@@ -107,8 +107,8 @@ export default function Homepage() {
                         to={`/collections/${c.handle}`}
                         className="group relative aspect-[3/4] bg-white/5 border border-white/5 overflow-hidden block"
                       >
-                        {/* Collection Image */}
-                        {c.image ? (
+                        {/* Stealth Mode: Force Placeholder */}
+                        {false && c.image ? (
                           <div className="absolute inset-0 overflow-hidden">
                             <motion.div
                               className="w-full h-full"
