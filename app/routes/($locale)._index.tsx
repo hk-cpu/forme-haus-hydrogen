@@ -95,47 +95,54 @@ export default function Homepage() {
               const collections = response?.collections?.nodes || [];
               return (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  {collections.slice(0, 3).map((c: any) => (
-                    <Link
-                      key={c.id}
-                      to={`/collections/${c.handle}`}
-                      className="group relative aspect-[3/4] bg-white/5 border border-white/5 overflow-hidden block"
-                    >
-                      {/* Collection Image */}
-                      {c.image ? (
-                        <div className="absolute inset-0 overflow-hidden">
-                          <motion.div
-                            className="w-full h-full"
-                            whileHover={{ scale: 1.05 }}
-                            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                          >
-                            <Image
-                              data={c.image}
-                              sizes="(min-width: 45em) 33vw, 100vw"
-                              className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700"
+                  {collections.slice(0, 3).map((c: any, i: number) => {
+                    const placeholders = [
+                      '/brand/atelier-mood.png',
+                      '/brand/placeholder-drape.png',
+                      '/brand/silk-texture.png',
+                    ];
+                    return (
+                      <Link
+                        key={c.id}
+                        to={`/collections/${c.handle}`}
+                        className="group relative aspect-[3/4] bg-white/5 border border-white/5 overflow-hidden block"
+                      >
+                        {/* Collection Image */}
+                        {c.image ? (
+                          <div className="absolute inset-0 overflow-hidden">
+                            <motion.div
+                              className="w-full h-full"
+                              whileHover={{ scale: 1.05 }}
+                              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                            >
+                              <Image
+                                data={c.image}
+                                sizes="(min-width: 45em) 33vw, 100vw"
+                                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700"
+                              />
+                            </motion.div>
+                          </div>
+                        ) : (
+                          <div className="absolute inset-0 bg-transparent">
+                            <img
+                              src={placeholders[i % placeholders.length]}
+                              alt="Collection Preview"
+                              className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
                             />
-                          </motion.div>
-                        </div>
-                      ) : (
-                        <div className="absolute inset-0 bg-transparent">
-                          <img
-                            src="/silk-placeholder.jpg"
-                            alt="Collection Preview"
-                            className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
-                          />
-                        </div>
-                      )}
+                          </div>
+                        )}
 
-                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10 bg-black/20 group-hover:bg-black/10 transition-colors">
-                        <h3 className="font-serif text-2xl italic text-white drop-shadow-md">
-                          {c.title}
-                        </h3>
-                        <span className="text-[10px] uppercase tracking-widest text-[#F0EAE6] border border-white/30 px-4 py-2 backdrop-blur-sm hover:bg-white hover:text-black transition-colors">
-                          View Collection
-                        </span>
-                      </div>
-                    </Link>
-                  ))}
+                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10 bg-black/20 group-hover:bg-black/10 transition-colors">
+                          <h3 className="font-serif text-2xl italic text-white drop-shadow-md">
+                            {c.title}
+                          </h3>
+                          <span className="text-[10px] uppercase tracking-widest text-[#F0EAE6] border border-white/30 px-4 py-2 backdrop-blur-sm hover:bg-white hover:text-black transition-colors">
+                            View Collection
+                          </span>
+                        </div>
+                      </Link>
+                    );
+                  })}
                 </div>
               );
             }}
