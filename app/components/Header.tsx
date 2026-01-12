@@ -13,10 +13,12 @@ export function Header({
     title,
     menu,
     openCart,
+    openSearch,
 }: {
     title: string;
     menu?: EnhancedMenu;
     openCart: () => void;
+    openSearch: () => void;
 }) {
     const isHome = useIsHomePath();
     const { y } = useWindowScroll();
@@ -42,8 +44,8 @@ export function Header({
             role="banner"
             className={`sticky top-0 z-50 transition-all duration-700 w-full ease-[cubic-bezier(0.32,0.72,0,1)]
             ${scrolled
-                    ? 'bg-transparent backdrop-blur-[1px] py-4'
-                    : 'bg-transparent py-6'
+                    ? 'bg-[#121212]/30 backdrop-blur-md py-4 border-b border-white/5'
+                    : 'bg-transparent py-8'
                 }`}
         >
             <div
@@ -91,7 +93,7 @@ export function Header({
                                 width={180}
                                 height={45}
                                 className="w-auto h-full object-contain"
-                                priority
+                                loading="eager"
                             />
                         </div>
                     </Link>
@@ -115,7 +117,10 @@ export function Header({
 
                     <LanguageSwitch />
 
-                    <button className="text-[#F0EAE6] hover:text-white transition-all duration-300 hover:scale-105 active:scale-95">
+                    <button
+                        onClick={openSearch}
+                        className="text-[#F0EAE6] hover:text-white transition-all duration-300 hover:scale-105 active:scale-95"
+                    >
                         <Search strokeWidth={1} className="w-5 h-5" />
                     </button>
 
@@ -126,7 +131,7 @@ export function Header({
                         <ShoppingBag strokeWidth={1} className="w-4 h-4" />
                         <Suspense fallback={null}>
                             <Await resolve={rootData?.cart}>
-                                {(cart) =>
+                                {(cart: any) =>
                                     cart?.totalQuantity ? (
                                         <span className="absolute -top-2 -right-2 text-[8px] bg-[#8B5E3C] text-white rounded-full w-3 h-3 flex items-center justify-center">
                                             {cart.totalQuantity}

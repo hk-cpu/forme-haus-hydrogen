@@ -24,7 +24,7 @@ export function ProductCard({
   return (
     <Link
       to={`/products/${product.handle}`}
-      className="group relative flex flex-col gap-3"
+      className="group relative flex flex-col gap-3 cursor-pointer"
       prefetch="viewport"
     >
       <div className="aspect-[3/4] w-full overflow-hidden bg-white/5 relative border border-white/5">
@@ -33,31 +33,30 @@ export function ProductCard({
             data={image}
             aspectRatio="3/4"
             sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
-            className="object-cover w-full h-full transition-transform duration-700 ease-out group-hover:scale-110"
+            className="object-cover w-full h-full transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-110 will-change-transform"
             loading={loading}
           />
         )}
 
-        {/* Quick Add Overlay / View Product */}
-        <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out z-20">
-          <button className="w-full bg-white/90 backdrop-blur text-black py-3 text-[10px] uppercase tracking-widest font-medium hover:bg-white transition-colors">
+        {/* Quick Add Overlay */}
+        <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-20">
+          <button className="w-full bg-[#121212]/80 backdrop-blur-md text-[#F0EAE6] border border-[#F0EAE6]/20 py-3 text-[10px] uppercase tracking-widest font-medium hover:bg-[#F0EAE6] hover:text-[#121212] transition-colors duration-300">
             View Product
           </button>
         </div>
       </div>
 
       <div className="flex justify-between items-start text-sm text-[#F0EAE6]">
-        <div>
-          <h3 className="font-serif text-base tracking-wide group-hover:underline decoration-1 underline-offset-4">
+        <div className="space-y-1">
+          <h3 className="font-serif text-lg tracking-wide group-hover:text-white transition-colors">
             {product.title}
           </h3>
-          <p className="text-[#F0EAE6]/60 text-xs mt-1 uppercase tracking-widest">
-            {/* Fallback to generic text or collection name if available in fragment */}
+          <p className="text-[#F0EAE6]/50 text-[10px] uppercase tracking-[0.2em]">
             Formé Haus
           </p>
         </div>
-        <Money data={price!} className="font-medium tracking-wide" />
+        <Money data={price!} className="font-sans font-medium tracking-wide text-[#F0EAE6]/90" />
       </div>
-    </Link>
+    </Link >
   );
 }

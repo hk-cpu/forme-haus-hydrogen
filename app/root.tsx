@@ -28,6 +28,8 @@ import invariant from 'tiny-invariant';
 import { PageLayout } from '~/components/PageLayout';
 import { GenericError } from '~/components/GenericError';
 import { NotFound } from '~/components/NotFound';
+import Silk from '~/components/Silk';
+import SmoothScroll from '~/components/SmoothScroll';
 import favicon from '~/assets/favicon.svg';
 import { seoPayload } from '~/lib/seo.server';
 import styles from '~/styles/app.css?url';
@@ -194,6 +196,9 @@ function Layout({ children }: { children?: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        <div className="fixed inset-0 z-[-1] pointer-events-none">
+          <Silk color="#8C8478" />
+        </div>
         {data ? (
           <Analytics.Provider
             cart={data.cart}
@@ -212,6 +217,7 @@ function Layout({ children }: { children?: React.ReactNode }) {
         )}
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
+        <SmoothScroll />
       </body>
     </html>
   );

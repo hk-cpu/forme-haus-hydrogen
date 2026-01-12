@@ -1,11 +1,11 @@
-import {useRef, Suspense} from 'react';
-import {Disclosure, Listbox} from '@headlessui/react';
+import { useRef, Suspense } from 'react';
+import { Disclosure, Listbox } from '@headlessui/react';
 import {
   defer,
   type MetaArgs,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
-import {useLoaderData, Await} from '@remix-run/react';
+import { useLoaderData, Await } from '@remix-run/react';
 import {
   getSeoMeta,
   Money,
@@ -25,25 +25,25 @@ import type {
   ProductOptionValueSwatch,
 } from '@shopify/hydrogen/storefront-api-types';
 
-import type {ProductFragment} from 'storefrontapi.generated';
-import {Heading, Section, Text} from '~/components/Text';
-import {Link} from '~/components/Link';
-import {Button} from '~/components/Button';
-import {AddToCartButton} from '~/components/AddToCartButton';
-import {Skeleton} from '~/components/Skeleton';
-import {ProductSwimlane} from '~/components/ProductSwimlane';
-import {ProductGallery} from '~/components/ProductGallery';
-import {IconCaret, IconCheck, IconClose} from '~/components/Icon';
-import {getExcerpt} from '~/lib/utils';
-import {seoPayload} from '~/lib/seo.server';
-import type {Storefront} from '~/lib/type';
-import {routeHeaders} from '~/data/cache';
-import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
+import type { ProductFragment } from 'storefrontapi.generated';
+import { Heading, Section, Text } from '~/components/Text';
+import { Link } from '~/components/Link';
+import { Button } from '~/components/Button';
+import { AddToCartButton } from '~/components/AddToCartButton';
+import { Skeleton } from '~/components/Skeleton';
+import { ProductSwimlane } from '~/components/ProductSwimlane';
+import { ProductGallery } from '~/components/ProductGallery';
+import { IconCaret, IconCheck, IconClose } from '~/components/Icon';
+import { getExcerpt } from '~/lib/utils';
+import { seoPayload } from '~/lib/seo.server';
+import type { Storefront } from '~/lib/type';
+import { routeHeaders } from '~/data/cache';
+import { MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT } from '~/data/fragments';
 
 export const headers = routeHeaders;
 
 export async function loader(args: LoaderFunctionArgs) {
-  const {productHandle} = args.params;
+  const { productHandle } = args.params;
   invariant(productHandle, 'Missing productHandle param, check route filename');
 
   // Start fetching non-critical data without blocking time to first byte
@@ -52,7 +52,7 @@ export async function loader(args: LoaderFunctionArgs) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return defer({...deferredData, ...criticalData});
+  return defer({ ...deferredData, ...criticalData });
 }
 
 /**
@@ -64,12 +64,12 @@ async function loadCriticalData({
   request,
   context,
 }: LoaderFunctionArgs) {
-  const {productHandle} = params;
+  const { productHandle } = params;
   invariant(productHandle, 'Missing productHandle param, check route filename');
 
   const selectedOptions = getSelectedProductOptions(request);
 
-  const [{shop, product}] = await Promise.all([
+  const [{ shop, product }] = await Promise.all([
     context.storefront.query(PRODUCT_QUERY, {
       variables: {
         handle: productHandle,
@@ -82,7 +82,7 @@ async function loadCriticalData({
   ]);
 
   if (!product?.id) {
-    throw new Response('product', {status: 404});
+    throw new Response('product', { status: 404 });
   }
 
   const recommended = getRecommendedProducts(context.storefront, product.id);
@@ -90,7 +90,7 @@ async function loadCriticalData({
   const variants = getAdjacentAndFirstAvailableVariants(product);
 
   const seo = seoPayload.product({
-    product: {...product, variants},
+    product: { ...product, variants },
     selectedVariant,
     url: request.url,
   });
@@ -117,15 +117,15 @@ function loadDeferredData(args: LoaderFunctionArgs) {
   return {};
 }
 
-export const meta = ({matches}: MetaArgs<typeof loader>) => {
+export const meta = ({ matches }: MetaArgs<typeof loader>) => {
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
 export default function Product() {
-  const {product, shop, recommended, variants, storeDomain} =
+  const { product, shop, recommended, variants, storeDomain } =
     useLoaderData<typeof loader>();
-  const {media, title, vendor, descriptionHtml} = product;
-  const {shippingPolicy, refundPolicy} = shop;
+  const { media, title, vendor, descriptionHtml } = product;
+  const { shippingPolicy, refundPolicy } = shop;
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
@@ -154,11 +154,11 @@ export default function Product() {
           <div className="sticky md:-mb-nav md:top-nav md:-translate-y-nav md:h-screen md:pt-nav hiddenScroll md:overflow-y-scroll">
             <section className="flex flex-col w-full max-w-xl gap-8 p-6 md:mx-auto md:max-w-sm md:px-0">
               <div className="grid gap-2">
-                <Heading as="h1" className="whitespace-normal">
+                <Heading as="h1" className="whitespace-normal font-serif text-3xl md:text-5xl text-[#F0EAE6]">
                   {title}
                 </Heading>
                 {vendor && (
-                  <Text className={'opacity-50 font-medium'}>{vendor}</Text>
+                  <Text className={'opacity-50 font-medium tracking-widest uppercase text-xs'}>{vendor}</Text>
                 )}
               </div>
               <ProductForm
@@ -166,7 +166,7 @@ export default function Product() {
                 selectedVariant={selectedVariant}
                 storeDomain={storeDomain}
               />
-              <div className="grid gap-4 py-4">
+              <div className="grid gap-4 py-4 pt-8 border-t border-[#F0EAE6]/10">
                 {descriptionHtml && (
                   <ProductDetail
                     title="Product Details"
@@ -247,19 +247,19 @@ export function ProductForm({
             key={option.name}
             className="product-options flex flex-col flex-wrap mb-4 gap-y-2 last:mb-0"
           >
-            <Heading as="legend" size="lead" className="min-w-[4rem]">
+            <Heading as="legend" size="lead" className="min-w-[4rem] text-[#F0EAE6]/80 text-xs uppercase tracking-widest mb-2">
               {option.name}
             </Heading>
             <div className="flex flex-wrap items-baseline gap-4">
               {option.optionValues.length > 7 ? (
                 <div className="relative w-full">
                   <Listbox>
-                    {({open}) => (
+                    {({ open }) => (
                       <>
                         <Listbox.Button
                           ref={closeRef}
                           className={clsx(
-                            'flex items-center justify-between w-full py-3 px-4 border border-primary',
+                            'flex items-center justify-between w-full py-3 px-4 border border-[#F0EAE6]/20 text-[#F0EAE6] bg-transparent',
                             open
                               ? 'rounded-b md:rounded-t md:rounded-b-none'
                               : 'rounded',
@@ -275,7 +275,7 @@ export function ProductForm({
                         </Listbox.Button>
                         <Listbox.Options
                           className={clsx(
-                            'border-primary bg-contrast absolute bottom-12 z-30 grid h-48 w-full overflow-y-scroll rounded-t border px-2 py-2 transition-[max-height] duration-150 sm:bottom-auto md:rounded-b md:rounded-t-none md:border-t-0 md:border-b',
+                            'border-[#F0EAE6]/20 bg-[#121212] absolute bottom-12 z-30 grid h-48 w-full overflow-y-scroll rounded-t border px-2 py-2 transition-[max-height] duration-150 sm:bottom-auto md:rounded-b md:rounded-t-none md:border-t-0 md:border-b',
                             open ? 'max-h-48' : 'max-h-0',
                           )}
                         >
@@ -295,13 +295,13 @@ export function ProductForm({
                                 >
                                   <Link
                                     {...(!isDifferentProduct
-                                      ? {rel: 'nofollow'}
+                                      ? { rel: 'nofollow' }
                                       : {})}
                                     to={`/products/${handle}?${variantUriQuery}`}
                                     preventScrollReset
                                     className={clsx(
-                                      'text-primary w-full p-2 transition rounded flex justify-start items-center text-left cursor-pointer',
-                                      selected && 'bg-primary/10',
+                                      'text-[#F0EAE6] w-full p-2 transition rounded flex justify-start items-center text-left cursor-pointer hover:bg-white/5',
+                                      selected && 'bg-white/10',
                                     )}
                                     onClick={() => {
                                       if (!closeRef?.current) return;
@@ -336,14 +336,14 @@ export function ProductForm({
                   }) => (
                     <Link
                       key={option.name + name}
-                      {...(!isDifferentProduct ? {rel: 'nofollow'} : {})}
+                      {...(!isDifferentProduct ? { rel: 'nofollow' } : {})}
                       to={`/products/${handle}?${variantUriQuery}`}
                       preventScrollReset
                       prefetch="intent"
                       replace
                       className={clsx(
-                        'leading-none py-1 border-b-[1.5px] cursor-pointer transition-all duration-200',
-                        selected ? 'border-primary/50' : 'border-primary/0',
+                        'leading-none py-1 border-b-[1px] cursor-pointer transition-all duration-300 text-sm tracking-wide',
+                        selected ? 'border-[#F0EAE6] text-[#F0EAE6]' : 'border-transparent text-[#F0EAE6]/50 hover:text-[#F0EAE6] hover:border-[#F0EAE6]/30',
                         available ? 'opacity-100' : 'opacity-50',
                       )}
                     >
@@ -356,7 +356,7 @@ export function ProductForm({
           </div>
         ))}
         {selectedVariant && (
-          <div className="grid items-stretch gap-4">
+          <div className="grid items-stretch gap-4 pt-4">
             {isOutOfStock ? (
               <Button variant="secondary" disabled>
                 <Text>Sold out</Text>
@@ -423,12 +423,12 @@ function ProductOptionSwatch({
   return (
     <div
       aria-label={name}
-      className="w-8 h-8"
+      className="w-8 h-8 rounded-full border border-white/10"
       style={{
         backgroundColor: color || 'transparent',
       }}
     >
-      {!!image && <img src={image} alt={name} />}
+      {!!image && <img src={image} alt={name} className="rounded-full" />}
     </div>
   );
 }
@@ -443,32 +443,27 @@ function ProductDetail({
   learnMore?: string;
 }) {
   return (
-    <Disclosure key={title} as="div" className="grid w-full gap-2">
-      {({open}) => (
+    <Disclosure key={title} as="div" className="grid w-full gap-2 border-b border-[#F0EAE6]/10 pb-4">
+      {({ open }) => (
         <>
-          <Disclosure.Button className="text-left">
-            <div className="flex justify-between">
-              <Text size="lead" as="h4">
+          <Disclosure.Button className="text-left group">
+            <div className="flex justify-between items-center">
+              <Text size="lead" as="h4" className="text-[#F0EAE6] font-medium text-sm uppercase tracking-widest group-hover:pl-2 transition-all duration-300">
                 {title}
               </Text>
-              <IconClose
-                className={clsx(
-                  'transition-transform transform-gpu duration-200',
-                  !open && 'rotate-[45deg]',
-                )}
-              />
+              <IconCaret direction={open ? 'up' : 'down'} className="text-[#F0EAE6]/50" />
             </div>
           </Disclosure.Button>
 
-          <Disclosure.Panel className={'pb-4 pt-2 grid gap-2'}>
+          <Disclosure.Panel className={'pt-4 grid gap-2'}>
             <div
-              className="prose dark:prose-invert"
-              dangerouslySetInnerHTML={{__html: content}}
+              className="prose dark:prose-invert text-[#F0EAE6]/70 text-sm font-sans leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: content }}
             />
             {learnMore && (
               <div className="">
                 <Link
-                  className="pb-px border-b border-primary/30 text-primary/50"
+                  className="pb-px border-b border-[#F0EAE6]/30 text-[#F0EAE6]/50 text-xs hover:text-[#F0EAE6] transition-colors"
                   to={learnMore}
                 >
                   Learn more
@@ -617,7 +612,7 @@ async function getRecommendedProducts(
   productId: string,
 ) {
   const products = await storefront.query(RECOMMENDED_PRODUCTS_QUERY, {
-    variables: {productId, count: 12},
+    variables: { productId, count: 12 },
   });
 
   invariant(products, 'No data returned from Shopify API');
@@ -635,5 +630,5 @@ async function getRecommendedProducts(
 
   mergedProducts.splice(originalProduct, 1);
 
-  return {nodes: mergedProducts};
+  return { nodes: mergedProducts };
 }

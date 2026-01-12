@@ -6,6 +6,7 @@ import {
 } from '@shopify/remix-oxygen';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import { useInView } from 'react-intersection-observer';
+import { motion } from 'framer-motion';
 import type {
   Filter,
   ProductCollectionSortKeys,
@@ -166,15 +167,27 @@ export default function Collection() {
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ staggerChildren: 0.1 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20"
+            >
               {nodes.map((product: any, i: number) => (
-                <ProductCard
+                <motion.div
                   key={product.id}
-                  product={product}
-                  loading={getImageLoadingPriority(i)}
-                />
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                >
+                  <ProductCard
+                    product={product}
+                    loading={getImageLoadingPriority(i)}
+                  />
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
 
             <div className="flex items-center justify-center mt-6">
               <Button as={NextLink} variant="secondary" width="full">

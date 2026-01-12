@@ -27,9 +27,9 @@ export const Button = forwardRef(
       'inline-block rounded font-medium text-center py-3 px-6';
 
     const variants = {
-      primary: `${baseButtonClasses} border border-[#AA9B8F]/30 text-[#F5F2F0] uppercase tracking-[0.2em] text-xs hover:bg-[#F5F2F0] hover:text-[#2E2C2B] transition-colors duration-300 bg-transparent`,
-      secondary: `${baseButtonClasses} border border-[#F5F2F0]/20 bg-transparent text-[#F5F2F0] hover:bg-[#F5F2F0]/10 uppercase tracking-widest text-xs`,
-      inline: 'border-b border-primary/10 leading-none pb-1',
+      primary: `${baseButtonClasses} border border-[#F0EAE6]/40 text-[#F0EAE6] uppercase tracking-[0.25em] text-[10px] hover:bg-[#F0EAE6] hover:text-[#121212] transition-all duration-500 ease-out bg-transparent backdrop-blur-sm`,
+      secondary: `${baseButtonClasses} border border-transparent text-[#F0EAE6]/70 hover:text-[#F0EAE6] uppercase tracking-[0.25em] text-[10px] relative group`,
+      inline: 'border-b border-[#F0EAE6]/20 leading-none pb-1 hover:border-[#F0EAE6] transition-colors duration-300',
     };
 
     const widths = {

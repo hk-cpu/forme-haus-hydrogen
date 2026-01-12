@@ -31,6 +31,7 @@ import type { RootLoader } from '~/root';
 import { Header as FormeHeader } from '~/components/Header';
 import { StatusBanner } from '~/components/StatusBanner';
 import Silk from '~/components/Silk';
+import { PredictiveSearch } from '~/components/PredictiveSearch';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -82,6 +83,13 @@ function Header({ title, menu }: { title: string; menu?: EnhancedMenu }) {
     closeDrawer: closeCart,
   } = useDrawer();
 
+  /* Search Drawer State */
+  const {
+    isOpen: isSearchOpen,
+    openDrawer: openSearch,
+    closeDrawer: closeSearch,
+  } = useDrawer();
+
   const {
     isOpen: isMenuOpen,
     openDrawer: openMenu,
@@ -99,11 +107,22 @@ function Header({ title, menu }: { title: string; menu?: EnhancedMenu }) {
   return (
     <>
       <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
+      <SearchDrawer isOpen={isSearchOpen} onClose={closeSearch} />
       {menu && (
         <MenuDrawer isOpen={isMenuOpen} onClose={closeMenu} menu={menu} />
       )}
-      <FormeHeader title={title} menu={menu} openCart={openCart} />
+      <FormeHeader title={title} menu={menu} openCart={openCart} openSearch={openSearch} />
     </>
+  );
+}
+
+function SearchDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  return (
+    <Drawer open={isOpen} onClose={onClose} heading="Search" openFrom="right">
+      <div className="grid h-full">
+        <PredictiveSearch isOpen={isOpen} onClose={onClose} />
+      </div>
+    </Drawer>
   );
 }
 

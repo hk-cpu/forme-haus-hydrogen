@@ -226,6 +226,51 @@ export type HomepageFeaturedCollectionsQuery = {
   };
 };
 
+export type PredictiveSearchQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+  searchTerm: StorefrontAPI.Scalars['String']['input'];
+  limit: StorefrontAPI.Scalars['Int']['input'];
+  limitScope?: StorefrontAPI.PredictiveSearchLimitScope;
+}>;
+
+export type PredictiveSearchQuery = {
+  predictiveSearch?: StorefrontAPI.Maybe<{
+    articles: Array<
+      Pick<StorefrontAPI.Article, 'id' | 'title' | 'handle'> & {
+        image?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.Image, 'url' | 'altText' | 'width' | 'height'>
+        >;
+        blog: Pick<StorefrontAPI.Blog, 'handle'>;
+      }
+    >;
+    collections: Array<
+      Pick<StorefrontAPI.Collection, 'id' | 'title' | 'handle'> & {
+        image?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.Image, 'url' | 'altText' | 'width' | 'height'>
+        >;
+      }
+    >;
+    pages: Array<Pick<StorefrontAPI.Page, 'id' | 'title' | 'handle'>>;
+    products: Array<
+      Pick<StorefrontAPI.Product, 'id' | 'title' | 'handle'> & {
+        featuredImage?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.Image, 'url' | 'altText' | 'width' | 'height'>
+        >;
+        priceRange: {
+          minVariantPrice: Pick<
+            StorefrontAPI.MoneyV2,
+            'amount' | 'currencyCode'
+          >;
+        };
+      }
+    >;
+    queries: Array<
+      Pick<StorefrontAPI.SearchQuerySuggestion, 'text' | 'styledText'>
+    >;
+  }>;
+};
+
 export type ApiAllProductsQueryVariables = StorefrontAPI.Exact<{
   query?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['String']['input']>;
   count?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['Int']['input']>;
@@ -1089,6 +1134,10 @@ interface GeneratedQueryTypes {
   '#graphql\n  query homepageFeaturedCollections($country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    collections(\n      first: 3\n    ) {\n      nodes {\n        id\n        title\n        handle\n        image {\n          altText\n          width\n          height\n          url\n        }\n      }\n    }\n  }\n': {
     return: HomepageFeaturedCollectionsQuery;
     variables: HomepageFeaturedCollectionsQueryVariables;
+  };
+  '#graphql\n  query PredictiveSearch(\n    $country: CountryCode\n    $language: LanguageCode\n    $searchTerm: String!\n    $limit: Int!\n    $limitScope: PredictiveSearchLimitScope! = EACH\n  ) @inContext(country: $country, language: $language) {\n    predictiveSearch(\n      limit: $limit\n      limitScope: $limitScope\n      query: $searchTerm\n    ) {\n      articles {\n        id\n        title\n        handle\n        image {\n          url\n          altText\n          width\n          height\n        }\n        blog {\n          handle\n        }\n      }\n      collections {\n        id\n        title\n        handle\n        image {\n          url\n          altText\n          width\n          height\n        }\n      }\n      pages {\n        id\n        title\n        handle\n      }\n      products {\n        id\n        title\n        handle\n        featuredImage {\n          url\n          altText\n          width\n          height\n        }\n        priceRange {\n          minVariantPrice {\n            amount\n            currencyCode\n          }\n        }\n      }\n      queries {\n        text\n        styledText\n      }\n    }\n  }\n': {
+    return: PredictiveSearchQuery;
+    variables: PredictiveSearchQueryVariables;
   };
   '#graphql\n  query ApiAllProducts(\n    $query: String\n    $count: Int\n    $reverse: Boolean\n    $country: CountryCode\n    $language: LanguageCode\n    $sortKey: ProductSortKeys\n  ) @inContext(country: $country, language: $language) {\n    products(first: $count, sortKey: $sortKey, reverse: $reverse, query: $query) {\n      nodes {\n        ...ProductCard\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n      }\n    }\n  }\n\n': {
     return: ApiAllProductsQuery;

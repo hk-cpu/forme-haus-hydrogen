@@ -6,6 +6,7 @@ import {
 import { Suspense } from 'react';
 import { Await, useLoaderData, Link } from '@remix-run/react';
 import { getSeoMeta, Image } from '@shopify/hydrogen';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 import Hero from '~/components/Hero';
 import NotifyForm from '~/components/NotifyForm';
@@ -75,12 +76,18 @@ export default function Homepage() {
       <Hero />
 
       {/* 2. Brand Introduction */}
-      <section className="py-24 px-6 text-center max-w-2xl mx-auto space-y-8">
+      <motion.section
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="py-24 px-6 text-center max-w-2xl mx-auto space-y-8"
+      >
         <div className="w-px h-16 bg-gradient-to-b from-transparent via-bronze to-transparent mx-auto opacity-50" />
         <p className="font-serif text-xl md:text-2xl leading-relaxed text-[#F0EAE6]/90 font-light italic">
           “Formé Haus is a Saudi-based womenswear label rooted in modern elegance, refined silhouettes, and thoughtful craftsmanship.”
         </p>
-      </section>
+      </motion.section>
 
       {/* 3. Featured Categories (Live) */}
       <section className="container mx-auto px-6 pb-24">
@@ -98,12 +105,18 @@ export default function Homepage() {
                     >
                       {/* Collection Image */}
                       {c.image ? (
-                        <div className="absolute inset-0">
-                          <Image
-                            data={c.image}
-                            sizes="(min-width: 45em) 33vw, 100vw"
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
-                          />
+                        <div className="absolute inset-0 overflow-hidden">
+                          <motion.div
+                            className="w-full h-full"
+                            whileHover={{ scale: 1.05 }}
+                            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                          >
+                            <Image
+                              data={c.image}
+                              sizes="(min-width: 45em) 33vw, 100vw"
+                              className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700"
+                            />
+                          </motion.div>
                         </div>
                       ) : (
                         <div className="absolute inset-0 bg-neutral-800">
