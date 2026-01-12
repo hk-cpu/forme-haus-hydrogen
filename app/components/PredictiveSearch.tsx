@@ -63,7 +63,7 @@ export function PredictiveSearch({
                         type="search"
                         name="q"
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                         placeholder="Search..."
                         className="w-full bg-transparent border-none text-[#F0EAE6] text-lg placeholder-[#F0EAE6]/30 focus:ring-0 px-0 py-2 border-b border-[#F0EAE6]/20 rounded-none font-serif"
                         variant="search"
@@ -107,24 +107,14 @@ export function PredictiveSearch({
                                                 onClick={onClose}
                                                 className="flex items-center gap-4"
                                             >
-                                                {product.featuredImage && (
-                                                    <div className="w-12 h-16 bg-[#F0EAE6]/5 overflow-hidden">
-                                                        <Image
-                                                            data={product.featuredImage}
-                                                            width={48}
-                                                            height={64}
-                                                            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
-                                                        />
-                                                    </div>
-                                                )}
+                                                {/* Stealth Mode: Placeholder */}
+                                                <div className="w-12 h-16 bg-[#F0EAE6]/5 overflow-hidden border border-white/10 flex items-center justify-center">
+                                                    <div className="w-full h-full border border-white/5" />
+                                                </div>
+
                                                 <div>
-                                                    <p className="text-[#F0EAE6] text-sm font-medium group-hover:text-[#C4A484] transition-colors duration-300 font-serif">{product.title}</p>
-                                                    {product.priceRange?.minVariantPrice && (
-                                                        <Money
-                                                            data={product.priceRange.minVariantPrice}
-                                                            className="text-[#F0EAE6]/50 text-xs mt-1"
-                                                        />
-                                                    )}
+                                                    <p className="text-[#F0EAE6] text-sm font-medium group-hover:text-[#C4A484] transition-colors duration-300 font-serif">COMING SOON</p>
+                                                    {/* Stealth Mode: Hide Price */}
                                                 </div>
                                             </RemixLink>
                                         </li>
@@ -145,7 +135,7 @@ export function PredictiveSearch({
                                                 onClick={onClose}
                                                 className="text-[#F0EAE6] hover:text-[#C4A484] transition-colors text-sm"
                                             >
-                                                {collection.title}
+                                                COMING SOON
                                             </RemixLink>
                                         </li>
                                     ))}
@@ -165,7 +155,7 @@ export function PredictiveSearch({
                                                 onClick={onClose}
                                                 className="text-[#F0EAE6] hover:text-[#C4A484] transition-colors text-sm font-serif"
                                             >
-                                                {article.title}
+                                                COMING SOON
                                             </RemixLink>
                                         </li>
                                     ))}

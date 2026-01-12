@@ -28,18 +28,13 @@ export function ProductGallery({
 
         return (
           <div
-            className="aspect-[4/5] w-full bg-[#121212] overflow-hidden group"
+            className="aspect-[4/5] w-full bg-[#121212] overflow-hidden group border border-white/5"
             key={med.id || image?.id}
           >
-            {image && (
-              <Image
-                loading={i === 0 ? 'eager' : 'lazy'}
-                data={image}
-                aspectRatio="4/5"
-                sizes="(min-width: 48em) 60vw, 90vw"
-                className="object-cover w-full h-full transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform group-hover:scale-105"
-              />
-            )}
+            {/* Stealth Mode: Placeholder */}
+            <div className="w-full h-full bg-transparent flex items-center justify-center">
+              <div className="text-[#F0EAE6]/5 w-full h-full border border-white/5" />
+            </div>
           </div>
         );
       })}

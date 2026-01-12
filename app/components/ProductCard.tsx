@@ -28,20 +28,15 @@ export function ProductCard({
       prefetch="viewport"
     >
       <div className="aspect-[3/4] w-full overflow-hidden bg-white/5 relative border border-white/5">
-        {image && (
-          <Image
-            data={image}
-            aspectRatio="3/4"
-            sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
-            className="object-cover w-full h-full transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-110 will-change-transform"
-            loading={loading}
-          />
-        )}
+        {/* Stealth Mode: Image Replacement */}
+        <div className="w-full h-full bg-transparent flex items-center justify-center">
+          <div className="text-[#F0EAE6]/5 border border-[#F0EAE6]/10 w-full h-full" />
+        </div>
 
         {/* Quick Add Overlay */}
         <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-20">
           <button className="w-full bg-[#121212]/80 backdrop-blur-md text-[#F0EAE6] border border-[#F0EAE6]/20 py-3 text-[10px] uppercase tracking-widest font-medium hover:bg-[#F0EAE6] hover:text-[#121212] transition-colors duration-300">
-            View Product
+            View Details
           </button>
         </div>
       </div>
@@ -49,13 +44,14 @@ export function ProductCard({
       <div className="flex justify-between items-start text-sm text-[#F0EAE6]">
         <div className="space-y-1">
           <h3 className="font-serif text-lg tracking-wide group-hover:text-white transition-colors">
-            {product.title}
+            COMING SOON
           </h3>
           <p className="text-[#F0EAE6]/50 text-[10px] uppercase tracking-[0.2em]">
             Formé Haus
           </p>
         </div>
-        <Money data={price!} className="font-sans font-medium tracking-wide text-[#F0EAE6]/90" />
+        {/* Stealth Mode: Hide Price */}
+        {/* <Money data={price!} className="font-sans font-medium tracking-wide text-[#F0EAE6]/90" /> */}
       </div>
     </Link >
   );

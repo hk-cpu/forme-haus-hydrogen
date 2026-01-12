@@ -267,15 +267,10 @@ function CartLineItem({ line }: { line: CartLine }) {
       }}
     >
       <div className="flex-shrink">
-        {merchandise.image && (
-          <Image
-            width={110}
-            height={110}
-            data={merchandise.image}
-            className="object-cover object-center w-24 h-24 border rounded md:w-28 md:h-28"
-            alt={merchandise.title}
-          />
-        )}
+        {/* Stealth Mode: Placeholder */}
+        <div className="w-24 h-24 border rounded md:w-28 md:h-28 bg-[#121212] overflow-hidden border-white/10 flex items-center justify-center">
+          <div className="text-[#F0EAE6]/5 border border-[#F0EAE6]/5 w-full h-full" />
+        </div>
       </div>
 
       <div className="flex justify-between flex-grow">
@@ -283,10 +278,10 @@ function CartLineItem({ line }: { line: CartLine }) {
           <Heading as="h3" size="copy">
             {merchandise?.product?.handle ? (
               <Link to={`/products/${merchandise.product.handle}`}>
-                {merchandise?.product?.title || ''}
+                COMING SOON
               </Link>
             ) : (
-              <Text>{merchandise?.product?.title || ''}</Text>
+              <Text>COMING SOON</Text>
             )}
           </Heading>
 
@@ -306,7 +301,7 @@ function CartLineItem({ line }: { line: CartLine }) {
           </div>
         </div>
         <Text>
-          <CartLinePrice line={line} as="span" />
+          {/* <CartLinePrice line={line} as="span" /> */}
         </Text>
       </div>
     </motion.li>
