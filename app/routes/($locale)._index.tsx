@@ -117,7 +117,7 @@ export default function Homepage() {
                           </motion.div>
                         </div>
                       ) : (
-                        <div className="absolute inset-0 bg-neutral-800">
+                        <div className="absolute inset-0 bg-transparent">
                           <img
                             src="/silk-placeholder.jpg"
                             alt="Collection Preview"
