@@ -33,9 +33,7 @@ export async function loader(args: LoaderFunctionArgs) {
 }
 
 async function loadCriticalData({ context, request }: LoaderFunctionArgs) {
-  const { shop } = await context.storefront.query(HOMEPAGE_SEO_QUERY, {
-    variables: { handle: 'freestyle' },
-  });
+  const { shop } = await context.storefront.query(HOMEPAGE_SEO_QUERY);
 
   return {
     shop,
@@ -202,7 +200,7 @@ export default function Homepage() {
 }
 
 const HOMEPAGE_SEO_QUERY = `#graphql
-  query seoCollectionContent($handle: String, $country: CountryCode, $language: LanguageCode)
+  query seoCollectionContent($country: CountryCode, $language: LanguageCode)
   @inContext(country: $country, language: $language) {
     shop {
       name

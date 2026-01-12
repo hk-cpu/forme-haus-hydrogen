@@ -42,14 +42,14 @@ export function Header({
     return (
         <header
             role="banner"
-            className={`sticky top-0 z-50 transition-all duration-700 w-full ease-[cubic-bezier(0.32,0.72,0,1)]
+            className={`fixed z-50 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0
             ${scrolled
-                    ? 'bg-[#121212]/30 backdrop-blur-md py-4 border-b border-white/5'
-                    : 'bg-transparent py-8'
+                    ? 'top-4 w-[95%] max-w-7xl mx-auto rounded-full bg-[#121212]/30 backdrop-blur-md py-3 border border-white/10 shadow-2xl'
+                    : 'top-0 w-full bg-transparent py-8 border-transparent'
                 }`}
         >
             <div
-                className={`absolute inset-0 transition-opacity duration-700 ${scrolled
+                className={`absolute inset-0 transition-opacity duration-700 rounded-full overflow-hidden ${scrolled
                     ? 'opacity-20 bg-gradient-to-b from-black/40 to-transparent'
                     : 'opacity-0'
                     }`}
