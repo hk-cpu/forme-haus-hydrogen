@@ -12,22 +12,6 @@
   --taupe-dark: #2E2C2B;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-bronze: var(--bronze);
-  --color-taupe: var(--taupe);
-
-  --font-sans: "Montserrat", system-ui, sans-serif;
-  --font-serif: "Italiana", "Didot", "Bodoni MT", serif;
-  --font-heading: var(--font-serif);
-  --font-arabic: "Cairo", "Segoe UI", sans-serif;
-}
-
-@media (prefers-color-scheme: light) {
-
-  /* Optional: Keep light mode available but default is now dark as per image */
-  :root {
     --background: #F5F2F0;
     --foreground: #121212;
   }

@@ -77,10 +77,11 @@ export const links: LinksFunction = () => {
       href: 'https://shop.app',
     },
     { rel: 'icon', type: 'image/svg+xml', href: favicon },
-    {
-      rel: 'stylesheet',
-      href: 'https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Italiana&family=Montserrat:wght@100..900&display=swap',
-    },
+    // Stealth Mode & Optimization: Removed External Fonts
+    // {
+    //   rel: 'stylesheet',
+    //   href: 'https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Italiana&family=Montserrat:wght@100..900&display=swap',
+    // },
   ];
 };
 
