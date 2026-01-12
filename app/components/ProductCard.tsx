@@ -1,141 +1,63 @@
-import clsx from 'clsx';
-import {flattenConnection, Image, Money, useMoney} from '@shopify/hydrogen';
-import type {MoneyV2, Product} from '@shopify/hydrogen/storefront-api-types';
-
-import type {ProductCardFragment} from 'storefrontapi.generated';
-import {Text} from '~/components/Text';
-import {Link} from '~/components/Link';
-import {Button} from '~/components/Button';
-import {AddToCartButton} from '~/components/AddToCartButton';
-import {isDiscounted, isNewArrival} from '~/lib/utils';
-import {getProductPlaceholder} from '~/lib/placeholders';
+import { Link } from '@remix-run/react';
+import { Image, Money, flattenConnection } from '@shopify/hydrogen';
+import type { Product } from '@shopify/hydrogen/storefront-api-types';
+import type { ProductCardFragment } from 'storefrontapi.generated';
+import { getProductPlaceholder } from '~/lib/placeholders';
 
 export function ProductCard({
   product,
-  label,
-  className,
   loading,
-  onClick,
-  quickAdd,
 }: {
   product: ProductCardFragment;
-  label?: string;
-  className?: string;
   loading?: HTMLImageElement['loading'];
-  onClick?: () => void;
-  quickAdd?: boolean;
 }) {
-  let cardLabel;
-
   const cardProduct: Product = product?.variants
     ? (product as Product)
     : getProductPlaceholder();
   if (!cardProduct?.variants?.nodes?.length) return null;
 
   const firstVariant = flattenConnection(cardProduct.variants)[0];
-
   if (!firstVariant) return null;
-  const {image, price, compareAtPrice} = firstVariant;
 
-  if (label) {
-    cardLabel = label;
-  } else if (isDiscounted(price as MoneyV2, compareAtPrice as MoneyV2)) {
-    cardLabel = 'Sale';
-  } else if (isNewArrival(product.publishedAt)) {
-    cardLabel = 'New';
-  }
+  const { image, price } = firstVariant;
 
   return (
-    <div className="flex flex-col gap-2">
-      <Link
-        onClick={onClick}
-        to={`/products/${product.handle}`}
-        prefetch="viewport"
-      >
-        <div className={clsx('grid gap-4', className)}>
-          <div className="card-image aspect-[4/5] bg-primary/5">
-            {image && (
-              <Image
-                className="object-cover w-full fadeIn"
-                sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
-                aspectRatio="4/5"
-                data={image}
-                alt={image.altText || `Picture of ${product.title}`}
-                loading={loading}
-              />
-            )}
-            <Text
-              as="label"
-              size="fine"
-              className="absolute top-0 right-0 m-4 text-right text-notice"
-            >
-              {cardLabel}
-            </Text>
-          </div>
-          <div className="grid gap-1">
-            <Text
-              className="w-full overflow-hidden whitespace-nowrap text-ellipsis "
-              as="h3"
-            >
-              {product.title}
-            </Text>
-            <div className="flex gap-4">
-              <Text className="flex gap-4">
-                <Money withoutTrailingZeros data={price!} />
-                {isDiscounted(price as MoneyV2, compareAtPrice as MoneyV2) && (
-                  <CompareAtPrice
-                    className={'opacity-50'}
-                    data={compareAtPrice as MoneyV2}
-                  />
-                )}
-              </Text>
-            </div>
-          </div>
+    <Link
+      to={`/products/${product.handle}`}
+      className="group relative flex flex-col gap-3"
+      prefetch="viewport"
+    >
+      <div className="aspect-[3/4] w-full overflow-hidden bg-white/5 relative border border-white/5">
+        {image && (
+          <Image
+            data={image}
+            aspectRatio="3/4"
+            sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
+            className="object-cover w-full h-full transition-transform duration-700 ease-out group-hover:scale-110"
+            loading={loading}
+          />
+        )}
+
+        {/* Quick Add Overlay / View Product */}
+        <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out z-20">
+          <button className="w-full bg-white/90 backdrop-blur text-black py-3 text-[10px] uppercase tracking-widest font-medium hover:bg-white transition-colors">
+            View Product
+          </button>
         </div>
-      </Link>
-      {quickAdd && firstVariant.availableForSale && (
-        <AddToCartButton
-          lines={[
-            {
-              quantity: 1,
-              merchandiseId: firstVariant.id,
-            },
-          ]}
-          variant="secondary"
-          className="mt-2"
-        >
-          <Text as="span" className="flex items-center justify-center gap-2">
-            Add to Cart
-          </Text>
-        </AddToCartButton>
-      )}
-      {quickAdd && !firstVariant.availableForSale && (
-        <Button variant="secondary" className="mt-2" disabled>
-          <Text as="span" className="flex items-center justify-center gap-2">
-            Sold out
-          </Text>
-        </Button>
-      )}
-    </div>
-  );
-}
+      </div>
 
-function CompareAtPrice({
-  data,
-  className,
-}: {
-  data: MoneyV2;
-  className?: string;
-}) {
-  const {currencyNarrowSymbol, withoutTrailingZerosAndCurrency} =
-    useMoney(data);
-
-  const styles = clsx('strike', className);
-
-  return (
-    <span className={styles}>
-      {currencyNarrowSymbol}
-      {withoutTrailingZerosAndCurrency}
-    </span>
+      <div className="flex justify-between items-start text-sm text-[#F0EAE6]">
+        <div>
+          <h3 className="font-serif text-base tracking-wide group-hover:underline decoration-1 underline-offset-4">
+            {product.title}
+          </h3>
+          <p className="text-[#F0EAE6]/60 text-xs mt-1 uppercase tracking-widest">
+            {/* Fallback to generic text or collection name if available in fragment */}
+            Formé Haus
+          </p>
+        </div>
+        <Money data={price!} className="font-medium tracking-wide" />
+      </div>
+    </Link>
   );
 }

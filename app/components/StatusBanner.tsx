@@ -1,0 +1,32 @@
+import { motion } from 'framer-motion';
+import { ShinyText } from "./ShinyText";
+import { useEffect, useState } from "react";
+
+export function StatusBanner() {
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        // Simple mount animation
+        setIsVisible(true);
+    }, []);
+
+    // If we want strict "Coming Soon" check in a client component, we should pass it as a prop from Layout.
+    // But sticking to the requested "Dynamic Effects" on the banner itself:
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.32, 0.72, 0, 1], delay: 0.2 }}
+            className="w-full bg-[#121212] text-[#E0D8D0] text-[10px] uppercase tracking-[0.2em] py-2.5 text-center border-b border-white/5 relative z-[60]"
+        >
+            <ShinyText
+                text="Complimentary Global Shipping over €300"
+                speed={4}
+                shineColor="#FFFFFF"
+                color="#A09890" // Darker base for more contrast
+                className="font-medium"
+            />
+        </motion.div>
+    );
+}

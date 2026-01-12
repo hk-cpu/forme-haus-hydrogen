@@ -3,102 +3,47 @@ import {
   type MetaArgs,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
-import {Suspense} from 'react';
-import {Await, useLoaderData} from '@remix-run/react';
-import {getSeoMeta} from '@shopify/hydrogen';
+import { Suspense } from 'react';
+import { Await, useLoaderData, Link } from '@remix-run/react';
+import { getSeoMeta, Image } from '@shopify/hydrogen';
 
-import {Hero} from '~/components/Hero';
-import {FeaturedCollections} from '~/components/FeaturedCollections';
-import {ProductSwimlane} from '~/components/ProductSwimlane';
-import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
-import {getHeroPlaceholder} from '~/lib/placeholders';
-import {seoPayload} from '~/lib/seo.server';
-import {routeHeaders} from '~/data/cache';
+import Hero from '~/components/Hero';
+import NotifyForm from '~/components/NotifyForm';
+import { seoPayload } from '~/lib/seo.server';
+import { routeHeaders } from '~/data/cache';
 
 export const headers = routeHeaders;
 
 export async function loader(args: LoaderFunctionArgs) {
-  const {params, context} = args;
-  const {language, country} = context.storefront.i18n;
+  const { params, context } = args;
+  const { language, country } = context.storefront.i18n;
 
   if (
     params.locale &&
     params.locale.toLowerCase() !== `${language}-${country}`.toLowerCase()
   ) {
-    // If the locale URL param is defined, yet we still are on `EN-US`
-    // the the locale param must be invalid, send to the 404 page
-    throw new Response(null, {status: 404});
+    throw new Response(null, { status: 404 });
   }
 
-  // Start fetching non-critical data without blocking time to first byte
+  const criticalData = await loadCriticalData(args);
   const deferredData = loadDeferredData(args);
 
-  // Await the critical data required to render initial state of the page
-  const criticalData = await loadCriticalData(args);
-
-  return defer({...deferredData, ...criticalData});
+  return defer({ ...deferredData, ...criticalData });
 }
 
-/**
- * Load data necessary for rendering content above the fold. This is the critical data
- * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
- */
-async function loadCriticalData({context, request}: LoaderFunctionArgs) {
-  const [{shop, hero}] = await Promise.all([
-    context.storefront.query(HOMEPAGE_SEO_QUERY, {
-      variables: {handle: 'freestyle'},
-    }),
-    // Add other queries here, so that they are loaded in parallel
-  ]);
+async function loadCriticalData({ context, request }: LoaderFunctionArgs) {
+  const { shop } = await context.storefront.query(HOMEPAGE_SEO_QUERY, {
+    variables: { handle: 'freestyle' },
+  });
 
   return {
     shop,
-    primaryHero: hero,
-    seo: seoPayload.home({url: request.url}),
+    seo: seoPayload.home({ url: request.url }),
   };
 }
 
-/**
- * Load data for rendering content below the fold. This data is deferred and will be
- * fetched after the initial page load. If it's unavailable, the page should still 200.
- * Make sure to not throw any errors here, as it will cause the page to 500.
- */
-function loadDeferredData({context}: LoaderFunctionArgs) {
-  const {language, country} = context.storefront.i18n;
-
-  const featuredProducts = context.storefront
-    .query(HOMEPAGE_FEATURED_PRODUCTS_QUERY, {
-      variables: {
-        /**
-         * Country and language properties are automatically injected
-         * into all queries. Passing them is unnecessary unless you
-         * want to override them from the following default:
-         */
-        country,
-        language,
-      },
-    })
-    .catch((error) => {
-      // Log query errors, but don't throw them so the page can still render
-      // eslint-disable-next-line no-console
-      console.error(error);
-      return null;
-    });
-
-  const secondaryHero = context.storefront
-    .query(COLLECTION_HERO_QUERY, {
-      variables: {
-        handle: 'backcountry',
-        country,
-        language,
-      },
-    })
-    .catch((error) => {
-      // Log query errors, but don't throw them so the page can still render
-      // eslint-disable-next-line no-console
-      console.error(error);
-      return null;
-    });
+function loadDeferredData({ context }: LoaderFunctionArgs) {
+  const { language, country } = context.storefront.i18n;
 
   const featuredCollections = context.storefront
     .query(FEATURED_COLLECTIONS_QUERY, {
@@ -108,195 +53,149 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
       },
     })
     .catch((error) => {
-      // Log query errors, but don't throw them so the page can still render
-      // eslint-disable-next-line no-console
-      console.error(error);
-      return null;
-    });
-
-  const tertiaryHero = context.storefront
-    .query(COLLECTION_HERO_QUERY, {
-      variables: {
-        handle: 'winter-2022',
-        country,
-        language,
-      },
-    })
-    .catch((error) => {
-      // Log query errors, but don't throw them so the page can still render
-      // eslint-disable-next-line no-console
       console.error(error);
       return null;
     });
 
   return {
-    featuredProducts,
-    secondaryHero,
     featuredCollections,
-    tertiaryHero,
   };
 }
 
-export const meta = ({matches}: MetaArgs<typeof loader>) => {
+export const meta = ({ matches }: MetaArgs<typeof loader>) => {
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
 export default function Homepage() {
-  const {
-    primaryHero,
-    secondaryHero,
-    tertiaryHero,
-    featuredCollections,
-    featuredProducts,
-  } = useLoaderData<typeof loader>();
-
-  // TODO: skeletons vs placeholders
-  const skeletons = getHeroPlaceholder([{}, {}, {}]);
+  const { featuredCollections } = useLoaderData<typeof loader>();
 
   return (
-    <>
-      {primaryHero && (
-        <Hero {...primaryHero} height="full" top loading="eager" />
-      )}
+    <div className="min-h-screen bg-transparent text-[#F0EAE6]">
+      {/* 1. Hero */}
+      <Hero />
 
-      {featuredProducts && (
-        <Suspense>
-          <Await resolve={featuredProducts}>
-            {(response) => {
-              if (
-                !response ||
-                !response?.products ||
-                !response?.products?.nodes
-              ) {
-                return <></>;
-              }
-              return (
-                <ProductSwimlane
-                  products={response.products}
-                  title="Featured Products"
-                  count={4}
-                />
-              );
-            }}
-          </Await>
-        </Suspense>
-      )}
+      {/* 2. Brand Introduction */}
+      <section className="py-24 px-6 text-center max-w-2xl mx-auto space-y-8">
+        <div className="w-px h-16 bg-gradient-to-b from-transparent via-bronze to-transparent mx-auto opacity-50" />
+        <p className="font-serif text-xl md:text-2xl leading-relaxed text-[#F0EAE6]/90 font-light italic">
+          “Formé Haus is a Saudi-based womenswear label rooted in modern elegance, refined silhouettes, and thoughtful craftsmanship.”
+        </p>
+      </section>
 
-      {secondaryHero && (
-        <Suspense fallback={<Hero {...skeletons[1]} />}>
-          <Await resolve={secondaryHero}>
-            {(response) => {
-              if (!response || !response?.hero) {
-                return <></>;
-              }
-              return <Hero {...response.hero} />;
-            }}
-          </Await>
-        </Suspense>
-      )}
-
-      {featuredCollections && (
-        <Suspense>
+      {/* 3. Featured Categories (Live) */}
+      <section className="container mx-auto px-6 pb-24">
+        <Suspense fallback={<div className="h-96 w-full animate-pulse bg-white/5" />}>
           <Await resolve={featuredCollections}>
             {(response) => {
-              if (
-                !response ||
-                !response?.collections ||
-                !response?.collections?.nodes
-              ) {
-                return <></>;
-              }
+              const collections = response?.collections?.nodes || [];
               return (
-                <FeaturedCollections
-                  collections={response.collections}
-                  title="Collections"
-                />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {collections.slice(0, 3).map((c: any) => (
+                    <Link
+                      key={c.id}
+                      to={`/collections/${c.handle}`}
+                      className="group relative aspect-[3/4] bg-white/5 border border-white/5 overflow-hidden block"
+                    >
+                      {/* Collection Image */}
+                      {c.image ? (
+                        <div className="absolute inset-0">
+                          <Image
+                            data={c.image}
+                            sizes="(min-width: 45em) 33vw, 100vw"
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
+                          />
+                        </div>
+                      ) : (
+                        <div className="absolute inset-0 bg-neutral-800">
+                          <img
+                            src="/silk-placeholder.jpg"
+                            alt="Collection Preview"
+                            className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
+                          />
+                        </div>
+                      )}
+
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10 bg-black/20 group-hover:bg-black/10 transition-colors">
+                        <h3 className="font-serif text-2xl italic text-white drop-shadow-md">
+                          {c.title}
+                        </h3>
+                        <span className="text-[10px] uppercase tracking-widest text-[#F0EAE6] border border-white/30 px-4 py-2 backdrop-blur-sm hover:bg-white hover:text-black transition-colors">
+                          View Collection
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               );
             }}
           </Await>
         </Suspense>
-      )}
+      </section>
 
-      {tertiaryHero && (
-        <Suspense fallback={<Hero {...skeletons[2]} />}>
-          <Await resolve={tertiaryHero}>
-            {(response) => {
-              if (!response || !response?.hero) {
-                return <></>;
-              }
-              return <Hero {...response.hero} />;
-            }}
-          </Await>
-        </Suspense>
-      )}
-    </>
+      {/* 4. Journal Teaser */}
+      <section className="container mx-auto px-6 pb-32 border-t border-white/5 pt-24">
+        <div className="flex justify-between items-end mb-12">
+          <h2 className="font-serif text-3xl italic">Journal</h2>
+          <span className="text-xs uppercase tracking-widest text-neutral-500">
+            Editorial
+          </span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            {
+              title: 'A Modern Saudi Wardrobe',
+              img: '/brand/journal-identity.png',
+            },
+            {
+              title: 'Designing for Everyday Elegance',
+              img: '/brand/journal-motion.png',
+            },
+            {
+              title: 'Behind the Craft',
+              img: '/brand/journal-hero.png',
+            },
+          ].map((item, i) => (
+            <div
+              key={i}
+              className="space-y-4 cursor-pointer opacity-80 hover:opacity-100 transition-opacity group"
+            >
+              <div className="aspect-video relative overflow-hidden border border-white/5 bg-neutral-800">
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </div>
+              <h3 className="font-serif text-lg text-[#F0EAE6]">{item.title}</h3>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 5. Newsletter Signup */}
+      <section className="pb-32">
+        <div className="text-center space-y-6 mb-12">
+          <h2 className="font-serif text-3xl italic">
+            Launching soon in Saudi Arabia
+          </h2>
+          <p className="text-xs uppercase tracking-widest text-neutral-500">
+            Join the list for exclusive updates
+          </p>
+        </div>
+        <NotifyForm />
+      </section>
+    </div>
   );
 }
-
-const COLLECTION_CONTENT_FRAGMENT = `#graphql
-  fragment CollectionContent on Collection {
-    id
-    handle
-    title
-    descriptionHtml
-    heading: metafield(namespace: "hero", key: "title") {
-      value
-    }
-    byline: metafield(namespace: "hero", key: "byline") {
-      value
-    }
-    cta: metafield(namespace: "hero", key: "cta") {
-      value
-    }
-    spread: metafield(namespace: "hero", key: "spread") {
-      reference {
-        ...Media
-      }
-    }
-    spreadSecondary: metafield(namespace: "hero", key: "spread_secondary") {
-      reference {
-        ...Media
-      }
-    }
-  }
-  ${MEDIA_FRAGMENT}
-` as const;
 
 const HOMEPAGE_SEO_QUERY = `#graphql
   query seoCollectionContent($handle: String, $country: CountryCode, $language: LanguageCode)
   @inContext(country: $country, language: $language) {
-    hero: collection(handle: $handle) {
-      ...CollectionContent
-    }
     shop {
       name
       description
     }
   }
-  ${COLLECTION_CONTENT_FRAGMENT}
-` as const;
-
-const COLLECTION_HERO_QUERY = `#graphql
-  query heroCollectionContent($handle: String, $country: CountryCode, $language: LanguageCode)
-  @inContext(country: $country, language: $language) {
-    hero: collection(handle: $handle) {
-      ...CollectionContent
-    }
-  }
-  ${COLLECTION_CONTENT_FRAGMENT}
-` as const;
-
-// @see: https://shopify.dev/api/storefront/current/queries/products
-export const HOMEPAGE_FEATURED_PRODUCTS_QUERY = `#graphql
-  query homepageFeaturedProducts($country: CountryCode, $language: LanguageCode)
-  @inContext(country: $country, language: $language) {
-    products(first: 8) {
-      nodes {
-        ...ProductCard
-      }
-    }
-  }
-  ${PRODUCT_CARD_FRAGMENT}
 ` as const;
 
 // @see: https://shopify.dev/api/storefront/current/queries/collections
@@ -304,8 +203,7 @@ export const FEATURED_COLLECTIONS_QUERY = `#graphql
   query homepageFeaturedCollections($country: CountryCode, $language: LanguageCode)
   @inContext(country: $country, language: $language) {
     collections(
-      first: 4,
-      sortKey: UPDATED_AT
+      first: 3
     ) {
       nodes {
         id

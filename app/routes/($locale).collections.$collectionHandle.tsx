@@ -1,11 +1,11 @@
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 import {
   json,
   type MetaArgs,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
-import {useLoaderData, useNavigate} from '@remix-run/react';
-import {useInView} from 'react-intersection-observer';
+import { useLoaderData, useNavigate } from '@remix-run/react';
+import { useInView } from 'react-intersection-observer';
 import type {
   Filter,
   ProductCollectionSortKeys,
@@ -20,32 +20,32 @@ import {
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 
-import {PageHeader, Section, Text} from '~/components/Text';
-import {Grid} from '~/components/Grid';
-import {Button} from '~/components/Button';
-import {ProductCard} from '~/components/ProductCard';
-import {SortFilter, type SortParam} from '~/components/SortFilter';
-import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
-import {routeHeaders} from '~/data/cache';
-import {seoPayload} from '~/lib/seo.server';
-import {FILTER_URL_PREFIX} from '~/components/SortFilter';
-import {getImageLoadingPriority} from '~/lib/const';
-import {parseAsCurrency} from '~/lib/utils';
+import { PageHeader, Section, Text } from '~/components/Text';
+import { Grid } from '~/components/Grid';
+import { Button } from '~/components/Button';
+import { ProductCard } from '~/components/ProductCard';
+import { SortFilter, type SortParam } from '~/components/SortFilter';
+import { PRODUCT_CARD_FRAGMENT } from '~/data/fragments';
+import { routeHeaders } from '~/data/cache';
+import { seoPayload } from '~/lib/seo.server';
+import { FILTER_URL_PREFIX } from '~/components/SortFilter';
+import { getImageLoadingPriority } from '~/lib/const';
+import { parseAsCurrency } from '~/lib/utils';
 
 export const headers = routeHeaders;
 
-export async function loader({params, request, context}: LoaderFunctionArgs) {
+export async function loader({ params, request, context }: LoaderFunctionArgs) {
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 8,
   });
-  const {collectionHandle} = params;
+  const { collectionHandle } = params;
   const locale = context.storefront.i18n;
 
   invariant(collectionHandle, 'Missing collectionHandle param');
 
   const searchParams = new URL(request.url).searchParams;
 
-  const {sortKey, reverse} = getSortValuesFromParam(
+  const { sortKey, reverse } = getSortValuesFromParam(
     searchParams.get('sort') as SortParam,
   );
   const filters = [...searchParams.entries()].reduce(
@@ -61,7 +61,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     [] as ProductFilter[],
   );
 
-  const {collection, collections} = await context.storefront.query(
+  const { collection, collections } = await context.storefront.query(
     COLLECTION_QUERY,
     {
       variables: {
@@ -77,10 +77,10 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   );
 
   if (!collection) {
-    throw new Response('collection', {status: 404});
+    throw new Response('collection', { status: 404 });
   }
 
-  const seo = seoPayload.collection({collection, url: request.url});
+  const seo = seoPayload.collection({ collection, url: request.url });
 
   const allFilterValues = collection.products.filters.flatMap(
     (filter) => filter.values,
@@ -137,73 +137,60 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   });
 }
 
-export const meta = ({matches}: MetaArgs<typeof loader>) => {
+export const meta = ({ matches }: MetaArgs<typeof loader>) => {
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
 export default function Collection() {
-  const {collection, collections, appliedFilters} =
-    useLoaderData<typeof loader>();
-
-  const {ref, inView} = useInView();
+  const { collection } = useLoaderData<typeof loader>();
 
   return (
-    <>
-      <PageHeader heading={collection.title}>
-        {collection?.description && (
-          <div className="flex items-baseline justify-between w-full">
-            <div>
-              <Text format width="narrow" as="p" className="inline-block">
-                {collection.description}
-              </Text>
-            </div>
-          </div>
+    <main className="container mx-auto px-6 py-24 min-h-screen text-[#4A3C31]">
+      <header className="mb-16 text-center">
+        <h1 className="font-serif text-5xl md:text-6xl mb-4 text-[#F0EAE6]">
+          {collection.title}
+        </h1>
+        {collection.description && (
+          <p className="max-w-2xl mx-auto text-[#F0EAE6]/70 font-sans tracking-wide text-sm leading-relaxed">
+            {collection.description}
+          </p>
         )}
-      </PageHeader>
-      <Section>
-        <SortFilter
-          filters={collection.products.filters as Filter[]}
-          appliedFilters={appliedFilters}
-          collections={collections}
-        >
-          <Pagination connection={collection.products}>
-            {({
-              nodes,
-              isLoading,
-              PreviousLink,
-              NextLink,
-              nextPageUrl,
-              hasNextPage,
-              state,
-            }) => (
-              <>
-                <div className="flex items-center justify-center mb-6">
-                  <Button as={PreviousLink} variant="secondary" width="full">
-                    {isLoading ? 'Loading...' : 'Load previous'}
-                  </Button>
-                </div>
-                <ProductsLoadedOnScroll
-                  nodes={nodes}
-                  inView={inView}
-                  nextPageUrl={nextPageUrl}
-                  hasNextPage={hasNextPage}
-                  state={state}
+      </header>
+
+      <Pagination connection={collection.products}>
+        {({ nodes, isLoading, PreviousLink, NextLink }) => (
+          <>
+            <div className="flex items-center justify-center mb-6">
+              <Button as={PreviousLink} variant="secondary" width="full">
+                {isLoading ? 'Loading...' : 'Load previous'}
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+              {nodes.map((product: any, i: number) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  loading={getImageLoadingPriority(i)}
                 />
-                <div className="flex items-center justify-center mt-6">
-                  <Button
-                    ref={ref}
-                    as={NextLink}
-                    variant="secondary"
-                    width="full"
-                  >
-                    {isLoading ? 'Loading...' : 'Load more products'}
-                  </Button>
-                </div>
-              </>
-            )}
-          </Pagination>
-        </SortFilter>
-      </Section>
+              ))}
+            </div>
+
+            <div className="flex items-center justify-center mt-6">
+              <Button as={NextLink} variant="secondary" width="full">
+                {isLoading ? 'Loading...' : 'Load more products'}
+              </Button>
+            </div>
+          </>
+        )}
+      </Pagination>
+
+      {collection.products.nodes.length === 0 && (
+        <div className="text-center py-24 text-[#F0EAE6]/50 italic font-serif text-xl">
+          No products found in this collection.
+        </div>
+      )}
+
       <Analytics.CollectionView
         data={{
           collection: {
@@ -212,47 +199,10 @@ export default function Collection() {
           },
         }}
       />
-    </>
+    </main>
   );
 }
 
-function ProductsLoadedOnScroll({
-  nodes,
-  inView,
-  nextPageUrl,
-  hasNextPage,
-  state,
-}: {
-  nodes: any;
-  inView: boolean;
-  nextPageUrl: string;
-  hasNextPage: boolean;
-  state: any;
-}) {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      navigate(nextPageUrl, {
-        replace: true,
-        preventScrollReset: true,
-        state,
-      });
-    }
-  }, [inView, navigate, state, nextPageUrl, hasNextPage]);
-
-  return (
-    <Grid layout="products" data-test="product-grid">
-      {nodes.map((product: any, i: number) => (
-        <ProductCard
-          key={product.id}
-          product={product}
-          loading={getImageLoadingPriority(i)}
-        />
-      ))}
-    </Grid>
-  );
-}
 
 const COLLECTION_QUERY = `#graphql
   query CollectionDetails(

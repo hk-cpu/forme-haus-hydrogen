@@ -1,8 +1,8 @@
-import {forwardRef} from 'react';
-import {Link} from '@remix-run/react';
+import { forwardRef } from 'react';
+import { Link } from '@remix-run/react';
 import clsx from 'clsx';
 
-import {missingClass} from '~/lib/utils';
+import { missingClass } from '~/lib/utils';
 
 export const Button = forwardRef(
   (
@@ -27,8 +27,8 @@ export const Button = forwardRef(
       'inline-block rounded font-medium text-center py-3 px-6';
 
     const variants = {
-      primary: `${baseButtonClasses} bg-primary text-contrast`,
-      secondary: `${baseButtonClasses} border border-primary/10 bg-contrast text-primary`,
+      primary: `${baseButtonClasses} border border-[#AA9B8F]/30 text-[#F5F2F0] uppercase tracking-[0.2em] text-xs hover:bg-[#F5F2F0] hover:text-[#2E2C2B] transition-colors duration-300 bg-transparent`,
+      secondary: `${baseButtonClasses} border border-[#F5F2F0]/20 bg-transparent text-[#F5F2F0] hover:bg-[#F5F2F0]/10 uppercase tracking-widest text-xs`,
       inline: 'border-b border-primary/10 leading-none pb-1',
     };
 

@@ -1,0 +1,121 @@
+npm warn Unknown project config "public-hoist-pattern". This will stop working in the next major version of npm.
+
+> demo-store@2.1.6 dev
+> shopify hydrogen dev --codegen
+
+[7m[33m warn [39m[27m Data fetching is changing to a single fetch in React Router v7
+[33m┃[39m [90mYou can use the `v3_singleFetch` future flag to opt-in early.[39m
+[33m┃[39m [90m-> https://remix.run/docs/en/2.13.1/start/future-flags#v3_singleFetch[39m
+[33m┗[39m
+Port 3000 is in use, trying another one...
+
+Environment variables injected into MiniOxygen:
+
+SESSION_SECRET                          from local .env
+PUBLIC_STOREFRONT_API_TOKEN             from local .env
+PUBLIC_STORE_DOMAIN                     from local .env
+PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID   from local .env
+PUBLIC_CHECKOUT_DOMAIN                  from local .env
+SHOP_ID                                 from local .env
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+[2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+[2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+
+
+╭─ success ────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  View Hydrogen app: http://localhost:3001/                                   │
+│                                                                              │
+│  View GraphiQL API browser:                                                  │
+│  http://localhost:3001/graphiql                                              │
+│                                                                              │
+│  View server network requests:                                               │
+│  http://localhost:3001/subrequest-profiler                                   │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ info ───────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  There are 6 new @shopify/hydrogen versions available.                       │
+│                                                                              │
+│  Current: ^2025.1.1 | Latest: 2025.7.0                                       │
+│                                                                              │
+│  The next 5 version(s) include                                               │
+│    • 2025.1.2 - Shopify CLI update                                           │
+│    • 2025.1.3 - Remix routeConfig support, Remix and Vite updates.           │
+│    • 2025.1.4 - Cart delivery adddress support, fixes in Vite 6 SSR          │
+│      conditions, Skeleton & Customer Accounts session                        │
+│    • 2025.4.0 - Update Storefront and Customer Account API to 2025.4, new    │
+│      recipes and fixes                                                       │
+│    • 2025.4.1 - New tokenless Storefront API route, add buyerIdentity to     │
+│      create handlers                                                         │
+│    • ...more                                                                 │
+│                                                                              │
+│  Next steps                                                                  │
+│    • Run `npx shopify hydrogen upgrade` or `npx shopify hydrogen upgrade     │
+│      --version 2025.7.0`                                                     │
+│    • Read release notes at https://hydrogen.shopify.dev/releases             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+╭─ warning ────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  [Codegen]  warn  Data fetching is changing to a single fetch in React       │
+│  Router v7                                                                   │
+│                                                                              │
+│  ┃ You can use the `v3_singleFetch` future flag to opt-in early.             │
+│  ┃ -> https://remix.run/docs/en/2.13.1/start/future-flags#v3_singleFetch     │
+│  ┗                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ error ──────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  MiniOxygen encountered an error while running your app's entry point:       │
+│                                                                              │
+│  ReferenceError: module is not defined                                       │
+│                                                                              │
+│  To investigate the issue, examine this stack trace:                         │
+│    at (fast-deep-equal/react.js:7)                                           │
+│    at (../../../../../../node_modules/react-use/esm/misc/isDeepEqual.js?v=a  │
+│    6e9bc4f:1)                                                                │
+│    at (../../../../../../node_modules/react-use/esm/useBattery.js?v=a6e9bc4  │
+│    f:3)                                                                      │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ error ──────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  MiniOxygen encountered an error while running your app's entry point:       │
+│                                                                              │
+│  ReferenceError: module is not defined                                       │
+│                                                                              │
+│  To investigate the issue, examine this stack trace:                         │
+│    at (fast-deep-equal/react.js:7)                                           │
+│    at (../../../../../../node_modules/react-use/esm/misc/isDeepEqual.js?v=a  │
+│    6e9bc4f:1)                                                                │
+│    at (../../../../../../node_modules/react-use/esm/useBattery.js?v=a6e9bc4  │
+│    f:3)                                                                      │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ error ──────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  MiniOxygen encountered an error while running your app's entry point:       │
+│                                                                              │
+│  ReferenceError: module is not defined                                       │
+│                                                                              │
+│  To investigate the issue, examine this stack trace:                         │
+│    at (fast-deep-equal/react.js:7)                                           │
+│    at (../../../../../../node_modules/react-use/esm/misc/isDeepEqual.js?v=a  │
+│    6e9bc4f:1)                                                                │
+│    at (../../../../../../node_modules/react-use/esm/useBattery.js?v=a6e9bc4  │
+│    f:3)                                                                      │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[2m1:33:46 AM[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m1:33:46 AM[22m [36m[1m[vite][22m[39m server restarted.
+Terminate batch job (Y/N)? 

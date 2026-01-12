@@ -25,14 +25,14 @@ import {
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 
-import {PageLayout} from '~/components/PageLayout';
-import {GenericError} from '~/components/GenericError';
-import {NotFound} from '~/components/NotFound';
+import { PageLayout } from '~/components/PageLayout';
+import { GenericError } from '~/components/GenericError';
+import { NotFound } from '~/components/NotFound';
 import favicon from '~/assets/favicon.svg';
-import {seoPayload} from '~/lib/seo.server';
+import { seoPayload } from '~/lib/seo.server';
 import styles from '~/styles/app.css?url';
 
-import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
+import { DEFAULT_LOCALE, parseMenu } from './lib/utils';
 
 export type RootLoader = typeof loader;
 
@@ -74,7 +74,11 @@ export const links: LinksFunction = () => {
       rel: 'preconnect',
       href: 'https://shop.app',
     },
-    {rel: 'icon', type: 'image/svg+xml', href: favicon},
+    { rel: 'icon', type: 'image/svg+xml', href: favicon },
+    {
+      rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Italiana&family=Montserrat:wght@100..900&display=swap',
+    },
   ];
 };
 
@@ -95,15 +99,50 @@ export async function loader(args: LoaderFunctionArgs) {
  * Load data necessary for rendering content above the fold. This is the critical data
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
-async function loadCriticalData({request, context}: LoaderFunctionArgs) {
+async function loadCriticalData({ request, context }: LoaderFunctionArgs) {
+  const { storefront, env } = context;
+
+  /*
   const [layout] = await Promise.all([
-    getLayoutData(context),
+    getLayoutData(context).catch((error) => {
+      console.error("Layout query failed", error);
+      return {
+        shop: {
+          name: "Formé Haus",
+          description: "",
+          primaryDomain: { url: "https://forme-haus.com" },
+          brand: { logo: { image: { url: "/logo.png" } } },
+          id: "gid://shopify/Shop/1234567890"
+        },
+        headerMenu: undefined,
+        footerMenu: undefined
+      };
+    }),
     // Add other queries here, so that they are loaded in parallel
   ]);
+  */
 
-  const seo = seoPayload.root({shop: layout.shop, url: request.url});
+  const layout = {
+    shop: {
+      name: "Formé Haus",
+      description: "Luxury Fashion",
+      primaryDomain: { url: "https://forme-haus.com" },
+      brand: { logo: { image: { url: "/logo.png" } } },
+      id: "gid://shopify/Shop/1234567890"
+    },
+    headerMenu: {
+      id: "menu-1",
+      items: [
+        { id: "1", title: "SHOP", to: "/collections/all", target: "_self", isExternal: false, tags: [], type: "CATALOG", resourceId: null },
+        { id: "2", title: "COLLECTIONS", to: "/collections", target: "_self", isExternal: false, tags: [], type: "COLLECTIONS", resourceId: null },
+        { id: "3", title: "JOURNAL", to: "/journal", target: "_self", isExternal: false, tags: [], type: "BLOG", resourceId: null },
+        { id: "4", title: "ABOUT", to: "/pages/about", target: "_self", isExternal: false, tags: [], type: "PAGE", resourceId: null }
+      ]
+    },
+    footerMenu: undefined
+  };
 
-  const {storefront, env} = context;
+  const seo = seoPayload.root({ shop: layout.shop, url: request.url });
 
   return {
     layout,
@@ -126,20 +165,20 @@ async function loadCriticalData({request, context}: LoaderFunctionArgs) {
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-function loadDeferredData({context}: LoaderFunctionArgs) {
-  const {cart, customerAccount} = context;
+function loadDeferredData({ context }: LoaderFunctionArgs) {
+  const { cart, customerAccount } = context;
 
   return {
-    isLoggedIn: customerAccount.isLoggedIn(),
-    cart: cart.get(),
+    isLoggedIn: Promise.resolve(false),
+    cart: Promise.resolve(null),
   };
 }
 
-export const meta = ({data}: MetaArgs<typeof loader>) => {
+export const meta = ({ data }: MetaArgs<typeof loader>) => {
   return getSeoMeta(data!.seo as SeoConfig);
 };
 
-function Layout({children}: {children?: React.ReactNode}) {
+function Layout({ children }: { children?: React.ReactNode }) {
   const nonce = useNonce();
   const data = useRouteLoaderData<typeof loader>('root');
   const locale = data?.selectedLocale ?? DEFAULT_LOCALE;
@@ -186,7 +225,7 @@ export default function App() {
   );
 }
 
-export function ErrorBoundary({error}: {error: Error}) {
+export function ErrorBoundary({ error }: { error: Error }) {
   const routeError = useRouteError();
   const isRouteError = isRouteErrorResponse(routeError);
 
@@ -206,7 +245,7 @@ export function ErrorBoundary({error}: {error: Error}) {
             <NotFound type={pageType} />
           ) : (
             <GenericError
-              error={{message: `${routeError.status} ${routeError.data}`}}
+              error={{ message: `${routeError.status} ${routeError.data}` }}
             />
           )}
         </>
@@ -273,7 +312,7 @@ const LAYOUT_QUERY = `#graphql
   }
 ` as const;
 
-async function getLayoutData({storefront, env}: AppLoadContext) {
+async function getLayoutData({ storefront, env }: AppLoadContext) {
   const data = await storefront.query(LAYOUT_QUERY, {
     variables: {
       headerMenuHandle: 'main-menu',
@@ -292,25 +331,25 @@ async function getLayoutData({storefront, env}: AppLoadContext) {
       - /blog/news/blog-post -> /news/blog-post
       - /collections/all -> /products
   */
-  const customPrefixes = {BLOG: '', CATALOG: 'products'};
+  const customPrefixes = { BLOG: '', CATALOG: 'products' };
 
   const headerMenu = data?.headerMenu
     ? parseMenu(
-        data.headerMenu,
-        data.shop.primaryDomain.url,
-        env,
-        customPrefixes,
-      )
+      data.headerMenu,
+      data.shop.primaryDomain.url,
+      env,
+      customPrefixes,
+    )
     : undefined;
 
   const footerMenu = data?.footerMenu
     ? parseMenu(
-        data.footerMenu,
-        data.shop.primaryDomain.url,
-        env,
-        customPrefixes,
-      )
+      data.footerMenu,
+      data.shop.primaryDomain.url,
+      env,
+      customPrefixes,
+    )
     : undefined;
 
-  return {shop: data.shop, headerMenu, footerMenu};
+  return { shop: data.shop, headerMenu, footerMenu };
 }
