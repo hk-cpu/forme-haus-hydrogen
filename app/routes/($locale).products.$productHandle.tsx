@@ -383,6 +383,9 @@ export function ProductForm({
                     as="span"
                     data-test="price"
                   />
+                  <span className="text-[10px] opacity-60 normal-case tracking-normal ml-1">
+                    (VAT included)
+                  </span>
                   {isOnSale && (
                     <Money
                       withoutTrailingZeros

@@ -197,9 +197,6 @@ function Layout({ children }: { children?: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <div className="fixed inset-0 z-[-1] pointer-events-none">
-          <Silk color="#8C8478" />
-        </div>
         {data ? (
           <Analytics.Provider
             cart={data.cart}

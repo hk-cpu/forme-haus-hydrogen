@@ -1,20 +1,20 @@
 import clsx from 'clsx';
-import {json, redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData, type MetaFunction} from '@remix-run/react';
-import {Money, Image, flattenConnection} from '@shopify/hydrogen';
-import type {FulfillmentStatus} from '@shopify/hydrogen/customer-account-api-types';
+import { json, redirect, type LoaderFunctionArgs } from '@shopify/remix-oxygen';
+import { useLoaderData, type MetaFunction } from '@remix-run/react';
+import { Money, Image, flattenConnection } from '@shopify/hydrogen';
+import type { FulfillmentStatus } from '@shopify/hydrogen/customer-account-api-types';
 
-import type {OrderFragment} from 'customer-accountapi.generated';
-import {statusMessage} from '~/lib/utils';
-import {Link} from '~/components/Link';
-import {Heading, PageHeader, Text} from '~/components/Text';
-import {CUSTOMER_ORDER_QUERY} from '~/graphql/customer-account/CustomerOrderQuery';
+import type { OrderFragment } from 'customer-accountapi.generated';
+import { statusMessage } from '~/lib/utils';
+import { Link } from '~/components/Link';
+import { Heading, PageHeader, Text } from '~/components/Text';
+import { CUSTOMER_ORDER_QUERY } from '~/graphql/customer-account/CustomerOrderQuery';
 
-export const meta: MetaFunction<typeof loader> = ({data}) => {
-  return [{title: `Order ${data?.order?.name}`}];
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: `Order ${data?.order?.name}` }];
 };
 
-export async function loader({request, context, params}: LoaderFunctionArgs) {
+export async function loader({ request, context, params }: LoaderFunctionArgs) {
   if (!params.id) {
     return redirect(params?.locale ? `${params.locale}/account` : '/account');
   }
@@ -27,9 +27,9 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       ? `gid://shopify/Order/${params.id}?key=${orderToken}`
       : `gid://shopify/Order/${params.id}`;
 
-    const {data, errors} = await context.customerAccount.query(
+    const { data, errors } = await context.customerAccount.query(
       CUSTOMER_ORDER_QUERY,
-      {variables: {orderId}},
+      { variables: { orderId } },
     );
 
     if (errors?.length || !data?.order || !data?.order?.lineItems) {
@@ -83,9 +83,17 @@ export default function OrderRoute() {
   return (
     <div>
       <PageHeader heading="Order detail">
-        <Link to="/account">
-          <Text color="subtle">Return to Account Overview</Text>
-        </Link>
+        <div className="flex flex-wrap gap-4 justify-between items-center w-full">
+          <Link to="/account">
+            <Text color="subtle">Return to Account Overview</Text>
+          </Link>
+          <button
+            onClick={() => window.print()}
+            className="print:hidden border border-primary/20 hover:border-primary text-primary px-4 py-2 text-xs uppercase tracking-widest transition-colors"
+          >
+            Print Invoice
+          </button>
+        </div>
       </PageHeader>
       <div className="w-full p-6 sm:grid-cols-1 md:p-8 lg:p-12 lg:py-6">
         <div>
@@ -187,31 +195,31 @@ export default function OrderRoute() {
               <tfoot>
                 {((discountValue && discountValue.amount) ||
                   discountPercentage) && (
-                  <tr>
-                    <th
-                      scope="row"
-                      colSpan={3}
-                      className="hidden pt-6 pl-6 pr-3 font-normal text-right sm:table-cell md:pl-0"
-                    >
-                      <Text>Discounts</Text>
-                    </th>
-                    <th
-                      scope="row"
-                      className="pt-6 pr-3 font-normal text-left sm:hidden"
-                    >
-                      <Text>Discounts</Text>
-                    </th>
-                    <td className="pt-6 pl-3 pr-4 font-medium text-right text-green-700 md:pr-3">
-                      {discountPercentage ? (
-                        <span className="text-sm">
-                          -{discountPercentage}% OFF
-                        </span>
-                      ) : (
-                        discountValue && <Money data={discountValue!} />
-                      )}
-                    </td>
-                  </tr>
-                )}
+                    <tr>
+                      <th
+                        scope="row"
+                        colSpan={3}
+                        className="hidden pt-6 pl-6 pr-3 font-normal text-right sm:table-cell md:pl-0"
+                      >
+                        <Text>Discounts</Text>
+                      </th>
+                      <th
+                        scope="row"
+                        className="pt-6 pr-3 font-normal text-left sm:hidden"
+                      >
+                        <Text>Discounts</Text>
+                      </th>
+                      <td className="pt-6 pl-3 pr-4 font-medium text-right text-green-700 md:pr-3">
+                        {discountPercentage ? (
+                          <span className="text-sm">
+                            -{discountPercentage}% OFF
+                          </span>
+                        ) : (
+                          discountValue && <Money data={discountValue!} />
+                        )}
+                      </td>
+                    </tr>
+                  )}
                 <tr>
                   <th
                     scope="row"
@@ -236,13 +244,35 @@ export default function OrderRoute() {
                     colSpan={3}
                     className="hidden pt-4 pl-6 pr-3 font-normal text-right sm:table-cell md:pl-0"
                   >
-                    Tax
+                    Shipping
                   </th>
                   <th
                     scope="row"
                     className="pt-4 pr-3 font-normal text-left sm:hidden"
                   >
-                    <Text>Tax</Text>
+                    <Text>Shipping</Text>
+                  </th>
+                  <td className="pt-4 pl-3 pr-4 text-right md:pr-3">
+                    {order.totalShipping ? (
+                      <Money data={order.totalShipping} />
+                    ) : (
+                      <Text>Free</Text>
+                    )}
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    scope="row"
+                    colSpan={3}
+                    className="hidden pt-4 pl-6 pr-3 font-normal text-right sm:table-cell md:pl-0"
+                  >
+                    Tax (VAT 15%)
+                  </th>
+                  <th
+                    scope="row"
+                    className="pt-4 pr-3 font-normal text-left sm:hidden"
+                  >
+                    <Text>Tax (VAT 15%)</Text>
                   </th>
                   <td className="pt-4 pl-3 pr-4 text-right md:pr-3">
                     <Money data={order.totalTax!} />
@@ -306,6 +336,13 @@ export default function OrderRoute() {
                 </div>
               )}
             </div>
+          </div>
+          <div className="mt-8 pt-8 border-t border-gray-200">
+            <Text size="fine" className="opacity-70">
+              All prices include 15% VAT. Standard 2-Year Warranty applies to eligible products in accordance with Saudi Commerce Ministry regulations.
+              <br />
+              Commercial Registration: 1010XXXXXX
+            </Text>
           </div>
         </div>
       </div>

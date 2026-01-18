@@ -61,6 +61,9 @@ export const CUSTOMER_ORDER_QUERY = `#graphql
     subtotal {
       ...OrderMoney
     }
+    totalShipping {
+      ...OrderMoney
+    }
     shippingAddress {
       name
       formatted(withName: true)

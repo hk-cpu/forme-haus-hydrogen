@@ -196,6 +196,12 @@ function CartCheckoutActions({ checkoutUrl }: { checkoutUrl: string }) {
           Continue to Checkout
         </Button>
       </a>
+      <p className="text-xs text-center opacity-60 mt-2">
+        For Saudi Arabia: Please use your 8-digit National Address to ensure delivery.
+      </p>
+      <p className="text-[10px] text-center opacity-50 mt-1">
+        By checking out, you agree to our <a href="/policies/terms-of-service" className="underline">Terms</a> and acknowledge your <a href="/policies/refund-policy" className="underline">Consumer Rights</a> (7-day returns).
+      </p>
       {/* @todo: <CartShopPayButton cart={cart} /> */}
     </div>
   );
