@@ -22,12 +22,25 @@ export default async function handleRequest(
       'https://shopify.com',
       'https://www.google-analytics.com',
       'https://www.googletagmanager.com',
-      ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*'] : []),
+      ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*', 'http://127.0.0.1:*', "'unsafe-inline'", "'unsafe-eval'"] : []),
     ],
     styleSrc: [
       'self',
       'https://cdn.shopify.com',
       'https://fonts.googleapis.com',
+    ],
+    connectSrc: [
+      'self',
+      'https://cdn.shopify.com',
+      'https://shopify.com',
+      ...(process.env.NODE_ENV !== 'production' ? ['ws://localhost:*', 'http://localhost:*'] : []),
+    ],
+    imgSrc: [
+      'self',
+      'https://cdn.shopify.com',
+      'https://shopify.com',
+      'data:',
+      ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*'] : []),
     ],
     fontSrc: [
       'self',

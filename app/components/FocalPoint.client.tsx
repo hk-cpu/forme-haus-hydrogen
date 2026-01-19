@@ -8,7 +8,7 @@ export interface FocalPointProps {
     speed?: number;
 }
 
-function Shape({ color = "#C4A484", speed = 0.5 }: FocalPointProps) {
+function Shape({ color = "#a87441ff", speed = 0.5 }: FocalPointProps) {
     const meshRef = useRef<THREE.Mesh>(null!);
     const { mouse, viewport } = useThree();
 
@@ -37,11 +37,13 @@ function Shape({ color = "#C4A484", speed = 0.5 }: FocalPointProps) {
                 <torusKnotGeometry args={[1, 0.3, 128, 32]} />
                 <meshPhysicalMaterial
                     color={color}
-                    metalness={0.9}
+                    metalness={0.2}
                     roughness={0.1}
-                    transmission={0.5}
-                    thickness={2}
-                    envMapIntensity={2}
+                    transmission={0.99}
+                    thickness={0.5}
+                    envMapIntensity={1}
+                    transparent={true}
+                    opacity={0.3}
                 />
             </mesh>
             <pointLight position={[10, 10, 10]} intensity={2} color="#ffffff" />

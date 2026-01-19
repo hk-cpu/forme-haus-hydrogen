@@ -6,7 +6,7 @@ import FocalPoint from './FocalPoint';
 export default function Hero() {
   return (
     <section className="h-[90vh] flex flex-col items-center justify-center bg-transparent relative overflow-hidden">
-      <FocalPoint color="#C4A484" speed={0.4} />
+      <FocalPoint color="#a87441" speed={0.2} />
       <div className="text-center px-6 z-10">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
