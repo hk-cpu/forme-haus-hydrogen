@@ -6,17 +6,20 @@ import FocalPoint from './FocalPoint';
 // Forced Update
 export default function Hero() {
   return (
-    <section className="h-[90vh] flex flex-col items-center justify-center bg-[#121212] relative overflow-hidden">
+    <section
+      className="h-[90vh] flex flex-col items-center justify-center bg-[#121212] relative overflow-hidden"
+      style={{ backgroundColor: '#121212', height: '90vh', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+    >
 
       {/* Dynamic Video Background Placeholder */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] via-[#2a2a2a] to-[#121212] animate-pulse" />
-        <div className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none">
+        <div className="absolute inset-0 flex items-center justify-center opacity-60 pointer-events-none">
           {/* Using inline styles to bypass potential missing Tailwind config classes */}
           <span
-            className="text-[10vw] uppercase font-bold tracking-tighter blur-sm select-none"
+            className="text-[10vw] uppercase font-bold tracking-tighter blur-[1px] select-none"
             style={{
-              WebkitTextStroke: '1px rgba(255, 255, 255, 0.2)',
+              WebkitTextStroke: '1px rgba(255, 255, 255, 0.5)',
               color: 'transparent'
             }}
           >

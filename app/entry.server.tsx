@@ -16,36 +16,12 @@ export default async function handleRequest(
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
-    scriptSrc: [
-      'self',
-      'https://cdn.shopify.com',
-      'https://shopify.com',
-      'https://www.google-analytics.com',
-      'https://www.googletagmanager.com',
-      ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*', 'http://127.0.0.1:*', "'unsafe-inline'", "'unsafe-eval'"] : []),
-    ],
-    styleSrc: [
-      'self',
-      'https://cdn.shopify.com',
-      'https://fonts.googleapis.com',
-    ],
-    connectSrc: [
-      'self',
-      'https://cdn.shopify.com',
-      'https://shopify.com',
-      ...(process.env.NODE_ENV !== 'production' ? ['ws://localhost:*', 'http://localhost:*'] : []),
-    ],
-    imgSrc: [
-      'self',
-      'https://cdn.shopify.com',
-      'https://shopify.com',
-      'data:',
-      ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*'] : []),
-    ],
-    fontSrc: [
-      'self',
-      'https://fonts.gstatic.com',
-    ],
+    defaultSrc: ["'self'", '*', "'unsafe-inline'", "'unsafe-eval'", 'data:', 'blob:'],
+    scriptSrc: ["'self'", '*', "'unsafe-inline'", "'unsafe-eval'"],
+    styleSrc: ["'self'", '*', "'unsafe-inline'"],
+    imgSrc: ["'self'", '*', 'data:', 'blob:'],
+    connectSrc: ["'self'", '*'],
+    fontSrc: ["'self'", '*'],
   });
 
   const body = await renderToReadableStream(

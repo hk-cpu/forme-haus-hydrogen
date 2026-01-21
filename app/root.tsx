@@ -193,6 +193,10 @@ function Layout({ children }: { children?: React.ReactNode }) {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
         <link rel="stylesheet" href={styles}></link>
+        <style dangerouslySetInnerHTML={{
+          __html: `
+          html, body { background-color: #121212 !important; color: #F0EAE6 !important; }
+        `}} />
         <Meta />
         <Links />
       </head>
@@ -217,7 +221,7 @@ function Layout({ children }: { children?: React.ReactNode }) {
         <Scripts nonce={nonce} />
         <SmoothScroll />
       </body>
-    </html>
+    </html >
   );
 }
 
