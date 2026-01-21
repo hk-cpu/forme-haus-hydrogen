@@ -7,16 +7,13 @@ import FocalPoint from './FocalPoint';
 export default function Hero() {
   return (
     <section
-      className="h-[90vh] flex flex-col items-center justify-center bg-[#121212] relative overflow-hidden"
-      style={{ backgroundColor: '#121212', height: '90vh', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+      className="h-[90vh] flex flex-col items-center justify-center bg-transparent relative overflow-hidden"
+      style={{ height: '90vh', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
     >
-
-      {/* Dynamic Video Background Placeholder */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] via-[#2a2a2a] to-[#121212] animate-pulse" />
-        {/* Coming Soon Overlay Removed */}
-        <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
-      </div>
+      {/* 
+          Hero Background is TRANSPARENT to show the global Silk canvas from PageLayout.
+          Removed conflicting overlays/gradients. 
+      */}
 
       <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
         <div className="absolute inset-0 pointer-events-none">
