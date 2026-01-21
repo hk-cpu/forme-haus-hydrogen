@@ -451,7 +451,7 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
 
           {/* English Details */}
           <div className="text-center lg:text-left space-y-1">
-            <p>&copy; 2026 Formé Haus</p>
+            <p>&copy; 2026 Formé Haus (v3)</p>
             <p>Commercial Registration No. <span className="font-mono">7051891369</span></p>
             <p>VAT Registration No. <span className="font-mono">314271812300003</span></p>
             <p>Riyadh, Saudi Arabia</p>

@@ -34,16 +34,18 @@ function Shape({ color = "#a87441ff", speed = 0.5 }: FocalPointProps) {
     return (
         <group>
             <mesh ref={meshRef}>
-                <torusKnotGeometry args={[1, 0.3, 128, 32]} />
+                <torusGeometry args={[1.2, 0.15, 16, 100]} />
                 <meshPhysicalMaterial
                     color={color}
-                    metalness={0.2}
+                    metalness={0.8}
                     roughness={0.1}
-                    transmission={0.99}
-                    thickness={0.5}
-                    envMapIntensity={1}
+                    transmission={0.6}
+                    thickness={0.8}
+                    envMapIntensity={1.5}
+                    clearcoat={1}
+                    clearcoatRoughness={0.1}
                     transparent={true}
-                    opacity={0.3}
+                    opacity={0.6}
                 />
             </mesh>
             <pointLight position={[10, 10, 10]} intensity={2} color="#ffffff" />
