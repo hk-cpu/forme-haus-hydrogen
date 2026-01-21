@@ -436,25 +436,13 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
       divider={isHome ? 'none' : 'top'}
       as="footer"
       role="contentinfo"
-      className={`grid w-full py-16 px-6 md:px-12 lg:px-24 bg-[#0a0a0a] text-[#F0EAE6] overflow-hidden`}
+      className={`grid w-full py-16 px-6 md:px-12 lg:px-24 bg-[#2C241F] text-[#E0D8D0] overflow-hidden`}
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 w-full max-w-[1920px] mx-auto">
 
         {/* COL 1: Newsletter & Socials (Luxury Priority) */}
         <div className="lg:col-span-4 flex flex-col gap-8">
-          <div className="space-y-4">
-            <h3 className="text-xs uppercase tracking-[0.25em] font-medium text-white/90">Subscribe to our Newsletter</h3>
-            <div className="relative group max-w-md">
-              <input
-                type="email"
-                placeholder="Enter your email address here"
-                className="w-full bg-[#1A1A1A] border-none text-[#F0EAE6] text-xs py-4 px-6 tracking-wide placeholder:text-white/30 focus:ring-1 focus:ring-[#a87441] transition-all"
-              />
-              <button className="absolute right-0 top-0 h-full px-6 bg-[#E0D8D0] text-[#121212] text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors">
-                Subscribe
-              </button>
-            </div>
-          </div>
+          {/* Newsletter removed to avoid duplication with Homepage Luxury Form */}
 
           <div className="space-y-4">
             <h3 className="text-[10px] uppercase tracking-[0.25em] text-white/50">Follow Us</h3>

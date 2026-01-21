@@ -195,7 +195,7 @@ function Layout({ children }: { children?: React.ReactNode }) {
         <link rel="stylesheet" href={styles}></link>
         <style dangerouslySetInnerHTML={{
           __html: `
-          html, body { background-color: #121212 !important; color: #F0EAE6 !important; }
+          html, body { background-color: #121212; }
         `}} />
         <Meta />
         <Links />

@@ -14,24 +14,13 @@ export default function Hero() {
       {/* Dynamic Video Background Placeholder */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] via-[#2a2a2a] to-[#121212] animate-pulse" />
-        <div className="absolute inset-0 flex items-center justify-center opacity-60 pointer-events-none">
-          {/* Using inline styles to bypass potential missing Tailwind config classes */}
-          <span
-            className="text-[10vw] uppercase font-bold tracking-tighter blur-[1px] select-none"
-            style={{
-              WebkitTextStroke: '1px rgba(255, 255, 255, 0.5)',
-              color: 'transparent'
-            }}
-          >
-            Coming Soon
-          </span>
-        </div>
+        {/* Coming Soon Overlay Removed */}
         <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
       </div>
 
       <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
         <div className="absolute inset-0 pointer-events-none">
-          <FocalPoint color="#a87441" speed={0.2} />
+          {/* FocalPoint 3D Element Removed for Minimal Silk Aesthetic */}
         </div>
 
         <div className="text-center px-6 z-20 relative mix-blend-screen">
@@ -45,7 +34,7 @@ export default function Hero() {
               colors={['#E0D8D0', '#C4A484', '#E0D8D0']}
               animationSpeed={6}
               showBorder={false}
-              className="font-serif text-7xl md:text-9xl tracking-tight italic drop-shadow-lg"
+              className="font-serif text-3xl md:text-5xl tracking-normal italic drop-shadow-lg leading-snug"
             >
               Where Essence Meets Elegance
             </GradientText>
