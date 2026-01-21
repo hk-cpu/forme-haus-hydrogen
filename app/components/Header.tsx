@@ -31,10 +31,10 @@ export function Header({
 
     // Default Nav Links if menu is missing
     const defaultLinks = [
-        { id: '1', title: 'SHOP', to: '/collections/all' },
-        { id: '2', title: 'COLLECTIONS', to: '/collections' },
-        { id: '3', title: 'JOURNAL', to: '/journal' },
-        { id: '4', title: 'ABOUT', to: '/pages/about' },
+        { id: '1', title: 'New In', to: '/collections/new' },
+        { id: '2', title: 'Designers', to: '/pages/designers' }, // Mega Menu Candidate
+        { id: '3', title: 'Clothing', to: '/collections/clothing' },
+        { id: '4', title: 'Shoes', to: '/collections/shoes' },
     ];
 
     const items = menu?.items?.length ? menu.items : defaultLinks;
@@ -42,46 +42,48 @@ export function Header({
     return (
         <header
             role="banner"
-            className={`fixed z-50 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0
+            className={`fixed z-50 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0 group
             ${scrolled
-                    ? 'top-4 w-[95%] max-w-7xl mx-auto rounded-full bg-[#121212]/30 backdrop-blur-md py-3 border border-white/10 shadow-2xl'
-                    : 'top-0 w-full bg-transparent py-8 border-transparent'
+                    ? 'top-0 w-full bg-[#121212]/90 backdrop-blur-md py-4 border-b border-white/5'
+                    : 'top-0 w-full bg-gradient-to-b from-black/80 to-transparent py-8 hover:bg-black/90'
                 }`}
         >
-            <div
-                className={`absolute inset-0 transition-opacity duration-700 rounded-full overflow-hidden ${scrolled
-                    ? 'opacity-20 bg-gradient-to-b from-black/40 to-transparent'
-                    : 'opacity-0'
-                    }`}
-            />
+            <div className="container mx-auto px-6 lg:px-16 flex items-center justify-between relative z-50">
 
-            <div className="container mx-auto px-6 md:px-12 flex items-center justify-between relative z-50">
-                {/* Desktop Navigation - LEFT */}
-                <nav className="hidden md:flex items-center gap-12">
-                    {items.slice(0, 2).map((item: any) => (
-                        <div key={item.id} className="h-full flex items-center relative">
+                {/* Desktop Navigation - MEGA MENU TRIGGER */}
+                <nav className="hidden md:flex items-center gap-10">
+                    {items.slice(0, 3).map((item: any) => (
+                        <div key={item.id} className="h-full flex items-center relative group/item py-2">
                             <Link
                                 to={item.to}
-                                className="text-[10px] uppercase tracking-[0.25em] font-medium transition-colors duration-300 relative group font-sans text-[#F0EAE6] hover:text-white"
+                                className="text-[11px] uppercase tracking-[0.2em] font-medium transition-colors duration-300 text-[#F0EAE6]/80 hover:text-[#a87441]"
                             >
                                 {item.title}
-                                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white transition-all duration-500 ease-out group-hover:w-full" />
                             </Link>
+
+                            {/* Mega Menu Dropdown Panel (Placeholder Structure) */}
+                            <div className="absolute top-full left-0 pt-8 opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-300 -translate-y-2 group-hover/item:translate-y-0 w-[80vw] max-w-[400px]">
+                                {/* This simple dropdown mimics the 'start' of a mega menu. Real nested data would map here. */}
+                            </div>
                         </div>
                     ))}
+
+                    {/* Placeholder for "Sale" or Special Link */}
+                    <Link to="/collections/sale" className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#a87441] hover:text-white transition-colors">
+                        Sale
+                    </Link>
                 </nav>
 
-                {/* Mobile Menu Toggle - Placeholder */}
+                {/* Mobile Menu Toggle */}
                 <button className="md:hidden text-[#F0EAE6]">
                     <Menu className="w-6 h-6" />
                 </button>
 
                 {/* Centered Logo */}
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto h-20 flex items-center justify-center">
-                    <Link to="/" className="block relative h-full">
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+                    <Link to="/" className="block relative">
                         <div
-                            className={`relative flex items-center justify-center transition-all duration-700 ${scrolled ? 'h-8' : 'h-12'
-                                }`}
+                            className={`relative flex items-center justify-center transition-all duration-700 ${scrolled ? 'h-6' : 'h-10'}`}
                         >
                             <Image
                                 data={{
@@ -92,7 +94,7 @@ export function Header({
                                 }}
                                 width={180}
                                 height={45}
-                                className="w-auto h-full object-contain"
+                                className="w-auto h-full object-contain brightness-0 invert"
                                 loading="eager"
                             />
                         </div>
@@ -100,40 +102,28 @@ export function Header({
                 </div>
 
                 {/* Right Actions */}
-                <div className="flex items-center gap-10">
-                    <nav className="hidden md:flex items-center gap-12 mr-6">
-                        {items.slice(2).map((item: any) => (
-                            <div key={item.id} className="h-full flex items-center relative">
-                                <Link
-                                    to={item.to}
-                                    className="text-[10px] uppercase tracking-[0.25em] font-medium transition-colors duration-300 relative group font-sans text-[#F0EAE6] hover:text-white"
-                                >
-                                    {item.title}
-                                    <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white transition-all duration-500 ease-out group-hover:w-full" />
-                                </Link>
-                            </div>
-                        ))}
-                    </nav>
-
-                    <LanguageSwitch />
+                <div className="flex items-center gap-8">
+                    <div className="hidden md:flex ml-4">
+                        <LanguageSwitch />
+                    </div>
 
                     <button
                         onClick={openSearch}
-                        className="text-[#F0EAE6] hover:text-white transition-all duration-300 hover:scale-105 active:scale-95"
+                        className="text-[#F0EAE6] hover:text-[#a87441] transition-colors"
                     >
                         <Search strokeWidth={1} className="w-5 h-5" />
                     </button>
 
                     <button
                         onClick={openCart}
-                        className="text-[#F0EAE6] hover:text-white transition-all duration-300 relative group hover:scale-105 active:scale-95"
+                        className="text-[#F0EAE6] hover:text-[#a87441] transition-colors relative group"
                     >
-                        <ShoppingBag strokeWidth={1} className="w-4 h-4" />
+                        <ShoppingBag strokeWidth={1} className="w-5 h-5" />
                         <Suspense fallback={null}>
                             <Await resolve={rootData?.cart}>
                                 {(cart: any) =>
                                     cart?.totalQuantity ? (
-                                        <span className="absolute -top-2 -right-2 text-[8px] bg-[#8B5E3C] text-white rounded-full w-3 h-3 flex items-center justify-center">
+                                        <span className="absolute -top-1 -right-1 text-[9px] bg-[#a87441] text-white rounded-full w-3.5 h-3.5 flex items-center justify-center font-medium">
                                             {cart.totalQuantity}
                                         </span>
                                     ) : null
@@ -141,8 +131,17 @@ export function Header({
                             </Await>
                         </Suspense>
                     </button>
+
+                    {/* Account Icon (Desktop) */}
+                    <Link to="/account" className="hidden md:block text-[#F0EAE6] hover:text-[#a87441] transition-colors">
+                        <span className="w-5 h-5 block bg-white/10 rounded-full hover:bg-[#a87441] transition-colors" />
+                    </Link>
                 </div>
             </div>
+
+            {/* Mega Menu Backdrop (Global) */}
+            <div className="absolute top-full left-0 w-full h-[50vh] bg-[#121212]/95 backdrop-blur-xl border-t border-white/5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 delay-100 -z-10 pointer-events-none" />
+
         </header>
     );
 }

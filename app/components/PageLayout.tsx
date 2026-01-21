@@ -430,93 +430,102 @@ function Badge({
 
 function Footer({ menu }: { menu?: EnhancedMenu }) {
   const isHome = useIsHomePath();
-  const itemsCount = menu
-    ? menu?.items?.length + 1 > 4
-      ? 4
-      : menu?.items?.length + 1
-    : 1;
 
   return (
     <Section
       divider={isHome ? 'none' : 'top'}
       as="footer"
       role="contentinfo"
-      className={`grid min-h-[25rem] items-start grid-flow-row w-full gap-6 py-8 px-6 md:px-8 lg:px-12 md:gap-8 lg:gap-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-${itemsCount}
-        bg-primary dark:bg-contrast dark:text-primary text-contrast overflow-hidden`}
+      className={`grid w-full py-16 px-6 md:px-12 lg:px-24 bg-[#0a0a0a] text-[#F0EAE6] overflow-hidden`}
     >
-      <FooterMenu menu={menu} />
-      <CountrySelector />
-      <div className={`col-span-1 md:col-span-2 lg:col-span-${itemsCount} border-t border-primary/10 dark:border-contrast/10 pt-8 mt-4`}>
-        <div className="flex flex-col lg:flex-row justify-between items-center lg:items-end gap-6 text-sm opacity-80">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 w-full max-w-[1920px] mx-auto">
 
-          {/* English Details */}
-          <div className="text-center lg:text-left space-y-1">
-            <p>&copy; 2026 Formé Haus (v3)</p>
-            <p>Commercial Registration No. <span className="font-mono">7051891369</span></p>
-            <p>VAT Registration No. <span className="font-mono">314271812300003</span></p>
-            <p>Riyadh, Saudi Arabia</p>
-          </div>
-
-          {/* Compliance & Trust */}
-          <div className="flex flex-col items-center gap-4 py-4 lg:py-0">
-            <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-[10px] uppercase tracking-widest opacity-60 font-sans">
-              <a href="/compliance/cr-certificate.pdf" target="_blank" rel="noopener noreferrer" className="hover:opacity-100 transition-opacity border-b border-transparent hover:border-white/20 pb-0.5">CR Certificate</a>
-              <a href="/compliance/vat-certificate.pdf" target="_blank" rel="noopener noreferrer" className="hover:opacity-100 transition-opacity border-b border-transparent hover:border-white/20 pb-0.5">VAT Certificate</a>
-              <a href="/compliance/chamber-membership.pdf" target="_blank" rel="noopener noreferrer" className="hover:opacity-100 transition-opacity border-b border-transparent hover:border-white/20 pb-0.5">Chamber Membership</a>
-              <a href="/compliance/sbc-registration.pdf" target="_blank" rel="noopener noreferrer" className="hover:opacity-100 transition-opacity border-b border-transparent hover:border-white/20 pb-0.5">SBC Registration</a>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="h-px w-4 bg-white/10" />
-              <p className="text-[9px] opacity-40 uppercase tracking-[0.3em] font-sans">Verified Establishment</p>
-              <div className="h-px w-4 bg-white/10" />
+        {/* COL 1: Newsletter & Socials (Luxury Priority) */}
+        <div className="lg:col-span-4 flex flex-col gap-8">
+          <div className="space-y-4">
+            <h3 className="text-xs uppercase tracking-[0.25em] font-medium text-white/90">Subscribe to our Newsletter</h3>
+            <div className="relative group max-w-md">
+              <input
+                type="email"
+                placeholder="Enter your email address here"
+                className="w-full bg-[#1A1A1A] border-none text-[#F0EAE6] text-xs py-4 px-6 tracking-wide placeholder:text-white/30 focus:ring-1 focus:ring-[#a87441] transition-all"
+              />
+              <button className="absolute right-0 top-0 h-full px-6 bg-[#E0D8D0] text-[#121212] text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors">
+                Subscribe
+              </button>
             </div>
           </div>
 
-          {/* Verification & Payments */}
-          <div className="flex flex-col items-center gap-4">
-            {/* Payment Methods */}
-            {/* Payment Methods - Coming Soon */}
-            <div className="relative group overflow-hidden">
-              <div className="flex gap-4 items-center opacity-40 blur-[2px] pointer-events-none grayscale translate-y-1 transition-all">
-                {/* Mada */}
-                <div className="h-6 w-10 bg-white rounded flex items-center justify-center p-1" aria-label="Mada">
-                  <img src="/assets/payments/mada.png" alt="Mada" className="object-contain" />
-                </div>
-                {/* Visa */}
-                <div className="h-6 w-10 bg-white rounded flex items-center justify-center p-1" aria-label="Visa">
-                  <img src="/assets/payments/visa.png" alt="Visa" className="object-contain" />
-                </div>
-                {/* STC Pay */}
-                <div className="h-6 w-10 bg-white rounded flex items-center justify-center p-1" aria-label="STC Pay">
-                  <img src="/assets/payments/stcpay.png" alt="STC Pay" className="object-contain" />
-                </div>
-              </div>
-
-              {/* Coming Soon Label */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <span className="text-[9px] uppercase tracking-[0.2em] font-sans font-bold text-white/90 bg-black/60 px-3 py-1 rounded-full border border-white/10 backdrop-blur-sm shadow-xl whitespace-nowrap">
-                  Coming Soon
-                </span>
-              </div>
-            </div>
-
-            {/* Maroof / Business Platform Placeholder */}
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-24 bg-white/10 border border-white/20 rounded flex items-center justify-center text-xs">
-                Maroof
-              </div>
+          <div className="space-y-4">
+            <h3 className="text-[10px] uppercase tracking-[0.25em] text-white/50">Follow Us</h3>
+            <div className="flex gap-6 opacity-80">
+              <a href="#" className="hover:text-[#a87441] transition-colors"><div className="w-5 h-5 bg-white/10 rounded-full" /></a>
+              <a href="#" className="hover:text-[#a87441] transition-colors"><div className="w-5 h-5 bg-white/10 rounded-full" /></a>
+              <a href="#" className="hover:text-[#a87441] transition-colors"><div className="w-5 h-5 bg-white/10 rounded-full" /></a>
             </div>
           </div>
-
-          {/* Arabic Details */}
-          <div className="text-center lg:text-right space-y-1" dir="rtl">
-            <p>&copy; ٢٠٢٦ فورمي هاوس</p>
-            <p>رقم السجل التجاري: <span className="font-mono tracking-wider">٧٠٥١٨٩١٣٦٩</span></p>
-            <p>الرقم الضريبي: <span className="font-mono tracking-wider">٣١٤٢٧١٨١٢٣٠٠٠٠٣</span></p>
-            <p>الرياض، المملكة العربية السعودية</p>
-          </div>
-
         </div>
+
+        {/* COL 2: Navigation Links (Grid System) */}
+        <div className="lg:col-span-6 grid grid-cols-2 md:grid-cols-3 gap-8">
+          <FooterMenu menu={menu} />
+        </div>
+
+        {/* COL 3: App / Trust (Minimal) */}
+        <div className="lg:col-span-2 flex flex-col gap-8 items-start lg:items-end text-right">
+          <div className="space-y-4">
+            <div className="bg-[#1A1A1A] p-4 rounded-sm border border-white/5 text-center">
+              <span className="block text-[10px] uppercase tracking-widest text-[#a87441] mb-2">Mobile App</span>
+              <span className="text-xl font-serif italic text-white/20 select-none">Coming Soon</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer Bottom: Compliance & Legal */}
+      <div className="mt-20 pt-8 border-t border-white/5 flex flex-col lg:flex-row justify-between items-center gap-6 text-[11px] opacity-60 font-sans tracking-wide">
+
+        {/* Left: CR & Legal */}
+        <div className="flex flex-col lg:flex-row items-center gap-6">
+          <span>&copy; 2026 Formé Haus</span>
+          <span className="hidden lg:block h-3 w-px bg-white/20" />
+          <div className="flex items-center gap-2">
+            <span>CR No.</span>
+            <a
+              href="/compliance/cr-certificate.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-[#a87441] hover:text-white transition-colors border-b border-transparent hover:border-[#a87441]"
+              title="View Commercial Registration Certificate"
+            >
+              7051891369
+            </a>
+          </div>
+          <span className="hidden lg:block h-3 w-px bg-white/20" />
+          <div className="flex items-center gap-2">
+            <span>VAT No.</span>
+            <span className="font-mono">314271812300003</span>
+          </div>
+        </div>
+
+        {/* Center: Trust Badges */}
+        <div className="flex items-center gap-4">
+          <a href="/compliance/vat-certificate.pdf" className="hover:text-white transition-colors">VAT Certificate</a>
+          <a href="/compliance/cr-certificate.pdf" className="hover:text-white transition-colors">CR Certificate</a>
+          <div className="flex gap-2 opacity-50 grayscale hover:grayscale-0 transition-all">
+            {/* Mada/Visa Icons Placeholder */}
+            <div className="w-8 h-5 bg-white/10 rounded-[2px]" />
+            <div className="w-8 h-5 bg-white/10 rounded-[2px]" />
+          </div>
+        </div>
+
+        {/* Right: Arabic */}
+        <div className="text-right flex flex-col lg:flex-row items-center gap-4" dir="rtl">
+          <span className="font-sans">س.ت: <span className="font-mono">٧٠٥١٨٩١٣٦٩</span></span>
+          <span className="hidden lg:block h-3 w-px bg-white/20" />
+          <span>الرياض، المملكة العربية السعودية</span>
+        </div>
+
       </div>
     </Section>
   );
