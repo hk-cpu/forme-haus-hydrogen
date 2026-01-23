@@ -21,10 +21,10 @@ export function StatusBanner() {
             className="w-full bg-[#121212] text-[#E0D8D0] text-[10px] uppercase tracking-[0.2em] py-2.5 text-center border-b border-white/5 relative z-[60]"
         >
             <ShinyText
-                text="Complimentary Global Shipping over €300"
+                text="Complimentary Global Shipping over 300 SAR"
                 speed={4}
-                shineColor="#FFFFFF"
-                color="#A09890" // Darker base for more contrast
+                shineColor="#D48B60" // Copper shine
+                color="#AD9686" // Mushroom base
                 className="font-medium"
             />
         </motion.div>

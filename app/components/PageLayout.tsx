@@ -1,4 +1,4 @@
-import { useParams, Form, Await, useRouteLoaderData } from '@remix-run/react';
+import { useParams, Form, Await, useRouteLoaderData, useNavigation } from '@remix-run/react';
 import useWindowScroll from 'react-use/esm/useWindowScroll';
 import { Disclosure } from '@headlessui/react';
 import { Suspense, useEffect, useMemo } from 'react';
@@ -33,6 +33,8 @@ import { StatusBanner } from '~/components/StatusBanner';
 import Silk from '~/components/Silk';
 import Atmosphere from '~/components/Atmosphere';
 import { PredictiveSearch } from '~/components/PredictiveSearch';
+import Loader from '~/components/Loader';
+import SocialButtons from '~/components/SocialButtons';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -44,13 +46,22 @@ type LayoutProps = {
 
 export function PageLayout({ children, layout }: LayoutProps) {
   const { headerMenu, footerMenu } = layout || {};
+  const navigation = useNavigation();
+  const isLoading = navigation.state === 'loading';
   return (
     <>
       <div className="flex flex-col min-h-screen relative bg-[#121212]">
+        {/* Global Loading Overlay */}
+        {isLoading && (
+          <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center transition-opacity duration-300">
+            <Loader />
+          </div>
+        )}
+
         {/* Background Layer (Z-0) */}
         <div className="fixed inset-0 pointer-events-none z-0">
-          <Silk color="#C4A484" />
-          <Atmosphere count={150} color="#C4A484" size={0.012} opacity={0.4} />
+          <Silk color="#AD9686" />
+          <Atmosphere count={150} color="#AD9686" size={0.012} opacity={0.4} />
           {/* Dark Glass Overlay */}
           <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/80" />
@@ -62,15 +73,33 @@ export function PageLayout({ children, layout }: LayoutProps) {
           </a>
         </div>
 
-        <div className="relative z-10 flex flex-col">
-          <StatusBanner />
-          {headerMenu && layout?.shop.name && (
-            <Header title={layout.shop.name} menu={headerMenu} />
-          )}
-          <main role="main" id="mainContent" className="flex-grow">
-            {children}
-          </main>
-          <Footer menu={footerMenu || undefined} />
+        <div className="relative z-10 flex flex-col items-center lg:py-8 transition-all duration-700">
+          <div className="w-full max-w-[1800px] flex flex-col relative mx-auto my-0 px-4 md:px-8">
+            {/* Status Banner - Fades away on scroll per user request */}
+            <div
+              className="transition-all duration-500 ease-out overflow-hidden"
+              style={{
+                opacity: navigation.state === 'loading' ? 1 : Math.max(0, 1 - (typeof window !== 'undefined' ? window.scrollY / 50 : 0)),
+                height: 'auto',
+                maxHeight: (typeof window !== 'undefined' && window.scrollY > 50) ? '0px' : '50px'
+              }}
+            >
+              <StatusBanner />
+            </div>
+            {headerMenu && layout?.shop.name && (
+              <Header title={layout.shop.name} menu={headerMenu} />
+            )}
+            <main role="main" id="mainContent" className="flex-grow">
+              {useIsHomePath() ? (
+                children
+              ) : (
+                <div className="bg-[#F9F5F0] text-[#4A3C31] shadow-[0_0_100px_rgba(255,255,255,0.3)] lg:rounded-t-[2rem] min-h-[50vh] p-6 md:p-12">
+                  {children}
+                </div>
+              )}
+            </main>
+            <Footer menu={footerMenu || undefined} />
+          </div>
         </div>
       </div>
     </>
@@ -436,7 +465,7 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
       divider={isHome ? 'none' : 'top'}
       as="footer"
       role="contentinfo"
-      className={`grid w-full py-16 px-6 md:px-12 lg:px-24 bg-[#2C241F] text-[#E0D8D0] overflow-hidden`}
+      className={`grid w-full py-16 px-6 md:px-12 lg:px-24 bg-[#F9F5F0] text-[#4A3C31] overflow-hidden rounded-b-[2rem] shadow-[0_20px_60px_-15px_rgba(255,255,255,0.3)]`}
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 w-full max-w-[1920px] mx-auto">
 
@@ -445,12 +474,8 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
           {/* Newsletter removed to avoid duplication with Homepage Luxury Form */}
 
           <div className="space-y-4">
-            <h3 className="text-[10px] uppercase tracking-[0.25em] text-white/50">Follow Us</h3>
-            <div className="flex gap-6 opacity-80">
-              <a href="#" className="hover:text-[#a87441] transition-colors"><div className="w-5 h-5 bg-white/10 rounded-full" /></a>
-              <a href="#" className="hover:text-[#a87441] transition-colors"><div className="w-5 h-5 bg-white/10 rounded-full" /></a>
-              <a href="#" className="hover:text-[#a87441] transition-colors"><div className="w-5 h-5 bg-white/10 rounded-full" /></a>
-            </div>
+            <h3 className="text-[10px] uppercase tracking-[0.25em] text-[#8B8076]">Follow Us</h3>
+            <SocialButtons />
           </div>
         </div>
 
@@ -462,34 +487,34 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
         {/* COL 3: App / Trust (Minimal) */}
         <div className="lg:col-span-2 flex flex-col gap-8 items-start lg:items-end text-right">
           <div className="space-y-4">
-            <div className="bg-[#1A1A1A] p-4 rounded-sm border border-white/5 text-center">
+            <div className="bg-white p-4 rounded-sm border border-[#8B8076]/10 text-center shadow-sm">
               <span className="block text-[10px] uppercase tracking-widest text-[#a87441] mb-2">Mobile App</span>
-              <span className="text-xl font-serif italic text-white/20 select-none">Coming Soon</span>
+              <span className="text-xl font-serif italic text-[#8B8076] select-none">Coming Soon</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Footer Bottom: Compliance & Legal */}
-      <div className="mt-20 pt-8 border-t border-white/5 flex flex-col lg:flex-row justify-between items-center gap-6 text-[11px] opacity-60 font-sans tracking-wide">
+      <div className="mt-20 pt-8 border-t border-[#8B8076]/20 flex flex-col lg:flex-row justify-between items-center gap-6 text-[11px] opacity-60 font-sans tracking-wide">
 
         {/* Left: CR & Legal */}
         <div className="flex flex-col lg:flex-row items-center gap-6">
           <span>&copy; 2026 Formé Haus</span>
-          <span className="hidden lg:block h-3 w-px bg-white/20" />
+          <span className="hidden lg:block h-3 w-px bg-[#4A3C31]/20" />
           <div className="flex items-center gap-2">
             <span>CR No.</span>
             <a
               href="/compliance/cr-certificate.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-mono text-[#a87441] hover:text-white transition-colors border-b border-transparent hover:border-[#a87441]"
+              className="font-mono text-[#a87441] hover:text-[#4A3C31] transition-colors border-b border-transparent hover:border-[#a87441]"
               title="View Commercial Registration Certificate"
             >
               7051891369
             </a>
           </div>
-          <span className="hidden lg:block h-3 w-px bg-white/20" />
+          <span className="hidden lg:block h-3 w-px bg-[#4A3C31]/20" />
           <div className="flex items-center gap-2">
             <span>VAT No.</span>
             <span className="font-mono">314271812300003</span>
@@ -498,19 +523,19 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
 
         {/* Center: Trust Badges */}
         <div className="flex items-center gap-4">
-          <a href="/compliance/vat-certificate.pdf" className="hover:text-white transition-colors">VAT Certificate</a>
-          <a href="/compliance/cr-certificate.pdf" className="hover:text-white transition-colors">CR Certificate</a>
+          <a href="/compliance/vat-certificate.pdf" className="hover:text-[#4A3C31] transition-colors">VAT Certificate</a>
+          <a href="/compliance/cr-certificate.pdf" className="hover:text-[#4A3C31] transition-colors">CR Certificate</a>
           <div className="flex gap-2 opacity-50 grayscale hover:grayscale-0 transition-all">
             {/* Mada/Visa Icons Placeholder */}
-            <div className="w-8 h-5 bg-white/10 rounded-[2px]" />
-            <div className="w-8 h-5 bg-white/10 rounded-[2px]" />
+            <div className="w-8 h-5 bg-[#4A3C31]/10 rounded-[2px]" />
+            <div className="w-8 h-5 bg-[#4A3C31]/10 rounded-[2px]" />
           </div>
         </div>
 
         {/* Right: Arabic */}
         <div className="text-right flex flex-col lg:flex-row items-center gap-4" dir="rtl">
           <span className="font-sans">س.ت: <span className="font-mono">٧٠٥١٨٩١٣٦٩</span></span>
-          <span className="hidden lg:block h-3 w-px bg-white/20" />
+          <span className="hidden lg:block h-3 w-px bg-[#4A3C31]/20" />
           <span>الرياض، المملكة العربية السعودية</span>
         </div>
 

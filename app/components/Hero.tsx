@@ -28,7 +28,7 @@ export default function Hero() {
             className="mb-8 drop-shadow-2xl"
           >
             <GradientText
-              colors={['#E0D8D0', '#C4A484', '#E0D8D0']}
+              colors={['#AD9686', '#D48B60', '#E3D8D1']}
               animationSpeed={6}
               showBorder={false}
               className="font-serif text-3xl md:text-5xl tracking-normal italic drop-shadow-lg leading-snug"

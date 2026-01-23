@@ -10,6 +10,8 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 
 import Hero from '~/components/Hero';
 import NotifyForm from '~/components/NotifyForm';
+import CategorySlider from '~/components/CategorySlider';
+import EditorialSection from '~/components/EditorialSection';
 import { seoPayload } from '~/lib/seo.server';
 import { routeHeaders } from '~/data/cache';
 
@@ -74,15 +76,21 @@ export default function Homepage() {
       <Hero />
 
       {/* Light "Glowing" Theme Content Sheet */}
-      <div className="relative z-20 bg-[#F9F6F3] text-[#8B8076] rounded-t-[3rem] shadow-[0_-20px_60px_-15px_rgba(255,255,255,0.3)] mt-[-5vh] pt-12">
+      <div className="relative z-20 bg-[#F9F5F0] text-[#8B8076] rounded-t-[3rem] shadow-[0_-20px_60px_-15px_rgba(255,255,255,0.3)] mt-[-5vh] pt-12">
 
-        {/* 2. Brand Introduction */}
+        {/* 2. Category Slider (Horizontal Scroll - New In / Categories) */}
+        <CategorySlider />
+
+        {/* 3. The Edit (Editorial Section) */}
+        <EditorialSection />
+
+        {/* 4. Brand Introduction (Moved down slightly as a transition) */}
         <motion.section
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="py-24 px-6 text-center max-w-2xl mx-auto space-y-8"
+          className="py-16 px-6 text-center max-w-2xl mx-auto space-y-8 border-t border-[#8B8076]/10"
         >
           <div className="w-px h-16 bg-gradient-to-b from-transparent via-[#8B5E3C] to-transparent mx-auto opacity-50" />
           <p className="font-serif text-xl md:text-2xl leading-relaxed text-[#5C5046] font-light italic">
@@ -90,8 +98,9 @@ export default function Homepage() {
           </p>
         </motion.section>
 
-        {/* 3. Featured Categories (Live) */}
+        {/* 5. Featured Collections (Now "Curated For You") */}
         <section className="container mx-auto px-6 pb-24">
+          <h2 className="font-serif text-2xl italic text-[#4A3C31] mb-8 text-center">Curated For You</h2>
           <Suspense fallback={<div className="h-96 w-full animate-pulse bg-neutral-200" />}>
             <Await resolve={featuredCollections}>
               {(response) => {
@@ -153,7 +162,7 @@ export default function Homepage() {
           </Suspense>
         </section>
 
-        {/* 4. Journal Teaser */}
+        {/* 6. Journal Teaser */}
         <section className="container mx-auto px-6 pb-32 border-t border-[#8B8076]/20 pt-24">
           <div className="flex justify-between items-end mb-12">
             <h2 className="font-serif text-3xl italic text-[#4A3C31]">Journal</h2>
@@ -193,7 +202,7 @@ export default function Homepage() {
           </div>
         </section>
 
-        {/* 5. Newsletter Signup */}
+        {/* 7. Newsletter Signup */}
         <section className="pb-32">
           <div className="text-center space-y-6 mb-12">
             <h2 className="font-serif text-3xl italic text-[#4A3C31]">

@@ -66,7 +66,7 @@ export default function NotifyForm() {
                 <input
                     type="email"
                     name="email"
-                    className="input__search bg-transparent text-[#F0EAE6] placeholder:text-[#F0EAE6]/40 font-light"
+                    className="input__search bg-transparent text-[#5C5046] placeholder:text-[#8B8076]/60 font-light"
                     placeholder="Enter email address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}

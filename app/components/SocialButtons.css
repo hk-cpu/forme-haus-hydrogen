@@ -1,0 +1,53 @@
+/* Social Buttons - Minimal & Elegant */
+
+.links {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
+.icons-social-media {
+    width: 24px;
+    /* Minimal small size */
+    height: 24px;
+    cursor: pointer !important;
+    transition: 300ms all ease-in-out;
+    position: relative;
+    fill: #8B8076;
+    /* Default Muted Taupe/Mushroom */
+    padding: 4px;
+    /* Padding for circle clip */
+    background: transparent;
+}
+
+.icons-social-media:hover {
+    transform: translateY(-5px);
+    fill: #F9F5F0;
+    /* Icon turns white on hover */
+}
+
+/* Specific Hover Behaviors adapted to Mood Board */
+
+#instagram,
+#youtube,
+#twitch {
+    transition: 300ms all ease-in-out;
+    border-radius: 50%;
+    /* Minimal Circle */
+}
+
+/* Instagram -> Copper / Bronze Shine */
+#instagram:hover {
+    background-color: #D48B60;
+}
+
+/* Twitch -> Darker Mushroom/Taupe */
+#twitch:hover {
+    background-color: #88694D;
+}
+
+/* Youtube -> Deep Red/Maroon to blend with dark theme */
+#youtube:hover {
+    background-color: #7A3E3E;
+}
