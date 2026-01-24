@@ -18,12 +18,29 @@ export default function NotifyForm() {
         setStatus('loading');
         setMessage('');
 
-        // Stubbed action
-        setTimeout(() => {
-            setStatus('success');
-            setMessage('Thank you for subscribing.');
-            setEmail('');
-        }, 1000);
+        try {
+            const formData = new FormData();
+            formData.append('email', email);
+
+            const response = await fetch('/api/newsletter', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const data = await response.json() as { error?: string; message?: string };
+
+            if (!response.ok || data.error) {
+                setStatus('error');
+                setMessage(data.error || 'Something went wrong.');
+            } else {
+                setStatus('success');
+                setMessage(data.message || 'Thank you for subscribing.');
+                setEmail('');
+            }
+        } catch (error) {
+            setStatus('error');
+            setMessage('Failed to connect. Please check your internet.');
+        }
     };
 
     if (status === 'success') {
