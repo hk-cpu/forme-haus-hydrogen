@@ -172,6 +172,7 @@ export default function Collection() {
               animate={{ opacity: 1 }}
               transition={{ staggerChildren: 0.1 }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20"
+              data-test="product-grid"
             >
               {nodes.map((product: any, i: number) => (
                 <motion.div

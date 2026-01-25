@@ -62,6 +62,7 @@ let config: PlaywrightTestConfig = defineConfig({
   webServer: {
     command: 'npm run preview',
     port: 3000,
+    reuseExistingServer: true,
   },
 });
 
@@ -92,6 +93,7 @@ if (process.env.URL) {
     webServer: {
       command: 'npm run preview',
       port: 3000,
+      reuseExistingServer: true,
     },
   };
 }
