@@ -2,6 +2,24 @@ import type {Localizations} from '~/lib/type';
 
 export const countries: Localizations = {
   default: {
+    label: 'Saudi Arabia (SAR ﷼)',
+    language: 'EN',
+    country: 'SA',
+    currency: 'SAR',
+  },
+  '/ar-sa': {
+    label: 'المملكة العربية السعودية (ر.س)',
+    language: 'AR',
+    country: 'SA',
+    currency: 'SAR',
+  },
+  '/en-sa': {
+    label: 'Saudi Arabia (SAR ﷼)',
+    language: 'EN',
+    country: 'SA',
+    currency: 'SAR',
+  },
+  '/en-us': {
     label: 'United States (USD $)',
     language: 'EN',
     country: 'US',

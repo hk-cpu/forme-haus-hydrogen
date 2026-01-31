@@ -8,6 +8,7 @@ import { useIsHomePath } from '~/lib/utils';
 import type { RootLoader } from '~/root';
 import LanguageSwitch from './LanguageSwitch';
 import type { EnhancedMenu } from '~/lib/utils';
+import { useTranslation } from '~/hooks/useTranslation';
 
 export function Header({
     title,
@@ -24,6 +25,7 @@ export function Header({
     const { y } = useWindowScroll();
     const [scrolled, setScrolled] = useState(false);
     const rootData = useRouteLoaderData<RootLoader>('root');
+    const { t } = useTranslation();
 
     useEffect(() => {
         setScrolled(y > 20);
@@ -31,10 +33,10 @@ export function Header({
 
     // Default Nav Links if menu is missing
     const defaultLinks = [
-        { id: '1', title: 'New In', to: '/collections/new' },
-        { id: '2', title: 'Designers', to: '/pages/designers' }, // Mega Menu Candidate
-        { id: '3', title: 'Clothing', to: '/collections/clothing' },
-        { id: '4', title: 'Shoes', to: '/collections/shoes' },
+        { id: '1', title: t('nav.newIn'), to: '/collections/new' },
+        { id: '2', title: t('nav.designers'), to: '/pages/designers' }, // Mega Menu Candidate
+        { id: '3', title: t('nav.clothing'), to: '/collections/clothing' },
+        { id: '4', title: t('nav.shoes'), to: '/collections/shoes' },
     ];
 
     const items = menu?.items?.length ? menu.items : defaultLinks;
@@ -70,14 +72,17 @@ export function Header({
 
                     {/* Sale Link */}
                     <Link to="/collections/sale" className="text-[11px] uppercase tracking-[0.3em] font-light text-[#a87441]/90 hover:text-[#a87441] transition-all duration-500 hover:tracking-[0.35em]">
-                        Sale
+                        {t('nav.sale')}
                     </Link>
                 </nav>
 
-                {/* Mobile Menu Toggle */}
-                <button className="md:hidden text-[#F0EAE6]/80 hover:text-[#a87441] transition-colors duration-300">
-                    <Menu strokeWidth={1.5} className="w-7 h-7" />
-                </button>
+                {/* Mobile: Menu Toggle + Language */}
+                <div className="md:hidden flex items-center gap-4">
+                    <button className="text-[#F0EAE6]/80 hover:text-[#a87441] transition-colors duration-300">
+                        <Menu strokeWidth={1.5} className="w-7 h-7" />
+                    </button>
+                    <LanguageSwitch />
+                </div>
 
                 {/* Centered Logo Icon */}
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">

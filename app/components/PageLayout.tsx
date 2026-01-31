@@ -35,6 +35,7 @@ import Atmosphere from '~/components/Atmosphere';
 import { PredictiveSearch } from '~/components/PredictiveSearch';
 import Loader from '~/components/Loader';
 import SocialButtons from '~/components/SocialButtons';
+import { useTranslation } from '~/hooks/useTranslation';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -459,6 +460,7 @@ function Badge({
 
 function Footer({ menu }: { menu?: EnhancedMenu }) {
   const isHome = useIsHomePath();
+  const { t } = useTranslation();
 
   return (
     <Section
@@ -483,7 +485,7 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
           {/* Newsletter removed to avoid duplication with Homepage Luxury Form */}
 
           <div className="space-y-6">
-            <h3 className="text-[10px] uppercase tracking-[0.3em] text-[#8B8076] font-light">Follow Us</h3>
+            <h3 className="text-[10px] uppercase tracking-[0.3em] text-[#8B8076] font-light">{t('footer.followUs')}</h3>
             <SocialButtons />
           </div>
         </div>
@@ -497,8 +499,8 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
         <div className="lg:col-span-2 flex flex-col gap-8 items-start lg:items-end text-right">
           <div className="space-y-4">
             <div className="bg-white p-4 rounded-sm border border-[#8B8076]/10 text-center shadow-sm">
-              <span className="block text-[10px] uppercase tracking-widest text-[#a87441] mb-2">Mobile App</span>
-              <span className="text-xl font-serif italic text-[#8B8076] select-none">Coming Soon</span>
+              <span className="block text-[10px] uppercase tracking-widest text-[#a87441] mb-2">{t('footer.mobileApp')}</span>
+              <span className="text-xl font-serif italic text-[#8B8076] select-none">{t('footer.comingSoon')}</span>
             </div>
           </div>
         </div>
@@ -512,7 +514,7 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
           <span>&copy; 2026 Formé Haus</span>
           <span className="hidden lg:block h-3 w-px bg-[#4A3C31]/20" />
           <div className="flex items-center gap-2">
-            <span>CR No.</span>
+            <span>{t('footer.crNo')}</span>
             <a
               href="/compliance/cr-certificate.pdf"
               target="_blank"
@@ -525,15 +527,15 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
           </div>
           <span className="hidden lg:block h-3 w-px bg-[#4A3C31]/20" />
           <div className="flex items-center gap-2">
-            <span>VAT No.</span>
+            <span>{t('footer.vatNo')}</span>
             <span className="font-mono">314271812300003</span>
           </div>
         </div>
 
         {/* Center: Trust Badges */}
         <div className="flex items-center gap-4">
-          <a href="/compliance/vat-certificate.pdf" className="hover:text-[#4A3C31] transition-colors">VAT Certificate</a>
-          <a href="/compliance/cr-certificate.pdf" className="hover:text-[#4A3C31] transition-colors">CR Certificate</a>
+          <a href="/compliance/vat-certificate.pdf" className="hover:text-[#4A3C31] transition-colors">{t('footer.vatCertificate')}</a>
+          <a href="/compliance/cr-certificate.pdf" className="hover:text-[#4A3C31] transition-colors">{t('footer.crCertificate')}</a>
           <div className="flex gap-2 opacity-50 grayscale hover:grayscale-0 transition-all">
             {/* Mada/Visa Icons Placeholder */}
             <div className="w-8 h-5 bg-[#4A3C31]/10 rounded-[2px]" />

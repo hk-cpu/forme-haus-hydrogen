@@ -1,8 +1,11 @@
 import { Link } from '@remix-run/react';
 import { motion } from 'framer-motion';
+import { useTranslation } from '~/hooks/useTranslation';
 
 // Forced Update
 export default function Hero() {
+  const { t } = useTranslation();
+
   return (
     <section
       className="h-[90vh] flex flex-col items-center justify-center bg-transparent relative overflow-hidden"
@@ -117,7 +120,7 @@ export default function Hero() {
 
               {/* Text */}
               <span className="relative text-[10px] uppercase tracking-[0.3em] font-light text-[#F0EAE6]/90 group-hover/btn:text-[#a87441] group-hover/btn:tracking-[0.35em] transition-all duration-700">
-                Explore Collection
+                {t('hero.cta')}
               </span>
             </Link>
           </motion.div>
@@ -130,7 +133,7 @@ export default function Hero() {
         transition={{ delay: 1.5, duration: 1 }}
         className="absolute bottom-12 z-20 flex flex-col items-center gap-2"
       >
-        <span className="text-[10px] uppercase tracking-widest text-neutral-400 font-medium">Scroll</span>
+        <span className="text-[10px] uppercase tracking-widest text-neutral-400 font-medium">{t('hero.scroll')}</span>
         <div className="w-px h-12 bg-gradient-to-b from-transparent via-neutral-400 to-transparent opacity-50 overflow-hidden">
           <motion.div
             animate={{ y: [-50, 50] }}

@@ -1,9 +1,11 @@
 import { motion } from 'framer-motion';
 import { ShinyText } from "./ShinyText";
 import { useEffect, useState } from "react";
+import { useTranslation } from '~/hooks/useTranslation';
 
 export function StatusBanner() {
     const [isVisible, setIsVisible] = useState(false);
+    const { t } = useTranslation();
 
     useEffect(() => {
         // Simple mount animation
@@ -21,7 +23,7 @@ export function StatusBanner() {
             className="w-full bg-[#121212] text-[#E0D8D0] text-[10px] uppercase tracking-[0.25em] py-3 text-center border-b border-[#a87441]/20 relative z-[60]"
         >
             <ShinyText
-                text="Complimentary Global Shipping over 300 SAR"
+                text={t('banner.shipping')}
                 speed={4}
                 shineColor="#a87441"
                 color="#AD9686"

@@ -34,7 +34,7 @@
   --font-sans: "Helvetica Neue", Helvetica, "Gill Sans", Arial, sans-serif;
   --font-serif: "Didot", "Didot LT STD", "Hoefler Text", "Bodoni MT", "Times New Roman", serif;
   --font-heading: var(--font-serif);
-  --font-arabic: "Segoe UI", sans-serif;
+  --font-arabic: "IBM Plex Sans Arabic", "Noto Sans Arabic", "Segoe UI", sans-serif;
 }
 
 /* Light mode override removed to enforce luxury dark aesthetic */
@@ -45,9 +45,10 @@ body {
   font-family: var(--font-sans);
 }
 
-/* RTL Support - Arabic Font */
+/* RTL Support - Premium Arabic Typography */
 [dir="rtl"] {
-  font-family: var(--font-arabic), "Segoe UI", sans-serif;
+  font-family: var(--font-arabic);
+  letter-spacing: 0 !important;
 }
 
 [dir="rtl"] h1,
@@ -57,7 +58,23 @@ body {
 [dir="rtl"] h5,
 [dir="rtl"] h6,
 [dir="rtl"] .font-serif {
-  font-family: var(--font-arabic), "Segoe UI", sans-serif;
+  font-family: var(--font-arabic);
+  letter-spacing: 0;
+}
+
+/* RTL Layout Adjustments */
+[dir="rtl"] .tracking-widest,
+[dir="rtl"] .tracking-wide,
+[dir="rtl"] [class*="tracking-["] {
+  letter-spacing: 0.05em;
+}
+
+[dir="rtl"] .text-left {
+  text-align: right;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left;
 }
 
 /* NotifyForm Styles */

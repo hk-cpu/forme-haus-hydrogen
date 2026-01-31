@@ -32,6 +32,7 @@ import { seoPayload } from '~/lib/seo.server';
 import { FILTER_URL_PREFIX } from '~/components/SortFilter';
 import { getImageLoadingPriority } from '~/lib/const';
 import { parseAsCurrency } from '~/lib/utils';
+import { useTranslation } from '~/hooks/useTranslation';
 
 export const headers = routeHeaders;
 
@@ -41,7 +42,7 @@ export async function loader({ params, request, context }: LoaderFunctionArgs) {
   });
   const { collectionHandle } = params;
   const locale = context.storefront.i18n;
-
+  // ... (rest of loader remains same until label logic) ...
   invariant(collectionHandle, 'Missing collectionHandle param');
 
   const searchParams = new URL(request.url).searchParams;
@@ -144,6 +145,7 @@ export const meta = ({ matches }: MetaArgs<typeof loader>) => {
 
 export default function Collection() {
   const { collection } = useLoaderData<typeof loader>();
+  const { t } = useTranslation();
 
   return (
     <main className="container mx-auto px-6 py-24 min-h-screen text-[#4A3C31]">
@@ -163,7 +165,7 @@ export default function Collection() {
           <>
             <div className="flex items-center justify-center mb-6">
               <Button as={PreviousLink} variant="secondary" width="full">
-                {isLoading ? 'Loading...' : 'Load previous'}
+                {isLoading ? t('collection.loading') : t('collection.loadPrevious')}
               </Button>
             </div>
 
@@ -191,7 +193,7 @@ export default function Collection() {
 
             <div className="flex items-center justify-center mt-6">
               <Button as={NextLink} variant="secondary" width="full">
-                {isLoading ? 'Loading...' : 'Load more products'}
+                {isLoading ? t('collection.loading') : t('collection.loadMore')}
               </Button>
             </div>
           </>
@@ -200,7 +202,7 @@ export default function Collection() {
 
       {collection.products.nodes.length === 0 && (
         <div className="text-center py-24 text-[#F0EAE6]/50 italic font-serif text-xl">
-          No products found in this collection.
+          {t('collection.noProducts')}
         </div>
       )}
 

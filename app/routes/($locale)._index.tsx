@@ -14,6 +14,7 @@ import CategorySlider from '~/components/CategorySlider';
 import EditorialSection from '~/components/EditorialSection';
 import { seoPayload } from '~/lib/seo.server';
 import { routeHeaders } from '~/data/cache';
+import { useTranslation } from '~/hooks/useTranslation';
 
 export const headers = routeHeaders;
 
@@ -69,6 +70,7 @@ export const meta = ({ matches }: MetaArgs<typeof loader>) => {
 
 export default function Homepage() {
   const { featuredCollections } = useLoaderData<typeof loader>();
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-transparent text-[#F0EAE6]">
@@ -94,13 +96,13 @@ export default function Homepage() {
         >
           <div className="w-px h-20 bg-gradient-to-b from-transparent via-[#a87441]/60 to-transparent mx-auto" />
           <p className="font-serif text-2xl md:text-3xl leading-relaxed text-[#5C5046]/80 font-light italic tracking-wide">
-            "Formé Haus is a Saudi-based womenswear label rooted in modern elegance, refined silhouettes, and thoughtful craftsmanship."
+            "{t('home.brandIntro')}"
           </p>
         </motion.section>
 
         {/* 5. Featured Collections */}
         <section className="container mx-auto px-6 pb-32">
-          <h2 className="font-serif text-3xl italic text-[#4A3C31] mb-12 text-center tracking-wide font-light">Curated For You</h2>
+          <h2 className="font-serif text-3xl italic text-[#4A3C31] mb-12 text-center tracking-wide font-light">{t('home.curatedForYou')}</h2>
           <Suspense fallback={<div className="h-96 w-full animate-pulse bg-neutral-200" />}>
             <Await resolve={featuredCollections}>
               {(response) => {
@@ -165,23 +167,23 @@ export default function Homepage() {
         {/* 6. Journal Teaser */}
         <section className="container mx-auto px-6 pb-40 border-t border-[#8B8076]/15 pt-32">
           <div className="flex justify-between items-end mb-16">
-            <h2 className="font-serif text-4xl italic text-[#4A3C31] font-light tracking-wide">Journal</h2>
+            <h2 className="font-serif text-4xl italic text-[#4A3C31] font-light tracking-wide">{t('home.journal')}</h2>
             <span className="text-[10px] uppercase tracking-[0.3em] text-[#8B8076] font-light">
-              Editorial
+              {t('home.editorial.label')}
             </span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {[
               {
-                title: 'A Modern Saudi Wardrobe',
+                title: t('journal.modernWardrobe'),
                 img: '/brand/journal-identity.png',
               },
               {
-                title: 'Designing for Everyday Elegance',
+                title: t('journal.everydayElegance'),
                 img: '/brand/journal-motion.png',
               },
               {
-                title: 'Behind the Craft',
+                title: t('journal.behindCraft'),
                 img: '/brand/journal-hero.png',
               },
             ].map((item, i) => (
@@ -206,10 +208,10 @@ export default function Homepage() {
         <section className="pb-40">
           <div className="text-center space-y-8 mb-16">
             <h2 className="font-serif text-4xl italic text-[#4A3C31] font-light tracking-wide">
-              Launching soon in Saudi Arabia
+              {t('home.newsletter.title')}
             </h2>
             <p className="text-[10px] uppercase tracking-[0.3em] text-[#8B8076] font-light">
-              Join the list for exclusive updates
+              {t('home.newsletter.subtitle')}
             </p>
           </div>
           <NotifyForm />

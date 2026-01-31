@@ -24,6 +24,7 @@ import { Link } from '~/components/Link';
 import { IconRemove } from '~/components/Icon';
 import { FeaturedProducts } from '~/components/FeaturedProducts';
 import { getInputStyleClasses } from '~/lib/utils';
+import { useTranslation } from '~/hooks/useTranslation';
 
 type Layouts = 'page' | 'drawer';
 
@@ -87,13 +88,14 @@ function CartDiscounts({
     discountCodes
       ?.filter((discount) => discount.applicable)
       ?.map(({ code }) => code) || [];
+  const { t } = useTranslation();
 
   return (
     <>
       {/* Have existing discount, display it with a remove option */}
       <dl className={codes && codes.length !== 0 ? 'grid' : 'hidden'}>
         <div className="flex items-center justify-between font-medium">
-          <Text as="dt">Discount(s)</Text>
+          <Text as="dt">{t('cart.discount')}s</Text>
           <div className="flex items-center justify-between">
             <UpdateDiscountForm>
               <button>
@@ -120,10 +122,10 @@ function CartDiscounts({
             className={getInputStyleClasses()}
             type="text"
             name="discountCode"
-            placeholder="Discount code"
+            placeholder={t('cart.discount')}
           />
           <button className="flex justify-end font-medium whitespace-nowrap">
-            Apply Discount
+            {t('cart.applyDiscount')}
           </button>
         </div>
       </UpdateDiscountForm>
@@ -188,19 +190,20 @@ function CartLines({
 
 function CartCheckoutActions({ checkoutUrl }: { checkoutUrl: string }) {
   if (!checkoutUrl) return null;
+  const { t } = useTranslation();
 
   return (
     <div className="flex flex-col mt-2">
       <a href={checkoutUrl} target="_self">
         <Button as="span" width="full">
-          Continue to Checkout
+          {t('cart.checkout')}
         </Button>
       </a>
       <p className="text-xs text-center opacity-60 mt-2">
-        For Saudi Arabia: Please use your 8-digit National Address to ensure delivery.
+        {t('cart.saudiAddr')}
       </p>
       <p className="text-[10px] text-center opacity-50 mt-1">
-        By checking out, you agree to our <a href="/policies/terms-of-service" className="underline">Terms</a> and acknowledge your <a href="/policies/refund-policy" className="underline">Consumer Rights</a> (7-day returns).
+        {t('cart.terms')} <a href="/policies/terms-of-service" className="underline">{t('cart.termsLink')}</a> {t('cart.refunds')} <a href="/policies/refund-policy" className="underline">{t('cart.refundsLink')}</a> {t('cart.refundsNote')}
       </p>
       {/* @todo: <CartShopPayButton cart={cart} /> */}
     </div>
@@ -228,7 +231,7 @@ function CartSummary({
       </h2>
       <dl className="grid">
         <div className="flex items-center justify-between font-medium">
-          <Text as="dt">Subtotal</Text>
+          <Text as="dt"><CartSubtotalLabel /></Text>
           <Text as="dd" data-test="subtotal">
             {cost?.subtotalAmount?.amount ? (
               <Money data={cost?.subtotalAmount} />
@@ -446,6 +449,7 @@ export function CartEmpty({
 }) {
   const scrollRef = useRef(null);
   const { y } = useScroll(scrollRef);
+  const { t } = useTranslation();
 
   const container = {
     drawer: clsx([
@@ -462,17 +466,16 @@ export function CartEmpty({
     <div ref={scrollRef} className={container[layout]} hidden={hidden}>
       <section className="grid gap-6">
         <Text format>
-          Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you
-          started!
+          {t('cart.emptyStats')}
         </Text>
         <div>
-          <Button onClick={onClose}>Continue shopping</Button>
+          <Button onClick={onClose}>{t('cart.continueShopping')}</Button>
         </div>
       </section>
       <section className="grid gap-8 pt-16">
         <FeaturedProducts
           count={4}
-          heading="Shop Best Sellers"
+          heading={t('cart.shopBestSellers')}
           layout={layout}
           onClose={onClose}
           sortKey="BEST_SELLING"
@@ -480,4 +483,9 @@ export function CartEmpty({
       </section>
     </div>
   );
+}
+
+function CartSubtotalLabel() {
+  const { t } = useTranslation();
+  return <>{t('cart.subtotal')}</>;
 }

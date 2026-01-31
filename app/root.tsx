@@ -77,11 +77,19 @@ export const links: LinksFunction = () => {
       href: 'https://shop.app',
     },
     { rel: 'icon', type: 'image/svg+xml', href: favicon },
-    // Stealth Mode & Optimization: Removed External Fonts
-    // {
-    //   rel: 'stylesheet',
-    //   href: 'https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Italiana&family=Montserrat:wght@100..900&display=swap',
-    // },
+    {
+      rel: 'preconnect',
+      href: 'https://fonts.googleapis.com',
+    },
+    {
+      rel: 'preconnect',
+      href: 'https://fonts.gstatic.com',
+      crossOrigin: 'anonymous' as const,
+    },
+    {
+      rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap',
+    },
   ];
 };
 
@@ -125,6 +133,7 @@ async function loadCriticalData({ request, context }: LoaderFunctionArgs) {
   ]);
   */
 
+  /*
   const layout = {
     shop: {
       name: "Formé Haus",
@@ -142,6 +151,20 @@ async function loadCriticalData({ request, context }: LoaderFunctionArgs) {
         { id: "4", title: "ABOUT", to: "/pages/about", target: "_self", isExternal: false, tags: [], type: "PAGE", resourceId: null }
       ]
     },
+    footerMenu: undefined
+  };
+  */
+
+  // Use minimal layout to force fallback to translated links in components
+  const layout = {
+    shop: {
+      name: "Formé Haus",
+      description: "Luxury Fashion",
+      primaryDomain: { url: "https://forme-haus.com" },
+      brand: { logo: { image: { url: "/logo.png" } } },
+      id: "gid://shopify/Shop/1234567890"
+    },
+    headerMenu: undefined,
     footerMenu: undefined
   };
 
@@ -185,9 +208,10 @@ function Layout({ children }: { children?: React.ReactNode }) {
   const nonce = useNonce();
   const data = useRouteLoaderData<typeof loader>('root');
   const locale = data?.selectedLocale ?? DEFAULT_LOCALE;
+  const isRTL = locale.language === 'AR';
 
   return (
-    <html lang={locale.language}>
+    <html lang={isRTL ? 'ar' : locale.language.toLowerCase()} dir={isRTL ? 'rtl' : 'ltr'}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />

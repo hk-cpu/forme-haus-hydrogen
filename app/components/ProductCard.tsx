@@ -5,6 +5,7 @@ import { Image, Money, flattenConnection } from '@shopify/hydrogen';
 import type { Product } from '@shopify/hydrogen/storefront-api-types';
 import type { ProductCardFragment } from 'storefrontapi.generated';
 import { getProductPlaceholder } from '~/lib/placeholders';
+import { useTranslation } from '~/hooks/useTranslation';
 
 export function ProductCard({
   product,
@@ -14,6 +15,7 @@ export function ProductCard({
   loading?: HTMLImageElement['loading'];
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
   // Motion Values for Tilt
   const x = useMotionValue(0);
@@ -87,7 +89,7 @@ export function ProductCard({
 
             <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-20">
               <button className="w-full bg-[#121212]/80 backdrop-blur-md text-[#F0EAE6] border border-[#F0EAE6]/20 py-3 text-[10px] uppercase tracking-widest font-medium hover:bg-[#F0EAE6] hover:text-[#121212] transition-colors duration-300">
-                View Details
+                {t('product.viewDetails')}
               </button>
             </div>
           </div>
@@ -98,7 +100,7 @@ export function ProductCard({
           >
             <div className="space-y-1">
               <h3 className="font-serif text-lg tracking-wide group-hover:text-white transition-colors">
-                COMING SOON
+                {t('product.comingSoon')}
               </h3>
               <p className="text-[#F0EAE6]/50 text-[10px] uppercase tracking-[0.2em]">
                 Formé Haus
