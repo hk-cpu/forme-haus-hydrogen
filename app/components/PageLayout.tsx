@@ -465,16 +465,25 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
       divider={isHome ? 'none' : 'top'}
       as="footer"
       role="contentinfo"
-      className={`grid w-full py-16 px-6 md:px-12 lg:px-24 bg-[#F9F5F0] text-[#4A3C31] overflow-hidden rounded-b-[2rem] shadow-[0_20px_60px_-15px_rgba(255,255,255,0.3)]`}
+      className={`grid w-full py-20 px-6 md:px-12 lg:px-24 bg-[#F9F5F0] text-[#4A3C31] overflow-hidden rounded-b-[2rem] shadow-[0_20px_60px_-15px_rgba(255,255,255,0.3)]`}
     >
+      {/* Centered Logo Icon at Top */}
+      <div className="flex justify-center mb-16">
+        <img
+          src="/brand/logo-icon-only.png"
+          alt="Formé Haus"
+          className="h-12 md:h-16 w-auto object-contain opacity-70 hover:opacity-90 transition-opacity duration-500"
+        />
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 w-full max-w-[1920px] mx-auto">
 
         {/* COL 1: Newsletter & Socials (Luxury Priority) */}
         <div className="lg:col-span-4 flex flex-col gap-8">
           {/* Newsletter removed to avoid duplication with Homepage Luxury Form */}
 
-          <div className="space-y-4">
-            <h3 className="text-[10px] uppercase tracking-[0.25em] text-[#8B8076]">Follow Us</h3>
+          <div className="space-y-6">
+            <h3 className="text-[10px] uppercase tracking-[0.3em] text-[#8B8076] font-light">Follow Us</h3>
             <SocialButtons />
           </div>
         </div>
@@ -496,7 +505,7 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
       </div>
 
       {/* Footer Bottom: Compliance & Legal */}
-      <div className="mt-20 pt-8 border-t border-[#8B8076]/20 flex flex-col lg:flex-row justify-between items-center gap-6 text-[11px] opacity-60 font-sans tracking-wide">
+      <div className="mt-24 pt-10 border-t border-[#8B8076]/15 flex flex-col lg:flex-row justify-between items-center gap-8 text-[10px] opacity-60 font-sans tracking-[0.08em] uppercase">
 
         {/* Left: CR & Legal */}
         <div className="flex flex-col lg:flex-row items-center gap-6">

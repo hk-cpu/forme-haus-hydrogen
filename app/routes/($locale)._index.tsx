@@ -84,23 +84,23 @@ export default function Homepage() {
         {/* 3. The Edit (Editorial Section) */}
         <EditorialSection />
 
-        {/* 4. Brand Introduction (Moved down slightly as a transition) */}
+        {/* 4. Brand Introduction */}
         <motion.section
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="py-16 px-6 text-center max-w-2xl mx-auto space-y-8 border-t border-[#8B8076]/10"
+          className="py-20 px-6 text-center max-w-3xl mx-auto space-y-10 border-t border-[#8B8076]/8"
         >
-          <div className="w-px h-16 bg-gradient-to-b from-transparent via-[#8B5E3C] to-transparent mx-auto opacity-50" />
-          <p className="font-serif text-xl md:text-2xl leading-relaxed text-[#5C5046] font-light italic">
-            “Formé Haus is a Saudi-based womenswear label rooted in modern elegance, refined silhouettes, and thoughtful craftsmanship.”
+          <div className="w-px h-20 bg-gradient-to-b from-transparent via-[#a87441]/60 to-transparent mx-auto" />
+          <p className="font-serif text-2xl md:text-3xl leading-relaxed text-[#5C5046]/80 font-light italic tracking-wide">
+            "Formé Haus is a Saudi-based womenswear label rooted in modern elegance, refined silhouettes, and thoughtful craftsmanship."
           </p>
         </motion.section>
 
-        {/* 5. Featured Collections (Now "Curated For You") */}
-        <section className="container mx-auto px-6 pb-24">
-          <h2 className="font-serif text-2xl italic text-[#4A3C31] mb-8 text-center">Curated For You</h2>
+        {/* 5. Featured Collections */}
+        <section className="container mx-auto px-6 pb-32">
+          <h2 className="font-serif text-3xl italic text-[#4A3C31] mb-12 text-center tracking-wide font-light">Curated For You</h2>
           <Suspense fallback={<div className="h-96 w-full animate-pulse bg-neutral-200" />}>
             <Await resolve={featuredCollections}>
               {(response) => {
@@ -163,14 +163,14 @@ export default function Homepage() {
         </section>
 
         {/* 6. Journal Teaser */}
-        <section className="container mx-auto px-6 pb-32 border-t border-[#8B8076]/20 pt-24">
-          <div className="flex justify-between items-end mb-12">
-            <h2 className="font-serif text-3xl italic text-[#4A3C31]">Journal</h2>
-            <span className="text-xs uppercase tracking-widest text-[#8B8076]">
+        <section className="container mx-auto px-6 pb-40 border-t border-[#8B8076]/15 pt-32">
+          <div className="flex justify-between items-end mb-16">
+            <h2 className="font-serif text-4xl italic text-[#4A3C31] font-light tracking-wide">Journal</h2>
+            <span className="text-[10px] uppercase tracking-[0.3em] text-[#8B8076] font-light">
               Editorial
             </span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {[
               {
                 title: 'A Modern Saudi Wardrobe',
@@ -187,28 +187,28 @@ export default function Homepage() {
             ].map((item, i) => (
               <div
                 key={i}
-                className="space-y-4 cursor-pointer hover:opacity-80 transition-opacity group"
+                className="space-y-6 cursor-pointer group"
               >
-                <div className="aspect-video relative overflow-hidden border border-neutral-200 bg-neutral-100 rounded-sm">
+                <div className="aspect-video relative overflow-hidden border border-[#8B8076]/20 bg-neutral-100/50 rounded-sm shadow-sm">
                   <img
                     src={item.img}
                     alt={item.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105 opacity-90 group-hover:opacity-100"
                   />
                 </div>
-                <h3 className="font-serif text-lg text-[#5C5046]">{item.title}</h3>
+                <h3 className="font-serif text-xl text-[#5C5046] font-light tracking-wide group-hover:text-[#a87441] transition-colors duration-500">{item.title}</h3>
               </div>
             ))}
           </div>
         </section>
 
         {/* 7. Newsletter Signup */}
-        <section className="pb-32">
-          <div className="text-center space-y-6 mb-12">
-            <h2 className="font-serif text-3xl italic text-[#4A3C31]">
+        <section className="pb-40">
+          <div className="text-center space-y-8 mb-16">
+            <h2 className="font-serif text-4xl italic text-[#4A3C31] font-light tracking-wide">
               Launching soon in Saudi Arabia
             </h2>
-            <p className="text-xs uppercase tracking-widest text-[#8B8076]">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-[#8B8076] font-light">
               Join the list for exclusive updates
             </p>
           </div>

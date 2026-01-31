@@ -44,86 +44,87 @@ export function Header({
             role="banner"
             className={`fixed z-50 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0 group
             ${scrolled
-                    ? 'top-0 w-full bg-[#121212]/90 backdrop-blur-md py-4 border-b border-white/5'
-                    : 'top-0 w-full bg-gradient-to-b from-black/80 to-transparent py-8 hover:bg-black/90'
+                    ? 'top-0 w-full bg-[#121212]/95 backdrop-blur-xl py-5 border-b border-[#a87441]/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
+                    : 'top-0 w-full bg-gradient-to-b from-black/50 via-black/30 to-transparent py-8'
                 }`}
         >
             <div className="container mx-auto px-6 lg:px-16 flex items-center justify-between relative z-50">
 
-                {/* Desktop Navigation - MEGA MENU TRIGGER */}
-                <nav className="hidden md:flex items-center gap-10">
+                {/* Desktop Navigation - Left Side */}
+                <nav className="hidden md:flex items-center gap-12">
                     {items.slice(0, 3).map((item: any) => (
-                        <div key={item.id} className="h-full flex items-center relative group/item py-2">
+                        <div key={item.id} className="h-full flex items-center relative group/item">
                             <Link
                                 to={item.to}
-                                className="text-[11px] uppercase tracking-[0.2em] font-medium transition-colors duration-300 text-[#F0EAE6]/80 hover:text-[#a87441]"
+                                className="text-[11px] uppercase tracking-[0.3em] font-light transition-all duration-500 text-[#F0EAE6]/70 hover:text-[#a87441] hover:tracking-[0.35em]"
                             >
                                 {item.title}
                             </Link>
 
-                            {/* Mega Menu Dropdown Panel (Placeholder Structure) */}
+                            {/* Mega Menu Dropdown Panel */}
                             <div className="absolute top-full left-0 pt-8 opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-300 -translate-y-2 group-hover/item:translate-y-0 w-[80vw] max-w-[400px]">
-                                {/* This simple dropdown mimics the 'start' of a mega menu. Real nested data would map here. */}
+                                {/* Mega menu content */}
                             </div>
                         </div>
                     ))}
 
-                    {/* Placeholder for "Sale" or Special Link */}
-                    <Link to="/collections/sale" className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#a87441] hover:text-white transition-colors">
+                    {/* Sale Link */}
+                    <Link to="/collections/sale" className="text-[11px] uppercase tracking-[0.3em] font-light text-[#a87441]/90 hover:text-[#a87441] transition-all duration-500 hover:tracking-[0.35em]">
                         Sale
                     </Link>
                 </nav>
 
                 {/* Mobile Menu Toggle */}
-                <button className="md:hidden text-[#F0EAE6]">
-                    <Menu className="w-6 h-6" />
+                <button className="md:hidden text-[#F0EAE6]/80 hover:text-[#a87441] transition-colors duration-300">
+                    <Menu strokeWidth={1.5} className="w-7 h-7" />
                 </button>
 
-                {/* Centered Logo */}
+                {/* Centered Logo Icon */}
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
-                    <Link to="/" className="block relative">
+                    <Link to="/" className="block relative group/logo">
                         <div
-                            className={`relative flex items-center justify-center transition-all duration-700 ${scrolled ? 'h-6' : 'h-10'}`}
+                            className={`relative flex items-center justify-center transition-all duration-700 ${scrolled ? 'scale-90' : 'scale-100'}`}
                         >
-                            <Image
-                                data={{
-                                    url: '/logo.png',
-                                    altText: 'FORMÉ HAUS',
-                                    width: 180,
-                                    height: 45,
+                            <img
+                                src="/brand/logo-icon-only.png"
+                                alt="FORMÉ HAUS"
+                                className={`transition-all duration-700 object-contain ${scrolled ? 'h-12 w-12' : 'h-16 w-16'} opacity-90 group-hover/logo:opacity-100`}
+                            />
+                            {/* Elegant glow effect on hover */}
+                            <motion.div
+                                className="absolute inset-0 opacity-0 group-hover/logo:opacity-100 transition-opacity duration-700 pointer-events-none"
+                                style={{
+                                    filter: 'blur(24px)',
+                                    background: 'radial-gradient(ellipse at center, rgba(168, 116, 65, 0.4) 0%, transparent 70%)',
                                 }}
-                                width={180}
-                                height={45}
-                                className="w-auto h-full object-contain brightness-0 invert"
-                                loading="eager"
                             />
                         </div>
                     </Link>
                 </div>
 
                 {/* Right Actions */}
-                <div className="flex items-center gap-8">
-                    <div className="hidden md:flex ml-4">
+                <div className="flex items-center gap-6 md:gap-8">
+                    <div className="hidden md:flex">
                         <LanguageSwitch />
                     </div>
 
                     <button
                         onClick={openSearch}
-                        className="text-[#F0EAE6] hover:text-[#a87441] transition-colors"
+                        className="text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 hover:scale-110"
                     >
-                        <Search strokeWidth={1} className="w-5 h-5" />
+                        <Search strokeWidth={1.5} className="w-6 h-6" />
                     </button>
 
                     <button
                         onClick={openCart}
-                        className="text-[#F0EAE6] hover:text-[#a87441] transition-colors relative group"
+                        className="text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 hover:scale-110 relative group"
                     >
-                        <ShoppingBag strokeWidth={1} className="w-5 h-5" />
+                        <ShoppingBag strokeWidth={1.5} className="w-6 h-6" />
                         <Suspense fallback={null}>
                             <Await resolve={rootData?.cart}>
                                 {(cart: any) =>
                                     cart?.totalQuantity ? (
-                                        <span className="absolute -top-1 -right-1 text-[9px] bg-[#a87441] text-white rounded-full w-3.5 h-3.5 flex items-center justify-center font-medium">
+                                        <span className="absolute -top-1.5 -right-1.5 text-[9px] bg-[#a87441] text-white rounded-full w-4.5 h-4.5 flex items-center justify-center font-medium shadow-lg">
                                             {cart.totalQuantity}
                                         </span>
                                     ) : null
@@ -133,8 +134,10 @@ export function Header({
                     </button>
 
                     {/* Account Icon (Desktop) */}
-                    <Link to="/account" className="hidden md:block text-[#F0EAE6] hover:text-[#a87441] transition-colors">
-                        <span className="w-5 h-5 block bg-white/10 rounded-full hover:bg-[#a87441] transition-colors" />
+                    <Link to="/account" className="hidden md:flex items-center justify-center text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 hover:scale-110 group">
+                        <div className="w-6 h-6 rounded-full border border-[#F0EAE6]/30 group-hover:border-[#a87441] transition-all duration-300 flex items-center justify-center">
+                            <div className="w-2.5 h-2.5 rounded-full bg-[#F0EAE6]/50 group-hover:bg-[#a87441] transition-all duration-300" />
+                        </div>
                     </Link>
                 </div>
             </div>
