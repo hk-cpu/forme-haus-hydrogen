@@ -9,8 +9,11 @@ import {
   Money,
   useOptimisticData,
   OptimisticInput,
+  ShopPayButton,
   type CartReturn,
 } from '@shopify/hydrogen';
+import { useRouteLoaderData } from '@remix-run/react';
+import type { RootLoader } from '~/root';
 import type {
   Cart as CartType,
   CartCost,
@@ -67,7 +70,7 @@ export function CartDetails({
       {cartHasItems && (
         <CartSummary cost={cart.cost} layout={layout}>
           <CartDiscounts discountCodes={cart.discountCodes} />
-          <CartCheckoutActions checkoutUrl={cart.checkoutUrl} />
+          <CartCheckoutActions checkoutUrl={cart.checkoutUrl} cart={cart} />
         </CartSummary>
       )}
     </div>
@@ -188,7 +191,33 @@ function CartLines({
   );
 }
 
-function CartCheckoutActions({ checkoutUrl }: { checkoutUrl: string }) {
+function CartShopPayButton({ cart }: { cart: CartType }) {
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const storeDomain = rootData?.layout?.shop?.primaryDomain?.url;
+
+  if (!cart || !storeDomain) return null;
+
+  const lines = flattenConnection(cart.lines) as CartLine[];
+  const variantIds = lines.map((line) => line.merchandise?.id).filter(Boolean);
+
+  if (variantIds.length === 0) return null;
+
+  return (
+    <ShopPayButton
+      variantIds={variantIds}
+      storeDomain={storeDomain}
+      width="100%"
+    />
+  );
+}
+
+function CartCheckoutActions({
+  checkoutUrl,
+  cart,
+}: {
+  checkoutUrl: string;
+  cart: CartType;
+}) {
   if (!checkoutUrl) return null;
   const { t } = useTranslation();
 
@@ -205,7 +234,7 @@ function CartCheckoutActions({ checkoutUrl }: { checkoutUrl: string }) {
       <p className="text-[10px] text-center opacity-50 mt-1">
         {t('cart.terms')} <a href="/policies/terms-of-service" className="underline">{t('cart.termsLink')}</a> {t('cart.refunds')} <a href="/policies/refund-policy" className="underline">{t('cart.refundsLink')}</a> {t('cart.refundsNote')}
       </p>
-      {/* @todo: <CartShopPayButton cart={cart} /> */}
+      <CartShopPayButton cart={cart} />
     </div>
   );
 }
