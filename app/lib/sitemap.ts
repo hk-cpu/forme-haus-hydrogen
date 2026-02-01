@@ -149,12 +149,14 @@ export async function getSitemap(options: GetSiteMapOptions) {
 }
 
 function getSiteMapLinks(resource: string, count: number, baseUrl: string) {
-  let links = ``;
+  const links = [];
 
   for (let i = 1; i <= count; i++) {
-    links += `<sitemap><loc>${baseUrl}/sitemap/${resource}/${i}.xml</loc></sitemap>`;
+    links.push(
+      `<sitemap><loc>${baseUrl}/sitemap/${resource}/${i}.xml</loc></sitemap>`,
+    );
   }
-  return links;
+  return links.join('');
 }
 
 function renderUrlTag({
