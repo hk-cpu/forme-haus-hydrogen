@@ -1,0 +1,135 @@
+npm warn Unknown project config "public-hoist-pattern". This will stop working in the next major version of npm.
+
+> demo-store@2.1.6 dev
+> shopify hydrogen dev --codegen
+
+[warn] Data fetching is changing to a single fetch in React Router v7
+┃ You can use the `v3_singleFetch` future flag to opt-in early.
+┃ -> https://remix.run/docs/en/2.13.1/start/future-flags#v3_singleFetch
+┗
+
+Environment variables injected into MiniOxygen:
+
+SESSION_SECRET                          from local .env
+PUBLIC_STORE_DOMAIN                     from local .env
+PUBLIC_STOREFRONT_API_TOKEN             from local .env
+PRIVATE_STOREFRONT_API_TOKEN            from local .env
+PUBLIC_STOREFRONT_ID                    from local .env
+PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID   from local .env
+PUBLIC_CUSTOMER_ACCOUNT_API_URL         from local .env
+PUBLIC_CHECKOUT_DOMAIN                  from local .env
+SHOP_ID                                 from local .env
+
+  ➜  Local:   http://localhost:3000/
+  ➜  Network: use --host to expose
+
+
+╭─ success ────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  View Hydrogen app: http://localhost:3000/                                   │
+│                                                                              │
+│  View GraphiQL API browser:                                                  │
+│  http://localhost:3000/graphiql                                              │
+│                                                                              │
+│  View server network requests:                                               │
+│  http://localhost:3000/subrequest-profiler                                   │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ info ───────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  There are 10 new @shopify/hydrogen versions available.                      │
+│                                                                              │
+│  Current: ^2025.1.1 | Latest: 2025.7.1                                       │
+│                                                                              │
+│  The next 5 version(s) include                                               │
+│    • 2025.1.2 - Shopify CLI update                                           │
+│    • 2025.1.3 - Remix routeConfig support, Remix and Vite updates.           │
+│    • 2025.1.4 - Cart delivery adddress support, fixes in Vite 6 SSR          │
+│      conditions, Skeleton & Customer Accounts session                        │
+│    • 2025.1.5 - New Shopify cookie system and analytics improvements         │
+│    • 2025.4.0 - Update Storefront and Customer Account API to 2025.4, new    │
+│      recipes and fixes                                                       │
+│    • ...more                                                                 │
+│                                                                              │
+│  Next steps                                                                  │
+│    • Run `npx shopify hydrogen upgrade` or `npx shopify hydrogen upgrade     │
+│      --version 2025.7.1`                                                     │
+│    • Read release notes at https://hydrogen.shopify.dev/releases             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+╭─ warning ────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  [Codegen] [warn] Data fetching is changing to a single fetch in React       │
+│  Router v7                                                                   │
+│                                                                              │
+│  ┃ You can use the `v3_singleFetch` future flag to opt-in early.             │
+│  ┃ -> https://remix.run/docs/en/2.13.1/start/future-flags#v3_singleFetch     │
+│  ┗                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+   GET  302  render  /collections/all  16ms
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+╭─ error ──────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  In Hydrogen's `storefront.query`:                                           │
+│                                                                              │
+│  URL: https://demo.myshopify.com/api/2025-01/graphql.json                    │
+│  API response error: 403                                                     │
+│  Request ID: 07ba8940-75bc-43bb-9c99-6e01c4e3ad81-1769980818                 │
+│                                                                              │
+│  To debug the query `AllProducts`, try it in GraphiQL (                      │
+│  http://localhost:3000/graphiql?query=query%20AllProducts(%20%24country%3A%  │
+│  20CountryCode%20%24language%3A%20LanguageCode%20%24first%3A%20Int%20%24las  │
+│  t%3A%20Int%20%24startCursor%3A%20String%20%24endCursor%3A%20String%20)%20%  │
+│  40inContext(country%3A%20%24country%2C%20language%3A%20%24language)%20%7B%  │
+│  20products(first%3A%20%24first%2C%20last%3A%20%24last%2C%20before%3A%20%24  │
+│  startCursor%2C%20after%3A%20%24endCursor)%20%7B%20nodes%20%7B%20...Product  │
+│  Card%20%7D%20pageInfo%20%7B%20hasPreviousPage%20hasNextPage%20startCursor%  │
+│  20endCursor%20%7D%20%7D%20%7D%20fragment%20ProductCard%20on%20Product%20%7  │
+│  B%20id%20title%20publishedAt%20handle%20vendor%20variants(first%3A%201)%20  │
+│  %7B%20nodes%20%7B%20id%20availableForSale%20image%20%7B%20url%20altText%20  │
+│  width%20height%20%7D%20price%20%7B%20amount%20currencyCode%20%7D%20compare  │
+│  AtPrice%20%7B%20amount%20currencyCode%20%7D%20selectedOptions%20%7B%20name  │
+│  %20value%20%7D%20product%20%7B%20handle%20title%20%7D%20%7D%20%7D%20%7D&va  │
+│  riables=%7B%22first%22%3A8%2C%22endCursor%22%3Anull%2C%22country%22%3A%22S  │
+│  A%22%2C%22language%22%3A%22EN%22%7D ).                                      │
+│                                                                              │
+│  To investigate the issue, examine this stack trace:                         │
+│    at loader (routes/($locale).products._index.tsx:33)                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+   GET  500  render  /products  1652ms
+9:20:22 PM [vite] ✨ new dependencies optimized: tiny-invariant, lenis, framer-motion, react-use, lucide-react
+9:20:22 PM [vite] ✨ optimized dependencies changed. reloading
+9:20:49 PM [vite] .env changed, restarting server...
+9:20:49 PM [vite] server restarted.
+MiniOxygen: Error during evaluation: TypeError: fetch failed
+    at Object.fetch (/app/node_modules/miniflare/node_modules/undici/index.js:112:15)
+    at fetch3 (/app/node_modules/miniflare/src/http/fetch.ts:90:19)
+    at Object.dispatchFetch (/app/node_modules/miniflare/src/index.ts:1647:20) {
+  cause: SocketError: other side closed
+      at Socket.onSocketEnd (/app/node_modules/miniflare/node_modules/undici/lib/client.js:1118:22)
+      at Socket.emit (node:events:531:35)
+      at Socket.emit (node:domain:489:12)
+      at endReadableNT (node:internal/streams/readable:1698:12)
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'UND_ERR_SOCKET',
+    socket: {
+      localAddress: '127.0.0.1',
+      localPort: 56028,
+      remoteAddress: '127.0.0.1',
+      remotePort: 40511,
+      remoteFamily: 'IPv4',
+      timeout: undefined,
+      bytesWritten: 268,
+      bytesRead: 0
+    }
+  }
+}
