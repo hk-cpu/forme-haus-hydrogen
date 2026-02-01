@@ -257,7 +257,7 @@ export default function App() {
   );
 }
 
-export function ErrorBoundary({ error }: { error: Error }) {
+export function ErrorBoundary() {
   const routeError = useRouteError();
   const isRouteError = isRouteErrorResponse(routeError);
 
@@ -282,7 +282,9 @@ export function ErrorBoundary({ error }: { error: Error }) {
           )}
         </>
       ) : (
-        <GenericError error={error instanceof Error ? error : undefined} />
+        <GenericError
+          error={routeError instanceof Error ? routeError : undefined}
+        />
       )}
     </Layout>
   );
