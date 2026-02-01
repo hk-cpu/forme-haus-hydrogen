@@ -28,37 +28,37 @@ export default function LanguageSwitch() {
     return (
         <button
             onClick={toggleLanguage}
-            className="relative flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#F0EAE6]/15 hover:border-[#a87441]/40 transition-all duration-500 group overflow-hidden"
+            className="relative flex items-center gap-2.5 px-4 py-2 rounded-full border border-[#a87441]/30 hover:border-[#a87441]/70 bg-[#a87441]/5 hover:bg-[#a87441]/15 transition-all duration-500 group overflow-hidden cursor-pointer"
             aria-label={isArabic ? 'Switch to English' : 'التبديل إلى العربية'}
         >
             {/* Subtle background glow on hover */}
             <motion.div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 style={{
-                    background: 'radial-gradient(ellipse at center, rgba(168, 116, 65, 0.08) 0%, transparent 70%)',
+                    background: 'radial-gradient(ellipse at center, rgba(168, 116, 65, 0.12) 0%, transparent 70%)',
                 }}
             />
 
             {/* EN label */}
             <span
-                className={`relative text-[10px] uppercase tracking-[0.15em] font-light transition-all duration-500 ${
+                className={`relative text-[11px] uppercase tracking-[0.15em] transition-all duration-500 ${
                     !isArabic
-                        ? 'text-[#a87441]'
-                        : 'text-[#F0EAE6]/40 group-hover:text-[#F0EAE6]/70'
+                        ? 'text-[#a87441] font-medium'
+                        : 'text-[#F0EAE6]/50 font-light group-hover:text-[#F0EAE6]/80'
                 }`}
             >
                 EN
             </span>
 
             {/* Divider line */}
-            <span className="relative w-px h-3 bg-[#F0EAE6]/20" />
+            <span className="relative w-px h-3.5 bg-[#a87441]/40" />
 
             {/* AR label */}
             <span
-                className={`relative text-[11px] font-light transition-all duration-500 ${
+                className={`relative text-[12px] transition-all duration-500 ${
                     isArabic
-                        ? 'text-[#a87441]'
-                        : 'text-[#F0EAE6]/40 group-hover:text-[#F0EAE6]/70'
+                        ? 'text-[#a87441] font-medium'
+                        : 'text-[#F0EAE6]/50 font-light group-hover:text-[#F0EAE6]/80'
                 }`}
                 style={{ fontFamily: '"IBM Plex Sans Arabic", sans-serif' }}
             >

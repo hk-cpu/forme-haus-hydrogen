@@ -35,6 +35,7 @@ import Atmosphere from '~/components/Atmosphere';
 import { PredictiveSearch } from '~/components/PredictiveSearch';
 import Loader from '~/components/Loader';
 import SocialButtons from '~/components/SocialButtons';
+import PaymentBadges from '~/components/PaymentBadges';
 import { useTranslation } from '~/hooks/useTranslation';
 
 type LayoutProps = {
@@ -87,9 +88,7 @@ export function PageLayout({ children, layout }: LayoutProps) {
             >
               <StatusBanner />
             </div>
-            {headerMenu && layout?.shop.name && (
-              <Header title={layout.shop.name} menu={headerMenu} />
-            )}
+            <Header title={layout?.shop.name || 'Formé Haus'} menu={headerMenu || undefined} />
             <main role="main" id="mainContent" className="flex-grow">
               {useIsHomePath() ? (
                 children
@@ -536,11 +535,7 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
         <div className="flex items-center gap-4">
           <a href="/compliance/vat-certificate.pdf" className="hover:text-[#4A3C31] transition-colors">{t('footer.vatCertificate')}</a>
           <a href="/compliance/cr-certificate.pdf" className="hover:text-[#4A3C31] transition-colors">{t('footer.crCertificate')}</a>
-          <div className="flex gap-2 opacity-50 grayscale hover:grayscale-0 transition-all">
-            {/* Mada/Visa Icons Placeholder */}
-            <div className="w-8 h-5 bg-[#4A3C31]/10 rounded-[2px]" />
-            <div className="w-8 h-5 bg-[#4A3C31]/10 rounded-[2px]" />
-          </div>
+          <PaymentBadges />
         </div>
 
         {/* Right: Arabic */}

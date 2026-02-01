@@ -84,16 +84,16 @@ export function Header({
                     <LanguageSwitch />
                 </div>
 
-                {/* Centered Logo Icon */}
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+                {/* Centered Logo Icon - hidden initially to avoid overlapping StatusBanner, fades in on scroll */}
+                <div className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center transition-all duration-700 ${scrolled ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}>
                     <Link to="/" className="block relative group/logo">
                         <div
-                            className={`relative flex items-center justify-center transition-all duration-700 ${scrolled ? 'scale-90' : 'scale-100'}`}
+                            className="relative flex items-center justify-center transition-all duration-700"
                         >
                             <img
                                 src="/brand/logo-icon-only.png"
                                 alt="FORMÉ HAUS"
-                                className={`transition-all duration-700 object-contain ${scrolled ? 'h-12 w-12' : 'h-16 w-16'} opacity-90 group-hover/logo:opacity-100`}
+                                className="transition-all duration-700 object-contain h-12 w-12 opacity-90 group-hover/logo:opacity-100"
                             />
                             {/* Elegant glow effect on hover */}
                             <motion.div
