@@ -1,10 +1,10 @@
 import {
-  defer,
   type LinksFunction,
   type LoaderFunctionArgs,
   type AppLoadContext,
   type MetaArgs,
 } from '@shopify/remix-oxygen';
+import { defer } from '@remix-run/node';
 import {
   isRouteErrorResponse,
   Links,

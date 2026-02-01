@@ -1,8 +1,8 @@
 import {
-  defer,
   type MetaArgs,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
+import { defer } from '@remix-run/node';
 import { Suspense } from 'react';
 import { Await, useLoaderData, Link } from '@remix-run/react';
 import { getSeoMeta, Image } from '@shopify/hydrogen';

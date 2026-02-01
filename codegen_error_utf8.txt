@@ -1,0 +1,161 @@
+﻿node.exe : npm warn 
+Unknown project 
+config "public-hoist
+-pattern". This 
+will stop working 
+in the next major 
+version of npm.
+At line:1 char:1
++ & "C:\Program File
+s\nodejs/node.exe" "
+C:\Users\futte\AppDa
+ta\Roaming\ ...
++ ~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
+    + CategoryInfo  
+            : NotS  
+  pecified: (npm    
+ warn Unknow...v    
+ersion of npm.:    
+String) [], Rem    
+oteException
+    + FullyQualifie 
+   dErrorId : Nati  
+  veCommandError
+ 
+[31mfailed to load 
+config from C:\Users
+\futte\FORME-HAUS\FO
+RME-HAUS-main\forme-
+haus-static\forme-ha
+us-hydrogen\vite.con
+fig.ts[39m
+╭─ error ───────────
+────────────────────
+────────────────────
+───────────────────╮
+│                   
+                    
+                    
+                   │
+│  hydrogen.preset 
+is not a function   
+                    
+                    
+│
+│                   
+                    
+                    
+                   │
+│  To investigate 
+the issue, examine 
+this stack trace:   
+                    
+  │
+│    at (Users/futte
+/FORME-HAUS/FORME-HA
+US-main/forme-haus-s
+tatic/forme-haus-  │
+│    hydrogen/vite.c
+onfig.ts.timestamp-1
+769978974387-2fa355d
+8cd824.mjs:12)     │
+│    at run (node:in
+ternal/modules/esm/m
+odule_job:345)      
+                   │
+│    at __proto__ (n
+ode:internal/modules
+/esm/loader:665)    
+                   │
+│    at async loadCo
+nfigFromBundledFile 
+                    
+                   │
+│    (Users/futte/FO
+RME-HAUS/FORME-HAUS-
+main/forme-haus-stat
+ic/forme-haus-hyd  │
+│    rogen/node_modu
+les/vite/dist/node/c
+hunks/dep-BKbDVx1T.j
+s:69911)           │
+│    at 
+loadConfigFromFile  
+                    
+                    
+           │
+│    (Users/futte/FO
+RME-HAUS/FORME-HAUS-
+main/forme-haus-stat
+ic/forme-haus-hyd  │
+│    rogen/node_modu
+les/vite/dist/node/c
+hunks/dep-BKbDVx1T.j
+s:69764)           │
+│    at async 
+getViteConfig       
+                    
+                    
+     │
+│    (Users/futte/FO
+RME-HAUS/FORME-HAUS-
+main/forme-haus-stat
+ic/forme-haus-hyd  │
+│    rogen/node_modu
+les/@shopify/cli/dis
+t/chunk-U52M2SBG.js:
+151528)            │
+│    at async 
+getRemixConfig      
+                    
+                    
+     │
+│    (Users/futte/FO
+RME-HAUS/FORME-HAUS-
+main/forme-haus-stat
+ic/forme-haus-hyd  │
+│    rogen/node_modu
+les/@shopify/cli/dis
+t/chunk-U52M2SBG.js:
+151626)            │
+│    at async 
+runCodegen          
+                    
+                    
+     │
+│    (Users/futte/FO
+RME-HAUS/FORME-HAUS-
+main/forme-haus-stat
+ic/forme-haus-hyd  │
+│    rogen/node_modu
+les/@shopify/cli/dis
+t/index.js:205265)  
+                   │
+│    at run (Users/f
+utte/FORME-HAUS/FORM
+E-HAUS-main/forme-ha
+us-static/forme-h  │
+│    aus-hydrogen/no
+de_modules/@shopify/
+cli/dist/index.js:20
+5253)              │
+│    at _run (Users/
+futte/FORME-HAUS/FOR
+ME-HAUS-main/forme-h
+aus-static/forme-  │
+│    haus-hydrogen/n
+ode_modules/@shopify
+/cli/dist/chunk-WC5E
+DB4Z.js:169363)    │
+│                   
+                    
+                    
+                   │
+╰───────────────────
+────────────────────
+────────────────────
+───────────────────╯
+

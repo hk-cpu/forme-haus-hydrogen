@@ -76,16 +76,26 @@ export function ProductCard({
           className="group relative flex flex-col gap-3 cursor-pointer"
           prefetch="viewport"
         >
-          <div className="aspect-[3/4] w-full overflow-hidden bg-white/5 relative border border-white/5">
+          <div className="aspect-[3/4] w-full overflow-hidden bg-[#121212] relative border border-white/5">
             {/* 3D Depth Layer */}
             <div
-              className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+              className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10"
               style={{ transform: "translateZ(20px)" }}
             />
 
-            <div className="w-full h-full bg-transparent flex items-center justify-center">
-              <div className="text-[#F0EAE6]/5 border border-[#F0EAE6]/10 w-full h-full" />
-            </div>
+            {firstVariant.image ? (
+              <Image
+                data={firstVariant.image}
+                aspectRatio="3/4"
+                sizes="(min-width: 45em) 20vw, 50vw"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading={loading}
+              />
+            ) : (
+              <div className="w-full h-full bg-transparent flex items-center justify-center">
+                <div className="text-[#F0EAE6]/5 border border-[#F0EAE6]/10 w-full h-full" />
+              </div>
+            )}
 
             <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-20">
               <button className="w-full bg-[#121212]/80 backdrop-blur-md text-[#F0EAE6] border border-[#F0EAE6]/20 py-3 text-[10px] uppercase tracking-widest font-medium hover:bg-[#F0EAE6] hover:text-[#121212] transition-colors duration-300">
@@ -100,11 +110,19 @@ export function ProductCard({
           >
             <div className="space-y-1">
               <h3 className="font-serif text-lg tracking-wide group-hover:text-white transition-colors">
-                {t('product.comingSoon')}
+                {product.title}
               </h3>
-              <p className="text-[#F0EAE6]/50 text-[10px] uppercase tracking-[0.2em]">
-                Formé Haus
-              </p>
+              <div className="flex justify-between items-center gap-4">
+                <p className="text-[#F0EAE6]/50 text-[10px] uppercase tracking-[0.2em]">
+                  {product.vendor || 'Formé Haus'}
+                </p>
+                {firstVariant.price && (
+                  <Money
+                    data={firstVariant.price}
+                    className="text-[10px] text-[#F0EAE6]/80 font-medium"
+                  />
+                )}
+              </div>
             </div>
           </div>
         </Link >

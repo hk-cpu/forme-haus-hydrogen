@@ -11,7 +11,6 @@ export const UPDATE_ADDRESS_MUTATION = `#graphql
       defaultAddress: $defaultAddress
     ) {
       userErrors {
-        code
         field
         message
       }
@@ -27,7 +26,6 @@ export const DELETE_ADDRESS_MUTATION = `#graphql
     customerAddressDelete(addressId: $addressId) {
       deletedAddressId
       userErrors {
-        code
         field
         message
       }
@@ -49,7 +47,6 @@ export const CREATE_ADDRESS_MUTATION = `#graphql
         id
       }
       userErrors {
-        code
         field
         message
       }

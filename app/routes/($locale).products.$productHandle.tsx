@@ -1,10 +1,10 @@
 import { useRef, Suspense } from 'react';
 import { Disclosure, Listbox } from '@headlessui/react';
 import {
-  defer,
   type MetaArgs,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
+import { defer } from '@remix-run/node';
 import { useLoaderData, Await } from '@remix-run/react';
 import {
   getSeoMeta,

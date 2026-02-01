@@ -16,7 +16,7 @@ export type CustomerAddressUpdateMutation = {
     userErrors: Array<
       Pick<
         CustomerAccountAPI.UserErrorsCustomerAddressUserErrors,
-        'code' | 'field' | 'message'
+        'field' | 'message'
       >
     >;
   }>;
@@ -35,7 +35,7 @@ export type CustomerAddressDeleteMutation = {
       userErrors: Array<
         Pick<
           CustomerAccountAPI.UserErrorsCustomerAddressUserErrors,
-          'code' | 'field' | 'message'
+          'field' | 'message'
         >
       >;
     }
@@ -57,7 +57,7 @@ export type CustomerAddressCreateMutation = {
     userErrors: Array<
       Pick<
         CustomerAccountAPI.UserErrorsCustomerAddressUserErrors,
-        'code' | 'field' | 'message'
+        'field' | 'message'
       >
     >;
   }>;
@@ -464,10 +464,7 @@ export type CustomerUpdateMutationVariables = CustomerAccountAPI.Exact<{
 export type CustomerUpdateMutation = {
   customerUpdate?: CustomerAccountAPI.Maybe<{
     userErrors: Array<
-      Pick<
-        CustomerAccountAPI.UserErrorsCustomerUserErrors,
-        'code' | 'field' | 'message'
-      >
+      Pick<CustomerAccountAPI.UserErrorsCustomerUserErrors, 'field' | 'message'>
     >;
   }>;
 };
@@ -484,19 +481,19 @@ interface GeneratedQueryTypes {
 }
 
 interface GeneratedMutationTypes {
-  '#graphql\n  mutation customerAddressUpdate(\n    $address: CustomerAddressInput!\n    $addressId: ID!\n    $defaultAddress: Boolean\n ) {\n    customerAddressUpdate(\n      address: $address\n      addressId: $addressId\n      defaultAddress: $defaultAddress\n    ) {\n      userErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
+  '#graphql\n  mutation customerAddressUpdate(\n    $address: CustomerAddressInput!\n    $addressId: ID!\n    $defaultAddress: Boolean\n ) {\n    customerAddressUpdate(\n      address: $address\n      addressId: $addressId\n      defaultAddress: $defaultAddress\n    ) {\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n': {
     return: CustomerAddressUpdateMutation;
     variables: CustomerAddressUpdateMutationVariables;
   };
-  '#graphql\n  mutation customerAddressDelete(\n    $addressId: ID!,\n  ) {\n    customerAddressDelete(addressId: $addressId) {\n      deletedAddressId\n      userErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
+  '#graphql\n  mutation customerAddressDelete(\n    $addressId: ID!,\n  ) {\n    customerAddressDelete(addressId: $addressId) {\n      deletedAddressId\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n': {
     return: CustomerAddressDeleteMutation;
     variables: CustomerAddressDeleteMutationVariables;
   };
-  '#graphql\n  mutation customerAddressCreate(\n    $address: CustomerAddressInput!\n    $defaultAddress: Boolean\n  ) {\n    customerAddressCreate(\n      address: $address\n      defaultAddress: $defaultAddress\n    ) {\n      customerAddress {\n        id\n      }\n      userErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
+  '#graphql\n  mutation customerAddressCreate(\n    $address: CustomerAddressInput!\n    $defaultAddress: Boolean\n  ) {\n    customerAddressCreate(\n      address: $address\n      defaultAddress: $defaultAddress\n    ) {\n      customerAddress {\n        id\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n': {
     return: CustomerAddressCreateMutation;
     variables: CustomerAddressCreateMutationVariables;
   };
-  '#graphql\nmutation customerUpdate($customer: CustomerUpdateInput!) {\n  customerUpdate(input: $customer) {\n    userErrors {\n      code\n      field\n      message\n    }\n  }\n}\n': {
+  '#graphql\nmutation customerUpdate($customer: CustomerUpdateInput!) {\n  customerUpdate(input: $customer) {\n    userErrors {\n      field\n      message\n    }\n  }\n}\n': {
     return: CustomerUpdateMutation;
     variables: CustomerUpdateMutationVariables;
   };
