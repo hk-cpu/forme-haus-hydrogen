@@ -1,0 +1,82 @@
+npm warn Unknown project config "public-hoist-pattern". This will stop working in the next major version of npm.
+
+> demo-store@2.1.6 dev
+> shopify hydrogen dev --codegen
+
+[warn] Data fetching is changing to a single fetch in React Router v7
+┃ You can use the `v3_singleFetch` future flag to opt-in early.
+┃ -> https://remix.run/docs/en/2.13.1/start/future-flags#v3_singleFetch
+┗
+
+Environment variables injected into MiniOxygen:
+
+SESSION_SECRET                          from local .env
+PUBLIC_STORE_DOMAIN                     from local .env
+PUBLIC_STOREFRONT_API_TOKEN             from local .env
+PUBLIC_STOREFRONT_ID                    from local .env
+PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID   from local .env
+PUBLIC_CUSTOMER_ACCOUNT_API_URL         from local .env
+PUBLIC_CHECKOUT_DOMAIN                  from local .env
+SHOP_ID                                 from local .env
+PRIVATE_STOREFRONT_API_TOKEN            from local .env
+
+  ➜  Local:   http://localhost:3000/
+  ➜  Network: use --host to expose
+
+
+╭─ success ────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  View Hydrogen app: http://localhost:3000/                                   │
+│                                                                              │
+│  View GraphiQL API browser:                                                  │
+│  http://localhost:3000/graphiql                                              │
+│                                                                              │
+│  View server network requests:                                               │
+│  http://localhost:3000/subrequest-profiler                                   │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+╭─ warning ────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  [Codegen] [warn] Data fetching is changing to a single fetch in React       │
+│  Router v7                                                                   │
+│                                                                              │
+│  ┃ You can use the `v3_singleFetch` future flag to opt-in early.             │
+│  ┃ -> https://remix.run/docs/en/2.13.1/start/future-flags#v3_singleFetch     │
+│  ┗                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ info ───────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  There are 10 new @shopify/hydrogen versions available.                      │
+│                                                                              │
+│  Current: ^2025.1.1 | Latest: 2025.7.1                                       │
+│                                                                              │
+│  The next 5 version(s) include                                               │
+│    • 2025.1.2 - Shopify CLI update                                           │
+│    • 2025.1.3 - Remix routeConfig support, Remix and Vite updates.           │
+│    • 2025.1.4 - Cart delivery adddress support, fixes in Vite 6 SSR          │
+│      conditions, Skeleton & Customer Accounts session                        │
+│    • 2025.1.5 - New Shopify cookie system and analytics improvements         │
+│    • 2025.4.0 - Update Storefront and Customer Account API to 2025.4, new    │
+│      recipes and fixes                                                       │
+│    • ...more                                                                 │
+│                                                                              │
+│  Next steps                                                                  │
+│    • Run `npx shopify hydrogen upgrade` or `npx shopify hydrogen upgrade     │
+│      --version 2025.7.1`                                                     │
+│    • Read release notes at https://hydrogen.shopify.dev/releases             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+   GET  200  render  /test-spinner  1893ms
+9:18:05 PM [vite] ✨ new dependencies optimized: tiny-invariant, lenis, framer-motion, lucide-react, react-use
+9:18:05 PM [vite] ✨ optimized dependencies changed. reloading
+9:18:28 PM [vite] hmr update /app/routes/test-spinner.tsx, /app/styles/app.css?direct
+9:18:28 PM [vite] .env changed, restarting server...
+9:18:28 PM [vite] server restarted.
