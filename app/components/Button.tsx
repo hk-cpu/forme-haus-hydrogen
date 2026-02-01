@@ -1,8 +1,8 @@
-import { forwardRef } from 'react';
-import { Link } from '@remix-run/react';
+import {forwardRef} from 'react';
+import {Link} from '@remix-run/react';
 import clsx from 'clsx';
 
-import { missingClass } from '~/lib/utils';
+import {missingClass} from '~/lib/utils';
 
 export const Button = forwardRef(
   (
@@ -29,7 +29,8 @@ export const Button = forwardRef(
     const variants = {
       primary: `${baseButtonClasses} border border-[#F0EAE6]/40 text-[#F0EAE6] uppercase tracking-[0.25em] text-[10px] hover:bg-[#F0EAE6] hover:text-[#121212] transition-all duration-500 ease-out bg-transparent backdrop-blur-sm`,
       secondary: `${baseButtonClasses} border border-transparent text-[#F0EAE6]/70 hover:text-[#F0EAE6] uppercase tracking-[0.25em] text-[10px] relative group`,
-      inline: 'border-b border-[#F0EAE6]/20 leading-none pb-1 hover:border-[#F0EAE6] transition-colors duration-300',
+      inline:
+        'border-b border-[#F0EAE6]/20 leading-none pb-1 hover:border-[#F0EAE6] transition-colors duration-300',
     };
 
     const widths = {
@@ -45,8 +46,7 @@ export const Button = forwardRef(
 
     return (
       <Component
-        // @todo: not supported until react-router makes it into Remix.
-        // preventScrollReset={true}
+        {...(props?.to ? {preventScrollReset: true} : {})}
         className={styles}
         {...props}
         ref={ref}
