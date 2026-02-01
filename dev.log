@@ -1,0 +1,6 @@
+npm warn Unknown project config "public-hoist-pattern". This will stop working in the next major version of npm.
+
+> demo-store@2.1.6 dev
+> shopify hydrogen dev --codegen
+
+sh: 1: shopify: not found

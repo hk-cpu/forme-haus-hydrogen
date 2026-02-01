@@ -17,6 +17,7 @@ import type {
   CartLine,
   CartLineUpdateInput,
 } from '@shopify/hydrogen/storefront-api-types';
+import { useFetchers } from '@remix-run/react';
 
 import { Button } from '~/components/Button';
 import { Text, Heading } from '~/components/Text';
@@ -55,6 +56,7 @@ export function CartDetails({
   cart: CartType | null;
 }) {
   // @todo: get optimistic cart cost
+  const optimisticCost = useOptimisticCartCost(cart);
   const cartHasItems = !!cart && cart.totalQuantity > 0;
   const container = {
     drawer: 'grid grid-cols-1 h-screen-no-nav grid-rows-[1fr_auto]',
@@ -65,7 +67,7 @@ export function CartDetails({
     <div className={container[layout]}>
       <CartLines lines={cart?.lines} layout={layout} />
       {cartHasItems && (
-        <CartSummary cost={cart.cost} layout={layout}>
+        <CartSummary cost={optimisticCost ?? cart.cost} layout={layout}>
           <CartDiscounts discountCodes={cart.discountCodes} />
           <CartCheckoutActions checkoutUrl={cart.checkoutUrl} />
         </CartSummary>
@@ -488,4 +490,69 @@ export function CartEmpty({
 function CartSubtotalLabel() {
   const { t } = useTranslation();
   return <>{t('cart.subtotal')}</>;
+}
+
+function useOptimisticCartCost(cart: CartType | null): CartCost | undefined {
+  const fetchers = useFetchers();
+
+  if (!cart || !cart.cost) return undefined;
+
+  const currentLines = cart?.lines ? flattenConnection(cart.lines) : [];
+
+  const lineItems = currentLines.reduce((acc, line) => {
+    if (!line.id) return acc;
+    acc[line.id] = {
+      quantity: line.quantity,
+      price: parseFloat(line.cost?.amountPerQuantity?.amount || '0'),
+    };
+    return acc;
+  }, {} as Record<string, { quantity: number; price: number }>);
+
+  for (const fetcher of fetchers) {
+    if (fetcher.state === 'idle' || !fetcher.formData) continue;
+
+    const formInput = fetcher.formData.get('cartFormInput');
+    if (typeof formInput === 'string') {
+      try {
+        const { action, inputs } = JSON.parse(formInput);
+
+        if (action === CartForm.ACTIONS.LinesUpdate && inputs.lines) {
+          inputs.lines.forEach((line: any) => {
+            if (lineItems[line.id]) {
+              lineItems[line.id].quantity = line.quantity;
+            }
+          });
+        } else if (action === CartForm.ACTIONS.LinesRemove && inputs.lineIds) {
+          inputs.lineIds.forEach((id: string) => {
+            if (lineItems[id]) {
+              lineItems[id].quantity = 0;
+            }
+          });
+        }
+      } catch (e) {
+        // ignore parse error
+      }
+    }
+  }
+
+  let subtotal = 0;
+  Object.values(lineItems).forEach(({ price, quantity }) => {
+    subtotal += price * quantity;
+  });
+
+  const currencyCode = cart.cost.subtotalAmount?.currencyCode || 'USD';
+
+  return {
+    ...cart.cost,
+    subtotalAmount: {
+      ...cart.cost.subtotalAmount,
+      amount: subtotal.toFixed(2),
+      currencyCode,
+    },
+    totalAmount: {
+      ...cart.cost.totalAmount,
+      amount: subtotal.toFixed(2),
+      currencyCode,
+    },
+  };
 }
