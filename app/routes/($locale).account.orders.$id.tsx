@@ -341,7 +341,7 @@ export default function OrderRoute() {
             <Text size="fine" className="opacity-70">
               All prices include 15% VAT. Standard 2-Year Warranty applies to eligible products in accordance with Saudi Commerce Ministry regulations.
               <br />
-              Commercial Registration: 1010XXXXXX
+              Commercial Registration: 7051891369
             </Text>
           </div>
         </div>
