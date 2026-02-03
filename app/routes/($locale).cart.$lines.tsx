@@ -1,5 +1,5 @@
 import { type LoaderFunctionArgs } from '@shopify/remix-oxygen';
-import { redirect } from '@remix-run/node';
+import { redirect } from '@remix-run/server-runtime';
 
 /**
  * Automatically creates a new cart based on the URL and redirects straight to checkout.

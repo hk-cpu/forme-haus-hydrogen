@@ -4,7 +4,7 @@ import {
   type MetaArgs,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
-import { defer } from '@remix-run/node';
+import { defer } from '@remix-run/server-runtime';
 import { useLoaderData, Await } from '@remix-run/react';
 import {
   getSeoMeta,
@@ -39,6 +39,7 @@ import { seoPayload } from '~/lib/seo.server';
 import type { Storefront } from '~/lib/type';
 import { routeHeaders } from '~/data/cache';
 import { MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT } from '~/data/fragments';
+import { useTranslation } from '~/hooks/useTranslation';
 
 export const headers = routeHeaders;
 
@@ -125,6 +126,7 @@ export default function Product() {
   const { product, shop, recommended, variants, storeDomain } =
     useLoaderData<typeof loader>();
   const { media, title, vendor, descriptionHtml } = product;
+  const { t } = useTranslation();
   const { shippingPolicy, refundPolicy } = shop;
 
   // Optimistically selects a variant with given available variant information
@@ -169,20 +171,20 @@ export default function Product() {
               <div className="grid gap-4 py-4 pt-8 border-t border-[#F0EAE6]/10">
                 {descriptionHtml && (
                   <ProductDetail
-                    title="Product Details"
+                    title={t('product.details')}
                     content={descriptionHtml}
                   />
                 )}
                 {shippingPolicy?.body && (
                   <ProductDetail
-                    title="Shipping"
+                    title={t('product.shipping')}
                     content={getExcerpt(shippingPolicy.body)}
                     learnMore={`/policies/${shippingPolicy.handle}`}
                   />
                 )}
                 {refundPolicy?.body && (
                   <ProductDetail
-                    title="Returns"
+                    title={t('product.returns')}
                     content={getExcerpt(refundPolicy.body)}
                     learnMore={`/policies/${refundPolicy.handle}`}
                   />
@@ -359,7 +361,7 @@ export function ProductForm({
           <div className="grid items-stretch gap-4 pt-4">
             {isOutOfStock ? (
               <Button variant="secondary" disabled>
-                <Text>Sold out</Text>
+                <Text>{t('product.soldOut')}</Text>
               </Button>
             ) : (
               <AddToCartButton
@@ -376,7 +378,7 @@ export function ProductForm({
                   as="span"
                   className="flex items-center justify-center gap-2"
                 >
-                  <span>Add to Cart</span> <span>·</span>{' '}
+                  <span>{t('product.addToCart')}</span> <span>·</span>{' '}
                   <Money
                     withoutTrailingZeros
                     data={selectedVariant?.price!}
@@ -384,7 +386,7 @@ export function ProductForm({
                     data-test="price"
                   />
                   <span className="text-[10px] opacity-60 normal-case tracking-normal ml-1">
-                    (VAT included)
+                    {t('cart.vatIncluded')}
                   </span>
                   {isOnSale && (
                     <Money
@@ -469,7 +471,7 @@ function ProductDetail({
                   className="pb-px border-b border-[#F0EAE6]/30 text-[#F0EAE6]/50 text-xs hover:text-[#F0EAE6] transition-colors"
                   to={learnMore}
                 >
-                  Learn more
+                  {t('general.learnMore')}
                 </Link>
               </div>
             )}

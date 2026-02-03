@@ -1,5 +1,5 @@
+import {json} from '@remix-run/server-runtime';
 import {
-  json,
   type MetaArgs,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';

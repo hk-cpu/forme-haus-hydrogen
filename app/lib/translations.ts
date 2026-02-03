@@ -91,6 +91,7 @@ export const translations = {
     'cart.discount': 'Discount code',
     'cart.applyDiscount': 'Apply Discount',
     'cart.shopBestSellers': 'Shop Best Sellers',
+    'cart.vatIncluded': '(VAT included)',
 
     // Search
     'search.placeholder': 'Search products...',
@@ -99,6 +100,9 @@ export const translations = {
     // Product Card
     'product.viewDetails': 'View Details',
     'product.comingSoon': 'COMING SOON',
+    'product.details': 'Product Details',
+    'product.shipping': 'Shipping',
+    'product.returns': 'Returns',
 
     // General
     'general.viewAll': 'View All',
@@ -176,19 +180,20 @@ export const translations = {
     // Cart
     'cart.title': 'سلة التسوق',
     'cart.empty': 'سلتك فارغة',
-    'cart.emptyStats': 'يبدو أنك لم تضي أي شيء بعد، دعنا نبدأ!',
+    'cart.emptyStats': 'يبدو أنك لم تُضيفي أي شيء بعد، دعينا نبدأ!',
     'cart.continueShopping': 'تابعي التسوق',
     'cart.checkout': 'إتمام الشراء',
     'cart.subtotal': 'المجموع الفرعي',
-    'cart.saudiAddr': 'للمملكة العربية السعودية: يرجى استخدام العنوان الوطني لضمان التوصيل.',
-    'cart.terms': 'بإتمام الشراء، أنت توافقين على',
+    'cart.saudiAddr': 'للعملاء في المملكة: يُرجى استخدام العنوان الوطني المكوّن من 8 أرقام لضمان التوصيل.',
+    'cart.terms': 'بإتمام الشراء، أنتِ توافقين على',
     'cart.termsLink': 'شروط الخدمة',
-    'cart.refunds': 'وتقرين بـ',
+    'cart.refunds': 'وتُقرّين بمعرفتك بـ',
     'cart.refundsLink': 'سياسة الاسترجاع',
-    'cart.refundsNote': '(استرجاع خلال 7 أيام).',
+    'cart.refundsNote': '(استرجاع خلال ٧ أيام).',
     'cart.discount': 'كود الخصم',
     'cart.applyDiscount': 'تطبيق الخصم',
     'cart.shopBestSellers': 'تسوّقي الأكثر مبيعاً',
+    'cart.vatIncluded': '(شامل ضريبة القيمة المضافة)',
 
     // Search
     'search.placeholder': 'ابحثي عن المنتجات...',
@@ -197,6 +202,9 @@ export const translations = {
     // Product Card
     'product.viewDetails': 'عرض التفاصيل',
     'product.comingSoon': 'قريباً',
+    'product.details': 'تفاصيل المنتج',
+    'product.shipping': 'الشحن',
+    'product.returns': 'الاسترجاع',
 
     // General
     'general.viewAll': 'عرض الكل',

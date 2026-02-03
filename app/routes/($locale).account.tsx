@@ -7,7 +7,8 @@ import {
   useOutlet,
 } from '@remix-run/react';
 import { Suspense } from 'react';
-import { defer, type LoaderFunctionArgs } from '@shopify/remix-oxygen';
+import {defer} from '@remix-run/server-runtime';
+import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import { flattenConnection } from '@shopify/hydrogen';
 
 import type {

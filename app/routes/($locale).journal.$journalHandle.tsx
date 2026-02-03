@@ -1,5 +1,5 @@
+import {json} from '@remix-run/server-runtime';
 import {
-  json,
   type MetaArgs,
   type LinksFunction,
   type LoaderFunctionArgs,

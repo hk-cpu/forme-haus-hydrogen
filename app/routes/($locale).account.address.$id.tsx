@@ -1,6 +1,5 @@
+import {json, redirect} from '@remix-run/server-runtime';
 import {
-  json,
-  redirect,
   type ActionFunction,
   type AppLoadContext,
 } from '@shopify/remix-oxygen';

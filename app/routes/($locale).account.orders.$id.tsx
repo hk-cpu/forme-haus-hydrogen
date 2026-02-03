@@ -1,5 +1,6 @@
 import clsx from 'clsx';
-import { json, redirect, type LoaderFunctionArgs } from '@shopify/remix-oxygen';
+import {json, redirect} from '@remix-run/server-runtime';
+import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import { useLoaderData, type MetaFunction } from '@remix-run/react';
 import { Money, Image, flattenConnection } from '@shopify/hydrogen';
 import type { FulfillmentStatus } from '@shopify/hydrogen/customer-account-api-types';

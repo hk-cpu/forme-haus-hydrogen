@@ -1,4 +1,4 @@
-import { defer } from '@remix-run/node';
+import { defer } from '@remix-run/server-runtime';
 import {
   type LinksFunction,
   type LoaderFunctionArgs,

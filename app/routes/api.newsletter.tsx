@@ -1,5 +1,5 @@
 import { type ActionFunctionArgs } from '@shopify/remix-oxygen';
-import { json } from '@remix-run/node';
+import { json } from '@remix-run/server-runtime';
 
 export async function action({ request, context }: ActionFunctionArgs) {
     const formData = await request.formData();

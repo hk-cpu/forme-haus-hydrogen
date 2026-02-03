@@ -1,5 +1,5 @@
+import {redirect} from '@remix-run/server-runtime';
 import {
-  redirect,
   type ActionFunction,
   type AppLoadContext,
   type LoaderFunctionArgs,
