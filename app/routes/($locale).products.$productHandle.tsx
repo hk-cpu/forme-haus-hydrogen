@@ -234,6 +234,8 @@ export function ProductForm({
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
 
+  const { t } = useTranslation();
+
   const isOutOfStock = !selectedVariant?.availableForSale;
 
   const isOnSale =
@@ -447,6 +449,7 @@ function ProductDetail({
   content: string;
   learnMore?: string;
 }) {
+  const { t } = useTranslation();
   return (
     <Disclosure key={title} as="div" className="grid w-full gap-2 border-b border-[#F0EAE6]/10 pb-4">
       {({ open }) => (
