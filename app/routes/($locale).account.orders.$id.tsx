@@ -1,6 +1,6 @@
 import clsx from 'clsx';
-import {json, redirect} from '@remix-run/server-runtime';
-import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import { json, redirect } from '@remix-run/server-runtime';
+import { type LoaderFunctionArgs } from '@shopify/remix-oxygen';
 import { useLoaderData, type MetaFunction } from '@remix-run/react';
 import { Money, Image, flattenConnection } from '@shopify/hydrogen';
 import type { FulfillmentStatus } from '@shopify/hydrogen/customer-account-api-types';
@@ -10,6 +10,7 @@ import { statusMessage } from '~/lib/utils';
 import { Link } from '~/components/Link';
 import { Heading, PageHeader, Text } from '~/components/Text';
 import { CUSTOMER_ORDER_QUERY } from '~/graphql/customer-account/CustomerOrderQuery';
+import { OrderStepper } from '~/components/OrderStepper';
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: `Order ${data?.order?.name}` }];
@@ -321,21 +322,15 @@ export default function OrderRoute() {
               ) : (
                 <p className="mt-3">No shipping address defined</p>
               )}
-              <Heading size="copy" className="mt-8 font-semibold" as="h3">
-                Status
-              </Heading>
-              {fulfillmentStatus && (
-                <div
-                  className={clsx(
-                    `mt-3 px-3 py-1 text-xs font-medium rounded-full inline-block w-auto`,
-                    fulfillmentStatus === 'SUCCESS'
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-primary/20 text-primary/50',
-                  )}
-                >
-                  <Text size="fine">{statusMessage(fulfillmentStatus!)}</Text>
-                </div>
-              )}
+
+              <div className="mt-10">
+                <Heading size="copy" className="font-semibold mb-4" as="h3">
+                  Tracking
+                </Heading>
+                <OrderStepper status={fulfillmentStatus!} />
+              </div>
+
+
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-gray-200">

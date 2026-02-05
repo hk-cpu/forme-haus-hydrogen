@@ -1,52 +1,60 @@
-
-import { motion } from 'framer-motion';
-import logoIcon from '/brand/logo-icon-only.png'; // Assuming this path works as it is in public
-
 export default function Loader() {
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-[#AD9686]">
-      <div className="relative flex flex-col items-center">
-        {/* Pulsing Glow Effect */}
-        <motion.div
-          className="absolute inset-0 bg-[#F0EAE6]/40 blur-3xl rounded-full"
-          animate={{
-            scale: [1, 1.5, 1],
-            opacity: [0.3, 0.6, 0.3],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-
-        {/* Logo Icon Animation */}
-        <motion.img
-          src={logoIcon}
-          alt="Loading..."
-          className="w-16 h-16 md:w-20 md:h-20 object-contain z-10"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{
-            opacity: [0.5, 1, 0.5],
-            scale: [1, 1.05, 1],
-            rotate: [0, 0, 360] // Optional: slow rotation or just pulse
-          }}
-          transition={{
-            opacity: { duration: 2, repeat: Infinity, ease: "easeInOut" },
-            scale: { duration: 2, repeat: Infinity, ease: "easeInOut" },
-            rotate: { duration: 8, repeat: Infinity, ease: "linear" } // Slow rotation for elegance
-          }}
-        />
-
-        {/* Text Fade In */}
-        <motion.span
-          className="mt-6 font-serif text-[#F0EAE6] text-xs tracking-[0.3em] uppercase opacity-80"
-          animate={{ opacity: [0.4, 1, 0.4] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        >
-          Formé Haus
-        </motion.span>
+    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-[#121212]/90 backdrop-blur-sm">
+      <div className="loader-wrapper">
+        <div className="loader" />
       </div>
+      <style>{`
+        .loader-wrapper {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .loader {
+          position: relative;
+          font-size: 16px;
+          width: 5.5em;
+          height: 5.5em;
+        }
+
+        .loader:before {
+          content: '';
+          position: absolute;
+          transform: translate(-50%, -50%) rotate(45deg);
+          height: 100%;
+          width: 4px;
+          background: #F0EAE6; /* Cream instead of #fff */
+          left: 50%;
+          top: 50%;
+        }
+
+        .loader:after {
+          content: '';
+          position: absolute;
+          left: 0.2em;
+          bottom: 0.18em;
+          width: 1em;
+          height: 1em;
+          background-color: #a87441; /* Gold/Taupe instead of orange */
+          border-radius: 15%;
+          animation: rollingRock 2.5s cubic-bezier(.79, 0, .47, .97) infinite;
+        }
+
+        @keyframes rollingRock {
+          0% { transform: translate(0, -1em) rotate(-45deg) }
+          5% { transform: translate(0, -1em) rotate(-50deg) }
+          20% { transform: translate(1em, -2em) rotate(47deg) }
+          25% { transform: translate(1em, -2em) rotate(45deg) }
+          30% { transform: translate(1em, -2em) rotate(40deg) }
+          45% { transform: translate(2em, -3em) rotate(137deg) }
+          50% { transform: translate(2em, -3em) rotate(135deg) }
+          55% { transform: translate(2em, -3em) rotate(130deg) }
+          70% { transform: translate(3em, -4em) rotate(217deg) }
+          75% { transform: translate(3em, -4em) rotate(220deg) }
+          100% { transform: translate(0, -1em) rotate(-225deg) }
+        }
+      `}</style>
     </div>
   );
 }

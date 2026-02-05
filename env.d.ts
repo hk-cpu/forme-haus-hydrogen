@@ -7,14 +7,14 @@ import type {
   HydrogenCart,
   HydrogenSessionData,
 } from '@shopify/hydrogen';
-import type {Storefront, CustomerAccount} from '~/lib/type';
-import type {AppSession} from '~/lib/session.server';
+import type { Storefront, CustomerAccount } from '~/lib/type';
+import type { ApiClient } from '~/lib/api.server';
 
 declare global {
   /**
    * A global `process` object is only available during build to access NODE_ENV.
    */
-  const process: {env: {NODE_ENV: 'production' | 'development'}};
+  const process: { env: { NODE_ENV: 'production' | 'development' } };
 
   /**
    * Declare expected Env parameter in fetch handler.
@@ -29,6 +29,8 @@ declare global {
     PUBLIC_CUSTOMER_ACCOUNT_API_URL: string;
     PUBLIC_CHECKOUT_DOMAIN: string;
     SHOP_ID: string;
+    API_BASE_URL: string;
+    API_ACCESS_TOKEN: string;
   }
 }
 
@@ -43,13 +45,15 @@ declare module '@shopify/remix-oxygen' {
     customerAccount: CustomerAccount;
     cart: HydrogenCart;
     env: Env;
+    api: ApiClient;
   }
+
 
   /**
    * Declare local additions to the Remix session data.
    */
-  interface SessionData extends HydrogenSessionData {}
+  interface SessionData extends HydrogenSessionData { }
 }
 
 // Needed to make this file a module.
-export {};
+export { };

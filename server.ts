@@ -14,8 +14,9 @@ import {
   createCustomerAccountClient,
 } from '@shopify/hydrogen';
 
-import {AppSession} from '~/lib/session.server';
-import {getLocaleFromRequest} from '~/lib/utils';
+import { AppSession } from '~/lib/session.server';
+import { getLocaleFromRequest } from '~/lib/utils';
+import { createApiClient } from '~/lib/api.server';
 
 /**
  * Export a fetch handler in module format.
@@ -43,7 +44,7 @@ export default {
       /**
        * Create Hydrogen's Storefront client.
        */
-      const {storefront} = createStorefrontClient({
+      const { storefront } = createStorefrontClient({
         cache,
         waitUntil,
         i18n: getLocaleFromRequest(request),
@@ -72,6 +73,8 @@ export default {
         setCartId: cartSetIdDefault(),
       });
 
+      const api = createApiClient(env.API_BASE_URL ?? '', env.API_ACCESS_TOKEN);
+
       /**
        * Create a Remix request handler and pass
        * Hydrogen's Storefront client to the loader context.
@@ -86,6 +89,7 @@ export default {
           customerAccount,
           cart,
           env,
+          api,
         }),
       });
 
@@ -101,14 +105,14 @@ export default {
          * If the redirect doesn't exist, then `storefrontRedirect`
          * will pass through the 404 response.
          */
-        return storefrontRedirect({request, response, storefront});
+        return storefrontRedirect({ request, response, storefront });
       }
 
       return response;
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
-      return new Response('An unexpected error occurred', {status: 500});
+      return new Response('An unexpected error occurred', { status: 500 });
     }
   },
 };
