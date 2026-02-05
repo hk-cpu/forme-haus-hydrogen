@@ -137,7 +137,7 @@ function Header({ title, menu }: { title: string; menu?: EnhancedMenu }) {
       {menu && (
         <MenuDrawer isOpen={isMenuOpen} onClose={closeMenu} menu={menu} />
       )}
-      <FormeHeader title={title} menu={menu} openCart={openCart} openSearch={openSearch} />
+      <FormeHeader title={title} menu={menu} openCart={openCart} openSearch={openSearch} openMenu={openMenu} />
     </>
   );
 }
@@ -213,6 +213,15 @@ function MenuMobileNav({
           </Link>
         </span>
       ))}
+
+      {/* Account Link for Mobile */}
+      <span className="block mt-4 pt-4 border-t border-primary/10">
+        <Link to="/account" onClick={onClose} className="pb-1">
+          <Text as="span" size="copy">
+            Account / Sign In
+          </Text>
+        </Link>
+      </span>
     </nav>
   );
 }

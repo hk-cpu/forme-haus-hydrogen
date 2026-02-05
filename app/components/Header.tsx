@@ -15,11 +15,13 @@ export function Header({
     menu,
     openCart,
     openSearch,
+    openMenu,
 }: {
     title: string;
     menu?: EnhancedMenu;
     openCart: () => void;
     openSearch: () => void;
+    openMenu: () => void;
 }) {
     const isHome = useIsHomePath();
     const { y } = useWindowScroll();
@@ -78,7 +80,10 @@ export function Header({
 
                 {/* Mobile: Menu Toggle + Language */}
                 <div className="md:hidden flex items-center gap-4">
-                    <button className="text-[#F0EAE6]/80 hover:text-[#a87441] transition-colors duration-300">
+                    <button
+                        onClick={openMenu}
+                        className="text-[#F0EAE6]/80 hover:text-[#a87441] transition-colors duration-300"
+                    >
                         <Menu strokeWidth={1.5} className="w-7 h-7" />
                     </button>
                     <LanguageSwitch />
