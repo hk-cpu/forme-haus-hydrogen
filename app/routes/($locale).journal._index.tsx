@@ -35,15 +35,15 @@ export const loader = async ({
     throw new Response('Not found', { status: 404 });
   }
 
-  const articles = flattenConnection(blog.articles).map((article) => {
-    const { publishedAt } = article!;
+  const articles = (flattenConnection(blog.articles) as ArticleFragment[]).map((article) => {
+    const { publishedAt } = article;
     return {
       ...article,
       publishedAt: new Intl.DateTimeFormat(`${language}-${country}`, {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
-      }).format(new Date(publishedAt!)),
+      }).format(new Date(publishedAt)),
     };
   });
 

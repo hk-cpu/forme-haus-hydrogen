@@ -21,6 +21,7 @@ import { FeaturedCollections } from '~/components/FeaturedCollections';
 import { PRODUCT_CARD_FRAGMENT } from '~/data/fragments';
 import { getImageLoadingPriority, PAGINATION_SIZE } from '~/lib/const';
 import { seoPayload } from '~/lib/seo.server';
+import type { ProductCardFragment } from 'storefrontapi.generated';
 
 import {
   getFeaturedData,
@@ -111,7 +112,7 @@ export default function Search() {
         <Section>
           <Pagination connection={products}>
             {({ nodes, isLoading, NextLink, PreviousLink }) => {
-              const itemsMarkup = nodes.map((product, i) => (
+              const itemsMarkup = (nodes as ProductCardFragment[]).map((product, i) => (
                 <ProductCard
                   key={product.id}
                   product={product}

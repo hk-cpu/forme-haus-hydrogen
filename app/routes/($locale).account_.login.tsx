@@ -1,10 +1,11 @@
-import { type ActionFunctionArgs, type LoaderFunctionArgs, json } from '@shopify/remix-oxygen';
-import { Form, useActionData, useNavigation } from '@remix-run/react';
+import { type ActionFunctionArgs, type LoaderFunctionArgs } from '@shopify/remix-oxygen';
+import { json } from '@remix-run/node';
+import { Form, useNavigation } from '@remix-run/react';
 import GhostCursor from '~/components/GhostCursor';
 import logo from '~/assets/forme-haus-logo.png';
 
 export async function loader({ context }: LoaderFunctionArgs) {
-  // If already logged in, redirect to account? 
+  // If already logged in, redirect to account?
   // For now, just render the login page.
   return json({});
 }

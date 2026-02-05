@@ -85,12 +85,12 @@ export async function loader({ params, request, context }: LoaderFunctionArgs) {
   const seo = seoPayload.collection({ collection, url: request.url });
 
   const allFilterValues = collection.products.filters.flatMap(
-    (filter) => filter.values,
+    (filter: Filter) => filter.values,
   );
 
   const appliedFilters = filters
-    .map((filter) => {
-      const foundValue = allFilterValues.find((value) => {
+    .map((filter: ProductFilter) => {
+      const foundValue = allFilterValues.find((value: Filter['values'][number]) => {
         const valueInput = JSON.parse(value.input as string) as ProductFilter;
         // special case for price, the user can enter something freeform (still a number, though)
         // that may not make sense for the locale/currency.

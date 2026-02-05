@@ -13,7 +13,7 @@ import { CUSTOMER_ORDER_QUERY } from '~/graphql/customer-account/CustomerOrderQu
 import { OrderStepper } from '~/components/OrderStepper';
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  return [{ title: `Order ${data?.order?.name}` }];
+  return [{ title: `Order ${(data as any)?.order?.name}` }];
 };
 
 export async function loader({ request, context, params }: LoaderFunctionArgs) {

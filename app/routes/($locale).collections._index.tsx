@@ -68,9 +68,9 @@ export default function Collections() {
                 items={nodes.length === 3 ? 3 : 2}
                 data-test="collection-grid"
               >
-                {nodes.map((collection, i) => (
+                {(nodes as Collection[]).map((collection, i) => (
                   <CollectionCard
-                    collection={collection as Collection}
+                    collection={collection}
                     key={collection.id}
                     loading={getImageLoadingPriority(i, 2)}
                   />

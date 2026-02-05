@@ -54,7 +54,7 @@ function loadDeferredData({ context }: LoaderFunctionArgs) {
         language,
       },
     })
-    .catch((error) => {
+    .catch((error: unknown) => {
       console.error(error);
       return null;
     });

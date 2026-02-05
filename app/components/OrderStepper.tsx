@@ -1,12 +1,13 @@
 import clsx from 'clsx';
-import { type FulfillmentStatus } from '@shopify/hydrogen/customer-account-api-types';
 
-export function OrderStepper({ status }: { status: FulfillmentStatus }) {
+type FulfillmentStatusType = 'UNFULFILLED' | 'PARTIALLY_FULFILLED' | 'FULFILLED' | 'RESTOCKED' | 'PENDING_FULFILLMENT' | 'OPEN' | 'IN_PROGRESS' | 'ON_HOLD' | 'SCHEDULED' | string;
+
+export function OrderStepper({ status }: { status: FulfillmentStatusType }) {
     // Map fulfillment status to stepper steps
-    // Logic: 
+    // Logic:
     // OPEN/UNFULFILLED -> Step 1 (Order Placed) Active / Step 2 Pending
-    // IN_PROGRESS -> Step 1 Complete / Step 2 Processing Active
-    // FULFILLED/SUCCESS -> Step 1, 2 Complete / Step 3 Shipping/Delivered Active
+    // IN_PROGRESS/PARTIALLY_FULFILLED -> Step 1 Complete / Step 2 Processing Active
+    // FULFILLED -> Step 1, 2 Complete / Step 3 Shipping/Delivered Active
 
     const steps = [
         { title: 'Order Placed', status: 'Completed', date: 'Confirmed' },
@@ -15,8 +16,9 @@ export function OrderStepper({ status }: { status: FulfillmentStatus }) {
     ];
 
     let activeStep = 0; // 0-indexed
-    if (status === 'IN_PROGRESS') activeStep = 1;
-    if (status === 'FULFILLED' || status === 'SUCCESS') activeStep = 2;
+    const statusStr = String(status).toUpperCase();
+    if (statusStr.includes('PROGRESS') || statusStr.includes('PARTIAL')) activeStep = 1;
+    if (statusStr.includes('FULFILLED') && !statusStr.includes('UNFULFILLED') && !statusStr.includes('PARTIAL')) activeStep = 2;
 
     // @todo: Refine this logic based on actual Shopify statuses (OPEN, FULFILLED, etc.)
 

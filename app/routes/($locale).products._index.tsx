@@ -18,6 +18,7 @@ import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
 import {getImageLoadingPriority} from '~/lib/const';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
+import type {ProductCardFragment} from 'storefrontapi.generated';
 
 const PAGE_BY = 8;
 
@@ -76,7 +77,7 @@ export default function AllProducts() {
       <Section>
         <Pagination connection={products}>
           {({nodes, isLoading, NextLink, PreviousLink}) => {
-            const itemsMarkup = nodes.map((product, i) => (
+            const itemsMarkup = (nodes as ProductCardFragment[]).map((product, i) => (
               <ProductCard
                 key={product.id}
                 product={product}

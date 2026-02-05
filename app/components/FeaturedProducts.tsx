@@ -70,7 +70,6 @@ export function FeaturedProducts({
       >
         <FeatureProductsContent
           count={count}
-          onClick={onClose}
           products={data?.products}
         />
       </div>
@@ -83,12 +82,10 @@ export function FeaturedProducts({
  */
 function FeatureProductsContent({
   count = 4,
-  onClick,
   products,
 }: {
   count: FeaturedProductsProps['count'];
   products: Product[] | undefined;
-  onClick?: () => void;
 }) {
   const id = useId();
 
@@ -113,10 +110,8 @@ function FeatureProductsContent({
     <>
       {products.map((product) => (
         <ProductCard
-          product={product}
+          product={product as any}
           key={product.id}
-          onClick={onClick}
-          quickAdd
         />
       ))}
     </>

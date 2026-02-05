@@ -7,6 +7,7 @@ import {
   CartForm,
   Image,
   Money,
+  ShopPayButton,
   useOptimisticData,
   OptimisticInput,
   type CartReturn,
@@ -67,7 +68,7 @@ export function CartDetails({
       {cartHasItems && (
         <CartSummary cost={cart.cost} layout={layout}>
           <CartDiscounts discountCodes={cart.discountCodes} />
-          <CartCheckoutActions checkoutUrl={cart.checkoutUrl} />
+          <CartCheckoutActions checkoutUrl={cart.checkoutUrl} cart={cart} />
         </CartSummary>
       )}
     </div>
@@ -75,9 +76,8 @@ export function CartDetails({
 }
 
 /**
- * Temporary discount UI
+ * Discount code UI for cart
  * @param discountCodes the current discount codes applied to the cart
- * @todo rework when a design is ready
  */
 function CartDiscounts({
   discountCodes,
@@ -91,45 +91,48 @@ function CartDiscounts({
   const { t } = useTranslation();
 
   return (
-    <>
-      {/* Have existing discount, display it with a remove option */}
-      <dl className={codes && codes.length !== 0 ? 'grid' : 'hidden'}>
-        <div className="flex items-center justify-between font-medium">
-          <Text as="dt">{t('cart.discount')}s</Text>
-          <div className="flex items-center justify-between">
-            <UpdateDiscountForm>
-              <button>
-                <IconRemove
-                  aria-hidden="true"
-                  style={{ height: 18, marginRight: 4 }}
-                />
-              </button>
-            </UpdateDiscountForm>
-            <Text as="dd">{codes?.join(', ')}</Text>
+    <div className="space-y-3">
+      {/* Display applied discount codes */}
+      {codes && codes.length > 0 && (
+        <div className="flex items-center justify-between py-2 px-3 bg-[#F0EAE6]/5 rounded border border-[#F0EAE6]/10">
+          <div className="flex items-center gap-2">
+            <span className="text-xs uppercase tracking-wider text-[#F0EAE6]/60">
+              {t('cart.discount')}
+            </span>
+            <span className="text-sm font-medium text-[#F0EAE6]">
+              {codes.join(', ')}
+            </span>
           </div>
+          <UpdateDiscountForm>
+            <button
+              type="submit"
+              className="p-1 hover:bg-[#F0EAE6]/10 rounded transition-colors"
+              aria-label="Remove discount"
+            >
+              <IconRemove aria-hidden="true" className="w-4 h-4 text-[#F0EAE6]/50" />
+            </button>
+          </UpdateDiscountForm>
         </div>
-      </dl>
+      )}
 
-      {/* Show an input to apply a discount */}
+      {/* Input to apply a discount code */}
       <UpdateDiscountForm discountCodes={codes}>
-        <div
-          className={clsx(
-            'flex',
-            'items-center gap-4 justify-between text-copy',
-          )}
-        >
+        <div className="flex items-center gap-2">
           <input
-            className={getInputStyleClasses()}
+            className="flex-1 px-3 py-2 text-sm bg-transparent border border-[#F0EAE6]/20 rounded text-[#F0EAE6] placeholder:text-[#F0EAE6]/40 focus:outline-none focus:border-[#F0EAE6]/40 transition-colors"
             type="text"
             name="discountCode"
             placeholder={t('cart.discount')}
           />
-          <button className="flex justify-end font-medium whitespace-nowrap">
+          <button
+            type="submit"
+            className="px-4 py-2 text-xs uppercase tracking-wider font-medium text-[#F0EAE6]/80 border border-[#F0EAE6]/20 rounded hover:bg-[#F0EAE6]/5 hover:border-[#F0EAE6]/40 transition-all"
+          >
             {t('cart.applyDiscount')}
           </button>
         </div>
       </UpdateDiscountForm>
-    </>
+    </div>
   );
 }
 
@@ -188,24 +191,38 @@ function CartLines({
   );
 }
 
-function CartCheckoutActions({ checkoutUrl }: { checkoutUrl: string }) {
+function CartCheckoutActions({ checkoutUrl, cart }: { checkoutUrl: string; cart: CartType }) {
   if (!checkoutUrl) return null;
   const { t } = useTranslation();
 
+  // Get variant IDs from cart lines for ShopPay
+  const variantIds = cart.lines?.edges?.map(
+    (edge) => edge.node.merchandise.id
+  ) || [];
+
   return (
-    <div className="flex flex-col mt-2">
+    <div className="flex flex-col mt-2 gap-3">
       <a href={checkoutUrl} target="_self">
         <Button as="span" width="full">
           {t('cart.checkout')}
         </Button>
       </a>
+      {variantIds.length > 0 && (
+        <ShopPayButton
+          width="100%"
+          variantIdsAndQuantities={cart.lines?.edges?.map((edge) => ({
+            id: edge.node.merchandise.id,
+            quantity: edge.node.quantity,
+          })) || []}
+          storeDomain="formehaus.me"
+        />
+      )}
       <p className="text-xs text-center opacity-60 mt-2">
         {t('cart.saudiAddr')}
       </p>
       <p className="text-[10px] text-center opacity-50 mt-1">
         {t('cart.terms')} <a href="/policies/terms-of-service" className="underline">{t('cart.termsLink')}</a> {t('cart.refunds')} <a href="/policies/refund-policy" className="underline">{t('cart.refundsLink')}</a> {t('cart.refundsNote')}
       </p>
-      {/* @todo: <CartShopPayButton cart={cart} /> */}
     </div>
   );
 }
@@ -276,10 +293,19 @@ function CartLineItem({ line }: { line: CartLine }) {
       }}
     >
       <div className="flex-shrink">
-        {/* Stealth Mode: Placeholder */}
-        <div className="w-24 h-24 border rounded md:w-28 md:h-28 bg-[#121212] overflow-hidden border-white/10 flex items-center justify-center">
-          <div className="text-[#F0EAE6]/5 border border-[#F0EAE6]/5 w-full h-full" />
-        </div>
+        {merchandise.image ? (
+          <Image
+            width={112}
+            height={112}
+            data={merchandise.image}
+            className="w-24 h-24 border rounded md:w-28 md:h-28 bg-[#121212] overflow-hidden border-white/10 object-cover"
+            alt={merchandise.product?.title || ''}
+          />
+        ) : (
+          <div className="w-24 h-24 border rounded md:w-28 md:h-28 bg-[#121212] overflow-hidden border-white/10 flex items-center justify-center">
+            <span className="text-[#F0EAE6]/30 text-xs">No image</span>
+          </div>
+        )}
       </div>
 
       <div className="flex justify-between flex-grow">
@@ -287,10 +313,10 @@ function CartLineItem({ line }: { line: CartLine }) {
           <Heading as="h3" size="copy">
             {merchandise?.product?.handle ? (
               <Link to={`/products/${merchandise.product.handle}`}>
-                COMING SOON
+                {merchandise.product.title}
               </Link>
             ) : (
-              <Text>COMING SOON</Text>
+              <Text>{merchandise.product?.title || 'Product'}</Text>
             )}
           </Heading>
 
@@ -310,7 +336,7 @@ function CartLineItem({ line }: { line: CartLine }) {
           </div>
         </div>
         <Text>
-          {/* <CartLinePrice line={line} as="span" /> */}
+          <CartLinePrice line={line} as="span" />
         </Text>
       </div>
     </motion.li>
