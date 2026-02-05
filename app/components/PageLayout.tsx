@@ -33,7 +33,7 @@ import { StatusBanner } from '~/components/StatusBanner';
 import Silk from '~/components/Silk';
 import Atmosphere from '~/components/Atmosphere';
 import { PredictiveSearch } from '~/components/PredictiveSearch';
-import Loader from '~/components/Loader';
+
 import SocialButtons from '~/components/SocialButtons';
 import PaymentBadges from '~/components/PaymentBadges';
 import { useTranslation } from '~/hooks/useTranslation';
@@ -49,17 +49,11 @@ type LayoutProps = {
 export function PageLayout({ children, layout }: LayoutProps) {
   const { headerMenu, footerMenu } = layout || {};
   const navigation = useNavigation();
-  const isLoading = navigation.state === 'loading';
+
+
   return (
     <>
       <div className="flex flex-col min-h-screen relative bg-[#121212]">
-        {/* Global Loading Overlay */}
-        {isLoading && (
-          <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center transition-opacity duration-300">
-            <Loader />
-          </div>
-        )}
-
         {/* Background Layer (Z-0) */}
         <div className="fixed inset-0 pointer-events-none z-0">
           <Silk color="#AD9686" />
@@ -101,7 +95,7 @@ export function PageLayout({ children, layout }: LayoutProps) {
             <Footer menu={footerMenu || undefined} />
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 }
