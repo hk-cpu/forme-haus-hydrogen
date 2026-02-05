@@ -1,6 +1,7 @@
 import { type ActionFunctionArgs, type LoaderFunctionArgs, json } from '@shopify/remix-oxygen';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
 import GhostCursor from '~/components/GhostCursor';
+import logo from '~/assets/forme-haus-logo.png';
 
 export async function loader({ context }: LoaderFunctionArgs) {
   // If already logged in, redirect to account? 
@@ -41,14 +42,13 @@ export default function Login() {
       />
 
       <div className="relative z-10 flex flex-col items-center gap-12 p-8">
-        {/* Logo Text with Hover Brightness */}
-        <div className="group cursor-default transition-all duration-500 hover:drop-shadow-[0_0_15px_rgba(240,234,230,0.5)]">
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl tracking-tight text-[#F0EAE6] transition-colors duration-500 group-hover:text-white">
-            FORMÉ HAUS
-          </h1>
-          <p className="mt-4 text-center text-sm md:text-base tracking-[0.3em] font-sans text-[#F0EAE6]/80 group-hover:text-white/90 transition-all duration-500">
-            Where Essence Meets Elegance
-          </p>
+        {/* Logo Image with Hover Brightness */}
+        <div className="group cursor-default transition-all duration-500 hover:drop-shadow-[0_0_25px_rgba(240,234,230,0.6)]">
+          <img
+            src={logo}
+            alt="Formé Haus - Where Essence Meets Elegance"
+            className="w-full max-w-[500px] h-auto object-contain opacity-90 transition-all duration-500 group-hover:opacity-100 group-hover:brightness-110 group-hover:scale-105"
+          />
         </div>
 
         {/* Login Button */}
@@ -65,3 +65,4 @@ export default function Login() {
     </div>
   );
 }
+
