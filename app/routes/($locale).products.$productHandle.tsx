@@ -3,8 +3,8 @@ import { Disclosure, Listbox } from '@headlessui/react';
 import {
   type MetaArgs,
   type LoaderFunctionArgs,
-  defer,
 } from '@shopify/remix-oxygen';
+import {defer} from '@remix-run/server-runtime';
 import { useLoaderData, Await } from '@remix-run/react';
 import {
   getSeoMeta,
