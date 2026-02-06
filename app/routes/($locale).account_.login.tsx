@@ -1,5 +1,4 @@
-import { type ActionFunctionArgs, type LoaderFunctionArgs } from '@shopify/remix-oxygen';
-import { json } from '@remix-run/node';
+import { type ActionFunctionArgs, type LoaderFunctionArgs, json } from '@shopify/remix-oxygen';
 import { Form, useNavigation } from '@remix-run/react';
 import GhostCursor from '~/components/GhostCursor';
 // Force redeploy trigger
