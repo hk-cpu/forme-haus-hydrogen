@@ -1,9 +1,7 @@
-
-
-import { defineConfig } from 'vite';
-import { hydrogen } from '@shopify/hydrogen/vite';
-import { oxygen } from '@shopify/mini-oxygen/vite';
-import { vitePlugin as remix } from '@remix-run/dev';
+import {defineConfig} from 'vite';
+import {hydrogen} from '@shopify/hydrogen/vite';
+import {oxygen} from '@shopify/mini-oxygen/vite';
+import {vitePlugin as remix} from '@remix-run/dev';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
@@ -24,6 +22,7 @@ export default defineConfig({
     optimizeDeps: {
       include: ['typographic-base', 'fast-deep-equal', 'react-use'],
     },
+    external: ['@remix-run/node'],
   },
   optimizeDeps: {
     include: [
