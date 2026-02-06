@@ -2,6 +2,7 @@ import { type ActionFunctionArgs, type LoaderFunctionArgs } from '@shopify/remix
 import { json } from '@remix-run/node';
 import { Form, useNavigation } from '@remix-run/react';
 import GhostCursor from '~/components/GhostCursor';
+// Force redeploy trigger
 
 export async function loader({ context }: LoaderFunctionArgs) {
   // If already logged in, redirect to account?
