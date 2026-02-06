@@ -1,53 +1,47 @@
 /* Social Buttons - Minimal & Elegant */
 
 .links {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
 }
 
 .icons-social-media {
-    width: 24px;
-    /* Minimal small size */
-    height: 24px;
-    cursor: pointer !important;
-    transition: 300ms all ease-in-out;
-    position: relative;
-    fill: #8B8076;
-    /* Default Muted Taupe/Mushroom */
-    padding: 4px;
-    /* Padding for circle clip */
-    background: transparent;
+  width: 24px;
+  /* Minimal small size */
+  height: 24px;
+  cursor: pointer !important;
+  transition: 300ms all ease-in-out;
+  position: relative;
+  fill: #8b8076;
+  /* Default Muted Taupe/Mushroom */
+  padding: 4px;
+  /* Padding for circle clip */
+  background: transparent;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .icons-social-media:hover {
-    transform: translateY(-5px);
-    fill: #F9F5F0;
-    /* Icon turns white on hover */
+  transform: translateY(-5px);
+  fill: #f9f5f0;
+  /* Icon turns white on hover */
 }
 
-/* Specific Hover Behaviors adapted to Mood Board */
-
-#instagram,
-#youtube,
-#twitch {
-    transition: 300ms all ease-in-out;
-    border-radius: 50%;
-    /* Minimal Circle */
+.icons-social-media svg {
+  width: 16px;
+  height: 16px;
 }
 
 /* Instagram -> Copper / Bronze Shine */
-#instagram:hover {
-    background-color: #D48B60;
+.icons-social-media[href*='instagram']:hover {
+  background-color: #d48b60;
 }
 
-/* Twitch -> Darker Mushroom/Taupe */
-#twitch:hover {
-    background-color: #88694D;
-}
-
-/* Youtube -> Deep Red/Maroon to blend with dark theme */
-#youtube:hover {
-    background-color: #7A3E3E;
+/* TikTok -> Dark Rose/Pink */
+.icons-social-media[href*='tiktok']:hover {
+  background-color: #d4a5a5;
 }

@@ -1,8 +1,8 @@
-import type { AppLoadContext, EntryContext } from '@shopify/remix-oxygen';
-import { RemixServer } from '@remix-run/react';
+import type {AppLoadContext, EntryContext} from '@shopify/remix-oxygen';
+import {RemixServer} from '@remix-run/react';
 import isbot from 'isbot';
-import { renderToReadableStream } from 'react-dom/server';
-import { createContentSecurityPolicy } from '@shopify/hydrogen';
+import {renderToReadableStream} from 'react-dom/server';
+import {createContentSecurityPolicy} from '@shopify/hydrogen';
 
 export default async function handleRequest(
   request: Request,
@@ -11,17 +11,28 @@ export default async function handleRequest(
   remixContext: EntryContext,
   context: AppLoadContext,
 ) {
-  const { nonce, header, NonceProvider } = createContentSecurityPolicy({
+  const {nonce, header, NonceProvider} = createContentSecurityPolicy({
     shop: {
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
-    defaultSrc: ["'self'", '*', "'unsafe-inline'", "'unsafe-eval'", 'data:', 'blob:'],
-    scriptSrc: ["'self'", '*', "'unsafe-inline'", "'unsafe-eval'"],
-    styleSrc: ["'self'", '*', "'unsafe-inline'"],
-    imgSrc: ["'self'", '*', 'data:', 'blob:'],
-    connectSrc: ["'self'", '*'],
-    fontSrc: ["'self'", '*'],
+    defaultSrc: ["'self'", 'data:', 'blob:'],
+    scriptSrc: [
+      "'self'",
+      "'nonce-{nonce}'",
+      'https://cdn.shopify.com',
+      'https://shop.app',
+    ],
+    styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+    imgSrc: [
+      "'self'",
+      'https://cdn.shopify.com',
+      'https://cdn.sanity.io',
+      'data:',
+      'blob:',
+    ],
+    connectSrc: ["'self'", 'https://monorail-edge.shopifysvc.com'],
+    fontSrc: ["'self'", 'https://fonts.gstatic.com'],
   });
 
   const body = await renderToReadableStream(

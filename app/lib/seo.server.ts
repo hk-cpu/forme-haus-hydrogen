@@ -31,9 +31,9 @@ function root({
 }): SeoConfig {
   return {
     title: shop?.name,
-    titleTemplate: '%s | Hydrogen Demo Store',
+    titleTemplate: '%s | Formé Haus',
     description: truncate(shop?.description ?? ''),
-    handle: '@shopify',
+    handle: '@formehaus',
     url,
     robots: {
       noIndex: false,
@@ -44,13 +44,7 @@ function root({
       '@type': 'Organization',
       name: shop.name,
       logo: shop.brand?.logo?.image?.url,
-      sameAs: [
-        'https://twitter.com/shopify',
-        'https://facebook.com/shopify',
-        'https://instagram.com/shopify',
-        'https://youtube.com/shopify',
-        'https://tiktok.com/@shopify',
-      ],
+      sameAs: ['https://instagram.com/formehaus'],
       url,
       potentialAction: {
         '@type': 'SearchAction',
@@ -64,8 +58,9 @@ function root({
 function home({url}: {url: Request['url']}): SeoConfig {
   return {
     title: 'Home',
-    titleTemplate: '%s | Hydrogen Demo Store',
-    description: 'The best place to buy snowboarding products',
+    titleTemplate: '%s | Formé Haus',
+    description:
+      'Saudi-based luxury womenswear — modern elegance, refined silhouettes, and thoughtful craftsmanship.',
     url,
     robots: {
       noIndex: false,
@@ -314,8 +309,8 @@ function listCollections({
 }): SeoConfig {
   return {
     title: 'Collections',
-    titleTemplate: '%s | Collections',
-    description: 'All hydrogen collections',
+    titleTemplate: '%s | Formé Haus Collections',
+    description: 'Explore our curated collections of luxury womenswear.',
     url,
     jsonLd: collectionsJsonLd({collections, url}),
   };
@@ -442,7 +437,7 @@ function policies({
   return {
     title: 'Policies',
     titleTemplate: '%s | Policies',
-    description: 'Hydroge store policies',
+    description: 'Formé Haus store policies',
     jsonLd: [
       {
         '@context': 'https://schema.org',
@@ -452,7 +447,7 @@ function policies({
       {
         '@context': 'https://schema.org',
         '@type': 'WebPage',
-        description: 'Hydrogen store policies',
+        description: 'Formé Haus store policies',
         name: 'Policies',
         url,
       },

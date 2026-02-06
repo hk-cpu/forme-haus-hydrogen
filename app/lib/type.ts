@@ -1,4 +1,5 @@
 import type {Storefront as HydrogenStorefront} from '@shopify/hydrogen';
+import type {CustomerAccount as HydrogenCustomerAccount} from '@shopify/hydrogen';
 import type {
   CountryCode,
   CurrencyCode,
@@ -23,3 +24,4 @@ export type I18nLocale = Locale & {
 };
 
 export type Storefront = HydrogenStorefront<I18nLocale>;
+export type CustomerAccount = HydrogenCustomerAccount;
