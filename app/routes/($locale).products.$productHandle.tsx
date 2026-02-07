@@ -181,14 +181,14 @@ export default function Product() {
             media={media.nodes}
             className="w-full lg:col-span-2"
           />
-          <div className="sticky md:-mb-nav md:top-nav md:-translate-y-nav md:h-screen md:pt-nav hiddenScroll md:overflow-y-scroll">
-            <section className="flex flex-col w-full max-w-xl gap-8 p-6 md:mx-auto md:max-w-sm md:px-0">
-              <div className="grid gap-2">
-                <Heading as="h1" className="whitespace-normal font-serif text-3xl md:text-5xl text-[#F0EAE6]">
+          <div className="sticky md:top-24 md:h-[calc(100vh-6rem)] hiddenScroll md:overflow-y-auto">
+            <section className="flex flex-col w-full max-w-xl gap-10 p-6 md:pl-10 lg:pl-16 md:mx-auto md:max-w-none">
+              <div className="grid gap-3">
+                <Heading as="h1" className="whitespace-normal font-serif text-4xl md:text-5xl lg:text-6xl text-[#4A3C31] font-light leading-tight">
                   {title}
                 </Heading>
                 {vendor && (
-                  <Text className={'opacity-50 font-medium tracking-widest uppercase text-xs'}>{vendor}</Text>
+                  <Text className={'opacity-60 font-sans tracking-[0.2em] uppercase text-xs text-[#8B8076]'}>{vendor}</Text>
                 )}
               </div>
               <ProductForm
@@ -196,7 +196,7 @@ export default function Product() {
                 selectedVariant={selectedVariant}
                 storeDomain={storeDomain}
               />
-              <div className="grid gap-4 py-4 pt-8 border-t border-[#F0EAE6]/10">
+              <div className="grid gap-4 py-8 border-t border-[#8B8076]/20">
                 {descriptionHtml && (
                   <ProductDetail
                     title={t('product.details')}
@@ -279,7 +279,7 @@ export function ProductForm({
             key={option.name}
             className="product-options flex flex-col flex-wrap mb-4 gap-y-2 last:mb-0"
           >
-            <Heading as="legend" size="lead" className="min-w-[4rem] text-[#F0EAE6]/80 text-xs uppercase tracking-widest mb-2">
+            <Heading as="legend" size="lead" className="min-w-[4rem] text-[#5C5046] text-xs uppercase tracking-[0.15em] mb-3 font-medium">
               {option.name}
             </Heading>
             <div className="flex flex-wrap items-baseline gap-4">
@@ -291,10 +291,10 @@ export function ProductForm({
                         <Listbox.Button
                           ref={closeRef}
                           className={clsx(
-                            'flex items-center justify-between w-full py-3 px-4 border border-[#F0EAE6]/20 text-[#F0EAE6] bg-transparent',
+                            'flex items-center justify-between w-full py-3 px-4 border border-[#8B8076]/30 text-[#5C5046] bg-transparent hover:border-[#8B8076] transition-colors',
                             open
-                              ? 'rounded-b md:rounded-t md:rounded-b-none'
-                              : 'rounded',
+                              ? 'rounded-t-sm border-b-0'
+                              : 'rounded-sm',
                           )}
                         >
                           <span>
@@ -303,11 +303,11 @@ export function ProductForm({
                                 .value
                             }
                           </span>
-                          <IconCaret direction={open ? 'up' : 'down'} />
+                          <IconCaret direction={open ? 'up' : 'down'} className="text-[#5C5046]" />
                         </Listbox.Button>
                         <Listbox.Options
                           className={clsx(
-                            'border-[#F0EAE6]/20 bg-[#121212] absolute bottom-12 z-30 grid h-48 w-full overflow-y-scroll rounded-t border px-2 py-2 transition-[max-height] duration-150 sm:bottom-auto md:rounded-b md:rounded-t-none md:border-t-0 md:border-b',
+                            'border-[#8B8076]/20 bg-[#F9F5F0] text-[#5C5046] absolute bottom-12 z-30 grid h-48 w-full overflow-y-scroll rounded-sm border px-2 py-2 transition-[max-height] duration-150 sm:bottom-auto shadow-lg',
                             open ? 'max-h-48' : 'max-h-0',
                           )}
                         >
@@ -332,8 +332,8 @@ export function ProductForm({
                                     to={`/products/${handle}?${variantUriQuery}`}
                                     preventScrollReset
                                     className={clsx(
-                                      'text-[#F0EAE6] w-full p-2 transition rounded flex justify-start items-center text-left cursor-pointer hover:bg-white/5',
-                                      selected && 'bg-white/10',
+                                      'text-[#5C5046] w-full p-2 transition rounded-sm flex justify-start items-center text-left cursor-pointer hover:bg-[#8B8076]/10',
+                                      selected && 'bg-[#8B8076]/10 font-medium',
                                     )}
                                     onClick={() => {
                                       if (!closeRef?.current) return;
@@ -374,9 +374,9 @@ export function ProductForm({
                       prefetch="intent"
                       replace
                       className={clsx(
-                        'leading-none py-1 border-b-[1px] cursor-pointer transition-all duration-300 text-sm tracking-wide',
-                        selected ? 'border-[#F0EAE6] text-[#F0EAE6]' : 'border-transparent text-[#F0EAE6]/50 hover:text-[#F0EAE6] hover:border-[#F0EAE6]/30',
-                        available ? 'opacity-100' : 'opacity-50',
+                        'leading-none py-2 px-4 border border-transparent cursor-pointer transition-all duration-300 text-sm tracking-wide rounded-sm',
+                        selected ? 'border-[#8B8076] text-[#4A3C31] bg-[#8B8076]/5' : 'text-[#8B8076] hover:text-[#4A3C31] hover:border-[#8B8076]/30',
+                        available ? 'opacity-100' : 'opacity-40 line-through',
                       )}
                     >
                       <ProductOptionSwatch swatch={swatch} name={name} />
@@ -458,7 +458,7 @@ function ProductOptionSwatch({
   return (
     <div
       aria-label={name}
-      className="w-8 h-8 rounded-full border border-white/10"
+      className="w-8 h-8 rounded-full border border-[#8B8076]/20 relative"
       style={{
         backgroundColor: color || 'transparent',
       }}
@@ -479,27 +479,27 @@ function ProductDetail({
 }) {
   const { t } = useTranslation();
   return (
-    <Disclosure key={title} as="div" className="grid w-full gap-2 border-b border-[#F0EAE6]/10 pb-4">
+    <Disclosure key={title} as="div" className="grid w-full gap-2 border-b border-[#8B8076]/20 pb-6 mb-2">
       {({ open }) => (
         <>
           <Disclosure.Button className="text-left group">
             <div className="flex justify-between items-center">
-              <Text size="lead" as="h4" className="text-[#F0EAE6] font-medium text-sm uppercase tracking-widest group-hover:pl-2 transition-all duration-300">
+              <Text size="lead" as="h4" className="text-[#4A3C31] font-medium text-xs uppercase tracking-[0.2em] group-hover:text-[#a87441] transition-colors">
                 {title}
               </Text>
-              <IconCaret direction={open ? 'up' : 'down'} className="text-[#F0EAE6]/50" />
+              <IconCaret direction={open ? 'up' : 'down'} className="text-[#8B8076] w-5 h-5" />
             </div>
           </Disclosure.Button>
 
           <Disclosure.Panel className={'pt-4 grid gap-2'}>
             <div
-              className="prose dark:prose-invert text-[#F0EAE6]/70 text-sm font-sans leading-relaxed"
+              className="prose text-[#5C5046]/80 text-sm font-sans leading-loose tracking-wide"
               dangerouslySetInnerHTML={{ __html: content }}
             />
             {learnMore && (
               <div className="">
                 <Link
-                  className="pb-px border-b border-[#F0EAE6]/30 text-[#F0EAE6]/50 text-xs hover:text-[#F0EAE6] transition-colors"
+                  className="pb-px border-b border-[#8B8076]/30 text-[#8B8076] text-xs hover:text-[#4A3C31] hover:border-[#4A3C31] transition-colors uppercase tracking-widest mt-2 inline-block"
                   to={learnMore}
                 >
                   {t('general.learnMore')}

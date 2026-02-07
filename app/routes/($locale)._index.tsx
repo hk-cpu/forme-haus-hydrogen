@@ -89,10 +89,10 @@ export default function Homepage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 1, ease: 'easeOut' }}
-          className="py-20 px-6 text-center max-w-3xl mx-auto space-y-10 border-t border-[#8B8076]/8"
+          className="py-12 px-6 text-center max-w-2xl mx-auto space-y-8 border-t border-[#8B8076]/8"
         >
-          <div className="w-px h-20 bg-gradient-to-b from-transparent via-[#a87441]/60 to-transparent mx-auto" />
-          <p className="font-serif text-2xl md:text-3xl leading-relaxed text-[#5C5046]/80 font-light italic tracking-wide">
+          <div className="w-px h-12 bg-gradient-to-b from-transparent via-[#a87441]/60 to-transparent mx-auto" />
+          <p className="font-serif text-lg md:text-xl leading-relaxed text-[#5C5046]/80 font-light italic tracking-wide">
             "{t('home.brandIntro')}"
           </p>
         </motion.section>
