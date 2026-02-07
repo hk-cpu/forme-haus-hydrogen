@@ -1,5 +1,5 @@
 # Don't change the line below!
-#! oxygen_storefront_id: 1000082807
+# oxygen_storefront_id: 1000082807
 
 name: Storefront 1000082807
 on: [push]
