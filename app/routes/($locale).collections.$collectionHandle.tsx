@@ -1,7 +1,7 @@
-import {json} from '@remix-run/server-runtime';
-import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData} from '@remix-run/react';
-import {motion} from 'framer-motion';
+import { json } from '@remix-run/server-runtime';
+import { type MetaArgs, type LoaderFunctionArgs } from '@shopify/remix-oxygen';
+import { useLoaderData } from '@remix-run/react';
+import { motion } from 'framer-motion';
 import type {
   Filter,
   ProductCollectionSortKeys,
@@ -16,30 +16,30 @@ import {
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 
-import {Button} from '~/components/Button';
-import {ProductCard} from '~/components/ProductCard';
-import {type SortParam, FILTER_URL_PREFIX} from '~/components/SortFilter';
-import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
-import {routeHeaders} from '~/data/cache';
-import {seoPayload} from '~/lib/seo.server';
-import {getImageLoadingPriority} from '~/lib/const';
-import {parseAsCurrency} from '~/lib/utils';
-import {useTranslation} from '~/hooks/useTranslation';
+import { Button } from '~/components/Button';
+import { ProductCard } from '~/components/ProductCard';
+import { type SortParam, FILTER_URL_PREFIX } from '~/components/SortFilter';
+import { PRODUCT_CARD_FRAGMENT } from '~/data/fragments';
+import { routeHeaders } from '~/data/cache';
+import { seoPayload } from '~/lib/seo.server';
+import { getImageLoadingPriority } from '~/lib/const';
+import { parseAsCurrency } from '~/lib/utils';
+import { useTranslation } from '~/hooks/useTranslation';
 
 export const headers = routeHeaders;
 
-export async function loader({params, request, context}: LoaderFunctionArgs) {
+export async function loader({ params, request, context }: LoaderFunctionArgs) {
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 8,
   });
-  const {collectionHandle} = params;
+  const { collectionHandle } = params;
   const locale = context.storefront.i18n;
   // ... (rest of loader remains same until label logic) ...
   invariant(collectionHandle, 'Missing collectionHandle param');
 
   const searchParams = new URL(request.url).searchParams;
 
-  const {sortKey, reverse} = getSortValuesFromParam(
+  const { sortKey, reverse } = getSortValuesFromParam(
     searchParams.get('sort') as SortParam,
   );
   const filters = [...searchParams.entries()].reduce(
@@ -55,7 +55,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     [] as ProductFilter[],
   );
 
-  const {collection, collections} = await context.storefront.query(
+  const { collection, collections } = await context.storefront.query(
     COLLECTION_QUERY,
     {
       variables: {
@@ -71,10 +71,10 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   );
 
   if (!collection) {
-    throw new Response('collection', {status: 404});
+    throw new Response('collection', { status: 404 });
   }
 
-  const seo = seoPayload.collection({collection, url: request.url});
+  const seo = seoPayload.collection({ collection, url: request.url });
 
   const allFilterValues = collection.products.filters.flatMap(
     (filter: Filter) => filter.values,
@@ -133,13 +133,14 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   });
 }
 
-export const meta = ({matches}: MetaArgs<typeof loader>) => {
+export const meta = ({ matches }: MetaArgs<typeof loader>) => {
+  // @ts-ignore
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
 export default function Collection() {
-  const {collection} = useLoaderData<typeof loader>();
-  const {t} = useTranslation();
+  const { collection } = useLoaderData<typeof loader>();
+  const { t } = useTranslation();
 
   return (
     <main className="container mx-auto px-6 py-24 min-h-screen text-[#4A3C31]">
@@ -155,7 +156,7 @@ export default function Collection() {
       </header>
 
       <Pagination connection={collection.products}>
-        {({nodes, isLoading, PreviousLink, NextLink}) => (
+        {({ nodes, isLoading, PreviousLink, NextLink }) => (
           <>
             <div className="flex items-center justify-center mb-6">
               <Button as={PreviousLink} variant="secondary" width="full">
@@ -166,18 +167,18 @@ export default function Collection() {
             </div>
 
             <motion.div
-              initial={{opacity: 0}}
-              animate={{opacity: 1}}
-              transition={{staggerChildren: 0.1}}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ staggerChildren: 0.1 }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20"
             >
               {nodes.map((product: any, i: number) => (
                 <motion.div
                   key={product.id}
-                  initial={{opacity: 0, y: 20}}
-                  whileInView={{opacity: 1, y: 0}}
-                  viewport={{once: true, margin: '-50px'}}
-                  transition={{duration: 0.8, ease: 'easeOut'}}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
                 >
                   <ProductCard
                     product={product}

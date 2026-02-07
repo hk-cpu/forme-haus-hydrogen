@@ -1,20 +1,20 @@
-import {json} from '@remix-run/server-runtime';
+import { json } from '@remix-run/server-runtime';
 import {
   type MetaArgs,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
-import {useLoaderData} from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 import invariant from 'tiny-invariant';
-import {getSeoMeta} from '@shopify/hydrogen';
+import { getSeoMeta } from '@shopify/hydrogen';
 
-import {PageHeader, Section} from '~/components/Text';
-import {Button} from '~/components/Button';
-import {routeHeaders} from '~/data/cache';
-import {seoPayload} from '~/lib/seo.server';
+import { PageHeader, Section } from '~/components/Text';
+import { Button } from '~/components/Button';
+import { routeHeaders } from '~/data/cache';
+import { seoPayload } from '~/lib/seo.server';
 
 export const headers = routeHeaders;
 
-export async function loader({request, params, context}: LoaderFunctionArgs) {
+export async function loader({ request, params, context }: LoaderFunctionArgs) {
   invariant(params.policyHandle, 'Missing policy handle');
 
   const policyName = params.policyHandle.replace(
@@ -37,20 +37,21 @@ export async function loader({request, params, context}: LoaderFunctionArgs) {
   const policy = data.shop?.[policyName];
 
   if (!policy) {
-    throw new Response(null, {status: 404});
+    throw new Response(null, { status: 404 });
   }
 
-  const seo = seoPayload.policy({policy, url: request.url});
+  const seo = seoPayload.policy({ policy, url: request.url });
 
-  return json({policy, seo});
+  return json({ policy, seo });
 }
 
-export const meta = ({matches}: MetaArgs<typeof loader>) => {
+export const meta = ({ matches }: MetaArgs<typeof loader>) => {
+  // @ts-ignore
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
 export default function Policies() {
-  const {policy} = useLoaderData<typeof loader>();
+  const { policy } = useLoaderData<typeof loader>();
 
   return (
     <>
@@ -73,7 +74,7 @@ export default function Policies() {
         </PageHeader>
         <div className="flex-grow w-full md:w-7/12">
           <div
-            dangerouslySetInnerHTML={{__html: policy.body}}
+            dangerouslySetInnerHTML={{ __html: policy.body }}
             className="prose dark:prose-invert"
           />
         </div>

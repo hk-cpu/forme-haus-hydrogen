@@ -1,4 +1,4 @@
-import {json} from '@remix-run/server-runtime';
+import { json } from '@remix-run/server-runtime';
 import {
   type MetaArgs,
   type LoaderFunctionArgs,
@@ -53,6 +53,7 @@ export const loader = async ({
 };
 
 export const meta = ({ matches }: MetaArgs<typeof loader>) => {
+  // @ts-ignore
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 

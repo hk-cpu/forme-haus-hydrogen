@@ -4,7 +4,7 @@ import {
   type MetaArgs,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
-import {defer} from '@remix-run/server-runtime';
+import { defer } from '@remix-run/server-runtime';
 import { useLoaderData, Await } from '@remix-run/react';
 import {
   getSeoMeta,
@@ -119,6 +119,7 @@ function loadDeferredData(args: LoaderFunctionArgs) {
 }
 
 export const meta = ({ matches }: MetaArgs<typeof loader>) => {
+  // @ts-ignore
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 

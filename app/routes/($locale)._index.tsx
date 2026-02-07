@@ -1,48 +1,48 @@
-import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {defer} from '@remix-run/server-runtime';
-import {Suspense} from 'react';
-import {Await, useLoaderData, Link} from '@remix-run/react';
-import {getSeoMeta, Image} from '@shopify/hydrogen';
-import {motion} from 'framer-motion';
+import { type MetaArgs, type LoaderFunctionArgs } from '@shopify/remix-oxygen';
+import { defer } from '@remix-run/server-runtime';
+import { Suspense } from 'react';
+import { Await, useLoaderData, Link } from '@remix-run/react';
+import { getSeoMeta, Image } from '@shopify/hydrogen';
+import { motion } from 'framer-motion';
 
 import Hero from '~/components/Hero';
 import NotifyForm from '~/components/NotifyForm';
 import CategorySlider from '~/components/CategorySlider';
 import EditorialSection from '~/components/EditorialSection';
-import {seoPayload} from '~/lib/seo.server';
-import {routeHeaders} from '~/data/cache';
-import {useTranslation} from '~/hooks/useTranslation';
+import { seoPayload } from '~/lib/seo.server';
+import { routeHeaders } from '~/data/cache';
+import { useTranslation } from '~/hooks/useTranslation';
 
 export const headers = routeHeaders;
 
 export async function loader(args: LoaderFunctionArgs) {
-  const {params, context} = args;
-  const {language, country} = context.storefront.i18n;
+  const { params, context } = args;
+  const { language, country } = context.storefront.i18n;
 
   if (
     params.locale &&
     params.locale.toLowerCase() !== `${language}-${country}`.toLowerCase()
   ) {
-    throw new Response(null, {status: 404});
+    throw new Response(null, { status: 404 });
   }
 
   const criticalData = await loadCriticalData(args);
   const deferredData = loadDeferredData(args);
 
-  return defer({...deferredData, ...criticalData});
+  return defer({ ...deferredData, ...criticalData });
 }
 
-async function loadCriticalData({context, request}: LoaderFunctionArgs) {
-  const {shop} = await context.storefront.query(HOMEPAGE_SEO_QUERY);
+async function loadCriticalData({ context, request }: LoaderFunctionArgs) {
+  const { shop } = await context.storefront.query(HOMEPAGE_SEO_QUERY);
 
   return {
     shop,
-    seo: seoPayload.home({url: request.url}),
+    seo: seoPayload.home({ url: request.url }),
   };
 }
 
-function loadDeferredData({context}: LoaderFunctionArgs) {
-  const {language, country} = context.storefront.i18n;
+function loadDeferredData({ context }: LoaderFunctionArgs) {
+  const { language, country } = context.storefront.i18n;
 
   const featuredCollections = context.storefront
     .query(FEATURED_COLLECTIONS_QUERY, {
@@ -61,13 +61,14 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
   };
 }
 
-export const meta = ({matches}: MetaArgs<typeof loader>) => {
+export const meta = ({ matches }: MetaArgs<typeof loader>) => {
+  // @ts-ignore
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
 export default function Homepage() {
-  const {featuredCollections} = useLoaderData<typeof loader>();
-  const {t} = useTranslation();
+  const { featuredCollections } = useLoaderData<typeof loader>();
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-transparent text-[#F0EAE6]">
@@ -84,10 +85,10 @@ export default function Homepage() {
 
         {/* 4. Brand Introduction */}
         <motion.section
-          initial={{opacity: 0, y: 30}}
-          whileInView={{opacity: 1, y: 0}}
-          viewport={{once: true, margin: '-100px'}}
-          transition={{duration: 1, ease: 'easeOut'}}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 1, ease: 'easeOut' }}
           className="py-20 px-6 text-center max-w-3xl mx-auto space-y-10 border-t border-[#8B8076]/8"
         >
           <div className="w-px h-20 bg-gradient-to-b from-transparent via-[#a87441]/60 to-transparent mx-auto" />
@@ -128,7 +129,7 @@ export default function Homepage() {
                             <div className="absolute inset-0 overflow-hidden">
                               <motion.div
                                 className="w-full h-full"
-                                whileHover={{scale: 1.05}}
+                                whileHover={{ scale: 1.05 }}
                                 transition={{
                                   duration: 1.2,
                                   ease: [0.16, 1, 0.3, 1],

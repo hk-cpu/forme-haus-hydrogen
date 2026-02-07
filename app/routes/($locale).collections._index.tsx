@@ -1,10 +1,10 @@
-import {json} from '@remix-run/server-runtime';
+import { json } from '@remix-run/server-runtime';
 import {
   type MetaArgs,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
-import {useLoaderData} from '@remix-run/react';
-import type {Collection} from '@shopify/hydrogen/storefront-api-types';
+import { useLoaderData } from '@remix-run/react';
+import type { Collection } from '@shopify/hydrogen/storefront-api-types';
 import {
   Image,
   Pagination,
@@ -12,13 +12,13 @@ import {
   getSeoMeta,
 } from '@shopify/hydrogen';
 
-import {Grid} from '~/components/Grid';
-import {Heading, PageHeader, Section} from '~/components/Text';
-import {Link} from '~/components/Link';
-import {Button} from '~/components/Button';
-import {getImageLoadingPriority} from '~/lib/const';
-import {seoPayload} from '~/lib/seo.server';
-import {routeHeaders} from '~/data/cache';
+import { Grid } from '~/components/Grid';
+import { Heading, PageHeader, Section } from '~/components/Text';
+import { Link } from '~/components/Link';
+import { Button } from '~/components/Button';
+import { getImageLoadingPriority } from '~/lib/const';
+import { seoPayload } from '~/lib/seo.server';
+import { routeHeaders } from '~/data/cache';
 
 const PAGINATION_SIZE = 4;
 
@@ -26,10 +26,10 @@ export const headers = routeHeaders;
 
 export const loader = async ({
   request,
-  context: {storefront},
+  context: { storefront },
 }: LoaderFunctionArgs) => {
-  const variables = getPaginationVariables(request, {pageBy: PAGINATION_SIZE});
-  const {collections} = await storefront.query(COLLECTIONS_QUERY, {
+  const variables = getPaginationVariables(request, { pageBy: PAGINATION_SIZE });
+  const { collections } = await storefront.query(COLLECTIONS_QUERY, {
     variables: {
       ...variables,
       country: storefront.i18n.country,
@@ -42,22 +42,23 @@ export const loader = async ({
     url: request.url,
   });
 
-  return json({collections, seo});
+  return json({ collections, seo });
 };
 
-export const meta = ({matches}: MetaArgs<typeof loader>) => {
+export const meta = ({ matches }: MetaArgs<typeof loader>) => {
+  // @ts-ignore
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
 export default function Collections() {
-  const {collections} = useLoaderData<typeof loader>();
+  const { collections } = useLoaderData<typeof loader>();
 
   return (
     <>
       <PageHeader heading="Collections" />
       <Section>
         <Pagination connection={collections}>
-          {({nodes, isLoading, PreviousLink, NextLink}) => (
+          {({ nodes, isLoading, PreviousLink, NextLink }) => (
             <>
               <div className="flex items-center justify-center mb-6">
                 <Button as={PreviousLink} variant="secondary" width="full">
