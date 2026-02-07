@@ -25,6 +25,7 @@ import { seoPayload } from '~/lib/seo.server';
 import { getImageLoadingPriority } from '~/lib/const';
 import { parseAsCurrency } from '~/lib/utils';
 import { useTranslation } from '~/hooks/useTranslation';
+import { translations } from '~/lib/translations';
 
 export const headers = routeHeaders;
 
@@ -55,7 +56,7 @@ export async function loader({ params, request, context }: LoaderFunctionArgs) {
     [] as ProductFilter[],
   );
 
-  const { collection, collections } = await context.storefront.query(
+  let { collection, collections } = await context.storefront.query(
     COLLECTION_QUERY,
     {
       variables: {
@@ -69,6 +70,32 @@ export async function loader({ params, request, context }: LoaderFunctionArgs) {
       },
     },
   );
+
+
+  if (!collection && (collectionHandle === 'new-in' || collectionHandle === 'new')) {
+    const { collection: allCollection } = await context.storefront.query(
+      COLLECTION_QUERY,
+      {
+        variables: {
+          ...paginationVariables,
+          handle: 'all',
+          filters,
+          sortKey: 'CREATED',
+          reverse: true,
+          country: context.storefront.i18n.country,
+          language: context.storefront.i18n.language,
+        },
+      },
+    );
+
+    if (allCollection) {
+      collection = allCollection;
+      const lang = context.storefront.i18n.language === 'AR' ? 'AR' : 'EN';
+      // @ts-ignore
+      collection.title = translations[lang]['nav.newIn'];
+      collection.description = '';
+    }
+  }
 
   if (!collection) {
     throw new Response('collection', { status: 404 });

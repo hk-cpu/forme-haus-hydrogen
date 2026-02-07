@@ -56,7 +56,7 @@ export function Header({
 
                 {/* Desktop Navigation - Left Side */}
                 <nav className="hidden md:flex items-center gap-12">
-                    {items.slice(0, 3).map((item: any) => (
+                    {items.map((item: any) => (
                         <div key={item.id} className="h-full flex items-center relative group/item">
                             <Link
                                 to={item.to}
@@ -71,11 +71,6 @@ export function Header({
                             </div>
                         </div>
                     ))}
-
-                    {/* Home Link */}
-                    <Link to="/" className="text-[11px] uppercase tracking-[0.3em] font-light text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-500 hover:tracking-[0.35em]">
-                        {t('nav.home')}
-                    </Link>
                 </nav>
 
                 {/* Mobile: Menu Toggle + Language */}
