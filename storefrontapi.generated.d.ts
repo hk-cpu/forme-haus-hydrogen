@@ -264,6 +264,102 @@ export type CustomerResetMutation = {
   }>;
 };
 
+export type CustomerDetailsQueryVariables = StorefrontAPI.Exact<{
+  customerAccessToken: StorefrontAPI.Scalars['String']['input'];
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+}>;
+
+export type CustomerDetailsQuery = {
+  customer?: StorefrontAPI.Maybe<
+    Pick<
+      StorefrontAPI.Customer,
+      'id' | 'firstName' | 'lastName' | 'email' | 'phone'
+    > & {
+      defaultAddress?: StorefrontAPI.Maybe<
+        Pick<
+          StorefrontAPI.MailingAddress,
+          | 'id'
+          | 'formatted'
+          | 'firstName'
+          | 'lastName'
+          | 'company'
+          | 'address1'
+          | 'address2'
+          | 'country'
+          | 'province'
+          | 'city'
+          | 'zip'
+        >
+      >;
+      addresses: {
+        edges: Array<{
+          node: Pick<
+            StorefrontAPI.MailingAddress,
+            | 'id'
+            | 'formatted'
+            | 'firstName'
+            | 'lastName'
+            | 'company'
+            | 'address1'
+            | 'address2'
+            | 'country'
+            | 'province'
+            | 'city'
+            | 'zip'
+          >;
+        }>;
+      };
+      orders: {
+        edges: Array<{
+          node: Pick<
+            StorefrontAPI.Order,
+            | 'id'
+            | 'orderNumber'
+            | 'processedAt'
+            | 'financialStatus'
+            | 'fulfillmentStatus'
+          > & {
+            currentTotalPrice: Pick<
+              StorefrontAPI.MoneyV2,
+              'amount' | 'currencyCode'
+            >;
+            lineItems: {
+              edges: Array<{
+                node: Pick<StorefrontAPI.OrderLineItem, 'title'> & {
+                  variant?: StorefrontAPI.Maybe<{
+                    image?: StorefrontAPI.Maybe<
+                      Pick<
+                        StorefrontAPI.Image,
+                        'url' | 'altText' | 'width' | 'height'
+                      >
+                    >;
+                  }>;
+                };
+              }>;
+            };
+          };
+        }>;
+      };
+    }
+  >;
+};
+
+export type CustomerAccessTokenCreateMutationVariables = StorefrontAPI.Exact<{
+  input: StorefrontAPI.CustomerAccessTokenCreateInput;
+}>;
+
+export type CustomerAccessTokenCreateMutation = {
+  customerAccessTokenCreate?: StorefrontAPI.Maybe<{
+    customerUserErrors: Array<
+      Pick<StorefrontAPI.CustomerUserError, 'code' | 'field' | 'message'>
+    >;
+    customerAccessToken?: StorefrontAPI.Maybe<
+      Pick<StorefrontAPI.CustomerAccessToken, 'accessToken' | 'expiresAt'>
+    >;
+  }>;
+};
+
 export type PredictiveSearchQueryVariables = StorefrontAPI.Exact<{
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
@@ -1186,6 +1282,10 @@ interface GeneratedQueryTypes {
     return: HomepageFeaturedCollectionsQuery;
     variables: HomepageFeaturedCollectionsQueryVariables;
   };
+  '#graphql\n  query CustomerDetails(\n    $customerAccessToken: String!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    customer(customerAccessToken: $customerAccessToken) {\n      id\n      firstName\n      lastName\n      email\n      phone\n      defaultAddress {\n        id\n        formatted\n        firstName\n        lastName\n        company\n        address1\n        address2\n        country\n        province\n        city\n        zip\n      }\n      addresses(first: 6) {\n        edges {\n          node {\n            id\n            formatted\n            firstName\n            lastName\n            company\n            address1\n            address2\n            country\n            province\n            city\n            zip\n          }\n        }\n      }\n      orders(first: 250, sortKey: PROCESSED_AT, reverse: true) {\n        edges {\n          node {\n            id\n            orderNumber\n            processedAt\n            financialStatus\n            fulfillmentStatus\n            currentTotalPrice {\n              amount\n              currencyCode\n            }\n            lineItems(first: 2) {\n              edges {\n                node {\n                  variant {\n                    image {\n                      url\n                      altText\n                      width\n                      height\n                    }\n                  }\n                  title\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+    return: CustomerDetailsQuery;
+    variables: CustomerDetailsQueryVariables;
+  };
   '#graphql\n  query PredictiveSearch(\n    $country: CountryCode\n    $language: LanguageCode\n    $searchTerm: String!\n    $limit: Int!\n    $limitScope: PredictiveSearchLimitScope! = EACH\n  ) @inContext(country: $country, language: $language) {\n    predictiveSearch(\n      limit: $limit\n      limitScope: $limitScope\n      query: $searchTerm\n    ) {\n      articles {\n        id\n        title\n        handle\n        image {\n          url\n          altText\n          width\n          height\n        }\n        blog {\n          handle\n        }\n      }\n      collections {\n        id\n        title\n        handle\n        image {\n          url\n          altText\n          width\n          height\n        }\n      }\n      pages {\n        id\n        title\n        handle\n      }\n      products {\n        id\n        title\n        handle\n        featuredImage {\n          url\n          altText\n          width\n          height\n        }\n        priceRange {\n          minVariantPrice {\n            amount\n            currencyCode\n          }\n        }\n      }\n      queries {\n        text\n        styledText\n      }\n    }\n  }\n': {
     return: PredictiveSearchQuery;
     variables: PredictiveSearchQueryVariables;
@@ -1256,6 +1356,10 @@ interface GeneratedMutationTypes {
   '#graphql\n  mutation customerReset($id: ID!, $input: CustomerResetInput!) {\n    customerReset(id: $id, input: $input) {\n      customer {\n        id\n      }\n      customerUserErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
     return: CustomerResetMutation;
     variables: CustomerResetMutationVariables;
+  };
+  '#graphql\n  mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {\n    customerAccessTokenCreate(input: $input) {\n      customerUserErrors {\n        code\n        field\n        message\n      }\n      customerAccessToken {\n        accessToken\n        expiresAt\n      }\n    }\n  }\n': {
+    return: CustomerAccessTokenCreateMutation;
+    variables: CustomerAccessTokenCreateMutationVariables;
   };
   '#graphql\n  mutation customerCreate($input: CustomerCreateInput!) {\n    customerCreate(input: $input) {\n      customer {\n        id\n        email\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n': {
     return: CustomerCreateMutation;

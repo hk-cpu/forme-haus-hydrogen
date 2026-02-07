@@ -7,14 +7,14 @@ import {
   useOutlet,
 } from '@remix-run/react';
 import { Suspense } from 'react';
-import {defer} from '@remix-run/server-runtime';
-import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import { defer, redirect } from '@remix-run/server-runtime';
+import { type LoaderFunctionArgs } from '@shopify/remix-oxygen';
 import { flattenConnection } from '@shopify/hydrogen';
 
-import type {
-  CustomerDetailsFragment,
-  OrderCardFragment,
-} from 'customer-accountapi.generated';
+// import type {
+//   CustomerDetailsFragment,
+//   OrderCardFragment,
+// } from 'customer-accountapi.generated';
 import { PageHeader, Text } from '~/components/Text';
 import { Button } from '~/components/Button';
 import { OrderCard } from '~/components/OrderCard';
@@ -25,9 +25,9 @@ import { ProductSwimlane } from '~/components/ProductSwimlane';
 import { FeaturedCollections } from '~/components/FeaturedCollections';
 import { usePrefixPathWithLocale } from '~/lib/utils';
 import { CACHE_NONE, routeHeaders } from '~/data/cache';
-import { CUSTOMER_DETAILS_QUERY } from '~/graphql/customer-account/CustomerDetailsQuery';
+// import { CUSTOMER_DETAILS_QUERY } from '~/graphql/customer-account/CustomerDetailsQuery';
 
-import { doLogout } from './($locale).account_.logout';
+// import { doLogout } from './($locale).account_.logout';
 import {
   getFeaturedData,
   type FeaturedData,
@@ -36,24 +36,29 @@ import {
 export const headers = routeHeaders;
 
 export async function loader({ request, context, params }: LoaderFunctionArgs) {
-  const { data, errors } = await context.customerAccount.query(
-    CUSTOMER_DETAILS_QUERY,
-  );
+  const { session, storefront } = context;
+  const customerAccessToken = await session.get('customerAccessToken');
 
-  /**
-   * If the customer failed to load, we assume their access token is invalid.
-   */
-  if (errors?.length || !data?.customer) {
-    throw await doLogout(context);
+  if (!customerAccessToken) {
+    return redirect('/account/login');
   }
 
-  const customer = data?.customer;
+  const { customer } = await storefront.query(CUSTOMER_QUERY, {
+    variables: {
+      customerAccessToken: customerAccessToken.accessToken,
+      country: storefront.i18n.country,
+      language: storefront.i18n.language,
+    },
+    cache: storefront.CacheNone(),
+  });
 
-  const heading = customer
-    ? customer.firstName
-      ? `Welcome, ${customer.firstName}.`
-      : `Welcome to your account.`
-    : 'Account Details';
+  if (!customer) {
+    throw redirect('/account/login');
+  }
+
+  const heading = customer.firstName
+    ? `Welcome, ${customer.firstName}.`
+    : `Welcome to your account.`;
 
   return defer(
     {
@@ -68,6 +73,82 @@ export async function loader({ request, context, params }: LoaderFunctionArgs) {
     },
   );
 }
+
+const CUSTOMER_QUERY = `#graphql
+  query CustomerDetails(
+    $customerAccessToken: String!
+    $country: CountryCode
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
+    customer(customerAccessToken: $customerAccessToken) {
+      id
+      firstName
+      lastName
+      email
+      phone
+      defaultAddress {
+        id
+        formatted
+        firstName
+        lastName
+        company
+        address1
+        address2
+        country
+        province
+        city
+        zip
+      }
+      addresses(first: 6) {
+        edges {
+          node {
+            id
+            formatted
+            firstName
+            lastName
+            company
+            address1
+            address2
+            country
+            province
+            city
+            zip
+          }
+        }
+      }
+      orders(first: 250, sortKey: PROCESSED_AT, reverse: true) {
+        edges {
+          node {
+            id
+            orderNumber
+            processedAt
+            financialStatus
+            fulfillmentStatus
+            currentTotalPrice {
+              amount
+              currencyCode
+            }
+            lineItems(first: 2) {
+              edges {
+                node {
+                  variant {
+                    image {
+                      url
+                      altText
+                      width
+                      height
+                    }
+                  }
+                  title
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+` as const;
 
 export default function Authenticated() {
   const data = useLoaderData<typeof loader>();
@@ -99,7 +180,7 @@ export default function Authenticated() {
 }
 
 interface AccountType {
-  customer: CustomerDetailsFragment;
+  customer: any; // Using any for now as we switched to Storefront API and need to regenerate types
   featuredDataPromise: Promise<FeaturedData>;
   heading: string;
 }
@@ -143,7 +224,7 @@ function Account({ customer, heading, featuredDataPromise }: AccountType) {
 }
 
 type OrderCardsProps = {
-  orders: OrderCardFragment[];
+  orders: any[]; // Using any for now until types are regenerated
 };
 
 function AccountOrderHistory({ orders }: OrderCardsProps) {
