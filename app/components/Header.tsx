@@ -72,9 +72,9 @@ export function Header({
                         </div>
                     ))}
 
-                    {/* Sale Link */}
-                    <Link to="/collections/sale" className="text-[11px] uppercase tracking-[0.3em] font-light text-[#a87441]/90 hover:text-[#a87441] transition-all duration-500 hover:tracking-[0.35em]">
-                        {t('nav.sale')}
+                    {/* Home Link */}
+                    <Link to="/" className="text-[11px] uppercase tracking-[0.3em] font-light text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-500 hover:tracking-[0.35em]">
+                        {t('nav.home')}
                     </Link>
                 </nav>
 
