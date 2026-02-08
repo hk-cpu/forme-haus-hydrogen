@@ -1,0 +1,39 @@
+# Shopify Checkout UI Extension Configuration
+# For Ounass-style delivery instructions and Saudi National Address
+
+name = "forme-haus-checkout"
+type = "checkout_ui_extension"
+
+# Extension targets - where this extension renders
+[[extension_targets]]
+target = "purchase.checkout.address.render-before"
+module = "./src/DeliveryInstructions.jsx"
+
+[[extension_targets]]
+target = "purchase.checkout.footer.render-after"
+module = "./src/GiftNote.jsx"
+
+[[extension_targets]]
+target = "purchase.checkout.payment-method-list.render-after"
+module = "./src/PaymentBanners.jsx"
+
+# Capabilities required
+capabilities = [
+  "api_access",
+  "network_access",
+  "block_progress"
+]
+
+# Settings for merchant configuration
+[settings]
+[[settings.fields]]
+key = "national_address_enabled"
+name = "Enable National Address Lookup"
+type = "boolean"
+default = true
+
+[[settings.fields]]
+key = "cod_restricted_cities"
+name = "COD Restricted Cities (comma-separated)"
+type = "single_line_text_field"
+default = "Remote Areas"

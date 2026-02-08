@@ -22,6 +22,7 @@ import Silk from '~/components/Silk';
 import Atmosphere from '~/components/Atmosphere';
 import { PredictiveSearch } from '~/components/PredictiveSearch';
 import { NavigationMenu } from '~/components/NavigationMenu';
+import { FooterAccordion } from '~/components/FooterAccordion';
 import { SearchOverlay } from '~/components/SearchOverlay';
 import { AccountOverlay } from '~/components/AccountOverlay';
 import { FilterPanel } from '~/components/FilterPanel';
