@@ -71,10 +71,22 @@ export function Header({
                                 {item.title}
                             </NavLink>
 
-                            {/* Mega Menu Dropdown Panel */}
-                            <div className="absolute top-full left-0 pt-8 opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-300 -translate-y-2 group-hover/item:translate-y-0 w-[80vw] max-w-[400px]">
-                                {/* Mega menu content */}
-                            </div>
+                            {/* Compact Dropdown - Only if has children */}
+                            {item?.items?.length > 0 && (
+                                <div className="absolute top-full left-0 pt-4 opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-200 -translate-y-1 group-hover/item:translate-y-0 min-w-[200px]">
+                                    <div className="bg-[#1A1A1A]/95 backdrop-blur-xl border border-[#a87441]/20 rounded-lg shadow-2xl shadow-black/50 py-2 overflow-hidden">
+                                        {item.items.map((subItem: any) => (
+                                            <Link
+                                                key={subItem.id}
+                                                to={subItem.to}
+                                                className="block px-4 py-2.5 text-[11px] uppercase tracking-[0.15em] text-[#F0EAE6]/80 hover:text-[#a87441] hover:bg-[#a87441]/10 transition-colors"
+                                            >
+                                                {subItem.title}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     ))}
                 </nav>
@@ -154,9 +166,6 @@ export function Header({
                     </Link>
                 </div>
             </div>
-
-            {/* Mega Menu Backdrop (Global) */}
-            <div className="absolute top-full left-0 w-full h-[50vh] bg-[#121212]/90 backdrop-blur-xl border-t border-[#a87441]/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 delay-100 -z-10 pointer-events-none" />
 
         </header>
     );
