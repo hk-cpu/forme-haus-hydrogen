@@ -34,7 +34,7 @@ export const translations = {
     'banner.shipping': 'Complimentary Global Shipping over 300 SAR',
 
     // Homepage Sections
-    'home.categorySlider': 'Shop by Category',
+    'home.categorySlider': 'The Collections',
     'home.editorial': 'The Edit',
     'home.brandIntro': 'Formé Haus is a Saudi-based womenswear label rooted in modern elegance, refined silhouettes, and thoughtful craftsmanship.',
     'home.curatedForYou': 'Curated For You',
@@ -198,7 +198,7 @@ export const translations = {
     'banner.shipping': 'شحن مجاني للطلبات فوق ٣٠٠ ر.س',
 
     // Homepage Sections
-    'home.categorySlider': 'تسوّق حسب الفئة',
+    'home.categorySlider': 'المجموعات',
     'home.editorial': 'اختيارات المحرر',
     'home.brandIntro': 'فورميه هاوس علامة أزياء نسائية سعودية تجمع بين الأناقة العصرية والتصميمات الراقية والحرفية المتقنة.',
     'home.curatedForYou': 'مختارة لكِ',

@@ -23,7 +23,7 @@ export default function CategorySlider() {
                     viewport={{ once: true }}
                     className="font-serif text-2xl italic text-[#F0EAE6] mb-8 text-center"
                 >
-                    Shop by Category
+                    The Collections
                 </motion.h2>
 
                 <div className="flex gap-6 overflow-x-auto pb-8 snap-x scrollbar-hide">
@@ -39,31 +39,62 @@ export default function CategorySlider() {
                                 to={cat.url}
                                 className="flex-shrink-0 w-32 md:w-40 snap-start group block"
                             >
-                                {/* Glass/Transparent Card */}
+                                {/* Glass/Transparent Card with Live Zoom */}
                                 <div className="aspect-[4/5] rounded-2xl overflow-hidden mb-4 relative
                                     bg-white/5 backdrop-blur-md border border-white/10
                                     hover:bg-white/10 hover:border-[#a87441]/30
-                                    transition-all duration-500 shadow-lg shadow-black/20">
+                                    transition-all duration-500 shadow-lg shadow-black/20 group/card">
                                     
                                     {/* Gradient Overlay */}
-                                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60 z-10" />
+                                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60 z-10 pointer-events-none" />
                                     
-                                    {/* Subtle Glow on Hover */}
-                                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[#a87441]/5" />
-                                    
-                                    {/* Image */}
-                                    <img
-                                        src={cat.image}
-                                        alt={cat.title}
-                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                        loading="lazy"
+                                    {/* Animated Glow on Hover */}
+                                    <motion.div 
+                                        className="absolute inset-0 bg-[#a87441]/10 z-[5]"
+                                        initial={{ opacity: 0 }}
+                                        whileHover={{ opacity: 1 }}
+                                        transition={{ duration: 0.3 }}
                                     />
                                     
-                                    {/* Category Title on Image */}
-                                    <div className="absolute bottom-0 left-0 right-0 p-3 z-20">
-                                        <span className="text-[10px] uppercase tracking-widest text-[#F0EAE6]/70 group-hover:text-[#a87441] transition-colors">
+                                    {/* Live Zoom Image Container */}
+                                    <motion.div 
+                                        className="w-full h-full"
+                                        whileHover={{ scale: 1.15 }}
+                                        transition={{ 
+                                            type: "spring", 
+                                            stiffness: 300, 
+                                            damping: 20,
+                                            duration: 0.6 
+                                        }}
+                                    >
+                                        <img
+                                            src={cat.image}
+                                            alt={cat.title}
+                                            className="w-full h-full object-cover"
+                                            loading="lazy"
+                                        />
+                                    </motion.div>
+                                    
+                                    {/* Shimmer Effect on Hover */}
+                                    <div className="absolute inset-0 z-20 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none">
+                                        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent transform -translate-x-full group-hover/card:translate-x-full transition-transform duration-1000" />
+                                    </div>
+                                    
+                                    {/* Collection Title on Image */}
+                                    <div className="absolute bottom-0 left-0 right-0 p-4 z-30">
+                                        <motion.span 
+                                            className="text-[10px] uppercase tracking-[0.2em] text-[#F0EAE6]/70 block mb-1"
+                                            initial={{ y: 0 }}
+                                            whileHover={{ y: -2 }}
+                                        >
+                                            Explore
+                                        </motion.span>
+                                        <motion.h4 
+                                            className="font-serif text-lg text-[#F0EAE6] group-hover/card:text-[#a87441] transition-colors duration-300"
+                                            whileHover={{ x: 2 }}
+                                        >
                                             {cat.title}
-                                        </span>
+                                        </motion.h4>
                                     </div>
                                 </div>
                                 
