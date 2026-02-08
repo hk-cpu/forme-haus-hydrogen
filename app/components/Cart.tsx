@@ -243,9 +243,6 @@ function CartCheckoutActions({
         </div>
       )}
 
-      {/* Free Shipping Progress */}
-      <FreeShippingProgress cart={cart} />
-
       {/* Terms */}
       <p className="text-[10px] text-center text-[#AA9B8F]/60 mt-2">
         {t('cart.terms', 'By proceeding, you agree to our')}{' '}
@@ -261,40 +258,7 @@ function CartCheckoutActions({
   );
 }
 
-// Free Shipping Progress Component
-function FreeShippingProgress({ cart }: { cart: CartType }) {
-  const {t} = useTranslation();
-  const threshold = 300; // SAR
-  const subtotal = parseFloat(cart.cost?.subtotalAmount?.amount || '0');
-  const progress = Math.min((subtotal / threshold) * 100, 100);
-  const remaining = Math.max(threshold - subtotal, 0);
 
-  return (
-    <div className="bg-[#1A1A1A] rounded-lg p-4 mt-2">
-      {progress >= 100 ? (
-        <p className="text-[#a87441] text-sm text-center font-medium">
-          {t('cart.freeShippingUnlocked', '🎉 You\'ve unlocked free shipping!')}
-        </p>
-      ) : (
-        <>
-          <p className="text-[#F0EAE6] text-sm text-center mb-2">
-            {t('cart.freeShippingProgress', 'Add {{amount}} more for free shipping', {
-              amount: `${remaining.toFixed(0)} SAR`,
-            })}
-          </p>
-          <div className="h-1.5 bg-[#2A2A2A] rounded-full overflow-hidden">
-            <motion.div
-              className="h-full bg-[#a87441] rounded-full"
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
-            />
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
 
 function CartSummary({
   cost,

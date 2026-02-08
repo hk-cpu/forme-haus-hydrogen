@@ -106,7 +106,7 @@ export default function Login() {
   }, [data]);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-white flex flex-col items-center justify-center text-[#2C2419]">
+    <div className="relative min-h-screen w-full overflow-hidden bg-[#F9F5F0] flex flex-col items-center justify-center text-[#2C2419] pt-24">
       {/* Darker Ghost Cursor with Bronze hover effect */}
       <GhostCursorEnhanced
         primaryColor="#0A0A0A"

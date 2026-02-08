@@ -21,7 +21,6 @@ import { Header as FormeHeader } from '~/components/Header';
 import Silk from '~/components/Silk';
 import Atmosphere from '~/components/Atmosphere';
 import { PredictiveSearch } from '~/components/PredictiveSearch';
-import { PromoBanner } from '~/components/PromoBanner';
 import { NavigationMenu } from '~/components/NavigationMenu';
 import { SearchOverlay } from '~/components/SearchOverlay';
 import { AccountOverlay } from '~/components/AccountOverlay';
@@ -57,11 +56,10 @@ export function PageLayout({ children, layout }: LayoutProps) {
       <div className="flex flex-col min-h-screen relative bg-[#121212]">
         {/* Background Layer (Z-0) */}
         <div className="fixed inset-0 pointer-events-none z-0">
-          <Silk color="#AD9686" />
-          <Atmosphere count={150} color="#AD9686" size={0.012} opacity={0.4} />
-          {/* Dark Glass Overlay */}
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/80" />
+          <Silk color="#AD9686" opacity={0.15} />
+          <Atmosphere count={100} color="#AD9686" size={0.008} opacity={0.2} />
+          {/* Subtle gradient for depth - much lighter */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
         </div>
 
         <div className="">
@@ -72,8 +70,6 @@ export function PageLayout({ children, layout }: LayoutProps) {
 
         <div className="relative z-10 flex flex-col items-center lg:py-8 transition-all duration-700">
           <div className="w-full max-w-[1800px] flex flex-col relative mx-auto my-0 px-4 md:px-8">
-            <PromoBanner />
-
             <Header
               title={layout?.shop.name || 'Formé Haus'}
               menu={headerMenu || undefined}

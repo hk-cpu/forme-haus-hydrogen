@@ -1,7 +1,7 @@
 import { useState, useEffect, Suspense } from 'react';
-import { Link, Await, useRouteLoaderData } from '@remix-run/react';
+import { Link, NavLink, Await, useRouteLoaderData } from '@remix-run/react';
 import { Image } from '@shopify/hydrogen';
-import { Menu, Search, ShoppingBag } from 'lucide-react';
+import { Menu, Search, ShoppingBag, User } from 'lucide-react';
 import { useWindowScroll } from 'react-use';
 import { motion } from 'framer-motion';
 import { useIsHomePath } from '~/lib/utils';
@@ -48,8 +48,8 @@ export function Header({
             role="banner"
             className={`fixed z-50 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0 group
             ${scrolled
-                    ? 'top-0 w-full bg-[#121212]/95 backdrop-blur-xl py-5 border-b border-[#a87441]/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
-                    : 'top-0 w-full bg-transparent py-8'
+                    ? 'top-0 w-full bg-[#121212]/95 backdrop-blur-xl py-4 border-b border-[#a87441]/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
+                    : 'top-0 w-full bg-[#121212]/80 backdrop-blur-md py-6'
                 }`}
         >
             <div className="container mx-auto px-6 lg:px-16 flex items-center justify-between relative z-50">
@@ -58,12 +58,18 @@ export function Header({
                 <nav className="hidden md:flex items-center gap-12">
                     {items.map((item: any) => (
                         <div key={item.id} className="h-full flex items-center relative group/item">
-                            <Link
+                            <NavLink
                                 to={item.to}
-                                className="text-[11px] uppercase tracking-[0.3em] font-light transition-all duration-500 text-[#F0EAE6]/70 hover:text-[#a87441] hover:tracking-[0.35em]"
+                                className={({ isActive }) =>
+                                    `text-[11px] uppercase tracking-[0.3em] font-light transition-all duration-500 hover:tracking-[0.35em] relative ${
+                                        isActive
+                                            ? 'text-[#a87441] after:content-[""] after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-[1px] after:bg-[#a87441]'
+                                            : 'text-[#F0EAE6]/70 hover:text-[#a87441]'
+                                    }`
+                                }
                             >
                                 {item.title}
-                            </Link>
+                            </NavLink>
 
                             {/* Mega Menu Dropdown Panel */}
                             <div className="absolute top-full left-0 pt-8 opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-300 -translate-y-2 group-hover/item:translate-y-0 w-[80vw] max-w-[400px]">
@@ -139,16 +145,18 @@ export function Header({
                     </button>
 
                     {/* Account Icon (Desktop) */}
-                    <Link to="/account" className="hidden md:flex items-center justify-center text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 hover:scale-110 group">
-                        <div className="w-6 h-6 rounded-full border border-[#F0EAE6]/30 group-hover:border-[#a87441] transition-all duration-300 flex items-center justify-center">
-                            <div className="w-2.5 h-2.5 rounded-full bg-[#F0EAE6]/50 group-hover:bg-[#a87441] transition-all duration-300" />
-                        </div>
+                    <Link 
+                        to="/account" 
+                        className="hidden md:flex items-center justify-center text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 hover:scale-110"
+                        aria-label="Account"
+                    >
+                        <User strokeWidth={1.5} className="w-6 h-6" />
                     </Link>
                 </div>
             </div>
 
             {/* Mega Menu Backdrop (Global) */}
-            <div className="absolute top-full left-0 w-full h-[50vh] bg-[#121212]/95 backdrop-blur-xl border-t border-white/5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 delay-100 -z-10 pointer-events-none" />
+            <div className="absolute top-full left-0 w-full h-[50vh] bg-[#121212]/90 backdrop-blur-xl border-t border-[#a87441]/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 delay-100 -z-10 pointer-events-none" />
 
         </header>
     );
