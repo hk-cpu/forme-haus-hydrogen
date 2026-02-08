@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { tokens, useStore, Icons } from './LuxuryStorefront';
+import { useStore } from './LuxuryStorefront';
+import { tokens, Icons } from './Theme';
 
 // ============================================================================
 // PRODUCT DETAIL PAGE
