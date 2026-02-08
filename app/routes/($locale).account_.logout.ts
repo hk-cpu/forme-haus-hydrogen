@@ -1,20 +1,29 @@
-import {redirect} from '@remix-run/server-runtime';
 import {
-  type ActionFunction,
-  type AppLoadContext,
-  type LoaderFunctionArgs,
+  redirect,
   type ActionFunctionArgs,
+  type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
 
-export async function doLogout(context: AppLoadContext) {
-  return context.customerAccount.logout();
+export async function loader({ context }: LoaderFunctionArgs) {
+  return redirect('/');
 }
 
-export async function loader({params}: LoaderFunctionArgs) {
-  const locale = params.locale;
-  return redirect(locale ? `/${locale}` : '/');
+export async function action({ context }: ActionFunctionArgs) {
+  const { session } = context;
+  session.unset('customerAccessToken');
+
+  return redirect('/', {
+    headers: {
+      'Set-Cookie': await session.commit(),
+    },
+  });
 }
 
-export const action: ActionFunction = async ({context}: ActionFunctionArgs) => {
-  return doLogout(context);
+export const doLogout = async ({ session }: { session: any }) => {
+  session.unset('customerAccessToken');
+  return redirect('/', {
+    headers: {
+      'Set-Cookie': await session.commit(),
+    },
+  });
 };

@@ -1,3 +1,6 @@
+# Don't change the line below!
+# oxygen_storefront_id: 1000082807
+
 name: Storefront 1000082807
 on: [push]
 
@@ -11,17 +14,17 @@ jobs:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Setup node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: "lts/*"
+          node-version: 'lts/*'
           check-latest: true
 
       - name: Cache node modules
         id: cache-npm
-        uses: actions/cache@v4
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         env:
           cache-name: cache-node-modules
         with:
@@ -36,6 +39,15 @@ jobs:
         run: npm ci
 
       - name: Build and Publish to Oxygen
-        run: npx shopify hydrogen deploy
-        env:
-          SHOPIFY_HYDROGEN_DEPLOYMENT_TOKEN: ${{ secrets.OXYGEN_DEPLOYMENT_TOKEN_1000082807 }}
+        id: deploy
+        run: |
+          npx shopify hydrogen deploy --auth-bypass-token --token "${{ secrets.OXYGEN_DEPLOYMENT_TOKEN_1000082807 }}"
+          echo "AUTH_BYPASS_TOKEN=$(jq -r '.authBypassToken' h2_deploy_log.json)" >> $GITHUB_ENV
+          echo "DEPLOYMENT_URL=$(jq -r '.url' h2_deploy_log.json)" >> $GITHUB_ENV
+
+      - name: Run end-to-end tests
+        id: end-to-end-tests
+        uses: ./.github/actions/end-to-end-tests
+        with:
+          url: ${{ env.DEPLOYMENT_URL }}
+          auth-bypass-token: ${{ env.AUTH_BYPASS_TOKEN }}

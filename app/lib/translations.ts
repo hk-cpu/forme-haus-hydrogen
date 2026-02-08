@@ -15,6 +15,7 @@ export const translations = {
     'nav.designers': 'Designers',
     'nav.clothing': 'Clothing',
     'nav.shoes': 'Shoes',
+    'nav.home': 'Home',
     'nav.sale': 'Sale',
     'nav.journal': 'Journal',
     'nav.about': 'About',
@@ -108,6 +109,67 @@ export const translations = {
     'general.viewAll': 'View All',
     'general.learnMore': 'Learn More',
     'general.backToHome': 'Back to Home',
+
+    // Mega Menu - subsections (New In)
+    'menu.newArrivals': 'New Arrivals',
+    'menu.signaturePieces': 'Signature Pieces',
+    'menu.weeklyHighlights': 'Weekly Highlights',
+    'menu.bestSellers': 'Best Sellers',
+    'menu.cta.shopNewIn': 'Shop New In',
+
+    // Mega Menu - categories (Clothing)
+    'menu.dresses': 'Dresses',
+    'menu.tops': 'Tops & Blouses',
+    'menu.shirts': 'Shirts',
+    'menu.blazers': 'Blazers',
+    'menu.trousers': 'Trousers',
+    'menu.skirts': 'Skirts',
+    'menu.knitwear': 'Knitwear',
+    'menu.outerwear': 'Outerwear',
+
+    // Occasions
+    'menu.workwear': 'Workwear',
+    'menu.evening': 'Evening',
+    'menu.casual': 'Casual',
+    'menu.travel': 'Travel',
+    'menu.cta.exploreClothing': 'Explore Clothing',
+
+    // Mega Menu - Accessories
+    'menu.jewelry': 'Jewelry',
+    'menu.scarves': 'Scarves',
+    'menu.belts': 'Belts',
+    'menu.sunglasses': 'Sunglasses',
+    'menu.leatherGoods': 'Small Leather Goods',
+    'menu.hair': 'Hair Accessories',
+    'menu.cta.shopAccessories': 'Shop Accessories',
+
+    // The Edit
+    'menu.workwearEssentials': 'Workwear Essentials',
+    'menu.minimalStaples': 'Minimal Staples',
+    'menu.signatureLooks': 'Signature Looks',
+    'menu.taupeEdit': 'Taupe Edit',
+    'menu.everydayElegance': 'Everyday Elegance',
+    'menu.cta.shopTheEdit': 'Shop The Edit',
+
+    // Collections
+    'menu.capsule': 'Capsule Collection',
+    'menu.seasonal': 'Seasonal Collection',
+    'menu.limited': 'Limited Edition',
+    'menu.cta.exploreCollections': 'Explore Collections',
+
+    // Product Page (Additional)
+    'pdp.addToBag': 'Add to Bag',
+    'pdp.details': 'Product Details',
+    'pdp.material': 'Material & Care',
+    'pdp.delivery': 'Delivery & Returns',
+    'pdp.complete': 'Complete the Look',
+    'pdp.selectSize': 'Please select a size',
+
+    // Checkout (Additional)
+    'checkout.summary': 'Order Summary',
+    'checkout.subtotal': 'Subtotal',
+    'checkout.shipping': 'Shipping & Taxes Calculated at Checkout',
+    'checkout.checkout': 'Continue to Checkout',
   },
   AR: {
     // Navigation
@@ -117,6 +179,7 @@ export const translations = {
     'nav.designers': 'المصممون',
     'nav.clothing': 'ملابس',
     'nav.shoes': 'أحذية',
+    'nav.home': 'الرئيسية',
     'nav.sale': 'تخفيضات',
     'nav.journal': 'المجلة',
     'nav.about': 'من نحن',
@@ -210,5 +273,66 @@ export const translations = {
     'general.viewAll': 'عرض الكل',
     'general.learnMore': 'اعرفي المزيد',
     'general.backToHome': 'العودة للرئيسية',
+
+    // Mega Menu - subsections
+    'menu.newArrivals': 'وصل جديد',
+    'menu.signaturePieces': 'قطع مميزة',
+    'menu.weeklyHighlights': 'مختارات الأسبوع',
+    'menu.bestSellers': 'الأكثر طلبًا',
+    'menu.cta.shopNewIn': 'تسوقي الجديد',
+
+    // Mega Menu - categories
+    'menu.dresses': 'فساتين',
+    'menu.tops': 'بلوزات',
+    'menu.shirts': 'قمصان',
+    'menu.blazers': 'بليزرات',
+    'menu.trousers': 'سراويل',
+    'menu.skirts': 'تنانير',
+    'menu.knitwear': 'قطَع محاكة',
+    'menu.outerwear': 'معاطف',
+
+    // Occasions
+    'menu.workwear': 'للعمل',
+    'menu.evening': 'للمساء',
+    'menu.casual': 'كاجوال',
+    'menu.travel': 'للسفر',
+    'menu.cta.exploreClothing': 'اكتشفي ملابس العمل',
+
+    // Mega Menu - Accessories
+    'menu.jewelry': 'مجوهرات',
+    'menu.scarves': 'أوشحة',
+    'menu.belts': 'أحزمة',
+    'menu.sunglasses': 'نظارات شمسية',
+    'menu.leatherGoods': 'إكسسوارات جلدية',
+    'menu.hair': 'إكسسوارات شعر',
+    'menu.cta.shopAccessories': 'تسوقي الإكسسوارات',
+
+    // The Edit
+    'menu.workwearEssentials': 'أساسيات العمل',
+    'menu.minimalStaples': 'القطع الأساسية',
+    'menu.signatureLooks': 'إطلالات مميزة',
+    'menu.taupeEdit': 'مختارات التوب',
+    'menu.everydayElegance': 'أناقة يومية',
+    'menu.cta.shopTheEdit': 'تسوقي المختارات',
+
+    // Collections
+    'menu.capsule': 'مجموعات كبسولة',
+    'menu.seasonal': 'مجموعة الموسم',
+    'menu.limited': 'إصدار محدود',
+    'menu.cta.exploreCollections': 'استكشفي المجموعات',
+
+    // Product Page (Additional)
+    'pdp.addToBag': 'أضيفي للحقيبة',
+    'pdp.details': 'تفاصيل القطعة',
+    'pdp.material': 'الخامة والعناية',
+    'pdp.delivery': 'التوصيل والاسترجاع',
+    'pdp.complete': 'نسقي الإطلالة',
+    'pdp.selectSize': 'الرجاء اختيار المقاس',
+
+    // Checkout (Additional)
+    'checkout.summary': 'ملخص الطلب',
+    'checkout.subtotal': 'المجموع الجزئي',
+    'checkout.shipping': 'التوصيل والضرائب تُحسب عند الدفع',
+    'checkout.checkout': 'متابعة الدفع',
   },
 } as const;

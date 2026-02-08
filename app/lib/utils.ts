@@ -1,6 +1,12 @@
-import {useLocation, useRouteLoaderData} from '@remix-run/react';
-import type {MoneyV2} from '@shopify/hydrogen/storefront-api-types';
-import type {FulfillmentStatus} from '@shopify/hydrogen/customer-account-api-types';
+import { useLocation, useRouteLoaderData } from '@remix-run/react';
+import { clsx, type ClassValue } from 'clsx';
+// import {twMerge} from 'tailwind-merge';
+
+export function cn(...inputs: ClassValue[]) {
+  return clsx(inputs);
+}
+import type { MoneyV2 } from '@shopify/hydrogen/storefront-api-types';
+import type { FulfillmentStatus } from '@shopify/hydrogen/customer-account-api-types';
 import typographicBase from 'typographic-base';
 
 import type {
@@ -8,10 +14,10 @@ import type {
   MenuFragment,
   ParentMenuItemFragment,
 } from 'storefrontapi.generated';
-import type {RootLoader} from '~/root';
-import {countries} from '~/data/countries';
+import type { RootLoader } from '~/root';
+import { countries } from '~/data/countries';
 
-import type {I18nLocale} from './type';
+import type { I18nLocale } from './type';
 
 type EnhancedMenuItemProps = {
   to: string;
@@ -24,8 +30,8 @@ export type ChildEnhancedMenuItem = ChildMenuItemFragment &
 
 export type ParentEnhancedMenuItem = (ParentMenuItemFragment &
   EnhancedMenuItemProps) & {
-  items: ChildEnhancedMenuItem[];
-};
+    items: ChildEnhancedMenuItem[];
+  };
 
 export type EnhancedMenu = Pick<MenuFragment, 'id'> & {
   items: ParentEnhancedMenuItem[];
@@ -49,7 +55,7 @@ export function formatText(input?: string | React.ReactNode) {
     return input;
   }
 
-  return typographicBase(input, {locale: 'en-us'}).replace(
+  return typographicBase(input, { locale: 'en-us' }).replace(
     /\s([^\s<]+)\s*$/g,
     '\u00A0$1',
   );
@@ -85,8 +91,8 @@ function resolveToFromType(
     pathname?: string;
     type?: string;
   } = {
-    customPrefixes: {},
-  },
+      customPrefixes: {},
+    },
 ) {
   if (!pathname || !type) return '';
 
@@ -162,26 +168,26 @@ function parseItem(primaryDomain: string, env: Env, customPrefixes = {}) {
     }
 
     // extract path from url because we don't need the origin on internal to attributes
-    const {host, pathname} = new URL(item.url);
+    const { host, pathname } = new URL(item.url);
 
     const isInternalLink =
       host === new URL(primaryDomain).host || host === env.PUBLIC_STORE_DOMAIN;
 
     const parsedItem = isInternalLink
       ? // internal links
-        {
-          ...item,
-          isExternal: false,
-          target: '_self',
-          to: resolveToFromType({type: item.type, customPrefixes, pathname}),
-        }
+      {
+        ...item,
+        isExternal: false,
+        target: '_self',
+        to: resolveToFromType({ type: item.type, customPrefixes, pathname }),
+      }
       : // external links
-        {
-          ...item,
-          isExternal: true,
-          target: '_blank',
-          to: item.url,
-        };
+      {
+        ...item,
+        isExternal: true,
+        target: '_blank',
+        to: item.url,
+      };
 
     if ('items' in item) {
       return {
@@ -227,9 +233,8 @@ export const INPUT_STYLE_CLASSES =
   'appearance-none rounded dark:bg-transparent border focus:border-primary/50 focus:ring-0 w-full py-2 px-3 text-primary/90 placeholder:text-primary/50 leading-tight focus:shadow-outline';
 
 export const getInputStyleClasses = (isError?: string | null) => {
-  return `${INPUT_STYLE_CLASSES} ${
-    isError ? 'border-red-500' : 'border-primary/20'
-  }`;
+  return `${INPUT_STYLE_CLASSES} ${isError ? 'border-red-500' : 'border-primary/20'
+    }`;
 };
 
 export function statusMessage(status: FulfillmentStatus) {
@@ -260,26 +265,25 @@ export function getLocaleFromRequest(request: Request): I18nLocale {
 
   return countries[firstPathPart]
     ? {
-        ...countries[firstPathPart],
-        pathPrefix: firstPathPart,
-      }
+      ...countries[firstPathPart],
+      pathPrefix: firstPathPart,
+    }
     : {
-        ...countries['default'],
-        pathPrefix: '',
-      };
+      ...countries['default'],
+      pathPrefix: '',
+    };
 }
 
 export function usePrefixPathWithLocale(path: string) {
   const rootData = useRouteLoaderData<RootLoader>('root');
   const selectedLocale = rootData?.selectedLocale ?? DEFAULT_LOCALE;
 
-  return `${selectedLocale.pathPrefix}${
-    path.startsWith('/') ? path : '/' + path
-  }`;
+  return `${selectedLocale.pathPrefix}${path.startsWith('/') ? path : '/' + path
+    }`;
 }
 
 export function useIsHomePath() {
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
   const rootData = useRouteLoaderData<RootLoader>('root');
   const selectedLocale = rootData?.selectedLocale ?? DEFAULT_LOCALE;
   const strippedPathname = pathname.replace(selectedLocale.pathPrefix, '');

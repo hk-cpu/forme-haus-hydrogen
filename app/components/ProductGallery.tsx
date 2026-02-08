@@ -18,7 +18,7 @@ export function ProductGallery({
 
   return (
     <div
-      className={`grid gap-4 md:gap-8 ${className}`}
+      className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${className}`}
     >
       {media.map((med, i) => {
         const image =
@@ -26,23 +26,30 @@ export function ProductGallery({
             ? { ...med.image, altText: med.alt || 'Product image' }
             : null;
 
+        const isFullWidth = i % 3 === 0; // Make every 3rd image full width for rhythm
+
         return (
           <div
-            className="aspect-[4/5] w-full bg-[#121212] overflow-hidden group border border-white/5"
+            className={`
+              aspect-[3/4] w-full bg-[#F9F5F0] overflow-hidden group relative
+              ${isFullWidth ? 'md:col-span-2 md:aspect-[16/9]' : 'md:col-span-1'}
+            `}
             key={med.id || (image && 'id' in image ? image.id : i)}
           >
             {image ? (
               <Image
                 data={image}
-                aspectRatio="4/5"
-                sizes="(min-width: 45em) 50vw, 100vw"
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                aspectRatio={isFullWidth ? "16/9" : "3/4"}
+                sizes={isFullWidth ? "(min-width: 45em) 100vw, 100vw" : "(min-width: 45em) 50vw, 100vw"}
+                className="w-full h-full object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-105"
               />
             ) : (
-              <div className="w-full h-full bg-transparent flex items-center justify-center">
-                <div className="text-[#F0EAE6]/5 w-full h-full border border-white/5" />
+              <div className="w-full h-full flex items-center justify-center">
+                <div className="text-[#8B8076]/20">No Image</div>
               </div>
             )}
+            {/* Subtle overlay for depth */}
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500 pointer-events-none" />
           </div>
         );
       })}

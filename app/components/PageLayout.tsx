@@ -1,31 +1,36 @@
-import {Await, useRouteLoaderData, useNavigation} from '@remix-run/react';
-import {Disclosure} from '@headlessui/react';
-import {Suspense, useEffect, useState} from 'react';
-import {CartForm} from '@shopify/hydrogen';
+import { Await, useRouteLoaderData, useNavigation } from '@remix-run/react';
+import { Disclosure } from '@headlessui/react';
+import { Suspense, useEffect, useState } from 'react';
+import { CartForm } from '@shopify/hydrogen';
 
-import {type LayoutQuery} from 'storefrontapi.generated';
-import {Text, Heading, Section} from '~/components/Text';
-import {Link} from '~/components/Link';
-import {Cart} from '~/components/Cart';
-import {CartLoading} from '~/components/CartLoading';
-import {Drawer, useDrawer} from '~/components/Drawer';
-import {IconCaret} from '~/components/Icon';
+import { type LayoutQuery } from 'storefrontapi.generated';
+import { Text, Heading, Section } from '~/components/Text';
+import { Link } from '~/components/Link';
+import { Cart } from '~/components/Cart';
+import { CartLoading } from '~/components/CartLoading';
+import { Drawer, useDrawer } from '~/components/Drawer';
+import { IconCaret } from '~/components/Icon';
 import {
   type EnhancedMenu,
   type ChildEnhancedMenuItem,
   useIsHomePath,
 } from '~/lib/utils';
-import {useCartFetchers} from '~/hooks/useCartFetchers';
-import type {RootLoader} from '~/root';
-import {Header as FormeHeader} from '~/components/Header';
-import {StatusBanner} from '~/components/StatusBanner';
+import { useCartFetchers } from '~/hooks/useCartFetchers';
+import type { RootLoader } from '~/root';
+import { Header as FormeHeader } from '~/components/Header';
 import Silk from '~/components/Silk';
 import Atmosphere from '~/components/Atmosphere';
-import {PredictiveSearch} from '~/components/PredictiveSearch';
+import { PredictiveSearch } from '~/components/PredictiveSearch';
+import { PromoBanner } from '~/components/PromoBanner';
+import { NavigationMenu } from '~/components/NavigationMenu';
+import { SearchOverlay } from '~/components/SearchOverlay';
+import { AccountOverlay } from '~/components/AccountOverlay';
+import { FilterPanel } from '~/components/FilterPanel';
+import { useUI } from '~/context/UIContext';
 
 import SocialButtons from '~/components/SocialButtons';
 import PaymentBadges from '~/components/PaymentBadges';
-import {useTranslation} from '~/hooks/useTranslation';
+import { useTranslation } from '~/hooks/useTranslation';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -35,15 +40,15 @@ type LayoutProps = {
   };
 };
 
-export function PageLayout({children, layout}: LayoutProps) {
-  const {headerMenu, footerMenu} = layout || {};
+export function PageLayout({ children, layout }: LayoutProps) {
+  const { headerMenu, footerMenu } = layout || {};
   const navigation = useNavigation();
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     handleScroll();
-    window.addEventListener('scroll', handleScroll, {passive: true});
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -67,20 +72,8 @@ export function PageLayout({children, layout}: LayoutProps) {
 
         <div className="relative z-10 flex flex-col items-center lg:py-8 transition-all duration-700">
           <div className="w-full max-w-[1800px] flex flex-col relative mx-auto my-0 px-4 md:px-8">
-            {/* Status Banner - Fades away on scroll per user request */}
-            <div
-              className="transition-all duration-500 ease-out overflow-hidden"
-              style={{
-                opacity:
-                  navigation.state === 'loading'
-                    ? 1
-                    : Math.max(0, 1 - scrollY / 50),
-                height: 'auto',
-                maxHeight: scrollY > 50 ? '0px' : '50px',
-              }}
-            >
-              <StatusBanner />
-            </div>
+            <PromoBanner />
+
             <Header
               title={layout?.shop.name || 'Formé Haus'}
               menu={headerMenu || undefined}
@@ -102,8 +95,9 @@ export function PageLayout({children, layout}: LayoutProps) {
   );
 }
 
-function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
+function Header({ title, menu }: { title: string; menu?: EnhancedMenu }) {
   const isHome = useIsHomePath();
+  const { state, toggleCart, toggleSearch, toggleMenu } = useUI();
 
   const {
     isOpen: isCartOpen,
@@ -118,12 +112,6 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
     closeDrawer: closeSearch,
   } = useDrawer();
 
-  const {
-    isOpen: isMenuOpen,
-    openDrawer: openMenu,
-    closeDrawer: closeMenu,
-  } = useDrawer();
-
   const addToCartFetchers = useCartFetchers(CartForm.ACTIONS.LinesAdd);
 
   // toggle cart drawer when adding to cart
@@ -132,19 +120,38 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
     openCart();
   }, [addToCartFetchers, isCartOpen, openCart]);
 
+  // Sync UIContext cart state with drawer
+  useEffect(() => {
+    if (state.isCartOpen && !isCartOpen) {
+      openCart();
+    } else if (!state.isCartOpen && isCartOpen) {
+      closeCart();
+    }
+  }, [state.isCartOpen, isCartOpen, openCart, closeCart]);
+
+  // Sync UIContext search state with drawer
+  useEffect(() => {
+    if (state.isSearchOpen && !isSearchOpen) {
+      openSearch();
+    } else if (!state.isSearchOpen && isSearchOpen) {
+      closeSearch();
+    }
+  }, [state.isSearchOpen, isSearchOpen, openSearch, closeSearch]);
+
   return (
     <>
       <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
       <SearchDrawer isOpen={isSearchOpen} onClose={closeSearch} />
-      {menu && (
-        <MenuDrawer isOpen={isMenuOpen} onClose={closeMenu} menu={menu} />
-      )}
+      <NavigationMenu />
+      <SearchOverlay />
+      <AccountOverlay />
+      <FilterPanel />
       <FormeHeader
         title={title}
         menu={menu}
         openCart={openCart}
-        openSearch={openSearch}
-        openMenu={openMenu}
+        openSearch={toggleSearch}
+        openMenu={toggleMenu}
       />
     </>
   );
@@ -166,7 +173,7 @@ function SearchDrawer({
   );
 }
 
-function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
+function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const rootData = useRouteLoaderData<RootLoader>('root');
   if (!rootData) return null;
 
@@ -217,7 +224,7 @@ function MenuMobileNav({
             to={item.to}
             target={item.target}
             onClick={onClose}
-            className={({isActive}) =>
+            className={({ isActive }) =>
               isActive ? 'pb-1 border-b -mb-px' : 'pb-1'
             }
           >
@@ -240,9 +247,9 @@ function MenuMobileNav({
   );
 }
 
-function Footer({menu}: {menu?: EnhancedMenu}) {
+function Footer({ menu }: { menu?: EnhancedMenu }) {
   const isHome = useIsHomePath();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Section
@@ -351,7 +358,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
   );
 }
 
-function FooterLink({item}: {item: ChildEnhancedMenuItem}) {
+function FooterLink({ item }: { item: ChildEnhancedMenuItem }) {
   if (item.to.startsWith('http')) {
     return (
       <a href={item.to} target={item.target} rel="noopener noreferrer">
@@ -367,7 +374,7 @@ function FooterLink({item}: {item: ChildEnhancedMenuItem}) {
   );
 }
 
-function FooterMenu({menu}: {menu?: EnhancedMenu}) {
+function FooterMenu({ menu }: { menu?: EnhancedMenu }) {
   const styles = {
     section: 'grid gap-4',
     nav: 'grid gap-2 pb-6',
@@ -378,7 +385,7 @@ function FooterMenu({menu}: {menu?: EnhancedMenu}) {
       {(menu?.items || []).map((item) => (
         <section key={item.id} className={styles.section}>
           <Disclosure>
-            {({open}) => (
+            {({ open }) => (
               <>
                 <Disclosure.Button className="text-left md:cursor-default">
                   <Heading className="flex justify-between" size="lead" as="h3">
@@ -392,9 +399,8 @@ function FooterMenu({menu}: {menu?: EnhancedMenu}) {
                 </Disclosure.Button>
                 {item?.items?.length > 0 ? (
                   <div
-                    className={`${
-                      open ? `max-h-48 h-fit` : `max-h-0 md:max-h-fit`
-                    } overflow-hidden transition-all duration-300`}
+                    className={`${open ? `max-h-48 h-fit` : `max-h-0 md:max-h-fit`
+                      } overflow-hidden transition-all duration-300`}
                   >
                     <Suspense data-comment="This suspense fixes a hydration bug in Disclosure.Panel with static prop">
                       <Disclosure.Panel static>

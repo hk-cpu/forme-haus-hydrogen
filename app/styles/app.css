@@ -31,10 +31,91 @@
   --color-cream: var(--cream);
   --color-silk: var(--silk);
 
-  --font-sans: "Helvetica Neue", Helvetica, "Gill Sans", Arial, sans-serif;
+  /* Formé Haus Brand Colors */
+  --color-brand: var(--bronze);
+  --color-brand-foreground: #ffffff;
+  --color-brand-light: var(--bronze-light);
+
+  /* UI Colors */
+  --color-border: rgba(240, 234, 230, 0.2);
+  --color-input: rgba(240, 234, 230, 0.1);
+  --color-ring: var(--bronze);
+
+  --color-primary: var(--bronze);
+  --color-primary-foreground: #ffffff;
+  --color-primary-hover: var(--bronze-dark);
+
+  --color-secondary: var(--taupe);
+  --color-secondary-foreground: #ffffff;
+
+  --color-muted: var(--taupe-dark);
+  --color-muted-foreground: var(--taupe);
+
+  --color-accent: var(--bronze-light);
+  --color-accent-foreground: var(--bronze-dark);
+
+  /* Fonts */
+  --font-sans: "Inter", "Helvetica Neue", Helvetica, "Gill Sans", Arial, sans-serif;
   --font-serif: "Didot", "Didot LT STD", "Hoefler Text", "Bodoni MT", "Times New Roman", serif;
   --font-heading: var(--font-serif);
   --font-arabic: "IBM Plex Sans Arabic", "Noto Sans Arabic", "Segoe UI", sans-serif;
+
+  /* Animations */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-slide-in: slide-in 0.3s ease-out;
+  --animate-slide-in-right: slide-in-right 0.3s ease-out;
+  --animate-fade-in: fade-in 0.3s ease-out;
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+
+  to {
+    height: 0;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* Light mode override removed to enforce luxury dark aesthetic */
