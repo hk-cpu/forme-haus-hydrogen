@@ -10,7 +10,7 @@ export const translations = {
   EN: {
     // Navigation
     'nav.shop': 'Shop',
-    'nav.collections': 'Collections',
+    'nav.collections': 'The Collections',
     'nav.newIn': 'New In',
     'nav.designers': 'Designers',
     'nav.clothing': 'Clothing',
@@ -21,7 +21,7 @@ export const translations = {
     'nav.about': 'About',
 
     // Header & Actions
-    'header.search': 'Search',
+    'header.search': '',
     'header.cart': 'Cart',
     'header.account': 'Account',
     'header.menu': 'Menu',

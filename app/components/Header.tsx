@@ -49,7 +49,7 @@ export function Header({
             className={`fixed z-50 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0 group
             ${scrolled
                     ? 'top-0 w-full bg-[#121212]/95 backdrop-blur-xl py-5 border-b border-[#a87441]/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
-                    : 'top-0 w-full bg-gradient-to-b from-black/50 via-black/30 to-transparent py-8'
+                    : 'top-0 w-full bg-transparent py-8'
                 }`}
         >
             <div className="container mx-auto px-6 lg:px-16 flex items-center justify-between relative z-50">

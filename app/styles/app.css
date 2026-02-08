@@ -222,3 +222,163 @@ body {
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
   color: transparent;
 }
+
+/* ============================================================================
+   GLOBAL BROWN GLOW TYPOGRAPHY - Luxury Enhancement
+   ============================================================================ */
+
+/* Apply brown glow to all navigation and menu text */
+nav a,
+.nav-link,
+header nav a,
+.menu-item,
+.footer-link,
+[role="navigation"] a {
+  text-shadow: 0 0 10px rgba(168, 116, 65, 0.3),
+               0 0 20px rgba(168, 116, 65, 0.15),
+               0 0 30px rgba(168, 116, 65, 0.05);
+  transition: text-shadow 0.3s ease, color 0.3s ease;
+}
+
+nav a:hover,
+.nav-link:hover,
+header nav a:hover,
+.menu-item:hover,
+.footer-link:hover {
+  text-shadow: 0 0 15px rgba(168, 116, 65, 0.5),
+               0 0 30px rgba(168, 116, 65, 0.3),
+               0 0 45px rgba(168, 116, 65, 0.15);
+}
+
+/* Brown glow for headers and titles */
+h1, h2, h3, h4, h5, h6,
+.font-serif,
+.text-heading {
+  text-shadow: 0 0 8px rgba(168, 116, 65, 0.2),
+               0 0 16px rgba(168, 116, 65, 0.1);
+}
+
+/* Category and product titles */
+.category-title,
+.product-title,
+.collection-title {
+  text-shadow: 0 0 12px rgba(168, 116, 65, 0.35),
+               0 0 24px rgba(168, 116, 65, 0.2),
+               0 0 36px rgba(168, 116, 65, 0.1);
+}
+
+/* Footer text glow */
+footer,
+footer a,
+.footer-text {
+  text-shadow: 0 0 8px rgba(168, 116, 65, 0.25),
+               0 0 16px rgba(168, 116, 65, 0.12);
+}
+
+/* Login input enhanced styling */
+.login-input {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(74, 60, 49, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.login-input:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 4px 16px rgba(139, 94, 60, 0.15);
+}
+
+.login-input:focus {
+  background: #121212;
+  color: white;
+  border-color: #8B5E3C;
+  box-shadow: 0 0 25px rgba(139, 94, 60, 0.5),
+              0 0 50px rgba(139, 94, 60, 0.25);
+}
+
+/* Ghost Cursor Enhanced Container */
+.ghost-cursor-enhanced {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ghost-cursor-enhanced > canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+/* Bento Grid Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(2deg); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(168, 116, 65, 0.2),
+                0 0 40px rgba(168, 116, 65, 0.1);
+  }
+  50% { 
+    box-shadow: 0 0 30px rgba(168, 116, 65, 0.4),
+                0 0 60px rgba(168, 116, 65, 0.2);
+  }
+}
+
+/* Coming Soon Badge Styling */
+.coming-soon-badge {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* 3D Contact Page Styles */
+.floating-3d {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.parallax-layer {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Brown neon glow for special elements */
+.bronze-glow {
+  box-shadow: 0 0 20px rgba(168, 116, 65, 0.4),
+              0 0 40px rgba(168, 116, 65, 0.2),
+              0 0 60px rgba(168, 116, 65, 0.1);
+}
+
+.bronze-glow-text {
+  text-shadow: 0 0 10px rgba(168, 116, 65, 0.6),
+               0 0 20px rgba(168, 116, 65, 0.4),
+               0 0 30px rgba(168, 116, 65, 0.2),
+               0 0 40px rgba(168, 116, 65, 0.1);
+}
+
+/* Smooth scrolling for the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #121212;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #a87441, #8B5E3C);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #D4AF87, #a87441);
+}

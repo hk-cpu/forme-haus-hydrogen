@@ -6,7 +6,7 @@ import {
 } from '@shopify/remix-oxygen';
 import { Form, useActionData, useNavigation, Link, useSearchParams } from '@remix-run/react';
 import { useState, useEffect } from 'react';
-import GhostCursor from '~/components/GhostCursor';
+import GhostCursorEnhanced from '~/components/GhostCursorEnhanced';
 
 export async function loader({ context, request }: LoaderFunctionArgs) {
   const { session } = context;
@@ -107,20 +107,22 @@ export default function Login() {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-[#AD9686] flex flex-col items-center justify-center text-[#F0EAE6]">
-      <GhostCursor
-        color="#4A3C31"
-        brightness={1.0}
-        edgeIntensity={0.2}
+      <GhostCursorEnhanced
+        primaryColor="#000000"
+        secondaryColor="#8B5E3C"
+        brightness={1.2}
+        edgeIntensity={0.15}
         trailLength={60}
         inertia={0.3}
-        grainIntensity={0.06}
-        bloomStrength={0.2}
-        bloomRadius={0.6}
-        bloomThreshold={0}
+        grainIntensity={0.04}
+        bloomStrength={0.25}
+        bloomRadius={0.8}
+        bloomThreshold={0.01}
         fadeDelayMs={800}
         fadeDurationMs={1200}
         zIndex={0}
-        mixBlendMode="overlay"
+        mixBlendMode="normal"
+        hoverIntensity={2.0}
       />
 
       <div className="relative z-10 flex flex-col items-center gap-10 p-8 w-full max-w-md transition-all duration-500">
@@ -167,7 +169,7 @@ export default function Login() {
                 id="email"
                 placeholder="EMAIL ADDRESS"
                 required
-                className="w-full bg-transparent border-b border-[#4A3C31]/20 py-3 text-[#4A3C31] placeholder-[#4A3C31]/40 focus:outline-none focus:border-[#4A3C31] transition-colors text-center tracking-[0.2em] text-xs font-medium"
+                className="login-input w-full bg-white/90 border border-[#4A3C31]/10 py-4 px-6 text-[#4A3C31] placeholder-[#4A3C31]/50 focus:outline-none focus:bg-[#121212] focus:text-white focus:border-[#8B5E3C] focus:shadow-[0_0_20px_rgba(139,94,60,0.4)] transition-all duration-500 text-center tracking-[0.15em] text-xs font-medium rounded-sm"
               />
             </div>
             <div>
@@ -178,7 +180,7 @@ export default function Login() {
                 id="password"
                 placeholder="PASSWORD"
                 required
-                className="w-full bg-transparent border-b border-[#4A3C31]/20 py-3 text-[#4A3C31] placeholder-[#4A3C31]/40 focus:outline-none focus:border-[#4A3C31] transition-colors text-center tracking-[0.2em] text-xs font-medium"
+                className="login-input w-full bg-white/90 border border-[#4A3C31]/10 py-4 px-6 text-[#4A3C31] placeholder-[#4A3C31]/50 focus:outline-none focus:bg-[#121212] focus:text-white focus:border-[#8B5E3C] focus:shadow-[0_0_20px_rgba(139,94,60,0.4)] transition-all duration-500 text-center tracking-[0.15em] text-xs font-medium rounded-sm"
               />
             </div>
           </div>
