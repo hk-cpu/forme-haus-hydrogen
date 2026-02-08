@@ -33,6 +33,7 @@ import SmoothScroll from '~/components/SmoothScroll';
 import favicon from '~/assets/favicon.svg';
 import {seoPayload} from '~/lib/seo.server';
 import styles from '~/styles/app.css?url';
+import {UIProvider} from '~/context/UIContext';
 
 import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
 
@@ -192,18 +193,20 @@ function Layout({children}: {children?: React.ReactNode}) {
       </head>
       <body>
         {data ? (
-          <Analytics.Provider
-            cart={data.cart}
-            shop={data.shop}
-            consent={data.consent}
-          >
-            <PageLayout
-              key={`${locale.language}-${locale.country}`}
-              layout={data.layout}
+          <UIProvider>
+            <Analytics.Provider
+              cart={data.cart}
+              shop={data.shop}
+              consent={data.consent}
             >
-              {children}
-            </PageLayout>
-          </Analytics.Provider>
+              <PageLayout
+                key={`${locale.language}-${locale.country}`}
+                layout={data.layout}
+              >
+                {children}
+              </PageLayout>
+            </Analytics.Provider>
+          </UIProvider>
         ) : (
           children
         )}

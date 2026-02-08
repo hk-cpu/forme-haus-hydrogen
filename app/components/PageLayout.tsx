@@ -21,6 +21,12 @@ import { Header as FormeHeader } from '~/components/Header';
 import Silk from '~/components/Silk';
 import Atmosphere from '~/components/Atmosphere';
 import { PredictiveSearch } from '~/components/PredictiveSearch';
+import { PromoBanner } from '~/components/PromoBanner';
+import { NavigationMenu } from '~/components/NavigationMenu';
+import { SearchOverlay } from '~/components/SearchOverlay';
+import { AccountOverlay } from '~/components/AccountOverlay';
+import { FilterPanel } from '~/components/FilterPanel';
+import { useUI } from '~/context/UIContext';
 
 import SocialButtons from '~/components/SocialButtons';
 import PaymentBadges from '~/components/PaymentBadges';
@@ -66,6 +72,7 @@ export function PageLayout({ children, layout }: LayoutProps) {
 
         <div className="relative z-10 flex flex-col items-center lg:py-8 transition-all duration-700">
           <div className="w-full max-w-[1800px] flex flex-col relative mx-auto my-0 px-4 md:px-8">
+            <PromoBanner />
 
             <Header
               title={layout?.shop.name || 'Formé Haus'}
@@ -90,6 +97,7 @@ export function PageLayout({ children, layout }: LayoutProps) {
 
 function Header({ title, menu }: { title: string; menu?: EnhancedMenu }) {
   const isHome = useIsHomePath();
+  const { state, toggleCart, toggleSearch, toggleMenu } = useUI();
 
   const {
     isOpen: isCartOpen,
@@ -104,12 +112,6 @@ function Header({ title, menu }: { title: string; menu?: EnhancedMenu }) {
     closeDrawer: closeSearch,
   } = useDrawer();
 
-  const {
-    isOpen: isMenuOpen,
-    openDrawer: openMenu,
-    closeDrawer: closeMenu,
-  } = useDrawer();
-
   const addToCartFetchers = useCartFetchers(CartForm.ACTIONS.LinesAdd);
 
   // toggle cart drawer when adding to cart
@@ -118,19 +120,38 @@ function Header({ title, menu }: { title: string; menu?: EnhancedMenu }) {
     openCart();
   }, [addToCartFetchers, isCartOpen, openCart]);
 
+  // Sync UIContext cart state with drawer
+  useEffect(() => {
+    if (state.isCartOpen && !isCartOpen) {
+      openCart();
+    } else if (!state.isCartOpen && isCartOpen) {
+      closeCart();
+    }
+  }, [state.isCartOpen, isCartOpen, openCart, closeCart]);
+
+  // Sync UIContext search state with drawer
+  useEffect(() => {
+    if (state.isSearchOpen && !isSearchOpen) {
+      openSearch();
+    } else if (!state.isSearchOpen && isSearchOpen) {
+      closeSearch();
+    }
+  }, [state.isSearchOpen, isSearchOpen, openSearch, closeSearch]);
+
   return (
     <>
       <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
       <SearchDrawer isOpen={isSearchOpen} onClose={closeSearch} />
-      {menu && (
-        <MenuDrawer isOpen={isMenuOpen} onClose={closeMenu} menu={menu} />
-      )}
+      <NavigationMenu />
+      <SearchOverlay />
+      <AccountOverlay />
+      <FilterPanel />
       <FormeHeader
         title={title}
         menu={menu}
         openCart={openCart}
-        openSearch={openSearch}
-        openMenu={openMenu}
+        openSearch={toggleSearch}
+        openMenu={toggleMenu}
       />
     </>
   );
