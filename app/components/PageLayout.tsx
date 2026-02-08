@@ -301,27 +301,27 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
       </div>
 
       {/* Footer Bottom: Compliance & Legal */}
-      <div className="mt-24 pt-10 border-t border-[#8B8076]/15 flex flex-col lg:flex-row justify-between items-center gap-8 text-[10px] opacity-60 font-sans tracking-[0.08em] uppercase">
+      <div className="mt-24 pt-10 border-t border-[#8B8076]/30 flex flex-col lg:flex-row justify-between items-center gap-8 text-[11px] font-sans tracking-[0.08em] uppercase text-[#3D352E]">
         {/* Left: CR & Legal */}
         <div className="flex flex-col lg:flex-row items-center gap-6">
-          <span>&copy; 2026 Formé Haus</span>
-          <span className="hidden lg:block h-3 w-px bg-[#4A3C31]/20" />
+          <span className="font-semibold text-[#2C2419]">&copy; 2026 Formé Haus</span>
+          <span className="hidden lg:block h-3 w-px bg-[#4A3C31]/30" />
           <div className="flex items-center gap-2">
-            <span>{t('footer.crNo')}</span>
+            <span className="text-[#5A5046]">{t('footer.crNo')}</span>
             <a
               href="/compliance/cr-certificate.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-mono text-[#a87441] hover:text-[#4A3C31] transition-colors border-b border-transparent hover:border-[#a87441]"
+              className="font-mono font-semibold text-[#2C2419] hover:text-[#a87441] transition-colors"
               title="View Commercial Registration Certificate"
             >
               7051891369
             </a>
           </div>
-          <span className="hidden lg:block h-3 w-px bg-[#4A3C31]/20" />
+          <span className="hidden lg:block h-3 w-px bg-[#4A3C31]/30" />
           <div className="flex items-center gap-2">
-            <span>{t('footer.vatNo')}</span>
-            <span className="font-mono">314271812300003</span>
+            <span className="text-[#5A5046]">{t('footer.vatNo')}</span>
+            <span className="font-mono font-semibold text-[#2C2419]">314271812300003</span>
           </div>
         </div>
 
@@ -329,29 +329,34 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
         <div className="flex items-center gap-4">
           <a
             href="/compliance/vat-certificate.pdf"
-            className="hover:text-[#4A3C31] transition-colors"
+            className="text-[#5A5046] hover:text-[#2C2419] transition-colors font-medium"
           >
             {t('footer.vatCertificate')}
           </a>
           <a
             href="/compliance/cr-certificate.pdf"
-            className="hover:text-[#4A3C31] transition-colors"
+            className="text-[#5A5046] hover:text-[#2C2419] transition-colors font-medium"
           >
             {t('footer.crCertificate')}
           </a>
+        </div>
+
+        {/* Right: Payment Badges - Horizontal with labels */}
+        <div className="flex flex-col items-center lg:items-end gap-3">
+          <span className="text-[10px] text-[#5A5046] tracking-wider">{t('footer.paymentMethods', 'Secure Payment Methods')}</span>
           <PaymentBadges />
         </div>
 
-        {/* Right: Arabic */}
+        {/* Far Right: Arabic */}
         <div
           className="text-right flex flex-col lg:flex-row items-center gap-4"
           dir="rtl"
         >
-          <span className="font-sans">
+          <span className="font-sans font-semibold text-[#2C2419]">
             س.ت: <span className="font-mono">٧٠٥١٨٩١٣٦٩</span>
           </span>
-          <span className="hidden lg:block h-3 w-px bg-[#4A3C31]/20" />
-          <span>الرياض، المملكة العربية السعودية</span>
+          <span className="hidden lg:block h-3 w-px bg-[#4A3C31]/30" />
+          <span className="text-[#3D352E]">الرياض، المملكة العربية السعودية</span>
         </div>
       </div>
     </Section>
@@ -380,9 +385,14 @@ function FooterMenu({ menu }: { menu?: EnhancedMenu }) {
     nav: 'grid gap-2 pb-6',
   };
 
+  // Filter out unwanted menu items like "Search"
+  const filteredItems = (menu?.items || []).filter(
+    (item) => item.title.toLowerCase() !== 'search'
+  );
+
   return (
     <>
-      {(menu?.items || []).map((item) => (
+      {filteredItems.map((item) => (
         <section key={item.id} className={styles.section}>
           <Disclosure>
             {({ open }) => (
@@ -405,9 +415,11 @@ function FooterMenu({ menu }: { menu?: EnhancedMenu }) {
                     <Suspense data-comment="This suspense fixes a hydration bug in Disclosure.Panel with static prop">
                       <Disclosure.Panel static>
                         <nav className={styles.nav}>
-                          {item.items.map((subItem: ChildEnhancedMenuItem) => (
-                            <FooterLink key={subItem.id} item={subItem} />
-                          ))}
+                          {item.items
+                            .filter((subItem) => subItem.title.toLowerCase() !== 'search')
+                            .map((subItem: ChildEnhancedMenuItem) => (
+                              <FooterLink key={subItem.id} item={subItem} />
+                            ))}
                         </nav>
                       </Disclosure.Panel>
                     </Suspense>
