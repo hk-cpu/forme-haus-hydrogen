@@ -3115,4 +3115,5 @@ export {
   Footer,
   PromoBanner,
   tokens,
+  Icons,
 };
