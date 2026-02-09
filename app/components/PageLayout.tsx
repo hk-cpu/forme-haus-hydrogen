@@ -1,15 +1,14 @@
 import { Await, useRouteLoaderData, useNavigation } from '@remix-run/react';
-import { Disclosure } from '@headlessui/react';
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CartForm } from '@shopify/hydrogen';
 
 import { type LayoutQuery } from 'storefrontapi.generated';
-import { Text, Heading, Section } from '~/components/Text';
+import { Text } from '~/components/Text';
 import { Link } from '~/components/Link';
 import { Cart } from '~/components/Cart';
 import { CartLoading } from '~/components/CartLoading';
 import { Drawer, useDrawer } from '~/components/Drawer';
-import { IconCaret } from '~/components/Icon';
+
 import {
   type EnhancedMenu,
   type ChildEnhancedMenuItem,
@@ -21,6 +20,12 @@ import { Header as FormeHeader } from '~/components/Header';
 import Silk from '~/components/Silk';
 import Atmosphere from '~/components/Atmosphere';
 import { PredictiveSearch } from '~/components/PredictiveSearch';
+import { NavigationMenu } from '~/components/NavigationMenu';
+
+import { SearchOverlay } from '~/components/SearchOverlay';
+import { AccountOverlay } from '~/components/AccountOverlay';
+import { FilterPanel } from '~/components/FilterPanel';
+import { useUI } from '~/context/UIContext';
 
 import SocialButtons from '~/components/SocialButtons';
 import PaymentBadges from '~/components/PaymentBadges';
@@ -51,11 +56,10 @@ export function PageLayout({ children, layout }: LayoutProps) {
       <div className="flex flex-col min-h-screen relative bg-[#121212]">
         {/* Background Layer (Z-0) */}
         <div className="fixed inset-0 pointer-events-none z-0">
-          <Silk color="#AD9686" />
-          <Atmosphere count={150} color="#AD9686" size={0.012} opacity={0.4} />
-          {/* Dark Glass Overlay */}
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/80" />
+          <Silk color="#AD9686" opacity={0.15} />
+          <Atmosphere count={100} color="#AD9686" size={0.008} opacity={0.2} />
+          {/* Subtle gradient for depth - much lighter */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
         </div>
 
         <div className="">
@@ -66,7 +70,6 @@ export function PageLayout({ children, layout }: LayoutProps) {
 
         <div className="relative z-10 flex flex-col items-center lg:py-8 transition-all duration-700">
           <div className="w-full max-w-[1800px] flex flex-col relative mx-auto my-0 px-4 md:px-8">
-
             <Header
               title={layout?.shop.name || 'Formé Haus'}
               menu={headerMenu || undefined}
@@ -90,6 +93,7 @@ export function PageLayout({ children, layout }: LayoutProps) {
 
 function Header({ title, menu }: { title: string; menu?: EnhancedMenu }) {
   const isHome = useIsHomePath();
+  const { state, toggleCart, toggleSearch, toggleMenu } = useUI();
 
   const {
     isOpen: isCartOpen,
@@ -104,12 +108,6 @@ function Header({ title, menu }: { title: string; menu?: EnhancedMenu }) {
     closeDrawer: closeSearch,
   } = useDrawer();
 
-  const {
-    isOpen: isMenuOpen,
-    openDrawer: openMenu,
-    closeDrawer: closeMenu,
-  } = useDrawer();
-
   const addToCartFetchers = useCartFetchers(CartForm.ACTIONS.LinesAdd);
 
   // toggle cart drawer when adding to cart
@@ -118,19 +116,38 @@ function Header({ title, menu }: { title: string; menu?: EnhancedMenu }) {
     openCart();
   }, [addToCartFetchers, isCartOpen, openCart]);
 
+  // Sync UIContext cart state with drawer
+  useEffect(() => {
+    if (state.isCartOpen && !isCartOpen) {
+      openCart();
+    } else if (!state.isCartOpen && isCartOpen) {
+      closeCart();
+    }
+  }, [state.isCartOpen, isCartOpen, openCart, closeCart]);
+
+  // Sync UIContext search state with drawer
+  useEffect(() => {
+    if (state.isSearchOpen && !isSearchOpen) {
+      openSearch();
+    } else if (!state.isSearchOpen && isSearchOpen) {
+      closeSearch();
+    }
+  }, [state.isSearchOpen, isSearchOpen, openSearch, closeSearch]);
+
   return (
     <>
       <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
       <SearchDrawer isOpen={isSearchOpen} onClose={closeSearch} />
-      {menu && (
-        <MenuDrawer isOpen={isMenuOpen} onClose={closeMenu} menu={menu} />
-      )}
+      <NavigationMenu />
+      <SearchOverlay />
+      <AccountOverlay />
+      <FilterPanel />
       <FormeHeader
         title={title}
         menu={menu}
         openCart={openCart}
-        openSearch={openSearch}
-        openMenu={openMenu}
+        openSearch={toggleSearch}
+        openMenu={toggleMenu}
       />
     </>
   );
@@ -231,172 +248,241 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
   const { t } = useTranslation();
 
   return (
-    <Section
-      divider={isHome ? 'none' : 'top'}
-      as="footer"
+    <footer
       role="contentinfo"
-      className={`grid w-full py-20 px-6 md:px-12 lg:px-24 bg-[#F9F5F0] text-[#4A3C31] overflow-hidden rounded-b-[2rem] shadow-[0_20px_60px_-15px_rgba(255,255,255,0.3)]`}
+      className="relative w-full overflow-hidden rounded-b-[2rem]"
     >
-      {/* Centered Logo Icon at Top */}
-      <div className="flex justify-center mb-16">
-        <img
-          src="/brand/logo-icon-only.png"
-          alt="Formé Haus"
-          className="h-12 md:h-16 w-auto object-contain opacity-70 hover:opacity-90 transition-opacity duration-500"
-        />
-      </div>
+      {/* Semi-Glass Background Layer */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a1a]/80 via-[#151515]/90 to-[#121212]/95 backdrop-blur-xl" />
+      
+      {/* Bronze Accent Line at Top */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 w-full max-w-[1920px] mx-auto">
-        {/* COL 1: Newsletter & Socials (Luxury Priority) */}
-        <div className="lg:col-span-4 flex flex-col gap-8">
-          {/* Newsletter removed to avoid duplication with Homepage Luxury Form */}
+      <div className="relative z-10 py-16 px-6 md:px-12 lg:px-24">
+        {/* Main Footer Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 w-full max-w-[1920px] mx-auto">
+          
+          {/* COL 1: Brand & Newsletter */}
+          <div className="lg:col-span-4 flex flex-col gap-8">
+            {/* Brand Logo */}
+            <div className="flex items-center gap-4">
+              <img
+                src="/brand/logo-icon-only.png"
+                alt="Formé Haus"
+                className="h-14 w-auto object-contain opacity-90"
+              />
+              <div>
+                <h3 className="font-serif text-xl text-[#F0EAE6]">Formé Haus</h3>
+                <p className="text-[11px] uppercase tracking-[0.2em] text-[#a87441]">Riyadh</p>
+              </div>
+            </div>
+            
+            {/* Brief Description */}
+            <p className="text-[13px] leading-relaxed text-[#AA9B8F] max-w-xs">
+              {t('footer.description', 'Luxury fashion destination in the heart of Saudi Arabia. Curating exceptional pieces for the discerning few.')}
+            </p>
 
-          <div className="space-y-6">
-            <h3 className="text-[10px] uppercase tracking-[0.3em] text-[#8B8076] font-light">
-              {t('footer.followUs')}
-            </h3>
-            <SocialButtons />
+            {/* Social Links */}
+            <div className="space-y-4">
+              <h3 className="text-[10px] uppercase tracking-[0.3em] text-[#8B8076] font-light">
+                {t('footer.followUs')}
+              </h3>
+              <SocialButtons />
+            </div>
           </div>
-        </div>
 
-        {/* COL 2: Navigation Links (Grid System) */}
-        <div className="lg:col-span-6 grid grid-cols-2 md:grid-cols-3 gap-8">
-          <FooterMenu menu={menu} />
-        </div>
+          {/* COL 2: Navigation Links */}
+          <div className="lg:col-span-5">
+            <FooterMenu menu={menu} />
+          </div>
 
-        {/* COL 3: App / Trust (Minimal) */}
-        <div className="lg:col-span-2 flex flex-col gap-8 items-start lg:items-end text-right">
-          <div className="space-y-4">
-            <div className="bg-white p-4 rounded-sm border border-[#8B8076]/10 text-center shadow-sm">
+          {/* COL 3: App Download & Contact */}
+          <div className="lg:col-span-3 flex flex-col gap-6">
+            {/* App Coming Soon */}
+            <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md border border-white/10 rounded-xl p-5">
               <span className="block text-[10px] uppercase tracking-widest text-[#a87441] mb-2">
                 {t('footer.mobileApp')}
               </span>
-              <span className="text-xl font-serif italic text-[#8B8076] select-none">
+              <span className="text-lg font-serif italic text-[#F0EAE6]/70 select-none">
                 {t('footer.comingSoon')}
               </span>
             </div>
+
+            {/* Quick Contact */}
+            <div className="space-y-3">
+              <h4 className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076]">
+                {t('footer.contact', 'Contact')}
+              </h4>
+              <a 
+                href="tel:+966800123456" 
+                className="flex items-center gap-3 text-[#AA9B8F] hover:text-[#a87441] transition-colors"
+              >
+                <span className="text-sm">800 123 456</span>
+              </a>
+              <a 
+                href="mailto:care@formehaus.com" 
+                className="block text-sm text-[#AA9B8F] hover:text-[#a87441] transition-colors"
+              >
+                care@formehaus.com
+              </a>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Footer Bottom: Compliance & Legal */}
-      <div className="mt-24 pt-10 border-t border-[#8B8076]/15 flex flex-col lg:flex-row justify-between items-center gap-8 text-[10px] opacity-60 font-sans tracking-[0.08em] uppercase">
-        {/* Left: CR & Legal */}
-        <div className="flex flex-col lg:flex-row items-center gap-6">
-          <span>&copy; 2026 Formé Haus</span>
-          <span className="hidden lg:block h-3 w-px bg-[#4A3C31]/20" />
-          <div className="flex items-center gap-2">
-            <span>{t('footer.crNo')}</span>
+        {/* Divider */}
+        <div className="max-w-[1920px] mx-auto my-12 h-[1px] bg-gradient-to-r from-transparent via-[#a87441]/20 to-transparent" />
+
+        {/* Footer Bottom: Legal & Compliance */}
+        <div className="max-w-[1920px] mx-auto flex flex-col lg:flex-row justify-between items-center gap-6 text-[11px] font-sans tracking-[0.08em] text-[#8B8076]">
+          {/* Left: Copyright & Legal */}
+          <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-6">
+            <span className="font-medium text-[#F0EAE6]/80">&copy; 2026 Formé Haus</span>
+            <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
+            <div className="flex items-center gap-2">
+              <span className="text-[#AA9B8F]">{t('footer.crNo')}</span>
+              <a
+                href="/compliance/cr-certificate.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono font-medium text-[#F0EAE6] hover:text-[#a87441] transition-colors"
+              >
+                7051891369
+              </a>
+            </div>
+            <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
+            <div className="flex items-center gap-2">
+              <span className="text-[#AA9B8F]">{t('footer.vatNo')}</span>
+              <span className="font-mono font-medium text-[#F0EAE6]">314271812300003</span>
+            </div>
+          </div>
+
+          {/* Center: Legal Links */}
+          <div className="flex items-center gap-6">
+            <Link to="/policies/privacy-policy" className="hover:text-[#a87441] transition-colors">
+              {t('footer.privacy')}
+            </Link>
+            <Link to="/policies/terms-of-service" className="hover:text-[#a87441] transition-colors">
+              {t('footer.terms')}
+            </Link>
             <a
-              href="/compliance/cr-certificate.pdf"
+              href="/compliance/vat-certificate.pdf"
               target="_blank"
-              rel="noopener noreferrer"
-              className="font-mono text-[#a87441] hover:text-[#4A3C31] transition-colors border-b border-transparent hover:border-[#a87441]"
-              title="View Commercial Registration Certificate"
+              className="hover:text-[#a87441] transition-colors"
             >
-              7051891369
+              {t('footer.vatCertificate')}
             </a>
           </div>
-          <span className="hidden lg:block h-3 w-px bg-[#4A3C31]/20" />
-          <div className="flex items-center gap-2">
-            <span>{t('footer.vatNo')}</span>
-            <span className="font-mono">314271812300003</span>
+
+          {/* Right: Payment Methods */}
+          <div className="flex items-center gap-4">
+            <span className="text-[10px] text-[#AA9B8F] tracking-wider">{t('footer.paymentMethods', 'Secure Payment')}</span>
+            <PaymentBadges />
           </div>
         </div>
 
-        {/* Center: Trust Badges */}
-        <div className="flex items-center gap-4">
-          <a
-            href="/compliance/vat-certificate.pdf"
-            className="hover:text-[#4A3C31] transition-colors"
-          >
-            {t('footer.vatCertificate')}
-          </a>
-          <a
-            href="/compliance/cr-certificate.pdf"
-            className="hover:text-[#4A3C31] transition-colors"
-          >
-            {t('footer.crCertificate')}
-          </a>
-          <PaymentBadges />
-        </div>
-
-        {/* Right: Arabic */}
-        <div
-          className="text-right flex flex-col lg:flex-row items-center gap-4"
-          dir="rtl"
-        >
-          <span className="font-sans">
-            س.ت: <span className="font-mono">٧٠٥١٨٩١٣٦٩</span>
-          </span>
-          <span className="hidden lg:block h-3 w-px bg-[#4A3C31]/20" />
-          <span>الرياض، المملكة العربية السعودية</span>
+        {/* Bottom Brand Logo */}
+        <div className="flex justify-center mt-16">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-16 h-[1px] bg-gradient-to-r from-transparent via-[#a87441]/40 to-transparent" />
+            <img
+              src="/brand/logo-icon-only.png"
+              alt="Formé Haus"
+              className="h-8 w-auto object-contain opacity-50 hover:opacity-80 transition-opacity duration-500"
+            />
+            <p className="text-[10px] uppercase tracking-[0.3em] text-[#8B8076]/60">
+              Saudi Arabia
+            </p>
+          </div>
         </div>
       </div>
-    </Section>
+    </footer>
   );
 }
 
 function FooterLink({ item }: { item: ChildEnhancedMenuItem }) {
+  const linkClass = "text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-200";
+  
   if (item.to.startsWith('http')) {
     return (
-      <a href={item.to} target={item.target} rel="noopener noreferrer">
+      <a href={item.to} target={item.target} rel="noopener noreferrer" className={linkClass}>
         {item.title}
       </a>
     );
   }
 
   return (
-    <Link to={item.to} target={item.target} prefetch="intent">
+    <Link to={item.to} target={item.target} prefetch="intent" className={linkClass}>
       {item.title}
     </Link>
   );
 }
 
 function FooterMenu({ menu }: { menu?: EnhancedMenu }) {
-  const styles = {
-    section: 'grid gap-4',
-    nav: 'grid gap-2 pb-6',
-  };
+  // Filter out unwanted menu items like "Search"
+  const filteredItems = (menu?.items || []).filter(
+    (item) => item.title.toLowerCase() !== 'search'
+  );
 
   return (
-    <>
-      {(menu?.items || []).map((item) => (
-        <section key={item.id} className={styles.section}>
-          <Disclosure>
-            {({ open }) => (
-              <>
-                <Disclosure.Button className="text-left md:cursor-default">
-                  <Heading className="flex justify-between" size="lead" as="h3">
-                    {item.title}
-                    {item?.items?.length > 0 && (
-                      <span className="md:hidden">
-                        <IconCaret direction={open ? 'up' : 'down'} />
-                      </span>
-                    )}
-                  </Heading>
-                </Disclosure.Button>
-                {item?.items?.length > 0 ? (
-                  <div
-                    className={`${open ? `max-h-48 h-fit` : `max-h-0 md:max-h-fit`
-                      } overflow-hidden transition-all duration-300`}
-                  >
-                    <Suspense data-comment="This suspense fixes a hydration bug in Disclosure.Panel with static prop">
-                      <Disclosure.Panel static>
-                        <nav className={styles.nav}>
-                          {item.items.map((subItem: ChildEnhancedMenuItem) => (
-                            <FooterLink key={subItem.id} item={subItem} />
-                          ))}
-                        </nav>
-                      </Disclosure.Panel>
-                    </Suspense>
-                  </div>
-                ) : null}
-              </>
-            )}
-          </Disclosure>
-        </section>
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+      {filteredItems.map((item) => (
+        <div key={item.id} className="space-y-4">
+          <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
+            {item.title}
+          </h4>
+          {item?.items?.length > 0 ? (
+            <nav className="grid gap-2.5">
+              {item.items
+                .filter((subItem) => subItem.title.toLowerCase() !== 'search')
+                .map((subItem: ChildEnhancedMenuItem) => (
+                  <FooterLink key={subItem.id} item={subItem} />
+                ))}
+            </nav>
+          ) : null}
+        </div>
       ))}
-    </>
+      
+      {/* Static Links - Customer Care */}
+      <div className="space-y-4">
+        <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
+          Customer Care
+        </h4>
+        <nav className="grid gap-2.5">
+          <Link to="/contact" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+            Contact Us
+          </Link>
+          <Link to="/pages/faqs" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+            FAQs
+          </Link>
+          <Link to="/pages/shipping-returns" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+            Shipping & Returns
+          </Link>
+          <Link to="/account/orders" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+            Track Order
+          </Link>
+        </nav>
+      </div>
+      
+      {/* Static Links - About */}
+      <div className="space-y-4">
+        <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
+          About
+        </h4>
+        <nav className="grid gap-2.5">
+          <Link to="/pages/about" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+            Our Story
+          </Link>
+          <Link to="/pages/sustainability" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+            Sustainability
+          </Link>
+          <Link to="/pages/stores" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+            Store Locator
+          </Link>
+          <Link to="/pages/careers" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+            Careers
+          </Link>
+        </nav>
+      </div>
+    </div>
   );
 }

@@ -1,0 +1,762 @@
+/* ============================================================================
+   FUTURISTIC POLISH - Tactile Maximalism & Liquid Glass Effects
+   ============================================================================
+   External stylesheet for FORME-HAUS luxury e-commerce
+   
+   This file provides:
+   - Liquid glass morphic effects
+   - Kinetic typography animations
+   - Squishy UI micro-interactions
+   - Neon pastel accent glows
+   - Scroll-triggered reveals
+   
+   Usage: Import in root.tsx or layout files
+   import '~/styles/futuristic-polish.css';
+   
+   Note: This is an additive stylesheet - it does not override existing
+   component styles but provides additional utility classes.
+   ============================================================================ */
+
+/* ============================================================================
+   CSS CUSTOM PROPERTIES - Futuristic Color Palette
+   ============================================================================ */
+
+:root {
+  /* Extended Bronze Spectrum */
+  --fp-bronze-50: #fdf8f3;
+  --fp-bronze-100: #f9ede0;
+  --fp-bronze-200: #f0d4b8;
+  --fp-bronze-300: #e4b88a;
+  --fp-bronze-400: #d4985c;
+  --fp-bronze-500: #a87441;
+  --fp-bronze-600: #8b5e3c;
+  --fp-bronze-700: #6d4a35;
+  --fp-bronze-800: #5a3f31;
+  --fp-bronze-900: #4d352c;
+  
+  /* Neon Pastel Accents */
+  --fp-neon-gold: #ffd700;
+  --fp-neon-rose: #ff6b9d;
+  --fp-neon-cyan: #00d4ff;
+  --fp-neon-lavender: #b8a9ff;
+  --fp-neon-mint: #7fffd4;
+  
+  /* Dark Mode Depth */
+  --fp-depth-0: #000000;
+  --fp-depth-1: #0a0a0a;
+  --fp-depth-2: #121212;
+  --fp-depth-3: #1a1a1a;
+  --fp-depth-4: #242424;
+  
+  /* Glass Effects */
+  --fp-glass-bg: rgba(255, 255, 255, 0.03);
+  --fp-glass-border: rgba(255, 255, 255, 0.08);
+  --fp-glass-highlight: rgba(255, 255, 255, 0.15);
+  --fp-glass-shadow: rgba(0, 0, 0, 0.4);
+  
+  /* Animation Timing */
+  --fp-ease-luxe: cubic-bezier(0.16, 1, 0.3, 1);
+  --fp-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --fp-ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --fp-ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ============================================================================
+   LIQUID GLASS MORPHISM
+   ============================================================================ */
+
+.fp-glass {
+  background: var(--fp-glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--fp-glass-border);
+  box-shadow: 
+    0 8px 32px 0 var(--fp-glass-shadow),
+    inset 0 1px 0 0 var(--fp-glass-highlight);
+}
+
+.fp-glass-strong {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.fp-glass-dark {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(30px) saturate(150%);
+  -webkit-backdrop-filter: blur(30px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Interactive Liquid Glass - responds to hover */
+.fp-liquid-glass {
+  position: relative;
+  background: var(--fp-glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--fp-glass-border);
+  border-radius: 24px;
+  overflow: hidden;
+  transition: transform 0.4s var(--fp-ease-luxe), box-shadow 0.4s var(--fp-ease-luxe);
+}
+
+.fp-liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    var(--fp-glass-highlight) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.fp-liquid-glass:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(168, 116, 65, 0.2),
+    0 0 30px rgba(168, 116, 65, 0.1);
+}
+
+.fp-liquid-glass:hover::before {
+  opacity: 1;
+}
+
+/* ============================================================================
+   KINETIC TYPOGRAPHY
+   ============================================================================ */
+
+/* Text Reveal Animation */
+.fp-kinetic-reveal {
+  overflow: hidden;
+}
+
+.fp-kinetic-reveal > span {
+  display: inline-block;
+  transform: translateY(100%) rotateX(-90deg);
+  opacity: 0;
+  animation: kineticReveal 0.8s var(--fp-ease-luxe) forwards;
+}
+
+.fp-kinetic-reveal > span:nth-child(1) { animation-delay: 0s; }
+.fp-kinetic-reveal > span:nth-child(2) { animation-delay: 0.08s; }
+.fp-kinetic-reveal > span:nth-child(3) { animation-delay: 0.16s; }
+.fp-kinetic-reveal > span:nth-child(4) { animation-delay: 0.24s; }
+.fp-kinetic-reveal > span:nth-child(5) { animation-delay: 0.32s; }
+
+@keyframes kineticReveal {
+  to {
+    transform: translateY(0) rotateX(0);
+    opacity: 1;
+  }
+}
+
+/* Morphing Text Effect */
+.fp-text-morph {
+  position: relative;
+  display: inline-block;
+}
+
+.fp-text-morph::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--fp-bronze-400), var(--fp-neon-gold), var(--fp-bronze-400));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShimmer 3s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.fp-text-morph:hover::after {
+  opacity: 1;
+}
+
+@keyframes textShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Glitch Text Effect */
+.fp-text-glitch {
+  position: relative;
+}
+
+.fp-text-glitch:hover {
+  animation: glitch 0.3s ease;
+}
+
+.fp-text-glitch::before,
+.fp-text-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.fp-text-glitch:hover::before {
+  animation: glitch-1 0.3s ease;
+  color: var(--fp-neon-rose);
+  z-index: -1;
+}
+
+.fp-text-glitch:hover::after {
+  animation: glitch-2 0.3s ease;
+  color: var(--fp-neon-cyan);
+  z-index: -2;
+}
+
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+}
+
+@keyframes glitch-1 {
+  0%, 100% { opacity: 0; transform: translate(0); }
+  20% { opacity: 0.8; transform: translate(3px, -3px); }
+  40% { opacity: 0; transform: translate(0); }
+  60% { opacity: 0.8; transform: translate(-3px, 3px); }
+  80% { opacity: 0; transform: translate(0); }
+}
+
+@keyframes glitch-2 {
+  0%, 100% { opacity: 0; transform: translate(0); }
+  20% { opacity: 0.8; transform: translate(-3px, 3px); }
+  40% { opacity: 0; transform: translate(0); }
+  60% { opacity: 0.8; transform: translate(3px, -3px); }
+  80% { opacity: 0; transform: translate(0); }
+}
+
+/* ============================================================================
+   TACTILE MAXIMALISM - SQUISHY UI
+   ============================================================================ */
+
+/* Squishy Button */
+.fp-btn-squish {
+  position: relative;
+  padding: 16px 32px;
+  background: linear-gradient(135deg, var(--fp-bronze-500), var(--fp-bronze-600));
+  border: none;
+  border-radius: 16px;
+  color: white;
+  font-family: "DM Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.3s var(--fp-ease-bounce);
+  box-shadow: 
+    0 4px 15px rgba(168, 116, 65, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.fp-btn-squish:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    0 8px 25px rgba(168, 116, 65, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.fp-btn-squish:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 
+    0 2px 8px rgba(168, 116, 65, 0.3),
+    inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Liquid Button with ripple effect */
+.fp-btn-liquid {
+  position: relative;
+  padding: 18px 36px;
+  background: var(--fp-depth-2);
+  border: 1px solid var(--fp-bronze-500);
+  border-radius: 30px;
+  color: var(--fp-bronze-300);
+  font-family: "DM Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.4s var(--fp-ease-luxe);
+}
+
+.fp-btn-liquid::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, var(--fp-bronze-500) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+  opacity: 0.3;
+}
+
+.fp-btn-liquid:hover {
+  color: white;
+  border-color: var(--fp-bronze-400);
+  box-shadow: 0 0 30px rgba(168, 116, 65, 0.3);
+}
+
+.fp-btn-liquid:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* ============================================================================
+   NEON GLOW EFFECTS
+   ============================================================================ */
+
+.fp-glow-bronze {
+  box-shadow: 
+    0 0 5px rgba(168, 116, 65, 0.5),
+    0 0 20px rgba(168, 116, 65, 0.3),
+    0 0 40px rgba(168, 116, 65, 0.1);
+}
+
+.fp-glow-gold {
+  box-shadow: 
+    0 0 5px rgba(212, 175, 135, 0.5),
+    0 0 20px rgba(212, 175, 135, 0.3),
+    0 0 40px rgba(212, 175, 135, 0.1);
+}
+
+.fp-glow-pulse {
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 5px rgba(168, 116, 65, 0.5),
+      0 0 20px rgba(168, 116, 65, 0.3);
+  }
+  50% {
+    box-shadow: 
+      0 0 10px rgba(168, 116, 65, 0.8),
+      0 0 40px rgba(168, 116, 65, 0.5),
+      0 0 60px rgba(212, 175, 135, 0.3);
+  }
+}
+
+/* Text Glow */
+.fp-text-glow {
+  text-shadow: 
+    0 0 10px rgba(168, 116, 65, 0.5),
+    0 0 20px rgba(168, 116, 65, 0.3),
+    0 0 40px rgba(168, 116, 65, 0.1);
+}
+
+/* ============================================================================
+   SCROLL-TRIGGERED ANIMATIONS
+   ============================================================================ */
+
+/* Fade Up Reveal */
+.fp-reveal-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s var(--fp-ease-luxe), transform 0.8s var(--fp-ease-luxe);
+}
+
+.fp-reveal-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Scale Reveal */
+.fp-reveal-scale {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.6s var(--fp-ease-luxe), transform 0.6s var(--fp-ease-luxe);
+}
+
+.fp-reveal-scale.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Blur Reveal */
+.fp-reveal-blur {
+  opacity: 0;
+  filter: blur(20px);
+  transform: translateY(30px);
+  transition: opacity 1s var(--fp-ease-luxe), filter 1s var(--fp-ease-luxe), transform 1s var(--fp-ease-luxe);
+}
+
+.fp-reveal-blur.is-visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+/* Stagger Children */
+.fp-stagger-children > * {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.fp-stagger-children.is-visible > *:nth-child(1) { animation: staggerIn 0.6s var(--fp-ease-luxe) 0.1s forwards; }
+.fp-stagger-children.is-visible > *:nth-child(2) { animation: staggerIn 0.6s var(--fp-ease-luxe) 0.2s forwards; }
+.fp-stagger-children.is-visible > *:nth-child(3) { animation: staggerIn 0.6s var(--fp-ease-luxe) 0.3s forwards; }
+.fp-stagger-children.is-visible > *:nth-child(4) { animation: staggerIn 0.6s var(--fp-ease-luxe) 0.4s forwards; }
+.fp-stagger-children.is-visible > *:nth-child(5) { animation: staggerIn 0.6s var(--fp-ease-luxe) 0.5s forwards; }
+.fp-stagger-children.is-visible > *:nth-child(6) { animation: staggerIn 0.6s var(--fp-ease-luxe) 0.6s forwards; }
+
+@keyframes staggerIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================================
+   HOVER MICRO-INTERACTIONS
+   ============================================================================ */
+
+/* Magnetic Effect */
+.fp-magnetic {
+  transition: transform 0.3s var(--fp-ease-smooth);
+}
+
+/* Lift Effect */
+.fp-hover-lift {
+  transition: transform 0.4s var(--fp-ease-luxe), box-shadow 0.4s var(--fp-ease-luxe);
+}
+
+.fp-hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Glow Border Effect */
+.fp-hover-glow {
+  position: relative;
+}
+
+.fp-hover-glow::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, var(--fp-bronze-500), var(--fp-neon-gold), var(--fp-bronze-500));
+  border-radius: inherit;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+  filter: blur(8px);
+}
+
+.fp-hover-glow:hover::before {
+  opacity: 0.6;
+}
+
+/* Shine Sweep Effect */
+.fp-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.fp-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  transform: rotate(30deg) translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.fp-shine:hover::after {
+  transform: rotate(30deg) translateX(100%);
+}
+
+/* ============================================================================
+   LOADING STATES
+   ============================================================================ */
+
+/* Shimmer Loading */
+.fp-loading-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--fp-depth-3) 0%,
+    var(--fp-depth-4) 50%,
+    var(--fp-depth-3) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Pulse Loading */
+.fp-loading-pulse {
+  animation: loadingPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes loadingPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+/* ============================================================================
+   CURSOR EFFECTS
+   ============================================================================ */
+
+/* Custom Cursor Trail */
+.fp-cursor-trail {
+  cursor: none;
+}
+
+/* Pointer Spotlight Effect */
+.fp-spotlight {
+  position: relative;
+}
+
+.fp-spotlight::before {
+  content: '';
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(168, 116, 65, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  left: var(--cursor-x, 50%);
+  top: var(--cursor-y, 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.fp-spotlight:hover::before {
+  opacity: 1;
+}
+
+/* ============================================================================
+   PARALLAX & DEPTH EFFECTS
+   ============================================================================ */
+
+/* Parallax Container */
+.fp-parallax-container {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+/* Floating Animation */
+.fp-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+/* Subtle Rotation */
+.fp-rotate-subtle {
+  animation: rotateSubtle 20s linear infinite;
+}
+
+@keyframes rotateSubtle {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================================
+   GRADIENT BACKGROUNDS
+   ============================================================================ */
+
+/* Aurora Gradient */
+.fp-aurora {
+  background: linear-gradient(
+    135deg,
+    var(--fp-depth-1) 0%,
+    rgba(168, 116, 65, 0.1) 25%,
+    rgba(139, 94, 60, 0.1) 50%,
+    rgba(168, 116, 65, 0.1) 75%,
+    var(--fp-depth-1) 100%
+  );
+  background-size: 400% 400%;
+  animation: aurora 15s ease infinite;
+}
+
+@keyframes aurora {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Mesh Gradient */
+.fp-mesh-gradient {
+  background: 
+    radial-gradient(at 40% 20%, rgba(168, 116, 65, 0.15) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, rgba(212, 175, 135, 0.1) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, rgba(139, 94, 60, 0.1) 0px, transparent 50%),
+    radial-gradient(at 80% 50%, rgba(168, 116, 65, 0.1) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(212, 175, 135, 0.1) 0px, transparent 50%),
+    var(--fp-depth-1);
+}
+
+/* ============================================================================
+   BENTO GRID 2.0
+   ============================================================================ */
+
+.fp-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 16px;
+}
+
+.fp-bento-item {
+  background: var(--fp-glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--fp-glass-border);
+  border-radius: 20px;
+  padding: 24px;
+  transition: all 0.4s var(--fp-ease-luxe);
+}
+
+.fp-bento-item:hover {
+  transform: scale(1.02);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.fp-bento-item-large {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.fp-bento-item-wide {
+  grid-column: span 2;
+}
+
+.fp-bento-item-tall {
+  grid-row: span 2;
+}
+
+/* Responsive Bento */
+@media (max-width: 1024px) {
+  .fp-bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .fp-bento-item-large {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .fp-bento-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .fp-bento-item-large,
+  .fp-bento-item-wide,
+  .fp-bento-item-tall {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+}
+
+/* ============================================================================
+   UTILITY CLASSES
+   ============================================================================ */
+
+/* Hide scrollbar but keep functionality */
+.fp-no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.fp-no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth scroll */
+.fp-smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+/* GPU Acceleration */
+.fp-gpu {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Text Balance */
+.fp-text-balance {
+  text-wrap: balance;
+}
+
+/* Aspect Ratio Shortcuts */
+.fp-aspect-product { aspect-ratio: 3/4; }
+.fp-aspect-hero { aspect-ratio: 16/9; }
+.fp-aspect-square { aspect-ratio: 1/1; }
+.fp-aspect-cinema { aspect-ratio: 21/9; }
+
+/* Z-index Scale */
+.fp-z-behind { z-index: -1; }
+.fp-z-base { z-index: 0; }
+.fp-z-above { z-index: 10; }
+.fp-z-dropdown { z-index: 100; }
+.fp-z-sticky { z-index: 200; }
+.fp-z-modal { z-index: 300; }
+.fp-z-popover { z-index: 400; }
+.fp-z-toast { z-index: 500; }
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .fp-kinetic-reveal > span,
+  .fp-text-morph::after,
+  .fp-glow-pulse,
+  .fp-float,
+  .fp-rotate-subtle,
+  .fp-aurora,
+  .fp-loading-shimmer,
+  .fp-loading-pulse {
+    animation: none;
+  }
+  
+  .fp-reveal-up,
+  .fp-reveal-scale,
+  .fp-reveal-blur,
+  .fp-stagger-children > * {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  
+  .fp-hover-lift:hover,
+  .fp-liquid-glass:hover,
+  .fp-btn-squish:hover {
+    transform: none;
+  }
+}

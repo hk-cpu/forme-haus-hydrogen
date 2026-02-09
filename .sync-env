@@ -1,0 +1,23 @@
+{
+  "targets": {
+    "FR": "theme-project-FR",
+    "EN": "theme-project-US",
+    "DE": "theme-project-DE"
+  },
+  "inclusions": [
+    "example-folder/",
+    "example.file"
+  ],
+  "syncFolders": {
+    "assets": true,
+    "config": true,
+    "layout": true,
+    "locales": false,
+    "sections": true,
+    "snippets": true,
+    "templates": false
+  },
+  "exclusions": [
+    "example.file"
+  ]
+}

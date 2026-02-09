@@ -50,7 +50,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
 }
 
 const CUSTOMER_CREATE_MUTATION = `#graphql
-  mutation customerCreate($input: CustomerCreateInput!) {
+  mutation newsletterCustomerCreate($input: CustomerCreateInput!) {
     customerCreate(input: $input) {
       customer {
         id

@@ -10,7 +10,7 @@ export const translations = {
   EN: {
     // Navigation
     'nav.shop': 'Shop',
-    'nav.collections': 'Collections',
+    'nav.collections': 'The Collections',
     'nav.newIn': 'New In',
     'nav.designers': 'Designers',
     'nav.clothing': 'Clothing',
@@ -21,7 +21,7 @@ export const translations = {
     'nav.about': 'About',
 
     // Header & Actions
-    'header.search': 'Search',
+    'header.search': '',
     'header.cart': 'Cart',
     'header.account': 'Account',
     'header.menu': 'Menu',
@@ -34,7 +34,7 @@ export const translations = {
     'banner.shipping': 'Complimentary Global Shipping over 300 SAR',
 
     // Homepage Sections
-    'home.categorySlider': 'Shop by Category',
+    'home.categorySlider': 'The Collections',
     'home.editorial': 'The Edit',
     'home.brandIntro': 'Formé Haus is a Saudi-based womenswear label rooted in modern elegance, refined silhouettes, and thoughtful craftsmanship.',
     'home.curatedForYou': 'Curated For You',
@@ -57,6 +57,11 @@ export const translations = {
     'footer.vatNo': 'VAT No.',
     'footer.vatCertificate': 'VAT Certificate',
     'footer.crCertificate': 'CR Certificate',
+    'footer.description': 'Luxury fashion destination in the heart of Saudi Arabia. Curating exceptional pieces for the discerning few.',
+    'footer.contact': 'Contact',
+    'footer.privacy': 'Privacy Policy',
+    'footer.terms': 'Terms of Service',
+    'footer.paymentMethods': 'Secure Payment Methods',
 
     // Newsletter / Notify
     'notify.email': 'Enter your email',
@@ -198,7 +203,7 @@ export const translations = {
     'banner.shipping': 'شحن مجاني للطلبات فوق ٣٠٠ ر.س',
 
     // Homepage Sections
-    'home.categorySlider': 'تسوّق حسب الفئة',
+    'home.categorySlider': 'المجموعات',
     'home.editorial': 'اختيارات المحرر',
     'home.brandIntro': 'فورميه هاوس علامة أزياء نسائية سعودية تجمع بين الأناقة العصرية والتصميمات الراقية والحرفية المتقنة.',
     'home.curatedForYou': 'مختارة لكِ',
@@ -221,6 +226,11 @@ export const translations = {
     'footer.vatNo': 'الرقم الضريبي',
     'footer.vatCertificate': 'شهادة ضريبة القيمة المضافة',
     'footer.crCertificate': 'شهادة السجل التجاري',
+    'footer.description': 'وجهة الأزياء الفاخرة في قلب المملكة العربية السعودية. نختار لكِ القطع الاستثنائية.',
+    'footer.contact': 'اتصل بنا',
+    'footer.privacy': 'سياسة الخصوصية',
+    'footer.terms': 'شروط الخدمة',
+    'footer.paymentMethods': 'طرق الدفع الآمنة',
 
     // Newsletter / Notify
     'notify.email': 'أدخلي بريدك الإلكتروني',
