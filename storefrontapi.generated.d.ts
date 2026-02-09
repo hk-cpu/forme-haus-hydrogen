@@ -360,6 +360,19 @@ export type CustomerAccessTokenCreateMutation = {
   }>;
 };
 
+export type CustomerCreateMutationVariables = StorefrontAPI.Exact<{
+  input: StorefrontAPI.CustomerCreateInput;
+}>;
+
+export type CustomerCreateMutation = {
+  customerCreate?: StorefrontAPI.Maybe<{
+    customer?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Customer, 'id'>>;
+    customerUserErrors: Array<
+      Pick<StorefrontAPI.CustomerUserError, 'code' | 'field' | 'message'>
+    >;
+  }>;
+};
+
 export type PredictiveSearchQueryVariables = StorefrontAPI.Exact<{
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
@@ -1252,11 +1265,11 @@ export type PaginatedProductsSearchQuery = {
   };
 };
 
-export type CustomerCreateMutationVariables = StorefrontAPI.Exact<{
+export type NewsletterCustomerCreateMutationVariables = StorefrontAPI.Exact<{
   input: StorefrontAPI.CustomerCreateInput;
 }>;
 
-export type CustomerCreateMutation = {
+export type NewsletterCustomerCreateMutation = {
   customerCreate?: StorefrontAPI.Maybe<{
     customer?: StorefrontAPI.Maybe<
       Pick<StorefrontAPI.Customer, 'id' | 'email'>
@@ -1361,9 +1374,13 @@ interface GeneratedMutationTypes {
     return: CustomerAccessTokenCreateMutation;
     variables: CustomerAccessTokenCreateMutationVariables;
   };
-  '#graphql\n  mutation customerCreate($input: CustomerCreateInput!) {\n    customerCreate(input: $input) {\n      customer {\n        id\n        email\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n': {
+  '#graphql\n  mutation customerCreate($input: CustomerCreateInput!) {\n    customerCreate(input: $input) {\n      customer {\n        id\n      }\n      customerUserErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
     return: CustomerCreateMutation;
     variables: CustomerCreateMutationVariables;
+  };
+  '#graphql\n  mutation newsletterCustomerCreate($input: CustomerCreateInput!) {\n    customerCreate(input: $input) {\n      customer {\n        id\n        email\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n': {
+    return: NewsletterCustomerCreateMutation;
+    variables: NewsletterCustomerCreateMutationVariables;
   };
 }
 
