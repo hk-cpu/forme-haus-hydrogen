@@ -37,7 +37,7 @@ import { IconCaret, IconCheck, IconClose } from '~/components/Icon';
 import { getExcerpt } from '~/lib/utils';
 import { seoPayload } from '~/lib/seo.server';
 import type { Storefront } from '~/lib/type';
-import { routeHeaders } from '~/data/cache';
+import { routeHeaders, CACHE_SHORT } from '~/data/cache';
 import { MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT } from '~/data/fragments';
 import { useTranslation } from '~/hooks/useTranslation';
 import {
@@ -61,7 +61,14 @@ export async function loader(args: LoaderFunctionArgs) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return defer({ ...deferredData, ...criticalData });
+  return defer(
+    { ...deferredData, ...criticalData },
+    {
+      headers: {
+        'Cache-Control': CACHE_SHORT,
+      },
+    },
+  );
 }
 
 /**
