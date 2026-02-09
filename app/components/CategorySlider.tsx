@@ -1,6 +1,6 @@
 import { Link } from '@remix-run/react';
-import { motion, useAnimation } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
 
 const CATEGORIES = [
     { id: 1, title: 'New In', image: '/brand/silk-texture.png', url: '/collections/new-in' },
@@ -17,44 +17,6 @@ const CATEGORIES = [
 // Individual Category Card Component
 function CategoryCard({ cat, index }: { cat: typeof CATEGORIES[0]; index: number }) {
     const [isHovered, setIsHovered] = useState(false);
-    const imageControls = useAnimation();
-    const glowControls = useAnimation();
-
-    // Loop zoom effect when hovered
-    useEffect(() => {
-        if (isHovered) {
-            // Continuous zoom in-out loop
-            imageControls.start({
-                scale: [1, 1.15, 1.1, 1.2, 1.15],
-                transition: {
-                    duration: 4,
-                    ease: "easeInOut",
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                },
-            });
-            // Side glow animation
-            glowControls.start({
-                opacity: [0.3, 0.6, 0.4, 0.7, 0.5],
-                transition: {
-                    duration: 2,
-                    ease: "easeInOut",
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                },
-            });
-        } else {
-            // Reset when not hovered
-            imageControls.start({
-                scale: 1,
-                transition: { duration: 0.5, ease: "easeOut" },
-            });
-            glowControls.start({
-                opacity: 0,
-                transition: { duration: 0.3 },
-            });
-        }
-    }, [isHovered, imageControls, glowControls]);
 
     return (
         <motion.div
@@ -76,30 +38,18 @@ function CategoryCard({ cat, index }: { cat: typeof CATEGORIES[0]; index: number
                     shadow-lg shadow-black/30
                     hover:shadow-xl hover:shadow-[#a87441]/20">
                     
-                    {/* Side Glow Effects */}
-                    {/* Left glow */}
-                    <motion.div
-                        animate={glowControls}
-                        initial={{ opacity: 0 }}
-                        className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-r from-[#a87441]/60 to-transparent z-20 pointer-events-none"
+                    {/* Side Glow Effects - CSS-based */}
+                    <div 
+                        className={`absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-r from-[#a87441]/60 to-transparent z-20 pointer-events-none transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
                     />
-                    {/* Right glow */}
-                    <motion.div
-                        animate={glowControls}
-                        initial={{ opacity: 0 }}
-                        className="absolute right-0 top-0 bottom-0 w-2 bg-gradient-to-l from-[#a87441]/60 to-transparent z-20 pointer-events-none"
+                    <div 
+                        className={`absolute right-0 top-0 bottom-0 w-2 bg-gradient-to-l from-[#a87441]/60 to-transparent z-20 pointer-events-none transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
                     />
-                    {/* Top glow */}
-                    <motion.div
-                        animate={glowControls}
-                        initial={{ opacity: 0 }}
-                        className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-[#a87441]/40 to-transparent z-20 pointer-events-none"
+                    <div 
+                        className={`absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-[#a87441]/40 to-transparent z-20 pointer-events-none transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
                     />
-                    {/* Bottom glow */}
-                    <motion.div
-                        animate={glowControls}
-                        initial={{ opacity: 0 }}
-                        className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-t from-[#a87441]/40 to-transparent z-20 pointer-events-none"
+                    <div 
+                        className={`absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-t from-[#a87441]/40 to-transparent z-20 pointer-events-none transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
                     />
 
                     {/* Main Border Glow on Hover */}
@@ -113,11 +63,9 @@ function CategoryCard({ cat, index }: { cat: typeof CATEGORIES[0]; index: number
                     {/* Gradient Overlay for text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 pointer-events-none" />
                     
-                    {/* Image with Loop Zoom */}
-                    <motion.div 
-                        className="w-full h-full"
-                        animate={imageControls}
-                        initial={{ scale: 1 }}
+                    {/* Image with CSS Zoom Animation */}
+                    <div 
+                        className={`w-full h-full transition-transform duration-[4000ms] ease-in-out ${isHovered ? 'scale-[1.15]' : 'scale-100'}`}
                     >
                         <img
                             src={cat.image}
@@ -125,23 +73,11 @@ function CategoryCard({ cat, index }: { cat: typeof CATEGORIES[0]; index: number
                             className="w-full h-full object-cover"
                             loading="lazy"
                         />
-                    </motion.div>
+                    </div>
 
                     {/* Shimmer Sweep Effect */}
-                    <div className={`absolute inset-0 z-15 pointer-events-none overflow-hidden rounded-2xl
-                        transition-opacity duration-500 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
-                        <motion.div
-                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                            animate={isHovered ? {
-                                x: ['-100%', '100%'],
-                            } : {}}
-                            transition={{
-                                duration: 1.5,
-                                ease: 'easeInOut',
-                                repeat: Infinity,
-                                repeatDelay: 1,
-                            }}
-                        />
+                    <div className={`absolute inset-0 z-15 pointer-events-none overflow-hidden rounded-2xl transition-opacity duration-500 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
                     </div>
 
                     {/* Corner Accents */}
@@ -154,27 +90,21 @@ function CategoryCard({ cat, index }: { cat: typeof CATEGORIES[0]; index: number
 
                     {/* Category Title */}
                     <div className="absolute bottom-0 left-0 right-0 p-5 z-20">
-                        <motion.span 
-                            className="text-[10px] uppercase tracking-[0.25em] text-[#a87441] block mb-1.5"
-                            animate={isHovered ? { y: -2, opacity: 1 } : { y: 0, opacity: 0.8 }}
-                            transition={{ duration: 0.3 }}
+                        <span 
+                            className={`text-[10px] uppercase tracking-[0.25em] text-[#a87441] block mb-1.5 transition-all duration-300 ${isHovered ? '-translate-y-0.5' : ''}`}
                         >
                             Explore
-                        </motion.span>
-                        <motion.h4 
-                            className="font-serif text-xl text-[#F0EAE6]"
-                            animate={isHovered ? { x: 3 } : { x: 0 }}
-                            transition={{ duration: 0.3 }}
+                        </span>
+                        <h4 
+                            className={`font-serif text-xl text-[#F0EAE6] transition-all duration-300 ${isHovered ? 'translate-x-0.5' : ''}`}
                         >
                             {cat.title}
-                        </motion.h4>
+                        </h4>
                     </div>
 
                     {/* Hover indicator dot */}
-                    <motion.div
-                        className="absolute top-4 right-4 w-2 h-2 rounded-full bg-[#a87441] z-20"
-                        animate={isHovered ? { scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] } : { scale: 0 }}
-                        transition={{ duration: 1, repeat: Infinity }}
+                    <div 
+                        className={`absolute top-4 right-4 w-2 h-2 rounded-full bg-[#a87441] z-20 transition-all duration-300 ${isHovered ? 'scale-100 opacity-100 animate-pulse' : 'scale-0 opacity-0'}`}
                     />
                 </div>
             </Link>
@@ -219,6 +149,14 @@ export default function CategorySlider() {
                 .scrollbar-hide {
                     -ms-overflow-style: none;
                     scrollbar-width: none;
+                }
+                @keyframes shimmer {
+                    0% { transform: translateX(-100%); }
+                    100% { transform: translateX(100%); }
+                }
+                .animate-shimmer {
+                    animation: shimmer 1.5s ease-in-out infinite;
+                    animation-delay: 0.5s;
                 }
             `}</style>
         </section>
