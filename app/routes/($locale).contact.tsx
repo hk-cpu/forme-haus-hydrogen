@@ -1,433 +1,431 @@
-import { useState, useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
-import GhostCursorEnhanced from '~/components/GhostCursorEnhanced';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { 
+  Mail, 
+  Phone, 
+  MapPin, 
+  Clock, 
+  Instagram, 
+  MessageCircle,
+  ArrowRight,
+  Send
+} from 'lucide-react';
+import { useTranslation } from '~/hooks/useTranslation';
 
-// 3D Floating Element Component
-function FloatingElement({ 
-  children, 
-  delay = 0
-}: { 
-  children: React.ReactNode; 
-  delay?: number;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
 
-      className="absolute first:top-[20%] first:left-[5%] [&:nth-child(2)]:top-[40%] [&:nth-child(2)]:right-[5%] [&:nth-child(3)]:top-[70%] [&:nth-child(3)]:left-[60%]"
-    >
-      <motion.div
-        animate={{ 
-          y: [0, -15, 0],
-          rotate: [0, 2, 0, -2, 0]
-        }}
-        transition={{ 
-          duration: 6 + delay,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      >
-        {children}
-      </motion.div>
-    </motion.div>
-  );
-}
-
-// Abstract 3D Shape
-function AbstractShape({ 
-  color = "#a87441", 
-  size = 200,
-  delay = 0 
-}: { 
-  color?: string; 
-  size?: number;
-  delay?: number;
-}) {
-  return (
-    <motion.div
-      className="relative"
-      style={{ width: size, height: size }}
-      animate={{ 
-        rotate: 360,
-        scale: [1, 1.05, 1]
-      }}
-      transition={{ 
-        rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-        scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
-      }}
-    >
-      <div 
-        className="absolute inset-0 rounded-full opacity-30"
-        style={{ 
-          background: `radial-gradient(circle at 30% 30%, ${color}, transparent)`,
-          filter: 'blur(40px)'
-        }}
-      />
-      <div 
-        className="absolute inset-4 rounded-full border-2 border-dashed opacity-40"
-        style={{ borderColor: color }}
-      />
-      <div 
-        className="absolute inset-8 rounded-full opacity-20"
-        style={{ background: color }}
-      />
-    </motion.div>
-  );
-}
-
-// Contact Method Card
-function ContactCard({ 
-  icon: Icon, 
-  title, 
-  value, 
-  href,
-  delay = 0 
-}: { 
-  icon: React.ElementType; 
-  title: string; 
-  value: string;
-  href?: string;
-  delay?: number;
-}) {
-  const content = (
-    <motion.div
-      initial={{ opacity: 0, x: -30 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay }}
-      whileHover={{ x: 10 }}
-      className="group flex items-center gap-6 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-[#a87441]/30 transition-all duration-500 cursor-pointer"
-    >
-      <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#a87441]/20 to-[#8B5E3C]/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-        <Icon className="w-6 h-6 text-[#a87441]" strokeWidth={1.5} />
-      </div>
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-white/50 mb-1">{title}</p>
-        <p className="text-white font-light tracking-wide">{value}</p>
-      </div>
-      <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-[#a87441]">
-          <path d="M7 17L17 7M17 7H7M17 7V17" />
-        </svg>
-      </div>
-    </motion.div>
-  );
-
-  if (href) {
-    return <a href={href} className="block">{content}</a>;
-  }
-  return content;
-}
-
-// Story Section
-function StorySection({ 
-  title, 
-  children, 
-  align = 'left' 
-}: { 
-  title: string; 
-  children: React.ReactNode;
-  align?: 'left' | 'right';
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
-      className={`max-w-xl ${align === 'right' ? 'ml-auto text-right' : ''}`}
-    >
-      <h3 className="text-2xl md:text-3xl font-serif text-white mb-4">{title}</h3>
-      <div className="h-px w-20 bg-gradient-to-r from-[#a87441] to-transparent mb-6" />
-      <div className="text-white/70 leading-relaxed">
-        {children}
-      </div>
-    </motion.div>
-  );
-}
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  },
+};
 
 export default function ContactPage() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const [formData, setFormData] = useState({
+  const { t } = useTranslation();
+  const [formState, setFormState] = useState({
     name: '',
     email: '',
     subject: '',
-    message: ''
+    message: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
+    setIsSubmitting(true);
+    // Simulate submission
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsSubmitting(false);
+    setSubmitted(true);
   };
 
+  const contactMethods = [
+    {
+      icon: Phone,
+      title: 'Call Us',
+      description: 'Speak directly with our concierge team',
+      value: '800 123 456',
+      href: 'tel:+966800123456',
+      action: 'Call Now',
+    },
+    {
+      icon: Mail,
+      title: 'Email Us',
+      description: 'We respond within 24 hours',
+      value: 'care@formehaus.com',
+      href: 'mailto:care@formehaus.com',
+      action: 'Send Email',
+    },
+    {
+      icon: MessageCircle,
+      title: 'WhatsApp',
+      description: 'Instant messaging for quick queries',
+      value: '+966 50 000 0000',
+      href: 'https://wa.me/966500000000',
+      action: 'Chat Now',
+    },
+  ];
+
+  const comingSoonChannels = [
+    { name: 'Live Chat', description: 'Real-time support on our website' },
+    { name: 'Video Call', description: 'Personal styling consultations' },
+    { name: 'SMS Updates', description: 'Order notifications via text' },
+  ];
+
   return (
-    <div ref={containerRef} className="relative min-h-screen bg-[#0a0a0a] overflow-hidden">
-      {/* Enhanced Ghost Cursor */}
-      <GhostCursorEnhanced
-        primaryColor="#000000"
-        secondaryColor="#a87441"
-        brightness={1.3}
-        bloomStrength={0.3}
-        hoverIntensity={2.5}
-        mixBlendMode="screen"
-      />
+    <div className="min-h-screen bg-[#F9F5F0]">
+      {/* Hero Section - Brand Story */}
+      <section className="relative py-24 px-6 md:px-12 overflow-hidden">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <span className="text-[11px] uppercase tracking-[0.3em] text-[#a87441] mb-4 block">
+              Get in Touch
+            </span>
+            <h1 className="font-serif text-4xl md:text-6xl italic text-[#4A3C31] mb-6">
+              We're Here for You
+            </h1>
+          </motion.div>
 
-      {/* Parallax Background */}
-      <motion.div 
-        className="fixed inset-0 z-0"
-        style={{ y: backgroundY }}
-      >
-        {/* Gradient Orbs */}
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#a87441]/10 rounded-full blur-[150px]" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#8B5E3C]/10 rounded-full blur-[120px]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-black/50 rounded-full blur-[100px]" />
-      </motion.div>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-[15px] leading-relaxed text-[#5C5046] max-w-2xl mx-auto mb-12"
+          >
+            At Formé Haus, we believe luxury is personal. Whether you're seeking styling advice, 
+            have questions about an order, or simply want to share your experience, our dedicated 
+            team in Riyadh is ready to assist you with the warmth and attention you deserve.
+          </motion.p>
 
-      {/* 3D Floating Abstract Elements */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <FloatingElement delay={0}>
-          <AbstractShape color="#a87441" size={300} />
-        </FloatingElement>
-        <FloatingElement delay={1}>
-          <AbstractShape color="#8B5E3C" size={200} />
-        </FloatingElement>
-        <FloatingElement delay={2}>
-          <AbstractShape color="#D4AF87" size={150} />
-        </FloatingElement>
-      </div>
+          {/* Location Badge */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-sm border border-[#8B8076]/10"
+          >
+            <MapPin className="w-4 h-4 text-[#a87441]" />
+            <span className="text-[12px] uppercase tracking-wider text-[#4A3C31]">
+              Riyadh, Kingdom of Saudi Arabia
+            </span>
+          </motion.div>
+        </div>
+      </section>
 
-      {/* Content */}
-      <div className="relative z-10">
-        {/* Hero Section */}
-        <section className="min-h-screen flex items-center justify-center px-6 py-32">
-          <div className="text-center max-w-4xl mx-auto">
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-[#a87441] text-xs uppercase tracking-[0.4em] mb-6"
+      {/* Contact Methods Grid */}
+      <section className="px-6 md:px-12 pb-16">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6"
+        >
+          {contactMethods.map((method, index) => (
+            <motion.a
+              key={method.title}
+              href={method.href}
+              variants={itemVariants}
+              className="group relative bg-white rounded-2xl p-8 border border-[#8B8076]/10 
+                hover:border-[#a87441]/30 hover:shadow-xl hover:shadow-[#a87441]/5
+                transition-all duration-500"
             >
-              Get In Touch
-            </motion.p>
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-8 leading-tight"
-            >
-              Let's Create
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a87441] via-[#D4AF87] to-[#a87441]">
-                Something Beautiful
-              </span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-white/60 text-lg max-w-2xl mx-auto leading-relaxed"
-            >
-              Whether you have a question about our collections, need styling advice, 
-              or want to explore a bespoke collaboration, we're here to listen.
-            </motion.p>
+              {/* Icon */}
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#a87441]/10 to-[#a87441]/5 
+                flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <method.icon className="w-6 h-6 text-[#a87441]" />
+              </div>
 
-            {/* Scroll Indicator */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
-              className="absolute bottom-12 left-1/2 -translate-x-1/2"
-            >
+              {/* Content */}
+              <h3 className="font-serif text-xl text-[#4A3C31] mb-2">{method.title}</h3>
+              <p className="text-[13px] text-[#8B8076] mb-4">{method.description}</p>
+              <p className="text-[15px] font-medium text-[#4A3C31] mb-6">{method.value}</p>
+
+              {/* Action */}
+              <div className="flex items-center gap-2 text-[#a87441] text-[12px] uppercase tracking-wider">
+                <span>{method.action}</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+
+              {/* Hover Glow */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#a87441]/5 to-transparent 
+                opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            </motion.a>
+          ))}
+        </motion.div>
+      </section>
+
+      {/* Main Content Grid */}
+      <section className="px-6 md:px-12 py-16 bg-white/50">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
+          {/* Left: Contact Form */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="font-serif text-2xl italic text-[#4A3C31] mb-2">
+              Send us a Message
+            </h2>
+            <p className="text-[13px] text-[#8B8076] mb-8">
+              Fill out the form below and we'll get back to you shortly.
+            </p>
+
+            {submitted ? (
               <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="w-6 h-10 border-2 border-white/20 rounded-full flex items-start justify-center p-2"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-[#a87441]/10 rounded-xl p-8 text-center"
               >
-                <motion.div
-                  animate={{ y: [0, 12, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="w-1 h-2 bg-[#a87441] rounded-full"
-                />
+                <div className="w-16 h-16 rounded-full bg-[#a87441]/20 flex items-center justify-center mx-auto mb-4">
+                  <Send className="w-6 h-6 text-[#a87441]" />
+                </div>
+                <h3 className="font-serif text-xl text-[#4A3C31] mb-2">Message Sent!</h3>
+                <p className="text-[13px] text-[#8B8076]">
+                  Thank you for reaching out. We'll respond within 24 hours.
+                </p>
               </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Story Section - The Atelier */}
-        <section className="py-32 px-6">
-          <div className="max-w-6xl mx-auto">
-            <StorySection title="The Atelier Awaits">
-              <p className="mb-4">
-                Every piece from Formé Haus begins with a conversation. Our atelier in Riyadh 
-                is more than a workspace—it's where vision transforms into textile, where 
-                sketches become silhouettes that drape elegantly across the discerning woman.
-              </p>
-              <p>
-                We invite you to begin your journey with us. Whether you're seeking the perfect 
-                ensemble for a special occasion or wish to explore our made-to-measure services, 
-                our dedicated client advisors are ready to guide you.
-              </p>
-            </StorySection>
-          </div>
-        </section>
-
-        {/* Contact Methods */}
-        <section className="py-32 px-6 bg-gradient-to-b from-transparent via-[#a87441]/5 to-transparent">
-          <div className="max-w-4xl mx-auto">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-4xl font-serif text-white text-center mb-16"
-            >
-              Connect With Us
-            </motion.h2>
-
-            <div className="space-y-4">
-              <ContactCard
-                icon={Mail}
-                title="Email"
-                value="concierge@formehaus.com"
-                href="mailto:concierge@formehaus.com"
-                delay={0}
-              />
-              <ContactCard
-                icon={Phone}
-                title="Phone"
-                value="+966 50 000 0000"
-                href="tel:+966500000000"
-                delay={0.1}
-              />
-              <ContactCard
-                icon={MapPin}
-                title="Visit Us"
-                value="Riyadh, Kingdom of Saudi Arabia"
-                delay={0.2}
-              />
-              <ContactCard
-                icon={Clock}
-                title="Hours"
-                value="Sun - Thu: 10:00 AM - 8:00 PM"
-                delay={0.3}
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Contact Form Section */}
-        <section className="py-32 px-6">
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-12"
-            >
-              <h2 className="text-3xl font-serif text-white mb-2">Send a Message</h2>
-              <p className="text-white/50 mb-8">We typically respond within 24 hours</p>
-
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-xs uppercase tracking-[0.2em] text-white/50 mb-3">
+                    <label className="block text-[11px] uppercase tracking-wider text-[#8B8076] mb-2">
                       Your Name
                     </label>
                     <input
                       type="text"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-white/30 focus:outline-none focus:border-[#a87441] focus:bg-white/10 transition-all duration-300"
-                      placeholder="Enter your name"
                       required
+                      value={formState.name}
+                      onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                      className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3 
+                        text-[#4A3C31] placeholder-[#8B8076]/50
+                        focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/20 
+                        transition-all outline-none"
+                      placeholder="Sarah Al-Rashid"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs uppercase tracking-[0.2em] text-white/50 mb-3">
+                    <label className="block text-[11px] uppercase tracking-wider text-[#8B8076] mb-2">
                       Email Address
                     </label>
                     <input
                       type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-white/30 focus:outline-none focus:border-[#a87441] focus:bg-white/10 transition-all duration-300"
-                      placeholder="Enter your email"
                       required
+                      value={formState.email}
+                      onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                      className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3 
+                        text-[#4A3C31] placeholder-[#8B8076]/50
+                        focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/20 
+                        transition-all outline-none"
+                      placeholder="sarah@example.com"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs uppercase tracking-[0.2em] text-white/50 mb-3">
+                  <label className="block text-[11px] uppercase tracking-wider text-[#8B8076] mb-2">
                     Subject
                   </label>
                   <input
                     type="text"
-                    value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-white/30 focus:outline-none focus:border-[#a87441] focus:bg-white/10 transition-all duration-300"
-                    placeholder="What is this regarding?"
                     required
+                    value={formState.subject}
+                    onChange={(e) => setFormState({ ...formState, subject: e.target.value })}
+                    className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3 
+                      text-[#4A3C31] placeholder-[#8B8076]/50
+                      focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/20 
+                      transition-all outline-none"
+                    placeholder="How can we help?"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs uppercase tracking-[0.2em] text-white/50 mb-3">
-                    Message
+                  <label className="block text-[11px] uppercase tracking-wider text-[#8B8076] mb-2">
+                    Your Message
                   </label>
                   <textarea
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    rows={5}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-white/30 focus:outline-none focus:border-[#a87441] focus:bg-white/10 transition-all duration-300 resize-none"
-                    placeholder="Tell us how we can help..."
                     required
+                    rows={5}
+                    value={formState.message}
+                    onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+                    className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3 
+                      text-[#4A3C31] placeholder-[#8B8076]/50 resize-none
+                      focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/20 
+                      transition-all outline-none"
+                    placeholder="Tell us how we can assist you..."
                   />
                 </div>
 
-                <motion.button
+                <button
                   type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full md:w-auto px-12 py-5 bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-white rounded-xl font-medium tracking-wider uppercase text-sm flex items-center justify-center gap-3 hover:shadow-[0_0_30px_rgba(168,116,65,0.4)] transition-shadow duration-500"
+                  disabled={isSubmitting}
+                  className="w-full bg-[#4A3C31] text-white py-4 rounded-lg font-medium text-[13px] uppercase tracking-wider
+                    hover:bg-[#a87441] transition-all duration-300
+                    disabled:opacity-50 disabled:cursor-not-allowed
+                    flex items-center justify-center gap-2"
                 >
-                  <Send className="w-5 h-5" />
-                  Send Message
-                </motion.button>
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Send Message
+                      <Send className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
               </form>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Footer Quote */}
-        <section className="py-32 px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto"
-          >
-            <blockquote className="text-2xl md:text-4xl font-serif text-white/90 leading-relaxed italic">
-              "Elegance is not about being noticed, 
-              <br />
-              it's about being remembered."
-            </blockquote>
-            <p className="mt-6 text-[#a87441] text-sm uppercase tracking-[0.3em]">
-              — Formé Haus
-            </p>
+            )}
           </motion.div>
-        </section>
-      </div>
+
+          {/* Right: Coming Soon & Instagram */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="space-y-10"
+          >
+            {/* Coming Soon Communications */}
+            <div className="bg-gradient-to-br from-[#121212] to-[#1a1a1a] rounded-2xl p-8 text-white relative overflow-hidden">
+              {/* Glow Effect */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#a87441]/10 rounded-full blur-3xl" />
+              
+              <div className="relative z-10">
+                <div className="flex items-center gap-3 mb-4">
+                  <Clock className="w-5 h-5 text-[#a87441]" />
+                  <span className="text-[11px] uppercase tracking-[0.2em] text-[#a87441]">
+                    Coming Soon
+                  </span>
+                </div>
+                <h3 className="font-serif text-2xl italic mb-4">New Ways to Connect</h3>
+                <p className="text-[13px] text-[#AA9B8F] mb-6 leading-relaxed">
+                  We're expanding our communication channels to serve you better. 
+                  Stay tuned for these exciting additions:
+                </p>
+
+                <div className="space-y-4">
+                  {comingSoonChannels.map((channel) => (
+                    <div key={channel.name} className="flex items-start gap-4">
+                      <div className="w-2 h-2 rounded-full bg-[#a87441] mt-2" />
+                      <div>
+                        <p className="text-[14px] font-medium text-[#F0EAE6]">{channel.name}</p>
+                        <p className="text-[12px] text-[#8B8076]">{channel.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Instagram Follow */}
+            <div className="bg-white rounded-2xl p-8 border border-[#8B8076]/10">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 
+                    flex items-center justify-center">
+                    <Instagram className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-serif text-lg text-[#4A3C31]">@formehaus</h3>
+                    <p className="text-[11px] text-[#8B8076]">Follow our journey</p>
+                  </div>
+                </div>
+                <a
+                  href="https://instagram.com/formehaus"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-5 py-2 bg-[#121212] text-white text-[11px] uppercase tracking-wider rounded-lg
+                    hover:bg-[#a87441] transition-colors"
+                >
+                  Follow
+                </a>
+              </div>
+
+              <p className="text-[13px] text-[#5C5046] leading-relaxed">
+                Discover the latest collections, behind-the-scenes moments, and exclusive 
+                styling inspiration. Join our community of discerning fashion enthusiasts.
+              </p>
+
+              {/* Instagram Preview Grid */}
+              <div className="grid grid-cols-4 gap-2 mt-6">
+                {[1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className="aspect-square rounded-lg bg-[#F5F0EB] flex items-center justify-center
+                      hover:bg-[#a87441]/10 transition-colors cursor-pointer"
+                  >
+                    <Instagram className="w-5 h-5 text-[#8B8076]/30" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Store Hours */}
+            <div className="bg-[#F5F0EB] rounded-2xl p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <Clock className="w-4 h-4 text-[#a87441]" />
+                <span className="text-[11px] uppercase tracking-wider text-[#4A3C31]">
+                  Customer Service Hours
+                </span>
+              </div>
+              <div className="space-y-2 text-[13px]">
+                <div className="flex justify-between">
+                  <span className="text-[#8B8076]">Sunday - Thursday</span>
+                  <span className="text-[#4A3C31] font-medium">9:00 AM - 9:00 PM</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#8B8076]">Friday - Saturday</span>
+                  <span className="text-[#4A3C31] font-medium">2:00 PM - 10:00 PM</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Bottom Brand Statement */}
+      <section className="py-16 px-6 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-2xl mx-auto"
+        >
+          <img
+            src="/brand/logo-icon-only.png"
+            alt="Formé Haus"
+            className="h-12 w-auto mx-auto mb-6 opacity-60"
+          />
+          <p className="font-serif text-xl italic text-[#4A3C31] mb-4">
+            "Luxury is in the details, and every detail matters."
+          </p>
+          <p className="text-[12px] uppercase tracking-[0.3em] text-[#8B8076]">
+            Formé Haus — Riyadh
+          </p>
+        </motion.div>
+      </section>
     </div>
   );
 }

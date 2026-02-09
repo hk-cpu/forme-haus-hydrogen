@@ -1,5 +1,5 @@
-import { useState, useEffect, Suspense } from 'react';
-import { Link, NavLink, Await, useRouteLoaderData } from '@remix-run/react';
+import { useState, useEffect, Suspense, useRef } from 'react';
+import { Link, NavLink, Await, useRouteLoaderData, useNavigation } from '@remix-run/react';
 import { Image } from '@shopify/hydrogen';
 import { Menu, Search, ShoppingBag, User } from 'lucide-react';
 import { useWindowScroll } from 'react-use';
@@ -25,23 +25,29 @@ export function Header({
 }) {
     const isHome = useIsHomePath();
     const { y } = useWindowScroll();
+    const navigation = useNavigation();
     const [scrolled, setScrolled] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
-    const [lastScrollY, setLastScrollY] = useState(0);
+    const lastScrollY = useRef(0);
     const rootData = useRouteLoaderData<RootLoader>('root');
     const { t } = useTranslation();
+    
+    // Check if we're navigating to prevent flicker
+    const isNavigating = navigation.state !== 'idle';
 
     useEffect(() => {
         setScrolled(y > 20);
         
-        // Smart hide/show on scroll direction
-        if (y > lastScrollY && y > 100) {
+        // Smart hide/show on scroll direction - skip during navigation
+        if (isNavigating) return;
+        
+        if (y > lastScrollY.current && y > 100) {
             setIsVisible(false);
         } else {
             setIsVisible(true);
         }
-        setLastScrollY(y);
-    }, [y, lastScrollY]);
+        lastScrollY.current = y;
+    }, [y, isNavigating]);
 
     // Default Nav Links if menu is missing
     const defaultLinks = [
@@ -218,16 +224,20 @@ export function Header({
                     </motion.button>
 
                     {/* Account Icon (Desktop) */}
-                    <motion.Link 
-                        to="/account" 
-                        className="hidden md:flex items-center justify-center text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative group"
+                    <motion.div
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
-                        aria-label="Account"
+                        className="hidden md:block"
                     >
-                        <User strokeWidth={1.5} className="w-5 h-5" />
-                        <span className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
-                    </motion.Link>
+                        <Link 
+                            to="/account" 
+                            className="flex items-center justify-center text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative group"
+                            aria-label="Account"
+                        >
+                            <User strokeWidth={1.5} className="w-5 h-5" />
+                            <span className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
+                        </Link>
+                    </motion.div>
                 </div>
             </div>
         </motion.header>
