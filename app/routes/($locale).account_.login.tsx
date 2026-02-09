@@ -5,8 +5,10 @@ import {
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
 import { Form, useActionData, useNavigation, Link, useSearchParams } from '@remix-run/react';
-import { useState, useEffect } from 'react';
-import GhostCursorEnhanced from '~/components/GhostCursorEnhanced';
+import { useState, useEffect, Suspense, lazy } from 'react';
+
+// Lazy load GhostCursorEnhanced to prevent SSR issues with three.js
+const GhostCursorEnhanced = lazy(() => import('~/components/GhostCursorEnhanced.client')); 
 
 export async function loader({ context, request }: LoaderFunctionArgs) {
   const { session } = context;
@@ -107,24 +109,26 @@ export default function Login() {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-[#F9F5F0] flex flex-col items-center justify-center text-[#2C2419] pt-24">
-      {/* Darker Ghost Cursor with Bronze hover effect */}
-      <GhostCursorEnhanced
-        primaryColor="#0A0A0A"
-        secondaryColor="#a87441"
-        brightness={0.8}
-        edgeIntensity={0.2}
-        trailLength={50}
-        inertia={0.25}
-        grainIntensity={0.03}
-        bloomStrength={0.4}
-        bloomRadius={0.6}
-        bloomThreshold={0.02}
-        fadeDelayMs={600}
-        fadeDurationMs={1000}
-        zIndex={0}
-        mixBlendMode="normal"
-        hoverIntensity={2.5}
-      />
+      {/* Darker Ghost Cursor with Bronze hover effect - Client only */}
+      <Suspense fallback={null}>
+        <GhostCursorEnhanced
+          primaryColor="#0A0A0A"
+          secondaryColor="#a87441"
+          brightness={0.8}
+          edgeIntensity={0.2}
+          trailLength={50}
+          inertia={0.25}
+          grainIntensity={0.03}
+          bloomStrength={0.4}
+          bloomRadius={0.6}
+          bloomThreshold={0.02}
+          fadeDelayMs={600}
+          fadeDurationMs={1000}
+          zIndex={0}
+          mixBlendMode="normal"
+          hoverIntensity={2.5}
+        />
+      </Suspense>
 
       <div className="relative z-10 flex flex-col items-center gap-10 p-8 w-full max-w-md transition-all duration-500">
         {/* Logo Image */}
