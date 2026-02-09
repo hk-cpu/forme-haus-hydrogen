@@ -33,6 +33,8 @@ import SmoothScroll from '~/components/SmoothScroll';
 import favicon from '~/assets/favicon.svg';
 import {seoPayload} from '~/lib/seo.server';
 import styles from '~/styles/app.css?url';
+import futuristicStyles from '~/styles/futuristic-polish.css?url';
+import {UIProvider} from '~/context/UIContext';
 
 import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
 
@@ -180,6 +182,7 @@ function Layout({children}: {children?: React.ReactNode}) {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
         <link rel="stylesheet" href={styles}></link>
+        <link rel="stylesheet" href={futuristicStyles}></link>
         <style
           dangerouslySetInnerHTML={{
             __html: `
@@ -192,18 +195,20 @@ function Layout({children}: {children?: React.ReactNode}) {
       </head>
       <body>
         {data ? (
-          <Analytics.Provider
-            cart={data.cart}
-            shop={data.shop}
-            consent={data.consent}
-          >
-            <PageLayout
-              key={`${locale.language}-${locale.country}`}
-              layout={data.layout}
+          <UIProvider>
+            <Analytics.Provider
+              cart={data.cart}
+              shop={data.shop}
+              consent={data.consent}
             >
-              {children}
-            </PageLayout>
-          </Analytics.Provider>
+              <PageLayout
+                key={`${locale.language}-${locale.country}`}
+                layout={data.layout}
+              >
+                {children}
+              </PageLayout>
+            </Analytics.Provider>
+          </UIProvider>
         ) : (
           children
         )}

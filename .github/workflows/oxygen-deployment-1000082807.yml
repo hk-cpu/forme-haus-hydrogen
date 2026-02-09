@@ -38,10 +38,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Build
+        run: npm run build
+
       - name: Build and Publish to Oxygen
         id: deploy
         run: |
-          npx shopify hydrogen deploy --auth-bypass-token --token "${{ secrets.OXYGEN_DEPLOYMENT_TOKEN_1000082807 }}"
+          npx shopify hydrogen deploy --force --auth-bypass-token --token "${{ secrets.OXYGEN_DEPLOYMENT_TOKEN_1000082807 }}"
           echo "AUTH_BYPASS_TOKEN=$(jq -r '.authBypassToken' h2_deploy_log.json)" >> $GITHUB_ENV
           echo "DEPLOYMENT_URL=$(jq -r '.url' h2_deploy_log.json)" >> $GITHUB_ENV
 

@@ -5,8 +5,10 @@ import {
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
 import { Form, useActionData, useNavigation, Link, useSearchParams } from '@remix-run/react';
-import { useState, useEffect } from 'react';
-import GhostCursor from '~/components/GhostCursor';
+import { useState, useEffect, Suspense, lazy } from 'react';
+
+// Lazy load GhostCursorEnhanced to prevent SSR issues with three.js
+const GhostCursorEnhanced = lazy(() => import('~/components/GhostCursorEnhanced.client')); 
 
 export async function loader({ context, request }: LoaderFunctionArgs) {
   const { session } = context;
@@ -106,54 +108,59 @@ export default function Login() {
   }, [data]);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-[#AD9686] flex flex-col items-center justify-center text-[#F0EAE6]">
-      <GhostCursor
-        color="#4A3C31"
-        brightness={1.0}
-        edgeIntensity={0.2}
-        trailLength={60}
-        inertia={0.3}
-        grainIntensity={0.06}
-        bloomStrength={0.2}
-        bloomRadius={0.6}
-        bloomThreshold={0}
-        fadeDelayMs={800}
-        fadeDurationMs={1200}
-        zIndex={0}
-        mixBlendMode="overlay"
-      />
+    <div className="relative min-h-screen w-full overflow-hidden bg-[#F9F5F0] flex flex-col items-center justify-center text-[#2C2419] pt-24">
+      {/* Darker Ghost Cursor with Bronze hover effect - Client only */}
+      <Suspense fallback={null}>
+        <GhostCursorEnhanced
+          primaryColor="#0A0A0A"
+          secondaryColor="#a87441"
+          brightness={0.8}
+          edgeIntensity={0.2}
+          trailLength={50}
+          inertia={0.25}
+          grainIntensity={0.03}
+          bloomStrength={0.4}
+          bloomRadius={0.6}
+          bloomThreshold={0.02}
+          fadeDelayMs={600}
+          fadeDurationMs={1000}
+          zIndex={0}
+          mixBlendMode="normal"
+          hoverIntensity={2.5}
+        />
+      </Suspense>
 
       <div className="relative z-10 flex flex-col items-center gap-10 p-8 w-full max-w-md transition-all duration-500">
         {/* Logo Image */}
-        <div className="group cursor-default transition-all duration-500 hover:drop-shadow-[0_0_25px_rgba(74,60,49,0.4)]">
+        <div className="group cursor-default transition-all duration-500 hover:drop-shadow-[0_0_25px_rgba(168,116,65,0.3)]">
           <img
             src="/brand/logo-icon-only.png"
             alt="Formé Haus - Where Essence Meets Elegance"
-            className="w-full max-w-[160px] h-auto object-contain opacity-90 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105"
+            className="w-full max-w-[140px] h-auto object-contain opacity-90 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105"
           />
         </div>
 
         <div className="text-center space-y-2">
-          <h1 className="font-serif text-3xl md:text-4xl tracking-tight text-[#F0EAE6]">
+          <h1 className="font-serif text-3xl md:text-4xl tracking-tight text-[#2C2419]">
             {isRegistering ? 'JOIN FORMÉ HAUS' : 'WELCOME BACK'}
           </h1>
-          <p className="text-xs md:text-sm tracking-[0.3em] font-sans text-[#4A3C31]/80 font-medium">
+          <p className="text-xs md:text-sm tracking-[0.3em] font-sans text-[#5A5046] font-medium">
             {isRegistering ? 'BEGIN YOUR JOURNEY' : 'CONTINUE YOUR JOURNEY'}
           </p>
         </div>
 
-        {/* Unified Form */}
-        <Form method="post" className="w-full space-y-6 bg-[#F0EAE6]/5 backdrop-blur-md p-8 rounded-sm border border-[#F0EAE6]/10 shadow-2xl">
+        {/* Unified Form with White Background and Dark Inputs */}
+        <Form method="post" className="w-full space-y-6 bg-white/80 backdrop-blur-sm p-8 rounded-lg border border-[#a87441]/20 shadow-2xl shadow-[#a87441]/10">
           <input type="hidden" name="formId" value={isRegistering ? 'register' : 'login'} />
 
           {data?.error && (
-            <div className="p-3 text-sm text-red-100 bg-red-900/10 border border-red-100/10 rounded text-center font-light tracking-wide">
+            <div className="p-3 text-sm text-red-100 bg-red-900/80 border border-red-100/20 rounded text-center font-light tracking-wide">
               {data.error}
             </div>
           )}
 
           {data?.success && isRegistering && (
-            <div className="p-3 text-sm text-[#4A3C31] bg-[#F0EAE6]/80 border border-[#4A3C31]/10 rounded text-center font-medium tracking-wide">
+            <div className="p-3 text-sm text-[#2C2419] bg-[#a87441]/20 border border-[#a87441]/30 rounded text-center font-medium tracking-wide">
               {data.success}
             </div>
           )}
@@ -167,7 +174,7 @@ export default function Login() {
                 id="email"
                 placeholder="EMAIL ADDRESS"
                 required
-                className="w-full bg-transparent border-b border-[#4A3C31]/20 py-3 text-[#4A3C31] placeholder-[#4A3C31]/40 focus:outline-none focus:border-[#4A3C31] transition-colors text-center tracking-[0.2em] text-xs font-medium"
+                className="login-input w-full bg-[#1A1A1A] border border-[#a87441]/30 py-4 px-6 text-white placeholder-white/50 focus:outline-none focus:bg-[#0A0A0A] focus:text-white focus:border-[#a87441] focus:shadow-[0_0_20px_rgba(168,116,65,0.5)] transition-all duration-500 text-center tracking-[0.15em] text-xs font-medium rounded-lg"
               />
             </div>
             <div>
@@ -178,7 +185,7 @@ export default function Login() {
                 id="password"
                 placeholder="PASSWORD"
                 required
-                className="w-full bg-transparent border-b border-[#4A3C31]/20 py-3 text-[#4A3C31] placeholder-[#4A3C31]/40 focus:outline-none focus:border-[#4A3C31] transition-colors text-center tracking-[0.2em] text-xs font-medium"
+                className="login-input w-full bg-[#1A1A1A] border border-[#a87441]/30 py-4 px-6 text-white placeholder-white/50 focus:outline-none focus:bg-[#0A0A0A] focus:text-white focus:border-[#a87441] focus:shadow-[0_0_20px_rgba(168,116,65,0.5)] transition-all duration-500 text-center tracking-[0.15em] text-xs font-medium rounded-lg"
               />
             </div>
           </div>
@@ -187,14 +194,14 @@ export default function Login() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full px-12 py-4 border border-[#4A3C31]/30 bg-[#4A3C31] text-[#F0EAE6] hover:bg-[#5C5046] uppercase tracking-[0.25em] text-[10px] sm:text-xs transition-all duration-500 hover:scale-[1.02] shadow-lg rounded-sm disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+              className="w-full px-12 py-4 border border-[#a87441] bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.25em] text-[10px] sm:text-xs transition-all duration-500 hover:scale-[1.02] shadow-lg shadow-[#a87441]/20 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
             >
               {isSubmitting ? 'PROCESSING...' : (isRegistering ? 'CREATE ACCOUNT' : 'SIGN IN')}
             </button>
 
-            <div className="flex flex-col items-center gap-3 text-[10px] uppercase tracking-widest text-[#4A3C31]/60">
+            <div className="flex flex-col items-center gap-3 text-[10px] uppercase tracking-widest text-[#5A5046]">
               {!isRegistering && (
-                <Link to="/account/recover" className="hover:text-[#4A3C31] transition-colors border-b border-transparent hover:border-[#4A3C31]/30 pb-0.5">
+                <Link to="/account/recover" className="hover:text-[#a87441] transition-colors border-b border-transparent hover:border-[#a87441]/50 pb-0.5">
                   Forgot Password?
                 </Link>
               )}
@@ -205,7 +212,7 @@ export default function Login() {
                   setIsRegistering(!isRegistering);
                   // Clear errors when switching
                 }}
-                className="hover:text-[#4A3C31] transition-colors font-semibold border-b border-transparent hover:border-[#4A3C31] pb-0.5"
+                className="hover:text-[#a87441] transition-colors font-semibold border-b border-transparent hover:border-[#a87441] pb-0.5"
               >
                 {isRegistering ? "Already have an account? Sign In" : "New to Formé Haus? Create Account"}
               </button>
