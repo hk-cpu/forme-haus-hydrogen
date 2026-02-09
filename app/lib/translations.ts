@@ -57,6 +57,11 @@ export const translations = {
     'footer.vatNo': 'VAT No.',
     'footer.vatCertificate': 'VAT Certificate',
     'footer.crCertificate': 'CR Certificate',
+    'footer.description': 'Luxury fashion destination in the heart of Saudi Arabia. Curating exceptional pieces for the discerning few.',
+    'footer.contact': 'Contact',
+    'footer.privacy': 'Privacy Policy',
+    'footer.terms': 'Terms of Service',
+    'footer.paymentMethods': 'Secure Payment Methods',
 
     // Newsletter / Notify
     'notify.email': 'Enter your email',
@@ -221,6 +226,11 @@ export const translations = {
     'footer.vatNo': 'الرقم الضريبي',
     'footer.vatCertificate': 'شهادة ضريبة القيمة المضافة',
     'footer.crCertificate': 'شهادة السجل التجاري',
+    'footer.description': 'وجهة الأزياء الفاخرة في قلب المملكة العربية السعودية. نختار لكِ القطع الاستثنائية.',
+    'footer.contact': 'اتصل بنا',
+    'footer.privacy': 'سياسة الخصوصية',
+    'footer.terms': 'شروط الخدمة',
+    'footer.paymentMethods': 'طرق الدفع الآمنة',
 
     // Newsletter / Notify
     'notify.email': 'أدخلي بريدك الإلكتروني',
