@@ -1,5 +1,5 @@
-import { useState, useEffect, Suspense, useRef } from 'react';
-import { Link, NavLink, Await, useRouteLoaderData, useNavigation } from '@remix-run/react';
+import { useState, useEffect, Suspense } from 'react';
+import { Link, NavLink, Await, useRouteLoaderData } from '@remix-run/react';
 import { Image } from '@shopify/hydrogen';
 import { Menu, Search, ShoppingBag, User } from 'lucide-react';
 import { useWindowScroll } from 'react-use';
@@ -25,29 +25,23 @@ export function Header({
 }) {
     const isHome = useIsHomePath();
     const { y } = useWindowScroll();
-    const navigation = useNavigation();
     const [scrolled, setScrolled] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
-    const lastScrollY = useRef(0);
+    const [lastScrollY, setLastScrollY] = useState(0);
     const rootData = useRouteLoaderData<RootLoader>('root');
     const { t } = useTranslation();
-    
-    // Check if we're navigating to prevent flicker
-    const isNavigating = navigation.state !== 'idle';
 
     useEffect(() => {
         setScrolled(y > 20);
         
-        // Smart hide/show on scroll direction - skip during navigation
-        if (isNavigating) return;
-        
-        if (y > lastScrollY.current && y > 100) {
+        // Smart hide/show on scroll direction
+        if (y > lastScrollY && y > 100) {
             setIsVisible(false);
         } else {
             setIsVisible(true);
         }
-        lastScrollY.current = y;
-    }, [y, isNavigating]);
+        setLastScrollY(y);
+    }, [y, lastScrollY]);
 
     // Default Nav Links if menu is missing
     const defaultLinks = [
