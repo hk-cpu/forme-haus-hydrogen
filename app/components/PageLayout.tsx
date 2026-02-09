@@ -1,5 +1,5 @@
 import { Await, useRouteLoaderData, useNavigation } from '@remix-run/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { CartForm } from '@shopify/hydrogen';
 
 import { type LayoutQuery } from 'storefrontapi.generated';
