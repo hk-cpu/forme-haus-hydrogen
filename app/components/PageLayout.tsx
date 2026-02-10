@@ -1,6 +1,7 @@
-import { Await, useRouteLoaderData, useNavigation } from '@remix-run/react';
-import { useEffect, useState, Suspense } from 'react';
+﻿import { Await, useRouteLoaderData } from '@remix-run/react';
+import { Suspense, useEffect, useState } from 'react';
 import { CartForm } from '@shopify/hydrogen';
+import { motion } from 'framer-motion';
 
 import { type LayoutQuery } from 'storefrontapi.generated';
 import { Text } from '~/components/Text';
@@ -21,6 +22,7 @@ import Silk from '~/components/Silk';
 import Atmosphere from '~/components/Atmosphere';
 import { PredictiveSearch } from '~/components/PredictiveSearch';
 import { NavigationMenu } from '~/components/NavigationMenu';
+import { Newsletter } from '~/components/Newsletter';
 
 import { SearchOverlay } from '~/components/SearchOverlay';
 import { AccountOverlay } from '~/components/AccountOverlay';
@@ -41,11 +43,19 @@ type LayoutProps = {
 
 export function PageLayout({ children, layout }: LayoutProps) {
   const { headerMenu, footerMenu } = layout || {};
-  const navigation = useNavigation();
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -71,7 +81,7 @@ export function PageLayout({ children, layout }: LayoutProps) {
         <div className="relative z-10 flex flex-col items-center lg:py-8 transition-all duration-700">
           <div className="w-full max-w-[1800px] flex flex-col relative mx-auto my-0 px-4 md:px-8">
             <Header
-              title={layout?.shop.name || 'Formé Haus'}
+              title={layout?.shop.name || 'Form├⌐ Haus'}
               menu={headerMenu || undefined}
             />
             <main role="main" id="mainContent" className="flex-grow">
@@ -212,33 +222,45 @@ function MenuMobileNav({
   onClose: () => void;
 }) {
   return (
-    <nav className="grid gap-4 p-6 sm:gap-6 sm:px-12 sm:py-8">
+    <nav className="grid gap-6 p-6 sm:gap-8 sm:px-12 sm:py-8">
       {/* Top level menu items */}
-      {(menu?.items || []).map((item) => (
-        <span key={item.id} className="block">
+      {(menu?.items || []).map((item, index) => (
+        <motion.span
+          key={item.id}
+          className="block"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: index * 0.1, duration: 0.5 }}
+        >
           <Link
             to={item.to}
             target={item.target}
             onClick={onClose}
             className={({ isActive }) =>
-              isActive ? 'pb-1 border-b -mb-px' : 'pb-1'
+              `block font-serif text-3xl md:text-4xl transition-colors duration-300 ${isActive ? 'text-[#a87441]' : 'text-[#F0EAE6] hover:text-[#a87441]'
+              }`
             }
           >
-            <Text as="span" size="copy">
-              {item.title}
-            </Text>
+            {item.title}
           </Link>
-        </span>
+        </motion.span>
       ))}
 
       {/* Account Link for Mobile */}
-      <span className="block mt-4 pt-4 border-t border-primary/10">
-        <Link to="/account" onClick={onClose} className="pb-1">
-          <Text as="span" size="copy">
-            Account / Sign In
-          </Text>
+      <motion.div
+        className="mt-8 pt-8 border-t border-[#a87441]/20"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
+      >
+        <Link
+          to="/account"
+          onClick={onClose}
+          className="flex items-center gap-3 text-[#AA9B8F] hover:text-[#F0EAE6] transition-colors"
+        >
+          <span className="uppercase tracking-widest text-sm">Account / Sign In</span>
         </Link>
-      </span>
+      </motion.div>
     </nav>
   );
 }
@@ -254,29 +276,29 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
     >
       {/* Semi-Glass Background Layer */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a1a]/80 via-[#151515]/90 to-[#121212]/95 backdrop-blur-xl" />
-      
+
       {/* Bronze Accent Line at Top */}
       <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
 
       <div className="relative z-10 py-16 px-6 md:px-12 lg:px-24">
         {/* Main Footer Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 w-full max-w-[1920px] mx-auto">
-          
+
           {/* COL 1: Brand & Newsletter */}
           <div className="lg:col-span-4 flex flex-col gap-8">
             {/* Brand Logo */}
             <div className="flex items-center gap-4">
               <img
                 src="/brand/logo-icon-only.png"
-                alt="Formé Haus"
+                alt="Form├⌐ Haus"
                 className="h-14 w-auto object-contain opacity-90"
               />
               <div>
-                <h3 className="font-serif text-xl text-[#F0EAE6]">Formé Haus</h3>
+                <h3 className="font-serif text-xl text-[#F0EAE6]">Form├⌐ Haus</h3>
                 <p className="text-[11px] uppercase tracking-[0.2em] text-[#a87441]">Riyadh</p>
               </div>
             </div>
-            
+
             {/* Brief Description */}
             <p className="text-[13px] leading-relaxed text-[#AA9B8F] max-w-xs">
               {t('footer.description', 'Luxury fashion destination in the heart of Saudi Arabia. Curating exceptional pieces for the discerning few.')}
@@ -288,6 +310,14 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
                 {t('footer.followUs')}
               </h3>
               <SocialButtons />
+            </div>
+
+            {/* Newsletter */}
+            <div className="space-y-4 pt-4">
+              <h3 className="text-[10px] uppercase tracking-[0.3em] text-[#8B8076] font-light">
+                {t('footer.newsletter', 'Newsletter')}
+              </h3>
+              <Newsletter />
             </div>
           </div>
 
@@ -313,14 +343,11 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
               <h4 className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076]">
                 {t('footer.contact', 'Contact')}
               </h4>
-              <a 
-                href="tel:+966800123456" 
-                className="flex items-center gap-3 text-[#AA9B8F] hover:text-[#a87441] transition-colors"
-              >
+              <span className="flex items-center gap-3 text-[#AA9B8F]">
                 <span className="text-sm">800 123 456</span>
-              </a>
-              <a 
-                href="mailto:care@formehaus.com" 
+              </span>
+              <a
+                href="mailto:care@formehaus.com"
                 className="block text-sm text-[#AA9B8F] hover:text-[#a87441] transition-colors"
               >
                 care@formehaus.com
@@ -336,18 +363,13 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
         <div className="max-w-[1920px] mx-auto flex flex-col lg:flex-row justify-between items-center gap-6 text-[11px] font-sans tracking-[0.08em] text-[#8B8076]">
           {/* Left: Copyright & Legal */}
           <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-6">
-            <span className="font-medium text-[#F0EAE6]/80">&copy; 2026 Formé Haus</span>
+            <span className="font-medium text-[#F0EAE6]/80">&copy; 2026 Form├⌐ Haus</span>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
             <div className="flex items-center gap-2">
               <span className="text-[#AA9B8F]">{t('footer.crNo')}</span>
-              <a
-                href="/compliance/cr-certificate.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-mono font-medium text-[#F0EAE6] hover:text-[#a87441] transition-colors"
-              >
+              <span className="font-mono font-medium text-[#F0EAE6]">
                 7051891369
-              </a>
+              </span>
             </div>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
             <div className="flex items-center gap-2">
@@ -364,13 +386,9 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
             <Link to="/policies/terms-of-service" className="hover:text-[#a87441] transition-colors">
               {t('footer.terms')}
             </Link>
-            <a
-              href="/compliance/vat-certificate.pdf"
-              target="_blank"
-              className="hover:text-[#a87441] transition-colors"
-            >
+            <span className="text-[#8B8076]">
               {t('footer.vatCertificate')}
-            </a>
+            </span>
           </div>
 
           {/* Right: Payment Methods */}
@@ -386,7 +404,7 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
             <div className="w-16 h-[1px] bg-gradient-to-r from-transparent via-[#a87441]/40 to-transparent" />
             <img
               src="/brand/logo-icon-only.png"
-              alt="Formé Haus"
+              alt="Form├⌐ Haus"
               className="h-8 w-auto object-contain opacity-50 hover:opacity-80 transition-opacity duration-500"
             />
             <p className="text-[10px] uppercase tracking-[0.3em] text-[#8B8076]/60">
@@ -401,7 +419,7 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
 
 function FooterLink({ item }: { item: ChildEnhancedMenuItem }) {
   const linkClass = "text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-200";
-  
+
   if (item.to.startsWith('http')) {
     return (
       <a href={item.to} target={item.target} rel="noopener noreferrer" className={linkClass}>
@@ -441,7 +459,7 @@ function FooterMenu({ menu }: { menu?: EnhancedMenu }) {
           ) : null}
         </div>
       ))}
-      
+
       {/* Static Links - Customer Care */}
       <div className="space-y-4">
         <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
@@ -462,7 +480,7 @@ function FooterMenu({ menu }: { menu?: EnhancedMenu }) {
           </Link>
         </nav>
       </div>
-      
+
       {/* Static Links - About */}
       <div className="space-y-4">
         <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
