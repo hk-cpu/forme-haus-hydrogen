@@ -56,6 +56,7 @@ export default {
           ...getStorefrontHeaders(request),
           buyerIpSig: '',
         },
+        storefrontApiVersion: '2024-10',
       });
 
       /**
