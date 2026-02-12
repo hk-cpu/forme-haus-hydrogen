@@ -39,4 +39,9 @@ Thumbs.db
 *.swp
 *.swo
 *~
-.claude/
+# Claude Code - ignore user-specific files, keep shared config
+.claude/*
+!.claude/settings.json
+!.claude/hooks/
+.claude/hooks/*
+!.claude/hooks/session-start.sh
