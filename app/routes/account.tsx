@@ -1,2 +1,4 @@
 // Alias route for /account - re-exports from ($locale).account.tsx
-export { loader, default, headers } from './($locale).account';
+import { loader, headers } from './($locale).account';
+export { loader, headers };
+export { default } from './($locale).account';

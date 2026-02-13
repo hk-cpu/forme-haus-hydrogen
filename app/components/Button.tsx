@@ -49,7 +49,7 @@ export const Button = forwardRef(
     };
 
     const baseButtonClasses =
-      'relative overflow-hidden inline-flex items-center justify-center rounded-lg font-medium text-center transition-all duration-300';
+      'relative overflow-hidden inline-flex items-center justify-center rounded-lg font-medium text-center transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]';
 
     const variants = {
       primary: `${baseButtonClasses} bg-[#a87441] text-white border border-[#a87441] hover:bg-[#8B5E3C] hover:border-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] py-4 px-8 shadow-lg shadow-[#a87441]/20 hover:shadow-xl hover:shadow-[#a87441]/30 disabled:opacity-50 disabled:cursor-not-allowed`,

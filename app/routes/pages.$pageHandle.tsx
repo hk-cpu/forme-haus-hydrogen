@@ -1,2 +1,4 @@
 // Alias route for /pages/:pageHandle - re-exports from ($locale).pages.$pageHandle.tsx
-export { loader, meta, default, headers } from './($locale).pages.$pageHandle';
+import { loader, meta, headers } from './($locale).pages.$pageHandle';
+export { loader, meta, headers };
+export { default } from './($locale).pages.$pageHandle';

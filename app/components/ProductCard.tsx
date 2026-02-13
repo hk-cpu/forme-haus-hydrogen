@@ -311,15 +311,15 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
 
         {/* Product Info */}
         <div className="space-y-2">
-          <h3 className="font-serif text-[#F0EAE6] text-[15px] leading-snug group-hover:text-[#a87441] transition-colors duration-300 line-clamp-2">
+          <h3 className="font-serif text-[#F0EAE6] text-[15px] leading-snug group-hover:text-[#a87441] transition-all duration-300 line-clamp-2 group-hover:tracking-wide">
             {product.title}
           </h3>
           <div className="flex items-center gap-2">
-            <p className="text-[#F0EAE6] font-medium">
+            <p className="text-[#F0EAE6] font-medium transition-all duration-300 group-hover:text-[#D4AF87]">
               <Money data={product.priceRange.minVariantPrice} />
             </p>
             {hasDiscount && (
-              <p className="text-[#AA9B8F] text-sm line-through">
+              <p className="text-[#AA9B8F] text-sm line-through opacity-70">
                 <Money data={product.compareAtPriceRange!.minVariantPrice} />
               </p>
             )}

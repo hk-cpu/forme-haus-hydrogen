@@ -418,7 +418,7 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
 }
 
 function FooterLink({ item }: { item: ChildEnhancedMenuItem }) {
-  const linkClass = "text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-200";
+  const linkClass = "text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-all duration-300 hover:translate-x-1 inline-block focus:outline-none focus-visible:text-[#a87441] focus-visible:underline underline-offset-4";
 
   if (item.to.startsWith('http')) {
     return (
@@ -466,16 +466,16 @@ function FooterMenu({ menu }: { menu?: EnhancedMenu }) {
           Customer Care
         </h4>
         <nav className="grid gap-2.5">
-          <Link to="/contact" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+          <Link to="/contact" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-all duration-300 hover:translate-x-1 inline-block focus:outline-none focus-visible:text-[#a87441]">
             Contact Us
           </Link>
-          <Link to="/pages/faqs" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+          <Link to="/pages/faqs" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-all duration-300 hover:translate-x-1 inline-block focus:outline-none focus-visible:text-[#a87441]">
             FAQs
           </Link>
-          <Link to="/pages/shipping-returns" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+          <Link to="/pages/shipping-returns" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-all duration-300 hover:translate-x-1 inline-block focus:outline-none focus-visible:text-[#a87441]">
             Shipping & Returns
           </Link>
-          <Link to="/account/orders" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+          <Link to="/account/orders" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-all duration-300 hover:translate-x-1 inline-block focus:outline-none focus-visible:text-[#a87441]">
             Track Order
           </Link>
         </nav>
@@ -487,16 +487,16 @@ function FooterMenu({ menu }: { menu?: EnhancedMenu }) {
           About
         </h4>
         <nav className="grid gap-2.5">
-          <Link to="/pages/about" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+          <Link to="/pages/about" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-all duration-300 hover:translate-x-1 inline-block focus:outline-none focus-visible:text-[#a87441]">
             Our Story
           </Link>
-          <Link to="/pages/sustainability" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+          <Link to="/pages/sustainability" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-all duration-300 hover:translate-x-1 inline-block focus:outline-none focus-visible:text-[#a87441]">
             Sustainability
           </Link>
-          <Link to="/pages/stores" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+          <Link to="/pages/stores" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-all duration-300 hover:translate-x-1 inline-block focus:outline-none focus-visible:text-[#a87441]">
             Store Locator
           </Link>
-          <Link to="/pages/careers" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+          <Link to="/pages/careers" className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-all duration-300 hover:translate-x-1 inline-block focus:outline-none focus-visible:text-[#a87441]">
             Careers
           </Link>
         </nav>

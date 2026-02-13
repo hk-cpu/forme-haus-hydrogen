@@ -1,3 +1,4 @@
 // Alias route for /cart - re-exports from ($locale).cart.tsx
-export { action, loader } from './($locale).cart';
+import { action, loader } from './($locale).cart';
+export { action, loader };
 export { default } from './($locale).cart';

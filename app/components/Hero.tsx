@@ -97,10 +97,10 @@ export default function Hero() {
           >
             <Link
               to="/collections/new-in"
-              className="relative inline-flex items-center justify-center px-14 py-4 overflow-hidden group/btn"
+              className="relative inline-flex items-center justify-center px-14 py-4 overflow-hidden group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded-sm"
             >
               {/* Border frame */}
-              <span className="absolute inset-0 border border-[#a87441]/40 group-hover/btn:border-[#a87441] transition-all duration-700" />
+              <span className="absolute inset-0 border border-[#a87441]/40 group-hover/btn:border-[#a87441] group-focus-visible/btn:border-[#a87441] transition-all duration-700" />
 
               {/* Shimmer effect */}
               <motion.span

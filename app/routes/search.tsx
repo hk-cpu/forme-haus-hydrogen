@@ -1,2 +1,4 @@
 // Alias route for /search - re-exports from ($locale).search.tsx
-export { loader, meta, default } from './($locale).search';
+import { loader, meta } from './($locale).search';
+export { loader, meta };
+export { default } from './($locale).search';

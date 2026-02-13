@@ -744,7 +744,7 @@
   .fp-loading-pulse {
     animation: none;
   }
-  
+
   .fp-reveal-up,
   .fp-reveal-scale,
   .fp-reveal-blur,
@@ -753,10 +753,424 @@
     transform: none;
     filter: none;
   }
-  
+
   .fp-hover-lift:hover,
   .fp-liquid-glass:hover,
   .fp-btn-squish:hover {
     transform: none;
   }
+}
+
+/* ============================================================================
+   POLISH LAYER - Typography Refinements
+   ============================================================================ */
+
+/* Premium Typography Features */
+.fp-type-refined {
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "pnum" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Balanced Headings */
+.fp-heading-balance {
+  text-wrap: balance;
+  word-spacing: 0.05em;
+}
+
+/* Elegant Line Heights */
+.fp-leading-luxe { line-height: 1.618; } /* Golden ratio */
+.fp-leading-tight-luxe { line-height: 1.2; }
+.fp-leading-relaxed-luxe { line-height: 1.8; }
+
+/* Letter Spacing Refined */
+.fp-tracking-display { letter-spacing: 0.08em; }
+.fp-tracking-editorial { letter-spacing: 0.15em; }
+.fp-tracking-whisper { letter-spacing: 0.25em; }
+
+/* ============================================================================
+   POLISH LAYER - Accessibility Focus States
+   ============================================================================ */
+
+/* Bronze Focus Ring - Elegant & Accessible */
+.fp-focus-ring:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--fp-depth-2),
+    0 0 0 4px var(--fp-bronze-500),
+    0 0 20px rgba(168, 116, 65, 0.3);
+  transition: box-shadow 0.2s ease;
+}
+
+/* Focus Ring for Dark Backgrounds */
+.fp-focus-ring-light:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.1),
+    0 0 0 4px var(--fp-bronze-400),
+    0 0 25px rgba(168, 116, 65, 0.4);
+}
+
+/* Skip Link Styling */
+.fp-skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  background: var(--fp-bronze-500);
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border-radius: 0 0 12px 12px;
+  z-index: 9999;
+  transition: top 0.3s ease;
+}
+
+.fp-skip-link:focus {
+  top: 0;
+}
+
+/* Focus Within Container Glow */
+.fp-focus-within-glow:focus-within {
+  box-shadow: 0 0 0 1px var(--fp-bronze-500), 0 0 30px rgba(168, 116, 65, 0.15);
+}
+
+/* ============================================================================
+   POLISH LAYER - Enhanced Loading States
+   ============================================================================ */
+
+/* Bronze Shimmer Loading */
+.fp-shimmer-bronze {
+  background: linear-gradient(
+    110deg,
+    var(--fp-depth-3) 0%,
+    var(--fp-depth-3) 40%,
+    rgba(168, 116, 65, 0.15) 50%,
+    var(--fp-depth-3) 60%,
+    var(--fp-depth-3) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerBronze 1.8s ease-in-out infinite;
+}
+
+@keyframes shimmerBronze {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Skeleton Bone Effect */
+.fp-skeleton {
+  background: var(--fp-depth-3);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.fp-skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(168, 116, 65, 0.08),
+    transparent
+  );
+  animation: skeletonWave 2s infinite;
+}
+
+@keyframes skeletonWave {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ============================================================================
+   POLISH LAYER - Link Micro-Interactions
+   ============================================================================ */
+
+/* Underline Reveal from Center */
+.fp-link-reveal {
+  position: relative;
+  text-decoration: none;
+}
+
+.fp-link-reveal::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 1px;
+  background: var(--fp-bronze-500);
+  transition: width 0.4s var(--fp-ease-luxe), left 0.4s var(--fp-ease-luxe);
+}
+
+.fp-link-reveal:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+/* Underline Reveal from Left */
+.fp-link-reveal-left::after {
+  left: 0;
+}
+
+.fp-link-reveal-left:hover::after {
+  left: 0;
+}
+
+/* Link Lift with Glow */
+.fp-link-lift {
+  display: inline-block;
+  transition: transform 0.3s var(--fp-ease-luxe), text-shadow 0.3s ease;
+}
+
+.fp-link-lift:hover {
+  transform: translateY(-2px);
+  text-shadow: 0 4px 12px rgba(168, 116, 65, 0.3);
+}
+
+/* ============================================================================
+   POLISH LAYER - Texture & Depth
+   ============================================================================ */
+
+/* Noise/Grain Overlay */
+.fp-grain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Subtle Vignette */
+.fp-vignette::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
+  pointer-events: none;
+}
+
+/* Depth Shadow Layers */
+.fp-depth-shadow {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.07),
+    0 2px 4px rgba(0, 0, 0, 0.07),
+    0 4px 8px rgba(0, 0, 0, 0.07),
+    0 8px 16px rgba(0, 0, 0, 0.07),
+    0 16px 32px rgba(0, 0, 0, 0.07);
+}
+
+/* Bronze Depth Shadow */
+.fp-depth-shadow-bronze {
+  box-shadow:
+    0 1px 2px rgba(168, 116, 65, 0.04),
+    0 2px 4px rgba(168, 116, 65, 0.04),
+    0 4px 8px rgba(168, 116, 65, 0.04),
+    0 8px 16px rgba(168, 116, 65, 0.04),
+    0 16px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================================================
+   POLISH LAYER - Scroll Behavior
+   ============================================================================ */
+
+/* Overscroll Prevention */
+.fp-overscroll-none {
+  overscroll-behavior: none;
+}
+
+.fp-overscroll-contain {
+  overscroll-behavior: contain;
+}
+
+/* Scroll Snap */
+.fp-scroll-snap-x {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.fp-scroll-snap-y {
+  scroll-snap-type: y mandatory;
+}
+
+.fp-scroll-snap-item {
+  scroll-snap-align: start;
+}
+
+.fp-scroll-snap-center {
+  scroll-snap-align: center;
+}
+
+/* ============================================================================
+   POLISH LAYER - Enhanced Hover States
+   ============================================================================ */
+
+/* Subtle Scale on Hover */
+.fp-hover-scale-subtle {
+  transition: transform 0.4s var(--fp-ease-luxe);
+}
+
+.fp-hover-scale-subtle:hover {
+  transform: scale(1.02);
+}
+
+/* Border Glow Intensify */
+.fp-hover-border-glow {
+  border: 1px solid rgba(168, 116, 65, 0.2);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.fp-hover-border-glow:hover {
+  border-color: rgba(168, 116, 65, 0.6);
+  box-shadow: 0 0 20px rgba(168, 116, 65, 0.15);
+}
+
+/* Background Fade Reveal */
+.fp-hover-bg-reveal {
+  position: relative;
+  overflow: hidden;
+}
+
+.fp-hover-bg-reveal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(168, 116, 65, 0.05), rgba(168, 116, 65, 0.1));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.fp-hover-bg-reveal:hover::before {
+  opacity: 1;
+}
+
+/* ============================================================================
+   POLISH LAYER - Input Enhancements
+   ============================================================================ */
+
+/* Elegant Input Focus */
+.fp-input-elegant {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(168, 116, 65, 0.2);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: var(--foreground);
+  transition: all 0.4s var(--fp-ease-luxe);
+}
+
+.fp-input-elegant::placeholder {
+  color: rgba(170, 155, 143, 0.5);
+}
+
+.fp-input-elegant:hover {
+  border-color: rgba(168, 116, 65, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.fp-input-elegant:focus {
+  outline: none;
+  border-color: var(--fp-bronze-500);
+  background: rgba(168, 116, 65, 0.05);
+  box-shadow:
+    0 0 0 3px rgba(168, 116, 65, 0.1),
+    0 0 20px rgba(168, 116, 65, 0.1);
+}
+
+/* ============================================================================
+   POLISH LAYER - Card Enhancements
+   ============================================================================ */
+
+/* Luxury Card */
+.fp-card-luxe {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  transition: all 0.5s var(--fp-ease-luxe);
+}
+
+.fp-card-luxe:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(168, 116, 65, 0.2);
+  transform: translateY(-4px);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.2),
+    0 0 40px rgba(168, 116, 65, 0.05);
+}
+
+/* Card Inner Glow on Hover */
+.fp-card-inner-glow {
+  position: relative;
+}
+
+.fp-card-inner-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.fp-card-inner-glow:hover::after {
+  opacity: 1;
+}
+
+/* ============================================================================
+   POLISH LAYER - Image Enhancements
+   ============================================================================ */
+
+/* Image Zoom on Hover */
+.fp-img-zoom {
+  overflow: hidden;
+}
+
+.fp-img-zoom img {
+  transition: transform 0.7s var(--fp-ease-luxe);
+}
+
+.fp-img-zoom:hover img {
+  transform: scale(1.08);
+}
+
+/* Image with Bronze Tint on Hover */
+.fp-img-bronze-tint {
+  position: relative;
+}
+
+.fp-img-bronze-tint::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(168, 116, 65, 0.15), transparent);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.fp-img-bronze-tint:hover::after {
+  opacity: 1;
+}
+
+/* ============================================================================
+   POLISH LAYER - Selection Styling
+   ============================================================================ */
+
+::selection {
+  background: rgba(168, 116, 65, 0.3);
+  color: inherit;
+}
+
+::-moz-selection {
+  background: rgba(168, 116, 65, 0.3);
+  color: inherit;
 }

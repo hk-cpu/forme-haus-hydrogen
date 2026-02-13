@@ -132,6 +132,11 @@ body {
   background: var(--background) !important;
   color: var(--foreground);
   font-family: var(--font-sans);
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior: none;
 }
 
 /* RTL Support - Premium Arabic Typography */
@@ -389,4 +394,56 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #D4AF87, #a87441);
+}
+
+/* ============================================================================
+   GLOBAL ACCESSIBILITY FOCUS STATES
+   ============================================================================ */
+
+/* Default focus-visible for interactive elements */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #a87441;
+  outline-offset: 2px;
+}
+
+/* Remove default outline when using custom focus styles */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 2px solid #a87441;
+  outline-offset: 2px;
+}
+
+/* ============================================================================
+   HEADING REFINEMENTS
+   ============================================================================ */
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+h4, h5, h6 {
+  text-wrap: pretty;
+}
+
+/* ============================================================================
+   MOTION PREFERENCES
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
