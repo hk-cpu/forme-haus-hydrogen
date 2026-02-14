@@ -19,7 +19,7 @@ Open: https://admin.shopify.com/store/f0c5au-jn/settings/apps/development
 1. Click **"Create an app"**
 2. Name: `Forme Haus Storefront`Environment variables
 PRIVATE_STOREFRONT_API_TOKEN
-[REDACTED]
+[REDACTED]l̥
 PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID
 a5be9e0d-b1f3-4489-851d-6b58785e254f
 PUBLIC_CUSTOMER_ACCOUNT_API_URL

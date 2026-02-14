@@ -88,9 +88,10 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
   const isWishlisted = isInWishlist(product.id);
   const isNew = product.tags?.includes('new') || false;
   const isSale = product.tags?.includes('sale') || false;
-  
+
   // Calculate discount if compareAtPrice exists
-  const hasDiscount = product.compareAtPriceRange?.minVariantPrice?.amount && 
+  const hasDiscount = product.compareAtPriceRange?.minVariantPrice?.amount &&
+    product.priceRange?.minVariantPrice?.amount &&
     parseFloat(product.compareAtPriceRange.minVariantPrice.amount) > parseFloat(product.priceRange.minVariantPrice.amount);
 
   // 3D Tilt effect with smooth spring
@@ -103,7 +104,7 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
     const centerY = rect.height / 2;
     const rotateX = (y - centerY) / 25;
     const rotateY = (centerX - x) / 25;
-    
+
     cardRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
   };
 
@@ -148,8 +149,8 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
       onMouseLeave={handleMouseLeave}
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ 
-        duration: 0.5, 
+      transition={{
+        duration: 0.5,
         delay: index * 0.1,
         ease: [0.16, 1, 0.3, 1]
       }}
@@ -202,7 +203,7 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
 
           {/* New Badge */}
           {isNew && (
-            <motion.span 
+            <motion.span
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               className="absolute top-3 left-3 px-3 py-1.5 bg-[#a87441] text-white text-[10px] uppercase tracking-widest rounded-full flex items-center gap-1.5 shadow-lg z-20"
@@ -225,15 +226,14 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
             initial={false}
             animate={isWishlisted ? { scale: [1, 1.2, 1] } : {}}
             transition={{ duration: 0.3 }}
-            className={`absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 z-20 shadow-lg ${
-              isWishlisted
-                ? 'bg-[#a87441] text-white'
-                : 'bg-[#121212]/60 text-[#F0EAE6] opacity-0 group-hover:opacity-100 hover:bg-[#a87441] backdrop-blur-sm'
-            }`}
+            className={`absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 z-20 shadow-lg ${isWishlisted
+              ? 'bg-[#a87441] text-white'
+              : 'bg-[#121212]/60 text-[#F0EAE6] opacity-0 group-hover:opacity-100 hover:bg-[#a87441] backdrop-blur-sm'
+              }`}
             aria-label={isWishlisted ? t('product.removeFromWishlist') : t('product.addToWishlist')}
           >
-            <Icons.Heart 
-              filled={isWishlisted} 
+            <Icons.Heart
+              filled={isWishlisted}
               className={`transition-all duration-300 ${isWishlisted ? 'scale-110' : ''}`}
             />
           </motion.button>
@@ -264,7 +264,7 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
                 </motion.button>
 
                 {/* Image Dots */}
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
@@ -278,11 +278,10 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
                         e.stopPropagation();
                         setCurrentImage(idx);
                       }}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${
-                        idx === currentImage 
-                          ? 'bg-[#a87441] w-6' 
-                          : 'bg-white/50 w-1.5 hover:bg-white/80'
-                      }`}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentImage
+                        ? 'bg-[#a87441] w-6'
+                        : 'bg-white/50 w-1.5 hover:bg-white/80'
+                        }`}
                       aria-label={`${t('product.goToImage', 'Go to image')} ${idx + 1}`}
                     />
                   ))}
@@ -316,7 +315,11 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
           </h3>
           <div className="flex items-center gap-2">
             <p className="text-[#F0EAE6] font-medium transition-all duration-300 group-hover:text-[#D4AF87]">
-              <Money data={product.priceRange.minVariantPrice} />
+              {product.priceRange?.minVariantPrice ? (
+                <Money data={product.priceRange.minVariantPrice} />
+              ) : (
+                <span className="text-sm">Price unavailable</span>
+              )}
             </p>
             {hasDiscount && (
               <p className="text-[#AA9B8F] text-sm line-through opacity-70">
