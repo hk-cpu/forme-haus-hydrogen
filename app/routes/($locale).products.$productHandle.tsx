@@ -1,5 +1,6 @@
 import { useRef, Suspense } from 'react';
 import { Disclosure, Listbox } from '@headlessui/react';
+import { motion } from 'framer-motion';
 import {
   type MetaArgs,
   type LoaderFunctionArgs,
@@ -289,7 +290,7 @@ export function ProductForm({
             <Heading as="legend" size="lead" className="min-w-[4rem] text-[#5C5046] text-xs uppercase tracking-[0.15em] mb-3 font-medium">
               {option.name}
             </Heading>
-            <div className="flex flex-wrap items-baseline gap-4">
+            <div className="flex flex-wrap items-baseline gap-3">
               {option.optionValues.length > 7 ? (
                 <div className="relative w-full">
                   <Listbox>
@@ -373,21 +374,32 @@ export function ProductForm({
                     available,
                     swatch,
                   }) => (
-                    <Link
-                      key={option.name + name}
-                      {...(!isDifferentProduct ? { rel: 'nofollow' } : {})}
-                      to={`/products/${handle}?${variantUriQuery}`}
-                      preventScrollReset
-                      prefetch="intent"
-                      replace
-                      className={clsx(
-                        'leading-none py-2 px-4 border border-transparent cursor-pointer transition-all duration-300 text-sm tracking-wide rounded-sm',
-                        selected ? 'border-[#8B8076] text-[#4A3C31] bg-[#8B8076]/5' : 'text-[#8B8076] hover:text-[#4A3C31] hover:border-[#8B8076]/30',
-                        available ? 'opacity-100' : 'opacity-40 line-through',
-                      )}
-                    >
-                      <ProductOptionSwatch swatch={swatch} name={name} />
-                    </Link>
+                    <div key={option.name + name} className="relative">
+                      <Link
+                        {...(!isDifferentProduct ? { rel: 'nofollow' } : {})}
+                        to={`/products/${handle}?${variantUriQuery}`}
+                        preventScrollReset
+                        prefetch="intent"
+                        replace
+                        className={clsx(
+                          'block relative z-10',
+                          available ? 'opacity-100' : 'opacity-40 line-through',
+                        )}
+                      >
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className={clsx(
+                            'leading-none py-2 px-4 border cursor-pointer transition-colors duration-200 text-sm tracking-wide rounded-sm min-w-[3rem] text-center',
+                            selected
+                              ? 'border-[#4A3C31] text-[#F9F6F3] bg-[#4A3C31]'
+                              : 'border-[#8B8076]/30 text-[#8B8076] hover:border-[#4A3C31] hover:text-[#4A3C31]'
+                          )}
+                        >
+                          <ProductOptionSwatch swatch={swatch} name={name} />
+                        </motion.div>
+                      </Link>
+                    </div>
                   ),
                 )
               )}
@@ -401,40 +413,43 @@ export function ProductForm({
                 <Text>{t('product.soldOut')}</Text>
               </Button>
             ) : (
-              <AddToCartButton
-                lines={[
-                  {
-                    merchandiseId: selectedVariant.id!,
-                    quantity: 1,
-                  },
-                ]}
-                variant="primary"
-                data-test="add-to-cart"
-              >
-                <Text
-                  as="span"
-                  className="flex items-center justify-center gap-2"
+              <motion.div whileTap={{ scale: 0.98 }}>
+                <AddToCartButton
+                  lines={[
+                    {
+                      merchandiseId: selectedVariant.id!,
+                      quantity: 1,
+                    },
+                  ]}
+                  variant="primary"
+                  data-test="add-to-cart"
+                  className="w-full bg-[#a87441] hover:bg-[#8B5E3C] text-white py-4 rounded-md transition-all duration-300 shadow-md hover:shadow-lg"
                 >
-                  <span>{t('product.addToCart')}</span> <span>·</span>{' '}
-                  <Money
-                    withoutTrailingZeros
-                    data={selectedVariant?.price!}
+                  <Text
                     as="span"
-                    data-test="price"
-                  />
-                  <span className="text-[10px] opacity-60 normal-case tracking-normal ml-1">
-                    {t('cart.vatIncluded')}
-                  </span>
-                  {isOnSale && (
+                    className="flex items-center justify-center gap-2 font-medium tracking-wide uppercase text-sm"
+                  >
+                    <span>{t('product.addToCart')}</span> <span>·</span>{' '}
                     <Money
                       withoutTrailingZeros
-                      data={selectedVariant?.compareAtPrice!}
+                      data={selectedVariant?.price!}
                       as="span"
-                      className="opacity-50 strike"
+                      data-test="price"
                     />
-                  )}
-                </Text>
-              </AddToCartButton>
+                    <span className="text-[10px] opacity-70 normal-case tracking-normal ml-1 border-l border-white/20 pl-2">
+                      {t('cart.vatIncluded')}
+                    </span>
+                    {isOnSale && (
+                      <Money
+                        withoutTrailingZeros
+                        data={selectedVariant?.compareAtPrice!}
+                        as="span"
+                        className="opacity-50 strike ml-1"
+                      />
+                    )}
+                  </Text>
+                </AddToCartButton>
+              </motion.div>
             )}
             {!isOutOfStock && (
               <ShopPayButton

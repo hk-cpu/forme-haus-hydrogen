@@ -1,4 +1,5 @@
 import { Image } from '@shopify/hydrogen';
+import { motion } from 'framer-motion';
 
 import type { MediaFragment } from 'storefrontapi.generated';
 
@@ -16,8 +17,27 @@ export function ProductGallery({
     return null;
   }
 
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+  };
+
   return (
-    <div
+    <motion.div
+      variants={container}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-50px" }}
       className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${className}`}
     >
       {media.map((med, i) => {
@@ -29,7 +49,8 @@ export function ProductGallery({
         const isFullWidth = i % 3 === 0; // Make every 3rd image full width for rhythm
 
         return (
-          <div
+          <motion.div
+            variants={item}
             className={`
               aspect-[3/4] w-full bg-[#F9F5F0] overflow-hidden group relative
               ${isFullWidth ? 'md:col-span-2 md:aspect-[16/9]' : 'md:col-span-1'}
@@ -50,9 +71,9 @@ export function ProductGallery({
             )}
             {/* Subtle overlay for depth */}
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500 pointer-events-none" />
-          </div>
+          </motion.div>
         );
       })}
-    </div>
+    </motion.div>
   );
 }

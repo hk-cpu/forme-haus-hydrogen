@@ -62,7 +62,7 @@ export function PageLayout({ children, layout }: LayoutProps) {
       <div className="flex flex-col min-h-screen relative bg-[#121212]">
         {/* Background Layer (Z-0) */}
         <div className="fixed inset-0 pointer-events-none z-0">
-          <Silk color="#AD9686" opacity={0.15} />
+          {useIsHomePath() && <Silk color="#AD9686" opacity={0.15} />}
           <Atmosphere count={100} color="#AD9686" size={0.008} opacity={0.2} />
           {/* Subtle gradient for depth - much lighter */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
