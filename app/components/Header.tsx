@@ -46,9 +46,10 @@ export function Header({
     // Default Nav Links if menu is missing
     const defaultLinks = [
         { id: '1', title: t('nav.newIn'), to: '/collections/new' },
-        { id: '2', title: t('nav.designers'), to: '/pages/designers' },
-        { id: '3', title: t('nav.clothing'), to: '/collections/clothing' },
-        { id: '4', title: t('nav.shoes'), to: '/collections/shoes' },
+        { id: '2', title: t('nav.collections'), to: '/collections' },
+        { id: '3', title: t('nav.designers'), to: '/pages/designers' },
+        { id: '4', title: t('nav.clothing'), to: '/collections/clothing' },
+        { id: '5', title: t('nav.shoes'), to: '/collections/shoes' },
     ];
 
     const items = menu?.items?.length ? menu.items : defaultLinks;

@@ -27,7 +27,7 @@ export const translations = {
     'header.menu': 'Menu',
 
     // Hero
-    'hero.cta': 'Explore Collection',
+    'hero.cta': 'Explore the Collection',
     'hero.scroll': 'Scroll',
 
     // Status Banner
@@ -36,8 +36,8 @@ export const translations = {
     // Homepage Sections
     'home.categorySlider': 'The Collections',
     'home.editorial': 'The Edit',
-    'home.brandIntro': 'Formé Haus is a Saudi-based womenswear label rooted in modern elegance, refined silhouettes, and thoughtful craftsmanship.',
-    'home.curatedForYou': 'Curated For You',
+    'home.brandIntro': 'Formé Haus is a curated destination inspired by modern elegance, refined detail, and thoughtful selection.',
+    'home.curatedForYou': 'Where Elegance Begins',
     'home.journal': 'Journal',
     'home.editorial.label': 'Editorial',
     'home.newsletter.title': 'Launching soon in Saudi Arabia',
@@ -45,9 +45,9 @@ export const translations = {
     'home.shopCollection': 'Shop Collection',
 
     // Journal
-    'journal.modernWardrobe': 'A Modern Saudi Wardrobe',
-    'journal.everydayElegance': 'Designing for Everyday Elegance',
-    'journal.behindCraft': 'Behind the Craft',
+    'journal.modernWardrobe': 'The Modern Wardrobe Edit',
+    'journal.everydayElegance': 'Everyday Elegance',
+    'journal.behindCraft': 'Behind the Selection',
 
     // Footer
     'footer.followUs': 'Follow Us',
@@ -57,7 +57,7 @@ export const translations = {
     'footer.vatNo': 'VAT No.',
     'footer.vatCertificate': 'VAT Certificate',
     'footer.crCertificate': 'CR Certificate',
-    'footer.description': 'Luxury fashion destination in the heart of Saudi Arabia. Curating exceptional pieces for the discerning few.',
+    'footer.description': 'Where Essence Meets Elegance',
     'footer.contact': 'Contact',
     'footer.privacy': 'Privacy Policy',
     'footer.terms': 'Terms of Service',
@@ -196,7 +196,7 @@ export const translations = {
     'header.menu': 'القائمة',
 
     // Hero
-    'hero.cta': 'استكشف المجموعة',
+    'hero.cta': 'استكشفي المجموعة',
     'hero.scroll': 'مرّر',
 
     // Status Banner
@@ -205,8 +205,8 @@ export const translations = {
     // Homepage Sections
     'home.categorySlider': 'المجموعات',
     'home.editorial': 'اختيارات المحرر',
-    'home.brandIntro': 'فورميه هاوس علامة أزياء نسائية سعودية تجمع بين الأناقة العصرية والتصميمات الراقية والحرفية المتقنة.',
-    'home.curatedForYou': 'مختارة لكِ',
+    'home.brandIntro': 'فورميه هاوس وجهة منسّقة مستوحاة من الأناقة العصرية والتفاصيل الراقية والاختيار المدروس.',
+    'home.curatedForYou': 'حيث تبدأ الأناقة',
     'home.journal': 'المجلة',
     'home.editorial.label': 'تحريري',
     'home.newsletter.title': 'قريباً في المملكة العربية السعودية',
@@ -214,9 +214,9 @@ export const translations = {
     'home.shopCollection': 'تسوّق المجموعة',
 
     // Journal
-    'journal.modernWardrobe': 'خزانة ملابس سعودية عصرية',
-    'journal.everydayElegance': 'تصميم الأناقة اليومية',
-    'journal.behindCraft': 'وراء الحرفة',
+    'journal.modernWardrobe': 'تحرير خزانة الملابس العصرية',
+    'journal.everydayElegance': 'أناقة يومية',
+    'journal.behindCraft': 'وراء الاختيار',
 
     // Footer
     'footer.followUs': 'تابعينا',
@@ -226,7 +226,7 @@ export const translations = {
     'footer.vatNo': 'الرقم الضريبي',
     'footer.vatCertificate': 'شهادة ضريبة القيمة المضافة',
     'footer.crCertificate': 'شهادة السجل التجاري',
-    'footer.description': 'وجهة الأزياء الفاخرة في قلب المملكة العربية السعودية. نختار لكِ القطع الاستثنائية.',
+    'footer.description': 'حيث يلتقي الجوهر بالأناقة',
     'footer.contact': 'اتصل بنا',
     'footer.privacy': 'سياسة الخصوصية',
     'footer.terms': 'شروط الخدمة',

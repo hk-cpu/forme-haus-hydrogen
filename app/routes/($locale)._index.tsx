@@ -6,7 +6,6 @@ import { getSeoMeta, Image } from '@shopify/hydrogen';
 import { motion } from 'framer-motion';
 
 import Hero from '~/components/Hero';
-import NotifyForm from '~/components/NotifyForm';
 import CategoryBento from '~/components/CategoryBento';
 import EditorialSection from '~/components/EditorialSection';
 import { seoPayload } from '~/lib/seo.server';
@@ -218,18 +217,6 @@ export default function Homepage() {
           </div>
         </section>
 
-        {/* 7. Newsletter Signup */}
-        <section className="pb-40">
-          <div className="text-center space-y-8 mb-16">
-            <h2 className="font-serif text-4xl italic text-[#4A3C31] font-light tracking-wide">
-              {t('home.newsletter.title')}
-            </h2>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-[#8B8076] font-light">
-              {t('home.newsletter.subtitle')}
-            </p>
-          </div>
-          <NotifyForm />
-        </section>
       </div>
     </div>
   );

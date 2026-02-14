@@ -8,21 +8,19 @@ interface Category {
   titleAr: string;
   image: string;
   url: string;
-  size: 'large' | 'medium' | 'small';
   isActive: boolean;
-  position: { row: number; col: number };
 }
 
 const CATEGORIES: Category[] = [
-  { id: 1, title: 'New In', titleAr: 'وصل حديثاً', image: '/brand/silk-texture.png', url: '/collections/new-in', size: 'medium', isActive: true, position: { row: 1, col: 1 } },
-  { id: 2, title: 'Sunglasses', titleAr: 'نظارات شمسية', image: '/brand/journal-motion.png', url: '/collections/sunglasses', size: 'large', isActive: true, position: { row: 1, col: 2 } },
-  { id: 3, title: 'Dresses', titleAr: 'فساتين', image: '/brand/placeholder-drape.png', url: '/collections/dresses', size: 'small', isActive: false, position: { row: 2, col: 1 } },
-  { id: 4, title: 'Abayas', titleAr: 'عبايات', image: '/brand/atelier-mood.png', url: '/collections/abayas', size: 'medium', isActive: false, position: { row: 2, col: 2 } },
-  { id: 5, title: 'Accessories', titleAr: 'إكسسوارات', image: '/brand/silk-texture.png', url: '/collections/accessories', size: 'small', isActive: false, position: { row: 2, col: 3 } },
-  { id: 6, title: 'Bags', titleAr: 'حقائب', image: '/brand/journal-identity.png', url: '/collections/bags', size: 'medium', isActive: false, position: { row: 3, col: 1 } },
-  { id: 7, title: 'Shoes', titleAr: 'أحذية', image: '/brand/journal-hero.png', url: '/collections/shoes', size: 'small', isActive: false, position: { row: 3, col: 2 } },
-  { id: 8, title: 'Kaftans', titleAr: 'قفاطين', image: '/brand/journal-motion.png', url: '/collections/kaftans', size: 'small', isActive: false, position: { row: 3, col: 3 } },
-  { id: 9, title: 'Sale', titleAr: 'تخفيضات', image: '/brand/placeholder-drape.png', url: '/collections/sale', size: 'small', isActive: false, position: { row: 3, col: 4 } },
+  { id: 1, title: 'New In', titleAr: 'وصل حديثاً', image: '/brand/silk-texture.png', url: '/collections/new-in', isActive: true },
+  { id: 2, title: 'Sunglasses', titleAr: 'نظارات شمسية', image: '/brand/journal-motion.png', url: '/collections/sunglasses', isActive: true },
+  { id: 3, title: 'Dresses', titleAr: 'فساتين', image: '/brand/placeholder-drape.png', url: '/collections/dresses', isActive: false },
+  { id: 4, title: 'Abayas', titleAr: 'عبايات', image: '/brand/atelier-mood.png', url: '/collections/abayas', isActive: false },
+  { id: 5, title: 'Accessories', titleAr: 'إكسسوارات', image: '/brand/silk-texture.png', url: '/collections/accessories', isActive: false },
+  { id: 6, title: 'Bags', titleAr: 'حقائب', image: '/brand/journal-identity.png', url: '/collections/bags', isActive: false },
+  { id: 7, title: 'Shoes', titleAr: 'أحذية', image: '/brand/journal-hero.png', url: '/collections/shoes', isActive: false },
+  { id: 8, title: 'Kaftans', titleAr: 'قفاطين', image: '/brand/journal-motion.png', url: '/collections/kaftans', isActive: false },
+  { id: 9, title: 'Sale', titleAr: 'تخفيضات', image: '/brand/placeholder-drape.png', url: '/collections/sale', isActive: false },
 ];
 
 const containerVariants = {
@@ -49,16 +47,10 @@ const itemVariants = {
 };
 
 function CategoryCard({ category, isRTL }: { category: Category; isRTL: boolean }) {
-  const sizeClasses = {
-    large: 'md:col-span-2 md:row-span-2 aspect-square md:aspect-auto',
-    medium: 'md:col-span-1 md:row-span-1 aspect-[4/3]',
-    small: 'md:col-span-1 md:row-span-1 aspect-square',
-  };
-
   return (
     <motion.div
       variants={itemVariants}
-      className={`relative group ${sizeClasses[category.size]} overflow-hidden rounded-2xl`}
+      className="relative group aspect-square overflow-hidden rounded-2xl"
     >
       <Link
         to={category.isActive ? category.url : '#'}
@@ -69,17 +61,21 @@ function CategoryCard({ category, isRTL }: { category: Category; isRTL: boolean 
           <img
             src={category.image}
             alt={isRTL ? category.titleAr : category.title}
-            className="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-110 transition-all duration-700"
+            className={`w-full h-full object-cover transition-all duration-700 ${
+              category.isActive
+                ? 'opacity-60 group-hover:opacity-80 group-hover:scale-110'
+                : 'opacity-40 blur-sm'
+            }`}
             loading="lazy"
           />
           {/* Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         </div>
 
-        {/* Coming Soon Badge */}
+        {/* Coming Soon Overlay */}
         {!category.isActive && (
-          <div className="absolute top-4 right-4 z-10">
-            <span className="inline-block px-3 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-[10px] uppercase tracking-widest text-white/90 font-medium">
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/40">
+            <span className="font-serif text-xl italic text-white/90 tracking-wide">
               {isRTL ? 'قريباً' : 'Coming Soon'}
             </span>
           </div>
@@ -95,15 +91,17 @@ function CategoryCard({ category, isRTL }: { category: Category; isRTL: boolean 
             </h3>
             <div className="h-px w-0 group-hover:w-12 bg-[#D4AF87] transition-all duration-500" />
           </motion.div>
-          
-          {/* Hover Arrow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <div className="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center backdrop-blur-sm">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-white">
-                <path d={isRTL ? "M19 12H5M12 19l-7-7 7-7" : "M5 12h14M12 5l7 7-7 7"} />
-              </svg>
+
+          {/* Hover Arrow - only for active categories */}
+          {category.isActive && (
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              <div className="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center backdrop-blur-sm">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-white">
+                  <path d={isRTL ? "M19 12H5M12 19l-7-7 7-7" : "M5 12h14M12 5l7 7-7 7"} />
+                </svg>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Border Glow on Hover */}
@@ -139,7 +137,7 @@ export default function CategoryBento() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[200px] md:auto-rows-[220px]"
+          className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6"
         >
           {CATEGORIES.map((category) => (
             <CategoryCard key={category.id} category={category} isRTL={isRTL} />
