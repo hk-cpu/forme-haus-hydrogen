@@ -19,6 +19,7 @@ const CATEGORIES: Category[] = [
   { id: 6, title: 'Bags', titleAr: 'حقائب', image: '/brand/journal-identity.png', url: '/collections/bags', isActive: false },
   { id: 7, title: 'Shoes', titleAr: 'أحذية', image: '/brand/journal-hero.png', url: '/collections/shoes', isActive: false },
   { id: 8, title: 'Kaftans', titleAr: 'قفاطين', image: '/brand/journal-motion.png', url: '/collections/kaftans', isActive: false },
+  { id: 9, title: 'Sale', titleAr: 'تخفيضات', image: '/brand/silk-texture.png', url: '/collections/sale', isActive: true },
 ];
 
 const containerVariants = {
@@ -139,7 +140,7 @@ export default function CategoryBento() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6"
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
         >
           {CATEGORIES.map((category) => (
             <CategoryCard key={category.id} category={category} isRTL={isRTL} />
