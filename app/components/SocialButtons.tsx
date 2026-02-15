@@ -6,7 +6,7 @@ interface SocialLinkProps {
   children: React.ReactNode;
 }
 
-function SocialLink({href, label, children}: SocialLinkProps) {
+function SocialLink({ href, label, children }: SocialLinkProps) {
   return (
     <a
       href={href}
@@ -24,7 +24,7 @@ export default function SocialButtons() {
   return (
     <div className="links">
       <SocialLink
-        href="https://instagram.com/formehaus"
+        href="https://www.instagram.com/formee.haus/"
         label="Follow us on Instagram"
       >
         <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">

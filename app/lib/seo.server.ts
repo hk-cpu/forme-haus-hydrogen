@@ -1,4 +1,4 @@
-import {type SeoConfig} from '@shopify/hydrogen';
+import { type SeoConfig } from '@shopify/hydrogen';
 import type {
   Article,
   Blog,
@@ -20,7 +20,7 @@ import type {
   WebPage,
 } from 'schema-dts';
 
-import type {ShopFragment} from 'storefrontapi.generated';
+import type { ShopFragment } from 'storefrontapi.generated';
 
 function root({
   shop,
@@ -44,7 +44,7 @@ function root({
       '@type': 'Organization',
       name: shop.name,
       logo: shop.brand?.logo?.image?.url,
-      sameAs: ['https://instagram.com/formehaus'],
+      sameAs: ['https://www.instagram.com/formee.haus/'],
       url,
       potentialAction: {
         '@type': 'SearchAction',
@@ -55,7 +55,7 @@ function root({
   };
 }
 
-function home({url}: {url: Request['url']}): SeoConfig {
+function home({ url }: { url: Request['url'] }): SeoConfig {
   return {
     title: 'Home',
     titleTemplate: '%s | Formé Haus',
@@ -174,7 +174,7 @@ function product({
     description,
     url,
     media: selectedVariant?.image,
-    jsonLd: productJsonLd({product, selectedVariant, url}),
+    jsonLd: productJsonLd({ product, selectedVariant, url }),
   };
 }
 
@@ -182,7 +182,7 @@ type CollectionRequiredFields = Omit<
   Collection,
   'products' | 'descriptionHtml' | 'metafields' | 'image' | 'updatedAt'
 > & {
-  products: {nodes: Pick<Product, 'handle'>[]};
+  products: { nodes: Pick<Product, 'handle'>[] };
   image?: null | Pick<Image, 'url' | 'height' | 'width' | 'altText'>;
   descriptionHtml?: null | Collection['descriptionHtml'];
   updatedAt?: null | Collection['updatedAt'];
@@ -262,7 +262,7 @@ function collection({
       width: collection?.image?.width,
       altText: collection?.image?.altText,
     },
-    jsonLd: collectionJsonLd({collection, url}),
+    jsonLd: collectionJsonLd({ collection, url }),
   };
 }
 
@@ -312,7 +312,7 @@ function listCollections({
     titleTemplate: '%s | Formé Haus Collections',
     description: 'Explore our curated collections of luxury womenswear.',
     url,
-    jsonLd: collectionsJsonLd({collections, url}),
+    jsonLd: collectionsJsonLd({ collections, url }),
   };
 }
 

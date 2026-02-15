@@ -2678,7 +2678,7 @@ function Footer() {
   ];
 
   const socialLinks = [
-    { name: 'Instagram', url: '#' },
+    { name: 'Instagram', url: 'https://www.instagram.com/formee.haus/' },
     { name: 'Facebook', url: '#' },
     { name: 'Twitter', url: '#' },
     { name: 'YouTube', url: '#' },

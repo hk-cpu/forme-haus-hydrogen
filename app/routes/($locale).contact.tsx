@@ -70,14 +70,7 @@ export default function ContactPage() {
     },
   ];
 
-  const comingSoonChannels = [
-    { name: 'Live Chat', description: 'Real-time support on our website' },
-    { name: 'Order Updates', description: 'Stay informed about your orders' },
-    {
-      name: 'Instagram',
-      description: 'Discover the latest collections, behind-the-scenes moments, and styling inspiration. Follow our journey.'
-    },
-  ];
+
 
   return (
     <div className="min-h-screen bg-[#F9F5F0]">
@@ -289,32 +282,6 @@ export default function ContactPage() {
             transition={{ duration: 0.8 }}
             className="space-y-10"
           >
-            {/* New Ways to Connect */}
-            <div className="bg-gradient-to-br from-[#121212] to-[#1a1a1a] rounded-2xl p-8 text-white relative overflow-hidden">
-              {/* Glow Effect */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-[#a87441]/10 rounded-full blur-3xl" />
-
-              <div className="relative z-10">
-                <h3 className="font-serif text-2xl italic mb-4">New Ways to Connect</h3>
-                <p className="text-[13px] text-[#AA9B8F] mb-6 leading-relaxed">
-                  We're expanding how we connect with you to offer a more seamless
-                  and personalized experience.
-                </p>
-
-                <div className="space-y-4">
-                  {comingSoonChannels.map((channel) => (
-                    <div key={channel.name} className="flex items-start gap-4">
-                      <div className="w-2 h-2 rounded-full bg-[#a87441] mt-2" />
-                      <div>
-                        <p className="text-[14px] font-medium text-[#F0EAE6]">{channel.name}</p>
-                        <p className="text-[12px] text-[#8B8076]">{channel.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
             {/* Instagram Follow */}
             <div className="bg-white rounded-2xl p-8 border border-[#8B8076]/10">
               <div className="flex items-center justify-between mb-6">
@@ -329,7 +296,7 @@ export default function ContactPage() {
                   </div>
                 </div>
                 <a
-                  href="https://instagram.com/formehaus"
+                  href="https://www.instagram.com/formee.haus/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-5 py-2 bg-[#121212] text-white text-[11px] uppercase tracking-wider rounded-lg
