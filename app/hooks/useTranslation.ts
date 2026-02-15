@@ -21,8 +21,8 @@ export function useTranslation() {
   const lang = useLanguage();
   const isRTL = lang === 'AR';
 
-  function t(key: TranslationKey): string {
-    return translations[lang][key] ?? translations.EN[key] ?? key;
+  function t(key: TranslationKey, defaultValue?: string): string {
+    return translations[lang][key] ?? translations.EN[key] ?? defaultValue ?? key;
   }
 
   return { t, lang, isRTL, dir: isRTL ? 'rtl' as const : 'ltr' as const };
