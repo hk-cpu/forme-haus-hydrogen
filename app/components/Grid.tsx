@@ -18,12 +18,9 @@ export function Grid({
   [key: string]: any;
 }) {
   const layouts = {
-    default: `grid-cols-1 ${items === 2 && 'md:grid-cols-2'}  ${
-      items === 3 && 'sm:grid-cols-3'
-    } ${items > 3 && 'md:grid-cols-3'} ${items >= 4 && 'lg:grid-cols-4'}`,
-    products: `grid-cols-2 ${items >= 3 && 'md:grid-cols-3'} ${
-      items >= 4 && 'lg:grid-cols-4'
-    }`,
+    default: `grid-cols-1 ${items === 2 && 'md:grid-cols-2'}  ${items === 3 && 'sm:grid-cols-3'
+      } ${items > 3 && 'md:grid-cols-3'} ${items >= 4 && 'lg:grid-cols-4'}`,
+    products: `grid-cols-2 md:grid-cols-3`, // Max 3 columns for premium look
     auto: 'auto-cols-auto',
     blog: 'grid-cols-1 md:grid-cols-2',
   };

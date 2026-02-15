@@ -109,6 +109,7 @@ export const translations = {
     'product.details': 'Product Details',
     'product.shipping': 'Shipping',
     'product.returns': 'Returns',
+    'product.quickAdd': 'Quick Add',
 
     // General
     'general.viewAll': 'View All',
@@ -278,6 +279,7 @@ export const translations = {
     'product.details': 'تفاصيل المنتج',
     'product.shipping': 'الشحن',
     'product.returns': 'الاسترجاع',
+    'product.quickAdd': 'إضافة سريعة',
 
     // General
     'general.viewAll': 'عرض الكل',

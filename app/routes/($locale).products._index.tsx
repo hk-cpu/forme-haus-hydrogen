@@ -73,7 +73,7 @@ export default function AllProducts() {
   const { products } = useLoaderData<typeof loader>();
 
   return (
-    <>
+    <div className="min-h-screen bg-[#4A3C31] text-[#F0EAE6]">
       <div className="py-24 text-center">
         <h1 className="font-serif italic font-light text-5xl md:text-6xl text-[#F0EAE6] mb-4">
           All Products
@@ -98,7 +98,7 @@ export default function AllProducts() {
                     {isLoading ? 'Loading...' : 'Previous'}
                   </PreviousLink>
                 </div>
-                <Grid data-test="product-grid">{itemsMarkup}</Grid>
+                <Grid layout="products" data-test="product-grid">{itemsMarkup}</Grid>
                 <div className="flex items-center justify-center mt-6">
                   <NextLink className="inline-block rounded font-medium text-center py-3 px-6 border border-primary/10 bg-contrast text-primary w-full">
                     {isLoading ? 'Loading...' : 'Next'}
@@ -109,7 +109,7 @@ export default function AllProducts() {
           }}
         </Pagination>
       </Section>
-    </>
+    </div>
   );
 }
 

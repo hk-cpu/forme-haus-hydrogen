@@ -44,6 +44,27 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
     publishedAt
     handle
     vendor
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    compareAtPriceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    images(first: 4) {
+      nodes {
+        id
+        url
+        altText
+        width
+        height
+      }
+    }
     variants(first: 1) {
       nodes {
         id
