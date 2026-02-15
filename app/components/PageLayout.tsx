@@ -1,7 +1,7 @@
-﻿import { Await, useRouteLoaderData } from '@remix-run/react';
+﻿import { Await, useRouteLoaderData, useLocation } from '@remix-run/react';
 import { Suspense, useEffect, useState } from 'react';
 import { CartForm } from '@shopify/hydrogen';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import { type LayoutQuery } from 'storefrontapi.generated';
 import { Text } from '~/components/Text';
@@ -28,6 +28,8 @@ import { FilterPanel } from '~/components/FilterPanel';
 import { useUI } from '~/context/UIContext';
 
 import { useTranslation } from '~/hooks/useTranslation';
+import { Newsletter } from '~/components/Newsletter';
+import PaymentBadges from '~/components/PaymentBadges';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -40,6 +42,7 @@ type LayoutProps = {
 export function PageLayout({ children, layout }: LayoutProps) {
   const { headerMenu, footerMenu } = layout || {};
   const [scrollY, setScrollY] = useState(0);
+  const location = useLocation();
 
   useEffect(() => {
     let ticking = false;
@@ -63,7 +66,7 @@ export function PageLayout({ children, layout }: LayoutProps) {
         {/* Background Layer (Z-0) */}
         <div className="fixed inset-0 pointer-events-none z-0">
           {useIsHomePath() && <Silk color="#AD9686" opacity={0.15} />}
-          <Atmosphere count={100} color="#AD9686" size={0.008} opacity={0.2} />
+          <Atmosphere count={60} color="#AD9686" size={0.008} opacity={0.2} />
           {/* Subtle gradient for depth - much lighter */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
         </div>
@@ -77,17 +80,27 @@ export function PageLayout({ children, layout }: LayoutProps) {
         <div className="relative z-10 flex flex-col items-center lg:py-8 transition-all duration-700">
           <div className="w-full max-w-[1800px] flex flex-col relative mx-auto my-0 px-4 md:px-8">
             <Header
-              title={layout?.shop.name || 'Form├⌐ Haus'}
+              title={layout?.shop.name || 'Formé Haus'}
               menu={headerMenu || undefined}
             />
             <main role="main" id="mainContent" className="flex-grow">
-              {useIsHomePath() ? (
-                children
-              ) : (
-                <div className="bg-[#F9F5F0] text-[#4A3C31] shadow-[0_0_100px_rgba(255,255,255,0.3)] lg:rounded-t-[2rem] min-h-[50vh] p-6 md:p-12">
-                  {children}
-                </div>
-              )}
+              <AnimatePresence mode="popLayout">
+                <motion.div
+                  key={location.pathname}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {useIsHomePath() ? (
+                    children
+                  ) : (
+                    <div className="bg-[#F9F5F0] text-[#4A3C31] shadow-[0_0_100px_rgba(255,255,255,0.3)] lg:rounded-t-[2rem] min-h-[50vh] p-6 md:p-12">
+                      {children}
+                    </div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
             </main>
             <Footer menu={footerMenu || undefined} />
           </div>
@@ -217,6 +230,7 @@ function MenuMobileNav({
   menu: EnhancedMenu;
   onClose: () => void;
 }) {
+  const { isRTL } = useTranslation();
   return (
     <nav className="grid gap-6 p-6 sm:gap-8 sm:px-12 sm:py-8">
       {/* Top level menu items */}
@@ -224,7 +238,7 @@ function MenuMobileNav({
         <motion.span
           key={item.id}
           className="block"
-          initial={{ opacity: 0, x: -20 }}
+          initial={{ opacity: 0, x: isRTL ? 20 : -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: index * 0.1, duration: 0.5 }}
         >
@@ -264,7 +278,7 @@ function MenuMobileNav({
 function Footer({ menu }: { menu?: EnhancedMenu }) {
   const { t } = useTranslation();
 
-  const linkClass = "text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-all duration-300 hover:translate-x-1 inline-block focus:outline-none focus-visible:text-[#a87441]";
+  const linkClass = "text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-300 inline-block focus:outline-none focus-visible:text-[#a87441]";
 
   return (
     <footer
@@ -278,6 +292,19 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
       <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
 
       <div className="relative z-10 py-16 px-6 md:px-12 lg:px-24">
+        {/* Newsletter */}
+        <div className="max-w-[1920px] mx-auto mb-12 pb-12 border-b border-[#a87441]/15">
+          <div className="max-w-md">
+            <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium mb-2">
+              {t('footer.newsletter', 'Stay in the Loop')}
+            </h4>
+            <p className="text-[12px] text-[#AA9B8F] mb-4">
+              {t('footer.newsletterDesc', 'New arrivals, exclusive offers, and more.')}
+            </p>
+            <Newsletter />
+          </div>
+        </div>
+
         {/* Main Footer Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 w-full max-w-[1920px] mx-auto">
 
@@ -330,40 +357,29 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
             </div>
           </div>
 
-          {/* COL 3: Contact Info */}
-          <div className="lg:col-span-3 flex flex-col gap-4">
-            {/* Phone */}
-            <div className="space-y-1">
-              <h4 className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076]">Phone</h4>
-              <a href="tel:+966800123456" className="text-sm text-[#AA9B8F] hover:text-[#a87441] transition-colors">
-                800 123 456
-              </a>
-            </div>
-
-            {/* Email */}
-            <div className="space-y-1">
-              <h4 className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076]">Email</h4>
-              <a href="mailto:care@formehaus.com" className="text-sm text-[#AA9B8F] hover:text-[#a87441] transition-colors">
-                care@formehaus.com
-              </a>
+          {/* COL 3: Contact & Payments */}
+          <div className="lg:col-span-3 flex flex-col gap-5">
+            {/* Get in Touch */}
+            <div className="space-y-3">
+              <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
+                Get in Touch
+              </h4>
+              <div className="grid gap-1.5">
+                <a href="tel:+966800123456" className="text-sm text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+                  800 123 456
+                </a>
+                <a href="mailto:care@formehaus.com" className="text-sm text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+                  care@formehaus.com
+                </a>
+              </div>
             </div>
 
             {/* Payments */}
-            <div className="space-y-1">
-              <h4 className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076]">Payments</h4>
-              <p className="text-[12px] text-[#AA9B8F]">Mada, Visa, Mastercard, Apple Pay</p>
-            </div>
-
-            {/* CR Number */}
-            <div className="space-y-1">
-              <h4 className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076]">CR No.</h4>
-              <span className="font-mono text-sm text-[#F0EAE6]">7051891369</span>
-            </div>
-
-            {/* VAT Number */}
-            <div className="space-y-1">
-              <h4 className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076]">VAT No.</h4>
-              <span className="font-mono text-sm text-[#F0EAE6]">314271812300003</span>
+            <div className="space-y-2">
+              <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
+                Payments
+              </h4>
+              <PaymentBadges />
             </div>
           </div>
         </div>

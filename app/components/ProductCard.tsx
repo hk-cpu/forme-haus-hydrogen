@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from '@remix-run/react';
 import { Image, Money } from '@shopify/hydrogen';
@@ -66,22 +66,12 @@ interface ProductCardProps {
 
 /**
  * ProductCard - Polished luxury product card
- * 
- * Features:
- * - Smooth 3D tilt effect with spring physics
- * - Shimmer effect on hover
- * - Animated image transitions
- * - Elegant wishlist button with heart animation
- * - Price comparison display
- * - Staggered entrance animations
  */
 export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCardProps) {
   const { toggleWishlist, isInWishlist } = useUI();
   const { isRTL, t } = useTranslation();
   const [currentImage, setCurrentImage] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const [isTilted, setIsTilted] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
 
   const images = product.images?.nodes || [];
   const hasMultipleImages = images.length > 1;
@@ -94,32 +84,8 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
     product.priceRange?.minVariantPrice?.amount &&
     parseFloat(product.compareAtPriceRange.minVariantPrice.amount) > parseFloat(product.priceRange.minVariantPrice.amount);
 
-  // 3D Tilt effect with smooth spring
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current || !isTilted) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotateX = (y - centerY) / 25;
-    const rotateY = (centerX - x) / 25;
-
-    cardRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-  };
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-    setTimeout(() => setIsTilted(true), 100);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    setIsTilted(false);
-    if (cardRef.current) {
-      cardRef.current.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
-    }
-  };
+  const handleMouseEnter = () => setIsHovered(true);
+  const handleMouseLeave = () => setIsHovered(false);
 
   const nextImage = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -141,14 +107,13 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
 
   return (
     <motion.div
-      ref={cardRef}
       className="group relative"
       style={{ direction: isRTL ? 'rtl' : 'ltr' }}
       onMouseEnter={handleMouseEnter}
-      onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -4 }}
       transition={{
         duration: 0.5,
         delay: index * 0.1,
@@ -228,7 +193,7 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
             transition={{ duration: 0.3 }}
             className={`absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 z-20 shadow-lg ${isWishlisted
               ? 'bg-[#a87441] text-white'
-              : 'bg-[#121212]/60 text-[#F0EAE6] opacity-0 group-hover:opacity-100 hover:bg-[#a87441] backdrop-blur-sm'
+              : 'bg-[#121212]/60 text-[#F0EAE6] opacity-40 group-hover:opacity-100 hover:bg-[#a87441] backdrop-blur-sm'
               }`}
             aria-label={isWishlisted ? t('product.removeFromWishlist') : t('product.addToWishlist')}
           >
@@ -238,7 +203,7 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
             />
           </motion.button>
 
-          {/* Image Navigation Arrows */}
+          {/* Image Navigation Arrows (hover-only on desktop) */}
           <AnimatePresence>
             {hasMultipleImages && isHovered && (
               <>
@@ -262,33 +227,30 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
                 >
                   <Icons.ChevronRight />
                 </motion.button>
-
-                {/* Image Dots */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20"
-                >
-                  {images.slice(0, 5).map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setCurrentImage(idx);
-                      }}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentImage
-                        ? 'bg-[#a87441] w-6'
-                        : 'bg-white/50 w-1.5 hover:bg-white/80'
-                        }`}
-                      aria-label={`${t('product.goToImage', 'Go to image')} ${idx + 1}`}
-                    />
-                  ))}
-                </motion.div>
               </>
             )}
           </AnimatePresence>
+
+          {/* Image Dots (always visible for mobile discoverability) */}
+          {hasMultipleImages && (
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+              {images.slice(0, 5).map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setCurrentImage(idx);
+                  }}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentImage
+                    ? 'bg-[#a87441] w-6'
+                    : 'bg-white/50 w-1.5 hover:bg-white/80'
+                    }`}
+                  aria-label={`${t('product.goToImage', 'Go to image')} ${idx + 1}`}
+                />
+              ))}
+            </div>
+          )}
 
           {/* Quick Add Button */}
           {quickAdd && product.availableForSale !== false && (
@@ -310,7 +272,7 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
 
         {/* Product Info */}
         <div className="space-y-2">
-          <h3 className="font-serif text-[#F0EAE6] text-[15px] leading-snug group-hover:text-[#a87441] transition-all duration-300 line-clamp-2 group-hover:tracking-wide">
+          <h3 className="font-serif text-[#F0EAE6] text-[15px] leading-snug group-hover:text-[#a87441] transition-colors duration-300 line-clamp-2">
             {product.title}
           </h3>
           <div className="flex items-center gap-2">

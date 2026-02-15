@@ -13,14 +13,13 @@ interface Category {
 
 const CATEGORIES: Category[] = [
   { id: 1, title: 'New In', titleAr: 'وصل حديثاً', image: '/brand/silk-texture.png', url: '/collections/new-in', isActive: true },
+  { id: 5, title: 'Accessories', titleAr: 'إكسسوارات', image: '/brand/silk-texture.png', url: '/collections/accessories', isActive: true },
   { id: 2, title: 'Sunglasses', titleAr: 'نظارات شمسية', image: '/brand/journal-motion.png', url: '/collections/sunglasses', isActive: true },
   { id: 3, title: 'Dresses', titleAr: 'فساتين', image: '/brand/placeholder-drape.png', url: '/collections/dresses', isActive: false },
   { id: 4, title: 'Abayas', titleAr: 'عبايات', image: '/brand/atelier-mood.png', url: '/collections/abayas', isActive: false },
-  { id: 5, title: 'Accessories', titleAr: 'إكسسوارات', image: '/brand/silk-texture.png', url: '/collections/accessories', isActive: false },
   { id: 6, title: 'Bags', titleAr: 'حقائب', image: '/brand/journal-identity.png', url: '/collections/bags', isActive: false },
   { id: 7, title: 'Shoes', titleAr: 'أحذية', image: '/brand/journal-hero.png', url: '/collections/shoes', isActive: false },
   { id: 8, title: 'Kaftans', titleAr: 'قفاطين', image: '/brand/journal-motion.png', url: '/collections/kaftans', isActive: false },
-  { id: 9, title: 'Sale', titleAr: 'تخفيضات', image: '/brand/placeholder-drape.png', url: '/collections/sale', isActive: false },
 ];
 
 const containerVariants = {
@@ -28,8 +27,8 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
+      staggerChildren: 0.06,
+      delayChildren: 0.1,
     },
   },
 };
@@ -61,11 +60,10 @@ function CategoryCard({ category, isRTL }: { category: Category; isRTL: boolean 
           <img
             src={category.image}
             alt={isRTL ? category.titleAr : category.title}
-            className={`w-full h-full object-cover transition-all duration-700 ${
-              category.isActive
-                ? 'opacity-60 group-hover:opacity-80 group-hover:scale-110'
-                : 'opacity-40 blur-sm'
-            }`}
+            className={`w-full h-full object-cover transition-all duration-1000 ease-out ${category.isActive
+              ? 'opacity-60 group-hover:opacity-80 group-hover:scale-110'
+              : 'opacity-40 blur-sm'
+              }`}
             loading="lazy"
           />
           {/* Overlay */}
@@ -86,7 +84,7 @@ function CategoryCard({ category, isRTL }: { category: Category; isRTL: boolean 
           <motion.div
             className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500"
           >
-            <h3 className="text-lg md:text-xl font-serif text-white mb-1 group-hover:text-[#D4AF87] transition-colors duration-300">
+            <h3 className="text-lg md:text-xl font-serif text-white/60 blur-[2px] mb-1 group-hover:text-[#D4AF87] group-hover:blur-0 group-hover:text-opacity-100 transition-all duration-500">
               {isRTL ? category.titleAr : category.title}
             </h3>
             <div className="h-px w-0 group-hover:w-12 bg-[#D4AF87] transition-all duration-500" />
@@ -115,7 +113,7 @@ export default function CategoryBento() {
   const { isRTL, t } = useTranslation();
 
   return (
-    <section className="py-16 md:py-24 border-b border-[#8B8076]/10 bg-[#121212]">
+    <section className="py-16 md:py-24 border-b border-[#8B8076]/10">
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <motion.div
@@ -125,7 +123,7 @@ export default function CategoryBento() {
           transition={{ duration: 0.6 }}
           className="mb-12"
         >
-          <h2 className="font-serif text-3xl md:text-4xl text-[#F0EAE6] mb-3">
+          <h2 className="font-serif text-3xl md:text-4xl text-[#4A3C31] mb-3">
             {isRTL ? 'تسوّق حسب الفئة' : t('home.categorySlider')}
           </h2>
           <div className="h-px w-24 bg-gradient-to-r from-[#a87441] to-transparent" />
@@ -157,14 +155,14 @@ export default function CategoryBento() {
             className="inline-flex items-center gap-3 px-8 py-4 border border-[#a87441]/30 text-[#a87441] hover:bg-[#a87441] hover:text-white transition-all duration-500 rounded-full text-xs uppercase tracking-[0.2em] group"
           >
             <span>{isRTL ? 'عرض الكل' : t('general.viewAll')}</span>
-            <svg 
-              width="16" 
-              height="16" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
               strokeWidth="1.5"
-              className="transform group-hover:translate-x-1 transition-transform"
+              className={`transform transition-transform ${isRTL ? 'group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`}
             >
               <path d={isRTL ? "M19 12H5M12 19l-7-7 7-7" : "M5 12h14M12 5l7 7-7 7"} />
             </svg>
@@ -172,14 +170,6 @@ export default function CategoryBento() {
         </motion.div>
       </div>
 
-      {/* Brown Glow Typography Effect */}
-      <style>{`
-        .category-bento-glow {
-          text-shadow: 0 0 10px rgba(168, 116, 65, 0.5),
-                       0 0 20px rgba(168, 116, 65, 0.3),
-                       0 0 30px rgba(168, 116, 65, 0.1);
-        }
-      `}</style>
     </section>
   );
 }

@@ -88,7 +88,7 @@ export default function Homepage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 1, ease: 'easeOut' }}
-          className="py-12 px-6 text-center max-w-2xl mx-auto space-y-8 border-t border-[#8B8076]/8"
+          className="py-12 px-6 text-center max-w-2xl mx-auto space-y-8 border-t border-[#8B8076]/20"
         >
           <div className="w-px h-12 bg-gradient-to-b from-transparent via-[#a87441]/60 to-transparent mx-auto" />
           <p className="font-serif text-lg md:text-xl leading-relaxed text-[#5C5046]/80 font-light italic tracking-wide">
@@ -97,7 +97,7 @@ export default function Homepage() {
         </motion.section>
 
         {/* 5. Featured Collections */}
-        <section className="container mx-auto px-6 pb-32">
+        <section className="container mx-auto px-6 pb-20">
           <h2 className="font-serif text-3xl italic text-[#4A3C31] mb-12 text-center tracking-wide font-light">
             {t('home.curatedForYou')}
           </h2>
@@ -153,7 +153,7 @@ export default function Homepage() {
 
                           <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10 bg-black/10 group-hover:bg-black/5 transition-colors">
                             <h3 className="font-serif text-2xl italic text-white drop-shadow-md">
-                              {c.title}
+                              {c.title === 'Home page' ? 'Where Elegance Begins' : c.title}
                             </h3>
                             <span className="text-[10px] uppercase tracking-widest text-[#F9F6F3] border border-white/50 px-4 py-2 backdrop-blur-sm hover:bg-white hover:text-black transition-colors">
                               View Collection
@@ -170,7 +170,7 @@ export default function Homepage() {
         </section>
 
         {/* 6. Journal Teaser */}
-        <section className="container mx-auto px-6 pb-40 border-t border-[#8B8076]/15 pt-32">
+        <section className="container mx-auto px-6 pb-24 border-t border-[#8B8076]/15 pt-20">
           <div className="flex justify-between items-end mb-16">
             <h2 className="font-serif text-4xl italic text-[#4A3C31] font-light tracking-wide">
               {t('home.journal')}

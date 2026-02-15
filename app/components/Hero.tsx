@@ -2,14 +2,12 @@ import { Link } from '@remix-run/react';
 import { motion } from 'framer-motion';
 import { useTranslation } from '~/hooks/useTranslation';
 
-// Forced Update
 export default function Hero() {
   const { t } = useTranslation();
 
   return (
     <section
       className="h-[90vh] flex flex-col items-center justify-center bg-transparent relative overflow-hidden"
-      style={{ height: '90vh', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
     >
       {/*
           Hero Background is TRANSPARENT to show the global Silk canvas from PageLayout.
@@ -69,13 +67,12 @@ export default function Hero() {
                   strokeLinecap="round"
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{
-                    pathLength: [0, 1, 1, 0],
-                    opacity: [0, 0.6, 0.6, 0],
+                    pathLength: 1,
+                    opacity: 0.5,
                   }}
                   transition={{
-                    duration: 8,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
+                    pathLength: { duration: 2, delay: 0.8, ease: [0.16, 1, 0.3, 1] },
+                    opacity: { duration: 1, delay: 0.8 },
                   }}
                 />
                 <defs>
@@ -136,9 +133,9 @@ export default function Hero() {
         <span className="text-[10px] uppercase tracking-widest text-neutral-400 font-medium">{t('hero.scroll')}</span>
         <div className="w-px h-12 bg-gradient-to-b from-transparent via-neutral-400 to-transparent opacity-50 overflow-hidden">
           <motion.div
-            animate={{ y: [-50, 50] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="w-full h-full bg-white/50"
+            animate={{ y: [-48, 48] }}
+            transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+            className="w-full h-full bg-gradient-to-b from-[#a87441]/50 to-transparent"
           />
         </div>
       </motion.div>

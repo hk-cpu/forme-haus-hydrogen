@@ -33,7 +33,7 @@ export function Header({
 
     useEffect(() => {
         setScrolled(y > 20);
-        
+
         // Smart hide/show on scroll direction
         if (y > lastScrollY && y > 100) {
             setIsVisible(false);
@@ -71,20 +71,19 @@ export function Header({
                 {/* Desktop Navigation - Left Side */}
                 <nav className="hidden md:flex items-center gap-10">
                     {items.map((item: any, index: number) => (
-                        <motion.div 
-                            key={item.id} 
+                        <motion.div
+                            key={item.id}
                             className="h-full flex items-center relative group/item"
                             initial={{ opacity: 0, y: -20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1, duration: 0.5 }}
+                            transition={{ delay: index * 0.06, duration: 0.4 }}
                         >
                             <NavLink
                                 to={item.to}
                                 className={({ isActive }) =>
-                                    `relative text-[11px] uppercase tracking-[0.25em] font-light transition-all duration-300 py-2 ${
-                                        isActive
-                                            ? 'text-[#a87441]'
-                                            : 'text-[#F0EAE6]/80 hover:text-[#a87441]'
+                                    `relative text-[11px] uppercase tracking-[0.25em] font-light transition-all duration-300 py-2 ${isActive
+                                        ? 'text-[#a87441]'
+                                        : 'text-[#F0EAE6]/80 hover:text-[#a87441]'
                                     }`
                                 }
                             >
@@ -93,7 +92,7 @@ export function Header({
                                         <span className="relative z-10">{item.title}</span>
                                         {/* Animated underline */}
                                         <motion.span
-                                            className="absolute bottom-0 left-0 h-[1px] bg-[#a87441]"
+                                            className="absolute bottom-0 left-0 rtl:left-auto rtl:right-0 h-[1px] bg-[#a87441]"
                                             initial={{ width: 0 }}
                                             animate={{ width: isActive ? '100%' : 0 }}
                                             whileHover={{ width: '100%' }}
@@ -120,7 +119,7 @@ export function Header({
                                                 >
                                                     <span className="relative">
                                                         {subItem.title}
-                                                        <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-[#a87441] group-hover/link:w-full transition-all duration-300" />
+                                                        <span className="absolute -bottom-0.5 left-0 rtl:left-auto rtl:right-0 w-0 h-[1px] bg-[#a87441] group-hover/link:w-full transition-all duration-300" />
                                                     </span>
                                                 </Link>
                                             </motion.div>
@@ -145,12 +144,12 @@ export function Header({
                 </div>
 
                 {/* Centered Logo */}
-                <motion.div 
+                <motion.div
                     className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
                     initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ 
-                        opacity: scrolled ? 1 : 0.7, 
-                        scale: scrolled ? 1 : 0.9 
+                    animate={{
+                        opacity: scrolled ? 1 : 0.7,
+                        scale: scrolled ? 1 : 0.9
                     }}
                     transition={{ duration: 0.5 }}
                 >
@@ -186,7 +185,7 @@ export function Header({
                     <motion.button
                         onClick={openSearch}
                         className="text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded-full"
-                        whileHover={{ scale: 1.1 }}
+                        whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         aria-label="Search"
                     >
@@ -197,7 +196,7 @@ export function Header({
                     <motion.button
                         onClick={openCart}
                         className="text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded-full"
-                        whileHover={{ scale: 1.1 }}
+                        whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         aria-label="Cart"
                     >
@@ -206,7 +205,7 @@ export function Header({
                             <Await resolve={rootData?.cart}>
                                 {(cart: any) =>
                                     cart?.totalQuantity ? (
-                                        <motion.span 
+                                        <motion.span
                                             initial={{ scale: 0 }}
                                             animate={{ scale: 1 }}
                                             className="absolute -top-0.5 -right-0.5 text-[9px] bg-[#a87441] text-white rounded-full w-4 h-4 flex items-center justify-center font-medium shadow-lg"
@@ -222,12 +221,12 @@ export function Header({
 
                     {/* Account Icon (Desktop) */}
                     <motion.div
-                        whileHover={{ scale: 1.1 }}
+                        whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className="hidden md:block"
                     >
-                        <Link 
-                            to="/account" 
+                        <Link
+                            to="/account"
                             className="flex items-center justify-center text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative group"
                             aria-label="Account"
                         >
