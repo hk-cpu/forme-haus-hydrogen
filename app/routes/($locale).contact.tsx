@@ -10,6 +10,13 @@ import {
 } from 'lucide-react';
 import { useTranslation } from '~/hooks/useTranslation';
 
+export const handle = {
+  seo: {
+    title: 'Contact Us | Formé Haus',
+    description: 'Get in touch with Formé Haus for styling guidance, order inquiries, or just to say hello.',
+  },
+};
+
 // Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },

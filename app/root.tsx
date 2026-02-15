@@ -1,4 +1,4 @@
-import { defer } from '@remix-run/server-runtime';
+import { defer, redirect } from '@remix-run/server-runtime';
 import {
   type LinksFunction,
   type LoaderFunctionArgs,
@@ -96,6 +96,12 @@ export const links: LinksFunction = () => {
 };
 
 export async function loader(args: LoaderFunctionArgs) {
+  // Redirect /pages/contact to /contact
+  const url = new URL(args.request.url);
+  if (url.pathname.includes('/pages/contact')) {
+    return redirect(url.pathname.replace('/pages/contact', '/contact'), 301);
+  }
+
   // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
 
