@@ -170,75 +170,77 @@ export default function Collection() {
   const { t } = useTranslation();
 
   return (
-    <main className="container mx-auto px-6 py-24 min-h-screen text-[#4A3C31]">
-      <header className="mb-16 text-center">
-        <h1 className="font-serif text-5xl md:text-6xl mb-4 text-[#F0EAE6]">
-          {collection.title}
-        </h1>
-        {collection.description && (
-          <p className="max-w-2xl mx-auto text-[#F0EAE6]/70 font-sans tracking-wide text-sm leading-relaxed">
-            {collection.description}
-          </p>
+    <div className="min-h-screen bg-[#4A3C31]">
+      <main className="container mx-auto px-6 py-24 text-[#F0EAE6]">
+        <header className="mb-16 text-center">
+          <h1 className="font-serif text-5xl md:text-6xl mb-4 text-[#F0EAE6]">
+            {collection.title}
+          </h1>
+          {collection.description && (
+            <p className="max-w-2xl mx-auto text-[#F0EAE6]/70 font-sans tracking-wide text-sm leading-relaxed">
+              {collection.description}
+            </p>
+          )}
+        </header>
+
+        <Pagination connection={collection.products}>
+          {({ nodes, isLoading, PreviousLink, NextLink }) => (
+            <>
+              <div className="flex items-center justify-center mb-6">
+                <Button as={PreviousLink} variant="secondary" width="full">
+                  {isLoading
+                    ? t('collection.loading')
+                    : t('collection.loadPrevious')}
+                </Button>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ staggerChildren: 0.1 }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20"
+              >
+                {nodes.map((product: any, i: number) => (
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-50px' }}
+                    transition={{ duration: 0.8, ease: 'easeOut' }}
+                  >
+                    <ProductCard
+                      product={product}
+                      loading={getImageLoadingPriority(i)}
+                    />
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              <div className="flex items-center justify-center mt-6">
+                <Button as={NextLink} variant="secondary" width="full">
+                  {isLoading ? t('collection.loading') : t('collection.loadMore')}
+                </Button>
+              </div>
+            </>
+          )}
+        </Pagination>
+
+        {collection.products.nodes.length === 0 && (
+          <div className="text-center py-24 text-[#F0EAE6]/50 italic font-serif text-xl">
+            {t('collection.noProducts')}
+          </div>
         )}
-      </header>
 
-      <Pagination connection={collection.products}>
-        {({ nodes, isLoading, PreviousLink, NextLink }) => (
-          <>
-            <div className="flex items-center justify-center mb-6">
-              <Button as={PreviousLink} variant="secondary" width="full">
-                {isLoading
-                  ? t('collection.loading')
-                  : t('collection.loadPrevious')}
-              </Button>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ staggerChildren: 0.1 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20"
-            >
-              {nodes.map((product: any, i: number) => (
-                <motion.div
-                  key={product.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-50px' }}
-                  transition={{ duration: 0.8, ease: 'easeOut' }}
-                >
-                  <ProductCard
-                    product={product}
-                    loading={getImageLoadingPriority(i)}
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
-
-            <div className="flex items-center justify-center mt-6">
-              <Button as={NextLink} variant="secondary" width="full">
-                {isLoading ? t('collection.loading') : t('collection.loadMore')}
-              </Button>
-            </div>
-          </>
-        )}
-      </Pagination>
-
-      {collection.products.nodes.length === 0 && (
-        <div className="text-center py-24 text-[#F0EAE6]/50 italic font-serif text-xl">
-          {t('collection.noProducts')}
-        </div>
-      )}
-
-      <Analytics.CollectionView
-        data={{
-          collection: {
-            id: collection.id,
-            handle: collection.handle,
-          },
-        }}
-      />
-    </main>
+        <Analytics.CollectionView
+          data={{
+            collection: {
+              id: collection.id,
+              handle: collection.handle,
+            },
+          }}
+        />
+      </main>
+    </div>
   );
 }
 
