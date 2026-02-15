@@ -1,14 +1,14 @@
-import {useEffect} from 'react';
-import {useFetcher} from '@remix-run/react';
+import { useEffect } from 'react';
+import { useFetcher } from '@remix-run/react';
 
-import {usePrefixPathWithLocale} from '~/lib/utils';
-import type {FeaturedData} from '~/routes/($locale).featured-products';
+import { usePrefixPathWithLocale } from '~/lib/utils';
+import type { FeaturedData } from '~/routes/($locale).featured-products';
 
-import {FeaturedCollections} from './FeaturedCollections';
-import {ProductSwimlane} from './ProductSwimlane';
+import { FeaturedCollections } from './FeaturedCollections';
+import { ProductSwimlane } from './ProductSwimlane';
 
 export function FeaturedSection() {
-  const {load, data} = useFetcher<FeaturedData>();
+  const { load, data } = useFetcher<FeaturedData>();
   const path = usePrefixPathWithLocale('/featured-products');
 
   useEffect(() => {
@@ -17,11 +17,11 @@ export function FeaturedSection() {
 
   if (!data) return null;
 
-  const {featuredCollections, featuredProducts} = data;
+  const { featuredCollections, featuredProducts } = data;
 
   return (
     <>
-      {featuredCollections.nodes.length < 2 && (
+      {featuredCollections.nodes.length > 0 && (
         <FeaturedCollections
           title="Popular Collections"
           collections={featuredCollections}
