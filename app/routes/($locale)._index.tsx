@@ -98,9 +98,6 @@ export default function Homepage() {
 
         {/* 5. Featured Collections */}
         <section className="container mx-auto px-6 pb-20">
-          <h2 className="font-serif text-3xl italic text-[#4A3C31] mb-12 text-center tracking-wide font-light">
-            {t('home.curatedForYou')}
-          </h2>
           <Suspense
             fallback={
               <div className="h-96 w-full animate-pulse bg-neutral-200" />
@@ -108,10 +105,12 @@ export default function Homepage() {
           >
             <Await resolve={featuredCollections}>
               {(response) => {
-                const collections = response?.collections?.nodes || [];
+                const collections = (response?.collections?.nodes || [])
+                  .filter((c: any) => c.title !== 'Home page')
+                  .slice(0, 3);
                 return (
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {collections.slice(0, 3).map((c: any, i: number) => {
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    {collections.map((c: any, i: number) => {
                       const placeholders = [
                         '/brand/atelier-mood.png',
                         '/brand/placeholder-drape.png',
@@ -123,7 +122,6 @@ export default function Homepage() {
                           to={`/collections/${c.handle}`}
                           className="group relative aspect-[3/4] bg-neutral-100 border border-neutral-200 overflow-hidden block rounded-md"
                         >
-                          {/* Use Shopify collection image or fallback to placeholder */}
                           {c.image ? (
                             <div className="absolute inset-0 overflow-hidden">
                               <motion.div
@@ -153,7 +151,7 @@ export default function Homepage() {
 
                           <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10 bg-black/10 group-hover:bg-black/5 transition-colors">
                             <h3 className="font-serif text-2xl italic text-white drop-shadow-md">
-                              {c.title === 'Home page' ? 'Where Elegance Begins' : c.title}
+                              {c.title}
                             </h3>
                             <span className="text-[10px] uppercase tracking-widest text-[#F9F6F3] border border-white/50 px-4 py-2 backdrop-blur-sm hover:bg-white hover:text-black transition-colors">
                               View Collection
