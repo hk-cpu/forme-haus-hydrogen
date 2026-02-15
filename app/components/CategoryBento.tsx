@@ -14,7 +14,6 @@ interface Category {
 const CATEGORIES: Category[] = [
   { id: 1, title: 'New In', titleAr: 'وصل حديثاً', image: '/brand/silk-texture.png', url: '/collections/new-in', isActive: true },
   { id: 5, title: 'Accessories', titleAr: 'إكسسوارات', image: '/brand/silk-texture.png', url: '/collections/accessories', isActive: true },
-  { id: 2, title: 'Sunglasses', titleAr: 'نظارات شمسية', image: '/brand/journal-motion.png', url: '/collections/sunglasses', isActive: true },
   { id: 3, title: 'Dresses', titleAr: 'فساتين', image: '/brand/placeholder-drape.png', url: '/collections/dresses', isActive: false },
   { id: 4, title: 'Abayas', titleAr: 'عبايات', image: '/brand/atelier-mood.png', url: '/collections/abayas', isActive: false },
   { id: 6, title: 'Bags', titleAr: 'حقائب', image: '/brand/journal-identity.png', url: '/collections/bags', isActive: false },
@@ -85,8 +84,8 @@ function CategoryCard({ category, isRTL }: { category: Category; isRTL: boolean 
             className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500"
           >
             <h3 className={`text-lg md:text-xl font-serif mb-1 transition-all duration-500 ${category.isActive
-                ? 'text-[#F0EAE6] blur-0 group-hover:text-[#D4AF87]'
-                : 'text-white/30 blur-[6px] select-none'
+              ? 'text-[#F0EAE6] blur-0 group-hover:text-[#D4AF87]'
+              : 'text-white/30 blur-[6px] select-none'
               }`}>
               {isRTL ? category.titleAr : category.title}
             </h3>
