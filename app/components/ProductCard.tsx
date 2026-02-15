@@ -122,7 +122,7 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
     >
       <Link to={`/products/${product.handle}`} className="block">
         {/* Image Container */}
-        <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-[#1A1A1A] mb-4 shadow-lg shadow-black/20">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-neutral-100 mb-4 shadow-md">
           {/* Shimmer Effect */}
           <AnimatePresence>
             {isHovered && (
@@ -151,13 +151,15 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
                   data={{
                     url: images[currentImage].url,
                     altText: images[currentImage].altText || product.title,
+                    width: 600,
+                    height: 800,
                   }}
                   className="w-full h-full object-cover"
                   sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-[#2A2A2A] to-[#1A1A1A] flex items-center justify-center">
-                  <span className="text-[#AA9B8F] text-sm font-light tracking-wider">No image</span>
+                <div className="w-full h-full bg-neutral-200 flex items-center justify-center">
+                  <span className="text-neutral-400 text-sm font-light tracking-wider">No image</span>
                 </div>
               )}
             </motion.div>
@@ -191,9 +193,9 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
             initial={false}
             animate={isWishlisted ? { scale: [1, 1.2, 1] } : {}}
             transition={{ duration: 0.3 }}
-            className={`absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 z-20 shadow-lg ${isWishlisted
+            className={`absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 z-20 shadow-md ${isWishlisted
               ? 'bg-[#a87441] text-white'
-              : 'bg-[#121212]/60 text-[#F0EAE6] opacity-40 group-hover:opacity-100 hover:bg-[#a87441] backdrop-blur-sm'
+              : 'bg-white/80 text-[#4A3C31] opacity-40 group-hover:opacity-100 hover:bg-[#a87441] hover:text-white backdrop-blur-sm'
               }`}
             aria-label={isWishlisted ? t('product.removeFromWishlist') : t('product.addToWishlist')}
           >
@@ -212,7 +214,7 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -10 }}
                   onClick={prevImage}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-[#121212]/70 text-[#F0EAE6] flex items-center justify-center backdrop-blur-sm hover:bg-[#a87441] transition-colors z-20 shadow-lg"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 text-[#4A3C31] flex items-center justify-center backdrop-blur-sm hover:bg-[#a87441] hover:text-white transition-colors z-20 shadow-md"
                   aria-label={t('product.prevImage', 'Previous image')}
                 >
                   <Icons.ChevronLeft />
@@ -222,7 +224,7 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 10 }}
                   onClick={nextImage}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-[#121212]/70 text-[#F0EAE6] flex items-center justify-center backdrop-blur-sm hover:bg-[#a87441] transition-colors z-20 shadow-lg"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 text-[#4A3C31] flex items-center justify-center backdrop-blur-sm hover:bg-[#a87441] hover:text-white transition-colors z-20 shadow-md"
                   aria-label={t('product.nextImage', 'Next image')}
                 >
                   <Icons.ChevronRight />
@@ -272,11 +274,11 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
 
         {/* Product Info */}
         <div className="space-y-2">
-          <h3 className="font-serif text-[#F0EAE6] text-[15px] leading-snug group-hover:text-[#a87441] transition-colors duration-300 line-clamp-2">
+          <h3 className="font-serif text-[#4A3C31] text-[15px] leading-snug group-hover:text-[#a87441] transition-colors duration-300 line-clamp-2">
             {product.title}
           </h3>
           <div className="flex items-center gap-2">
-            <p className="text-[#F0EAE6] font-medium transition-all duration-300 group-hover:text-[#D4AF87]">
+            <p className="text-[#4A3C31] font-medium transition-all duration-300 group-hover:text-[#a87441]">
               {product.priceRange?.minVariantPrice ? (
                 <Money data={product.priceRange.minVariantPrice} />
               ) : (
@@ -284,7 +286,7 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
               )}
             </p>
             {hasDiscount && (
-              <p className="text-[#AA9B8F] text-sm line-through opacity-70">
+              <p className="text-[#8B7355] text-sm line-through opacity-70">
                 <Money data={product.compareAtPriceRange!.minVariantPrice} />
               </p>
             )}

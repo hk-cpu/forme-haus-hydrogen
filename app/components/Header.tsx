@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { Link, NavLink, Await, useRouteLoaderData } from '@remix-run/react';
 import { Image } from '@shopify/hydrogen';
 import { Menu, Search, ShoppingBag, User } from 'lucide-react';
@@ -27,21 +27,36 @@ export function Header({
     const { y } = useWindowScroll();
     const [scrolled, setScrolled] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
-    const [lastScrollY, setLastScrollY] = useState(0);
+    const lastScrollY = useRef(0);
+    const ticking = useRef(false);
     const rootData = useRouteLoaderData<RootLoader>('root');
     const { t } = useTranslation();
 
     useEffect(() => {
-        setScrolled(y > 20);
+        const handleScroll = () => {
+            if (ticking.current) return;
+            ticking.current = true;
 
-        // Smart hide/show on scroll direction
-        if (y > lastScrollY && y > 100) {
-            setIsVisible(false);
-        } else {
-            setIsVisible(true);
-        }
-        setLastScrollY(y);
-    }, [y, lastScrollY]);
+            requestAnimationFrame(() => {
+                const currentY = window.scrollY;
+                setScrolled(currentY > 20);
+
+                // Only hide/show after a meaningful scroll delta (10px threshold)
+                const delta = currentY - lastScrollY.current;
+                if (delta > 10 && currentY > 100) {
+                    setIsVisible(false);
+                } else if (delta < -10) {
+                    setIsVisible(true);
+                }
+
+                lastScrollY.current = currentY;
+                ticking.current = false;
+            });
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     // Default Nav Links if menu is missing
     const defaultLinks = [
