@@ -74,7 +74,12 @@ export default function AllProducts() {
 
   return (
     <>
-      <PageHeader heading="All Products" variant="allCollections" />
+      <div className="py-24 text-center">
+        <h1 className="font-serif italic font-light text-5xl md:text-6xl text-[#F0EAE6] mb-4">
+          All Products
+        </h1>
+        <div className="w-24 h-px bg-[#a87441]/60 mx-auto" />
+      </div>
       <Section>
         <Pagination connection={products}>
           {({ nodes, isLoading, NextLink, PreviousLink }) => {
