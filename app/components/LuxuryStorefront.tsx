@@ -2727,6 +2727,25 @@ function Footer() {
             </AnimatePresence>
           </div>
         ))}
+
+        <div className="instagram-section py-8 border-t border-white/10">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="font-serif text-lg text-ivory italic">On Instagram</h3>
+            <a href="https://www.instagram.com/formee.haus/" className="text-xs uppercase tracking-widest text-[#8B8076] hover:text-ivory transition-colors">@formee.haus</a>
+          </div>
+          <div className="grid grid-cols-4 gap-4">
+            {[
+              'https://images.unsplash.com/photo-1549439602-43ebca2327af?w=400&q=80',
+              'https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=400&q=80',
+              'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80',
+              'https://images.unsplash.com/photo-1550928431-74782071279a?w=400&q=80'
+            ].map((img, i) => (
+              <a key={i} href="https://www.instagram.com/formee.haus/" className="block aspect-square overflow-hidden group">
+                <img src={img} alt="Instagram" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100" />
+              </a>
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className="footer-social">

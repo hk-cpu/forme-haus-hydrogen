@@ -84,10 +84,15 @@ function CategoryCard({ category, isRTL }: { category: Category; isRTL: boolean 
           <motion.div
             className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500"
           >
-            <h3 className="text-lg md:text-xl font-serif text-white/60 blur-[2px] mb-1 group-hover:text-[#D4AF87] group-hover:blur-0 group-hover:text-opacity-100 transition-all duration-500">
+            <h3 className={`text-lg md:text-xl font-serif mb-1 transition-all duration-500 ${category.isActive
+                ? 'text-[#F0EAE6] blur-0 group-hover:text-[#D4AF87]'
+                : 'text-white/30 blur-[6px] select-none'
+              }`}>
               {isRTL ? category.titleAr : category.title}
             </h3>
-            <div className="h-px w-0 group-hover:w-12 bg-[#D4AF87] transition-all duration-500" />
+            {category.isActive && (
+              <div className="h-px w-0 group-hover:w-12 bg-[#D4AF87] transition-all duration-500" />
+            )}
           </motion.div>
 
           {/* Hover Arrow - only for active categories */}

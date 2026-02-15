@@ -71,13 +71,13 @@ export const Icons = {
             <path d="M9 6V5a3 3 0 0 1 6 0v1" />
         </svg>
     ),
-    ChevronRight: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    ChevronRight: ({ className }: { className?: string }) => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className={`rtl:rotate-180 transition-transform duration-300 ${className || ''}`}>
             <path d="M9 6l6 6-6 6" />
         </svg>
     ),
-    ChevronLeft: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    ChevronLeft: ({ className }: { className?: string }) => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className={`rtl:rotate-180 transition-transform duration-300 ${className || ''}`}>
             <path d="M15 6l-6 6 6 6" />
         </svg>
     ),

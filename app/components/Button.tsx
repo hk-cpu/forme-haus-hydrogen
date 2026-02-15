@@ -34,32 +34,32 @@ export const Button = forwardRef(
     // Ripple effect handler
     const handleClick = (e: React.MouseEvent<HTMLElement>) => {
       if (disabled || loading) return;
-      
+
       const rect = e.currentTarget.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       const id = Date.now();
-      
+
       setRipples((prev) => [...prev, { x, y, id }]);
       setTimeout(() => {
         setRipples((prev) => prev.filter((ripple) => ripple.id !== id));
-      }, 600);
+      }, 800);
 
       props.onClick?.(e);
     };
 
     const baseButtonClasses =
-      'relative overflow-hidden inline-flex items-center justify-center rounded-lg font-medium text-center transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]';
+      'relative overflow-hidden inline-flex items-center justify-center rounded-lg font-medium text-center transition-all duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]';
 
     const variants = {
-      primary: `${baseButtonClasses} bg-[#a87441] text-white border border-[#a87441] hover:bg-[#8B5E3C] hover:border-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] py-4 px-8 shadow-lg shadow-[#a87441]/20 hover:shadow-xl hover:shadow-[#a87441]/30 disabled:opacity-50 disabled:cursor-not-allowed`,
-      
-      secondary: `${baseButtonClasses} bg-transparent border border-[#F0EAE6]/30 text-[#F0EAE6] hover:bg-[#F0EAE6]/5 hover:border-[#F0EAE6]/50 uppercase tracking-[0.2em] text-[11px] py-4 px-8 disabled:opacity-50`,
-      
-      bronze: `${baseButtonClasses} bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-white uppercase tracking-[0.2em] text-[11px] py-4 px-8 shadow-lg hover:shadow-xl hover:brightness-110 disabled:opacity-50`,
-      
-      outline: `${baseButtonClasses} bg-transparent border-2 border-[#a87441] text-[#a87441] hover:bg-[#a87441] hover:text-white uppercase tracking-[0.2em] text-[11px] py-4 px-8 disabled:opacity-50`,
-      
+      primary: `${baseButtonClasses} bg-[#a87441] text-white border border-[#a87441] hover:bg-[#8B5E3C] hover:border-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] py-4 px-8 shadow-[0_4px_14px_0_rgba(168,116,65,0.39)] hover:shadow-[0_6px_20px_rgba(168,116,65,0.23)] hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed`,
+
+      secondary: `${baseButtonClasses} bg-transparent border border-[#F0EAE6]/30 text-[#F0EAE6] hover:bg-[#F0EAE6]/5 hover:border-[#F0EAE6]/50 uppercase tracking-[0.2em] text-[11px] py-4 px-8 disabled:opacity-50 hover:shadow-[0_0_15px_rgba(240,234,230,0.1)]`,
+
+      bronze: `${baseButtonClasses} bg-gradient-to-r from-[#a87441] via-[#b88a5c] to-[#8B5E3C] text-white uppercase tracking-[0.2em] text-[11px] py-4 px-8 shadow-lg hover:shadow-xl hover:brightness-110 disabled:opacity-50 bg-[length:200%_auto] hover:bg-right transition-[background-position] duration-700`,
+
+      outline: `${baseButtonClasses} bg-transparent border-[1.5px] border-[#a87441] text-[#a87441] hover:bg-[#a87441] hover:text-white uppercase tracking-[0.2em] text-[11px] py-4 px-8 disabled:opacity-50 hover:shadow-[0_0_20px_rgba(168,116,65,0.4)]`,
+
       inline: 'relative inline-flex items-center text-[#F0EAE6]/70 hover:text-[#a87441] transition-colors duration-300 group',
     };
 
@@ -146,7 +146,7 @@ export const Button = forwardRef(
             }}
           />
         ))}
-        
+
         {/* Content */}
         <span className="relative z-10 flex items-center justify-center">
           {loading && <LoadingSpinner />}
