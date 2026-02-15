@@ -2,6 +2,7 @@ import { json } from '@remix-run/server-runtime';
 import { type MetaArgs, type LoaderFunctionArgs } from '@shopify/remix-oxygen';
 import { useLoaderData } from '@remix-run/react';
 import { motion } from 'framer-motion';
+import { useEffect, useRef, useCallback } from 'react';
 import type {
   Filter,
   ProductCollectionSortKeys,
@@ -13,6 +14,7 @@ import {
   getPaginationVariables,
   Analytics,
   getSeoMeta,
+  CacheShort,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 
@@ -31,7 +33,7 @@ export const headers = routeHeaders;
 
 export async function loader({ params, request, context }: LoaderFunctionArgs) {
   const paginationVariables = getPaginationVariables(request, {
-    pageBy: 8,
+    pageBy: 12,
   });
   const { collectionHandle } = params;
   const locale = context.storefront.i18n;
@@ -68,6 +70,7 @@ export async function loader({ params, request, context }: LoaderFunctionArgs) {
         country: context.storefront.i18n.country,
         language: context.storefront.i18n.language,
       },
+      cache: CacheShort(),
     },
   );
 
@@ -165,6 +168,68 @@ export const meta = ({ matches }: MetaArgs<typeof loader>) => {
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
+/**
+ * InfiniteScrollTrigger — auto-loads the next page when scrolled into view
+ */
+function InfiniteScrollTrigger({
+  hasNextPage,
+  nextPageUrl,
+  isLoading,
+  NextLink,
+  loadingText,
+}: {
+  hasNextPage: boolean;
+  nextPageUrl: string;
+  isLoading: boolean;
+  NextLink: any;
+  loadingText: string;
+}) {
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const nextLinkRef = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    if (!hasNextPage || isLoading) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && nextLinkRef.current) {
+          nextLinkRef.current.click();
+        }
+      },
+      { rootMargin: '200px', threshold: 0 },
+    );
+
+    if (triggerRef.current) {
+      observer.observe(triggerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasNextPage, isLoading, nextPageUrl]);
+
+  if (!hasNextPage) return null;
+
+  return (
+    <div ref={triggerRef} className="flex items-center justify-center mt-14">
+      {isLoading ? (
+        <div className="flex items-center gap-3 text-[#8B7355]">
+          <motion.div
+            className="w-5 h-5 border-2 border-[#a87441]/30 border-t-[#a87441] rounded-full"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
+          />
+          <span className="text-xs uppercase tracking-[0.2em] font-light">
+            {loadingText}
+          </span>
+        </div>
+      ) : (
+        <NextLink ref={nextLinkRef} className="sr-only">
+          Load more
+        </NextLink>
+      )}
+    </div>
+  );
+}
+
 export default function Collection() {
   const { collection, appliedFilters, collections } = useLoaderData<typeof loader>();
   const { t } = useTranslation();
@@ -243,7 +308,7 @@ export default function Collection() {
       {/* ─── Product Grid ─── */}
       <main className="max-w-[1600px] mx-auto px-6 md:px-12 py-12 md:py-16">
         <Pagination connection={collection.products}>
-          {({ nodes, isLoading, PreviousLink, NextLink }) => (
+          {({ nodes, isLoading, PreviousLink, NextLink, hasNextPage, nextPageUrl, state }) => (
             <>
               {/* Previous Link */}
               <div className="flex items-center justify-center mb-10">
@@ -254,50 +319,33 @@ export default function Collection() {
                 </Button>
               </div>
 
-              {/* Asymmetric Editorial Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-12 md:gap-x-8 md:gap-y-16">
-                {nodes.map((product: any, i: number) => {
-                  // Every 3rd item gets a larger treatment on desktop
-                  const isFeature = i % 5 === 0;
-
-                  return (
-                    <motion.div
-                      key={product.id}
-                      className={
-                        isFeature
-                          ? 'sm:col-span-2 md:col-span-1 lg:col-span-2'
-                          : ''
-                      }
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: '-80px' }}
-                      transition={{
-                        duration: 0.7,
-                        ease: [0.16, 1, 0.3, 1],
-                        delay: (i % 4) * 0.08,
-                      }}
-                    >
-                      <div
-                        className={`group ${isFeature ? 'max-w-[900px] mx-auto' : ''
-                          }`}
-                      >
-                        <ProductCard
-                          product={product}
-                        />
-                      </div>
-                    </motion.div>
-                  );
-                })}
+              {/* Product Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-12">
+                {nodes.map((product: any, i: number) => (
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-60px' }}
+                    transition={{
+                      duration: 0.5,
+                      ease: [0.16, 1, 0.3, 1],
+                      delay: (i % 4) * 0.06,
+                    }}
+                  >
+                    <ProductCard product={product} />
+                  </motion.div>
+                ))}
               </div>
 
-              {/* Load More */}
-              <div className="flex items-center justify-center mt-14">
-                <Button as={NextLink} variant="secondary" width="full">
-                  {isLoading
-                    ? t('collection.loading')
-                    : t('collection.loadMore')}
-                </Button>
-              </div>
+              {/* Infinite Scroll Trigger */}
+              <InfiniteScrollTrigger
+                hasNextPage={hasNextPage}
+                nextPageUrl={nextPageUrl}
+                isLoading={isLoading}
+                NextLink={NextLink}
+                loadingText={t('collection.loading')}
+              />
             </>
           )}
         </Pagination>
