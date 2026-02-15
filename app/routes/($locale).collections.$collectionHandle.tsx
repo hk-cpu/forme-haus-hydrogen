@@ -72,7 +72,7 @@ export async function loader({ params, request, context }: LoaderFunctionArgs) {
   );
 
 
-  if (!collection && (collectionHandle === 'new-in' || collectionHandle === 'new')) {
+  if (!collection && (collectionHandle === 'new-in' || collectionHandle === 'new' || collectionHandle === 'sunglasses')) {
     const { collection: allCollection } = await context.storefront.query(
       COLLECTION_QUERY,
       {
@@ -92,7 +92,7 @@ export async function loader({ params, request, context }: LoaderFunctionArgs) {
       collection = allCollection;
       const lang = context.storefront.i18n.language === 'AR' ? 'AR' : 'EN';
       // @ts-ignore
-      collection.title = translations[lang]['nav.newIn'];
+      collection.title = collectionHandle === 'sunglasses' ? 'Sunglasses' : translations[lang]['nav.newIn'];
       collection.description = '';
     }
   }
@@ -166,27 +166,87 @@ export const meta = ({ matches }: MetaArgs<typeof loader>) => {
 };
 
 export default function Collection() {
-  const { collection } = useLoaderData<typeof loader>();
+  const { collection, appliedFilters, collections } = useLoaderData<typeof loader>();
   const { t } = useTranslation();
 
-  return (
-    <div className="min-h-screen bg-[#4A3C31]">
-      <main className="container mx-auto px-6 py-24 text-[#F0EAE6]">
-        <header className="mb-16 text-center">
-          <h1 className="font-serif text-5xl md:text-6xl mb-4 text-[#F0EAE6]">
-            {collection.title}
-          </h1>
-          {collection.description && (
-            <p className="max-w-2xl mx-auto text-[#F0EAE6]/70 font-sans tracking-wide text-sm leading-relaxed">
-              {collection.description}
-            </p>
-          )}
-        </header>
+  // Collection hero image
+  const heroImage = collection.image?.url;
 
+  return (
+    <div className="min-h-screen bg-[#F9F5F0]">
+      {/* ─── Hero Banner ─── */}
+      <div className="relative w-full h-[45vh] min-h-[320px] max-h-[520px] overflow-hidden">
+        {heroImage ? (
+          <>
+            <motion.img
+              src={heroImage}
+              alt={collection.title}
+              className="w-full h-full object-cover"
+              initial={{ scale: 1.05 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1a1510]/70 via-[#1a1510]/20 to-transparent" />
+          </>
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-[#2a2118] via-[#1a1510] to-[#0f0d0a]" />
+        )}
+        {/* Title overlay */}
+        <div className="absolute inset-0 flex flex-col items-center justify-end pb-12 px-6">
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.7 }}
+          >
+            <span className="block text-[10px] uppercase tracking-[0.35em] text-[#a87441] font-light mb-3">
+              Collection
+            </span>
+            <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-[#F0EAE6] tracking-tight mb-3">
+              {collection.title}
+            </h1>
+            {collection.description && (
+              <p className="max-w-xl mx-auto text-[#F0EAE6]/60 text-sm font-light tracking-wide leading-relaxed">
+                {collection.description}
+              </p>
+            )}
+          </motion.div>
+        </div>
+      </div>
+
+      {/* ─── Sort / Filter Toolbar ─── */}
+      <div className="sticky top-0 z-30 bg-[#F9F5F0]/95 backdrop-blur-md border-b border-[#4A3C31]/10">
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-3 flex items-center justify-between">
+          <span className="text-[11px] uppercase tracking-[0.2em] text-[#8B7355] font-light">
+            {collection.products.nodes.length}{' '}
+            {collection.products.nodes.length === 1
+              ? t('collection.item')
+              : t('collection.items')}
+          </span>
+          <div className="flex items-center gap-4">
+            {appliedFilters.length > 0 && (
+              <div className="flex items-center gap-2">
+                {appliedFilters.map((filter, i) => (
+                  <span
+                    key={i}
+                    className="text-[10px] uppercase tracking-wider px-2 py-1 bg-[#4A3C31]/10 text-[#4A3C31] rounded-sm"
+                  >
+                    {filter.label}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ─── Product Grid ─── */}
+      <main className="max-w-[1600px] mx-auto px-6 md:px-12 py-12 md:py-16">
         <Pagination connection={collection.products}>
           {({ nodes, isLoading, PreviousLink, NextLink }) => (
             <>
-              <div className="flex items-center justify-center mb-6">
+              {/* Previous Link */}
+              <div className="flex items-center justify-center mb-10">
                 <Button as={PreviousLink} variant="secondary" width="full">
                   {isLoading
                     ? t('collection.loading')
@@ -194,40 +254,60 @@ export default function Collection() {
                 </Button>
               </div>
 
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ staggerChildren: 0.1 }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20"
-              >
-                {nodes.map((product: any, i: number) => (
-                  <motion.div
-                    key={product.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: '-50px' }}
-                    transition={{ duration: 0.8, ease: 'easeOut' }}
-                  >
-                    <ProductCard
-                      product={product}
-                      loading={getImageLoadingPriority(i)}
-                    />
-                  </motion.div>
-                ))}
-              </motion.div>
+              {/* Asymmetric Editorial Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-12 md:gap-x-8 md:gap-y-16">
+                {nodes.map((product: any, i: number) => {
+                  // Every 3rd item gets a larger treatment on desktop
+                  const isFeature = i % 5 === 0;
 
-              <div className="flex items-center justify-center mt-6">
+                  return (
+                    <motion.div
+                      key={product.id}
+                      className={
+                        isFeature
+                          ? 'sm:col-span-2 md:col-span-1 lg:col-span-2'
+                          : ''
+                      }
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-80px' }}
+                      transition={{
+                        duration: 0.7,
+                        ease: [0.16, 1, 0.3, 1],
+                        delay: (i % 4) * 0.08,
+                      }}
+                    >
+                      <div
+                        className={`group ${isFeature ? 'max-w-[900px] mx-auto' : ''
+                          }`}
+                      >
+                        <ProductCard
+                          product={product}
+                        />
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              {/* Load More */}
+              <div className="flex items-center justify-center mt-14">
                 <Button as={NextLink} variant="secondary" width="full">
-                  {isLoading ? t('collection.loading') : t('collection.loadMore')}
+                  {isLoading
+                    ? t('collection.loading')
+                    : t('collection.loadMore')}
                 </Button>
               </div>
             </>
           )}
         </Pagination>
 
+        {/* Empty state */}
         {collection.products.nodes.length === 0 && (
-          <div className="text-center py-24 text-[#F0EAE6]/50 italic font-serif text-xl">
-            {t('collection.noProducts')}
+          <div className="text-center py-24">
+            <p className="font-serif text-xl text-[#4A3C31]/40 italic">
+              {t('collection.noProducts')}
+            </p>
           </div>
         )}
 
@@ -243,6 +323,7 @@ export default function Collection() {
     </div>
   );
 }
+
 
 const COLLECTION_QUERY = `#graphql
   query CollectionDetails(

@@ -62,6 +62,11 @@ export const translations = {
     'footer.privacy': 'Privacy Policy',
     'footer.terms': 'Terms of Service',
     'footer.paymentMethods': 'Secure Payment Methods',
+    'footer.newsletter': 'Stay in the Loop',
+    'footer.newsletterDesc': 'New arrivals, exclusive offers, and more.',
+    'footer.emailPlaceholder': 'Enter your email',
+    'footer.submitting': 'Sending...',
+    'footer.subscribe': 'Join',
 
     // Newsletter / Notify
     'notify.email': 'Enter your email',
@@ -80,6 +85,8 @@ export const translations = {
     'collection.loadMore': 'Load more products',
     'collection.noProducts': 'No products found in this collection.',
     'collection.price': 'Price',
+    'collection.item': 'Item',
+    'collection.items': 'Items',
 
     // Cart
     'cart.title': 'Your Cart',
@@ -115,7 +122,17 @@ export const translations = {
     'general.viewAll': 'View All',
     'general.learnMore': 'Learn More',
     'general.backToHome': 'Back to Home',
+    'common.close': 'Close',
+    'country': 'Saudi Arabia',
 
+    // Mega Menu
+    'menu.title': 'Menu',
+    'menu.explore': 'Explore',
+    'menu.viewAll': 'View All',
+    'menu.stores': 'Find a Store',
+    'menu.collection': 'Collection',
+    'menu.comingSoon': 'Coming Soon',
+    'menu.services': 'Services',
     // Mega Menu - subsections (New In)
     'menu.newArrivals': 'New Arrivals',
     'menu.signaturePieces': 'Signature Pieces',
@@ -232,6 +249,11 @@ export const translations = {
     'footer.privacy': 'سياسة الخصوصية',
     'footer.terms': 'شروط الخدمة',
     'footer.paymentMethods': 'طرق الدفع الآمنة',
+    'footer.newsletter': 'ابقَ على اطلاع',
+    'footer.newsletterDesc': 'وصل حديثاً، عروض حصرية، والمزيد.',
+    'footer.emailPlaceholder': 'أدخلي بريدك الإلكتروني',
+    'footer.submitting': 'جارٍ الإرسال...',
+    'footer.subscribe': 'اشتركي',
 
     // Newsletter / Notify
     'notify.email': 'أدخلي بريدك الإلكتروني',
@@ -250,6 +272,8 @@ export const translations = {
     'collection.loadMore': 'تحميل المزيد',
     'collection.noProducts': 'لم يتم العثور على منتجات في هذه المجموعة.',
     'collection.price': 'السعر',
+    'collection.item': 'قطعة',
+    'collection.items': 'قطع',
 
     // Cart
     'cart.title': 'سلة التسوق',
@@ -285,7 +309,17 @@ export const translations = {
     'general.viewAll': 'عرض الكل',
     'general.learnMore': 'اعرفي المزيد',
     'general.backToHome': 'العودة للرئيسية',
+    'common.close': 'إغلاق',
+    'country': 'السعودية',
 
+    // Mega Menu
+    'menu.title': 'القائمة',
+    'menu.explore': 'استكشفي',
+    'menu.viewAll': 'عرض الكل',
+    'menu.stores': 'ابحثي عن متجر',
+    'menu.collection': 'مجموعة',
+    'menu.comingSoon': 'قريباً',
+    'menu.services': 'الخدمات',
     // Mega Menu - subsections
     'menu.newArrivals': 'وصل جديد',
     'menu.signaturePieces': 'قطع مميزة',
