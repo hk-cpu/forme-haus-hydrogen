@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense, useRef } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { Link, NavLink, Await, useRouteLoaderData } from '@remix-run/react';
 import { Image } from '@shopify/hydrogen';
 import { Menu, Search, ShoppingBag, User } from 'lucide-react';
@@ -27,30 +27,21 @@ export function Header({
     const { y } = useWindowScroll();
     const [scrolled, setScrolled] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
-    const lastScrollY = useRef(0);
+    const [lastScrollY, setLastScrollY] = useState(0);
+    const rootData = useRouteLoaderData<RootLoader>('root');
+    const { t } = useTranslation();
 
     useEffect(() => {
-        const currentY = y;
-        const lastY = lastScrollY.current;
-        const delta = currentY - lastY;
-
-        // 1. Determine if scrolled (for background change)
-        setScrolled(currentY > 20);
-
-        // 2. Smart hide/show with stabilization threshold
-        // Only trigger if scroll difference is significant (>5px) to prevent jitter
-        if (Math.abs(delta) > 5) {
-            if (currentY > 100 && delta > 0) {
-                // Scrolling DOWN and past 100px -> Hide
-                setIsVisible(false);
-            } else if (delta < 0 || currentY < 100) {
-                // Scrolling UP or near top -> Show
-                setIsVisible(true);
-            }
+        setScrolled(y > 20);
+        
+        // Smart hide/show on scroll direction
+        if (y > lastScrollY && y > 100) {
+            setIsVisible(false);
+        } else {
+            setIsVisible(true);
         }
-
-        lastScrollY.current = currentY;
-    }, [y]);
+        setLastScrollY(y);
+    }, [y, lastScrollY]);
 
     // Default Nav Links if menu is missing
     const defaultLinks = [
@@ -80,8 +71,8 @@ export function Header({
                 {/* Desktop Navigation - Left Side */}
                 <nav className="hidden md:flex items-center gap-10">
                     {items.map((item: any, index: number) => (
-                        <motion.div
-                            key={item.id}
+                        <motion.div 
+                            key={item.id} 
                             className="h-full flex items-center relative group/item"
                             initial={{ opacity: 0, y: -20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -90,9 +81,10 @@ export function Header({
                             <NavLink
                                 to={item.to}
                                 className={({ isActive }) =>
-                                    `relative text-[11px] uppercase tracking-[0.25em] font-light transition-all duration-300 py-2 ${isActive
-                                        ? 'text-[#a87441]'
-                                        : 'text-[#F0EAE6]/80 hover:text-[#a87441]'
+                                    `relative text-[11px] uppercase tracking-[0.25em] font-light transition-all duration-300 py-2 ${
+                                        isActive
+                                            ? 'text-[#a87441]'
+                                            : 'text-[#F0EAE6]/80 hover:text-[#a87441]'
                                     }`
                                 }
                             >
@@ -153,12 +145,12 @@ export function Header({
                 </div>
 
                 {/* Centered Logo */}
-                <motion.div
+                <motion.div 
                     className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
                     initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{
-                        opacity: scrolled ? 1 : 0.7,
-                        scale: scrolled ? 1 : 0.9
+                    animate={{ 
+                        opacity: scrolled ? 1 : 0.7, 
+                        scale: scrolled ? 1 : 0.9 
                     }}
                     transition={{ duration: 0.5 }}
                 >
@@ -214,7 +206,7 @@ export function Header({
                             <Await resolve={rootData?.cart}>
                                 {(cart: any) =>
                                     cart?.totalQuantity ? (
-                                        <motion.span
+                                        <motion.span 
                                             initial={{ scale: 0 }}
                                             animate={{ scale: 1 }}
                                             className="absolute -top-0.5 -right-0.5 text-[9px] bg-[#a87441] text-white rounded-full w-4 h-4 flex items-center justify-center font-medium shadow-lg"
@@ -234,8 +226,8 @@ export function Header({
                         whileTap={{ scale: 0.95 }}
                         className="hidden md:block"
                     >
-                        <Link
-                            to="/account"
+                        <Link 
+                            to="/account" 
                             className="flex items-center justify-center text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative group"
                             aria-label="Account"
                         >
