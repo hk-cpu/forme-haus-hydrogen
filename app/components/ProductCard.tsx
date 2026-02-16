@@ -156,7 +156,7 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
     >
       <Link to={`/products/${product.handle}`} className="block">
         {/* Image Container */}
-        <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-[#1A1A1A] mb-4 shadow-lg shadow-black/20">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-lg md:rounded-xl bg-[#F0EAE6] mb-3 md:mb-4 shadow-sm">
           {/* Shimmer Effect */}
           <AnimatePresence>
             {isHovered && (
@@ -310,16 +310,16 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
         </div>
 
         {/* Product Info */}
-        <div className="space-y-2">
-          <h3 className="font-serif text-[#F0EAE6] text-[15px] leading-snug group-hover:text-[#a87441] transition-colors duration-300 line-clamp-2">
+        <div className="space-y-1.5 pt-1">
+          <h3 className="font-serif text-[#4A3C31] text-[14px] md:text-[15px] leading-snug group-hover:text-[#a87441] transition-colors duration-300 line-clamp-2">
             {product.title}
           </h3>
           <div className="flex items-center gap-2">
-            <p className="text-[#F0EAE6] font-medium">
+            <p className="text-[#4A3C31] font-medium text-sm">
               <Money data={product.priceRange.minVariantPrice} />
             </p>
             {hasDiscount && (
-              <p className="text-[#AA9B8F] text-sm line-through">
+              <p className="text-[#AA9B8F] text-xs line-through">
                 <Money data={product.compareAtPriceRange!.minVariantPrice} />
               </p>
             )}

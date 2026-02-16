@@ -117,8 +117,8 @@ export default function CategoryBento() {
   const { isRTL, t } = useTranslation();
 
   return (
-    <section className="py-16 md:py-24 border-b border-[#8B8076]/10 bg-[#121212]">
-      <div className="container mx-auto px-6">
+    <section className="py-12 md:py-24 border-b border-[#8B8076]/10 bg-[#121212]">
+      <div className="container mx-auto px-4 md:px-6">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -139,7 +139,7 @@ export default function CategoryBento() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[200px] md:auto-rows-[220px]"
+          className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 auto-rows-[160px] md:auto-rows-[220px]"
         >
           {CATEGORIES.map((category) => (
             <CategoryCard key={category.id} category={category} isRTL={isRTL} />

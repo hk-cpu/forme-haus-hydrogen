@@ -20,7 +20,7 @@ import { seoPayload } from '~/lib/seo.server';
 import { routeHeaders } from '~/data/cache';
 import type { ProductCardFragment } from 'storefrontapi.generated';
 
-const PAGE_BY = 8;
+const PAGE_BY = 16;
 
 export const headers = routeHeaders;
 
@@ -93,7 +93,7 @@ export default function AllProducts() {
                     {isLoading ? 'Loading...' : 'Previous'}
                   </PreviousLink>
                 </div>
-                <Grid data-test="product-grid">{itemsMarkup}</Grid>
+                <Grid layout="products" data-test="product-grid">{itemsMarkup}</Grid>
                 <div className="flex items-center justify-center mt-6">
                   <NextLink className="inline-block rounded font-medium text-center py-3 px-6 border border-primary/10 bg-contrast text-primary w-full">
                     {isLoading ? 'Loading...' : 'Next'}

@@ -3,33 +3,33 @@ import { motion } from 'framer-motion';
 
 export default function EditorialSection() {
     return (
-        <section className="py-16 px-4 md:px-8">
+        <section className="py-10 md:py-16 px-4 md:px-8">
             <div className="container mx-auto">
-                <div className="flex justify-between items-end mb-8">
-                    <h2 className="font-serif text-3xl italic text-[#4A3C31]">The Edit</h2>
-                    <Link to="/journal" className="text-xs uppercase tracking-widest text-[#8B8076] hover:text-[#D48B60] transition-colors">
+                <div className="flex justify-between items-end mb-6 md:mb-8">
+                    <h2 className="font-serif text-2xl md:text-3xl italic text-[#4A3C31]">The Edit</h2>
+                    <Link to="/journal" className="text-[10px] md:text-xs uppercase tracking-widest text-[#8B8076] hover:text-[#D48B60] transition-colors">
                         View All Stories
                     </Link>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
                     {/* Large Feature */}
-                    <div className="lg:col-span-2 relative aspect-[16/9] md:aspect-auto md:h-[600px] overflow-hidden rounded-sm group cursor-pointer">
+                    <div className="lg:col-span-2 relative aspect-[4/3] md:aspect-auto md:h-[600px] overflow-hidden rounded-md group cursor-pointer">
                         <img
                             src="/brand/journal-hero.png"
                             alt="Main Editorial"
                             className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-8 md:p-12">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-6 md:p-12">
                             <span className="text-white/80 text-[10px] uppercase tracking-[0.2em] mb-2">Trend Report</span>
-                            <h3 className="font-serif text-3xl md:text-4xl text-white italic mb-4">Ramadan Essentials</h3>
+                            <h3 className="font-serif text-2xl md:text-4xl text-white italic mb-3 md:mb-4">Ramadan Essentials</h3>
                             <span className="text-white text-xs uppercase tracking-widest border-b border-white pb-1 w-fit">Read More</span>
                         </div>
                     </div>
 
                     {/* Side Column */}
                     <div className="flex flex-col gap-4 md:gap-8 h-full">
-                        <div className="relative flex-1 bg-[#E3D8D1] overflow-hidden rounded-sm group cursor-pointer min-h-[280px]">
+                        <div className="relative flex-1 bg-[#E3D8D1] overflow-hidden rounded-md group cursor-pointer min-h-[200px] md:min-h-[280px]">
                             <img
                                 src="/brand/atelier-mood.png"
                                 alt="Sub Feature 1"
@@ -39,7 +39,7 @@ export default function EditorialSection() {
                                 <h4 className="font-serif text-2xl text-white italic drop-shadow-md">Evening Wear</h4>
                             </div>
                         </div>
-                        <div className="relative flex-1 bg-[#D48B60] overflow-hidden rounded-sm group cursor-pointer min-h-[280px]">
+                        <div className="relative flex-1 bg-[#D48B60] overflow-hidden rounded-md group cursor-pointer min-h-[200px] md:min-h-[280px]">
                             <img
                                 src="/brand/silk-texture.png"
                                 alt="Sub Feature 2"

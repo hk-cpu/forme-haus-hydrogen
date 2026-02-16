@@ -88,7 +88,7 @@ export function PageLayout({ children, layout }: LayoutProps) {
               {useIsHomePath() ? (
                 children
               ) : (
-                <div className="bg-[#F9F5F0] text-[#4A3C31] shadow-[0_0_100px_rgba(255,255,255,0.3)] lg:rounded-t-[2rem] min-h-[50vh] p-6 md:p-12">
+                <div className="bg-[#F9F5F0] text-[#4A3C31] shadow-[0_0_100px_rgba(255,255,255,0.3)] rounded-t-[1.5rem] lg:rounded-t-[2rem] min-h-[50vh] p-4 md:p-8 lg:p-12">
                   {children}
                 </div>
               )}
@@ -280,7 +280,7 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
       {/* Bronze Accent Line at Top */}
       <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
 
-      <div className="relative z-10 py-16 px-6 md:px-12 lg:px-24">
+      <div className="relative z-10 py-12 md:py-16 px-4 md:px-12 lg:px-24">
         {/* Main Footer Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 w-full max-w-[1920px] mx-auto">
 

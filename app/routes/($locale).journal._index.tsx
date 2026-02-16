@@ -61,9 +61,9 @@ export default function Journals() {
   const { articles } = useLoaderData<typeof loader>();
 
   return (
-    <div className="pt-24 min-h-screen container mx-auto px-6 md:px-12">
-      <PageHeader heading={BLOG_HANDLE} className="mb-16 text-center" />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-20">
+    <div className="pt-16 md:pt-24 min-h-screen container mx-auto px-4 md:px-12">
+      <PageHeader heading={BLOG_HANDLE} className="mb-10 md:mb-16 text-center" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12 md:gap-x-12 md:gap-y-20">
         {articles.map((article, i) => (
           <ArticleCard
             blogHandle={BLOG_HANDLE.toLowerCase()}
@@ -105,12 +105,12 @@ function ArticleCard({
           </div>
         )}
         <div className={`space-y-3 ${isFeatured ? 'text-center max-w-2xl mx-auto' : ''}`}>
-          <span className="block text-[#F0EAE6]/60 text-xs uppercase tracking-[0.2em]">{article.publishedAt}</span>
-          <h2 className={`font-serif text-[#F0EAE6] ${isFeatured ? 'text-4xl md:text-5xl' : 'text-2xl'} group-hover:text-white transition-colors`}>
+          <span className="block text-[#8B8076] text-xs uppercase tracking-[0.2em]">{article.publishedAt}</span>
+          <h2 className={`font-serif text-[#4A3C31] ${isFeatured ? 'text-3xl md:text-5xl' : 'text-xl md:text-2xl'} group-hover:text-[#a87441] transition-colors`}>
             {article.title}
           </h2>
           <div className="pt-2">
-            <span className="text-[#F0EAE6] border-b border-[#F0EAE6]/30 pb-1 text-xs uppercase tracking-widest group-hover:border-[#F0EAE6] transition-all">Read Story</span>
+            <span className="text-[#4A3C31] border-b border-[#4A3C31]/30 pb-1 text-xs uppercase tracking-widest group-hover:border-[#a87441] group-hover:text-[#a87441] transition-all">Read Story</span>
           </div>
         </div>
       </Link>

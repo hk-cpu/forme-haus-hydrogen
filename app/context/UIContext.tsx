@@ -323,16 +323,13 @@ export function useUI() {
 
 export const menuData = {
   level1: [
-    { id: 'new', label: 'New In', hasChildren: true, href: '/collections/new-in' },
+    { id: 'new', label: 'New In', hasChildren: false, href: '/collections/new' },
     { id: 'women', label: 'Women', hasChildren: true, href: '/collections/women' },
     { id: 'men', label: 'Men', hasChildren: true, href: '/collections/men' },
     { id: 'clothing', label: 'Clothing', hasChildren: true, href: '/collections/clothing' },
     { id: 'accessories', label: 'Accessories', hasChildren: true, href: '/collections/accessories' },
     { id: 'shoes', label: 'Shoes', hasChildren: true, href: '/collections/shoes' },
-    { id: 'beauty', label: 'Beauty', hasChildren: true, href: '/collections/beauty' },
-    { id: 'the-edit', label: 'The Edit', hasChildren: true, href: '/collections/the-edit' },
     { id: 'sale', label: 'Sale', hasChildren: false, href: '/collections/sale' },
-    { id: 'journal', label: 'Journal', hasChildren: false, href: '/journal' },
   ],
   women: {
     image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=80',

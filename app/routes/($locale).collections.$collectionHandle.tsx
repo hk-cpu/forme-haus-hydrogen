@@ -31,7 +31,7 @@ export const headers = routeHeaders;
 
 export async function loader({ params, request, context }: LoaderFunctionArgs) {
   const paginationVariables = getPaginationVariables(request, {
-    pageBy: 8,
+    pageBy: 16,
   });
   const { collectionHandle } = params;
   const locale = context.storefront.i18n;
@@ -170,13 +170,13 @@ export default function Collection() {
   const { t } = useTranslation();
 
   return (
-    <main className="container mx-auto px-6 py-24 min-h-screen text-[#4A3C31]">
-      <header className="mb-16 text-center">
-        <h1 className="font-serif text-5xl md:text-6xl mb-4 text-[#F0EAE6]">
+    <main className="container mx-auto px-4 md:px-6 py-16 md:py-24 min-h-screen text-[#4A3C31]">
+      <header className="mb-10 md:mb-16 text-center">
+        <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl mb-3 md:mb-4 text-[#4A3C31]">
           {collection.title}
         </h1>
         {collection.description && (
-          <p className="max-w-2xl mx-auto text-[#F0EAE6]/70 font-sans tracking-wide text-sm leading-relaxed">
+          <p className="max-w-2xl mx-auto text-[#8B8076] font-sans tracking-wide text-sm leading-relaxed">
             {collection.description}
           </p>
         )}
@@ -197,7 +197,7 @@ export default function Collection() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ staggerChildren: 0.1 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20"
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-12 lg:gap-x-8 lg:gap-y-16"
             >
               {nodes.map((product: any, i: number) => (
                 <motion.div
@@ -225,7 +225,7 @@ export default function Collection() {
       </Pagination>
 
       {collection.products.nodes.length === 0 && (
-        <div className="text-center py-24 text-[#F0EAE6]/50 italic font-serif text-xl">
+        <div className="text-center py-24 text-[#8B8076] italic font-serif text-xl">
           {t('collection.noProducts')}
         </div>
       )}

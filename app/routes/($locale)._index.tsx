@@ -76,7 +76,7 @@ export default function Homepage() {
       <Hero />
 
       {/* Light "Glowing" Theme Content Sheet */}
-      <div className="relative z-20 bg-[#F9F5F0] text-[#8B8076] rounded-t-[3rem] shadow-[0_-20px_60px_-15px_rgba(255,255,255,0.3)] mt-[-5vh] pt-12">
+      <div className="relative z-20 bg-[#F9F5F0] text-[#8B8076] rounded-t-[2rem] md:rounded-t-[3rem] shadow-[0_-20px_60px_-15px_rgba(255,255,255,0.3)] mt-[-5vh] pt-8 md:pt-12">
         {/* 2. Category Slider (Horizontal Scroll - New In / Categories) */}
         <CategoryBento />
 
@@ -89,29 +89,29 @@ export default function Homepage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 1, ease: 'easeOut' }}
-          className="py-12 px-6 text-center max-w-2xl mx-auto space-y-8 border-t border-[#8B8076]/8"
+          className="py-10 md:py-12 px-4 md:px-6 text-center max-w-2xl mx-auto space-y-6 md:space-y-8 border-t border-[#8B8076]/8"
         >
-          <div className="w-px h-12 bg-gradient-to-b from-transparent via-[#a87441]/60 to-transparent mx-auto" />
-          <p className="font-serif text-lg md:text-xl leading-relaxed text-[#5C5046]/80 font-light italic tracking-wide">
+          <div className="w-px h-10 md:h-12 bg-gradient-to-b from-transparent via-[#a87441]/60 to-transparent mx-auto" />
+          <p className="font-serif text-base md:text-xl leading-relaxed text-[#5C5046]/80 font-light italic tracking-wide">
             "{t('home.brandIntro')}"
           </p>
         </motion.section>
 
         {/* 5. Featured Collections */}
-        <section className="container mx-auto px-6 pb-32">
-          <h2 className="font-serif text-3xl italic text-[#4A3C31] mb-12 text-center tracking-wide font-light">
+        <section className="container mx-auto px-4 md:px-6 pb-16 md:pb-32">
+          <h2 className="font-serif text-2xl md:text-3xl italic text-[#4A3C31] mb-8 md:mb-12 text-center tracking-wide font-light">
             {t('home.curatedForYou')}
           </h2>
           <Suspense
             fallback={
-              <div className="h-96 w-full animate-pulse bg-neutral-200" />
+              <div className="h-96 w-full animate-pulse bg-neutral-200 rounded-md" />
             }
           >
             <Await resolve={featuredCollections}>
               {(response) => {
                 const collections = response?.collections?.nodes || [];
                 return (
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
                     {collections.slice(0, 3).map((c: any, i: number) => {
                       const placeholders = [
                         '/brand/atelier-mood.png',
@@ -122,9 +122,8 @@ export default function Homepage() {
                         <Link
                           key={c.id}
                           to={`/collections/${c.handle}`}
-                          className="group relative aspect-[3/4] bg-neutral-100 border border-neutral-200 overflow-hidden block rounded-md"
+                          className="group relative aspect-[3/4] bg-neutral-100 border border-neutral-200 overflow-hidden block rounded-lg"
                         >
-                          {/* Use Shopify collection image or fallback to placeholder */}
                           {c.image ? (
                             <div className="absolute inset-0 overflow-hidden">
                               <motion.div
@@ -137,7 +136,7 @@ export default function Homepage() {
                               >
                                 <Image
                                   data={c.image}
-                                  sizes="(min-width: 45em) 33vw, 100vw"
+                                  sizes="(min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
                                   className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700"
                                 />
                               </motion.div>
@@ -152,8 +151,8 @@ export default function Homepage() {
                             </div>
                           )}
 
-                          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10 bg-black/10 group-hover:bg-black/5 transition-colors">
-                            <h3 className="font-serif text-2xl italic text-white drop-shadow-md">
+                          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 md:gap-4 z-10 bg-black/10 group-hover:bg-black/5 transition-colors">
+                            <h3 className="font-serif text-xl md:text-2xl italic text-white drop-shadow-md">
                               {c.title}
                             </h3>
                             <span className="text-[10px] uppercase tracking-widest text-[#F9F6F3] border border-white/50 px-4 py-2 backdrop-blur-sm hover:bg-white hover:text-black transition-colors">
@@ -171,16 +170,16 @@ export default function Homepage() {
         </section>
 
         {/* 6. Journal Teaser */}
-        <section className="container mx-auto px-6 pb-40 border-t border-[#8B8076]/15 pt-32">
-          <div className="flex justify-between items-end mb-16">
-            <h2 className="font-serif text-4xl italic text-[#4A3C31] font-light tracking-wide">
+        <section className="container mx-auto px-4 md:px-6 pb-20 md:pb-40 border-t border-[#8B8076]/15 pt-16 md:pt-32">
+          <div className="flex justify-between items-end mb-8 md:mb-16">
+            <h2 className="font-serif text-2xl md:text-4xl italic text-[#4A3C31] font-light tracking-wide">
               {t('home.journal')}
             </h2>
-            <span className="text-[10px] uppercase tracking-[0.3em] text-[#8B8076] font-light">
+            <span className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] text-[#8B8076] font-light">
               {t('home.editorial.label')}
             </span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
             {[
               {
                 title: t('journal.modernWardrobe'),
@@ -201,16 +200,16 @@ export default function Homepage() {
               <Link
                 key={i}
                 to={item.to}
-                className="space-y-6 cursor-pointer group block"
+                className="space-y-4 md:space-y-6 cursor-pointer group block"
               >
-                <div className="aspect-video relative overflow-hidden border border-[#8B8076]/20 bg-neutral-100/50 rounded-sm shadow-sm">
+                <div className="aspect-video relative overflow-hidden border border-[#8B8076]/20 bg-neutral-100/50 rounded-md shadow-sm">
                   <img
                     src={item.img}
                     alt={item.title}
                     className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105 opacity-90 group-hover:opacity-100"
                   />
                 </div>
-                <h3 className="font-serif text-xl text-[#5C5046] font-light tracking-wide group-hover:text-[#a87441] transition-colors duration-500">
+                <h3 className="font-serif text-lg md:text-xl text-[#5C5046] font-light tracking-wide group-hover:text-[#a87441] transition-colors duration-500">
                   {item.title}
                 </h3>
               </Link>
@@ -219,9 +218,9 @@ export default function Homepage() {
         </section>
 
         {/* 7. Newsletter Signup */}
-        <section className="pb-40">
-          <div className="text-center space-y-8 mb-16">
-            <h2 className="font-serif text-4xl italic text-[#4A3C31] font-light tracking-wide">
+        <section className="pb-20 md:pb-40 px-4 md:px-0">
+          <div className="text-center space-y-4 md:space-y-8 mb-10 md:mb-16">
+            <h2 className="font-serif text-2xl md:text-4xl italic text-[#4A3C31] font-light tracking-wide">
               {t('home.newsletter.title')}
             </h2>
             <p className="text-[10px] uppercase tracking-[0.3em] text-[#8B8076] font-light">
