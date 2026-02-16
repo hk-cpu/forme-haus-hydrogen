@@ -11,16 +11,18 @@ import {
   Analytics,
   getSeoMeta,
 } from '@shopify/hydrogen';
+import { motion } from 'framer-motion';
 
-import { Heading, PageHeader, Section, Text } from '~/components/Text';
+import { Text } from '~/components/Text';
 import { Input } from '~/components/Input';
-import { Grid } from '~/components/Grid';
+import { Button } from '~/components/Button';
 import { ProductCard } from '~/components/ProductCard';
 import { ProductSwimlane } from '~/components/ProductSwimlane';
 import { FeaturedCollections } from '~/components/FeaturedCollections';
 import { PRODUCT_CARD_FRAGMENT } from '~/data/fragments';
 import { getImageLoadingPriority, PAGINATION_SIZE } from '~/lib/const';
 import { seoPayload } from '~/lib/seo.server';
+import { useTranslation } from '~/hooks/useTranslation';
 import type { ProductCardFragment } from 'storefrontapi.generated';
 
 import {
@@ -83,65 +85,81 @@ export const meta = ({ matches }: MetaArgs<typeof loader>) => {
 export default function Search() {
   const { searchTerm, products, noResultRecommendations } =
     useLoaderData<typeof loader>();
+  const { t } = useTranslation();
   const noResults = products?.nodes?.length === 0;
 
   return (
-    <>
-      <PageHeader>
-        <Heading as="h1" size="copy">
-          Search
-        </Heading>
-        <Form method="get" className="relative flex w-full text-heading">
+    <main className="container mx-auto px-4 md:px-6 py-16 md:py-24 min-h-screen text-[#4A3C31]">
+      {/* Search Header */}
+      <header className="mb-10 md:mb-16 text-center space-y-6">
+        <h1 className="font-serif text-3xl md:text-5xl text-[#4A3C31]">
+          {t('search.title', 'Search')}
+        </h1>
+        <Form method="get" className="relative flex w-full max-w-xl mx-auto">
           <Input
             defaultValue={searchTerm}
             name="q"
-            placeholder="Search…"
+            placeholder={t('search.placeholder', 'Search...')}
             type="search"
             variant="search"
+            className="w-full"
           />
-          <button className="absolute right-0 py-2" type="submit">
-            Go
+          <button
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[#a87441] hover:text-[#8B5E3C] font-medium uppercase tracking-wider transition-colors"
+            type="submit"
+          >
+            {t('search.go', 'Go')}
           </button>
         </Form>
-      </PageHeader>
+      </header>
+
       {!searchTerm || noResults ? (
         <NoResults
           noResults={noResults}
           recommendations={noResultRecommendations}
         />
       ) : (
-        <Section>
-          <Pagination connection={products}>
-            {({ nodes, isLoading, NextLink, PreviousLink }) => {
-              const itemsMarkup = (nodes as ProductCardFragment[]).map((product, i) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  loading={getImageLoadingPriority(i)}
-                />
-              ));
+        <Pagination connection={products}>
+          {({ nodes, isLoading, NextLink, PreviousLink }) => (
+            <>
+              <div className="flex items-center justify-center mb-8">
+                <Button as={PreviousLink} variant="secondary" width="full">
+                  {isLoading ? t('collection.loading', 'Loading...') : t('collection.loadPrevious', 'Previous')}
+                </Button>
+              </div>
 
-              return (
-                <>
-                  <div className="flex items-center justify-center mt-6">
-                    <PreviousLink className="inline-block rounded font-medium text-center py-3 px-6 border border-primary/10 bg-contrast text-primary w-full">
-                      {isLoading ? 'Loading...' : 'Previous'}
-                    </PreviousLink>
-                  </div>
-                  <Grid data-test="product-grid">{itemsMarkup}</Grid>
-                  <div className="flex items-center justify-center mt-6">
-                    <NextLink className="inline-block rounded font-medium text-center py-3 px-6 border border-primary/10 bg-contrast text-primary w-full">
-                      {isLoading ? 'Loading...' : 'Next'}
-                    </NextLink>
-                  </div>
-                </>
-              );
-            }}
-          </Pagination>
-        </Section>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-6 md:gap-x-5 md:gap-y-10 lg:gap-x-6 lg:gap-y-12"
+              >
+                {(nodes as ProductCardFragment[]).map((product, i) => (
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-50px' }}
+                    transition={{ duration: 0.6, delay: i * 0.03, ease: 'easeOut' }}
+                  >
+                    <ProductCard
+                      product={product}
+                      loading={getImageLoadingPriority(i)}
+                    />
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              <div className="flex items-center justify-center mt-8">
+                <Button as={NextLink} variant="secondary" width="full">
+                  {isLoading ? t('collection.loading', 'Loading...') : t('collection.loadMore', 'Load more')}
+                </Button>
+              </div>
+            </>
+          )}
+        </Pagination>
       )}
       <Analytics.SearchView data={{ searchTerm, searchResults: products }} />
-    </>
+    </main>
   );
 }
 
@@ -155,11 +173,11 @@ function NoResults({
   return (
     <>
       {noResults && (
-        <Section padding="x">
-          <Text className="opacity-50">
+        <div className="text-center py-12">
+          <p className="text-[#8B8076] italic font-serif text-lg">
             No results, try a different search.
-          </Text>
-        </Section>
+          </p>
+        </div>
       )}
       <Suspense>
         <Await

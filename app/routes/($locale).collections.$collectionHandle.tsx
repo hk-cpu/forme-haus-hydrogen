@@ -197,7 +197,7 @@ export default function Collection() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ staggerChildren: 0.1 }}
-              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-12 lg:gap-x-8 lg:gap-y-16"
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-6 md:gap-x-5 md:gap-y-10 lg:gap-x-6 lg:gap-y-12"
             >
               {nodes.map((product: any, i: number) => (
                 <motion.div

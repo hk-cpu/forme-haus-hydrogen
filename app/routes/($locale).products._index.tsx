@@ -10,14 +10,15 @@ import {
   getPaginationVariables,
   getSeoMeta,
 } from '@shopify/hydrogen';
+import { motion } from 'framer-motion';
 
-import { PageHeader, Section } from '~/components/Text';
 import { ProductCard } from '~/components/ProductCard';
-import { Grid } from '~/components/Grid';
+import { Button } from '~/components/Button';
 import { PRODUCT_CARD_FRAGMENT } from '~/data/fragments';
 import { getImageLoadingPriority } from '~/lib/const';
 import { seoPayload } from '~/lib/seo.server';
 import { routeHeaders } from '~/data/cache';
+import { useTranslation } from '~/hooks/useTranslation';
 import type { ProductCardFragment } from 'storefrontapi.generated';
 
 const PAGE_BY = 16;
@@ -71,40 +72,55 @@ export const meta = ({ matches }: MetaArgs<typeof loader>) => {
 
 export default function AllProducts() {
   const { products } = useLoaderData<typeof loader>();
+  const { t } = useTranslation();
 
   return (
-    <>
-      <PageHeader heading="All Products" variant="allCollections" />
-      <Section>
-        <Pagination connection={products}>
-          {({ nodes, isLoading, NextLink, PreviousLink }) => {
-            const itemsMarkup = (nodes as ProductCardFragment[]).map((product, i) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                loading={getImageLoadingPriority(i)}
-              />
-            ));
+    <main className="container mx-auto px-4 md:px-6 py-16 md:py-24 min-h-screen text-[#4A3C31]">
+      <header className="mb-10 md:mb-16 text-center">
+        <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl mb-3 md:mb-4 text-[#4A3C31]">
+          {t('products.title', 'All Products')}
+        </h1>
+      </header>
 
-            return (
-              <>
-                <div className="flex items-center justify-center mt-6">
-                  <PreviousLink className="inline-block rounded font-medium text-center py-3 px-6 border border-primary/10 bg-contrast text-primary w-full">
-                    {isLoading ? 'Loading...' : 'Previous'}
-                  </PreviousLink>
-                </div>
-                <Grid layout="products" data-test="product-grid">{itemsMarkup}</Grid>
-                <div className="flex items-center justify-center mt-6">
-                  <NextLink className="inline-block rounded font-medium text-center py-3 px-6 border border-primary/10 bg-contrast text-primary w-full">
-                    {isLoading ? 'Loading...' : 'Next'}
-                  </NextLink>
-                </div>
-              </>
-            );
-          }}
-        </Pagination>
-      </Section>
-    </>
+      <Pagination connection={products}>
+        {({ nodes, isLoading, NextLink, PreviousLink }) => (
+          <>
+            <div className="flex items-center justify-center mb-8">
+              <Button as={PreviousLink} variant="secondary" width="full">
+                {isLoading ? t('collection.loading', 'Loading...') : t('collection.loadPrevious', 'Previous')}
+              </Button>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-6 md:gap-x-5 md:gap-y-10 lg:gap-x-6 lg:gap-y-12"
+            >
+              {(nodes as ProductCardFragment[]).map((product, i) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.6, delay: i * 0.03, ease: 'easeOut' }}
+                >
+                  <ProductCard
+                    product={product}
+                    loading={getImageLoadingPriority(i)}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+
+            <div className="flex items-center justify-center mt-8">
+              <Button as={NextLink} variant="secondary" width="full">
+                {isLoading ? t('collection.loading', 'Loading...') : t('collection.loadMore', 'Load more')}
+              </Button>
+            </div>
+          </>
+        )}
+      </Pagination>
+    </main>
   );
 }
 
