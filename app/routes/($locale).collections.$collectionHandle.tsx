@@ -77,6 +77,12 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     },
   );
 
+  if (collection) {
+    console.log('[DEBUG] Collection found:', collection.handle, 'Products:', collection.products?.nodes?.length);
+  } else {
+    console.log('[DEBUG] Collection NOT found for handle:', collectionHandle);
+  }
+
   if (
     (!collection || collection.products.nodes.length === 0) &&
     (collectionHandle === 'new-in' ||
@@ -90,9 +96,18 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
         variables: {
           ...paginationVariables,
           handle: 'all',
-          filters,
-          sortKey: collectionHandle === 'new-in' || collectionHandle === 'new' ? 'CREATED' : 'BEST_SELLING',
-          reverse: collectionHandle === 'new-in' || collectionHandle === 'new' ? true : false,
+          filters: [
+            ...filters,
+            ...(collectionHandle === 'sale' ? [{ tag: 'sale' }] : []),
+          ],
+          sortKey:
+            collectionHandle === 'new-in' || collectionHandle === 'new'
+              ? 'CREATED'
+              : 'BEST_SELLING',
+          reverse:
+            collectionHandle === 'new-in' || collectionHandle === 'new'
+              ? true
+              : false,
           country: context.storefront.i18n.country,
           language: context.storefront.i18n.language,
         },
