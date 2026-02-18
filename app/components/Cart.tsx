@@ -218,8 +218,8 @@ function CartCheckoutActions({
     <div className="flex flex-col gap-3">
       {/* Checkout Button */}
       <a href={checkoutUrl} target="_self">
-        <Button 
-          as="span" 
+        <Button
+          as="span"
           width="full"
           className="bg-[#a87441] hover:bg-[#8B5E3C] text-white font-medium py-4 rounded-lg transition-colors"
         >
@@ -246,19 +246,23 @@ function CartCheckoutActions({
       {/* Terms */}
       <p className="text-[10px] text-center text-[#AA9B8F]/60 mt-2">
         {t('cart.terms', 'By proceeding, you agree to our')}{' '}
-        <a href="/policies/terms-of-service" className="text-[#a87441] hover:underline">
+        <a
+          href="/policies/terms-of-service"
+          className="text-[#a87441] hover:underline"
+        >
           {t('cart.termsLink', 'Terms')}
         </a>{' '}
         {t('cart.and', 'and')}{' '}
-        <a href="/policies/refund-policy" className="text-[#a87441] hover:underline">
+        <a
+          href="/policies/refund-policy"
+          className="text-[#a87441] hover:underline"
+        >
           {t('cart.refundsLink', 'Refund Policy')}
         </a>
       </p>
     </div>
   );
 }
-
-
 
 function CartSummary({
   cost,
@@ -270,7 +274,7 @@ function CartSummary({
   layout: Layouts;
 }) {
   const {t} = useTranslation();
-  
+
   const summary = {
     drawer: 'grid gap-4 p-6 border-t border-[#a87441]/20 bg-[#121212]',
     page: 'sticky top-nav grid gap-6 p-4 md:px-6 md:translate-y-4 bg-primary/5 rounded w-full',
@@ -281,13 +285,17 @@ function CartSummary({
       <h2 id="summary-heading" className="sr-only">
         Order summary
       </h2>
-      
+
       {/* Subtotal */}
       <div className="flex items-center justify-between py-3 border-b border-[#a87441]/10">
         <Text as="span" className="text-[#AA9B8F]">
           <CartSubtotalLabel />
         </Text>
-        <Text as="span" className="text-[#F0EAE6] font-medium text-lg" data-test="subtotal">
+        <Text
+          as="span"
+          className="text-[#F0EAE6] font-medium text-lg"
+          data-test="subtotal"
+        >
           {cost?.subtotalAmount?.amount ? (
             <Money data={cost?.subtotalAmount} />
           ) : (
@@ -359,9 +367,16 @@ function CartLineItem({line}: {line: CartLine}) {
       <div className="flex-1 flex flex-col justify-between">
         <div>
           {/* Product Title */}
-          <Heading as="h3" size="copy" className="font-serif text-[#F0EAE6] text-[15px] leading-tight mb-1">
+          <Heading
+            as="h3"
+            size="copy"
+            className="font-serif text-[#F0EAE6] text-[15px] leading-tight mb-1"
+          >
             {merchandise?.product?.handle ? (
-              <Link to={`/products/${merchandise.product.handle}`} className="hover:text-[#a87441] transition-colors">
+              <Link
+                to={`/products/${merchandise.product.handle}`}
+                className="hover:text-[#a87441] transition-colors"
+              >
                 {merchandise.product.title}
               </Link>
             ) : (
@@ -372,8 +387,13 @@ function CartLineItem({line}: {line: CartLine}) {
           {/* Selected Options (Size, Color, etc.) */}
           <div className="flex flex-wrap gap-x-4 gap-y-1 mb-2">
             {(merchandise?.selectedOptions || []).map((option) => (
-              <Text color="subtle" key={option.name} className="text-[#AA9B8F] text-xs">
-                {option.name}: <span className="text-[#F0EAE6]">{option.value}</span>
+              <Text
+                color="subtle"
+                key={option.name}
+                className="text-[#AA9B8F] text-xs"
+              >
+                {option.name}:{' '}
+                <span className="text-[#F0EAE6]">{option.value}</span>
               </Text>
             ))}
           </div>
@@ -451,8 +471,8 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
           </button>
         </UpdateCartButton>
 
-        <div 
-          className="w-10 text-center text-[#F0EAE6] text-sm font-medium" 
+        <div
+          className="w-10 text-center text-[#F0EAE6] text-sm font-medium"
           data-test="item-quantity"
         >
           {optimisticQuantity}
@@ -521,7 +541,7 @@ function CartLinePrice({
 }
 
 export // Empty Bag Icon Component
-function EmptyBagIcon({ className }: { className?: string }) {
+function EmptyBagIcon({className}: {className?: string}) {
   return (
     <svg
       className={className}
@@ -585,7 +605,10 @@ function CartEmpty({
             {t('cart.emptyTitle', 'Your bag is empty')}
           </h3>
           <p className="text-[#AA9B8F] text-sm mb-8 max-w-[240px]">
-            {t('cart.emptySubtitle', 'Discover our exclusive collections and find something you love.')}
+            {t(
+              'cart.emptySubtitle',
+              'Discover our exclusive collections and find something you love.',
+            )}
           </p>
           <button
             onClick={onClose}

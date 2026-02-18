@@ -1,25 +1,26 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import {useState} from 'react';
+import {motion} from 'framer-motion';
 import {
   Mail,
   Clock,
   Instagram,
   MessageCircle,
   ArrowRight,
-  Send
+  Send,
 } from 'lucide-react';
-import { useTranslation } from '~/hooks/useTranslation';
+import {useTranslation} from '~/hooks/useTranslation';
 
 export const handle = {
   seo: {
     title: 'Contact Us | Formé Haus',
-    description: 'Get in touch with Formé Haus for styling guidance, order inquiries, or just to say hello.',
+    description:
+      'Get in touch with Formé Haus for styling guidance, order inquiries, or just to say hello.',
   },
 };
 
 // Animation variants
 const containerVariants = {
-  hidden: { opacity: 0 },
+  hidden: {opacity: 0},
   visible: {
     opacity: 1,
     transition: {
@@ -30,16 +31,16 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: {opacity: 0, y: 20},
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+    transition: {duration: 0.6, ease: [0.22, 1, 0.36, 1]},
   },
 };
 
 export default function ContactPage() {
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   const [formState, setFormState] = useState({
     name: '',
     email: '',
@@ -53,7 +54,7 @@ export default function ContactPage() {
     e.preventDefault();
     setIsSubmitting(true);
     // Simulate submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsSubmitting(false);
     setSubmitted(true);
   };
@@ -77,17 +78,15 @@ export default function ContactPage() {
     },
   ];
 
-
-
   return (
     <div className="min-h-screen bg-[#F9F5F0]">
       {/* Hero Section */}
       <section className="relative py-24 px-6 md:px-12 overflow-hidden">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{opacity: 0, y: 30}}
+            animate={{opacity: 1, y: 0}}
+            transition={{duration: 0.8}}
           >
             <span className="text-[11px] uppercase tracking-[0.3em] text-[#a87441] mb-4 block">
               Get in Touch
@@ -98,14 +97,14 @@ export default function ContactPage() {
           </motion.div>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            initial={{opacity: 0, y: 20}}
+            animate={{opacity: 1, y: 0}}
+            transition={{duration: 0.8, delay: 0.2}}
             className="text-[15px] leading-relaxed text-[#5C5046] max-w-2xl mx-auto mb-12"
           >
-            At Formé Haus, every interaction is personal. Whether you're seeking styling guidance,
-            have a question about an order, or simply wish to connect, our team is here to assist
-            with care and attention.
+            At Formé Haus, every interaction is personal. Whether you're seeking
+            styling guidance, have a question about an order, or simply wish to
+            connect, our team is here to assist with care and attention.
           </motion.p>
         </div>
       </section>
@@ -116,7 +115,7 @@ export default function ContactPage() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={{once: true}}
           className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6"
         >
           {contactMethods.map((method) => (
@@ -124,22 +123,34 @@ export default function ContactPage() {
               key={method.title}
               href={method.href}
               target={method.href.startsWith('http') ? '_blank' : undefined}
-              rel={method.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              rel={
+                method.href.startsWith('http')
+                  ? 'noopener noreferrer'
+                  : undefined
+              }
               variants={itemVariants}
               className="group relative bg-white rounded-2xl p-8 border border-[#8B8076]/10
                 hover:border-[#a87441]/30 hover:shadow-xl hover:shadow-[#a87441]/5
                 transition-all duration-500"
             >
               {/* Icon */}
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#a87441]/10 to-[#a87441]/5
-                flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <div
+                className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#a87441]/10 to-[#a87441]/5
+                flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
+              >
                 <method.icon className="w-6 h-6 text-[#a87441]" />
               </div>
 
               {/* Content */}
-              <h3 className="font-serif text-xl text-[#4A3C31] mb-2">{method.title}</h3>
-              <p className="text-[13px] text-[#8B8076] mb-4">{method.description}</p>
-              <p className="text-[15px] font-medium text-[#4A3C31] mb-6">{method.value}</p>
+              <h3 className="font-serif text-xl text-[#4A3C31] mb-2">
+                {method.title}
+              </h3>
+              <p className="text-[13px] text-[#8B8076] mb-4">
+                {method.description}
+              </p>
+              <p className="text-[15px] font-medium text-[#4A3C31] mb-6">
+                {method.value}
+              </p>
 
               {/* Action */}
               <div className="flex items-center gap-2 text-[#a87441] text-[12px] uppercase tracking-wider">
@@ -148,8 +159,10 @@ export default function ContactPage() {
               </div>
 
               {/* Hover Glow */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#a87441]/5 to-transparent
-                opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              <div
+                className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#a87441]/5 to-transparent
+                opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+              />
             </motion.a>
           ))}
         </motion.div>
@@ -160,10 +173,10 @@ export default function ContactPage() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Left: Contact Form */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            initial={{opacity: 0, x: -30}}
+            whileInView={{opacity: 1, x: 0}}
+            viewport={{once: true}}
+            transition={{duration: 0.8}}
           >
             <h2 className="font-serif text-2xl italic text-[#4A3C31] mb-2">
               Send a Message
@@ -174,14 +187,16 @@ export default function ContactPage() {
 
             {submitted ? (
               <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{opacity: 0, scale: 0.95}}
+                animate={{opacity: 1, scale: 1}}
                 className="bg-[#a87441]/10 rounded-xl p-8 text-center"
               >
                 <div className="w-16 h-16 rounded-full bg-[#a87441]/20 flex items-center justify-center mx-auto mb-4">
                   <Send className="w-6 h-6 text-[#a87441]" />
                 </div>
-                <h3 className="font-serif text-xl text-[#4A3C31] mb-2">Message Sent!</h3>
+                <h3 className="font-serif text-xl text-[#4A3C31] mb-2">
+                  Message Sent!
+                </h3>
                 <p className="text-[13px] text-[#8B8076]">
                   Thank you for reaching out. We'll respond within 24 hours.
                 </p>
@@ -197,7 +212,9 @@ export default function ContactPage() {
                       type="text"
                       required
                       value={formState.name}
-                      onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                      onChange={(e) =>
+                        setFormState({...formState, name: e.target.value})
+                      }
                       className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3
                         text-[#4A3C31] placeholder-[#8B8076]/50
                         focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/20
@@ -213,7 +230,9 @@ export default function ContactPage() {
                       type="email"
                       required
                       value={formState.email}
-                      onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                      onChange={(e) =>
+                        setFormState({...formState, email: e.target.value})
+                      }
                       className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3
                         text-[#4A3C31] placeholder-[#8B8076]/50
                         focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/20
@@ -231,7 +250,9 @@ export default function ContactPage() {
                     type="text"
                     required
                     value={formState.subject}
-                    onChange={(e) => setFormState({ ...formState, subject: e.target.value })}
+                    onChange={(e) =>
+                      setFormState({...formState, subject: e.target.value})
+                    }
                     className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3
                       text-[#4A3C31] placeholder-[#8B8076]/50
                       focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/20
@@ -248,7 +269,9 @@ export default function ContactPage() {
                     required
                     rows={5}
                     value={formState.message}
-                    onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+                    onChange={(e) =>
+                      setFormState({...formState, message: e.target.value})
+                    }
                     className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3
                       text-[#4A3C31] placeholder-[#8B8076]/50 resize-none
                       focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/20
@@ -283,23 +306,29 @@ export default function ContactPage() {
 
           {/* Right: Coming Soon & Instagram */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            initial={{opacity: 0, x: 30}}
+            whileInView={{opacity: 1, x: 0}}
+            viewport={{once: true}}
+            transition={{duration: 0.8}}
             className="space-y-10"
           >
             {/* Instagram Follow */}
             <div className="bg-white rounded-2xl p-8 border border-[#8B8076]/10">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400
-                    flex items-center justify-center">
+                  <div
+                    className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400
+                    flex items-center justify-center"
+                  >
                     <Instagram className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-serif text-lg text-[#4A3C31]">@formehaus</h3>
-                    <p className="text-[11px] text-[#8B8076]">Follow our journey</p>
+                    <h3 className="font-serif text-lg text-[#4A3C31]">
+                      @formehaus
+                    </h3>
+                    <p className="text-[11px] text-[#8B8076]">
+                      Follow our journey
+                    </p>
                   </div>
                 </div>
                 <a
@@ -314,8 +343,8 @@ export default function ContactPage() {
               </div>
 
               <p className="text-[13px] text-[#5C5046] leading-relaxed">
-                Discover the latest collections, behind-the-scenes moments, and styling
-                inspiration. Follow our journey.
+                Discover the latest collections, behind-the-scenes moments, and
+                styling inspiration. Follow our journey.
               </p>
 
               {/* Instagram Preview Grid */}
@@ -343,11 +372,15 @@ export default function ContactPage() {
               <div className="space-y-2 text-[13px]">
                 <div className="flex justify-between">
                   <span className="text-[#8B8076]">Sunday - Thursday</span>
-                  <span className="text-[#4A3C31] font-medium">9:00 AM - 9:00 PM</span>
+                  <span className="text-[#4A3C31] font-medium">
+                    9:00 AM - 9:00 PM
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#8B8076]">Friday - Saturday</span>
-                  <span className="text-[#4A3C31] font-medium">2:00 PM - 10:00 PM</span>
+                  <span className="text-[#4A3C31] font-medium">
+                    2:00 PM - 10:00 PM
+                  </span>
                 </div>
               </div>
             </div>
@@ -358,9 +391,9 @@ export default function ContactPage() {
       {/* Bottom Brand Statement */}
       <section className="py-16 px-6 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          initial={{opacity: 0, y: 20}}
+          whileInView={{opacity: 1, y: 0}}
+          viewport={{once: true}}
           className="max-w-2xl mx-auto"
         >
           <img

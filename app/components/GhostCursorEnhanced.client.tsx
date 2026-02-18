@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useRef } from 'react';
+import {useEffect, useMemo, useRef} from 'react';
 import * as THREE from 'three';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
+import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
+import {UnrealBloomPass} from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import {ShaderPass} from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import './GhostCursor.css';
 
 type GhostCursorEnhancedProps = {
@@ -98,21 +98,24 @@ export default function GhostCursorEnhanced({
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.OrthographicCamera | null>(null);
   const composerRef = useRef<EffectComposer | null>(null);
-  const trailRef = useRef<{ x: number; y: number; age: number; intensity: number }[]>([]);
-  const mouseRef = useRef({ x: 0, y: 0, vx: 0, vy: 0 });
-  const targetRef = useRef({ x: 0, y: 0 });
+  const trailRef = useRef<
+    {x: number; y: number; age: number; intensity: number}[]
+  >([]);
+  const mouseRef = useRef({x: 0, y: 0, vx: 0, vy: 0});
+  const targetRef = useRef({x: 0, y: 0});
   const rafRef = useRef<number>(0);
   const lastMoveRef = useRef(Date.now());
   const fadingRef = useRef(false);
   const uniformsRef = useRef({
-    uTime: { value: 0 },
-    uGrainIntensity: { value: grainIntensity },
-    uEdgeIntensity: { value: edgeIntensity },
-    uBrightness: { value: brightness },
+    uTime: {value: 0},
+    uGrainIntensity: {value: grainIntensity},
+    uEdgeIntensity: {value: edgeIntensity},
+    uBrightness: {value: brightness},
   });
 
   const dpr = useMemo(() => {
-    const deviceDpr = typeof window !== 'undefined' ? window.devicePixelRatio : 1;
+    const deviceDpr =
+      typeof window !== 'undefined' ? window.devicePixelRatio : 1;
     return Math.min(deviceDpr, maxDevicePixelRatio);
   }, [maxDevicePixelRatio]);
 
@@ -128,12 +131,19 @@ export default function GhostCursorEnhanced({
     sceneRef.current = scene;
 
     // Camera setup
-    const camera = new THREE.OrthographicCamera(-width / 2, width / 2, height / 2, -height / 2, 0.1, 1000);
+    const camera = new THREE.OrthographicCamera(
+      -width / 2,
+      width / 2,
+      height / 2,
+      -height / 2,
+      0.1,
+      1000,
+    );
     camera.position.z = 1;
     cameraRef.current = camera;
 
     // Renderer setup
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false });
+    const renderer = new THREE.WebGLRenderer({alpha: true, antialias: false});
     renderer.setSize(width, height);
     renderer.setPixelRatio(dpr);
     container.appendChild(renderer.domElement);
@@ -145,7 +155,7 @@ export default function GhostCursorEnhanced({
       new THREE.Vector2(width, height),
       bloomStrength,
       bloomRadius,
-      bloomThreshold
+      bloomThreshold,
     );
 
     const grainShader = new ShaderPass({
@@ -197,8 +207,12 @@ export default function GhostCursorEnhanced({
           fadingRef.current = true;
         }
         if (fadingRef.current) {
-          const fadeProgress = Math.min((sinceLastMove - fadeDelayMs) / fadeDurationMs, 1);
-          uniformsRef.current.uBrightness.value = brightness * (1 - fadeProgress);
+          const fadeProgress = Math.min(
+            (sinceLastMove - fadeDelayMs) / fadeDurationMs,
+            1,
+          );
+          uniformsRef.current.uBrightness.value =
+            brightness * (1 - fadeProgress);
           if (fadeProgress >= 1) {
             trailRef.current = [];
           }
@@ -208,27 +222,36 @@ export default function GhostCursorEnhanced({
       }
 
       // Update mouse with inertia
-      mouseRef.current.vx += (targetRef.current.x - mouseRef.current.x) * (1 - inertia);
-      mouseRef.current.vy += (targetRef.current.y - mouseRef.current.y) * (1 - inertia);
+      mouseRef.current.vx +=
+        (targetRef.current.x - mouseRef.current.x) * (1 - inertia);
+      mouseRef.current.vy +=
+        (targetRef.current.y - mouseRef.current.y) * (1 - inertia);
       mouseRef.current.vx *= inertia;
       mouseRef.current.vy *= inertia;
       mouseRef.current.x += mouseRef.current.vx;
       mouseRef.current.y += mouseRef.current.vy;
 
       // Add to trail
-      if (Math.abs(mouseRef.current.vx) > 0.1 || Math.abs(mouseRef.current.vy) > 0.1) {
+      if (
+        Math.abs(mouseRef.current.vx) > 0.1 ||
+        Math.abs(mouseRef.current.vy) > 0.1
+      ) {
         trailRef.current.push({
           x: mouseRef.current.x,
           y: mouseRef.current.y,
           age: 0,
-          intensity: Math.min(Math.sqrt(mouseRef.current.vx ** 2 + mouseRef.current.vy ** 2) * 0.1, 1),
+          intensity: Math.min(
+            Math.sqrt(mouseRef.current.vx ** 2 + mouseRef.current.vy ** 2) *
+              0.1,
+            1,
+          ),
         });
       }
 
       // Update trail
       trailRef.current = trailRef.current
-        .map(p => ({ ...p, age: p.age + 1 }))
-        .filter(p => p.age < trailLength);
+        .map((p) => ({...p, age: p.age + 1}))
+        .filter((p) => p.age < trailLength);
 
       // Update geometry
       const posArray = geometry.attributes.position.array as Float32Array;
@@ -243,7 +266,9 @@ export default function GhostCursorEnhanced({
           posArray[i * 3 + 2] = 0;
 
           const life = 1 - point.age / trailLength;
-          const color = primary.clone().lerp(secondary, point.intensity * hoverIntensity);
+          const color = primary
+            .clone()
+            .lerp(secondary, point.intensity * hoverIntensity);
           colArray[i * 3] = color.r;
           colArray[i * 3 + 1] = color.g;
           colArray[i * 3 + 2] = color.b;
@@ -298,7 +323,22 @@ export default function GhostCursorEnhanced({
       material.dispose();
       container.removeChild(renderer.domElement);
     };
-  }, [dpr, trailLength, inertia, grainIntensity, bloomStrength, bloomRadius, bloomThreshold, brightness, primaryColor, secondaryColor, edgeIntensity, fadeDelayMs, fadeDurationMs, hoverIntensity]);
+  }, [
+    dpr,
+    trailLength,
+    inertia,
+    grainIntensity,
+    bloomStrength,
+    bloomRadius,
+    bloomThreshold,
+    brightness,
+    primaryColor,
+    secondaryColor,
+    edgeIntensity,
+    fadeDelayMs,
+    fadeDurationMs,
+    hoverIntensity,
+  ]);
 
   return (
     <div

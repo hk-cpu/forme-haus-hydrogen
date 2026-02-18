@@ -4,8 +4,14 @@
 // An additive layer that creates scroll-triggered narrative reveals
 // without modifying existing ProductDetailPage logic
 
-import { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
+import {useRef, useState, useEffect} from 'react';
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  useInView,
+} from 'framer-motion';
 
 // ============================================================================
 // TYPES & INTERFACES
@@ -46,29 +52,37 @@ const defaultFeatures: ProductFeature[] = [
   {
     id: 'materials',
     title: 'Premium Materials',
-    description: 'Sourced from the finest mills in Italy and France, our fabrics undergo a rigorous selection process.',
-    image: 'https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=90',
+    description:
+      'Sourced from the finest mills in Italy and France, our fabrics undergo a rigorous selection process.',
+    image:
+      'https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=90',
     highlight: 'Italian Wool-Cashmere Blend',
   },
   {
     id: 'craftsmanship',
     title: 'Artisan Craftsmanship',
-    description: 'Each piece is handcrafted by master artisans with decades of experience in luxury fashion.',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=90',
+    description:
+      'Each piece is handcrafted by master artisans with decades of experience in luxury fashion.',
+    image:
+      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=90',
     highlight: '120+ Hours of Work',
   },
   {
     id: 'details',
     title: 'Signature Details',
-    description: 'From hand-stitched lapels to genuine horn buttons, every detail speaks of uncompromising quality.',
-    image: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=90',
+    description:
+      'From hand-stitched lapels to genuine horn buttons, every detail speaks of uncompromising quality.',
+    image:
+      'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=90',
     highlight: 'Hand-Finished Elements',
   },
   {
     id: 'sustainability',
     title: 'Sustainable Luxury',
-    description: 'Committed to responsible fashion with eco-conscious materials and ethical production practices.',
-    image: 'https://images.unsplash.com/photo-1467043237213-65f2da53396f?w=800&q=90',
+    description:
+      'Committed to responsible fashion with eco-conscious materials and ethical production practices.',
+    image:
+      'https://images.unsplash.com/photo-1467043237213-65f2da53396f?w=800&q=90',
     highlight: 'Carbon Neutral Certified',
   },
 ];
@@ -77,20 +91,28 @@ const defaultFeatures: ProductFeature[] = [
 // KINETIC TYPOGRAPHY COMPONENT
 // ============================================================================
 
-function KineticText({ children, className = '', delay = 0 }: { children: string; className?: string; delay?: number }) {
+function KineticText({
+  children,
+  className = '',
+  delay = 0,
+}: {
+  children: string;
+  className?: string;
+  delay?: number;
+}) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-  
+  const isInView = useInView(ref, {once: true, margin: '-100px'});
+
   const words = children.split(' ');
-  
+
   return (
     <div ref={ref} className={`kinetic-text ${className}`}>
       {words.map((word, i) => (
         <motion.span
           key={i}
           className="kinetic-word"
-          initial={{ y: 100, opacity: 0, rotateX: -90 }}
-          animate={isInView ? { y: 0, opacity: 1, rotateX: 0 } : {}}
+          initial={{y: 100, opacity: 0, rotateX: -90}}
+          animate={isInView ? {y: 0, opacity: 1, rotateX: 0} : {}}
           transition={{
             duration: 0.8,
             delay: delay + i * 0.08,
@@ -108,28 +130,38 @@ function KineticText({ children, className = '', delay = 0 }: { children: string
 // LIQUID GLASS CARD COMPONENT
 // ============================================================================
 
-function LiquidGlassCard({ children, className = '', intensity = 0.5 }: { children: React.ReactNode; className?: string; intensity?: number }) {
+function LiquidGlassCard({
+  children,
+  className = '',
+  intensity = 0.5,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  intensity?: number;
+}) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
-  
+  const [mousePosition, setMousePosition] = useState({x: 0.5, y: 0.5});
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width;
     const y = (e.clientY - rect.top) / rect.height;
-    setMousePosition({ x, y });
+    setMousePosition({x, y});
   };
-  
+
   return (
     <div
       ref={cardRef}
       className={`liquid-glass-card ${className}`}
       onMouseMove={handleMouseMove}
-      style={{
-        '--mouse-x': mousePosition.x,
-        '--mouse-y': mousePosition.y,
-        '--intensity': intensity,
-      } as React.CSSProperties}
+      style={
+        {
+          '--mouse-x': mousePosition.x,
+          '--mouse-y': mousePosition.y,
+          '--intensity': intensity,
+        } as React.CSSProperties
+      }
     >
       <div className="liquid-glass-shine" />
       <div className="liquid-glass-content">{children}</div>
@@ -141,20 +173,31 @@ function LiquidGlassCard({ children, className = '', intensity = 0.5 }: { childr
 // PARALLAX IMAGE COMPONENT
 // ============================================================================
 
-function ParallaxImage({ src, alt, speed = 0.5 }: { src: string; alt: string; speed?: number }) {
+function ParallaxImage({
+  src,
+  alt,
+  speed = 0.5,
+}: {
+  src: string;
+  alt: string;
+  speed?: number;
+}) {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
+  const {scrollYProgress} = useScroll({
     target: ref,
     offset: ['start end', 'end start'],
   });
-  
+
   const y = useTransform(scrollYProgress, [0, 1], [-100 * speed, 100 * speed]);
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.1, 1, 1.1]);
-  const smoothY = useSpring(y, { stiffness: 100, damping: 30 });
-  
+  const smoothY = useSpring(y, {stiffness: 100, damping: 30});
+
   return (
     <div ref={ref} className="parallax-image-container">
-      <motion.div className="parallax-image-wrapper" style={{ y: smoothY, scale }}>
+      <motion.div
+        className="parallax-image-wrapper"
+        style={{y: smoothY, scale}}
+      >
         <img src={src} alt={alt} className="parallax-image" />
       </motion.div>
     </div>
@@ -165,38 +208,44 @@ function ParallaxImage({ src, alt, speed = 0.5 }: { src: string; alt: string; sp
 // FEATURE REVEAL SECTION
 // ============================================================================
 
-function FeatureReveal({ feature, index }: { feature: ProductFeature; index: number }) {
+function FeatureReveal({
+  feature,
+  index,
+}: {
+  feature: ProductFeature;
+  index: number;
+}) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-20%' });
+  const isInView = useInView(ref, {once: true, margin: '-20%'});
   const isEven = index % 2 === 0;
-  
+
   return (
     <motion.div
       ref={ref}
       className={`feature-reveal ${isEven ? 'feature-left' : 'feature-right'}`}
-      initial={{ opacity: 0 }}
-      animate={isInView ? { opacity: 1 } : {}}
-      transition={{ duration: 0.6 }}
+      initial={{opacity: 0}}
+      animate={isInView ? {opacity: 1} : {}}
+      transition={{duration: 0.6}}
     >
       <div className="feature-visual">
         <ParallaxImage src={feature.image} alt={feature.title} speed={0.3} />
         <motion.div
           className="feature-highlight-badge"
-          initial={{ scale: 0, rotate: -10 }}
-          animate={isInView ? { scale: 1, rotate: 0 } : {}}
-          transition={{ delay: 0.4, duration: 0.6, type: 'spring' }}
+          initial={{scale: 0, rotate: -10}}
+          animate={isInView ? {scale: 1, rotate: 0} : {}}
+          transition={{delay: 0.4, duration: 0.6, type: 'spring'}}
         >
           <span className="highlight-text">{feature.highlight}</span>
         </motion.div>
       </div>
-      
+
       <div className="feature-content">
         <LiquidGlassCard intensity={0.3}>
           <motion.span
             className="feature-number"
-            initial={{ opacity: 0, x: -30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ delay: 0.2 }}
+            initial={{opacity: 0, x: -30}}
+            animate={isInView ? {opacity: 1, x: 0} : {}}
+            transition={{delay: 0.2}}
           >
             0{index + 1}
           </motion.span>
@@ -205,9 +254,9 @@ function FeatureReveal({ feature, index }: { feature: ProductFeature; index: num
           </KineticText>
           <motion.p
             className="feature-description"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.5 }}
+            initial={{opacity: 0, y: 20}}
+            animate={isInView ? {opacity: 1, y: 0} : {}}
+            transition={{delay: 0.5}}
           >
             {feature.description}
           </motion.p>
@@ -222,51 +271,46 @@ function FeatureReveal({ feature, index }: { feature: ProductFeature; index: num
 // ============================================================================
 
 function ScrollProgress() {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
-  
-  return (
-    <motion.div
-      className="scroll-progress"
-      style={{ scaleX }}
-    />
-  );
+  const {scrollYProgress} = useScroll();
+  const scaleX = useSpring(scrollYProgress, {stiffness: 100, damping: 30});
+
+  return <motion.div className="scroll-progress" style={{scaleX}} />;
 }
 
 // ============================================================================
 // HERO SECTION
 // ============================================================================
 
-function HeroReveal({ product }: { product: ScrollytellingProps['product'] }) {
+function HeroReveal({product}: {product: ScrollytellingProps['product']}) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
+  const {scrollYProgress} = useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
   });
-  
+
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
   const y = useTransform(scrollYProgress, [0, 0.5], [0, 100]);
-  
+
   return (
-    <motion.div ref={containerRef} className="scrolly-hero" style={{ opacity }}>
-      <motion.div className="scrolly-hero-content" style={{ scale, y }}>
+    <motion.div ref={containerRef} className="scrolly-hero" style={{opacity}}>
+      <motion.div className="scrolly-hero-content" style={{scale, y}}>
         <motion.div
           className="scrolly-hero-image"
-          initial={{ scale: 1.2, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          initial={{scale: 1.2, opacity: 0}}
+          animate={{scale: 1, opacity: 1}}
+          transition={{duration: 1.2, ease: [0.16, 1, 0.3, 1]}}
         >
           <img src={product.images[0]} alt={product.name} />
           <div className="scrolly-hero-overlay" />
         </motion.div>
-        
+
         <div className="scrolly-hero-text">
           <motion.span
             className="scrolly-hero-label"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
+            initial={{opacity: 0, y: 30}}
+            animate={{opacity: 1, y: 0}}
+            transition={{delay: 0.5}}
           >
             The Collection
           </motion.span>
@@ -275,22 +319,24 @@ function HeroReveal({ product }: { product: ScrollytellingProps['product'] }) {
           </KineticText>
           <motion.div
             className="scrolly-hero-meta"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            transition={{delay: 1}}
           >
-            <span className="meta-price">AED {product.price.toLocaleString()}</span>
+            <span className="meta-price">
+              AED {product.price.toLocaleString()}
+            </span>
             <span className="meta-divider" />
             <span className="meta-sku">{product.id}</span>
           </motion.div>
         </div>
       </motion.div>
-      
+
       <motion.div
         className="scroll-indicator"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
+        initial={{opacity: 0}}
+        animate={{opacity: 1}}
+        transition={{delay: 1.5}}
       >
         <div className="scroll-line" />
         <span>Scroll to Explore</span>
@@ -303,40 +349,42 @@ function HeroReveal({ product }: { product: ScrollytellingProps['product'] }) {
 // MAIN COMPONENT
 // ============================================================================
 
-export default function ImmersiveScrollytelling({ product }: ScrollytellingProps) {
+export default function ImmersiveScrollytelling({
+  product,
+}: ScrollytellingProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const features = product.features || defaultFeatures;
-  
+
   return (
     <div ref={containerRef} className="immersive-scrollytelling">
       <ScrollProgress />
-      
+
       {/* Hero Section */}
       <HeroReveal product={product} />
-      
+
       {/* Features Sections */}
       <section className="scrolly-features">
         {features.map((feature, index) => (
           <FeatureReveal key={feature.id} feature={feature} index={index} />
         ))}
       </section>
-      
+
       {/* Closing CTA */}
       <section className="scrolly-cta">
         <div className="cta-content">
           <KineticText className="cta-title">Define Your Legacy</KineticText>
           <motion.p
             className="cta-description"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
+            initial={{opacity: 0, y: 30}}
+            whileInView={{opacity: 1, y: 0}}
+            viewport={{once: true}}
+            transition={{delay: 0.3}}
           >
             Experience the pinnacle of luxury fashion
           </motion.p>
         </div>
       </section>
-      
+
       <style>{`
         .immersive-scrollytelling {
           position: relative;
@@ -695,4 +743,4 @@ export default function ImmersiveScrollytelling({ product }: ScrollytellingProps
   );
 }
 
-export { ImmersiveScrollytelling };
+export {ImmersiveScrollytelling};

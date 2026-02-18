@@ -4,12 +4,12 @@ import {
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
 
-export async function loader({ context }: LoaderFunctionArgs) {
+export async function loader({context}: LoaderFunctionArgs) {
   return redirect('/');
 }
 
-export async function action({ context }: ActionFunctionArgs) {
-  const { session } = context;
+export async function action({context}: ActionFunctionArgs) {
+  const {session} = context;
   session.unset('customerAccessToken');
 
   return redirect('/', {
@@ -19,7 +19,7 @@ export async function action({ context }: ActionFunctionArgs) {
   });
 }
 
-export const doLogout = async ({ session }: { session: any }) => {
+export const doLogout = async ({session}: {session: any}) => {
   session.unset('customerAccessToken');
   return redirect('/', {
     headers: {

@@ -1,5 +1,5 @@
-import { type LoaderFunctionArgs } from '@shopify/remix-oxygen';
-import { redirect } from '@remix-run/server-runtime';
+import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import {redirect} from '@remix-run/server-runtime';
 
 /**
  * Automatically creates a new cart based on the URL and redirects straight to checkout.
@@ -20,9 +20,9 @@ import { redirect } from '@remix-run/server-runtime';
  * ```
  * @preserve
  */
-export async function loader({ request, context, params }: LoaderFunctionArgs) {
-  const { cart } = context;
-  const { lines } = params;
+export async function loader({request, context, params}: LoaderFunctionArgs) {
+  const {cart} = context;
+  const {lines} = params;
   const linesMap = lines?.split(',').map((line) => {
     const lineDetails = line.split(':');
     const variantId = lineDetails[0];
@@ -59,7 +59,7 @@ export async function loader({ request, context, params }: LoaderFunctionArgs) {
 
   //! redirect to checkout
   if (cartResult.checkoutUrl) {
-    return redirect(cartResult.checkoutUrl, { headers });
+    return redirect(cartResult.checkoutUrl, {headers});
   } else {
     throw new Error('No checkout URL found');
   }

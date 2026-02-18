@@ -1,12 +1,9 @@
-import { useRef, Suspense } from 'react';
-import { Disclosure, Listbox } from '@headlessui/react';
-import { motion } from 'framer-motion';
-import {
-  type MetaArgs,
-  type LoaderFunctionArgs,
-} from '@shopify/remix-oxygen';
-import { defer } from '@remix-run/server-runtime';
-import { useLoaderData, Await } from '@remix-run/react';
+import {useRef, Suspense} from 'react';
+import {Disclosure, Listbox} from '@headlessui/react';
+import {motion} from 'framer-motion';
+import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import {defer} from '@remix-run/server-runtime';
+import {useLoaderData, Await} from '@remix-run/react';
 import {
   getSeoMeta,
   Money,
@@ -26,34 +23,34 @@ import type {
   ProductOptionValueSwatch,
 } from '@shopify/hydrogen/storefront-api-types';
 
-import type { ProductFragment } from 'storefrontapi.generated';
-import { Heading, Section, Text } from '~/components/Text';
-import { Link } from '~/components/Link';
-import { Button } from '~/components/Button';
-import { AddToCartButton } from '~/components/AddToCartButton';
-import { Skeleton } from '~/components/Skeleton';
-import { ProductSwimlane } from '~/components/ProductSwimlane';
-import { ProductGallery } from '~/components/ProductGallery';
-import { IconCaret, IconCheck, IconClose } from '~/components/Icon';
-import { getExcerpt } from '~/lib/utils';
-import { seoPayload } from '~/lib/seo.server';
-import type { Storefront } from '~/lib/type';
-import { routeHeaders, CACHE_SHORT } from '~/data/cache';
-import { MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT } from '~/data/fragments';
-import { useTranslation } from '~/hooks/useTranslation';
+import type {ProductFragment} from 'storefrontapi.generated';
+import {Heading, Section, Text} from '~/components/Text';
+import {Link} from '~/components/Link';
+import {Button} from '~/components/Button';
+import {AddToCartButton} from '~/components/AddToCartButton';
+import {Skeleton} from '~/components/Skeleton';
+import {ProductSwimlane} from '~/components/ProductSwimlane';
+import {ProductGallery} from '~/components/ProductGallery';
+import {IconCaret, IconCheck, IconClose} from '~/components/Icon';
+import {getExcerpt} from '~/lib/utils';
+import {seoPayload} from '~/lib/seo.server';
+import type {Storefront} from '~/lib/type';
+import {routeHeaders, CACHE_SHORT} from '~/data/cache';
+import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
+import {useTranslation} from '~/hooks/useTranslation';
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator
+  BreadcrumbSeparator,
 } from '~/components/Breadcrumb';
 
 export const headers = routeHeaders;
 
 export async function loader(args: LoaderFunctionArgs) {
-  const { productHandle } = args.params;
+  const {productHandle} = args.params;
   invariant(productHandle, 'Missing productHandle param, check route filename');
 
   // Start fetching non-critical data without blocking time to first byte
@@ -63,7 +60,7 @@ export async function loader(args: LoaderFunctionArgs) {
   const criticalData = await loadCriticalData(args);
 
   return defer(
-    { ...deferredData, ...criticalData },
+    {...deferredData, ...criticalData},
     {
       headers: {
         'Cache-Control': CACHE_SHORT,
@@ -81,12 +78,12 @@ async function loadCriticalData({
   request,
   context,
 }: LoaderFunctionArgs) {
-  const { productHandle } = params;
+  const {productHandle} = params;
   invariant(productHandle, 'Missing productHandle param, check route filename');
 
   const selectedOptions = getSelectedProductOptions(request);
 
-  const [{ shop, product }] = await Promise.all([
+  const [{shop, product}] = await Promise.all([
     context.storefront.query(PRODUCT_QUERY, {
       variables: {
         handle: productHandle,
@@ -99,7 +96,7 @@ async function loadCriticalData({
   ]);
 
   if (!product?.id) {
-    throw new Response('product', { status: 404 });
+    throw new Response('product', {status: 404});
   }
 
   const recommended = getRecommendedProducts(context.storefront, product.id);
@@ -107,7 +104,7 @@ async function loadCriticalData({
   const variants = getAdjacentAndFirstAvailableVariants(product);
 
   const seo = seoPayload.product({
-    product: { ...product, variants },
+    product: {...product, variants},
     selectedVariant,
     url: request.url,
   });
@@ -134,17 +131,17 @@ function loadDeferredData(args: LoaderFunctionArgs) {
   return {};
 }
 
-export const meta = ({ matches }: MetaArgs<typeof loader>) => {
+export const meta = ({matches}: MetaArgs<typeof loader>) => {
   // @ts-ignore
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
 export default function Product() {
-  const { product, shop, recommended, variants, storeDomain } =
+  const {product, shop, recommended, variants, storeDomain} =
     useLoaderData<typeof loader>();
-  const { media, title, vendor, descriptionHtml } = product;
-  const { t } = useTranslation();
-  const { shippingPolicy, refundPolicy } = shop;
+  const {media, title, vendor, descriptionHtml} = product;
+  const {t} = useTranslation();
+  const {shippingPolicy, refundPolicy} = shop;
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
@@ -154,7 +151,10 @@ export default function Product() {
 
   // Sets the search param to the selected variant without navigation
   // only when no search params are set in the url
-  useSelectedOptionInUrlParam(selectedVariant.selectedOptions);
+  // Prevent "Default Title" from appearing in URL for single-variant products
+  if (selectedVariant.title !== 'Default Title') {
+    useSelectedOptionInUrlParam(selectedVariant.selectedOptions);
+  }
 
   // Get the product options array
   const productOptions = getProductOptions({
@@ -192,11 +192,20 @@ export default function Product() {
           <div className="sticky md:top-24 md:h-[calc(100vh-6rem)] hiddenScroll md:overflow-y-auto">
             <section className="flex flex-col w-full max-w-xl gap-10 p-6 md:pl-10 lg:pl-16 md:mx-auto md:max-w-none">
               <div className="grid gap-3">
-                <Heading as="h1" className="whitespace-normal font-serif text-4xl md:text-5xl lg:text-6xl text-[#4A3C31] font-light leading-tight">
+                <Heading
+                  as="h1"
+                  className="whitespace-normal font-serif text-4xl md:text-5xl lg:text-7xl text-[#2a2118] font-thin leading-[0.9] tracking-tight mb-2"
+                >
                   {title}
                 </Heading>
                 {vendor && (
-                  <Text className={'opacity-60 font-sans tracking-[0.2em] uppercase text-xs text-[#8B8076]'}>{vendor}</Text>
+                  <Text
+                    className={
+                      'opacity-60 font-sans tracking-[0.2em] uppercase text-xs text-[#8B8076]'
+                    }
+                  >
+                    {vendor}
+                  </Text>
                 )}
               </div>
               <ProductForm
@@ -270,7 +279,7 @@ export function ProductForm({
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
 
-  const { t } = useTranslation();
+  const {t} = useTranslation();
 
   const isOutOfStock = !selectedVariant?.availableForSale;
 
@@ -287,22 +296,24 @@ export function ProductForm({
             key={option.name}
             className="product-options flex flex-col flex-wrap mb-4 gap-y-2 last:mb-0"
           >
-            <Heading as="legend" size="lead" className="min-w-[4rem] text-[#5C5046] text-xs uppercase tracking-[0.15em] mb-3 font-medium">
+            <Heading
+              as="legend"
+              size="lead"
+              className="min-w-[4rem] text-[#5C5046] text-xs uppercase tracking-[0.15em] mb-3 font-medium"
+            >
               {option.name}
             </Heading>
             <div className="flex flex-wrap items-baseline gap-3">
               {option.optionValues.length > 7 ? (
                 <div className="relative w-full">
                   <Listbox>
-                    {({ open }) => (
+                    {({open}) => (
                       <>
                         <Listbox.Button
                           ref={closeRef}
                           className={clsx(
                             'flex items-center justify-between w-full py-3 px-4 border border-[#8B8076]/30 text-[#5C5046] bg-transparent hover:border-[#8B8076] transition-colors',
-                            open
-                              ? 'rounded-t-sm border-b-0'
-                              : 'rounded-sm',
+                            open ? 'rounded-t-sm border-b-0' : 'rounded-sm',
                           )}
                         >
                           <span>
@@ -311,12 +322,15 @@ export function ProductForm({
                                 .value
                             }
                           </span>
-                          <IconCaret direction={open ? 'up' : 'down'} className="text-[#5C5046]" />
+                          <IconCaret
+                            direction={open ? 'up' : 'down'}
+                            className="text-[#5C5046]"
+                          />
                         </Listbox.Button>
                         <Listbox.Options
                           className={clsx(
-                            'border-[#8B8076]/20 bg-[#F9F5F0] text-[#5C5046] absolute bottom-12 z-30 grid h-48 w-full overflow-y-scroll rounded-sm border px-2 py-2 transition-[max-height] duration-150 sm:bottom-auto shadow-lg',
-                            open ? 'max-h-48' : 'max-h-0',
+                            'border-[#8B8076]/20 bg-[#F9F5F0] text-[#5C5046] absolute bottom-12 z-30 grid h-48 w-full overflow-y-scroll rounded-sm border px-2 py-2 transition-[max-height] duration-150 sm:bottom-auto shadow-xl',
+                            open ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0',
                           )}
                         >
                           {option.optionValues
@@ -335,7 +349,7 @@ export function ProductForm({
                                 >
                                   <Link
                                     {...(!isDifferentProduct
-                                      ? { rel: 'nofollow' }
+                                      ? {rel: 'nofollow'}
                                       : {})}
                                     to={`/products/${handle}?${variantUriQuery}`}
                                     preventScrollReset
@@ -376,7 +390,7 @@ export function ProductForm({
                   }) => (
                     <div key={option.name + name} className="relative">
                       <Link
-                        {...(!isDifferentProduct ? { rel: 'nofollow' } : {})}
+                        {...(!isDifferentProduct ? {rel: 'nofollow'} : {})}
                         to={`/products/${handle}?${variantUriQuery}`}
                         preventScrollReset
                         prefetch="intent"
@@ -387,13 +401,13 @@ export function ProductForm({
                         )}
                       >
                         <motion.div
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
+                          whileHover={{scale: 1.05}}
+                          whileTap={{scale: 0.95}}
                           className={clsx(
-                            'leading-none py-2 px-4 border cursor-pointer transition-colors duration-200 text-sm tracking-wide rounded-sm min-w-[3rem] text-center',
+                            'leading-none py-3 px-5 border cursor-pointer transition-all duration-300 text-sm tracking-widest uppercase rounded-none min-w-[3rem] text-center font-light',
                             selected
-                              ? 'border-[#4A3C31] text-[#F9F6F3] bg-[#4A3C31]'
-                              : 'border-[#8B8076]/30 text-[#8B8076] hover:border-[#4A3C31] hover:text-[#4A3C31]'
+                              ? 'border-[#2a2118] text-[#F9F6F3] bg-[#2a2118]'
+                              : 'border-[#8B8076]/30 text-[#8B8076] hover:border-[#2a2118] hover:text-[#2a2118]',
                           )}
                         >
                           <ProductOptionSwatch swatch={swatch} name={name} />
@@ -413,7 +427,7 @@ export function ProductForm({
                 <Text>{t('product.soldOut')}</Text>
               </Button>
             ) : (
-              <motion.div whileTap={{ scale: 0.98 }}>
+              <motion.div whileTap={{scale: 0.98}}>
                 <AddToCartButton
                   lines={[
                     {
@@ -423,7 +437,7 @@ export function ProductForm({
                   ]}
                   variant="primary"
                   data-test="add-to-cart"
-                  className="w-full bg-[#a87441] hover:bg-[#8B5E3C] text-white py-4 rounded-md transition-all duration-300 shadow-md hover:shadow-lg"
+                  className="w-full bg-[#2a2118] hover:bg-[#4A3C31] text-[#F0EAE6] py-5 rounded-none transition-all duration-300 shadow-none hover:shadow-xl tracking-widest uppercase text-sm"
                 >
                   <Text
                     as="span"
@@ -436,7 +450,7 @@ export function ProductForm({
                       as="span"
                       data-test="price"
                     />
-                    <span className="text-[10px] opacity-70 normal-case tracking-normal ml-1 border-l border-white/20 pl-2">
+                    <span className="text-[10px] opacity-70 normal-case tracking-normal ml-3 border-l border-white/20 pl-3 hidden sm:inline-block">
                       {t('cart.vatIncluded')}
                     </span>
                     {isOnSale && (
@@ -499,24 +513,35 @@ function ProductDetail({
   content: string;
   learnMore?: string;
 }) {
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   return (
-    <Disclosure key={title} as="div" className="grid w-full gap-2 border-b border-[#8B8076]/20 pb-6 mb-2">
-      {({ open }) => (
+    <Disclosure
+      key={title}
+      as="div"
+      className="grid w-full gap-2 border-b border-[#8B8076]/20 pb-6 mb-2"
+    >
+      {({open}) => (
         <>
           <Disclosure.Button className="text-left group">
             <div className="flex justify-between items-center">
-              <Text size="lead" as="h4" className="text-[#4A3C31] font-medium text-xs uppercase tracking-[0.2em] group-hover:text-[#a87441] transition-colors">
+              <Text
+                size="lead"
+                as="h4"
+                className="text-[#4A3C31] font-medium text-xs uppercase tracking-[0.2em] group-hover:text-[#a87441] transition-colors"
+              >
                 {title}
               </Text>
-              <IconCaret direction={open ? 'up' : 'down'} className="text-[#8B8076] w-5 h-5" />
+              <IconCaret
+                direction={open ? 'up' : 'down'}
+                className="text-[#8B8076] w-5 h-5"
+              />
             </div>
           </Disclosure.Button>
 
           <Disclosure.Panel className={'pt-4 grid gap-2'}>
             <div
               className="prose text-[#5C5046]/80 text-sm font-sans leading-loose tracking-wide"
-              dangerouslySetInnerHTML={{ __html: content }}
+              dangerouslySetInnerHTML={{__html: content}}
             />
             {learnMore && (
               <div className="">
@@ -670,7 +695,7 @@ async function getRecommendedProducts(
   productId: string,
 ) {
   const products = await storefront.query(RECOMMENDED_PRODUCTS_QUERY, {
-    variables: { productId, count: 12 },
+    variables: {productId, count: 12},
   });
 
   invariant(products, 'No data returned from Shopify API');
@@ -688,5 +713,5 @@ async function getRecommendedProducts(
 
   mergedProducts.splice(originalProduct, 1);
 
-  return { nodes: mergedProducts };
+  return {nodes: mergedProducts};
 }

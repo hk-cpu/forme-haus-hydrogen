@@ -21,7 +21,7 @@ export function Input({
   const styles = clsx(variants[variant], className);
 
   return (
-    <div className={clsx("relative group", className)}>
+    <div className={clsx('relative group', className)}>
       <input type={type} {...props} className={styles} />
       {variant === 'search' && (
         <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#a87441] transition-all duration-500 group-focus-within:w-full" />

@@ -4,14 +4,22 @@ import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
-import { Form, useActionData, useNavigation, Link, useSearchParams } from '@remix-run/react';
-import { useState, useEffect, Suspense, lazy } from 'react';
+import {
+  Form,
+  useActionData,
+  useNavigation,
+  Link,
+  useSearchParams,
+} from '@remix-run/react';
+import {useState, useEffect, Suspense, lazy} from 'react';
 
 // Lazy load GhostCursorEnhanced to prevent SSR issues with three.js
-const GhostCursorEnhanced = lazy(() => import('~/components/GhostCursorEnhanced.client')); 
+const GhostCursorEnhanced = lazy(
+  () => import('~/components/GhostCursorEnhanced.client'),
+);
 
-export async function loader({ context, request }: LoaderFunctionArgs) {
-  const { session } = context;
+export async function loader({context, request}: LoaderFunctionArgs) {
+  const {session} = context;
 
   if (await session.get('customerAccessToken')) {
     return redirect('/account');
@@ -20,63 +28,78 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
   return json({});
 }
 
-export async function action({ context, request }: ActionFunctionArgs) {
-  const { storefront, session } = context;
+export async function action({context, request}: ActionFunctionArgs) {
+  const {storefront, session} = context;
   const formData = await request.formData();
   const formId = String(formData.get('formId'));
   const email = String(formData.get('email'));
   const password = String(formData.get('password'));
 
   if (!email || !password) {
-    return json({ error: 'Please provide both email and password.', formId }, { status: 400 });
+    return json(
+      {error: 'Please provide both email and password.', formId},
+      {status: 400},
+    );
   }
 
   try {
     if (formId === 'register') {
-      const { data, errors } = await storefront.mutate(CUSTOMER_CREATE_MUTATION, {
+      const {data, errors} = await storefront.mutate(CUSTOMER_CREATE_MUTATION, {
         variables: {
-          input: { email, password },
+          input: {email, password},
         },
       });
 
       if (errors?.length) {
-        return json({ error: errors[0].message, formId: 'register' }, { status: 400 });
+        return json(
+          {error: errors[0].message, formId: 'register'},
+          {status: 400},
+        );
       }
 
       if (data?.customerCreate?.customerUserErrors?.length) {
         return json(
-          { error: data.customerCreate.customerUserErrors[0].message, formId: 'register' },
-          { status: 400 },
+          {
+            error: data.customerCreate.customerUserErrors[0].message,
+            formId: 'register',
+          },
+          {status: 400},
         );
       }
 
-      return json({ success: 'Account created. Please check your email to verify.', formId: 'register' });
+      return json({
+        success: 'Account created. Please check your email to verify.',
+        formId: 'register',
+      });
     } else {
       // Login
-      const { data, errors } = await storefront.mutate(
-        LOGIN_MUTATION,
-        {
-          variables: {
-            input: { email, password },
-          },
+      const {data, errors} = await storefront.mutate(LOGIN_MUTATION, {
+        variables: {
+          input: {email, password},
         },
-      );
+      });
 
       if (errors?.length) {
-        return json({ error: errors[0].message, formId: 'login' }, { status: 400 });
+        return json({error: errors[0].message, formId: 'login'}, {status: 400});
       }
 
       if (data?.customerAccessTokenCreate?.customerUserErrors?.length) {
         return json(
-          { error: data.customerAccessTokenCreate.customerUserErrors[0].message, formId: 'login' },
-          { status: 400 },
+          {
+            error: data.customerAccessTokenCreate.customerUserErrors[0].message,
+            formId: 'login',
+          },
+          {status: 400},
         );
       }
 
-      const { customerAccessToken } = data?.customerAccessTokenCreate || {};
+      const {customerAccessToken} = data?.customerAccessTokenCreate || {};
 
       if (!customerAccessToken?.accessToken) {
-        return json({ error: 'Invalid credentials.', formId: 'login' }, { status: 401 });
+        return json(
+          {error: 'Invalid credentials.', formId: 'login'},
+          {status: 401},
+        );
       }
 
       session.set('customerAccessToken', customerAccessToken);
@@ -88,7 +111,10 @@ export async function action({ context, request }: ActionFunctionArgs) {
       });
     }
   } catch (error: any) {
-    return json({ error: error.message || 'Something went wrong.', formId }, { status: 500 });
+    return json(
+      {error: error.message || 'Something went wrong.', formId},
+      {status: 500},
+    );
   }
 }
 
@@ -150,8 +176,15 @@ export default function Login() {
         </div>
 
         {/* Unified Form with White Background and Dark Inputs */}
-        <Form method="post" className="w-full space-y-6 bg-white/80 backdrop-blur-sm p-8 rounded-lg border border-[#a87441]/20 shadow-2xl shadow-[#a87441]/10">
-          <input type="hidden" name="formId" value={isRegistering ? 'register' : 'login'} />
+        <Form
+          method="post"
+          className="w-full space-y-6 bg-white/80 backdrop-blur-sm p-8 rounded-lg border border-[#a87441]/20 shadow-2xl shadow-[#a87441]/10"
+        >
+          <input
+            type="hidden"
+            name="formId"
+            value={isRegistering ? 'register' : 'login'}
+          />
 
           {data?.error && (
             <div className="p-3 text-sm text-red-100 bg-red-900/80 border border-red-100/20 rounded text-center font-light tracking-wide">
@@ -167,7 +200,9 @@ export default function Login() {
 
           <div className="space-y-5">
             <div>
-              <label htmlFor="email" className="sr-only">Email</label>
+              <label htmlFor="email" className="sr-only">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
@@ -178,7 +213,9 @@ export default function Login() {
               />
             </div>
             <div>
-              <label htmlFor="password" className="sr-only">Password</label>
+              <label htmlFor="password" className="sr-only">
+                Password
+              </label>
               <input
                 type="password"
                 name="password"
@@ -196,12 +233,19 @@ export default function Login() {
               disabled={isSubmitting}
               className="w-full px-12 py-4 border border-[#a87441] bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.25em] text-[10px] sm:text-xs transition-all duration-500 hover:scale-[1.02] shadow-lg shadow-[#a87441]/20 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
             >
-              {isSubmitting ? 'PROCESSING...' : (isRegistering ? 'CREATE ACCOUNT' : 'SIGN IN')}
+              {isSubmitting
+                ? 'PROCESSING...'
+                : isRegistering
+                ? 'CREATE ACCOUNT'
+                : 'SIGN IN'}
             </button>
 
             <div className="flex flex-col items-center gap-3 text-[10px] uppercase tracking-widest text-[#5A5046]">
               {!isRegistering && (
-                <Link to="/account/recover" className="hover:text-[#a87441] transition-colors border-b border-transparent hover:border-[#a87441]/50 pb-0.5">
+                <Link
+                  to="/account/recover"
+                  className="hover:text-[#a87441] transition-colors border-b border-transparent hover:border-[#a87441]/50 pb-0.5"
+                >
                   Forgot Password?
                 </Link>
               )}
@@ -214,7 +258,9 @@ export default function Login() {
                 }}
                 className="hover:text-[#a87441] transition-colors font-semibold border-b border-transparent hover:border-[#a87441] pb-0.5"
               >
-                {isRegistering ? "Already have an account? Sign In" : "New to Formé Haus? Create Account"}
+                {isRegistering
+                  ? 'Already have an account? Sign In'
+                  : 'New to Formé Haus? Create Account'}
               </button>
             </div>
           </div>

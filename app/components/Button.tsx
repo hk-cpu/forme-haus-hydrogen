@@ -1,9 +1,9 @@
-import { forwardRef, useState } from 'react';
-import { Link } from '@remix-run/react';
-import { motion } from 'framer-motion';
+import {forwardRef, useState} from 'react';
+import {Link} from '@remix-run/react';
+import {motion} from 'framer-motion';
 import clsx from 'clsx';
 
-import { missingClass } from '~/lib/utils';
+import {missingClass} from '~/lib/utils';
 
 export const Button = forwardRef(
   (
@@ -29,7 +29,9 @@ export const Button = forwardRef(
     ref,
   ) => {
     const Component = props?.to ? Link : as;
-    const [ripples, setRipples] = useState<Array<{ x: number; y: number; id: number }>>([]);
+    const [ripples, setRipples] = useState<
+      Array<{x: number; y: number; id: number}>
+    >([]);
 
     // Ripple effect handler
     const handleClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -40,7 +42,7 @@ export const Button = forwardRef(
       const y = e.clientY - rect.top;
       const id = Date.now();
 
-      setRipples((prev) => [...prev, { x, y, id }]);
+      setRipples((prev) => [...prev, {x, y, id}]);
       setTimeout(() => {
         setRipples((prev) => prev.filter((ripple) => ripple.id !== id));
       }, 800);
@@ -60,7 +62,8 @@ export const Button = forwardRef(
 
       outline: `${baseButtonClasses} bg-transparent border-[1.5px] border-[#a87441] text-[#a87441] hover:bg-[#a87441] hover:text-white uppercase tracking-[0.2em] text-[11px] py-4 px-8 disabled:opacity-50 hover:shadow-[0_0_20px_rgba(168,116,65,0.4)]`,
 
-      inline: 'relative inline-flex items-center text-[#F0EAE6]/70 hover:text-[#a87441] transition-colors duration-300 group',
+      inline:
+        'relative inline-flex items-center text-[#F0EAE6]/70 hover:text-[#a87441] transition-colors duration-300 group',
     };
 
     const widths = {
@@ -78,8 +81,8 @@ export const Button = forwardRef(
     // Loading spinner
     const LoadingSpinner = () => (
       <motion.svg
-        animate={{ rotate: 360 }}
-        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+        animate={{rotate: 360}}
+        transition={{duration: 1, repeat: Infinity, ease: 'linear'}}
         className="w-4 h-4 mr-2"
         viewBox="0 0 24 24"
         fill="none"
@@ -109,11 +112,7 @@ export const Button = forwardRef(
     // Inline variant special rendering
     if (variant === 'inline') {
       return (
-        <Component
-          className={styles}
-          {...props}
-          ref={ref}
-        >
+        <Component className={styles} {...props} ref={ref}>
           <span className="relative">
             {children}
             <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-[#a87441] group-hover:w-full transition-all duration-300" />
@@ -134,9 +133,9 @@ export const Button = forwardRef(
         {ripples.map((ripple) => (
           <motion.span
             key={ripple.id}
-            initial={{ scale: 0, opacity: 0.5 }}
-            animate={{ scale: 4, opacity: 0 }}
-            transition={{ duration: 0.6 }}
+            initial={{scale: 0, opacity: 0.5}}
+            animate={{scale: 4, opacity: 0}}
+            transition={{duration: 0.6}}
             className="absolute rounded-full bg-white/30 pointer-events-none"
             style={{
               left: ripple.x - 10,

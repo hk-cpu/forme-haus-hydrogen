@@ -4,43 +4,43 @@
  */
 
 export class ApiClient {
-    constructor(
-        private baseUrl: string,
-        private defaultHeaders: HeadersInit = {},
-    ) {
-        if (this.baseUrl.endsWith('/')) {
-            this.baseUrl = this.baseUrl.slice(0, -1);
-        }
+  constructor(
+    private baseUrl: string,
+    private defaultHeaders: HeadersInit = {},
+  ) {
+    if (this.baseUrl.endsWith('/')) {
+      this.baseUrl = this.baseUrl.slice(0, -1);
+    }
+  }
+
+  async fetch(path: string, init?: RequestInit): Promise<Response> {
+    const url = `${this.baseUrl}${path.startsWith('/') ? path : '/' + path}`;
+
+    const headers = new Headers(this.defaultHeaders);
+    if (init?.headers) {
+      new Headers(init.headers).forEach((value, key) => {
+        headers.set(key, value);
+      });
     }
 
-    async fetch(path: string, init?: RequestInit): Promise<Response> {
-        const url = `${this.baseUrl}${path.startsWith('/') ? path : '/' + path}`;
+    const response = await fetch(url, {
+      ...init,
+      headers,
+    });
 
-        const headers = new Headers(this.defaultHeaders);
-        if (init?.headers) {
-            new Headers(init.headers).forEach((value, key) => {
-                headers.set(key, value);
-            });
-        }
-
-        const response = await fetch(url, {
-            ...init,
-            headers,
-        });
-
-        return response;
-    }
+    return response;
+  }
 }
 
 export function createApiClient(baseUrl: string, accessToken?: string) {
-    const headers: HeadersInit = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-    };
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  };
 
-    if (accessToken) {
-        headers['Authorization'] = accessToken; // Assuming the token handles its own prefix or is a direct key
-    }
+  if (accessToken) {
+    headers['Authorization'] = accessToken; // Assuming the token handles its own prefix or is a direct key
+  }
 
-    return new ApiClient(baseUrl, headers);
+  return new ApiClient(baseUrl, headers);
 }

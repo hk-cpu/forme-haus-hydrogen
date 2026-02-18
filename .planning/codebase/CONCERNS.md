@@ -9,23 +9,27 @@
 **Files:** Build system  
 **Impact:** Cannot deploy to production  
 **Error:**
+
 ```
 "useFetcher" is not exported by "node_modules/react-router/dist/index.js"
 ```
 
 **Root Cause:**
 Version mismatch between:
+
 - `@shopify/hydrogen` 2024.10.2 (expects React Router v6)
 - `@remix-run/react` 2.17.4 (bundles react-router v6.30.3)
 - `@shopify/remix-oxygen` 3.0.2 (expects react-router v7)
 
 **Fix Applied:**
 Aligned all packages to use react-router v6:
+
 ```bash
 npm install @shopify/hydrogen@2024.10.2 @shopify/remix-oxygen@2.0.12 react-router@6.30.3 --legacy-peer-deps
 ```
 
 **Current Working Versions:**
+
 - `@shopify/hydrogen`: 2024.10.2
 - `@shopify/remix-oxygen`: 2.0.12
 - `@remix-run/react`: 2.17.4
@@ -46,7 +50,8 @@ npm install @shopify/hydrogen@2024.10.2 @shopify/remix-oxygen@2.0.12 react-route
 
 ### 2. Sourcemap Warnings
 
-**Files:** 
+**Files:**
+
 - `app/components/SmoothScroll.tsx`
 - `app/components/Silk.client.tsx`
 - `app/components/Atmosphere.client.tsx`
@@ -87,11 +92,13 @@ npm install @shopify/hydrogen@2024.10.2 @shopify/remix-oxygen@2.0.12 react-route
 ### Large Dependencies
 
 **Three.js** (0.182.0):
+
 - Used for 3D product viewer
 - Bundle size impact: ~500KB+
 - Recommendation: Lazy load with `React.lazy()` if not critical
 
 **Framer Motion:**
+
 - Used throughout for animations
 - Consider `LazyMotion` for reduced initial bundle
 
@@ -160,6 +167,7 @@ npm install @shopify/hydrogen@2024.10.2 @shopify/remix-oxygen@2.0.12 react-route
 ## Test Coverage Gaps
 
 **Untested areas:**
+
 - Menu parsing logic (`app/lib/utils.ts`)
 - Cart operations
 - Authentication flows
@@ -173,23 +181,27 @@ npm install @shopify/hydrogen@2024.10.2 @shopify/remix-oxygen@2.0.12 react-route
 ## Recommendations Priority
 
 ### P0 (Fix Immediately)
+
 1. Resolve build failure (React Router export issue)
 
 ### P1 (High Priority)
+
 2. Upgrade Hydrogen to stable version
 3. Add error monitoring (Sentry)
 4. Add unit tests for critical utilities
 
 ### P2 (Medium Priority)
+
 5. Lazy load Three.js
 6. Remove/fix sourcemap warnings
 7. Audit and optimize bundle size
 
 ### P3 (Low Priority)
+
 8. Clean up commented code
 9. Replace @ts-ignore with proper types
 10. Move hardcoded business values to config
 
 ---
 
-*Concerns audit: 2026-02-11*
+_Concerns audit: 2026-02-11_

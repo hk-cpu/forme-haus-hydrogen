@@ -1,10 +1,10 @@
-import { Form } from '@remix-run/react';
-import type { CustomerAddress } from '@shopify/hydrogen/customer-account-api-types';
+import {Form} from '@remix-run/react';
+import type {CustomerAddress} from '@shopify/hydrogen/customer-account-api-types';
 
-import type { CustomerDetailsFragment } from 'customer-accountapi.generated';
-import { Button } from '~/components/Button';
-import { Text } from '~/components/Text';
-import { Link } from '~/components/Link';
+import type {CustomerDetailsFragment} from 'customer-accountapi.generated';
+import {Button} from '~/components/Button';
+import {Text} from '~/components/Text';
+import {Link} from '~/components/Link';
 
 export function AccountAddressBook({
   customer,
@@ -16,10 +16,17 @@ export function AccountAddressBook({
   return (
     <>
       <div className="grid w-full gap-4 p-4 py-6 md:gap-8 md:p-8 lg:p-12 border-t border-[#F0EAE6]/10">
-        <h3 className="font-serif text-[#F0EAE6] text-2xl mb-6">Address Book</h3>
+        <h3 className="font-serif text-[#F0EAE6] text-2xl mb-6">
+          Address Book
+        </h3>
         <div>
           {!addresses?.length && (
-            <Text className="mb-1 text-[#F0EAE6]/60" width="narrow" as="p" size="copy">
+            <Text
+              className="mb-1 text-[#F0EAE6]/60"
+              width="narrow"
+              as="p"
+              size="copy"
+            >
               You haven&apos;t saved any addresses yet.
             </Text>
           )}

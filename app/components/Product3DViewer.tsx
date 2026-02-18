@@ -5,8 +5,8 @@
 // Uses model-viewer for high-performance WebGL rendering
 // Falls back to image gallery if 3D model is unavailable
 
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, {useState, useRef, useEffect, useCallback} from 'react';
+import {motion, AnimatePresence} from 'framer-motion';
 
 // ============================================================================
 // TYPES & INTERFACES
@@ -68,11 +68,11 @@ const defaultHotspots: HotspotData[] = [
 // VIEW TOGGLE COMPONENT
 // ============================================================================
 
-function ViewToggle({ 
-  currentView, 
-  onToggle 
-}: { 
-  currentView: '3d' | 'image'; 
+function ViewToggle({
+  currentView,
+  onToggle,
+}: {
+  currentView: '3d' | 'image';
   onToggle: (view: '3d' | 'image') => void;
 }) {
   return (
@@ -80,10 +80,17 @@ function ViewToggle({
       <motion.button
         className={`toggle-btn ${currentView === 'image' ? 'active' : ''}`}
         onClick={() => onToggle('image')}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
+        whileHover={{scale: 1.02}}
+        whileTap={{scale: 0.98}}
       >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
           <rect x="3" y="3" width="18" height="18" rx="2" />
           <circle cx="8.5" cy="8.5" r="1.5" />
           <path d="M21 15l-5-5L5 21" />
@@ -93,10 +100,17 @@ function ViewToggle({
       <motion.button
         className={`toggle-btn ${currentView === '3d' ? 'active' : ''}`}
         onClick={() => onToggle('3d')}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
+        whileHover={{scale: 1.02}}
+        whileTap={{scale: 0.98}}
       >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
           <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
           <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
           <line x1="12" y1="22.08" x2="12" y2="12" />
@@ -129,57 +143,85 @@ function ViewerControls({
       <motion.button
         className={`control-btn ${autoRotate ? 'active' : ''}`}
         onClick={onAutoRotateToggle}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{scale: 1.1}}
+        whileTap={{scale: 0.95}}
         title="Auto Rotate"
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
           <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
           <path d="M3 3v5h5" />
         </svg>
       </motion.button>
-      
+
       <div className="control-divider" />
-      
+
       <motion.button
         className="control-btn"
         onClick={onZoomOut}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{scale: 1.1}}
+        whileTap={{scale: 0.95}}
         title="Zoom Out"
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
           <circle cx="11" cy="11" r="8" />
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
           <line x1="8" y1="11" x2="14" y2="11" />
         </svg>
       </motion.button>
-      
+
       <motion.button
         className="control-btn"
         onClick={onZoomIn}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{scale: 1.1}}
+        whileTap={{scale: 0.95}}
         title="Zoom In"
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
           <circle cx="11" cy="11" r="8" />
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
           <line x1="11" y1="8" x2="11" y2="14" />
           <line x1="8" y1="11" x2="14" y2="11" />
         </svg>
       </motion.button>
-      
+
       <div className="control-divider" />
-      
+
       <motion.button
         className="control-btn"
         onClick={onFullscreen}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{scale: 1.1}}
+        whileTap={{scale: 0.95}}
         title="Fullscreen"
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
           <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
         </svg>
       </motion.button>
@@ -191,16 +233,22 @@ function ViewerControls({
 // HOTSPOT ANNOTATION COMPONENT
 // ============================================================================
 
-function HotspotAnnotation({ hotspot, isVisible }: { hotspot: HotspotData; isVisible: boolean }) {
+function HotspotAnnotation({
+  hotspot,
+  isVisible,
+}: {
+  hotspot: HotspotData;
+  isVisible: boolean;
+}) {
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.div
           className="hotspot-annotation"
-          initial={{ opacity: 0, scale: 0.8, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.8, y: 10 }}
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          initial={{opacity: 0, scale: 0.8, y: 10}}
+          animate={{opacity: 1, scale: 1, y: 0}}
+          exit={{opacity: 0, scale: 0.8, y: 10}}
+          transition={{duration: 0.3, ease: [0.16, 1, 0.3, 1]}}
         >
           <div className="annotation-dot" />
           <div className="annotation-content">
@@ -227,9 +275,9 @@ function ViewerLoader() {
       <div className="loader-progress">
         <motion.div
           className="loader-bar"
-          initial={{ width: 0 }}
-          animate={{ width: '100%' }}
-          transition={{ duration: 2, ease: 'easeInOut' }}
+          initial={{width: 0}}
+          animate={{width: '100%'}}
+          transition={{duration: 2, ease: 'easeInOut'}}
         />
       </div>
     </div>
@@ -240,64 +288,87 @@ function ViewerLoader() {
 // FALLBACK IMAGE GALLERY
 // ============================================================================
 
-function ImageGallery({ images, productName }: { images: string[]; productName: string }) {
+function ImageGallery({
+  images,
+  productName,
+}: {
+  images: string[];
+  productName: string;
+}) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  
+
   const nextImage = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
   }, [images.length]);
-  
+
   const prevImage = useCallback(() => {
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
   }, [images.length]);
-  
+
   return (
     <div className="image-gallery">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentIndex}
           className="gallery-main-image"
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 0.4 }}
+          initial={{opacity: 0, scale: 1.05}}
+          animate={{opacity: 1, scale: 1}}
+          exit={{opacity: 0, scale: 0.95}}
+          transition={{duration: 0.4}}
         >
-          <img src={images[currentIndex]} alt={`${productName} - View ${currentIndex + 1}`} />
+          <img
+            src={images[currentIndex]}
+            alt={`${productName} - View ${currentIndex + 1}`}
+          />
         </motion.div>
       </AnimatePresence>
-      
+
       <div className="gallery-thumbnails">
         {images.map((img, idx) => (
           <motion.button
             key={idx}
             className={`gallery-thumb ${idx === currentIndex ? 'active' : ''}`}
             onClick={() => setCurrentIndex(idx)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{scale: 1.05}}
+            whileTap={{scale: 0.95}}
           >
             <img src={img} alt={`Thumbnail ${idx + 1}`} />
           </motion.button>
         ))}
       </div>
-      
+
       <div className="gallery-nav">
         <motion.button
           className="gallery-nav-btn"
           onClick={prevImage}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{scale: 1.1}}
+          whileTap={{scale: 0.9}}
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
             <polyline points="15 18 9 12 15 6" />
           </svg>
         </motion.button>
         <motion.button
           className="gallery-nav-btn"
           onClick={nextImage}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{scale: 1.1}}
+          whileTap={{scale: 0.9}}
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
             <polyline points="9 18 15 12 9 6" />
           </svg>
         </motion.button>
@@ -310,7 +381,10 @@ function ImageGallery({ images, productName }: { images: string[]; productName: 
 // MAIN 3D VIEWER COMPONENT
 // ============================================================================
 
-export default function Product3DViewer({ product, className = '' }: Product3DViewerProps) {
+export default function Product3DViewer({
+  product,
+  className = '',
+}: Product3DViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const modelViewerRef = useRef<HTMLElement | null>(null);
   const [state, setState] = useState<ViewerState>({
@@ -323,10 +397,10 @@ export default function Product3DViewer({ product, className = '' }: Product3DVi
   });
   const [activeHotspot, setActiveHotspot] = useState<number | null>(null);
   const [modelLoaded, setModelLoaded] = useState(false);
-  
+
   // Check if model-viewer is available
   const [modelViewerAvailable, setModelViewerAvailable] = useState(false);
-  
+
   useEffect(() => {
     // Check if model-viewer custom element is defined
     const checkModelViewer = () => {
@@ -336,66 +410,76 @@ export default function Product3DViewer({ product, className = '' }: Product3DVi
         // Try to load model-viewer script
         const script = document.createElement('script');
         script.type = 'module';
-        script.src = 'https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js';
+        script.src =
+          'https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js';
         script.onload = () => setModelViewerAvailable(true);
         document.head.appendChild(script);
       }
     };
-    
+
     checkModelViewer();
   }, [product.model3d]);
-  
+
   // Handle fullscreen toggle
   const toggleFullscreen = useCallback(() => {
     if (!containerRef.current) return;
-    
+
     if (!document.fullscreenElement) {
       containerRef.current.requestFullscreen?.();
-      setState(prev => ({ ...prev, isFullscreen: true }));
+      setState((prev) => ({...prev, isFullscreen: true}));
     } else {
       document.exitFullscreen?.();
-      setState(prev => ({ ...prev, isFullscreen: false }));
+      setState((prev) => ({...prev, isFullscreen: false}));
     }
   }, []);
-  
+
   // Handle zoom
   const zoomIn = useCallback(() => {
-    setState(prev => ({ ...prev, zoom: Math.min(prev.zoom + 0.2, 2) }));
+    setState((prev) => ({...prev, zoom: Math.min(prev.zoom + 0.2, 2)}));
   }, []);
-  
+
   const zoomOut = useCallback(() => {
-    setState(prev => ({ ...prev, zoom: Math.max(prev.zoom - 0.2, 0.5) }));
+    setState((prev) => ({...prev, zoom: Math.max(prev.zoom - 0.2, 0.5)}));
   }, []);
-  
+
   // Toggle auto-rotate
   const toggleAutoRotate = useCallback(() => {
-    setState(prev => ({ ...prev, autoRotate: !prev.autoRotate }));
+    setState((prev) => ({...prev, autoRotate: !prev.autoRotate}));
   }, []);
-  
+
   // Switch view
-  const switchView = useCallback((view: '3d' | 'image') => {
-    setState(prev => ({ ...prev, currentView: view, isLoading: view === '3d' && !modelLoaded }));
-  }, [modelLoaded]);
-  
+  const switchView = useCallback(
+    (view: '3d' | 'image') => {
+      setState((prev) => ({
+        ...prev,
+        currentView: view,
+        isLoading: view === '3d' && !modelLoaded,
+      }));
+    },
+    [modelLoaded],
+  );
+
   // Handle model load
   const handleModelLoad = useCallback(() => {
     setModelLoaded(true);
-    setState(prev => ({ ...prev, isLoading: false }));
+    setState((prev) => ({...prev, isLoading: false}));
   }, []);
-  
+
   // Determine if we can show 3D view
   const canShow3D = modelViewerAvailable && product.model3d;
-  
+
   return (
-    <div 
+    <div
       ref={containerRef}
-      className={`product-3d-viewer ${className} ${state.isFullscreen ? 'fullscreen' : ''}`}
+      className={`product-3d-viewer ${className} ${
+        state.isFullscreen ? 'fullscreen' : ''
+      }`}
     >
       {/* View Toggle */}
       {canShow3D && (
         <ViewToggle currentView={state.currentView} onToggle={switchView} />
       )}
-      
+
       {/* Main Viewer Area */}
       <div className="viewer-container">
         <AnimatePresence mode="wait">
@@ -403,13 +487,13 @@ export default function Product3DViewer({ product, className = '' }: Product3DVi
             <motion.div
               key="3d-view"
               className="viewer-3d"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
+              initial={{opacity: 0}}
+              animate={{opacity: 1}}
+              exit={{opacity: 0}}
+              transition={{duration: 0.4}}
             >
               {state.isLoading && <ViewerLoader />}
-              
+
               {/* Model Viewer - using createElement to bypass JSX type checking */}
               {React.createElement('model-viewer', {
                 ref: modelViewerRef,
@@ -438,14 +522,19 @@ export default function Product3DViewer({ product, className = '' }: Product3DVi
                     data-position={hotspot.position}
                     data-normal={hotspot.normal}
                     className="model-hotspot"
-                    onClick={() => setActiveHotspot(activeHotspot === index ? null : index)}
+                    onClick={() =>
+                      setActiveHotspot(activeHotspot === index ? null : index)
+                    }
                   >
                     <div className="hotspot-pulse" />
-                    <HotspotAnnotation hotspot={hotspot} isVisible={activeHotspot === index} />
+                    <HotspotAnnotation
+                      hotspot={hotspot}
+                      isVisible={activeHotspot === index}
+                    />
                   </button>
-                ))
+                )),
               } as any)}
-              
+
               {/* 3D Controls */}
               <ViewerControls
                 autoRotate={state.autoRotate}
@@ -454,13 +543,13 @@ export default function Product3DViewer({ product, className = '' }: Product3DVi
                 onZoomIn={zoomIn}
                 onZoomOut={zoomOut}
               />
-              
+
               {/* Interaction hint */}
-              <motion.div 
+              <motion.div
                 className="viewer-hint"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1 }}
+                initial={{opacity: 0, y: 20}}
+                animate={{opacity: 1, y: 0}}
+                transition={{delay: 1}}
               >
                 <span>Drag to rotate • Scroll to zoom</span>
               </motion.div>
@@ -469,28 +558,33 @@ export default function Product3DViewer({ product, className = '' }: Product3DVi
             <motion.div
               key="image-view"
               className="viewer-image"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
+              initial={{opacity: 0}}
+              animate={{opacity: 1}}
+              exit={{opacity: 0}}
+              transition={{duration: 0.4}}
             >
-              <ImageGallery images={product.images} productName={product.name} />
+              <ImageGallery
+                images={product.images}
+                productName={product.name}
+              />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
-      
+
       {/* Product Info Overlay */}
-      <motion.div 
+      <motion.div
         className="viewer-info"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
+        initial={{opacity: 0, y: 20}}
+        animate={{opacity: 1, y: 0}}
+        transition={{delay: 0.5}}
       >
-        <span className="viewer-badge">{state.currentView === '3d' ? 'Interactive 3D' : 'High-Res Gallery'}</span>
+        <span className="viewer-badge">
+          {state.currentView === '3d' ? 'Interactive 3D' : 'High-Res Gallery'}
+        </span>
         <h3 className="viewer-name">{product.name}</h3>
       </motion.div>
-      
+
       <style>{`
         .product-3d-viewer {
           position: relative;
@@ -921,4 +1015,4 @@ export default function Product3DViewer({ product, className = '' }: Product3DVi
   );
 }
 
-export { Product3DViewer };
+export {Product3DViewer};

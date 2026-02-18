@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from '@remix-run/react';
-import { useUI, promoMessages } from '~/context/UIContext';
-import { useTranslation } from '~/hooks/useTranslation';
+import {useState, useEffect} from 'react';
+import {motion, AnimatePresence} from 'framer-motion';
+import {Link} from '@remix-run/react';
+import {useUI, promoMessages} from '~/context/UIContext';
+import {useTranslation} from '~/hooks/useTranslation';
 
 /**
  * PromoBanner - Rotating promotional banner
@@ -16,8 +16,8 @@ import { useTranslation } from '~/hooks/useTranslation';
  * - Matches Formé Haus dark luxury aesthetic
  */
 export function PromoBanner() {
-  const { state, dispatch } = useUI();
-  const { isRTL } = useTranslation();
+  const {state, dispatch} = useUI();
+  const {isRTL} = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Auto-rotate messages
@@ -25,7 +25,7 @@ export function PromoBanner() {
     if (state.promoBannerPaused || !state.promoBannerVisible) return;
 
     const interval = setInterval(() => {
-      setCurrentIndex(prev => (prev + 1) % promoMessages.length);
+      setCurrentIndex((prev) => (prev + 1) % promoMessages.length);
     }, 4500);
 
     return () => clearInterval(interval);
@@ -40,8 +40,10 @@ export function PromoBanner() {
       {/* Pause/Play Button */}
       <button
         className="promo-control promo-pause"
-        onClick={() => dispatch({ type: 'TOGGLE_PROMO_PAUSE' })}
-        aria-label={state.promoBannerPaused ? 'Play announcements' : 'Pause announcements'}
+        onClick={() => dispatch({type: 'TOGGLE_PROMO_PAUSE'})}
+        aria-label={
+          state.promoBannerPaused ? 'Play announcements' : 'Pause announcements'
+        }
       >
         {state.promoBannerPaused ? (
           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
@@ -60,10 +62,10 @@ export function PromoBanner() {
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+            initial={{opacity: 0, y: 8}}
+            animate={{opacity: 1, y: 0}}
+            exit={{opacity: 0, y: -8}}
+            transition={{duration: 0.35, ease: [0.4, 0, 0.2, 1]}}
           >
             <Link to={currentMessage.href} className="promo-link">
               {currentMessage.text}
@@ -87,10 +89,17 @@ export function PromoBanner() {
       {/* Close Button */}
       <button
         className="promo-control promo-close"
-        onClick={() => dispatch({ type: 'CLOSE_PROMO_BANNER' })}
+        onClick={() => dispatch({type: 'CLOSE_PROMO_BANNER'})}
         aria-label="Close announcement banner"
       >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
           <line x1="4" y1="4" x2="20" y2="20" />
           <line x1="20" y1="4" x2="4" y2="20" />
         </svg>

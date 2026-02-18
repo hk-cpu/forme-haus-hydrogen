@@ -1,7 +1,7 @@
-import { useRouteLoaderData } from '@remix-run/react';
-import type { RootLoader } from '~/root';
-import { DEFAULT_LOCALE } from '~/lib/utils';
-import { translations, type TranslationKey } from '~/lib/translations';
+import {useRouteLoaderData} from '@remix-run/react';
+import type {RootLoader} from '~/root';
+import {DEFAULT_LOCALE} from '~/lib/utils';
+import {translations, type TranslationKey} from '~/lib/translations';
 
 /**
  * Returns the current language code based on the selected locale.
@@ -25,5 +25,5 @@ export function useTranslation() {
     return translations[lang][key] ?? translations.EN[key] ?? key;
   }
 
-  return { t, lang, isRTL, dir: isRTL ? 'rtl' as const : 'ltr' as const };
+  return {t, lang, isRTL, dir: isRTL ? ('rtl' as const) : ('ltr' as const)};
 }

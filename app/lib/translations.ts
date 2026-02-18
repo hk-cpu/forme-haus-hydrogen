@@ -36,7 +36,8 @@ export const translations = {
     // Homepage Sections
     'home.categorySlider': 'The Collections',
     'home.editorial': 'The Edit',
-    'home.brandIntro': 'Formé Haus is a curated destination inspired by modern elegance, refined detail, and thoughtful selection.',
+    'home.brandIntro':
+      'Formé Haus is a curated destination inspired by modern elegance, refined detail, and thoughtful selection.',
     'home.curatedForYou': 'Where Elegance Begins',
     'home.journal': 'Journal',
     'home.editorial.label': 'Editorial',
@@ -71,7 +72,7 @@ export const translations = {
     // Newsletter / Notify
     'notify.email': 'Enter your email',
     'notify.submit': 'Notify Me',
-    'notify.success': 'Thank you! We\'ll keep you updated.',
+    'notify.success': "Thank you! We'll keep you updated.",
 
     // Product
     'product.addToCart': 'Add to Cart',
@@ -91,11 +92,13 @@ export const translations = {
     // Cart
     'cart.title': 'Your Cart',
     'cart.empty': 'Your cart is empty',
-    'cart.emptyStats': "Looks like you haven't added anything yet, let's get you started!",
+    'cart.emptyStats':
+      "Looks like you haven't added anything yet, let's get you started!",
     'cart.continueShopping': 'Continue Shopping',
     'cart.checkout': 'Checkout',
     'cart.subtotal': 'Subtotal',
-    'cart.saudiAddr': 'For Saudi Arabia: Please use your 8-digit National Address to ensure delivery.',
+    'cart.saudiAddr':
+      'For Saudi Arabia: Please use your 8-digit National Address to ensure delivery.',
     'cart.terms': 'By checking out, you agree to our',
     'cart.termsLink': 'Terms',
     'cart.refunds': 'and acknowledge your',
@@ -123,7 +126,7 @@ export const translations = {
     'general.learnMore': 'Learn More',
     'general.backToHome': 'Back to Home',
     'common.close': 'Close',
-    'country': 'Saudi Arabia',
+    country: 'Saudi Arabia',
 
     // Mega Menu
     'menu.title': 'Menu',
@@ -223,7 +226,8 @@ export const translations = {
     // Homepage Sections
     'home.categorySlider': 'المجموعات',
     'home.editorial': 'اختيارات المحرر',
-    'home.brandIntro': 'فورميه هاوس وجهة منسّقة مستوحاة من الأناقة العصرية والتفاصيل الراقية والاختيار المدروس.',
+    'home.brandIntro':
+      'فورميه هاوس وجهة منسّقة مستوحاة من الأناقة العصرية والتفاصيل الراقية والاختيار المدروس.',
     'home.curatedForYou': 'حيث تبدأ الأناقة',
     'home.journal': 'المجلة',
     'home.editorial.label': 'تحريري',
@@ -282,7 +286,8 @@ export const translations = {
     'cart.continueShopping': 'تابعي التسوق',
     'cart.checkout': 'إتمام الشراء',
     'cart.subtotal': 'المجموع الفرعي',
-    'cart.saudiAddr': 'للعملاء في المملكة: يُرجى استخدام العنوان الوطني المكوّن من 8 أرقام لضمان التوصيل.',
+    'cart.saudiAddr':
+      'للعملاء في المملكة: يُرجى استخدام العنوان الوطني المكوّن من 8 أرقام لضمان التوصيل.',
     'cart.terms': 'بإتمام الشراء، أنتِ توافقين على',
     'cart.termsLink': 'شروط الخدمة',
     'cart.refunds': 'وتُقرّين بمعرفتك بـ',
@@ -310,7 +315,7 @@ export const translations = {
     'general.learnMore': 'اعرفي المزيد',
     'general.backToHome': 'العودة للرئيسية',
     'common.close': 'إغلاق',
-    'country': 'السعودية',
+    country: 'السعودية',
 
     // Mega Menu
     'menu.title': 'القائمة',

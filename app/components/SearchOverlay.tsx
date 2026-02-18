@@ -1,27 +1,48 @@
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useFetcher } from '@remix-run/react';
-import { Image, Money } from '@shopify/hydrogen';
-import { useDebounce } from 'react-use';
-import { useUI } from '~/context/UIContext';
-import { useTranslation } from '~/hooks/useTranslation';
+import {useState, useEffect, useRef} from 'react';
+import {motion, AnimatePresence} from 'framer-motion';
+import {Link, useFetcher} from '@remix-run/react';
+import {Image, Money} from '@shopify/hydrogen';
+import {useDebounce} from 'react-use';
+import {useUI} from '~/context/UIContext';
+import {useTranslation} from '~/hooks/useTranslation';
 
 // Icons
 const Icons = {
   Search: () => (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
       <circle cx="10" cy="10" r="7" />
       <line x1="15" y1="15" x2="21" y2="21" />
     </svg>
   ),
   Close: () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
       <line x1="4" y1="4" x2="20" y2="20" />
       <line x1="20" y1="4" x2="4" y2="20" />
     </svg>
   ),
   ArrowRight: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
       <path d="M5 12h14M12 5l7 7-7 7" />
     </svg>
   ),
@@ -52,8 +73,8 @@ const trendingSearches = [
 interface SearchProduct {
   id: string;
   title: string;
-  price: { amount: string; currencyCode: string };
-  image: { url: string; altText: string };
+  price: {amount: string; currencyCode: string};
+  image: {url: string; altText: string};
   handle: string;
 }
 
@@ -64,7 +85,7 @@ export const NO_PREDICTIVE_SEARCH_RESULTS = {
 
 /**
  * SearchOverlay - Full-screen search overlay
- * 
+ *
  * Features:
  * - Full-screen overlay (not drawer)
  * - Large search input with rotating placeholders
@@ -74,14 +95,16 @@ export const NO_PREDICTIVE_SEARCH_RESULTS = {
  * - Dark luxury theme
  */
 export function SearchOverlay() {
-  const { state, dispatch } = useUI();
-  const { isRTL, t } = useTranslation();
+  const {state, dispatch} = useUI();
+  const {isRTL, t} = useTranslation();
   const [query, setQuery] = useState('');
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Fetcher for predictive search
-  const fetcher = useFetcher<{ searchResults: { results: any; totalResults: number } }>({
+  const fetcher = useFetcher<{
+    searchResults: {results: any; totalResults: number};
+  }>({
     key: 'search-overlay',
   });
 
@@ -104,13 +127,15 @@ export function SearchOverlay() {
   // Predictive search
   const search = () => {
     if (!query || query.length < 2) return;
-    fetcher.load(`/api/predictive-search?q=${encodeURIComponent(query)}&limit=6`);
+    fetcher.load(
+      `/api/predictive-search?q=${encodeURIComponent(query)}&limit=6`,
+    );
   };
 
   useDebounce(search, 300, [query]);
 
   const handleClose = () => {
-    dispatch({ type: 'CLOSE_SEARCH' });
+    dispatch({type: 'CLOSE_SEARCH'});
     setQuery('');
   };
 
@@ -119,7 +144,8 @@ export function SearchOverlay() {
     inputRef.current?.focus();
   };
 
-  const { results, totalResults } = fetcher.data?.searchResults || NO_PREDICTIVE_SEARCH_RESULTS;
+  const {results, totalResults} =
+    fetcher.data?.searchResults || NO_PREDICTIVE_SEARCH_RESULTS;
   const hasResults = query && results && totalResults > 0;
 
   // Mock recommendations when no search query
@@ -127,29 +153,41 @@ export function SearchOverlay() {
     {
       id: '1',
       title: 'Silk Evening Dress',
-      price: { amount: '2500.00', currencyCode: 'SAR' },
-      image: { url: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&q=80', altText: 'Silk Evening Dress' },
+      price: {amount: '2500.00', currencyCode: 'SAR'},
+      image: {
+        url: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&q=80',
+        altText: 'Silk Evening Dress',
+      },
       handle: 'silk-evening-dress',
     },
     {
       id: '2',
       title: 'Leather Crossbody Bag',
-      price: { amount: '1800.00', currencyCode: 'SAR' },
-      image: { url: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&q=80', altText: 'Leather Crossbody Bag' },
+      price: {amount: '1800.00', currencyCode: 'SAR'},
+      image: {
+        url: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&q=80',
+        altText: 'Leather Crossbody Bag',
+      },
       handle: 'leather-crossbody-bag',
     },
     {
       id: '3',
       title: 'Gold Hoop Earrings',
-      price: { amount: '850.00', currencyCode: 'SAR' },
-      image: { url: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&q=80', altText: 'Gold Hoop Earrings' },
+      price: {amount: '850.00', currencyCode: 'SAR'},
+      image: {
+        url: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&q=80',
+        altText: 'Gold Hoop Earrings',
+      },
       handle: 'gold-hoop-earrings',
     },
     {
       id: '4',
       title: 'Designer Sunglasses',
-      price: { amount: '1200.00', currencyCode: 'SAR' },
-      image: { url: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&q=80', altText: 'Designer Sunglasses' },
+      price: {amount: '1200.00', currencyCode: 'SAR'},
+      image: {
+        url: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&q=80',
+        altText: 'Designer Sunglasses',
+      },
       handle: 'designer-sunglasses',
     },
   ];
@@ -159,11 +197,11 @@ export function SearchOverlay() {
       {state.isSearchOpen && (
         <motion.div
           className="fixed inset-0 bg-[#121212] z-[300] flex flex-col"
-          style={{ direction: isRTL ? 'rtl' : 'ltr' }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          style={{direction: isRTL ? 'rtl' : 'ltr'}}
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          exit={{opacity: 0}}
+          transition={{duration: 0.3}}
         >
           {/* Header with Search Input */}
           <div className="flex items-center gap-4 px-6 py-5 border-b border-[#a87441]/20">
@@ -205,9 +243,9 @@ export function SearchOverlay() {
               {/* Search Results */}
               {hasResults ? (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
+                  initial={{opacity: 0, y: 20}}
+                  animate={{opacity: 1, y: 0}}
+                  transition={{delay: 0.1}}
                 >
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-[11px] uppercase tracking-[0.2em] text-[#AA9B8F]">
@@ -229,9 +267,9 @@ export function SearchOverlay() {
                       {results.products.map((product: any, index: number) => (
                         <motion.div
                           key={product.id}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.05 }}
+                          initial={{opacity: 0, y: 20}}
+                          animate={{opacity: 1, y: 0}}
+                          transition={{delay: index * 0.05}}
                         >
                           <Link
                             to={`/products/${product.handle}`}
@@ -311,8 +349,8 @@ export function SearchOverlay() {
                 /* No Results */
                 <motion.div
                   className="text-center py-16"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  initial={{opacity: 0}}
+                  animate={{opacity: 1}}
                 >
                   <p className="text-[#AA9B8F] text-lg mb-2">
                     {t('search.noResults', 'No results found')}
@@ -326,9 +364,9 @@ export function SearchOverlay() {
                 <>
                   {/* Trending Searches */}
                   <motion.section
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
+                    initial={{opacity: 0, y: 20}}
+                    animate={{opacity: 1, y: 0}}
+                    transition={{delay: 0.1}}
                     className="mb-10"
                   >
                     <h3 className="text-[11px] uppercase tracking-[0.2em] text-[#AA9B8F] mb-4">
@@ -349,9 +387,9 @@ export function SearchOverlay() {
 
                   {/* Product Recommendations */}
                   <motion.section
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
+                    initial={{opacity: 0, y: 20}}
+                    animate={{opacity: 1, y: 0}}
+                    transition={{delay: 0.2}}
                   >
                     <div className="flex items-center justify-between mb-6">
                       <h3 className="text-[11px] uppercase tracking-[0.2em] text-[#AA9B8F]">
@@ -371,9 +409,9 @@ export function SearchOverlay() {
                       {recommendations.map((product, index) => (
                         <motion.div
                           key={product.id}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.1 + index * 0.05 }}
+                          initial={{opacity: 0, y: 20}}
+                          animate={{opacity: 1, y: 0}}
+                          transition={{delay: 0.1 + index * 0.05}}
                         >
                           <Link
                             to={`/products/${product.handle}`}

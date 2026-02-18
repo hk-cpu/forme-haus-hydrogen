@@ -11,9 +11,9 @@
 // - Floating action buttons for mode switching
 // ============================================================================
 
-import { useState, useRef, useEffect, lazy, Suspense } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { tokens } from './Theme';
+import {useState, useRef, useEffect, lazy, Suspense} from 'react';
+import {motion, AnimatePresence} from 'framer-motion';
+import {tokens} from './Theme';
 
 // Lazy load the heavy components for performance
 const ImmersiveScrollytelling = lazy(() => import('./ImmersiveScrollytelling'));
@@ -50,24 +50,36 @@ type ViewMode = 'standard' | 'immersive' | '3d';
 // MODE SWITCHER COMPONENT
 // ============================================================================
 
-function ModeSwitcher({ 
-  currentMode, 
+function ModeSwitcher({
+  currentMode,
   onModeChange,
-  has3DModel 
-}: { 
-  currentMode: ViewMode; 
+  has3DModel,
+}: {
+  currentMode: ViewMode;
   onModeChange: (mode: ViewMode) => void;
   has3DModel: boolean;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  
-  const modes: { id: ViewMode; label: string; icon: React.ReactNode; description: string }[] = [
+
+  const modes: {
+    id: ViewMode;
+    label: string;
+    icon: React.ReactNode;
+    description: string;
+  }[] = [
     {
       id: 'standard',
       label: 'Classic',
       description: 'Traditional gallery view',
       icon: (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
           <rect x="3" y="3" width="18" height="18" rx="2" />
           <line x1="3" y1="9" x2="21" y2="9" />
           <line x1="9" y1="21" x2="9" y2="9" />
@@ -79,21 +91,35 @@ function ModeSwitcher({
       label: 'Immersive',
       description: 'Scrollytelling experience',
       icon: (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
           <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
           <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
         </svg>
       ),
     },
   ];
-  
+
   if (has3DModel) {
     modes.push({
       id: '3d',
       label: '3D View',
       description: 'Interactive 3D model',
       icon: (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
           <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
           <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
           <line x1="12" y1="22.08" x2="12" y2="12" />
@@ -101,28 +127,30 @@ function ModeSwitcher({
       ),
     });
   }
-  
+
   return (
     <div className="mode-switcher">
       <AnimatePresence>
         {isExpanded && (
           <motion.div
             className="mode-options"
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            initial={{opacity: 0, y: 10, scale: 0.95}}
+            animate={{opacity: 1, y: 0, scale: 1}}
+            exit={{opacity: 0, y: 10, scale: 0.95}}
+            transition={{duration: 0.3, ease: [0.16, 1, 0.3, 1]}}
           >
             {modes.map((mode) => (
               <motion.button
                 key={mode.id}
-                className={`mode-option ${currentMode === mode.id ? 'active' : ''}`}
+                className={`mode-option ${
+                  currentMode === mode.id ? 'active' : ''
+                }`}
                 onClick={() => {
                   onModeChange(mode.id);
                   setIsExpanded(false);
                 }}
-                whileHover={{ x: 4 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{x: 4}}
+                whileTap={{scale: 0.98}}
               >
                 <span className="mode-icon">{mode.icon}</span>
                 <span className="mode-label">{mode.label}</span>
@@ -132,12 +160,12 @@ function ModeSwitcher({
           </motion.div>
         )}
       </AnimatePresence>
-      
+
       <motion.button
         className={`mode-toggle ${isExpanded ? 'expanded' : ''}`}
         onClick={() => setIsExpanded(!isExpanded)}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{scale: 1.05}}
+        whileTap={{scale: 0.95}}
       >
         <span className="toggle-icon">
           {currentMode === 'standard' && modes[0].icon}
@@ -149,12 +177,19 @@ function ModeSwitcher({
           {currentMode === 'immersive' && 'Immersive'}
           {currentMode === '3d' && '3D View'}
         </span>
-        <motion.span 
+        <motion.span
           className="toggle-arrow"
-          animate={{ rotate: isExpanded ? 180 : 0 }}
-          transition={{ duration: 0.3 }}
+          animate={{rotate: isExpanded ? 180 : 0}}
+          transition={{duration: 0.3}}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             <polyline points="6 9 12 15 18 9" />
           </svg>
         </motion.span>
@@ -167,15 +202,15 @@ function ModeSwitcher({
 // FLOATING CTA COMPONENT
 // ============================================================================
 
-function FloatingCTA({ onClick }: { onClick: () => void }) {
+function FloatingCTA({onClick}: {onClick: () => void}) {
   const [isVisible, setIsVisible] = useState(false);
   const lastScrollY = useRef(0);
-  
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       const scrollThreshold = 400;
-      
+
       // Show when scrolling up past threshold, hide when scrolling down
       if (currentScrollY > scrollThreshold) {
         if (currentScrollY < lastScrollY.current) {
@@ -186,32 +221,39 @@ function FloatingCTA({ onClick }: { onClick: () => void }) {
       } else {
         setIsVisible(false);
       }
-      
+
       lastScrollY.current = currentScrollY;
     };
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    window.addEventListener('scroll', handleScroll, {passive: true});
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  
+
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.div
           className="floating-cta"
-          initial={{ opacity: 0, y: 100 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 100 }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          initial={{opacity: 0, y: 100}}
+          animate={{opacity: 1, y: 0}}
+          exit={{opacity: 0, y: 100}}
+          transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
         >
           <motion.button
             className="floating-btn"
             onClick={onClick}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={{scale: 1.02}}
+            whileTap={{scale: 0.98}}
           >
             <span className="floating-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
                 <line x1="3" y1="6" x2="21" y2="6" />
                 <path d="M16 10a4 4 0 0 1-8 0" />
@@ -233,9 +275,9 @@ function EnhancementBadge() {
   return (
     <motion.div
       className="enhancement-badge"
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 1, duration: 0.5 }}
+      initial={{opacity: 0, x: -20}}
+      animate={{opacity: 1, x: 0}}
+      transition={{delay: 1, duration: 0.5}}
     >
       <span className="badge-dot" />
       <span className="badge-text">Futuristic Mode</span>
@@ -247,65 +289,72 @@ function EnhancementBadge() {
 // MAIN COMPONENT
 // ============================================================================
 
-export default function FuturisticProductOverlay({ children, product }: FuturisticOverlayProps) {
+export default function FuturisticProductOverlay({
+  children,
+  product,
+}: FuturisticOverlayProps) {
   const [mode, setMode] = useState<ViewMode>('standard');
   const [isLoading, setIsLoading] = useState(false);
   const standardViewRef = useRef<HTMLDivElement>(null);
-  
+
   // Handle mode change with loading state
   const handleModeChange = (newMode: ViewMode) => {
     if (newMode === mode) return;
-    
+
     setIsLoading(true);
-    
+
     // Simulate transition
     setTimeout(() => {
       setMode(newMode);
       setIsLoading(false);
-      
+
       // Scroll to top for immersive modes
       if (newMode !== 'standard') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({top: 0, behavior: 'smooth'});
       }
     }, 400);
   };
-  
+
   // Scroll to add to cart in standard view
   const scrollToAddToCart = () => {
     if (standardViewRef.current) {
-      const addToCartBtn = standardViewRef.current.querySelector('.pdp-add-to-cart');
-      addToCartBtn?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      
+      const addToCartBtn =
+        standardViewRef.current.querySelector('.pdp-add-to-cart');
+      addToCartBtn?.scrollIntoView({behavior: 'smooth', block: 'center'});
+
       // Add a subtle highlight effect
       if (addToCartBtn) {
         addToCartBtn.classList.add('fp-highlight-pulse');
-        setTimeout(() => addToCartBtn.classList.remove('fp-highlight-pulse'), 2000);
+        setTimeout(
+          () => addToCartBtn.classList.remove('fp-highlight-pulse'),
+          2000,
+        );
       }
     }
   };
-  
+
   const has3DModel = !!product.model3d;
-  
+
   return (
     <div className="futuristic-overlay">
       {/* Mode Switcher - Always visible */}
       <div className="overlay-controls">
-        <ModeSwitcher 
-          currentMode={mode} 
+        <ModeSwitcher
+          currentMode={mode}
           onModeChange={handleModeChange}
           has3DModel={has3DModel}
         />
         {mode !== 'standard' && <EnhancementBadge />}
       </div>
-      
+
       {/* Loading Overlay */}
       <AnimatePresence>
         {isLoading && (
           <motion.div
             className="mode-loading"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
           >
             <div className="loading-ring">
               <div className="loading-ring-inner" />
@@ -314,7 +363,7 @@ export default function FuturisticProductOverlay({ children, product }: Futurist
           </motion.div>
         )}
       </AnimatePresence>
-      
+
       {/* Content Views */}
       <div className="overlay-content">
         <AnimatePresence mode="wait">
@@ -323,59 +372,63 @@ export default function FuturisticProductOverlay({ children, product }: Futurist
               key="standard"
               ref={standardViewRef}
               className="view-standard"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              initial={{opacity: 0}}
+              animate={{opacity: 1}}
+              exit={{opacity: 0}}
+              transition={{duration: 0.3}}
             >
               {children}
             </motion.div>
           )}
-          
+
           {mode === 'immersive' && (
             <motion.div
               key="immersive"
               className="view-immersive"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+              initial={{opacity: 0}}
+              animate={{opacity: 1}}
+              exit={{opacity: 0}}
+              transition={{duration: 0.5}}
             >
-              <Suspense fallback={
-                <div className="suspense-fallback">
-                  <div className="fallback-ring" />
-                  <span>Loading Immersive Experience...</span>
-                </div>
-              }>
+              <Suspense
+                fallback={
+                  <div className="suspense-fallback">
+                    <div className="fallback-ring" />
+                    <span>Loading Immersive Experience...</span>
+                  </div>
+                }
+              >
                 <ImmersiveScrollytelling product={product} />
               </Suspense>
             </motion.div>
           )}
-          
+
           {mode === '3d' && (
             <motion.div
               key="3d"
               className="view-3d"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+              initial={{opacity: 0}}
+              animate={{opacity: 1}}
+              exit={{opacity: 0}}
+              transition={{duration: 0.5}}
             >
               <div className="view-3d-container">
-                <Suspense fallback={
-                  <div className="suspense-fallback">
-                    <div className="fallback-ring" />
-                    <span>Loading 3D Viewer...</span>
-                  </div>
-                }>
+                <Suspense
+                  fallback={
+                    <div className="suspense-fallback">
+                      <div className="fallback-ring" />
+                      <span>Loading 3D Viewer...</span>
+                    </div>
+                  }
+                >
                   <Product3DViewer product={product} />
                 </Suspense>
               </div>
-              <motion.div 
+              <motion.div
                 className="view-3d-info"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
+                initial={{opacity: 0, y: 20}}
+                animate={{opacity: 1, y: 0}}
+                transition={{delay: 0.3}}
               >
                 <h2>{product.name}</h2>
                 <p className="price">AED {product.price.toLocaleString()}</p>
@@ -383,8 +436,8 @@ export default function FuturisticProductOverlay({ children, product }: Futurist
                 <motion.button
                   className="btn-add-cart"
                   onClick={() => setMode('standard')}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{scale: 1.02}}
+                  whileTap={{scale: 0.98}}
                 >
                   Continue to Purchase
                 </motion.button>
@@ -393,10 +446,10 @@ export default function FuturisticProductOverlay({ children, product }: Futurist
           )}
         </AnimatePresence>
       </div>
-      
+
       {/* Floating CTA - Only in standard mode */}
       {mode === 'standard' && <FloatingCTA onClick={scrollToAddToCart} />}
-      
+
       <style>{`
         .futuristic-overlay {
           position: relative;
@@ -779,4 +832,4 @@ export default function FuturisticProductOverlay({ children, product }: Futurist
   );
 }
 
-export { FuturisticProductOverlay };
+export {FuturisticProductOverlay};

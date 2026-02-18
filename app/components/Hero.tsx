@@ -1,14 +1,12 @@
-import { Link } from '@remix-run/react';
-import { motion } from 'framer-motion';
-import { useTranslation } from '~/hooks/useTranslation';
+import {Link} from '@remix-run/react';
+import {motion} from 'framer-motion';
+import {useTranslation} from '~/hooks/useTranslation';
 
 export default function Hero() {
-  const { t } = useTranslation();
+  const {t} = useTranslation();
 
   return (
-    <section
-      className="h-[90vh] flex flex-col items-center justify-center bg-transparent relative overflow-hidden"
-    >
+    <section className="h-[90vh] flex flex-col items-center justify-center bg-transparent relative overflow-hidden">
       {/*
           Hero Background is TRANSPARENT to show the global Silk canvas from PageLayout.
           Removed conflicting overlays/gradients.
@@ -22,9 +20,9 @@ export default function Hero() {
         <div className="text-center px-6 z-20 relative">
           {/* Brand Logo with Silk Animation */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+            initial={{opacity: 0, scale: 0.9}}
+            animate={{opacity: 1, scale: 1}}
+            transition={{duration: 1.5, ease: [0.16, 1, 0.3, 1]}}
             className="mb-12 relative"
           >
             <div className="relative inline-block">
@@ -42,7 +40,8 @@ export default function Hero() {
                 }}
                 style={{
                   filter: 'blur(40px)',
-                  background: 'radial-gradient(ellipse at center, rgba(168, 116, 65, 0.6) 0%, transparent 70%)',
+                  background:
+                    'radial-gradient(ellipse at center, rgba(168, 116, 65, 0.6) 0%, transparent 70%)',
                 }}
               />
 
@@ -65,18 +64,28 @@ export default function Hero() {
                   strokeWidth="2"
                   fill="none"
                   strokeLinecap="round"
-                  initial={{ pathLength: 0, opacity: 0 }}
+                  initial={{pathLength: 0, opacity: 0}}
                   animate={{
                     pathLength: 1,
                     opacity: 0.5,
                   }}
                   transition={{
-                    pathLength: { duration: 2, delay: 0.8, ease: [0.16, 1, 0.3, 1] },
-                    opacity: { duration: 1, delay: 0.8 },
+                    pathLength: {
+                      duration: 2,
+                      delay: 0.8,
+                      ease: [0.16, 1, 0.3, 1],
+                    },
+                    opacity: {duration: 1, delay: 0.8},
                   }}
                 />
                 <defs>
-                  <linearGradient id="heroSilkGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <linearGradient
+                    id="heroSilkGradient"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="0%"
+                  >
                     <stop offset="0%" stopColor="#a87441" stopOpacity="0" />
                     <stop offset="50%" stopColor="#a87441" stopOpacity="1" />
                     <stop offset="100%" stopColor="#a87441" stopOpacity="0" />
@@ -87,9 +96,9 @@ export default function Hero() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 1 }}
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            transition={{delay: 1, duration: 1}}
             className="group/cta"
           >
             <Link
@@ -103,12 +112,12 @@ export default function Hero() {
               <motion.span
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-[#a87441]/20 to-transparent"
                 animate={{
-                  x: ['-200%', '200%']
+                  x: ['-200%', '200%'],
                 }}
                 transition={{
                   duration: 3,
                   repeat: Infinity,
-                  ease: 'linear'
+                  ease: 'linear',
                 }}
               />
 
@@ -125,16 +134,18 @@ export default function Hero() {
       </div>
 
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
+        initial={{opacity: 0}}
+        animate={{opacity: 1}}
+        transition={{delay: 1.5, duration: 1}}
         className="absolute bottom-12 z-20 flex flex-col items-center gap-2"
       >
-        <span className="text-[10px] uppercase tracking-widest text-neutral-400 font-medium">{t('hero.scroll')}</span>
+        <span className="text-[10px] uppercase tracking-widest text-neutral-400 font-medium">
+          {t('hero.scroll')}
+        </span>
         <div className="w-px h-12 bg-gradient-to-b from-transparent via-neutral-400 to-transparent opacity-50 overflow-hidden">
           <motion.div
-            animate={{ y: [-48, 48] }}
-            transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+            animate={{y: [-48, 48]}}
+            transition={{duration: 2.2, repeat: Infinity, ease: 'easeInOut'}}
             className="w-full h-full bg-gradient-to-b from-[#a87441]/50 to-transparent"
           />
         </div>

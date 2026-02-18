@@ -1,8 +1,8 @@
-import { json } from '@remix-run/server-runtime';
-import { type MetaArgs, type LoaderFunctionArgs } from '@shopify/remix-oxygen';
-import { useLoaderData } from '@remix-run/react';
-import { motion } from 'framer-motion';
-import { useEffect, useRef, useCallback } from 'react';
+import {json} from '@remix-run/server-runtime';
+import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import {useLoaderData} from '@remix-run/react';
+import {motion} from 'framer-motion';
+
 import type {
   Filter,
   ProductCollectionSortKeys,
@@ -18,31 +18,34 @@ import {
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 
-import { Button } from '~/components/Button';
-import { ProductCard } from '~/components/ProductCard';
-import { type SortParam, FILTER_URL_PREFIX } from '~/components/SortFilter';
-import { PRODUCT_CARD_FRAGMENT } from '~/data/fragments';
-import { routeHeaders } from '~/data/cache';
-import { seoPayload } from '~/lib/seo.server';
-import { getImageLoadingPriority } from '~/lib/const';
-import { parseAsCurrency } from '~/lib/utils';
-import { useTranslation } from '~/hooks/useTranslation';
-import { translations } from '~/lib/translations';
+import {Button} from '~/components/Button';
+import {ProductCard} from '~/components/ProductCard';
+import SortMenu, {
+  type SortParam,
+  FILTER_URL_PREFIX,
+} from '~/components/SortFilter';
+import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
+import {routeHeaders} from '~/data/cache';
+import {seoPayload} from '~/lib/seo.server';
+import {getImageLoadingPriority} from '~/lib/const';
+import {parseAsCurrency} from '~/lib/utils';
+import {useTranslation} from '~/hooks/useTranslation';
+import {translations} from '~/lib/translations';
 
 export const headers = routeHeaders;
 
-export async function loader({ params, request, context }: LoaderFunctionArgs) {
+export async function loader({params, request, context}: LoaderFunctionArgs) {
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 12,
   });
-  const { collectionHandle } = params;
+  const {collectionHandle} = params;
   const locale = context.storefront.i18n;
   // ... (rest of loader remains same until label logic) ...
   invariant(collectionHandle, 'Missing collectionHandle param');
 
   const searchParams = new URL(request.url).searchParams;
 
-  const { sortKey, reverse } = getSortValuesFromParam(
+  const {sortKey, reverse} = getSortValuesFromParam(
     searchParams.get('sort') as SortParam,
   );
   const filters = [...searchParams.entries()].reduce(
@@ -58,7 +61,7 @@ export async function loader({ params, request, context }: LoaderFunctionArgs) {
     [] as ProductFilter[],
   );
 
-  let { collection, collections } = await context.storefront.query(
+  let {collection, collections} = await context.storefront.query(
     COLLECTION_QUERY,
     {
       variables: {
@@ -74,17 +77,22 @@ export async function loader({ params, request, context }: LoaderFunctionArgs) {
     },
   );
 
-
-  if (!collection && (collectionHandle === 'new-in' || collectionHandle === 'new' || collectionHandle === 'sunglasses')) {
-    const { collection: allCollection } = await context.storefront.query(
+  if (
+    !collection &&
+    (collectionHandle === 'new-in' ||
+      collectionHandle === 'new' ||
+      collectionHandle === 'sunglasses' ||
+      collectionHandle === 'sale')
+  ) {
+    const {collection: allCollection} = await context.storefront.query(
       COLLECTION_QUERY,
       {
         variables: {
           ...paginationVariables,
           handle: 'all',
           filters,
-          sortKey: 'CREATED',
-          reverse: true,
+          sortKey: collectionHandle === 'new-in' || collectionHandle === 'new' ? 'CREATED' : 'BEST_SELLING',
+          reverse: collectionHandle === 'new-in' || collectionHandle === 'new' ? true : false,
           country: context.storefront.i18n.country,
           language: context.storefront.i18n.language,
         },
@@ -95,16 +103,20 @@ export async function loader({ params, request, context }: LoaderFunctionArgs) {
       collection = allCollection;
       const lang = context.storefront.i18n.language === 'AR' ? 'AR' : 'EN';
       // @ts-ignore
-      collection.title = collectionHandle === 'sunglasses' ? 'Sunglasses' : translations[lang]['nav.newIn'];
+      let title = translations[lang]['nav.newIn'];
+      if(collectionHandle === 'sunglasses') title = 'Sunglasses';
+      if(collectionHandle === 'sale') title = 'Sale';
+      
+      collection.title = title;
       collection.description = '';
     }
   }
 
   if (!collection) {
-    throw new Response('collection', { status: 404 });
+    throw new Response('collection', {status: 404});
   }
 
-  const seo = seoPayload.collection({ collection, url: request.url });
+  const seo = seoPayload.collection({collection, url: request.url});
 
   const allFilterValues = collection.products.filters.flatMap(
     (filter: Filter) => filter.values,
@@ -163,76 +175,15 @@ export async function loader({ params, request, context }: LoaderFunctionArgs) {
   });
 }
 
-export const meta = ({ matches }: MetaArgs<typeof loader>) => {
+export const meta = ({matches}: MetaArgs<typeof loader>) => {
   // @ts-ignore
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
-/**
- * InfiniteScrollTrigger — auto-loads the next page when scrolled into view
- */
-function InfiniteScrollTrigger({
-  hasNextPage,
-  nextPageUrl,
-  isLoading,
-  NextLink,
-  loadingText,
-}: {
-  hasNextPage: boolean;
-  nextPageUrl: string;
-  isLoading: boolean;
-  NextLink: any;
-  loadingText: string;
-}) {
-  const triggerRef = useRef<HTMLDivElement>(null);
-  const nextLinkRef = useRef<HTMLAnchorElement>(null);
-
-  useEffect(() => {
-    if (!hasNextPage || isLoading) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && nextLinkRef.current) {
-          nextLinkRef.current.click();
-        }
-      },
-      { rootMargin: '200px', threshold: 0 },
-    );
-
-    if (triggerRef.current) {
-      observer.observe(triggerRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [hasNextPage, isLoading, nextPageUrl]);
-
-  if (!hasNextPage) return null;
-
-  return (
-    <div ref={triggerRef} className="flex items-center justify-center mt-14">
-      {isLoading ? (
-        <div className="flex items-center gap-3 text-[#8B7355]">
-          <motion.div
-            className="w-5 h-5 border-2 border-[#a87441]/30 border-t-[#a87441] rounded-full"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
-          />
-          <span className="text-xs uppercase tracking-[0.2em] font-light">
-            {loadingText}
-          </span>
-        </div>
-      ) : (
-        <NextLink ref={nextLinkRef} className="sr-only">
-          Load more
-        </NextLink>
-      )}
-    </div>
-  );
-}
-
 export default function Collection() {
-  const { collection, appliedFilters, collections } = useLoaderData<typeof loader>();
-  const { t } = useTranslation();
+  const {collection, appliedFilters, collections} =
+    useLoaderData<typeof loader>();
+  const {t} = useTranslation();
 
   // Collection hero image
   const heroImage = collection.image?.url;
@@ -247,9 +198,9 @@ export default function Collection() {
               src={heroImage}
               alt={collection.title}
               className="w-full h-full object-cover"
-              initial={{ scale: 1.05 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+              initial={{scale: 1.05}}
+              animate={{scale: 1}}
+              transition={{duration: 1.2, ease: [0.16, 1, 0.3, 1]}}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#1a1510]/70 via-[#1a1510]/20 to-transparent" />
           </>
@@ -260,9 +211,9 @@ export default function Collection() {
         <div className="absolute inset-0 flex flex-col items-center justify-end pb-12 px-6">
           <motion.div
             className="text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.7 }}
+            initial={{opacity: 0, y: 20}}
+            animate={{opacity: 1, y: 0}}
+            transition={{delay: 0.3, duration: 0.7}}
           >
             <span className="block text-[10px] uppercase tracking-[0.35em] text-[#a87441] font-light mb-3">
               Collection
@@ -289,6 +240,7 @@ export default function Collection() {
               : t('collection.items')}
           </span>
           <div className="flex items-center gap-4">
+            <SortMenu />
             {appliedFilters.length > 0 && (
               <div className="flex items-center gap-2">
                 {appliedFilters.map((filter, i) => (
@@ -308,7 +260,15 @@ export default function Collection() {
       {/* ─── Product Grid ─── */}
       <main className="max-w-[1600px] mx-auto px-6 md:px-12 py-12 md:py-16">
         <Pagination connection={collection.products}>
-          {({ nodes, isLoading, PreviousLink, NextLink, hasNextPage, nextPageUrl, state }) => (
+          {({
+            nodes,
+            isLoading,
+            PreviousLink,
+            NextLink,
+            hasNextPage,
+            nextPageUrl,
+            state,
+          }) => (
             <>
               {/* Previous Link */}
               <div className="flex items-center justify-center mb-10">
@@ -324,9 +284,9 @@ export default function Collection() {
                 {nodes.map((product: any, i: number) => (
                   <motion.div
                     key={product.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: '-60px' }}
+                    initial={{opacity: 0, y: 20}}
+                    whileInView={{opacity: 1, y: 0}}
+                    viewport={{once: true, margin: '-60px'}}
                     transition={{
                       duration: 0.5,
                       ease: [0.16, 1, 0.3, 1],
@@ -338,14 +298,31 @@ export default function Collection() {
                 ))}
               </div>
 
-              {/* Infinite Scroll Trigger */}
-              <InfiniteScrollTrigger
-                hasNextPage={hasNextPage}
-                nextPageUrl={nextPageUrl}
-                isLoading={isLoading}
-                NextLink={NextLink}
-                loadingText={t('collection.loading')}
-              />
+              {/* Load More Button (Manual Pagination) */}
+              {hasNextPage && (
+                <div className="flex items-center justify-center mt-14">
+                  <NextLink className="w-full max-w-xs">
+                    <Button variant="primary" width="full" disabled={isLoading}>
+                      {isLoading ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <motion.div
+                            className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
+                            animate={{rotate: 360}}
+                            transition={{
+                              duration: 0.8,
+                              repeat: Infinity,
+                              ease: 'linear',
+                            }}
+                          />
+                          <span>{t('collection.loading')}</span>
+                        </div>
+                      ) : (
+                        t('collection.loadMore') || 'Load More'
+                      )}
+                    </Button>
+                  </NextLink>
+                </div>
+              )}
             </>
           )}
         </Pagination>
@@ -371,7 +348,6 @@ export default function Collection() {
     </div>
   );
 }
-
 
 const COLLECTION_QUERY = `#graphql
   query CollectionDetails(

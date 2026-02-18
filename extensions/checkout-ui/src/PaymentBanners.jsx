@@ -1,6 +1,6 @@
 /**
  * PaymentBanners - Checkout UI Extension
- * 
+ *
  * Target: purchase.checkout.payment-method-list.render-after
  * Features:
  * - Tabby BNPL banner
@@ -22,12 +22,16 @@ import {
   Image,
 } from '@shopify/ui-extensions-react/checkout';
 
-export default reactExtension('purchase.checkout.payment-method-list.render-after', () => <PaymentBanners />);
+export default reactExtension(
+  'purchase.checkout.payment-method-list.render-after',
+  () => <PaymentBanners />,
+);
 
 function PaymentBanners() {
-  const { cost } = useApi();
+  const {cost} = useApi();
   const totalAmount = useSubscription(cost?.totalAmount?.amount) || 0;
-  const currencyCode = useSubscription(cost?.totalAmount?.currencyCode) || 'SAR';
+  const currencyCode =
+    useSubscription(cost?.totalAmount?.currencyCode) || 'SAR';
 
   // Calculate installment amounts
   const tabbyInstallment = (totalAmount / 4).toFixed(2);
@@ -46,11 +50,16 @@ function PaymentBanners() {
               inlineSize={60}
               blockSize={30}
             >
-              <Text size="small" emphasis="bold">tabby</Text>
+              <Text size="small" emphasis="bold">
+                tabby
+              </Text>
             </View>
             <BlockStack spacing="none">
               <Text size="small">
-                Pay in 4 interest-free payments of <Text emphasis="bold">{tabbyInstallment} {currencyCode}</Text>
+                Pay in 4 interest-free payments of{' '}
+                <Text emphasis="bold">
+                  {tabbyInstallment} {currencyCode}
+                </Text>
               </Text>
               <Text size="extraSmall" appearance="subdued">
                 No fees. Sharia-compliant.
@@ -71,11 +80,16 @@ function PaymentBanners() {
               inlineSize={60}
               blockSize={30}
             >
-              <Text size="small" emphasis="bold" appearance="critical">tamara</Text>
+              <Text size="small" emphasis="bold" appearance="critical">
+                tamara
+              </Text>
             </View>
             <BlockStack spacing="none">
               <Text size="small">
-                Pay in 3 payments of <Text emphasis="bold">{tamaraInstallment} {currencyCode}</Text>
+                Pay in 3 payments of{' '}
+                <Text emphasis="bold">
+                  {tamaraInstallment} {currencyCode}
+                </Text>
               </Text>
               <Text size="extraSmall" appearance="subdued">
                 No interest. No hidden fees.

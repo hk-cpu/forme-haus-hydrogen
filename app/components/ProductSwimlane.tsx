@@ -4,7 +4,7 @@ import {ProductCard} from '~/components/ProductCard';
 
 type ProductSwimlaneProps = {
   title?: string;
-  products?: { nodes: ProductCardFragment[] };
+  products?: {nodes: ProductCardFragment[]};
   count?: number;
 };
 

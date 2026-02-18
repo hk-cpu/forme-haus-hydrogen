@@ -1,7 +1,7 @@
-import { useState, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { useStore } from './LuxuryStorefront';
-import { tokens, Icons } from './Theme';
+import {useState, useRef} from 'react';
+import {motion, AnimatePresence, useScroll, useTransform} from 'framer-motion';
+import {useStore} from './LuxuryStorefront';
+import {tokens, Icons} from './Theme';
 
 // ============================================================================
 // PRODUCT DETAIL PAGE
@@ -29,8 +29,10 @@ const defaultProduct = {
   sku: '1AJIYZ',
   name: 'Signature Wool Cashmere Coat',
   price: 18500,
-  description: 'An elegant wool-cashmere coat featuring a refined silhouette and meticulous craftsmanship. This timeless piece embodies the essence of luxury outerwear.',
-  longDescription: 'Crafted from the finest wool-cashmere blend, this coat represents the pinnacle of luxury tailoring. The double-faced construction eliminates the need for lining, creating a lightweight yet warm garment. Features include hand-stitched lapels, horn buttons, and a concealed interior pocket. The relaxed fit allows for comfortable layering while maintaining a sophisticated drape.',
+  description:
+    'An elegant wool-cashmere coat featuring a refined silhouette and meticulous craftsmanship. This timeless piece embodies the essence of luxury outerwear.',
+  longDescription:
+    'Crafted from the finest wool-cashmere blend, this coat represents the pinnacle of luxury tailoring. The double-faced construction eliminates the need for lining, creating a lightweight yet warm garment. Features include hand-stitched lapels, horn buttons, and a concealed interior pocket. The relaxed fit allows for comfortable layering while maintaining a sophisticated drape.',
   images: [
     'https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=1200&q=90',
     'https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=1200&q=90',
@@ -44,12 +46,16 @@ const defaultProduct = {
     'Alterations and repairs',
     'Complimentary gift wrapping',
   ],
-  deliveryInfo: 'Complimentary express delivery. Orders placed before 2pm arrive the next business day. Free returns within 14 days.',
-  giftingInfo: 'Make it special with our signature gift packaging. Add a personalized message to complete your gift.',
+  deliveryInfo:
+    'Complimentary express delivery. Orders placed before 2pm arrive the next business day. Free returns within 14 days.',
+  giftingInfo:
+    'Make it special with our signature gift packaging. Add a personalized message to complete your gift.',
 };
 
-export default function ProductDetailPage({ product = defaultProduct }: ProductDetailProps) {
-  const { state, dispatch } = useStore();
+export default function ProductDetailPage({
+  product = defaultProduct,
+}: ProductDetailProps) {
+  const {state, dispatch} = useStore();
   const [currentImage, setCurrentImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
@@ -83,20 +89,48 @@ export default function ProductDetailPage({ product = defaultProduct }: ProductD
   };
 
   const prevImage = () => {
-    setCurrentImage((prev) => (prev - 1 + product.images.length) % product.images.length);
+    setCurrentImage(
+      (prev) => (prev - 1 + product.images.length) % product.images.length,
+    );
   };
 
   const accordionSections = [
-    { id: 'services', title: 'In-store Service', content: product.inStoreServices },
-    { id: 'delivery', title: 'Delivery & Returns', content: product.deliveryInfo },
-    { id: 'gifting', title: 'Gifting', content: product.giftingInfo },
+    {
+      id: 'services',
+      title: 'In-store Service',
+      content: product.inStoreServices,
+    },
+    {
+      id: 'delivery',
+      title: 'Delivery & Returns',
+      content: product.deliveryInfo,
+    },
+    {id: 'gifting', title: 'Gifting', content: product.giftingInfo},
   ];
 
   // Suggested products for "Complete the Look"
   const suggestedProducts = [
-    { id: '2', name: 'Silk Scarf', price: 2400, image: 'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=400&q=80' },
-    { id: '3', name: 'Leather Gloves', price: 1850, image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&q=80' },
-    { id: '4', name: 'Wool Beret', price: 980, image: 'https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=400&q=80' },
+    {
+      id: '2',
+      name: 'Silk Scarf',
+      price: 2400,
+      image:
+        'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=400&q=80',
+    },
+    {
+      id: '3',
+      name: 'Leather Gloves',
+      price: 1850,
+      image:
+        'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&q=80',
+    },
+    {
+      id: '4',
+      name: 'Wool Beret',
+      price: 980,
+      image:
+        'https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=400&q=80',
+    },
   ];
 
   return (
@@ -108,10 +142,10 @@ export default function ProductDetailPage({ product = defaultProduct }: ProductD
             <motion.div
               key={currentImage}
               className="gallery-image"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
+              initial={{opacity: 0}}
+              animate={{opacity: 1}}
+              exit={{opacity: 0}}
+              transition={{duration: 0.4}}
             >
               <img src={product.images[currentImage]} alt={product.name} />
             </motion.div>
@@ -128,7 +162,7 @@ export default function ProductDetailPage({ product = defaultProduct }: ProductD
           {/* Wishlist Button */}
           <button
             className="gallery-wishlist"
-            onClick={() => dispatch({ type: 'TOGGLE_WISHLIST', id: product.id })}
+            onClick={() => dispatch({type: 'TOGGLE_WISHLIST', id: product.id})}
           >
             <Icons.Heart filled={isWishlisted} />
           </button>
@@ -173,30 +207,28 @@ export default function ProductDetailPage({ product = defaultProduct }: ProductD
             {product.sizes.map((size) => (
               <button
                 key={size}
-                className={`size-btn ${selectedSize === size ? 'selected' : ''}`}
+                className={`size-btn ${
+                  selectedSize === size ? 'selected' : ''
+                }`}
                 onClick={() => setSelectedSize(size)}
               >
                 {size}
               </button>
             ))}
           </div>
-          {!selectedSize && (
-            <p className="size-hint">Please select a size</p>
-          )}
+          {!selectedSize && <p className="size-hint">Please select a size</p>}
         </div>
 
         {/* Add to Cart Button */}
         <motion.button
           className={`pdp-add-to-cart ${addedToCart ? 'added' : ''}`}
           onClick={handleAddToCart}
-          whileTap={{ scale: 0.98 }}
+          whileTap={{scale: 0.98}}
         >
           {addedToCart ? 'Added to Bag ✓' : 'Place in Cart'}
         </motion.button>
 
-        <button className="pdp-contact-advisor">
-          Contact an Advisor
-        </button>
+        <button className="pdp-contact-advisor">Contact an Advisor</button>
 
         {/* Description */}
         <div className="pdp-description">
@@ -206,10 +238,10 @@ export default function ProductDetailPage({ product = defaultProduct }: ProductD
               <AnimatePresence>
                 {showFullDescription && (
                   <motion.p
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
+                    initial={{height: 0, opacity: 0}}
+                    animate={{height: 'auto', opacity: 1}}
+                    exit={{height: 0, opacity: 0}}
+                    transition={{duration: 0.3}}
                     className="pdp-description-extended"
                   >
                     {product.longDescription}
@@ -234,14 +266,14 @@ export default function ProductDetailPage({ product = defaultProduct }: ProductD
                 className="accordion-header"
                 onClick={() =>
                   setExpandedSection(
-                    expandedSection === section.id ? null : section.id
+                    expandedSection === section.id ? null : section.id,
                   )
                 }
               >
                 <span>{section.title}</span>
                 <motion.span
-                  animate={{ rotate: expandedSection === section.id ? 45 : 0 }}
-                  transition={{ duration: 0.2 }}
+                  animate={{rotate: expandedSection === section.id ? 45 : 0}}
+                  transition={{duration: 0.2}}
                 >
                   <Icons.Plus />
                 </motion.span>
@@ -250,10 +282,10 @@ export default function ProductDetailPage({ product = defaultProduct }: ProductD
                 {expandedSection === section.id && (
                   <motion.div
                     className="accordion-content"
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.25 }}
+                    initial={{height: 0, opacity: 0}}
+                    animate={{height: 'auto', opacity: 1}}
+                    exit={{height: 0, opacity: 0}}
+                    transition={{duration: 0.25}}
                   >
                     {Array.isArray(section.content) ? (
                       <ul>
@@ -281,16 +313,18 @@ export default function ProductDetailPage({ product = defaultProduct }: ProductD
               key={item.id}
               href={`/products/${item.id}`}
               className="suggested-product"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+              initial={{opacity: 0, y: 20}}
+              whileInView={{opacity: 1, y: 0}}
+              viewport={{once: true}}
+              transition={{delay: index * 0.1}}
             >
               <div className="suggested-product-image">
                 <img src={item.image} alt={item.name} />
               </div>
               <h3 className="suggested-product-name">{item.name}</h3>
-              <p className="suggested-product-price">AED {item.price.toLocaleString()}</p>
+              <p className="suggested-product-price">
+                AED {item.price.toLocaleString()}
+              </p>
             </motion.a>
           ))}
         </div>
@@ -711,4 +745,4 @@ export default function ProductDetailPage({ product = defaultProduct }: ProductD
   );
 }
 
-export { ProductDetailPage };
+export {ProductDetailPage};

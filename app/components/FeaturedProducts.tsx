@@ -68,10 +68,7 @@ export function FeaturedProducts({
           layout === 'page' ? 'md:grid-cols-4 sm:grid-col-4' : '',
         ])}
       >
-        <FeatureProductsContent
-          count={count}
-          products={data?.products}
-        />
+        <FeatureProductsContent count={count} products={data?.products} />
       </div>
     </>
   );
@@ -109,10 +106,7 @@ function FeatureProductsContent({
   return (
     <>
       {products.map((product) => (
-        <ProductCard
-          product={product as any}
-          key={product.id}
-        />
+        <ProductCard product={product as any} key={product.id} />
       ))}
     </>
   );

@@ -1,7 +1,7 @@
-import type { SyntheticEvent } from 'react';
-import { useMemo, useState } from 'react';
-import { Menu, Disclosure } from '@headlessui/react';
-import type { Location } from '@remix-run/react';
+import type {SyntheticEvent} from 'react';
+import {useMemo, useState} from 'react';
+import {Menu, Disclosure} from '@headlessui/react';
+import type {Location} from '@remix-run/react';
 import {
   Link,
   useLocation,
@@ -14,8 +14,8 @@ import type {
   ProductFilter,
 } from '@shopify/hydrogen/storefront-api-types';
 
-import { Heading, Text } from '~/components/Text';
-import { IconFilters, IconCaret, IconXMark } from '~/components/Icon';
+import {Heading, Text} from '~/components/Text';
+import {IconFilters, IconCaret, IconXMark} from '~/components/Icon';
 
 export type AppliedFilter = {
   label: string;
@@ -33,7 +33,7 @@ type Props = {
   filters: Filter[];
   appliedFilters?: AppliedFilter[];
   children: React.ReactNode;
-  collections?: Array<{ handle: string; title: string }>;
+  collections?: Array<{handle: string; title: string}>;
 };
 export const FILTER_URL_PREFIX = 'filter.';
 
@@ -59,10 +59,11 @@ export function SortFilter({
       </div>
       <div className="flex flex-col flex-wrap md:flex-row">
         <div
-          className={`transition-all duration-200 ${isOpen
+          className={`transition-all duration-200 ${
+            isOpen
               ? 'opacity-100 min-w-full md:min-w-[240px] md:w-[240px] md:pr-8 max-h-full'
               : 'opacity-0 md:min-w-[0px] md:w-[0px] pr-0 max-h-0 md:max-h-full'
-            }`}
+          }`}
         >
           <FiltersDrawer filters={filters} appliedFilters={appliedFilters} />
         </div>
@@ -120,7 +121,7 @@ export function FiltersDrawer({
         <div className="divide-y">
           {filters.map((filter: Filter) => (
             <Disclosure as="div" key={filter.id} className="w-full">
-              {({ open }) => (
+              {({open}) => (
                 <>
                   <Disclosure.Button className="flex justify-between w-full py-4">
                     <Text size="lead">{filter.label}</Text>
@@ -147,7 +148,7 @@ export function FiltersDrawer({
   );
 }
 
-function AppliedFilters({ filters = [] }: { filters: AppliedFilter[] }) {
+function AppliedFilters({filters = []}: {filters: AppliedFilter[]}) {
   const [params] = useSearchParams();
   const location = useLocation();
   return (
@@ -215,7 +216,7 @@ function getFilterLink(
 
 const PRICE_RANGE_FILTER_DEBOUNCE = 500;
 
-function PriceRangeFilter({ max, min }: { max?: number; min?: number }) {
+function PriceRangeFilter({max, min}: {max?: number; min?: number}) {
   const location = useLocation();
   const params = useMemo(
     () => new URLSearchParams(location.search),
@@ -235,10 +236,10 @@ function PriceRangeFilter({ max, min }: { max?: number; min?: number }) {
       }
 
       const price = {
-        ...(minPrice === undefined ? {} : { min: minPrice }),
-        ...(maxPrice === undefined ? {} : { max: maxPrice }),
+        ...(minPrice === undefined ? {} : {min: minPrice}),
+        ...(maxPrice === undefined ? {} : {max: maxPrice}),
       };
-      const newParams = filterInputToParams({ price }, params);
+      const newParams = filterInputToParams({price}, params);
       navigate(`${location.pathname}?${newParams.toString()}`);
     },
     PRICE_RANGE_FILTER_DEBOUNCE,
@@ -314,8 +315,8 @@ function filterInputToParams(
 }
 
 export default function SortMenu() {
-  const items: { label: string; key: SortParam }[] = [
-    { label: 'Featured', key: 'featured' },
+  const items: {label: string; key: SortParam}[] = [
+    {label: 'Featured', key: 'featured'},
     {
       label: 'Price: Low - High',
       key: 'price-low-high',
@@ -355,8 +356,11 @@ export default function SortMenu() {
           <Menu.Item key={item.label}>
             {() => (
               <Link
-                className={`block text-xs uppercase tracking-widest pb-3 px-3 hover:text-[#C4A484] transition-colors ${activeItem?.key === item.key ? 'text-[#C4A484]' : 'text-[#F0EAE6]/70'
-                  }`}
+                className={`block text-xs uppercase tracking-widest pb-3 px-3 hover:text-[#C4A484] transition-colors ${
+                  activeItem?.key === item.key
+                    ? 'text-[#C4A484]'
+                    : 'text-[#F0EAE6]/70'
+                }`}
                 to={getSortLink(item.key, params, location)}
               >
                 {item.label}

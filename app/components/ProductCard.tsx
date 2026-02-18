@@ -1,29 +1,64 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from '@remix-run/react';
-import { Image, Money } from '@shopify/hydrogen';
-import { useUI } from '~/context/UIContext';
-import { useTranslation } from '~/hooks/useTranslation';
+import {useState} from 'react';
+import {motion, AnimatePresence} from 'framer-motion';
+import {Link} from '@remix-run/react';
+import {Image, Money} from '@shopify/hydrogen';
+import {useUI} from '~/context/UIContext';
+import {useTranslation} from '~/hooks/useTranslation';
 
 // Icons
 const Icons = {
-  Heart: ({ filled = false, className = '' }: { filled?: boolean; className?: string }) => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill={filled ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.5" className={className}>
+  Heart: ({
+    filled = false,
+    className = '',
+  }: {
+    filled?: boolean;
+    className?: string;
+  }) => (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill={filled ? 'currentColor' : 'none'}
+      stroke="currentColor"
+      strokeWidth="1.5"
+      className={className}
+    >
       <path d="M12 21C12 21 3 14 3 8.5C3 5.5 5.5 3 8.5 3C10.24 3 11.91 3.81 12 5C12.09 3.81 13.76 3 15.5 3C18.5 3 21 5.5 21 8.5C21 14 12 21 12 21Z" />
     </svg>
   ),
   ChevronLeft: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <path d="M15 18l-6-6 6-6" />
     </svg>
   ),
   ChevronRight: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <path d="M9 18l6-6-6-6" />
     </svg>
   ),
   Bag: () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
       <path d="M6 6h12l1 15H5L6 6z" />
       <path d="M9 6V5a3 3 0 0 1 6 0v1" />
     </svg>
@@ -67,9 +102,13 @@ interface ProductCardProps {
 /**
  * ProductCard - Polished luxury product card
  */
-export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCardProps) {
-  const { toggleWishlist, isInWishlist } = useUI();
-  const { isRTL, t } = useTranslation();
+export function ProductCard({
+  product,
+  quickAdd = true,
+  index = 0,
+}: ProductCardProps) {
+  const {toggleWishlist, isInWishlist} = useUI();
+  const {isRTL, t} = useTranslation();
   const [currentImage, setCurrentImage] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -80,9 +119,11 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
   const isSale = product.tags?.includes('sale') || false;
 
   // Calculate discount if compareAtPrice exists
-  const hasDiscount = product.compareAtPriceRange?.minVariantPrice?.amount &&
+  const hasDiscount =
+    product.compareAtPriceRange?.minVariantPrice?.amount &&
     product.priceRange?.minVariantPrice?.amount &&
-    parseFloat(product.compareAtPriceRange.minVariantPrice.amount) > parseFloat(product.priceRange.minVariantPrice.amount);
+    parseFloat(product.compareAtPriceRange.minVariantPrice.amount) >
+      parseFloat(product.priceRange.minVariantPrice.amount);
 
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
@@ -108,16 +149,16 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
   return (
     <motion.div
       className="group relative"
-      style={{ direction: isRTL ? 'rtl' : 'ltr' }}
+      style={{direction: isRTL ? 'rtl' : 'ltr'}}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -4 }}
+      initial={{opacity: 0, y: 30}}
+      animate={{opacity: 1, y: 0}}
+      whileHover={{y: -4}}
       transition={{
         duration: 0.5,
         delay: index * 0.1,
-        ease: [0.16, 1, 0.3, 1]
+        ease: [0.16, 1, 0.3, 1],
       }}
     >
       <Link to={`/products/${product.handle}`} className="block">
@@ -127,10 +168,10 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
           <AnimatePresence>
             {isHovered && (
               <motion.div
-                initial={{ x: '-100%', opacity: 0 }}
-                animate={{ x: '100%', opacity: [0, 0.3, 0] }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.8, ease: 'easeInOut' }}
+                initial={{x: '-100%', opacity: 0}}
+                animate={{x: '100%', opacity: [0, 0.3, 0]}}
+                exit={{opacity: 0}}
+                transition={{duration: 0.8, ease: 'easeInOut'}}
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent z-20 pointer-events-none"
               />
             )}
@@ -140,10 +181,10 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
           <AnimatePresence mode="wait">
             <motion.div
               key={currentImage}
-              initial={{ opacity: 0, scale: 1.1 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
+              initial={{opacity: 0, scale: 1.1}}
+              animate={{opacity: 1, scale: 1}}
+              exit={{opacity: 0, scale: 0.95}}
+              transition={{duration: 0.4, ease: 'easeOut'}}
               className="w-full h-full"
             >
               {images.length > 0 ? (
@@ -159,7 +200,9 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
                 />
               ) : (
                 <div className="w-full h-full bg-neutral-200 flex items-center justify-center">
-                  <span className="text-neutral-400 text-sm font-light tracking-wider">No image</span>
+                  <span className="text-neutral-400 text-sm font-light tracking-wider">
+                    No image
+                  </span>
                 </div>
               )}
             </motion.div>
@@ -171,8 +214,8 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
           {/* New Badge */}
           {isNew && (
             <motion.span
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{opacity: 0, x: -20}}
+              animate={{opacity: 1, x: 0}}
               className="absolute top-3 left-3 px-3 py-1.5 bg-[#a87441] text-white text-[10px] uppercase tracking-widest rounded-full flex items-center gap-1.5 shadow-lg z-20"
             >
               <Icons.Sparkles />
@@ -191,17 +234,24 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
           <motion.button
             onClick={handleWishlist}
             initial={false}
-            animate={isWishlisted ? { scale: [1, 1.2, 1] } : {}}
-            transition={{ duration: 0.3 }}
-            className={`absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 z-20 shadow-md ${isWishlisted
-              ? 'bg-[#a87441] text-white'
-              : 'bg-white/80 text-[#4A3C31] opacity-40 group-hover:opacity-100 hover:bg-[#a87441] hover:text-white backdrop-blur-sm'
-              }`}
-            aria-label={isWishlisted ? t('product.removeFromWishlist') : t('product.addToWishlist')}
+            animate={isWishlisted ? {scale: [1, 1.2, 1]} : {}}
+            transition={{duration: 0.3}}
+            className={`absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 z-20 shadow-md ${
+              isWishlisted
+                ? 'bg-[#a87441] text-white'
+                : 'bg-white/80 text-[#4A3C31] opacity-40 group-hover:opacity-100 hover:bg-[#a87441] hover:text-white backdrop-blur-sm'
+            }`}
+            aria-label={
+              isWishlisted
+                ? t('product.removeFromWishlist')
+                : t('product.addToWishlist')
+            }
           >
             <Icons.Heart
               filled={isWishlisted}
-              className={`transition-all duration-300 ${isWishlisted ? 'scale-110' : ''}`}
+              className={`transition-all duration-300 ${
+                isWishlisted ? 'scale-110' : ''
+              }`}
             />
           </motion.button>
 
@@ -210,9 +260,9 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
             {hasMultipleImages && isHovered && (
               <>
                 <motion.button
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
+                  initial={{opacity: 0, x: -10}}
+                  animate={{opacity: 1, x: 0}}
+                  exit={{opacity: 0, x: -10}}
                   onClick={prevImage}
                   className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 text-[#4A3C31] flex items-center justify-center backdrop-blur-sm hover:bg-[#a87441] hover:text-white transition-colors z-20 shadow-md"
                   aria-label={t('product.prevImage', 'Previous image')}
@@ -220,9 +270,9 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
                   <Icons.ChevronLeft />
                 </motion.button>
                 <motion.button
-                  initial={{ opacity: 0, x: 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 10 }}
+                  initial={{opacity: 0, x: 10}}
+                  animate={{opacity: 1, x: 0}}
+                  exit={{opacity: 0, x: 10}}
                   onClick={nextImage}
                   className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 text-[#4A3C31] flex items-center justify-center backdrop-blur-sm hover:bg-[#a87441] hover:text-white transition-colors z-20 shadow-md"
                   aria-label={t('product.nextImage', 'Next image')}
@@ -244,11 +294,14 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
                     e.stopPropagation();
                     setCurrentImage(idx);
                   }}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentImage
-                    ? 'bg-[#a87441] w-6'
-                    : 'bg-white/50 w-1.5 hover:bg-white/80'
-                    }`}
-                  aria-label={`${t('product.goToImage', 'Go to image')} ${idx + 1}`}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    idx === currentImage
+                      ? 'bg-[#a87441] w-6'
+                      : 'bg-white/50 w-1.5 hover:bg-white/80'
+                  }`}
+                  aria-label={`${t('product.goToImage', 'Go to image')} ${
+                    idx + 1
+                  }`}
                 />
               ))}
             </div>
@@ -257,9 +310,9 @@ export function ProductCard({ product, quickAdd = true, index = 0 }: ProductCard
           {/* Quick Add Button */}
           {quickAdd && product.availableForSale !== false && (
             <motion.button
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
+              initial={{opacity: 0, y: 20}}
+              animate={{opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20}}
+              transition={{duration: 0.3, ease: 'easeOut'}}
               className="absolute bottom-4 left-4 right-4 bg-[#a87441] hover:bg-[#8B5E3C] text-white py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl z-20"
               onClick={(e) => {
                 e.preventDefault();

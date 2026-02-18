@@ -6,25 +6,25 @@ import {
   useMatches,
   useOutlet,
 } from '@remix-run/react';
-import { Suspense } from 'react';
-import { defer, redirect } from '@remix-run/server-runtime';
-import { type LoaderFunctionArgs } from '@shopify/remix-oxygen';
-import { flattenConnection } from '@shopify/hydrogen';
+import {Suspense} from 'react';
+import {defer, redirect} from '@remix-run/server-runtime';
+import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import {flattenConnection} from '@shopify/hydrogen';
 
 // import type {
 //   CustomerDetailsFragment,
 //   OrderCardFragment,
 // } from 'customer-accountapi.generated';
-import { PageHeader, Text } from '~/components/Text';
-import { Button } from '~/components/Button';
-import { OrderCard } from '~/components/OrderCard';
-import { AccountDetails } from '~/components/AccountDetails';
-import { AccountAddressBook } from '~/components/AccountAddressBook';
-import { Modal } from '~/components/Modal';
-import { ProductSwimlane } from '~/components/ProductSwimlane';
-import { FeaturedCollections } from '~/components/FeaturedCollections';
-import { usePrefixPathWithLocale } from '~/lib/utils';
-import { CACHE_NONE, routeHeaders } from '~/data/cache';
+import {PageHeader, Text} from '~/components/Text';
+import {Button} from '~/components/Button';
+import {OrderCard} from '~/components/OrderCard';
+import {AccountDetails} from '~/components/AccountDetails';
+import {AccountAddressBook} from '~/components/AccountAddressBook';
+import {Modal} from '~/components/Modal';
+import {ProductSwimlane} from '~/components/ProductSwimlane';
+import {FeaturedCollections} from '~/components/FeaturedCollections';
+import {usePrefixPathWithLocale} from '~/lib/utils';
+import {CACHE_NONE, routeHeaders} from '~/data/cache';
 // import { CUSTOMER_DETAILS_QUERY } from '~/graphql/customer-account/CustomerDetailsQuery';
 
 // import { doLogout } from './($locale).account_.logout';
@@ -35,15 +35,15 @@ import {
 
 export const headers = routeHeaders;
 
-export async function loader({ request, context, params }: LoaderFunctionArgs) {
-  const { session, storefront } = context;
+export async function loader({request, context, params}: LoaderFunctionArgs) {
+  const {session, storefront} = context;
   const customerAccessToken = await session.get('customerAccessToken');
 
   if (!customerAccessToken) {
     return redirect('/account/login');
   }
 
-  const { customer } = await storefront.query(CUSTOMER_QUERY, {
+  const {customer} = await storefront.query(CUSTOMER_QUERY, {
     variables: {
       customerAccessToken: customerAccessToken.accessToken,
       country: storefront.i18n.country,
@@ -157,7 +157,7 @@ export default function Authenticated() {
 
   // routes that export handle { renderInModal: true }
   const renderOutletInModal = matches.some((match) => {
-    const handle = match?.handle as { renderInModal?: boolean };
+    const handle = match?.handle as {renderInModal?: boolean};
     return handle?.renderInModal;
   });
 
@@ -166,13 +166,13 @@ export default function Authenticated() {
       return (
         <>
           <Modal cancelLink="/account">
-            <Outlet context={{ customer: data.customer }} />
+            <Outlet context={{customer: data.customer}} />
           </Modal>
           <Account {...data} />
         </>
       );
     } else {
-      return <Outlet context={{ customer: data.customer }} />;
+      return <Outlet context={{customer: data.customer}} />;
     }
   }
 
@@ -185,7 +185,7 @@ interface AccountType {
   heading: string;
 }
 
-function Account({ customer, heading, featuredDataPromise }: AccountType) {
+function Account({customer, heading, featuredDataPromise}: AccountType) {
   const orders = flattenConnection(customer.orders);
   const addresses = flattenConnection(customer.addresses);
 
@@ -193,7 +193,10 @@ function Account({ customer, heading, featuredDataPromise }: AccountType) {
     <>
       <PageHeader heading={heading} className="text-center mb-10">
         <Form method="post" action={usePrefixPathWithLocale('/account/logout')}>
-          <button type="submit" className="text-[#C4A484] hover:text-[#F0EAE6] text-xs uppercase tracking-[0.2em] relative group transition-colors pb-1 border-b border-transparent hover:border-[#F0EAE6]/50">
+          <button
+            type="submit"
+            className="text-[#C4A484] hover:text-[#F0EAE6] text-xs uppercase tracking-[0.2em] relative group transition-colors pb-1 border-b border-transparent hover:border-[#F0EAE6]/50"
+          >
             Sign out
           </button>
         </Form>
@@ -227,11 +230,13 @@ type OrderCardsProps = {
   orders: any[]; // Using any for now until types are regenerated
 };
 
-function AccountOrderHistory({ orders }: OrderCardsProps) {
+function AccountOrderHistory({orders}: OrderCardsProps) {
   return (
     <div className="mt-6">
       <div className="grid w-full gap-4 p-4 py-6 md:gap-8 md:p-8 lg:p-12 border-t border-[#F0EAE6]/10">
-        <h2 className="font-serif text-[#F0EAE6] text-2xl mb-6">Order History</h2>
+        <h2 className="font-serif text-[#F0EAE6] text-2xl mb-6">
+          Order History
+        </h2>
         {orders?.length ? <Orders orders={orders} /> : <EmptyOrders />}
       </div>
     </div>
@@ -257,7 +262,7 @@ function EmptyOrders() {
   );
 }
 
-function Orders({ orders }: OrderCardsProps) {
+function Orders({orders}: OrderCardsProps) {
   return (
     <ul className="grid grid-flow-row grid-cols-1 gap-2 gap-y-6 md:gap-4 lg:gap-6 false sm:grid-cols-3">
       {orders.map((order) => (

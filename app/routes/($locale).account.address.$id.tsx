@@ -1,8 +1,5 @@
-import { json, redirect } from '@remix-run/server-runtime';
-import {
-  type ActionFunction,
-  type AppLoadContext,
-} from '@shopify/remix-oxygen';
+import {json, redirect} from '@remix-run/server-runtime';
+import {type ActionFunction, type AppLoadContext} from '@shopify/remix-oxygen';
 import {
   Form,
   useActionData,
@@ -10,21 +7,21 @@ import {
   useParams,
   useNavigation,
 } from '@remix-run/react';
-import { flattenConnection } from '@shopify/hydrogen';
-import type { CustomerAddressInput } from '@shopify/hydrogen/customer-account-api-types';
+import {flattenConnection} from '@shopify/hydrogen';
+import type {CustomerAddressInput} from '@shopify/hydrogen/customer-account-api-types';
 import invariant from 'tiny-invariant';
 
-import { Button } from '~/components/Button';
-import { Text } from '~/components/Text';
-import { getInputStyleClasses } from '~/lib/utils';
+import {Button} from '~/components/Button';
+import {Text} from '~/components/Text';
+import {getInputStyleClasses} from '~/lib/utils';
 import {
   UPDATE_ADDRESS_MUTATION,
   DELETE_ADDRESS_MUTATION,
   CREATE_ADDRESS_MUTATION,
 } from '~/graphql/customer-account/CustomerAddressMutations';
 
-import { doLogout } from './($locale).account_.logout';
-import type { AccountOutletContext } from './($locale).account.edit';
+import {doLogout} from './($locale).account_.logout';
+import type {AccountOutletContext} from './($locale).account.edit';
 
 interface ActionData {
   formError?: string;
@@ -34,8 +31,8 @@ export const handle = {
   renderInModal: true,
 };
 
-export const action: ActionFunction = async ({ request, context, params }) => {
-  const { customerAccount } = context;
+export const action: ActionFunction = async ({request, context, params}) => {
+  const {customerAccount} = context;
   const formData = await request.formData();
 
   // Double-check current user is logged in.
@@ -49,9 +46,9 @@ export const action: ActionFunction = async ({ request, context, params }) => {
 
   if (request.method === 'DELETE') {
     try {
-      const { data, errors } = await customerAccount.mutate(
+      const {data, errors} = await customerAccount.mutate(
         DELETE_ADDRESS_MUTATION,
-        { variables: { addressId } },
+        {variables: {addressId}},
       );
 
       invariant(!errors?.length, errors?.[0]?.message);
@@ -66,7 +63,7 @@ export const action: ActionFunction = async ({ request, context, params }) => {
       );
     } catch (error: any) {
       return json(
-        { formError: error.message },
+        {formError: error.message},
         {
           status: 400,
         },
@@ -102,9 +99,9 @@ export const action: ActionFunction = async ({ request, context, params }) => {
 
   if (addressId === 'add') {
     try {
-      const { data, errors } = await customerAccount.mutate(
+      const {data, errors} = await customerAccount.mutate(
         CREATE_ADDRESS_MUTATION,
-        { variables: { address, defaultAddress } },
+        {variables: {address, defaultAddress}},
       );
 
       invariant(!errors?.length, errors?.[0]?.message);
@@ -124,7 +121,7 @@ export const action: ActionFunction = async ({ request, context, params }) => {
       );
     } catch (error: any) {
       return json(
-        { formError: error.message },
+        {formError: error.message},
         {
           status: 400,
         },
@@ -132,7 +129,7 @@ export const action: ActionFunction = async ({ request, context, params }) => {
     }
   } else {
     try {
-      const { data, errors } = await customerAccount.mutate(
+      const {data, errors} = await customerAccount.mutate(
         UPDATE_ADDRESS_MUTATION,
         {
           variables: {
@@ -155,7 +152,7 @@ export const action: ActionFunction = async ({ request, context, params }) => {
       );
     } catch (error: any) {
       return json(
-        { formError: error.message },
+        {formError: error.message},
         {
           status: 400,
         },
@@ -165,11 +162,11 @@ export const action: ActionFunction = async ({ request, context, params }) => {
 };
 
 export default function EditAddress() {
-  const { id: addressId } = useParams();
+  const {id: addressId} = useParams();
   const isNewAddress = addressId === 'add';
   const actionData = useActionData<ActionData>();
-  const { state } = useNavigation();
-  const { customer } = useOutletContext<AccountOutletContext>();
+  const {state} = useNavigation();
+  const {customer} = useOutletContext<AccountOutletContext>();
   const addresses = flattenConnection(customer.addresses);
   const defaultAddress = customer.defaultAddress;
   /**

@@ -1,12 +1,12 @@
 /**
  * Formé Haus Web Pixel - Adjust Attribution Tracking
- * 
+ *
  * Implements Ounass-style app attribution and event tracking:
  * - checkout_started: User initiates checkout
  * - checkout_completed: Purchase complete
  * - payment_info_submitted: Payment method selected
  * - product_added_to_cart: Add to cart events
- * 
+ *
  * Sends data to Adjust SDK for attribution analysis.
  */
 
@@ -35,7 +35,7 @@ function initAdjust() {
       // Disable auto-tracking, we'll send custom events
       disableAutoTracking: true,
     });
-    
+
     // Log initialization for debugging
     console.log('[Adjust] SDK initialized');
   };
@@ -50,9 +50,9 @@ function trackAdjustEvent(eventToken, params = {}) {
   }
 
   const event = new window.Adjust.Event(eventToken);
-  
+
   // Add custom parameters
-  Object.keys(params).forEach(key => {
+  Object.keys(params).forEach((key) => {
     event.addCallbackParameter(key, String(params[key]));
   });
 
@@ -62,8 +62,8 @@ function trackAdjustEvent(eventToken, params = {}) {
 
 // Shopify Event Handlers
 analytics.subscribe('checkout_started', (event) => {
-  const { checkout } = event.data;
-  
+  const {checkout} = event.data;
+
   trackAdjustEvent('checkout_started', {
     checkout_id: checkout.token,
     currency: checkout.currencyCode,
@@ -73,8 +73,8 @@ analytics.subscribe('checkout_started', (event) => {
 });
 
 analytics.subscribe('checkout_completed', (event) => {
-  const { checkout, order } = event.data;
-  
+  const {checkout, order} = event.data;
+
   // Track purchase - this is crucial for attribution
   trackAdjustEvent('purchase', {
     order_id: order.id,
@@ -102,8 +102,8 @@ analytics.subscribe('checkout_completed', (event) => {
 });
 
 analytics.subscribe('payment_info_submitted', (event) => {
-  const { checkout, paymentMethod } = event.data;
-  
+  const {checkout, paymentMethod} = event.data;
+
   trackAdjustEvent('payment_info', {
     checkout_id: checkout.token,
     payment_method: paymentMethod.type,
@@ -113,8 +113,8 @@ analytics.subscribe('payment_info_submitted', (event) => {
 });
 
 analytics.subscribe('product_added_to_cart', (event) => {
-  const { cartLine, productVariant } = event.data;
-  
+  const {cartLine, productVariant} = event.data;
+
   trackAdjustEvent('add_to_cart', {
     product_id: productVariant.product.id,
     variant_id: productVariant.id,
@@ -127,8 +127,8 @@ analytics.subscribe('product_added_to_cart', (event) => {
 });
 
 analytics.subscribe('product_viewed', (event) => {
-  const { productVariant } = event.data;
-  
+  const {productVariant} = event.data;
+
   trackAdjustEvent('product_view', {
     product_id: productVariant.product.id,
     variant_id: productVariant.id,
@@ -139,8 +139,8 @@ analytics.subscribe('product_viewed', (event) => {
 });
 
 analytics.subscribe('search_submitted', (event) => {
-  const { searchResult } = event.data;
-  
+  const {searchResult} = event.data;
+
   trackAdjustEvent('search', {
     search_term: searchResult.query,
     results_count: searchResult.productVariants.length,
@@ -149,8 +149,8 @@ analytics.subscribe('search_submitted', (event) => {
 
 // Custom event for app store redirects (Ounass-style)
 analytics.subscribe('custom_event', (event) => {
-  const { name, data } = event.data;
-  
+  const {name, data} = event.data;
+
   if (name === 'app_store_redirect') {
     trackAdjustEvent('app_store_click', {
       platform: data.platform, // 'ios' or 'android'
@@ -158,7 +158,7 @@ analytics.subscribe('custom_event', (event) => {
       campaign: data.campaign || 'organic',
     });
   }
-  
+
   if (name === 'loyalty_redirect') {
     trackAdjustEvent('loyalty_click', {
       destination: data.destination || 'myamber.ae',

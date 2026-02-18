@@ -1,22 +1,22 @@
-import { type LoaderFunctionArgs } from '@shopify/remix-oxygen';
+import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 
-export const loader = ({ request }: LoaderFunctionArgs) => {
-    const url = new URL(request.url);
+export const loader = ({request}: LoaderFunctionArgs) => {
+  const url = new URL(request.url);
 
-    return new Response(robotsTxtData({ url: url.origin }), {
-        status: 200,
-        headers: {
-            'content-type': 'text/plain',
-            // Cache for 24 hours
-            'cache-control': `max-age=${60 * 60 * 24}`,
-        },
-    });
+  return new Response(robotsTxtData({url: url.origin}), {
+    status: 200,
+    headers: {
+      'content-type': 'text/plain',
+      // Cache for 24 hours
+      'cache-control': `max-age=${60 * 60 * 24}`,
+    },
+  });
 };
 
-function robotsTxtData({ url }: { url: string }) {
-    const sitemapUrl = url ? `${url}/sitemap.xml` : undefined;
+function robotsTxtData({url}: {url: string}) {
+  const sitemapUrl = url ? `${url}/sitemap.xml` : undefined;
 
-    return `
+  return `
 User-agent: *
 Disallow: /admin
 Disallow: /cart

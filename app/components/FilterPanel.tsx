@@ -1,34 +1,69 @@
-import { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useUI } from '~/context/UIContext';
-import { useTranslation } from '~/hooks/useTranslation';
+import {useState, useCallback} from 'react';
+import {motion, AnimatePresence} from 'framer-motion';
+import {useUI} from '~/context/UIContext';
+import {useTranslation} from '~/hooks/useTranslation';
 
 // Icons
 const Icons = {
   Close: () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
       <line x1="4" y1="4" x2="20" y2="20" />
       <line x1="20" y1="4" x2="4" y2="20" />
     </svg>
   ),
   Plus: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <line x1="12" y1="5" x2="12" y2="19" />
       <line x1="5" y1="12" x2="19" y2="12" />
     </svg>
   ),
   Minus: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <line x1="5" y1="12" x2="19" y2="12" />
     </svg>
   ),
   Check: () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <polyline points="20,6 9,17 4,12" />
     </svg>
   ),
   Sliders: () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
       <line x1="4" y1="6" x2="20" y2="6" />
       <line x1="6" y1="12" x2="18" y2="12" />
       <line x1="8" y1="18" x2="16" y2="18" />
@@ -39,51 +74,51 @@ const Icons = {
 // Filter options
 const filterData = {
   categories: [
-    { id: 'dresses', label: 'Dresses', count: 48 },
-    { id: 'tops', label: 'Tops & Blouses', count: 72 },
-    { id: 'blazers', label: 'Blazers', count: 24 },
-    { id: 'pants', label: 'Pants', count: 36 },
-    { id: 'skirts', label: 'Skirts', count: 28 },
-    { id: 'knitwear', label: 'Knitwear', count: 42 },
-    { id: 'outerwear', label: 'Outerwear', count: 18 },
-    { id: 'activewear', label: 'Activewear', count: 15 },
+    {id: 'dresses', label: 'Dresses', count: 48},
+    {id: 'tops', label: 'Tops & Blouses', count: 72},
+    {id: 'blazers', label: 'Blazers', count: 24},
+    {id: 'pants', label: 'Pants', count: 36},
+    {id: 'skirts', label: 'Skirts', count: 28},
+    {id: 'knitwear', label: 'Knitwear', count: 42},
+    {id: 'outerwear', label: 'Outerwear', count: 18},
+    {id: 'activewear', label: 'Activewear', count: 15},
   ],
   collections: [
-    { id: 'new', label: 'New Arrivals', count: 56 },
-    { id: 'spring', label: 'Spring-Summer 2025', count: 124 },
-    { id: 'evening', label: 'Evening Collection', count: 32 },
-    { id: 'resort', label: 'Resort Collection', count: 48 },
-    { id: 'sale', label: 'Sale', count: 89 },
+    {id: 'new', label: 'New Arrivals', count: 56},
+    {id: 'spring', label: 'Spring-Summer 2025', count: 124},
+    {id: 'evening', label: 'Evening Collection', count: 32},
+    {id: 'resort', label: 'Resort Collection', count: 48},
+    {id: 'sale', label: 'Sale', count: 89},
   ],
   colors: [
-    { id: 'white', label: 'White', hex: '#FFFFFF' },
-    { id: 'black', label: 'Black', hex: '#1A1A1A' },
-    { id: 'grey', label: 'Grey', hex: '#808080' },
-    { id: 'beige', label: 'Beige', hex: '#F5F5DC' },
-    { id: 'brown', label: 'Brown', hex: '#8B4513' },
-    { id: 'red', label: 'Red', hex: '#DC143C' },
-    { id: 'orange', label: 'Orange', hex: '#FF8C00' },
-    { id: 'green', label: 'Green', hex: '#228B22' },
-    { id: 'blue', label: 'Blue', hex: '#4169E1' },
-    { id: 'navy', label: 'Navy', hex: '#000080' },
-    { id: 'pink', label: 'Pink', hex: '#FFB6C1' },
-    { id: 'gold', label: 'Gold', hex: '#D4AF37' },
+    {id: 'white', label: 'White', hex: '#FFFFFF'},
+    {id: 'black', label: 'Black', hex: '#1A1A1A'},
+    {id: 'grey', label: 'Grey', hex: '#808080'},
+    {id: 'beige', label: 'Beige', hex: '#F5F5DC'},
+    {id: 'brown', label: 'Brown', hex: '#8B4513'},
+    {id: 'red', label: 'Red', hex: '#DC143C'},
+    {id: 'orange', label: 'Orange', hex: '#FF8C00'},
+    {id: 'green', label: 'Green', hex: '#228B22'},
+    {id: 'blue', label: 'Blue', hex: '#4169E1'},
+    {id: 'navy', label: 'Navy', hex: '#000080'},
+    {id: 'pink', label: 'Pink', hex: '#FFB6C1'},
+    {id: 'gold', label: 'Gold', hex: '#D4AF37'},
   ],
   sizes: [
-    { id: 'xxs', label: 'XXS' },
-    { id: 'xs', label: 'XS' },
-    { id: 's', label: 'S' },
-    { id: 'm', label: 'M' },
-    { id: 'l', label: 'L' },
-    { id: 'xl', label: 'XL' },
-    { id: 'xxl', label: 'XXL' },
-    { id: '32', label: '32' },
-    { id: '34', label: '34' },
-    { id: '36', label: '36' },
-    { id: '38', label: '38' },
-    { id: '40', label: '40' },
-    { id: '42', label: '42' },
-    { id: '44', label: '44' },
+    {id: 'xxs', label: 'XXS'},
+    {id: 'xs', label: 'XS'},
+    {id: 's', label: 'S'},
+    {id: 'm', label: 'M'},
+    {id: 'l', label: 'L'},
+    {id: 'xl', label: 'XL'},
+    {id: 'xxl', label: 'XXL'},
+    {id: '32', label: '32'},
+    {id: '34', label: '34'},
+    {id: '36', label: '36'},
+    {id: '38', label: '38'},
+    {id: '40', label: '40'},
+    {id: '42', label: '42'},
+    {id: '44', label: '44'},
   ],
 };
 
@@ -98,7 +133,7 @@ interface FilterState {
 
 /**
  * FilterPanel - Advanced filter panel with slide-in animation
- * 
+ *
  * Features:
  * - Slide-in from right
  * - Accordion sections: Categories, Collections, Colors, Sizes, Price Range
@@ -107,10 +142,13 @@ interface FilterState {
  * - "Show X products" CTA
  * - Dark luxury theme
  */
-export function FilterPanel({ totalProducts = 156 }: { totalProducts?: number }) {
-  const { state, dispatch } = useUI();
-  const { isRTL, t } = useTranslation();
-  const [expandedSections, setExpandedSections] = useState<string[]>(['categories', 'price']);
+export function FilterPanel({totalProducts = 156}: {totalProducts?: number}) {
+  const {state, dispatch} = useUI();
+  const {isRTL, t} = useTranslation();
+  const [expandedSections, setExpandedSections] = useState<string[]>([
+    'categories',
+    'price',
+  ]);
   const [filters, setFilters] = useState<FilterState>({
     categories: [],
     collections: [],
@@ -122,7 +160,9 @@ export function FilterPanel({ totalProducts = 156 }: { totalProducts?: number })
 
   const toggleSection = (section: string) => {
     setExpandedSections((prev) =>
-      prev.includes(section) ? prev.filter((s) => s !== section) : [...prev, section]
+      prev.includes(section)
+        ? prev.filter((s) => s !== section)
+        : [...prev, section],
     );
   };
 
@@ -132,16 +172,16 @@ export function FilterPanel({ totalProducts = 156 }: { totalProducts?: number })
       const updated = current.includes(id)
         ? current.filter((item) => item !== id)
         : [...current, id];
-      return { ...prev, [type]: updated };
+      return {...prev, [type]: updated};
     });
   }, []);
 
   const setOnlineOnly = (value: boolean) => {
-    setFilters((prev) => ({ ...prev, onlineOnly: value }));
+    setFilters((prev) => ({...prev, onlineOnly: value}));
   };
 
   const setPriceRange = (range: [number, number]) => {
-    setFilters((prev) => ({ ...prev, priceRange: range }));
+    setFilters((prev) => ({...prev, priceRange: range}));
   };
 
   const clearFilters = () => {
@@ -156,7 +196,7 @@ export function FilterPanel({ totalProducts = 156 }: { totalProducts?: number })
   };
 
   const handleClose = () => {
-    dispatch({ type: 'CLOSE_FILTER' });
+    dispatch({type: 'CLOSE_FILTER'});
   };
 
   // Calculate active filters count
@@ -177,9 +217,9 @@ export function FilterPanel({ totalProducts = 156 }: { totalProducts?: number })
   };
 
   const panelVariants = {
-    initial: { x: isRTL ? '-100%' : '100%' },
-    animate: { x: 0 },
-    exit: { x: isRTL ? '-100%' : '100%' },
+    initial: {x: isRTL ? '-100%' : '100%'},
+    animate: {x: 0},
+    exit: {x: isRTL ? '-100%' : '100%'},
   };
 
   return (
@@ -189,21 +229,21 @@ export function FilterPanel({ totalProducts = 156 }: { totalProducts?: number })
           {/* Backdrop */}
           <motion.div
             className="fixed inset-0 bg-black/60 z-[200]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
             onClick={handleClose}
           />
 
           {/* Filter Panel */}
           <motion.aside
             className="fixed top-0 right-0 h-full w-full max-w-[420px] bg-[#121212] z-[201] flex flex-col overflow-hidden"
-            style={{ direction: isRTL ? 'rtl' : 'ltr' }}
+            style={{direction: isRTL ? 'rtl' : 'ltr'}}
             variants={panelVariants}
             initial="initial"
             animate="animate"
             exit="exit"
-            transition={{ type: 'tween', duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            transition={{type: 'tween', duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-[#a87441]/20">
@@ -256,7 +296,7 @@ export function FilterPanel({ totalProducts = 156 }: { totalProducts?: number })
                     animate={{
                       left: filters.onlineOnly ? 'calc(100% - 20px)' : '4px',
                     }}
-                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                    transition={{type: 'spring', stiffness: 500, damping: 30}}
                   />
                 </button>
               </div>
@@ -285,9 +325,13 @@ export function FilterPanel({ totalProducts = 156 }: { totalProducts?: number })
                             <Icons.Check />
                           )}
                         </span>
-                        <span className="text-[#F0EAE6] text-sm">{category.label}</span>
+                        <span className="text-[#F0EAE6] text-sm">
+                          {category.label}
+                        </span>
                       </span>
-                      <span className="text-[#AA9B8F] text-xs">({category.count})</span>
+                      <span className="text-[#AA9B8F] text-xs">
+                        ({category.count})
+                      </span>
                       <input
                         type="checkbox"
                         className="sr-only"
@@ -319,16 +363,24 @@ export function FilterPanel({ totalProducts = 156 }: { totalProducts?: number })
                               : 'border-[#a87441]/30 group-hover:border-[#a87441]'
                           }`}
                         >
-                          {filters.collections.includes(collection.id) && <Icons.Check />}
+                          {filters.collections.includes(collection.id) && (
+                            <Icons.Check />
+                          )}
                         </span>
-                        <span className="text-[#F0EAE6] text-sm">{collection.label}</span>
+                        <span className="text-[#F0EAE6] text-sm">
+                          {collection.label}
+                        </span>
                       </span>
-                      <span className="text-[#AA9B8F] text-xs">({collection.count})</span>
+                      <span className="text-[#AA9B8F] text-xs">
+                        ({collection.count})
+                      </span>
                       <input
                         type="checkbox"
                         className="sr-only"
                         checked={filters.collections.includes(collection.id)}
-                        onChange={() => toggleFilter('collections', collection.id)}
+                        onChange={() =>
+                          toggleFilter('collections', collection.id)
+                        }
                       />
                     </label>
                   ))}
@@ -351,7 +403,7 @@ export function FilterPanel({ totalProducts = 156 }: { totalProducts?: number })
                           ? 'border-[#a87441] scale-110'
                           : 'border-transparent hover:scale-105'
                       }`}
-                      style={{ backgroundColor: color.hex }}
+                      style={{backgroundColor: color.hex}}
                       title={color.label}
                       aria-label={color.label}
                     >
@@ -396,8 +448,12 @@ export function FilterPanel({ totalProducts = 156 }: { totalProducts?: number })
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-[#AA9B8F]">{formatPrice(filters.priceRange[0])}</span>
-                    <span className="text-[#AA9B8F]">{formatPrice(filters.priceRange[1])}</span>
+                    <span className="text-[#AA9B8F]">
+                      {formatPrice(filters.priceRange[0])}
+                    </span>
+                    <span className="text-[#AA9B8F]">
+                      {formatPrice(filters.priceRange[1])}
+                    </span>
                   </div>
 
                   {/* Price Slider */}
@@ -406,7 +462,9 @@ export function FilterPanel({ totalProducts = 156 }: { totalProducts?: number })
                       className="absolute h-full bg-[#a87441] rounded-full"
                       style={{
                         left: `${(filters.priceRange[0] / 50000) * 100}%`,
-                        right: `${100 - (filters.priceRange[1] / 50000) * 100}%`,
+                        right: `${
+                          100 - (filters.priceRange[1] / 50000) * 100
+                        }%`,
                       }}
                     />
                     <input
@@ -417,12 +475,15 @@ export function FilterPanel({ totalProducts = 156 }: { totalProducts?: number })
                       value={filters.priceRange[0]}
                       onChange={(e) =>
                         setPriceRange([
-                          Math.min(Number(e.target.value), filters.priceRange[1] - 1000),
+                          Math.min(
+                            Number(e.target.value),
+                            filters.priceRange[1] - 1000,
+                          ),
                           filters.priceRange[1],
                         ])
                       }
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                      style={{ pointerEvents: 'auto' }}
+                      style={{pointerEvents: 'auto'}}
                     />
                     <input
                       type="range"
@@ -433,11 +494,14 @@ export function FilterPanel({ totalProducts = 156 }: { totalProducts?: number })
                       onChange={(e) =>
                         setPriceRange([
                           filters.priceRange[0],
-                          Math.max(Number(e.target.value), filters.priceRange[0] + 1000),
+                          Math.max(
+                            Number(e.target.value),
+                            filters.priceRange[0] + 1000,
+                          ),
                         ])
                       }
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                      style={{ pointerEvents: 'auto' }}
+                      style={{pointerEvents: 'auto'}}
                     />
                   </div>
 
@@ -451,7 +515,10 @@ export function FilterPanel({ totalProducts = 156 }: { totalProducts?: number })
                         type="number"
                         value={filters.priceRange[0]}
                         onChange={(e) =>
-                          setPriceRange([Math.max(0, Number(e.target.value)), filters.priceRange[1]])
+                          setPriceRange([
+                            Math.max(0, Number(e.target.value)),
+                            filters.priceRange[1],
+                          ])
                         }
                         className="w-full bg-[#1A1A1A] border border-[#a87441]/20 rounded-lg px-3 py-2 text-[#F0EAE6] text-sm focus:border-[#a87441] focus:outline-none"
                       />
@@ -464,7 +531,10 @@ export function FilterPanel({ totalProducts = 156 }: { totalProducts?: number })
                         type="number"
                         value={filters.priceRange[1]}
                         onChange={(e) =>
-                          setPriceRange([filters.priceRange[0], Math.min(50000, Number(e.target.value))])
+                          setPriceRange([
+                            filters.priceRange[0],
+                            Math.min(50000, Number(e.target.value)),
+                          ])
                         }
                         className="w-full bg-[#1A1A1A] border border-[#a87441]/20 rounded-lg px-3 py-2 text-[#F0EAE6] text-sm focus:border-[#a87441] focus:outline-none"
                       />
@@ -477,7 +547,9 @@ export function FilterPanel({ totalProducts = 156 }: { totalProducts?: number })
             {/* Footer */}
             <div className="border-t border-[#a87441]/20 px-6 py-4 space-y-3">
               <button className="w-full bg-[#a87441] hover:bg-[#8B5E3C] text-white font-medium py-4 rounded-lg transition-colors flex items-center justify-center gap-2">
-                {t('filter.showProducts', 'Show {count} products', { count: totalProducts })}
+                {t('filter.showProducts', 'Show {count} products', {
+                  count: totalProducts,
+                })}
               </button>
               <button
                 onClick={handleClose}
@@ -512,8 +584,19 @@ function FilterSection({
         className="w-full flex items-center justify-between py-4 text-left"
       >
         <span className="text-[#F0EAE6] font-medium">{title}</span>
-        <span className={`text-[#AA9B8F] transition-transform ${isExpanded ? 'rotate-180' : ''}`}>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <span
+          className={`text-[#AA9B8F] transition-transform ${
+            isExpanded ? 'rotate-180' : ''
+          }`}
+        >
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             <polyline points="6,9 12,15 18,9" />
           </svg>
         </span>
@@ -521,10 +604,10 @@ function FilterSection({
       <AnimatePresence initial={false}>
         {isExpanded && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            initial={{height: 0, opacity: 0}}
+            animate={{height: 'auto', opacity: 1}}
+            exit={{height: 0, opacity: 0}}
+            transition={{duration: 0.2}}
             className="overflow-hidden pb-4"
           >
             {children}

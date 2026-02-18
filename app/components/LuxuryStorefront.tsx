@@ -1,13 +1,18 @@
-import { useState, useEffect, useRef, createContext, useContext, ReactNode } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Link } from '@remix-run/react';
-import { tokens, Icons } from './Theme';
+import {
+  useState,
+  useEffect,
+  useRef,
+  createContext,
+  useContext,
+  ReactNode,
+} from 'react';
+import {motion, AnimatePresence, useScroll, useTransform} from 'framer-motion';
+import {Link} from '@remix-run/react';
+import {tokens, Icons} from './Theme';
 
 // ============================================================================
 // DESIGN TOKENS & THEME
 // ============================================================================
-
-
 
 // ============================================================================
 // GLOBAL STATE CONTEXT
@@ -45,61 +50,87 @@ const StoreContext = createContext<{
 function storeReducer(state: StoreState, action: any): StoreState {
   switch (action.type) {
     case 'TOGGLE_MENU':
-      return { ...state, isMenuOpen: !state.isMenuOpen, menuLevel: 0, menuPath: [] };
+      return {
+        ...state,
+        isMenuOpen: !state.isMenuOpen,
+        menuLevel: 0,
+        menuPath: [],
+      };
     case 'CLOSE_MENU':
-      return { ...state, isMenuOpen: false, menuLevel: 0, menuPath: [] };
+      return {...state, isMenuOpen: false, menuLevel: 0, menuPath: []};
     case 'NAVIGATE_MENU':
-      return { ...state, menuLevel: state.menuLevel + 1, menuPath: [...state.menuPath, action.category] };
+      return {
+        ...state,
+        menuLevel: state.menuLevel + 1,
+        menuPath: [...state.menuPath, action.category],
+      };
     case 'BACK_MENU':
-      return { ...state, menuLevel: Math.max(0, state.menuLevel - 1), menuPath: state.menuPath.slice(0, -1) };
+      return {
+        ...state,
+        menuLevel: Math.max(0, state.menuLevel - 1),
+        menuPath: state.menuPath.slice(0, -1),
+      };
     case 'TOGGLE_SEARCH':
-      return { ...state, isSearchOpen: !state.isSearchOpen };
+      return {...state, isSearchOpen: !state.isSearchOpen};
     case 'CLOSE_SEARCH':
-      return { ...state, isSearchOpen: false };
+      return {...state, isSearchOpen: false};
     case 'TOGGLE_LOGIN':
-      return { ...state, isLoginOpen: !state.isLoginOpen };
+      return {...state, isLoginOpen: !state.isLoginOpen};
     case 'CLOSE_LOGIN':
-      return { ...state, isLoginOpen: false };
+      return {...state, isLoginOpen: false};
     case 'TOGGLE_FILTER':
-      return { ...state, isFilterOpen: !state.isFilterOpen };
+      return {...state, isFilterOpen: !state.isFilterOpen};
     case 'CLOSE_FILTER':
-      return { ...state, isFilterOpen: false };
+      return {...state, isFilterOpen: false};
     case 'TOGGLE_CART':
-      return { ...state, isCartOpen: !state.isCartOpen };
+      return {...state, isCartOpen: !state.isCartOpen};
     case 'CLOSE_CART':
-      return { ...state, isCartOpen: false };
+      return {...state, isCartOpen: false};
     case 'ADD_TO_CART':
-      const existingItem = state.cartItems.find(item => item.id === action.item.id);
+      const existingItem = state.cartItems.find(
+        (item) => item.id === action.item.id,
+      );
       if (existingItem) {
         return {
           ...state,
-          cartItems: state.cartItems.map(item =>
-            item.id === action.item.id ? { ...item, quantity: item.quantity + 1 } : item
+          cartItems: state.cartItems.map((item) =>
+            item.id === action.item.id
+              ? {...item, quantity: item.quantity + 1}
+              : item,
           ),
         };
       }
-      return { ...state, cartItems: [...state.cartItems, { ...action.item, quantity: 1 }] };
+      return {
+        ...state,
+        cartItems: [...state.cartItems, {...action.item, quantity: 1}],
+      };
     case 'REMOVE_FROM_CART':
-      return { ...state, cartItems: state.cartItems.filter(item => item.id !== action.id) };
+      return {
+        ...state,
+        cartItems: state.cartItems.filter((item) => item.id !== action.id),
+      };
     case 'TOGGLE_WISHLIST':
       if (state.wishlist.includes(action.id)) {
-        return { ...state, wishlist: state.wishlist.filter(id => id !== action.id) };
+        return {
+          ...state,
+          wishlist: state.wishlist.filter((id) => id !== action.id),
+        };
       }
-      return { ...state, wishlist: [...state.wishlist, action.id] };
+      return {...state, wishlist: [...state.wishlist, action.id]};
     case 'LOGIN':
-      return { ...state, isLoggedIn: true, isLoginOpen: false };
+      return {...state, isLoggedIn: true, isLoginOpen: false};
     case 'LOGOUT':
-      return { ...state, isLoggedIn: false };
+      return {...state, isLoggedIn: false};
     case 'CLOSE_PROMO':
-      return { ...state, promoBannerVisible: false };
+      return {...state, promoBannerVisible: false};
     case 'TOGGLE_PROMO_PAUSE':
-      return { ...state, promoPaused: !state.promoPaused };
+      return {...state, promoPaused: !state.promoPaused};
     default:
       return state;
   }
 }
 
-function StoreProvider({ children }: { children: ReactNode }) {
+function StoreProvider({children}: {children: ReactNode}) {
   const [state, dispatch] = useState<StoreState>({
     isMenuOpen: false,
     isSearchOpen: false,
@@ -116,11 +147,11 @@ function StoreProvider({ children }: { children: ReactNode }) {
   });
 
   const dispatchAction = (action: any) => {
-    dispatch(prev => storeReducer(prev, action));
+    dispatch((prev) => storeReducer(prev, action));
   };
 
   return (
-    <StoreContext.Provider value={{ state, dispatch: dispatchAction }}>
+    <StoreContext.Provider value={{state, dispatch: dispatchAction}}>
       {children}
     </StoreContext.Provider>
   );
@@ -136,27 +167,31 @@ function useStore() {
 // ICON COMPONENTS
 // ============================================================================
 
-
-
 // ============================================================================
 // PROMOTIONAL BANNER
 // ============================================================================
 
 const promoMessages = [
-  { text: 'Complimentary Delivery & Returns', link: '/shipping' },
-  { text: 'Discover the New Spring Collection', link: '/collections/spring-2025' },
-  { text: 'Exclusive Online Pieces Now Available', link: '/collections/online-exclusive' },
-  { text: 'Book a Private Appointment', link: '/appointments' },
+  {text: 'Complimentary Delivery & Returns', link: '/shipping'},
+  {
+    text: 'Discover the New Spring Collection',
+    link: '/collections/spring-2025',
+  },
+  {
+    text: 'Exclusive Online Pieces Now Available',
+    link: '/collections/online-exclusive',
+  },
+  {text: 'Book a Private Appointment', link: '/appointments'},
 ];
 
 function PromoBanner() {
-  const { state, dispatch } = useStore();
+  const {state, dispatch} = useStore();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     if (state.promoPaused || !state.promoBannerVisible) return;
     const interval = setInterval(() => {
-      setCurrentIndex(prev => (prev + 1) % promoMessages.length);
+      setCurrentIndex((prev) => (prev + 1) % promoMessages.length);
     }, 4000);
     return () => clearInterval(interval);
   }, [state.promoPaused, state.promoBannerVisible]);
@@ -167,7 +202,7 @@ function PromoBanner() {
     <div className="promo-banner">
       <button
         className="promo-control promo-pause"
-        onClick={() => dispatch({ type: 'TOGGLE_PROMO_PAUSE' })}
+        onClick={() => dispatch({type: 'TOGGLE_PROMO_PAUSE'})}
         aria-label={state.promoPaused ? 'Play' : 'Pause'}
       >
         {state.promoPaused ? <Icons.Play /> : <Icons.Pause />}
@@ -179,10 +214,10 @@ function PromoBanner() {
             key={currentIndex}
             href={promoMessages[currentIndex].link}
             className="promo-link"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
+            initial={{opacity: 0, y: 10}}
+            animate={{opacity: 1, y: 0}}
+            exit={{opacity: 0, y: -10}}
+            transition={{duration: 0.3}}
           >
             {promoMessages[currentIndex].text}
           </motion.a>
@@ -191,7 +226,7 @@ function PromoBanner() {
 
       <button
         className="promo-control promo-close"
-        onClick={() => dispatch({ type: 'CLOSE_PROMO' })}
+        onClick={() => dispatch({type: 'CLOSE_PROMO'})}
         aria-label="Close banner"
       >
         <Icons.Close />
@@ -246,15 +281,18 @@ function PromoBanner() {
 // ============================================================================
 
 function Header() {
-  const { state, dispatch } = useStore();
+  const {state, dispatch} = useStore();
   const [isScrolled, setIsScrolled] = useState(false);
-  const cartCount = state.cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const cartCount = state.cartItems.reduce(
+    (sum, item) => sum + item.quantity,
+    0,
+  );
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, {passive: true});
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -264,22 +302,24 @@ function Header() {
         className="main-header"
         initial={false}
         animate={{
-          backgroundColor: isScrolled ? 'rgba(253, 251, 247, 0.95)' : tokens.colors.ivory,
+          backgroundColor: isScrolled
+            ? 'rgba(253, 251, 247, 0.95)'
+            : tokens.colors.ivory,
           backdropFilter: isScrolled ? 'blur(20px)' : 'none',
         }}
-        transition={{ duration: 0.3 }}
+        transition={{duration: 0.3}}
       >
         <div className="header-left">
           <button
             className="header-btn"
-            onClick={() => dispatch({ type: 'TOGGLE_MENU' })}
+            onClick={() => dispatch({type: 'TOGGLE_MENU'})}
             aria-label="Menu"
           >
             <Icons.Menu />
           </button>
           <button
             className="header-btn"
-            onClick={() => dispatch({ type: 'TOGGLE_SEARCH' })}
+            onClick={() => dispatch({type: 'TOGGLE_SEARCH'})}
             aria-label="Search"
           >
             <Icons.Search />
@@ -293,7 +333,7 @@ function Header() {
         <div className="header-right">
           <button
             className="header-btn"
-            onClick={() => dispatch({ type: 'TOGGLE_LOGIN' })}
+            onClick={() => dispatch({type: 'TOGGLE_LOGIN'})}
             aria-label="Account"
           >
             <Icons.User />
@@ -308,7 +348,7 @@ function Header() {
           )}
           <button
             className="header-btn"
-            onClick={() => dispatch({ type: 'TOGGLE_CART' })}
+            onClick={() => dispatch({type: 'TOGGLE_CART'})}
             aria-label="Shopping bag"
           >
             <Icons.Bag />
@@ -405,42 +445,60 @@ function Header() {
 
 const menuData = {
   level1: [
-    { id: 'monogram', label: 'Monogram Anniversary', hasChildren: true },
-    { id: 'gifts', label: 'Gifts and Personalization', hasChildren: true },
-    { id: 'new', label: 'New', hasChildren: true },
-    { id: 'bags', label: 'Bags and Small Leather Goods', hasChildren: true },
-    { id: 'women', label: 'Women', hasChildren: true },
-    { id: 'men', label: 'Men', hasChildren: true },
-    { id: 'perfumes', label: 'Perfumes and Beauty', hasChildren: true },
-    { id: 'jewelry', label: 'Jewelry', hasChildren: true },
-    { id: 'watches', label: 'Watches', hasChildren: true },
-    { id: 'travel', label: 'Trunks Travel and Home', hasChildren: true },
-    { id: 'services', label: 'Services', hasChildren: true },
-    { id: 'maison', label: 'The Maison', hasChildren: false },
+    {id: 'monogram', label: 'Monogram Anniversary', hasChildren: true},
+    {id: 'gifts', label: 'Gifts and Personalization', hasChildren: true},
+    {id: 'new', label: 'New', hasChildren: true},
+    {id: 'bags', label: 'Bags and Small Leather Goods', hasChildren: true},
+    {id: 'women', label: 'Women', hasChildren: true},
+    {id: 'men', label: 'Men', hasChildren: true},
+    {id: 'perfumes', label: 'Perfumes and Beauty', hasChildren: true},
+    {id: 'jewelry', label: 'Jewelry', hasChildren: true},
+    {id: 'watches', label: 'Watches', hasChildren: true},
+    {id: 'travel', label: 'Trunks Travel and Home', hasChildren: true},
+    {id: 'services', label: 'Services', hasChildren: true},
+    {id: 'maison', label: 'The Maison', hasChildren: false},
   ],
   women: {
-    image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=80',
-    categories: ['Travel', 'Accessories', 'Fashion Jewelry', 'Clothing', 'Shoes', 'Perfumes', 'Beauté'],
+    image:
+      'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=80',
+    categories: [
+      'Travel',
+      'Accessories',
+      'Fashion Jewelry',
+      'Clothing',
+      'Shoes',
+      'Perfumes',
+      'Beauté',
+    ],
   },
   clothing: {
-    image: 'https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=80',
-    items: ['Knitwear', 'Tops', 'Denim', 'Dresses', 'Pants', 'Skirts and Shorts', 'Swimwear'],
+    image:
+      'https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=80',
+    items: [
+      'Knitwear',
+      'Tops',
+      'Denim',
+      'Dresses',
+      'Pants',
+      'Skirts and Shorts',
+      'Swimwear',
+    ],
   },
 };
 
 function NavigationMenu() {
-  const { state, dispatch } = useStore();
+  const {state, dispatch} = useStore();
 
   const slideVariants = {
-    initial: { x: '-100%' },
-    animate: { x: 0 },
-    exit: { x: '-100%' },
+    initial: {x: '-100%'},
+    animate: {x: 0},
+    exit: {x: '-100%'},
   };
 
   const contentVariants = {
-    initial: { x: 100, opacity: 0 },
-    animate: { x: 0, opacity: 1 },
-    exit: { x: -100, opacity: 0 },
+    initial: {x: 100, opacity: 0},
+    animate: {x: 0, opacity: 1},
+    exit: {x: -100, opacity: 0},
   };
 
   const currentCategory = state.menuPath[state.menuPath.length - 1];
@@ -451,10 +509,10 @@ function NavigationMenu() {
         <>
           <motion.div
             className="menu-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => dispatch({ type: 'CLOSE_MENU' })}
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
+            onClick={() => dispatch({type: 'CLOSE_MENU'})}
           />
           <motion.nav
             className="navigation-menu"
@@ -462,13 +520,13 @@ function NavigationMenu() {
             initial="initial"
             animate="animate"
             exit="exit"
-            transition={{ type: 'tween', duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            transition={{type: 'tween', duration: 0.5, ease: [0.16, 1, 0.3, 1]}}
           >
             <div className="menu-header">
               {state.menuLevel > 0 ? (
                 <button
                   className="menu-back"
-                  onClick={() => dispatch({ type: 'BACK_MENU' })}
+                  onClick={() => dispatch({type: 'BACK_MENU'})}
                 >
                   <Icons.ChevronLeft />
                   <span>{currentCategory}</span>
@@ -478,7 +536,7 @@ function NavigationMenu() {
               )}
               <button
                 className="menu-close"
-                onClick={() => dispatch({ type: 'CLOSE_MENU' })}
+                onClick={() => dispatch({type: 'CLOSE_MENU'})}
               >
                 <Icons.Close />
               </button>
@@ -494,19 +552,25 @@ function NavigationMenu() {
                     initial="initial"
                     animate="animate"
                     exit="exit"
-                    transition={{ duration: 0.3 }}
+                    transition={{duration: 0.3}}
                   >
                     <ul className="menu-list">
                       {menuData.level1.map((item, index) => (
                         <motion.li
                           key={item.id}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.04 }}
+                          initial={{opacity: 0, x: -20}}
+                          animate={{opacity: 1, x: 0}}
+                          transition={{delay: index * 0.04}}
                         >
                           <button
                             className="menu-item"
-                            onClick={() => item.hasChildren && dispatch({ type: 'NAVIGATE_MENU', category: item.label })}
+                            onClick={() =>
+                              item.hasChildren &&
+                              dispatch({
+                                type: 'NAVIGATE_MENU',
+                                category: item.label,
+                              })
+                            }
                           >
                             <span>{item.label}</span>
                             {item.hasChildren && <Icons.ChevronRight />}
@@ -525,22 +589,27 @@ function NavigationMenu() {
                     initial="initial"
                     animate="animate"
                     exit="exit"
-                    transition={{ duration: 0.3 }}
+                    transition={{duration: 0.3}}
                   >
                     <div className="menu-hero">
-                      <img src={menuData.women.image} alt="Women's Collection" />
+                      <img
+                        src={menuData.women.image}
+                        alt="Women's Collection"
+                      />
                     </div>
                     <ul className="menu-list">
                       {menuData.women.categories.map((cat, index) => (
                         <motion.li
                           key={cat}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.04 }}
+                          initial={{opacity: 0, x: -20}}
+                          animate={{opacity: 1, x: 0}}
+                          transition={{delay: index * 0.04}}
                         >
                           <button
                             className="menu-item"
-                            onClick={() => dispatch({ type: 'NAVIGATE_MENU', category: cat })}
+                            onClick={() =>
+                              dispatch({type: 'NAVIGATE_MENU', category: cat})
+                            }
                           >
                             <span>{cat}</span>
                             <Icons.ChevronRight />
@@ -559,7 +628,7 @@ function NavigationMenu() {
                     initial="initial"
                     animate="animate"
                     exit="exit"
-                    transition={{ duration: 0.3 }}
+                    transition={{duration: 0.3}}
                   >
                     <div className="menu-hero">
                       <img src={menuData.clothing.image} alt="Clothing" />
@@ -568,14 +637,16 @@ function NavigationMenu() {
                       {menuData.clothing.items.map((item, index) => (
                         <motion.li
                           key={item}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.04 }}
+                          initial={{opacity: 0, x: -20}}
+                          animate={{opacity: 1, x: 0}}
+                          transition={{delay: index * 0.04}}
                         >
                           <Link
-                            to={`/collections/${item.toLowerCase().replace(/\s/g, '-')}`}
+                            to={`/collections/${item
+                              .toLowerCase()
+                              .replace(/\s/g, '-')}`}
                             className="menu-item"
-                            onClick={() => dispatch({ type: 'CLOSE_MENU' })}
+                            onClick={() => dispatch({type: 'CLOSE_MENU'})}
                           >
                             <span>{item}</span>
                           </Link>
@@ -588,10 +659,18 @@ function NavigationMenu() {
             </div>
 
             <div className="menu-footer">
-              <a href="/client-services" className="menu-footer-link">Client Services</a>
-              <a href="tel:+971800123456" className="menu-footer-link">+971 800 123 456</a>
-              <a href="/sustainability" className="menu-footer-link">Sustainability</a>
-              <a href="/stores" className="menu-footer-link">Find a Store</a>
+              <a href="/client-services" className="menu-footer-link">
+                Client Services
+              </a>
+              <a href="tel:+971800123456" className="menu-footer-link">
+                +971 800 123 456
+              </a>
+              <a href="/sustainability" className="menu-footer-link">
+                Sustainability
+              </a>
+              <a href="/stores" className="menu-footer-link">
+                Find a Store
+              </a>
               <div className="menu-footer-row">
                 <button className="menu-locale">
                   <span>🇦🇪</span>
@@ -742,11 +821,21 @@ function NavigationMenu() {
 // SEARCH OVERLAY
 // ============================================================================
 
-const trendingSearches = ['Capucines', 'Neverfull', 'Perfume', 'Speedy', 'Pochette'];
-const searchPlaceholders = ['Search for Capucines', 'Search for New Arrivals', 'Search for Perfumes'];
+const trendingSearches = [
+  'Capucines',
+  'Neverfull',
+  'Perfume',
+  'Speedy',
+  'Pochette',
+];
+const searchPlaceholders = [
+  'Search for Capucines',
+  'Search for New Arrivals',
+  'Search for Perfumes',
+];
 
 function SearchOverlay() {
-  const { state, dispatch } = useStore();
+  const {state, dispatch} = useStore();
   const [query, setQuery] = useState('');
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -759,16 +848,40 @@ function SearchOverlay() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setPlaceholderIndex(prev => (prev + 1) % searchPlaceholders.length);
+      setPlaceholderIndex((prev) => (prev + 1) % searchPlaceholders.length);
     }, 3000);
     return () => clearInterval(interval);
   }, []);
 
   const giftProducts = [
-    { id: '1', name: 'Capucines Mini', price: 18500, image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&q=80' },
-    { id: '2', name: 'Twist PM', price: 14200, image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&q=80' },
-    { id: '3', name: 'Dauphine Mini', price: 12800, image: 'https://images.unsplash.com/photo-1591561954557-26941169b49e?w=400&q=80' },
-    { id: '4', name: 'Petite Malle', price: 22500, image: 'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=400&q=80' },
+    {
+      id: '1',
+      name: 'Capucines Mini',
+      price: 18500,
+      image:
+        'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&q=80',
+    },
+    {
+      id: '2',
+      name: 'Twist PM',
+      price: 14200,
+      image:
+        'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&q=80',
+    },
+    {
+      id: '3',
+      name: 'Dauphine Mini',
+      price: 12800,
+      image:
+        'https://images.unsplash.com/photo-1591561954557-26941169b49e?w=400&q=80',
+    },
+    {
+      id: '4',
+      name: 'Petite Malle',
+      price: 22500,
+      image:
+        'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=400&q=80',
+    },
   ];
 
   return (
@@ -776,10 +889,10 @@ function SearchOverlay() {
       {state.isSearchOpen && (
         <motion.div
           className="search-overlay"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          exit={{opacity: 0}}
+          transition={{duration: 0.3}}
         >
           <div className="search-header">
             <div className="search-input-wrapper">
@@ -790,7 +903,7 @@ function SearchOverlay() {
                 className="search-input"
                 placeholder={searchPlaceholders[placeholderIndex]}
                 value={query}
-                onChange={e => setQuery(e.target.value)}
+                onChange={(e) => setQuery(e.target.value)}
               />
               {query && (
                 <button className="search-clear" onClick={() => setQuery('')}>
@@ -800,7 +913,7 @@ function SearchOverlay() {
             </div>
             <button
               className="search-close"
-              onClick={() => dispatch({ type: 'CLOSE_SEARCH' })}
+              onClick={() => dispatch({type: 'CLOSE_SEARCH'})}
             >
               Cancel
             </button>
@@ -809,13 +922,13 @@ function SearchOverlay() {
           <div className="search-content">
             <motion.section
               className="search-section"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
+              initial={{opacity: 0, y: 20}}
+              animate={{opacity: 1, y: 0}}
+              transition={{delay: 0.1}}
             >
               <h3 className="search-section-title">Trending Searches</h3>
               <div className="trending-chips">
-                {trendingSearches.map(term => (
+                {trendingSearches.map((term) => (
                   <button
                     key={term}
                     className="trending-chip"
@@ -829,17 +942,17 @@ function SearchOverlay() {
 
             <motion.section
               className="search-section"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+              initial={{opacity: 0, y: 20}}
+              animate={{opacity: 1, y: 0}}
+              transition={{delay: 0.2}}
             >
               <h3 className="search-section-title">The Perfect Gift for Her</h3>
               <div className="search-products-grid">
-                {giftProducts.map(product => (
+                {giftProducts.map((product) => (
                   <ProductCard
                     key={product.id}
                     product={product}
-                    onClose={() => dispatch({ type: 'CLOSE_SEARCH' })}
+                    onClose={() => dispatch({type: 'CLOSE_SEARCH'})}
                   />
                 ))}
               </div>
@@ -970,8 +1083,8 @@ interface ProductCardProps {
   onClose?: () => void;
 }
 
-function ProductCard({ product, onClose }: ProductCardProps) {
-  const { state, dispatch } = useStore();
+function ProductCard({product, onClose}: ProductCardProps) {
+  const {state, dispatch} = useStore();
   const [currentImage, setCurrentImage] = useState(0);
   const isWishlisted = state.wishlist.includes(product.id);
   const images = product.images || [product.image];
@@ -985,9 +1098,9 @@ function ProductCard({ product, onClose }: ProductCardProps) {
 
         <button
           className="product-wishlist"
-          onClick={e => {
+          onClick={(e) => {
             e.preventDefault();
-            dispatch({ type: 'TOGGLE_WISHLIST', id: product.id });
+            dispatch({type: 'TOGGLE_WISHLIST', id: product.id});
           }}
         >
           <Icons.Heart filled={isWishlisted} />
@@ -997,18 +1110,20 @@ function ProductCard({ product, onClose }: ProductCardProps) {
           <>
             <button
               className="product-nav product-nav-prev"
-              onClick={e => {
+              onClick={(e) => {
                 e.preventDefault();
-                setCurrentImage(prev => (prev - 1 + images.length) % images.length);
+                setCurrentImage(
+                  (prev) => (prev - 1 + images.length) % images.length,
+                );
               }}
             >
               <Icons.ChevronLeft />
             </button>
             <button
               className="product-nav product-nav-next"
-              onClick={e => {
+              onClick={(e) => {
                 e.preventDefault();
-                setCurrentImage(prev => (prev + 1) % images.length);
+                setCurrentImage((prev) => (prev + 1) % images.length);
               }}
             >
               <Icons.ChevronRight />
@@ -1017,7 +1132,9 @@ function ProductCard({ product, onClose }: ProductCardProps) {
               {images.map((_, idx) => (
                 <span
                   key={idx}
-                  className={`product-dot ${idx === currentImage ? 'active' : ''}`}
+                  className={`product-dot ${
+                    idx === currentImage ? 'active' : ''
+                  }`}
                 />
               ))}
             </div>
@@ -1156,21 +1273,57 @@ function ProductCard({ product, onClose }: ProductCardProps) {
 // ============================================================================
 
 function FilterPanel() {
-  const { state, dispatch } = useStore();
-  const [expandedSections, setExpandedSections] = useState<string[]>(['categories']);
+  const {state, dispatch} = useStore();
+  const [expandedSections, setExpandedSections] = useState<string[]>([
+    'categories',
+  ]);
   const [priceRange, setPriceRange] = useState([7350, 29900]);
   const [onlineOnly, setOnlineOnly] = useState(false);
 
   const toggleSection = (section: string) => {
-    setExpandedSections(prev =>
-      prev.includes(section) ? prev.filter(s => s !== section) : [...prev, section]
+    setExpandedSections((prev) =>
+      prev.includes(section)
+        ? prev.filter((s) => s !== section)
+        : [...prev, section],
     );
   };
 
   const categories = ['Blazers', 'Coats', 'Coats and Jackets', 'Jackets'];
-  const collections = ['Permanent Collection', 'Spring-Summer 2025', 'LV Night Collection', 'LV Ski', 'Flight Mode'];
-  const colors = ['White', 'Black', 'Grey', 'Naturel', 'Beige', 'Rouge', 'Orange', 'Marron', 'Green', 'Blue', 'Pink'];
-  const sizes = ['32', '34', '36', '38', '40', '42', '44', '46', 'XS', 'S', 'M', 'L', 'XL'];
+  const collections = [
+    'Permanent Collection',
+    'Spring-Summer 2025',
+    'LV Night Collection',
+    'LV Ski',
+    'Flight Mode',
+  ];
+  const colors = [
+    'White',
+    'Black',
+    'Grey',
+    'Naturel',
+    'Beige',
+    'Rouge',
+    'Orange',
+    'Marron',
+    'Green',
+    'Blue',
+    'Pink',
+  ];
+  const sizes = [
+    '32',
+    '34',
+    '36',
+    '38',
+    '40',
+    '42',
+    '44',
+    '46',
+    'XS',
+    'S',
+    'M',
+    'L',
+    'XL',
+  ];
 
   return (
     <AnimatePresence>
@@ -1178,23 +1331,23 @@ function FilterPanel() {
         <>
           <motion.div
             className="filter-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => dispatch({ type: 'CLOSE_FILTER' })}
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
+            onClick={() => dispatch({type: 'CLOSE_FILTER'})}
           />
           <motion.aside
             className="filter-panel"
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'tween', duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            initial={{x: '100%'}}
+            animate={{x: 0}}
+            exit={{x: '100%'}}
+            transition={{type: 'tween', duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
           >
             <div className="filter-header">
               <h2 className="filter-title">Show filters</h2>
               <button
                 className="filter-close"
-                onClick={() => dispatch({ type: 'CLOSE_FILTER' })}
+                onClick={() => dispatch({type: 'CLOSE_FILTER'})}
               >
                 <Icons.Close />
               </button>
@@ -1219,19 +1372,25 @@ function FilterPanel() {
                   onClick={() => toggleSection('categories')}
                 >
                   <span>Categories</span>
-                  {expandedSections.includes('categories') ? <Icons.Minus /> : <Icons.Plus />}
+                  {expandedSections.includes('categories') ? (
+                    <Icons.Minus />
+                  ) : (
+                    <Icons.Plus />
+                  )}
                 </button>
                 <AnimatePresence>
                   {expandedSections.includes('categories') && (
                     <motion.div
                       className="filter-section-content"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
+                      initial={{height: 0, opacity: 0}}
+                      animate={{height: 'auto', opacity: 1}}
+                      exit={{height: 0, opacity: 0}}
+                      transition={{duration: 0.2}}
                     >
-                      {categories.map(cat => (
-                        <a key={cat} href="#" className="filter-link">{cat}</a>
+                      {categories.map((cat) => (
+                        <a key={cat} href="#" className="filter-link">
+                          {cat}
+                        </a>
                       ))}
                     </motion.div>
                   )}
@@ -1245,17 +1404,21 @@ function FilterPanel() {
                   onClick={() => toggleSection('collections')}
                 >
                   <span>Collections</span>
-                  {expandedSections.includes('collections') ? <Icons.Minus /> : <Icons.Plus />}
+                  {expandedSections.includes('collections') ? (
+                    <Icons.Minus />
+                  ) : (
+                    <Icons.Plus />
+                  )}
                 </button>
                 <AnimatePresence>
                   {expandedSections.includes('collections') && (
                     <motion.div
                       className="filter-section-content"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
+                      initial={{height: 0, opacity: 0}}
+                      animate={{height: 'auto', opacity: 1}}
+                      exit={{height: 0, opacity: 0}}
                     >
-                      {collections.map(col => (
+                      {collections.map((col) => (
                         <label key={col} className="filter-checkbox">
                           <input type="checkbox" />
                           <span className="checkbox-custom" />
@@ -1274,18 +1437,24 @@ function FilterPanel() {
                   onClick={() => toggleSection('colors')}
                 >
                   <span>Colors</span>
-                  {expandedSections.includes('colors') ? <Icons.Minus /> : <Icons.Plus />}
+                  {expandedSections.includes('colors') ? (
+                    <Icons.Minus />
+                  ) : (
+                    <Icons.Plus />
+                  )}
                 </button>
                 <AnimatePresence>
                   {expandedSections.includes('colors') && (
                     <motion.div
                       className="filter-section-content filter-colors"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
+                      initial={{height: 0, opacity: 0}}
+                      animate={{height: 'auto', opacity: 1}}
+                      exit={{height: 0, opacity: 0}}
                     >
-                      {colors.map(color => (
-                        <a key={color} href="#" className="filter-color-link">{color}</a>
+                      {colors.map((color) => (
+                        <a key={color} href="#" className="filter-color-link">
+                          {color}
+                        </a>
                       ))}
                     </motion.div>
                   )}
@@ -1299,18 +1468,22 @@ function FilterPanel() {
                   onClick={() => toggleSection('sizes')}
                 >
                   <span>Size</span>
-                  {expandedSections.includes('sizes') ? <Icons.Minus /> : <Icons.Plus />}
+                  {expandedSections.includes('sizes') ? (
+                    <Icons.Minus />
+                  ) : (
+                    <Icons.Plus />
+                  )}
                 </button>
                 <AnimatePresence>
                   {expandedSections.includes('sizes') && (
                     <motion.div
                       className="filter-section-content"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
+                      initial={{height: 0, opacity: 0}}
+                      animate={{height: 'auto', opacity: 1}}
+                      exit={{height: 0, opacity: 0}}
                     >
                       <div className="filter-sizes">
-                        {sizes.map(size => (
+                        {sizes.map((size) => (
                           <label key={size} className="filter-size">
                             <input type="checkbox" />
                             <span>{size}</span>
@@ -1329,15 +1502,19 @@ function FilterPanel() {
                   onClick={() => toggleSection('price')}
                 >
                   <span>Price Range</span>
-                  {expandedSections.includes('price') ? <Icons.Minus /> : <Icons.Plus />}
+                  {expandedSections.includes('price') ? (
+                    <Icons.Minus />
+                  ) : (
+                    <Icons.Plus />
+                  )}
                 </button>
                 <AnimatePresence>
                   {expandedSections.includes('price') && (
                     <motion.div
                       className="filter-section-content"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
+                      initial={{height: 0, opacity: 0}}
+                      animate={{height: 'auto', opacity: 1}}
+                      exit={{height: 0, opacity: 0}}
                     >
                       <div className="price-display">
                         <span>AED {priceRange[0].toLocaleString()}</span>
@@ -1348,7 +1525,12 @@ function FilterPanel() {
                         min="0"
                         max="50000"
                         value={priceRange[1]}
-                        onChange={e => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+                        onChange={(e) =>
+                          setPriceRange([
+                            priceRange[0],
+                            parseInt(e.target.value),
+                          ])
+                        }
                         className="price-slider"
                       />
                     </motion.div>
@@ -1600,7 +1782,7 @@ function FilterPanel() {
 // ============================================================================
 
 function LoginOverlay() {
-  const { state, dispatch } = useStore();
+  const {state, dispatch} = useStore();
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -1608,16 +1790,16 @@ function LoginOverlay() {
       {state.isLoginOpen && (
         <motion.div
           className="login-overlay"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          exit={{opacity: 0}}
+          transition={{duration: 0.3}}
         >
           <div className="login-header">
             <h2 className="login-title">Identification</h2>
             <button
               className="login-close"
-              onClick={() => dispatch({ type: 'CLOSE_LOGIN' })}
+              onClick={() => dispatch({type: 'CLOSE_LOGIN'})}
             >
               <Icons.Close />
             </button>
@@ -1626,13 +1808,19 @@ function LoginOverlay() {
           <div className="login-content">
             <motion.section
               className="login-section"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
+              initial={{opacity: 0, y: 20}}
+              animate={{opacity: 1, y: 0}}
+              transition={{delay: 0.1}}
             >
               <h3 className="login-section-title">I already have an account</h3>
 
-              <form className="login-form" onSubmit={e => { e.preventDefault(); dispatch({ type: 'LOGIN' }); }}>
+              <form
+                className="login-form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  dispatch({type: 'LOGIN'});
+                }}
+              >
                 <div className="form-group">
                   <label htmlFor="email">Login*</label>
                   <input type="email" id="email" placeholder="Email address" />
@@ -1656,26 +1844,33 @@ function LoginOverlay() {
                   </div>
                 </div>
 
-                <a href="/forgot-password" className="forgot-link">Forgot your password?</a>
+                <a href="/forgot-password" className="forgot-link">
+                  Forgot your password?
+                </a>
 
                 <div className="login-alt">
                   <span>Or use a one-time login link to Sign In:</span>
-                  <a href="#" className="email-link">Email me the link</a>
+                  <a href="#" className="email-link">
+                    Email me the link
+                  </a>
                 </div>
 
-                <button type="submit" className="login-btn primary">Sign in</button>
+                <button type="submit" className="login-btn primary">
+                  Sign in
+                </button>
               </form>
             </motion.section>
 
             <motion.section
               className="login-section create-section"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+              initial={{opacity: 0, y: 20}}
+              animate={{opacity: 1, y: 0}}
+              transition={{delay: 0.2}}
             >
               <h3 className="login-section-title">Create My Account</h3>
               <p className="login-description">
-                Create an account to enjoy exclusive benefits and a personalized shopping experience.
+                Create an account to enjoy exclusive benefits and a personalized
+                shopping experience.
               </p>
 
               <button className="login-btn secondary">Create My Account</button>
@@ -1880,8 +2075,11 @@ function LoginOverlay() {
 // ============================================================================
 
 function CartDrawer() {
-  const { state, dispatch } = useStore();
-  const cartTotal = state.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const {state, dispatch} = useStore();
+  const cartTotal = state.cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
 
   return (
     <AnimatePresence>
@@ -1889,23 +2087,23 @@ function CartDrawer() {
         <>
           <motion.div
             className="cart-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => dispatch({ type: 'CLOSE_CART' })}
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
+            onClick={() => dispatch({type: 'CLOSE_CART'})}
           />
           <motion.aside
             className="cart-drawer"
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'tween', duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            initial={{x: '100%'}}
+            animate={{x: 0}}
+            exit={{x: '100%'}}
+            transition={{type: 'tween', duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
           >
             <div className="cart-header">
               <h2 className="cart-title">Shopping Bag</h2>
               <button
                 className="cart-close"
-                onClick={() => dispatch({ type: 'CLOSE_CART' })}
+                onClick={() => dispatch({type: 'CLOSE_CART'})}
               >
                 <Icons.Close />
               </button>
@@ -1916,7 +2114,7 @@ function CartDrawer() {
                 <p className="cart-empty-text">Your shopping bag is empty</p>
                 <button
                   className="cart-continue"
-                  onClick={() => dispatch({ type: 'CLOSE_CART' })}
+                  onClick={() => dispatch({type: 'CLOSE_CART'})}
                 >
                   Continue Shopping
                 </button>
@@ -1924,28 +2122,34 @@ function CartDrawer() {
             ) : (
               <>
                 <div className="cart-items">
-                  {state.cartItems.map(item => (
+                  {state.cartItems.map((item) => (
                     <motion.div
                       key={item.id}
                       className="cart-item"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
+                      initial={{opacity: 0, x: 20}}
+                      animate={{opacity: 1, x: 0}}
+                      exit={{opacity: 0, x: -20}}
                     >
                       <div className="cart-item-image">
                         <img src={item.image} alt={item.name} />
                       </div>
                       <div className="cart-item-info">
                         <h3 className="cart-item-name">{item.name}</h3>
-                        {item.size && <p className="cart-item-size">Size: {item.size}</p>}
-                        <p className="cart-item-price">AED {item.price.toLocaleString()}</p>
+                        {item.size && (
+                          <p className="cart-item-size">Size: {item.size}</p>
+                        )}
+                        <p className="cart-item-price">
+                          AED {item.price.toLocaleString()}
+                        </p>
                         <div className="cart-item-qty">
                           <span>Qty: {item.quantity}</span>
                         </div>
                       </div>
                       <button
                         className="cart-item-remove"
-                        onClick={() => dispatch({ type: 'REMOVE_FROM_CART', id: item.id })}
+                        onClick={() =>
+                          dispatch({type: 'REMOVE_FROM_CART', id: item.id})
+                        }
                       >
                         <Icons.Close />
                       </button>
@@ -1958,7 +2162,9 @@ function CartDrawer() {
                     <span>Subtotal</span>
                     <span>AED {cartTotal.toLocaleString()}</span>
                   </div>
-                  <p className="cart-shipping-note">Shipping and taxes calculated at checkout</p>
+                  <p className="cart-shipping-note">
+                    Shipping and taxes calculated at checkout
+                  </p>
                   <button className="cart-checkout">Proceed to Checkout</button>
                 </div>
               </>
@@ -2136,8 +2342,8 @@ function CartDrawer() {
 // CATEGORY PAGE HEADER
 // ============================================================================
 
-function CategoryHeader({ category = 'Coats and Jackets' }: { category?: string }) {
-  const { dispatch } = useStore();
+function CategoryHeader({category = 'Coats and Jackets'}: {category?: string}) {
+  const {dispatch} = useStore();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const siblingCategories = [
@@ -2162,8 +2368,8 @@ function CategoryHeader({ category = 'Coats and Jackets' }: { category?: string 
         >
           <span>{category}</span>
           <motion.span
-            animate={{ rotate: dropdownOpen ? 180 : 0 }}
-            transition={{ duration: 0.2 }}
+            animate={{rotate: dropdownOpen ? 180 : 0}}
+            transition={{duration: 0.2}}
           >
             <Icons.ChevronDown />
           </motion.span>
@@ -2173,16 +2379,18 @@ function CategoryHeader({ category = 'Coats and Jackets' }: { category?: string 
           {dropdownOpen && (
             <motion.div
               className="category-dropdown-menu"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
+              initial={{opacity: 0, y: -10}}
+              animate={{opacity: 1, y: 0}}
+              exit={{opacity: 0, y: -10}}
+              transition={{duration: 0.2}}
             >
-              {siblingCategories.map(cat => (
+              {siblingCategories.map((cat) => (
                 <a
                   key={cat}
                   href={`/collections/${cat.toLowerCase().replace(/\s/g, '-')}`}
-                  className={`category-dropdown-item ${cat === category ? 'active' : ''}`}
+                  className={`category-dropdown-item ${
+                    cat === category ? 'active' : ''
+                  }`}
                 >
                   {cat}
                 </a>
@@ -2194,7 +2402,7 @@ function CategoryHeader({ category = 'Coats and Jackets' }: { category?: string 
 
       <button
         className="filter-toggle"
-        onClick={() => dispatch({ type: 'TOGGLE_FILTER' })}
+        onClick={() => dispatch({type: 'TOGGLE_FILTER'})}
       >
         <Icons.Filter />
         <span>Filters</span>
@@ -2294,15 +2502,23 @@ function HomepageHero() {
       </div>
       <motion.div
         className="hero-content"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.3 }}
+        initial={{opacity: 0, y: 40}}
+        animate={{opacity: 1, y: 0}}
+        transition={{duration: 0.8, delay: 0.3}}
       >
         <span className="hero-label">Women</span>
-        <h1 className="hero-headline">The Art of<br />Timeless Elegance</h1>
+        <h1 className="hero-headline">
+          The Art of
+          <br />
+          Timeless Elegance
+        </h1>
         <div className="hero-ctas">
-          <a href="/collections/women" className="hero-cta">Discover the Collection</a>
-          <a href="/collections/new" className="hero-cta">Shop New Arrivals</a>
+          <a href="/collections/women" className="hero-cta">
+            Discover the Collection
+          </a>
+          <a href="/collections/new" className="hero-cta">
+            Shop New Arrivals
+          </a>
         </div>
       </motion.div>
 
@@ -2405,25 +2621,59 @@ function HomepageHero() {
 
 function FeaturedGrid() {
   const categories = [
-    { title: "Women's Handbags", image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&q=80', link: '/collections/womens-handbags' },
-    { title: "Women's Small Leather Goods", image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80', link: '/collections/womens-slg' },
-    { title: 'Jewelry', image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80', link: '/collections/jewelry' },
-    { title: 'Beauty', image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&q=80', link: '/collections/beauty' },
-    { title: "Men's Bags", image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80', link: '/collections/mens-bags' },
-    { title: "Men's Wallets", image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=800&q=80', link: '/collections/mens-wallets' },
+    {
+      title: "Women's Handbags",
+      image:
+        'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&q=80',
+      link: '/collections/womens-handbags',
+    },
+    {
+      title: "Women's Small Leather Goods",
+      image:
+        'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80',
+      link: '/collections/womens-slg',
+    },
+    {
+      title: 'Jewelry',
+      image:
+        'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80',
+      link: '/collections/jewelry',
+    },
+    {
+      title: 'Beauty',
+      image:
+        'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&q=80',
+      link: '/collections/beauty',
+    },
+    {
+      title: "Men's Bags",
+      image:
+        'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80',
+      link: '/collections/mens-bags',
+    },
+    {
+      title: "Men's Wallets",
+      image:
+        'https://images.unsplash.com/photo-1627123424574-724758594e93?w=800&q=80',
+      link: '/collections/mens-wallets',
+    },
   ];
 
   return (
     <section className="featured-grid">
       <motion.div
         className="featured-header"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
+        initial={{opacity: 0, y: 20}}
+        whileInView={{opacity: 1, y: 0}}
+        viewport={{once: true}}
+        transition={{duration: 0.6}}
       >
-        <h2 className="featured-title">Explore a Selection of the Maison's Creations</h2>
-        <p className="featured-subtitle">Complimentary delivery on all orders</p>
+        <h2 className="featured-title">
+          Explore a Selection of the Maison's Creations
+        </h2>
+        <p className="featured-subtitle">
+          Complimentary delivery on all orders
+        </p>
       </motion.div>
 
       <div className="featured-items">
@@ -2432,10 +2682,10 @@ function FeaturedGrid() {
             key={cat.title}
             href={cat.link}
             className="featured-item"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
+            initial={{opacity: 0, y: 30}}
+            whileInView={{opacity: 1, y: 0}}
+            viewport={{once: true}}
+            transition={{duration: 0.6, delay: index * 0.1}}
           >
             <div className="featured-item-image">
               <img src={cat.image} alt={cat.title} />
@@ -2523,12 +2773,51 @@ function FeaturedGrid() {
 
 function ProductListingPage() {
   const products = [
-    { id: '1', name: 'Wool Cashmere Coat', price: 18500, image: 'https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=600&q=80', isNew: true },
-    { id: '2', name: 'Double Breasted Blazer', price: 12200, image: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80' },
-    { id: '3', name: 'Leather Trench Coat', price: 29900, image: 'https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=600&q=80', isNew: true },
-    { id: '4', name: 'Belted Wool Jacket', price: 15800, image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&q=80' },
-    { id: '5', name: 'Cropped Bomber Jacket', price: 9500, image: 'https://images.unsplash.com/photo-1551537482-f2075a1d41f2?w=600&q=80' },
-    { id: '6', name: 'Tailored Overcoat', price: 22400, image: 'https://images.unsplash.com/photo-1548624313-0396c75e4b1a?w=600&q=80', isNew: true },
+    {
+      id: '1',
+      name: 'Wool Cashmere Coat',
+      price: 18500,
+      image:
+        'https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=600&q=80',
+      isNew: true,
+    },
+    {
+      id: '2',
+      name: 'Double Breasted Blazer',
+      price: 12200,
+      image:
+        'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80',
+    },
+    {
+      id: '3',
+      name: 'Leather Trench Coat',
+      price: 29900,
+      image:
+        'https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=600&q=80',
+      isNew: true,
+    },
+    {
+      id: '4',
+      name: 'Belted Wool Jacket',
+      price: 15800,
+      image:
+        'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&q=80',
+    },
+    {
+      id: '5',
+      name: 'Cropped Bomber Jacket',
+      price: 9500,
+      image:
+        'https://images.unsplash.com/photo-1551537482-f2075a1d41f2?w=600&q=80',
+    },
+    {
+      id: '6',
+      name: 'Tailored Overcoat',
+      price: 22400,
+      image:
+        'https://images.unsplash.com/photo-1548624313-0396c75e4b1a?w=600&q=80',
+      isNew: true,
+    },
   ];
 
   return (
@@ -2537,9 +2826,9 @@ function ProductListingPage() {
         {products.map((product, index) => (
           <motion.div
             key={product.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.08 }}
+            initial={{opacity: 0, y: 20}}
+            animate={{opacity: 1, y: 0}}
+            transition={{duration: 0.5, delay: index * 0.08}}
           >
             <ProductCard product={product} />
           </motion.div>
@@ -2555,15 +2844,18 @@ function ProductListingPage() {
           <span className="page-number">5</span>
         </div>
         <button className="view-more">View More</button>
-        <a href="#top" className="back-to-top">Back to top</a>
+        <a href="#top" className="back-to-top">
+          Back to top
+        </a>
       </div>
 
       <div className="category-description">
         <p>
-          Discover the collection of luxury <a href="#">coats</a> and <a href="#">jackets</a> for women.
-          From timeless wool overcoats to contemporary leather pieces, explore designs that embody
-          refined craftsmanship and modern elegance. Each piece in this collection represents the
-          pinnacle of <a href="#">ready-to-wear</a> fashion.
+          Discover the collection of luxury <a href="#">coats</a> and{' '}
+          <a href="#">jackets</a> for women. From timeless wool overcoats to
+          contemporary leather pieces, explore designs that embody refined
+          craftsmanship and modern elegance. Each piece in this collection
+          represents the pinnacle of <a href="#">ready-to-wear</a> fashion.
         </p>
       </div>
 
@@ -2671,18 +2963,34 @@ function Footer() {
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
 
   const sections = [
-    { id: 'help', title: 'Help', links: ['FAQs', 'Track Your Order', 'Shipping', 'Returns', 'Contact Us'] },
-    { id: 'services', title: 'Services', links: ['Product Care', 'Personalization', 'Repairs', 'Art of Gifting'] },
-    { id: 'about', title: 'About', links: ['The Maison', 'Sustainability', 'Careers', 'Press'] },
-    { id: 'connect', title: 'Connect', links: ['Newsletter', 'Find a Store', 'Book an Appointment'] },
+    {
+      id: 'help',
+      title: 'Help',
+      links: ['FAQs', 'Track Your Order', 'Shipping', 'Returns', 'Contact Us'],
+    },
+    {
+      id: 'services',
+      title: 'Services',
+      links: ['Product Care', 'Personalization', 'Repairs', 'Art of Gifting'],
+    },
+    {
+      id: 'about',
+      title: 'About',
+      links: ['The Maison', 'Sustainability', 'Careers', 'Press'],
+    },
+    {
+      id: 'connect',
+      title: 'Connect',
+      links: ['Newsletter', 'Find a Store', 'Book an Appointment'],
+    },
   ];
 
   const socialLinks = [
-    { name: 'Instagram', url: 'https://www.instagram.com/formee.haus/' },
-    { name: 'Facebook', url: '#' },
-    { name: 'Twitter', url: '#' },
-    { name: 'YouTube', url: '#' },
-    { name: 'Pinterest', url: '#' },
+    {name: 'Instagram', url: 'https://www.instagram.com/formee.haus/'},
+    {name: 'Facebook', url: '#'},
+    {name: 'Twitter', url: '#'},
+    {name: 'YouTube', url: '#'},
+    {name: 'Pinterest', url: '#'},
   ];
 
   return (
@@ -2696,16 +3004,20 @@ function Footer() {
       </div>
 
       <div className="footer-sections">
-        {sections.map(section => (
+        {sections.map((section) => (
           <div key={section.id} className="footer-section">
             <button
               className="footer-section-header"
-              onClick={() => setExpandedSection(expandedSection === section.id ? null : section.id)}
+              onClick={() =>
+                setExpandedSection(
+                  expandedSection === section.id ? null : section.id,
+                )
+              }
             >
               <span>{section.title}</span>
               <motion.span
-                animate={{ rotate: expandedSection === section.id ? 180 : 0 }}
-                transition={{ duration: 0.2 }}
+                animate={{rotate: expandedSection === section.id ? 180 : 0}}
+                transition={{duration: 0.2}}
               >
                 <Icons.ChevronDown />
               </motion.span>
@@ -2714,13 +3026,15 @@ function Footer() {
               {expandedSection === section.id && (
                 <motion.div
                   className="footer-section-content"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
+                  initial={{height: 0, opacity: 0}}
+                  animate={{height: 'auto', opacity: 1}}
+                  exit={{height: 0, opacity: 0}}
+                  transition={{duration: 0.2}}
                 >
-                  {section.links.map(link => (
-                    <a key={link} href="#" className="footer-link">{link}</a>
+                  {section.links.map((link) => (
+                    <a key={link} href="#" className="footer-link">
+                      {link}
+                    </a>
                   ))}
                 </motion.div>
               )}
@@ -2730,18 +3044,33 @@ function Footer() {
 
         <div className="instagram-section py-8 border-t border-white/10">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="font-serif text-lg text-ivory italic">On Instagram</h3>
-            <a href="https://www.instagram.com/formee.haus/" className="text-xs uppercase tracking-widest text-[#8B8076] hover:text-ivory transition-colors">@formee.haus</a>
+            <h3 className="font-serif text-lg text-ivory italic">
+              On Instagram
+            </h3>
+            <a
+              href="https://www.instagram.com/formee.haus/"
+              className="text-xs uppercase tracking-widest text-[#8B8076] hover:text-ivory transition-colors"
+            >
+              @formee.haus
+            </a>
           </div>
           <div className="grid grid-cols-4 gap-4">
             {[
               'https://images.unsplash.com/photo-1549439602-43ebca2327af?w=400&q=80',
               'https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=400&q=80',
               'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80',
-              'https://images.unsplash.com/photo-1550928431-74782071279a?w=400&q=80'
+              'https://images.unsplash.com/photo-1550928431-74782071279a?w=400&q=80',
             ].map((img, i) => (
-              <a key={i} href="https://www.instagram.com/formee.haus/" className="block aspect-square overflow-hidden group">
-                <img src={img} alt="Instagram" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100" />
+              <a
+                key={i}
+                href="https://www.instagram.com/formee.haus/"
+                className="block aspect-square overflow-hidden group"
+              >
+                <img
+                  src={img}
+                  alt="Instagram"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+                />
               </a>
             ))}
           </div>
@@ -2751,8 +3080,10 @@ function Footer() {
       <div className="footer-social">
         <span className="footer-social-label">Follow Us</span>
         <div className="social-links">
-          {socialLinks.map(social => (
-            <a key={social.name} href={social.url} className="social-link">{social.name}</a>
+          {socialLinks.map((social) => (
+            <a key={social.name} href={social.url} className="social-link">
+              {social.name}
+            </a>
           ))}
         </div>
       </div>
@@ -2912,7 +3243,9 @@ interface LuxuryStorefrontProps {
   page?: PageView;
 }
 
-export default function LuxuryStorefront({ page = 'home' }: LuxuryStorefrontProps) {
+export default function LuxuryStorefront({
+  page = 'home',
+}: LuxuryStorefrontProps) {
   return (
     <StoreProvider>
       <div className="luxury-storefront">

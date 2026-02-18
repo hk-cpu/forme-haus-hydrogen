@@ -1,34 +1,31 @@
-﻿import { Await, useRouteLoaderData, useLocation } from '@remix-run/react';
-import { Suspense, useEffect, useState } from 'react';
-import { CartForm } from '@shopify/hydrogen';
-import { motion, AnimatePresence } from 'framer-motion';
+﻿import {Await, useRouteLoaderData, useLocation} from '@remix-run/react';
+import {Suspense, useEffect, useState} from 'react';
+import {CartForm} from '@shopify/hydrogen';
+import {motion, AnimatePresence} from 'framer-motion';
 
-import { type LayoutQuery } from 'storefrontapi.generated';
-import { Text } from '~/components/Text';
-import { Link } from '~/components/Link';
-import { Cart } from '~/components/Cart';
-import { CartLoading } from '~/components/CartLoading';
-import { Drawer, useDrawer } from '~/components/Drawer';
+import {type LayoutQuery} from 'storefrontapi.generated';
+import {Text} from '~/components/Text';
+import {Link} from '~/components/Link';
+import {Cart} from '~/components/Cart';
+import {CartLoading} from '~/components/CartLoading';
+import {Drawer, useDrawer} from '~/components/Drawer';
 
-import {
-  type EnhancedMenu,
-  useIsHomePath,
-} from '~/lib/utils';
-import { useCartFetchers } from '~/hooks/useCartFetchers';
-import type { RootLoader } from '~/root';
-import { Header as FormeHeader } from '~/components/Header';
+import {type EnhancedMenu, useIsHomePath} from '~/lib/utils';
+import {useCartFetchers} from '~/hooks/useCartFetchers';
+import type {RootLoader} from '~/root';
+import {Header as FormeHeader} from '~/components/Header';
 import Silk from '~/components/Silk';
 import Atmosphere from '~/components/Atmosphere';
-import { PredictiveSearch } from '~/components/PredictiveSearch';
-import { NavigationMenu } from '~/components/NavigationMenu';
+import {PredictiveSearch} from '~/components/PredictiveSearch';
+import {NavigationMenu} from '~/components/NavigationMenu';
 
-import { SearchOverlay } from '~/components/SearchOverlay';
-import { AccountOverlay } from '~/components/AccountOverlay';
-import { FilterPanel } from '~/components/FilterPanel';
-import { useUI } from '~/context/UIContext';
+import {SearchOverlay} from '~/components/SearchOverlay';
+import {AccountOverlay} from '~/components/AccountOverlay';
+import {FilterPanel} from '~/components/FilterPanel';
+import {useUI} from '~/context/UIContext';
 
-import { useTranslation } from '~/hooks/useTranslation';
-import { Newsletter } from '~/components/Newsletter';
+import {useTranslation} from '~/hooks/useTranslation';
+import {Newsletter} from '~/components/Newsletter';
 import PaymentBadges from '~/components/PaymentBadges';
 
 type LayoutProps = {
@@ -39,8 +36,8 @@ type LayoutProps = {
   };
 };
 
-export function PageLayout({ children, layout }: LayoutProps) {
-  const { headerMenu, footerMenu } = layout || {};
+export function PageLayout({children, layout}: LayoutProps) {
+  const {headerMenu, footerMenu} = layout || {};
   const [scrollY, setScrollY] = useState(0);
   const location = useLocation();
 
@@ -56,7 +53,7 @@ export function PageLayout({ children, layout }: LayoutProps) {
       }
     };
     handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, {passive: true});
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -87,10 +84,10 @@ export function PageLayout({ children, layout }: LayoutProps) {
               <AnimatePresence mode="popLayout">
                 <motion.div
                   key={location.pathname}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  initial={{opacity: 0, y: 20}}
+                  animate={{opacity: 1, y: 0}}
+                  exit={{opacity: 0, y: -20}}
+                  transition={{duration: 0.5, ease: [0.22, 1, 0.36, 1]}}
                 >
                   {useIsHomePath() ? (
                     children
@@ -110,9 +107,9 @@ export function PageLayout({ children, layout }: LayoutProps) {
   );
 }
 
-function Header({ title, menu }: { title: string; menu?: EnhancedMenu }) {
+function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
   const isHome = useIsHomePath();
-  const { state, toggleCart, toggleSearch, toggleMenu } = useUI();
+  const {state, toggleCart, toggleSearch, toggleMenu} = useUI();
 
   const {
     isOpen: isCartOpen,
@@ -188,7 +185,7 @@ function SearchDrawer({
   );
 }
 
-function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
   const rootData = useRouteLoaderData<RootLoader>('root');
   if (!rootData) return null;
 
@@ -230,7 +227,7 @@ function MenuMobileNav({
   menu: EnhancedMenu;
   onClose: () => void;
 }) {
-  const { isRTL } = useTranslation();
+  const {isRTL} = useTranslation();
   return (
     <nav className="grid gap-6 p-6 sm:gap-8 sm:px-12 sm:py-8">
       {/* Top level menu items */}
@@ -238,16 +235,19 @@ function MenuMobileNav({
         <motion.span
           key={item.id}
           className="block"
-          initial={{ opacity: 0, x: isRTL ? 20 : -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: index * 0.1, duration: 0.5 }}
+          initial={{opacity: 0, x: isRTL ? 20 : -20}}
+          animate={{opacity: 1, x: 0}}
+          transition={{delay: index * 0.1, duration: 0.5}}
         >
           <Link
             to={item.to}
             target={item.target}
             onClick={onClose}
-            className={({ isActive }) =>
-              `block font-serif text-3xl md:text-4xl transition-colors duration-300 ${isActive ? 'text-[#a87441]' : 'text-[#F0EAE6] hover:text-[#a87441]'
+            className={({isActive}) =>
+              `block font-serif text-3xl md:text-4xl transition-colors duration-300 ${
+                isActive
+                  ? 'text-[#a87441]'
+                  : 'text-[#F0EAE6] hover:text-[#a87441]'
               }`
             }
           >
@@ -259,26 +259,29 @@ function MenuMobileNav({
       {/* Account Link for Mobile */}
       <motion.div
         className="mt-8 pt-8 border-t border-[#a87441]/20"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
+        initial={{opacity: 0}}
+        animate={{opacity: 1}}
+        transition={{delay: 0.5, duration: 0.5}}
       >
         <Link
           to="/account"
           onClick={onClose}
           className="flex items-center gap-3 text-[#AA9B8F] hover:text-[#F0EAE6] transition-colors"
         >
-          <span className="uppercase tracking-widest text-sm">Account / Sign In</span>
+          <span className="uppercase tracking-widest text-sm">
+            Account / Sign In
+          </span>
         </Link>
       </motion.div>
     </nav>
   );
 }
 
-function Footer({ menu }: { menu?: EnhancedMenu }) {
-  const { t } = useTranslation();
+function Footer({menu}: {menu?: EnhancedMenu}) {
+  const {t} = useTranslation();
 
-  const linkClass = "text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-300 inline-block focus:outline-none focus-visible:text-[#a87441]";
+  const linkClass =
+    'text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-300 inline-block focus:outline-none focus-visible:text-[#a87441]';
 
   return (
     <footer
@@ -299,7 +302,10 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
               {t('footer.newsletter', 'Stay in the Loop')}
             </h4>
             <p className="text-[12px] text-[#AA9B8F] mb-4">
-              {t('footer.newsletterDesc', 'New arrivals, exclusive offers, and more.')}
+              {t(
+                'footer.newsletterDesc',
+                'New arrivals, exclusive offers, and more.',
+              )}
             </p>
             <Newsletter />
           </div>
@@ -307,7 +313,6 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
 
         {/* Main Footer Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 w-full max-w-[1920px] mx-auto">
-
           {/* COL 1: Brand & Slogan */}
           <div className="lg:col-span-4 flex flex-col gap-6">
             {/* Brand Logo */}
@@ -335,11 +340,21 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
                   Customer Care
                 </h4>
                 <nav className="grid gap-2.5">
-                  <Link to="/contact" className={linkClass}>Contact</Link>
-                  <Link to="/pages/faqs" className={linkClass}>FAQs</Link>
-                  <Link to="/policies/shipping-policy" className={linkClass}>Shipping Policy</Link>
-                  <Link to="/policies/refund-policy" className={linkClass}>Returns Policy</Link>
-                  <Link to="/account/orders" className={linkClass}>Track Order</Link>
+                  <Link to="/contact" className={linkClass}>
+                    Contact
+                  </Link>
+                  <Link to="/pages/faqs" className={linkClass}>
+                    FAQs
+                  </Link>
+                  <Link to="/policies/shipping-policy" className={linkClass}>
+                    Shipping Policy
+                  </Link>
+                  <Link to="/policies/refund-policy" className={linkClass}>
+                    Returns Policy
+                  </Link>
+                  <Link to="/account/orders" className={linkClass}>
+                    Track Order
+                  </Link>
                 </nav>
               </div>
 
@@ -349,9 +364,15 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
                   About
                 </h4>
                 <nav className="grid gap-2.5">
-                  <Link to="/pages/about" className={linkClass}>Our Story</Link>
-                  <Link to="/policies/privacy-policy" className={linkClass}>Privacy Policy</Link>
-                  <Link to="/policies/terms-of-service" className={linkClass}>Terms</Link>
+                  <Link to="/pages/about" className={linkClass}>
+                    Our Story
+                  </Link>
+                  <Link to="/policies/privacy-policy" className={linkClass}>
+                    Privacy Policy
+                  </Link>
+                  <Link to="/policies/terms-of-service" className={linkClass}>
+                    Terms
+                  </Link>
                 </nav>
               </div>
             </div>
@@ -365,10 +386,16 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
                 Get in Touch
               </h4>
               <div className="grid gap-1.5">
-                <a href="tel:+966800123456" className="text-sm text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+                <a
+                  href="tel:+966800123456"
+                  className="text-sm text-[#AA9B8F] hover:text-[#a87441] transition-colors"
+                >
                   800 123 456
                 </a>
-                <a href="mailto:care@formehaus.com" className="text-sm text-[#AA9B8F] hover:text-[#a87441] transition-colors">
+                <a
+                  href="mailto:care@formehaus.com"
+                  className="text-sm text-[#AA9B8F] hover:text-[#a87441] transition-colors"
+                >
                   care@formehaus.com
                 </a>
               </div>
@@ -390,11 +417,19 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
         {/* Footer Bottom Line */}
         <div className="max-w-[1920px] mx-auto text-center text-[11px] font-sans tracking-[0.08em] text-[#8B8076]">
           <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-6">
-            <span className="font-medium text-[#F0EAE6]/80">&copy; Formé Haus FH Establishment</span>
+            <span className="font-medium text-[#F0EAE6]/80">
+              &copy; Formé Haus FH Establishment
+            </span>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
-            <span>CR No: <span className="font-mono text-[#F0EAE6]">7051891369</span></span>
+            <span>
+              CR No:{' '}
+              <span className="font-mono text-[#F0EAE6]">7051891369</span>
+            </span>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
-            <span>VAT No: <span className="font-mono text-[#F0EAE6]">314271812300003</span></span>
+            <span>
+              VAT No:{' '}
+              <span className="font-mono text-[#F0EAE6]">314271812300003</span>
+            </span>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
             <span>Registered in Saudi Arabia</span>
           </div>
@@ -403,4 +438,3 @@ function Footer({ menu }: { menu?: EnhancedMenu }) {
     </footer>
   );
 }
-

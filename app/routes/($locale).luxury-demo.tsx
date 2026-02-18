@@ -1,6 +1,17 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import LuxuryStorefront, { StoreProvider, Header, NavigationMenu, SearchOverlay, LoginOverlay, FilterPanel, CartDrawer, PromoBanner, Footer, tokens } from '~/components/LuxuryStorefront';
+import {useState} from 'react';
+import {motion, AnimatePresence} from 'framer-motion';
+import LuxuryStorefront, {
+  StoreProvider,
+  Header,
+  NavigationMenu,
+  SearchOverlay,
+  LoginOverlay,
+  FilterPanel,
+  CartDrawer,
+  PromoBanner,
+  Footer,
+  tokens,
+} from '~/components/LuxuryStorefront';
 import ProductDetailPage from '~/components/ProductDetailPage';
 
 /**
@@ -21,9 +32,9 @@ export default function LuxuryDemo() {
   const [currentView, setCurrentView] = useState<DemoView>('home');
 
   const views = [
-    { id: 'home' as const, label: 'Homepage' },
-    { id: 'category' as const, label: 'Category Page' },
-    { id: 'product' as const, label: 'Product Detail' },
+    {id: 'home' as const, label: 'Homepage'},
+    {id: 'category' as const, label: 'Category Page'},
+    {id: 'product' as const, label: 'Product Detail'},
   ];
 
   return (
@@ -37,7 +48,9 @@ export default function LuxuryDemo() {
               {views.map((view) => (
                 <button
                   key={view.id}
-                  className={`demo-tab ${currentView === view.id ? 'active' : ''}`}
+                  className={`demo-tab ${
+                    currentView === view.id ? 'active' : ''
+                  }`}
                   onClick={() => setCurrentView(view.id)}
                 >
                   {view.label}
@@ -53,10 +66,10 @@ export default function LuxuryDemo() {
             {currentView === 'home' && (
               <motion.div
                 key="home"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                initial={{opacity: 0}}
+                animate={{opacity: 1}}
+                exit={{opacity: 0}}
+                transition={{duration: 0.3}}
               >
                 <LuxuryStorefront page="home" />
               </motion.div>
@@ -64,10 +77,10 @@ export default function LuxuryDemo() {
             {currentView === 'category' && (
               <motion.div
                 key="category"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                initial={{opacity: 0}}
+                animate={{opacity: 1}}
+                exit={{opacity: 0}}
+                transition={{duration: 0.3}}
               >
                 <LuxuryStorefront page="category" />
               </motion.div>
@@ -75,10 +88,10 @@ export default function LuxuryDemo() {
             {currentView === 'product' && (
               <motion.div
                 key="product"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                initial={{opacity: 0}}
+                animate={{opacity: 1}}
+                exit={{opacity: 0}}
+                transition={{duration: 0.3}}
               >
                 <div className="pdp-wrapper">
                   <link
