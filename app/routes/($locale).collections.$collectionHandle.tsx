@@ -78,7 +78,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   );
 
   if (
-    !collection &&
+    (!collection || collection.products.nodes.length === 0) &&
     (collectionHandle === 'new-in' ||
       collectionHandle === 'new' ||
       collectionHandle === 'sunglasses' ||
