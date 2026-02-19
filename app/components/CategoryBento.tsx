@@ -49,7 +49,7 @@ const CATEGORIES: Category[] = [
     title: 'Bags',
     titleAr: 'حقائب',
     image: '/brand/journal-identity.png',
-    url: '/collections/bags',
+    url: '/collections/bags-e',
     isActive: false,
   },
   {
