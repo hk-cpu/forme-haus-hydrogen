@@ -91,7 +91,7 @@ export default function Homepage() {
           className="py-12 px-6 text-center max-w-2xl mx-auto space-y-8 border-t border-[#8B8076]/20"
         >
           <div className="w-px h-12 bg-gradient-to-b from-transparent via-[#a87441]/60 to-transparent mx-auto" />
-          <p className="font-serif text-lg md:text-xl leading-relaxed text-[#5C5046]/80 font-light italic tracking-wide">
+          <p className="font-serif text-lg md:text-xl leading-relaxed text-[#4A3C31] font-light italic tracking-wide">
             "{t('home.brandIntro')}"
           </p>
         </motion.section>

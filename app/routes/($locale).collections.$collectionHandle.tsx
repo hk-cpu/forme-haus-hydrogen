@@ -18,7 +18,6 @@ import {
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 
-import {Button} from '~/components/Button';
 import {ProductCard} from '~/components/ProductCard';
 import SortMenu, {
   type SortParam,
@@ -36,7 +35,7 @@ export const headers = routeHeaders;
 
 export async function loader({params, request, context}: LoaderFunctionArgs) {
   const paginationVariables = getPaginationVariables(request, {
-    pageBy: 12,
+    pageBy: 16,
   });
   const {collectionHandle} = params;
   const locale = context.storefront.i18n;
@@ -280,21 +279,11 @@ export default function Collection() {
             isLoading,
             PreviousLink,
             NextLink,
+            hasPreviousPage,
             hasNextPage,
-            nextPageUrl,
-            state,
           }) => (
             <>
-              {/* Previous Link */}
-              <div className="flex items-center justify-center mb-10">
-                <Button as={PreviousLink} variant="secondary" width="full">
-                  {isLoading
-                    ? t('collection.loading')
-                    : t('collection.loadPrevious')}
-                </Button>
-              </div>
-
-              {/* Product Grid */}
+              {/* Product Grid - 4 columns */}
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-12">
                 {nodes.map((product: any, i: number) => (
                   <motion.div
@@ -313,30 +302,41 @@ export default function Collection() {
                 ))}
               </div>
 
-              {/* Load More Button (Manual Pagination) */}
-              {hasNextPage && (
-                <div className="flex items-center justify-center mt-14">
-                  <NextLink className="w-full max-w-xs">
-                    <Button variant="primary" width="full" disabled={isLoading}>
-                      {isLoading ? (
-                        <div className="flex items-center justify-center gap-2">
-                          <motion.div
-                            className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
-                            animate={{rotate: 360}}
-                            transition={{
-                              duration: 0.8,
-                              repeat: Infinity,
-                              ease: 'linear',
-                            }}
-                          />
-                          <span>{t('collection.loading')}</span>
-                        </div>
-                      ) : (
-                        t('collection.loadMore') || 'Load More'
-                      )}
-                    </Button>
-                  </NextLink>
-                </div>
+              {/* Pagination Bar */}
+              {(hasPreviousPage || hasNextPage) && (
+                <nav className="flex items-center justify-center gap-6 mt-14 pt-8 border-t border-[#4A3C31]/10">
+                  {hasPreviousPage ? (
+                    <PreviousLink className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31] border border-[#4A3C31]/20 hover:border-[#a87441] hover:text-[#a87441] transition-colors duration-300">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                      </svg>
+                      {isLoading ? t('collection.loading') : 'Previous'}
+                    </PreviousLink>
+                  ) : (
+                    <span className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/30 border border-[#4A3C31]/10 cursor-not-allowed">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                      </svg>
+                      Previous
+                    </span>
+                  )}
+
+                  {hasNextPage ? (
+                    <NextLink className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31] border border-[#4A3C31]/20 hover:border-[#a87441] hover:text-[#a87441] transition-colors duration-300">
+                      {isLoading ? t('collection.loading') : 'Next'}
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </NextLink>
+                  ) : (
+                    <span className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/30 border border-[#4A3C31]/10 cursor-not-allowed">
+                      Next
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  )}
+                </nav>
               )}
             </>
           )}

@@ -74,13 +74,13 @@ export default function EditorialSection() {
 
             {/* Box 2: Carry it your way */}
             <Link
-              to="/collections/bags"
+              to="/collections/phone-cases"
               className="relative flex-1 overflow-hidden rounded-xl group cursor-pointer min-h-[200px] block"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-[#E8DDD4] to-[#D4C5B9]" />
               <div className="absolute inset-0 bg-black/15 group-hover:bg-black/5 transition-colors duration-500 flex flex-col items-center justify-center text-center p-4">
                 <h4 className="font-serif text-2xl text-white italic drop-shadow-md mb-1">
-                  Carry it your way
+                  Phone Accessories
                 </h4>
                 <p className="text-white/70 text-[11px] tracking-wide">
                   Hands-free. Effortless. Elevated.
@@ -89,12 +89,15 @@ export default function EditorialSection() {
             </Link>
 
             {/* Box 3: New Arrivals */}
-            <Link
-              to="/collections/new-in"
-              className="relative flex-1 overflow-hidden rounded-xl group cursor-pointer min-h-[200px] block"
-            >
+            <div className="relative flex-1 overflow-hidden rounded-xl group cursor-pointer min-h-[200px] block">
               <div className="absolute inset-0 bg-gradient-to-br from-[#D48B60] to-[#C07A52]" />
-              <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-4">
+               {/* Coming Soon Overlay */}
+              <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+                <span className="font-serif text-xl italic text-white/90 tracking-wide">
+                  Coming Soon
+                </span>
+              </div>
+              <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-4 opacity-60">
                 <h4 className="font-serif text-2xl text-white italic mb-1">
                   New Arrivals
                 </h4>
@@ -102,7 +105,7 @@ export default function EditorialSection() {
                   Latest additions to the Haus.
                 </p>
               </div>
-            </Link>
+            </div>
           </div>
         </motion.div>
       </div>

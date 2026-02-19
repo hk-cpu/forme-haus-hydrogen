@@ -8,16 +8,13 @@ import {
   getSeoMeta,
 } from '@shopify/hydrogen';
 
-import {PageHeader, Section} from '~/components/Text';
+import {Section} from '~/components/Text';
 import {ProductCard} from '~/components/ProductCard';
-import {Grid} from '~/components/Grid';
 import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
-import {getImageLoadingPriority} from '~/lib/const';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
-import type {ProductCardFragment} from 'storefrontapi.generated';
 
-const PAGE_BY = 8;
+const PAGE_BY = 16;
 
 export const headers = routeHeaders;
 
@@ -79,35 +76,56 @@ export default function AllProducts() {
       </div>
       <Section>
         <Pagination connection={products}>
-          {({nodes, isLoading, NextLink, PreviousLink}) => {
-            const itemsMarkup = (nodes as ProductCardFragment[]).map(
-              (product, i) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  loading={getImageLoadingPriority(i)}
-                />
-              ),
-            );
+          {({nodes, isLoading, NextLink, PreviousLink, hasPreviousPage, hasNextPage}) => (
+            <>
+              {/* Product Grid - 4 columns */}
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-12">
+                {nodes.map((product: any, i: number) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                  />
+                ))}
+              </div>
 
-            return (
-              <>
-                <div className="flex items-center justify-center mt-6">
-                  <PreviousLink className="inline-block rounded font-medium text-center py-3 px-6 border border-primary/10 bg-contrast text-primary w-full">
-                    {isLoading ? 'Loading...' : 'Previous'}
-                  </PreviousLink>
-                </div>
-                <Grid layout="products" data-test="product-grid">
-                  {itemsMarkup}
-                </Grid>
-                <div className="flex items-center justify-center mt-6">
-                  <NextLink className="inline-block rounded font-medium text-center py-3 px-6 border border-primary/10 bg-contrast text-primary w-full">
-                    {isLoading ? 'Loading...' : 'Next'}
-                  </NextLink>
-                </div>
-              </>
-            );
-          }}
+              {/* Pagination Bar */}
+              {(hasPreviousPage || hasNextPage) && (
+                <nav className="flex items-center justify-center gap-6 mt-14 pt-8 border-t border-[#F0EAE6]/20">
+                  {hasPreviousPage ? (
+                    <PreviousLink className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] border border-[#F0EAE6]/20 hover:border-[#a87441] hover:text-[#a87441] transition-colors duration-300">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                      </svg>
+                      {isLoading ? 'Loading...' : 'Previous'}
+                    </PreviousLink>
+                  ) : (
+                    <span className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6]/30 border border-[#F0EAE6]/10 cursor-not-allowed">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                      </svg>
+                      Previous
+                    </span>
+                  )}
+
+                  {hasNextPage ? (
+                    <NextLink className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] border border-[#F0EAE6]/20 hover:border-[#a87441] hover:text-[#a87441] transition-colors duration-300">
+                      {isLoading ? 'Loading...' : 'Next'}
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </NextLink>
+                  ) : (
+                    <span className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6]/30 border border-[#F0EAE6]/10 cursor-not-allowed">
+                      Next
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  )}
+                </nav>
+              )}
+            </>
+          )}
         </Pagination>
       </Section>
     </div>
