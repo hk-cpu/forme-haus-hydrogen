@@ -8,6 +8,7 @@ import {
   ArrowRight,
   Send,
 } from 'lucide-react';
+
 import {useTranslation} from '~/hooks/useTranslation';
 
 export const handle = {
@@ -92,7 +93,7 @@ export default function ContactPage() {
               Get in Touch
             </span>
             <h1 className="font-serif text-4xl md:text-6xl italic text-[#4A3C31] mb-6">
-              We're Here for You
+              We&quot;re Here for You
             </h1>
           </motion.div>
 
@@ -102,8 +103,8 @@ export default function ContactPage() {
             transition={{duration: 0.8, delay: 0.2}}
             className="text-[15px] leading-relaxed text-[#5C5046] max-w-2xl mx-auto mb-12"
           >
-            Whether you're looking for styling advice, need assistance with your
-            order, or want to learn more about our pieces, our dedicated
+            Whether you&apos;re looking for styling advice, need assistance with
+            your order, or want to learn more about our pieces, our dedicated
             team is at your service. Experience the Formé Haus standard of care.
           </motion.p>
         </div>
@@ -182,7 +183,7 @@ export default function ContactPage() {
               Send a Message
             </h2>
             <p className="text-[13px] text-[#8B8076] mb-8">
-              Fill out the form below and we'll get back to you shortly.
+              Fill out the form below and we&apos;ll get back to you shortly.
             </p>
 
             {submitted ? (
@@ -198,17 +199,22 @@ export default function ContactPage() {
                   Message Sent!
                 </h3>
                 <p className="text-[13px] text-[#8B8076]">
-                  Thank you for reaching out. We'll respond within 24 hours.
+                  Thank you for reaching out. We&apos;ll respond within 24
+                  hours.
                 </p>
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-[11px] uppercase tracking-wider text-[#8B8076] mb-2">
+                    <label
+                      htmlFor="contact-name"
+                      className="block text-[11px] uppercase tracking-wider text-[#8B8076] mb-2"
+                    >
                       Your Name
                     </label>
                     <input
+                      id="contact-name"
                       type="text"
                       required
                       value={formState.name}
@@ -223,10 +229,14 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] uppercase tracking-wider text-[#8B8076] mb-2">
+                    <label
+                      htmlFor="contact-email"
+                      className="block text-[11px] uppercase tracking-wider text-[#8B8076] mb-2"
+                    >
                       Email Address
                     </label>
                     <input
+                      id="contact-email"
                       type="email"
                       required
                       value={formState.email}
@@ -243,10 +253,14 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] uppercase tracking-wider text-[#8B8076] mb-2">
+                  <label
+                    htmlFor="contact-subject"
+                    className="block text-[11px] uppercase tracking-wider text-[#8B8076] mb-2"
+                  >
                     Subject
                   </label>
                   <input
+                    id="contact-subject"
                     type="text"
                     required
                     value={formState.subject}
@@ -262,10 +276,14 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] uppercase tracking-wider text-[#8B8076] mb-2">
+                  <label
+                    htmlFor="contact-message"
+                    className="block text-[11px] uppercase tracking-wider text-[#8B8076] mb-2"
+                  >
                     Your Message
                   </label>
                   <textarea
+                    id="contact-message"
                     required
                     rows={5}
                     value={formState.message}

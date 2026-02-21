@@ -1,5 +1,6 @@
 import {json} from '@remix-run/server-runtime';
 import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+
 import {type NormalizedPredictiveSearchResults} from '~/components/PredictiveSearch';
 import {NO_PREDICTIVE_SEARCH_RESULTS} from '~/components/PredictiveSearch';
 

@@ -10,8 +10,8 @@ export function AccountAddressBook({
   customer,
   addresses,
 }: {
-  customer: CustomerDetailsFragment;
-  addresses: CustomerAddress[];
+  customer: any;
+  addresses: any[];
 }) {
   return (
     <>
@@ -61,7 +61,7 @@ function Address({
   address,
   defaultAddress,
 }: {
-  address: CustomerAddress;
+  address: any;
   defaultAddress?: boolean;
 }) {
   return (

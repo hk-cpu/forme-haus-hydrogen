@@ -6,6 +6,7 @@
 
 import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {useLoaderData} from '@remix-run/react';
+
 import FuturisticProductOverlay from '~/components/FuturisticProductOverlay';
 import ProductDetailPage from '~/components/ProductDetailPage';
 

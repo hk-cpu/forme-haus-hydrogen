@@ -1,4 +1,5 @@
 import {Suspense, lazy, useEffect, useState} from 'react';
+
 import type {SilkProps} from './Silk.client';
 
 const SilkClient = lazy(() => import('./Silk.client'));

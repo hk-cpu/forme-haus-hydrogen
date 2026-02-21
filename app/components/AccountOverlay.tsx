@@ -1,6 +1,7 @@
 import {useState, useRef} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 import {Link, useFetcher} from '@remix-run/react';
+
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
 

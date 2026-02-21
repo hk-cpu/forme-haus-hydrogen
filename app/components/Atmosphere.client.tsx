@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 import React, {useMemo, useRef} from 'react';
 import {Canvas, useFrame, useThree} from '@react-three/fiber';
 import * as THREE from 'three';
@@ -42,16 +43,15 @@ function Sparkles({
 
       // Subtle mouse interaction
       const mouseX = state.mouse.x * (viewport.width / 2);
-      const mouseY = state.mouse.y * (viewport.height / 2);
-
       positions[i * 3] += (mouseX * 0.01 - positions[i * 3]) * 0.01;
     }
+
     points.current.geometry.attributes.position.needsUpdate = true;
   });
 
   return (
     <points ref={points}>
-      <bufferGeometry>
+      <bufferGeometry attach="geometry">
         <bufferAttribute
           attach="attributes-position"
           count={particles.positions.length / 3}
@@ -60,12 +60,14 @@ function Sparkles({
         />
       </bufferGeometry>
       <pointsMaterial
+        attach="material"
         size={size}
         color={color}
         transparent
         opacity={opacity}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
+        depthWrite={false}
       />
     </points>
   );
@@ -82,3 +84,4 @@ const Atmosphere: React.FC<AtmosphereProps> = (props) => {
 };
 
 export default Atmosphere;
+/* eslint-enable react/no-unknown-property */

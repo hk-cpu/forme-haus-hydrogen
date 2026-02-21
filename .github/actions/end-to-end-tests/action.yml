@@ -1,4 +1,5 @@
 name: 🧪 End-to-end tests
+description: 'Installs dependencies, builds the app, and runs Playwright end-to-end tests.'
 
 inputs:
   url:
@@ -11,9 +12,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: ⬇️ Checkout repo
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
     - name: 📥 Install dependencies
       shell: 'bash'
       run: npm ci

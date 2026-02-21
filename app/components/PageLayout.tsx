@@ -9,7 +9,6 @@ import {Link} from '~/components/Link';
 import {Cart} from '~/components/Cart';
 import {CartLoading} from '~/components/CartLoading';
 import {Drawer, useDrawer} from '~/components/Drawer';
-
 import {type EnhancedMenu, useIsHomePath} from '~/lib/utils';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
 import type {RootLoader} from '~/root';
@@ -18,12 +17,10 @@ import Silk from '~/components/Silk';
 import Atmosphere from '~/components/Atmosphere';
 import {PredictiveSearch} from '~/components/PredictiveSearch';
 import {NavigationMenu} from '~/components/NavigationMenu';
-
 import {SearchOverlay} from '~/components/SearchOverlay';
 import {AccountOverlay} from '~/components/AccountOverlay';
 import {FilterPanel} from '~/components/FilterPanel';
 import {useUI} from '~/context/UIContext';
-
 import {useTranslation} from '~/hooks/useTranslation';
 import {Newsletter} from '~/components/Newsletter';
 import PaymentBadges from '~/components/PaymentBadges';
