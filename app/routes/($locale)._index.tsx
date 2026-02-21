@@ -105,9 +105,10 @@ export default function Homepage() {
           >
             <Await resolve={featuredCollections}>
               {(response) => {
-                const collections = (response?.collections?.nodes || [])
-                  .filter((c: any) => c.title !== 'Home page')
-                  .slice(0, 3);
+                const collections = (response?.collections?.nodes || []).slice(
+                  0,
+                  3,
+                );
                 return (
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
                     {collections.map((c: any, i: number) => {
@@ -116,6 +117,9 @@ export default function Homepage() {
                         '/brand/placeholder-drape.png',
                         '/brand/silk-texture.png',
                       ];
+                      
+                      const displayTitle = c.title === 'Home page' ? 'Where Elegance Begins' : c.title;
+                      
                       return (
                         <Link
                           key={c.id}
@@ -150,8 +154,8 @@ export default function Homepage() {
                           )}
 
                           <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10 bg-black/10 group-hover:bg-black/5 transition-colors">
-                            <h3 className="font-serif text-2xl italic text-white drop-shadow-md">
-                              {c.title}
+                            <h3 className="font-serif text-2xl italic text-white drop-shadow-md text-center px-4">
+                              {displayTitle}
                             </h3>
                             <span className="text-[10px] uppercase tracking-widest text-[#F9F6F3] border border-white/50 px-4 py-2 backdrop-blur-sm hover:bg-white hover:text-black transition-colors">
                               View Collection

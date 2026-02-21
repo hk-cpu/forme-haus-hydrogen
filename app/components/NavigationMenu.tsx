@@ -100,6 +100,15 @@ const menuCategories: Record<string, CategoryData> = {
       {label: 'Beauty Tools', href: '/collections/beauty-tools'},
     ],
   },
+  'Phone Accessories': {
+    editorial:
+      'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=900&q=85&auto=format',
+    tagline: 'Protect in Style',
+    categories: [
+      {label: 'Phone Cases', href: '/collections/phone-cases', featured: true},
+      {label: 'Phone Straps', href: '/collections/phone-straps'},
+    ],
+  },
 };
 
 // Top-level categories shown in the left panel
@@ -111,6 +120,7 @@ const topLevelItems = [
   {label: 'Accessories', href: '/collections/accessories', hasSubmenu: true},
   {label: 'Shoes', href: '/collections/shoes', hasSubmenu: true},
   {label: 'Beauty', href: '/collections/beauty', hasSubmenu: true},
+  {label: 'Phone Accessories', href: '/collections/phone-accessories', hasSubmenu: true},
   {label: 'The Edit', href: '/collections/the-edit', hasSubmenu: false},
   {label: 'Sale', href: '/collections/sale', hasSubmenu: false},
 ];

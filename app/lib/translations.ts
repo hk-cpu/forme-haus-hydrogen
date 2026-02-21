@@ -41,7 +41,7 @@ export const translations = {
     'home.curatedForYou': 'Where Elegance Begins',
     'home.journal': 'Journal',
     'home.editorial.label': 'Editorial',
-    'home.newsletter.title': 'Launching soon in Saudi Arabia',
+    'home.newsletter.title': 'Launching soon',
     'home.newsletter.subtitle': 'Join the list for exclusive updates',
     'home.shopCollection': 'Shop Collection',
 
@@ -181,7 +181,7 @@ export const translations = {
     'menu.capsule': 'Capsule Collection',
     'menu.seasonal': 'Seasonal Collection',
     'menu.limited': 'Limited Edition',
-    'menu.cta.exploreCollections': 'Explore Collections',
+    'menu.cta.exploreCollections': 'Explore the Collection',
 
     // Product Page (Additional)
     'pdp.addToBag': 'Add to Bag',
@@ -231,7 +231,7 @@ export const translations = {
     'home.curatedForYou': 'حيث تبدأ الأناقة',
     'home.journal': 'المجلة',
     'home.editorial.label': 'تحريري',
-    'home.newsletter.title': 'قريباً في المملكة العربية السعودية',
+    'home.newsletter.title': 'قريباً',
     'home.newsletter.subtitle': 'سجّلي لتصلك آخر التحديثات الحصرية',
     'home.shopCollection': 'تسوّق المجموعة',
 

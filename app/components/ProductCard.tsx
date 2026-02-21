@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect, useRef, useCallback} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 import {Link} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
@@ -117,6 +117,7 @@ export function ProductCard({
   const isWishlisted = isInWishlist(product.id);
   const isNew = product.tags?.includes('new') || false;
   const isSale = product.tags?.includes('sale') || false;
+  const slideshowRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Calculate discount if compareAtPrice exists
   const hasDiscount =
@@ -125,8 +126,36 @@ export function ProductCard({
     parseFloat(product.compareAtPriceRange.minVariantPrice.amount) >
       parseFloat(product.priceRange.minVariantPrice.amount);
 
-  const handleMouseEnter = () => setIsHovered(true);
-  const handleMouseLeave = () => setIsHovered(false);
+  // Auto-slideshow: cycle images every 2s while hovered
+  const startSlideshow = useCallback(() => {
+    if (!hasMultipleImages || slideshowRef.current) return;
+    slideshowRef.current = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % images.length);
+    }, 2000);
+  }, [hasMultipleImages, images.length]);
+
+  const stopSlideshow = useCallback(() => {
+    if (slideshowRef.current) {
+      clearInterval(slideshowRef.current);
+      slideshowRef.current = null;
+    }
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => stopSlideshow();
+  }, [stopSlideshow]);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    startSlideshow();
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    stopSlideshow();
+    setCurrentImage(0);
+  };
 
   const nextImage = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -185,7 +214,7 @@ export function ProductCard({
               animate={{opacity: 1, scale: 1}}
               exit={{opacity: 0, scale: 0.95}}
               transition={{duration: 0.4, ease: 'easeOut'}}
-              className="w-full h-full"
+              className={`w-full h-full ${!product.availableForSale ? 'blur-md opacity-70 grayscale-[30%]' : ''}`}
             >
               {images.length > 0 ? (
                 <Image
@@ -195,7 +224,7 @@ export function ProductCard({
                     width: 600,
                     height: 800,
                   }}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain p-3"
                   sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
                 />
               ) : (
@@ -209,7 +238,16 @@ export function ProductCard({
           </AnimatePresence>
 
           {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
+
+          {/* Coming Soon Overlay for Out of Stock */}
+          {!product.availableForSale && (
+            <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+              <span className="font-serif text-xl italic text-white/90 tracking-wide">
+                {t('product.comingSoon', 'Coming Soon')}
+              </span>
+            </div>
+          )}
 
           {/* New Badge */}
           {isNew && (
@@ -330,10 +368,17 @@ export function ProductCard({
           <h3 className="font-serif text-[#4A3C31] text-[15px] leading-snug group-hover:text-[#a87441] transition-colors duration-300 line-clamp-2">
             {product.title}
           </h3>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <p className="text-[#4A3C31] font-medium transition-all duration-300 group-hover:text-[#a87441]">
               {product.priceRange?.minVariantPrice ? (
-                <Money data={product.priceRange.minVariantPrice} />
+                <span className="flex items-center gap-1.5">
+                  <Money data={product.priceRange.minVariantPrice} />
+                  {product.availableForSale !== false && (
+                    <span className="text-[10px] text-[#8B8076] font-normal lowercase tracking-wide">
+                      {t('cart.vatIncluded', '(vat included)')}
+                    </span>
+                  )}
+                </span>
               ) : (
                 <span className="text-sm">Price unavailable</span>
               )}

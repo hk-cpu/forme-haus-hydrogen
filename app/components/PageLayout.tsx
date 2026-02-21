@@ -251,7 +251,9 @@ function MenuMobileNav({
               }`
             }
           >
-            {item.title}
+            {item.title === 'CATALOG' || item.title === 'Catalog'
+              ? 'COLLECTIONS'
+              : item.title}
           </Link>
         </motion.span>
       ))}
@@ -320,7 +322,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
               <img
                 src="/brand/logo-icon-only.png"
                 alt="Formé Haus"
-                className="h-14 w-14 object-contain opacity-90"
+                className="h-16 w-auto object-contain opacity-90"
               />
               <h3 className="font-serif text-xl text-[#F0EAE6]">Formé Haus</h3>
             </div>
@@ -347,10 +349,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
                     FAQs
                   </Link>
                   <Link to="/policies/shipping-policy" className={linkClass}>
-                    Shipping Policy
-                  </Link>
-                  <Link to="/policies/refund-policy" className={linkClass}>
-                    Returns Policy
+                    Shipping & Returns
                   </Link>
                   <Link to="/account/orders" className={linkClass}>
                     Track Order

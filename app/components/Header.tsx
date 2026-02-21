@@ -105,7 +105,11 @@ export function Header({
               >
                 {({isActive}) => (
                   <>
-                    <span className="relative z-10">{item.title}</span>
+                    <span className="relative z-10">
+                      {item.title === 'CATALOG' || item.title === 'Catalog'
+                        ? 'COLLECTIONS'
+                        : item.title}
+                    </span>
                     {/* Animated underline */}
                     <motion.span
                       className="absolute bottom-0 left-0 rtl:left-auto rtl:right-0 h-[1px] bg-[#a87441]"
@@ -134,7 +138,9 @@ export function Header({
                           className="block px-5 py-3 text-[11px] uppercase tracking-[0.12em] text-[#F0EAE6]/70 hover:text-[#a87441] hover:bg-[#a87441]/5 transition-all duration-200 group/link"
                         >
                           <span className="relative">
-                            {subItem.title}
+                            {subItem.title === 'CATALOG' || subItem.title === 'Catalog'
+                              ? 'COLLECTIONS'
+                              : subItem.title}
                             <span className="absolute -bottom-0.5 left-0 rtl:left-auto rtl:right-0 w-0 h-[1px] bg-[#a87441] group-hover/link:w-full transition-all duration-300" />
                           </span>
                         </Link>

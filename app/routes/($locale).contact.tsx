@@ -35,7 +35,7 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: {duration: 0.6, ease: [0.22, 1, 0.36, 1]},
+    transition: {duration: 0.6, ease: [0.22, 1, 0.36, 1] as const},
   },
 };
 
@@ -102,9 +102,9 @@ export default function ContactPage() {
             transition={{duration: 0.8, delay: 0.2}}
             className="text-[15px] leading-relaxed text-[#5C5046] max-w-2xl mx-auto mb-12"
           >
-            At Formé Haus, every interaction is personal. Whether you're seeking
-            styling guidance, have a question about an order, or simply wish to
-            connect, our team is here to assist with care and attention.
+            Whether you're looking for styling advice, need assistance with your
+            order, or want to learn more about our pieces, our dedicated
+            team is at your service. Experience the Formé Haus standard of care.
           </motion.p>
         </div>
       </section>
@@ -324,7 +324,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-serif text-lg text-[#4A3C31]">
-                      @formehaus
+                      @forme.haus
                     </h3>
                     <p className="text-[11px] text-[#8B8076]">
                       Follow our journey
@@ -332,7 +332,7 @@ export default function ContactPage() {
                   </div>
                 </div>
                 <a
-                  href="https://www.instagram.com/formee.haus/"
+                  href="https://www.instagram.com/forme.haus/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-5 py-2 bg-[#121212] text-white text-[11px] uppercase tracking-wider rounded-lg
@@ -343,8 +343,8 @@ export default function ContactPage() {
               </div>
 
               <p className="text-[13px] text-[#5C5046] leading-relaxed">
-                Discover the latest collections, behind-the-scenes moments, and
-                styling inspiration. Follow our journey.
+                Discover the latest collections, editorial inspiration, and
+                behind-the-scenes moments.
               </p>
 
               {/* Instagram Preview Grid */}

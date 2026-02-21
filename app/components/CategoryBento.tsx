@@ -18,7 +18,7 @@ const CATEGORIES: Category[] = [
     titleAr: 'وصل حديثاً',
     image: '/brand/silk-texture.png',
     url: '/collections/new-in',
-    isActive: false,
+    isActive: true,
   },
   {
     id: 2,
@@ -121,7 +121,7 @@ function CategoryCard({category, isRTL}: {category: Category; isRTL: boolean}) {
             className={`w-full h-full object-cover transition-all duration-1000 ease-out ${
               category.isActive
                 ? 'opacity-60 group-hover:opacity-80 group-hover:scale-110'
-                : 'opacity-40 blur-sm'
+                : 'opacity-40 blur-md scale-105'
             }`}
             loading="lazy"
           />
@@ -139,24 +139,16 @@ function CategoryCard({category, isRTL}: {category: Category; isRTL: boolean}) {
         )}
 
         {/* Content */}
-        <div className="absolute inset-0 flex flex-col justify-end p-6">
-          <motion.div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-            <h3
-              className={`text-lg md:text-xl font-serif mb-1 transition-all duration-500 ${
-                category.isActive
-                  ? 'text-[#F0EAE6] blur-0 group-hover:text-[#D4AF87]'
-                  : 'text-white/30 blur-[6px] select-none'
-              }`}
-            >
-              {isRTL ? category.titleAr : category.title}
-            </h3>
-            {category.isActive && (
+        {category.isActive && (
+          <div className="absolute inset-0 flex flex-col justify-end p-6">
+            <motion.div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+              <h3 className="text-lg md:text-xl font-serif mb-1 transition-all duration-500 text-[#F0EAE6] blur-0 group-hover:text-[#D4AF87]">
+                {isRTL ? category.titleAr : category.title}
+              </h3>
               <div className="h-px w-0 group-hover:w-12 bg-[#D4AF87] transition-all duration-500" />
-            )}
-          </motion.div>
+            </motion.div>
 
-          {/* Hover Arrow - only for active categories */}
-          {category.isActive && (
+            {/* Hover Arrow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
               <div className="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center backdrop-blur-sm">
                 <svg
@@ -178,8 +170,8 @@ function CategoryCard({category, isRTL}: {category: Category; isRTL: boolean}) {
                 </svg>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Border Glow on Hover */}
         <div className="absolute inset-0 rounded-2xl border border-white/0 group-hover:border-[#D4AF87]/30 transition-colors duration-500 pointer-events-none" />
