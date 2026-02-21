@@ -10,20 +10,16 @@ export async function action({request, context}: ActionFunctionArgs) {
   }
 
   try {
-    const {data, errors} = await context.storefront.mutate(
+    const {data, errors}: any = await context.storefront.mutate(
       CUSTOMER_CREATE_MUTATION,
       {
         variables: {
           input: {
             email,
             acceptsMarketing: true,
-            emailMarketingConsent: {
-              marketingState: 'SUBSCRIBED',
-              marketingOptInLevel: 'SINGLE_OPT_IN',
-            },
-          },
+          } as any,
         },
-      },
+      }
     );
 
     if (errors) {

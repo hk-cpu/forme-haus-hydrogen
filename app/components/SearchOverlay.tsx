@@ -433,7 +433,7 @@ export function SearchOverlay() {
                               <Money
                                 data={{
                                   amount: product.price.amount,
-                                  currencyCode: product.price.currencyCode,
+                                  currencyCode: product.price.currencyCode as any,
                                 }}
                               />
                             </p>

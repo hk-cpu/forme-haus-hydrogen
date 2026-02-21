@@ -181,18 +181,18 @@ export function ProductCard({
       style={{direction: isRTL ? 'rtl' : 'ltr'}}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      initial={{opacity: 0, y: 30}}
+      initial={{opacity: 0, y: 20}}
       animate={{opacity: 1, y: 0}}
-      whileHover={{y: -4}}
+      whileHover={{y: -3}}
       transition={{
         duration: 0.5,
-        delay: index * 0.1,
-        ease: [0.16, 1, 0.3, 1],
+        delay: index * 0.08,
+        ease: [0.25, 0.1, 0.25, 1],
       }}
     >
       <Link to={`/products/${product.handle}`} className="block">
         {/* Image Container */}
-        <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-neutral-100 mb-4 shadow-md">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-[#F5F2EF] mb-3 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.03)] group-hover:shadow-[0_8px_32px_rgba(0,0,0,0.1)] transition-shadow duration-500">
           {/* Shimmer Effect */}
           <AnimatePresence>
             {isHovered && (
@@ -224,13 +224,14 @@ export function ProductCard({
                     width: 600,
                     height: 800,
                   }}
-                  className="w-full h-full object-contain p-3"
+                  className="w-full h-full object-cover"
                   sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                  loading={index < 4 ? 'eager' : 'lazy'}
                 />
               ) : (
-                <div className="w-full h-full bg-neutral-200 flex items-center justify-center">
-                  <span className="text-neutral-400 text-sm font-light tracking-wider">
-                    No image
+                <div className="w-full h-full bg-[#EDE8E3] flex items-center justify-center">
+                  <span className="text-[#AA9B8F]/40 text-[10px] font-light tracking-[0.2em] uppercase">
+                    {product.title}
                   </span>
                 </div>
               )}
@@ -348,10 +349,10 @@ export function ProductCard({
           {/* Quick Add Button */}
           {quickAdd && product.availableForSale !== false && (
             <motion.button
-              initial={{opacity: 0, y: 20}}
-              animate={{opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20}}
-              transition={{duration: 0.3, ease: 'easeOut'}}
-              className="absolute bottom-4 left-4 right-4 bg-[#a87441] hover:bg-[#8B5E3C] text-white py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl z-20"
+              initial={{opacity: 0, y: 12}}
+              animate={{opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 12}}
+              transition={{duration: 0.3, ease: [0.25, 0.1, 0.25, 1]}}
+              className="absolute bottom-4 left-4 right-4 bg-[#a87441]/95 hover:bg-[#8B5E3C] text-white py-3 rounded-md font-medium text-[12px] uppercase tracking-[0.1em] flex items-center justify-center gap-2 transition-colors duration-300 backdrop-blur-sm z-20"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -364,27 +365,27 @@ export function ProductCard({
         </div>
 
         {/* Product Info */}
-        <div className="space-y-2">
-          <h3 className="font-serif text-[#4A3C31] text-[15px] leading-snug group-hover:text-[#a87441] transition-colors duration-300 line-clamp-2">
+        <div className="space-y-1.5 px-0.5">
+          <h3 className="font-serif text-[#4A3C31] text-[14px] md:text-[15px] leading-snug group-hover:text-[#a87441] transition-colors duration-300 line-clamp-2">
             {product.title}
           </h3>
-          <div className="flex items-center gap-2 flex-wrap">
-            <p className="text-[#4A3C31] font-medium transition-all duration-300 group-hover:text-[#a87441]">
+          <div className="flex items-baseline gap-2 flex-wrap">
+            <p className="text-[#4A3C31] text-[13px] font-medium transition-colors duration-300 group-hover:text-[#a87441]">
               {product.priceRange?.minVariantPrice ? (
-                <span className="flex items-center gap-1.5">
-                  <Money data={product.priceRange.minVariantPrice} />
+                <span className="flex items-baseline gap-1.5">
+                  <Money data={product.priceRange.minVariantPrice as any} />
                   {product.availableForSale !== false && (
-                    <span className="text-[10px] text-[#8B8076] font-normal lowercase tracking-wide">
+                    <span className="text-[9px] text-[#AA9B8F] font-normal lowercase tracking-wide">
                       {t('cart.vatIncluded', '(vat included)')}
                     </span>
                   )}
                 </span>
               ) : (
-                <span className="text-sm">Price unavailable</span>
+                <span className="text-sm text-[#AA9B8F]">Price unavailable</span>
               )}
             </p>
             {hasDiscount && (
-              <p className="text-[#8B7355] text-sm line-through opacity-70">
+              <p className="text-[#AA9B8F] text-[12px] line-through">
                 <Money data={product.compareAtPriceRange!.minVariantPrice} />
               </p>
             )}

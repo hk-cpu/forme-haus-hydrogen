@@ -234,7 +234,7 @@ export function UIProvider({children}: {children: ReactNode}) {
         try {
           const parsed = JSON.parse(saved);
           if (Array.isArray(parsed)) {
-            dispatch({type: 'SET_WISHLIST', productIds: parsed});
+            dispatch({type: 'SET_WISHLIST', productIds: parsed as string[]});
           }
         } catch (e) {
           console.error('Failed to parse wishlist from localStorage');

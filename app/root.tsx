@@ -37,8 +37,40 @@ import futuristicStyles from '~/styles/futuristic-polish.css?url';
 import {UIProvider} from '~/context/UIContext';
 
 import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
+import {useEffect, useState, useCallback} from 'react';
 
 export type RootLoader = typeof loader;
+
+/** Thin scroll progress bar at top of viewport */
+function ScrollProgress() {
+  const [progress, setProgress] = useState(0);
+
+  const handleScroll = useCallback(() => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight > 0) {
+      setProgress((scrollTop / docHeight) * 100);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, {passive: true});
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
+
+  if (progress < 1) return null;
+
+  return (
+    <div
+      className="scroll-progress"
+      style={{width: `${progress}%`}}
+      role="progressbar"
+      aria-valuenow={Math.round(progress)}
+      aria-valuemin={0}
+      aria-valuemax={100}
+    />
+  );
+}
 
 // This is important to avoid re-fetching root queries on sub-navigations
 export const shouldRevalidate: ShouldRevalidateFunction = ({
@@ -202,6 +234,7 @@ function Layout({children}: {children?: React.ReactNode}) {
         <Links />
       </head>
       <body>
+        <ScrollProgress />
         {data ? (
           <UIProvider>
             <Analytics.Provider

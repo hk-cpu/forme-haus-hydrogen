@@ -105,7 +105,7 @@ function CategoryCard({category, isRTL}: {category: Category; isRTL: boolean}) {
   return (
     <motion.div
       variants={itemVariants}
-      className="relative group aspect-square overflow-hidden rounded-2xl"
+      className="relative group aspect-square overflow-hidden rounded-lg"
     >
       <Link
         to={category.isActive ? category.url : '#'}
@@ -174,7 +174,7 @@ function CategoryCard({category, isRTL}: {category: Category; isRTL: boolean}) {
         )}
 
         {/* Border Glow on Hover */}
-        <div className="absolute inset-0 rounded-2xl border border-white/0 group-hover:border-[#D4AF87]/30 transition-colors duration-500 pointer-events-none" />
+        <div className="absolute inset-0 rounded-lg border border-white/0 group-hover:border-[#D4AF87]/20 transition-colors duration-500 pointer-events-none" />
       </Link>
     </motion.div>
   );
@@ -184,29 +184,29 @@ export default function CategoryBento() {
   const {isRTL, t} = useTranslation();
 
   return (
-    <section className="py-16 md:py-24 border-b border-[#8B8076]/10">
-      <div className="container mx-auto px-6">
+    <section className="pb-16 md:pb-24 border-b border-[#8B8076]/10">
+      <div className="max-w-[1200px] mx-auto" style={{padding: '0 var(--page-gutter)'}}>
         {/* Section Header */}
         <motion.div
-          initial={{opacity: 0, y: 20}}
+          initial={{opacity: 0, y: 16}}
           whileInView={{opacity: 1, y: 0}}
           viewport={{once: true}}
-          transition={{duration: 0.6}}
-          className="mb-12"
+          transition={{duration: 0.5, ease: [0.25, 0.1, 0.25, 1]}}
+          className="mb-10 md:mb-12"
         >
           <h2 className="font-serif text-3xl md:text-4xl text-[#4A3C31] mb-3">
             {isRTL ? 'تسوّق حسب الفئة' : t('home.categorySlider')}
           </h2>
-          <div className="h-px w-24 bg-gradient-to-r from-[#a87441] to-transparent" />
+          <div className="h-px w-20 bg-gradient-to-r from-[#a87441] to-transparent" />
         </motion.div>
 
-        {/* Bento Grid */}
+        {/* Bento Grid — equal gaps all sides */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{once: true}}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
+          className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"
         >
           {CATEGORIES.map((category) => (
             <CategoryCard key={category.id} category={category} isRTL={isRTL} />
@@ -218,22 +218,22 @@ export default function CategoryBento() {
           initial={{opacity: 0}}
           whileInView={{opacity: 1}}
           viewport={{once: true}}
-          transition={{delay: 0.5}}
-          className="mt-12 text-center"
+          transition={{delay: 0.4}}
+          className="mt-10 md:mt-12 text-center"
         >
           <Link
             to="/collections"
-            className="inline-flex items-center gap-3 px-8 py-4 border border-[#a87441]/30 text-[#a87441] hover:bg-[#a87441] hover:text-white transition-all duration-500 rounded-full text-xs uppercase tracking-[0.2em] group"
+            className="inline-flex items-center gap-3 px-7 py-3.5 border border-[#a87441]/25 text-[#a87441] hover:bg-[#a87441] hover:text-white transition-all duration-500 rounded-full text-[11px] uppercase tracking-[0.2em] group"
           >
             <span>{isRTL ? 'عرض الكل' : t('general.viewAll')}</span>
             <svg
-              width="16"
-              height="16"
+              width="14"
+              height="14"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               strokeWidth="1.5"
-              className={`transform transition-transform ${
+              className={`transform transition-transform duration-300 ${
                 isRTL
                   ? 'group-hover:-translate-x-1'
                   : 'group-hover:translate-x-1'

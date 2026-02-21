@@ -547,9 +547,7 @@ export function FilterPanel({totalProducts = 156}: {totalProducts?: number}) {
             {/* Footer */}
             <div className="border-t border-[#a87441]/20 px-6 py-4 space-y-3">
               <button className="w-full bg-[#a87441] hover:bg-[#8B5E3C] text-white font-medium py-4 rounded-lg transition-colors flex items-center justify-center gap-2">
-                {t('filter.showProducts', 'Show {count} products', {
-                  count: totalProducts,
-                })}
+                {t('filter.showProducts', `Show ${totalProducts} products`)}
               </button>
               <button
                 onClick={handleClose}

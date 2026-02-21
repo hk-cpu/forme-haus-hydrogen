@@ -1,17 +1,14 @@
 import {useState, useEffect, useRef, Suspense} from 'react';
 import {Link, NavLink, Await, useRouteLoaderData} from '@remix-run/react';
-import {Image} from '@shopify/hydrogen';
 import {Menu, Search, ShoppingBag, User} from 'lucide-react';
-import {useWindowScroll} from 'react-use';
-import {motion, AnimatePresence} from 'framer-motion';
-import {useIsHomePath} from '~/lib/utils';
+import {motion} from 'framer-motion';
 import type {RootLoader} from '~/root';
 import LanguageSwitch from './LanguageSwitch';
 import type {EnhancedMenu} from '~/lib/utils';
 import {useTranslation} from '~/hooks/useTranslation';
 
 export function Header({
-  title,
+  title: _title,
   menu,
   openCart,
   openSearch,
@@ -23,8 +20,6 @@ export function Header({
   openSearch: () => void;
   openMenu: () => void;
 }) {
-  const isHome = useIsHomePath();
-  const {y} = useWindowScroll();
   const [scrolled, setScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
@@ -78,9 +73,13 @@ export function Header({
       className={`fixed z-50 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0 group
             ${
               scrolled
-                ? 'top-0 w-full bg-[#121212]/95 backdrop-blur-xl py-3 border-b border-[#a87441]/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
-                : 'top-0 w-full bg-gradient-to-b from-[#121212]/90 to-transparent backdrop-blur-sm py-5'
+                ? 'top-0 w-full bg-[#121212]/[0.97] backdrop-blur-2xl py-3 border-b border-[#a87441]/8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]'
+                : 'top-0 w-full bg-[#121212]/[0.85] backdrop-blur-xl py-5'
             }`}
+      style={{
+        WebkitBackdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
+        backdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
+      }}
     >
       <div className="container mx-auto px-6 lg:px-16 flex items-center justify-between relative z-50">
         {/* Desktop Navigation - Left Side */}
@@ -168,10 +167,10 @@ export function Header({
         {/* Centered Logo */}
         <motion.div
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-          initial={{opacity: 0, scale: 0.8}}
+          initial={{opacity: 0, scale: 0.95}}
           animate={{
-            opacity: scrolled ? 1 : 0.7,
-            scale: scrolled ? 1 : 0.9,
+            opacity: 1,
+            scale: 1,
           }}
           transition={{duration: 0.5}}
         >

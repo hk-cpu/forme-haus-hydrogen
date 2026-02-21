@@ -44,7 +44,7 @@ export async function action({context, request}: ActionFunctionArgs) {
 
   try {
     if (formId === 'register') {
-      const {data, errors} = await storefront.mutate(CUSTOMER_CREATE_MUTATION, {
+      const {data, errors}: any = await storefront.mutate(CUSTOMER_CREATE_MUTATION, {
         variables: {
           input: {email, password},
         },
@@ -73,7 +73,7 @@ export async function action({context, request}: ActionFunctionArgs) {
       });
     } else {
       // Login
-      const {data, errors} = await storefront.mutate(LOGIN_MUTATION, {
+      const {data, errors}: any = await storefront.mutate(LOGIN_MUTATION, {
         variables: {
           input: {email, password},
         },
@@ -119,7 +119,7 @@ export async function action({context, request}: ActionFunctionArgs) {
 }
 
 export default function Login() {
-  const data = useActionData<typeof action>();
+  const data = useActionData<typeof action>() as any;
   const navigation = useNavigation();
   const [params] = useSearchParams();
   const isSubmitting = navigation.state === 'submitting';
@@ -134,8 +134,8 @@ export default function Login() {
   }, [data]);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-[#F9F5F0] flex flex-col items-center justify-center text-[#2C2419] pt-24">
-      {/* Darker Ghost Cursor with Bronze hover effect - Client only */}
+    <div className="relative min-h-screen w-full overflow-hidden bg-[#F9F5F0] flex flex-col items-center justify-center text-[#2C2419]">
+      {/* Ghost Cursor - Client only */}
       <Suspense fallback={null}>
         <GhostCursorEnhanced
           primaryColor="#0A0A0A"
@@ -156,29 +156,29 @@ export default function Login() {
         />
       </Suspense>
 
-      <div className="relative z-10 flex flex-col items-center gap-10 p-8 w-full max-w-md transition-all duration-500">
-        {/* Logo Image */}
-        <div className="group cursor-default transition-all duration-500 hover:drop-shadow-[0_0_25px_rgba(168,116,65,0.3)]">
+      <div className="relative z-10 flex flex-col items-center gap-8 w-full max-w-[420px] mx-auto px-6 py-16">
+        {/* Logo */}
+        <div className="group cursor-default">
           <img
             src="/brand/logo-icon-only.png"
-            alt="Formé Haus - Where Essence Meets Elegance"
-            className="w-full max-w-[140px] h-auto object-contain opacity-90 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105"
+            alt="Formé Haus"
+            className="w-24 h-auto object-contain opacity-85 transition-opacity duration-700 group-hover:opacity-100"
           />
         </div>
 
         <div className="text-center space-y-2">
-          <h1 className="font-serif text-3xl md:text-4xl tracking-tight text-[#2C2419]">
-            {isRegistering ? 'JOIN FORMÉ HAUS' : 'WELCOME BACK'}
+          <h1 className="font-serif text-3xl md:text-4xl text-[#2C2419]" style={{letterSpacing: '0.02em'}}>
+            {isRegistering ? 'Join Formé Haus' : 'Welcome Back'}
           </h1>
-          <p className="text-xs md:text-sm tracking-[0.3em] font-sans text-[#5A5046] font-medium">
-            {isRegistering ? 'BEGIN YOUR JOURNEY' : 'CONTINUE YOUR JOURNEY'}
+          <p className="text-[11px] tracking-[0.25em] font-sans text-[#8B8076] uppercase">
+            {isRegistering ? 'Begin Your Journey' : 'Continue Your Journey'}
           </p>
         </div>
 
-        {/* Unified Form with White Background and Dark Inputs */}
+        {/* Form Card */}
         <Form
           method="post"
-          className="w-full space-y-6 bg-white/80 backdrop-blur-sm p-8 rounded-lg border border-[#a87441]/20 shadow-2xl shadow-[#a87441]/10"
+          className="w-full space-y-6 bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-xl border border-[#4A3C31]/8 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
         >
           <input
             type="hidden"
@@ -187,64 +187,66 @@ export default function Login() {
           />
 
           {data?.error && (
-            <div className="p-3 text-sm text-red-100 bg-red-900/80 border border-red-100/20 rounded text-center font-light tracking-wide">
+            <div className="p-3.5 text-[12px] text-[#8B3A3A] bg-[#FDF2F2] border border-[#E8C4C4] rounded-lg text-center tracking-wide">
               {data.error}
             </div>
           )}
 
           {data?.success && isRegistering && (
-            <div className="p-3 text-sm text-[#2C2419] bg-[#a87441]/20 border border-[#a87441]/30 rounded text-center font-medium tracking-wide">
+            <div className="p-3.5 text-[12px] text-[#2C2419] bg-[#a87441]/10 border border-[#a87441]/20 rounded-lg text-center tracking-wide">
               {data.success}
             </div>
           )}
 
-          <div className="space-y-5">
+          <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="sr-only">
-                Email
+              <label htmlFor="email" className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium">
+                Email Address
               </label>
               <input
                 type="email"
                 name="email"
                 id="email"
-                placeholder="EMAIL ADDRESS"
+                placeholder="you@example.com"
                 required
-                className="login-input w-full bg-[#1A1A1A] border border-[#a87441]/30 py-4 px-6 text-white placeholder-white/50 focus:outline-none focus:bg-[#0A0A0A] focus:text-white focus:border-[#a87441] focus:shadow-[0_0_20px_rgba(168,116,65,0.5)] transition-all duration-500 text-center tracking-[0.15em] text-xs font-medium rounded-lg"
+                autoComplete="email"
+                className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 px-4 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[13px] tracking-wide rounded-lg"
               />
             </div>
             <div>
-              <label htmlFor="password" className="sr-only">
+              <label htmlFor="password" className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium">
                 Password
               </label>
               <input
                 type="password"
                 name="password"
                 id="password"
-                placeholder="PASSWORD"
+                placeholder="Enter your password"
                 required
-                className="login-input w-full bg-[#1A1A1A] border border-[#a87441]/30 py-4 px-6 text-white placeholder-white/50 focus:outline-none focus:bg-[#0A0A0A] focus:text-white focus:border-[#a87441] focus:shadow-[0_0_20px_rgba(168,116,65,0.5)] transition-all duration-500 text-center tracking-[0.15em] text-xs font-medium rounded-lg"
+                autoComplete={isRegistering ? 'new-password' : 'current-password'}
+                className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 px-4 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[13px] tracking-wide rounded-lg"
               />
             </div>
           </div>
 
-          <div className="flex flex-col gap-5 pt-4">
+          <div className="flex flex-col gap-4 pt-2">
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full px-12 py-4 border border-[#a87441] bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.25em] text-[10px] sm:text-xs transition-all duration-500 hover:scale-[1.02] shadow-lg shadow-[#a87441]/20 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+              className="w-full py-4 bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] transition-all duration-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
             >
               {isSubmitting
-                ? 'PROCESSING...'
+                ? 'Processing...'
                 : isRegistering
-                ? 'CREATE ACCOUNT'
-                : 'SIGN IN'}
+                ? 'Create Account'
+                : 'Sign In'}
             </button>
 
-            <div className="flex flex-col items-center gap-3 text-[10px] uppercase tracking-widest text-[#5A5046]">
+            <div className="flex flex-col items-center gap-3 pt-2">
               {!isRegistering && (
                 <Link
                   to="/account/recover"
-                  className="hover:text-[#a87441] transition-colors border-b border-transparent hover:border-[#a87441]/50 pb-0.5"
+                  className="text-[10px] uppercase tracking-[0.15em] text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-300"
                 >
                   Forgot Password?
                 </Link>
@@ -252,11 +254,8 @@ export default function Login() {
 
               <button
                 type="button"
-                onClick={() => {
-                  setIsRegistering(!isRegistering);
-                  // Clear errors when switching
-                }}
-                className="hover:text-[#a87441] transition-colors font-semibold border-b border-transparent hover:border-[#a87441] pb-0.5"
+                onClick={() => setIsRegistering(!isRegistering)}
+                className="text-[10px] uppercase tracking-[0.15em] text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 font-semibold"
               >
                 {isRegistering
                   ? 'Already have an account? Sign In'

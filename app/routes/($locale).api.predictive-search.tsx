@@ -29,7 +29,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
 
   const searchResults = normalizePredictiveSearchResults(
     data.predictiveSearch,
-    context.storefront.i18n.locale,
+    context.storefront.i18n.language,
   );
 
   return json({searchResults});

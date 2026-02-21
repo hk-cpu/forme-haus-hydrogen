@@ -6,7 +6,7 @@ export default function Hero() {
   const {t} = useTranslation();
 
   return (
-    <section className="h-[90vh] flex flex-col items-center justify-center bg-transparent relative overflow-hidden">
+    <section className="h-[85vh] md:h-[90vh] min-h-[500px] max-h-[900px] flex flex-col items-center justify-center bg-transparent relative overflow-hidden">
       {/*
           Hero Background is TRANSPARENT to show the global Silk canvas from PageLayout.
           Removed conflicting overlays/gradients.
@@ -48,7 +48,9 @@ export default function Hero() {
               <img
                 src="/brand/logo-full.png"
                 alt="FORMÉ HAUS - Where Essence Meets Elegance"
-                className="w-auto h-32 md:h-48 lg:h-56 object-contain relative z-10 drop-shadow-2xl"
+                className="w-auto h-24 sm:h-32 md:h-44 lg:h-52 object-contain relative z-10 drop-shadow-2xl"
+                loading="eager"
+                fetchPriority="high"
               />
 
               {/* Animated Silk Accent Lines */}

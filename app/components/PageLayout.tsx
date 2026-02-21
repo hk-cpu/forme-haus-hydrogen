@@ -62,7 +62,7 @@ export function PageLayout({children, layout}: LayoutProps) {
       <div className="flex flex-col min-h-screen relative bg-[#121212]">
         {/* Background Layer (Z-0) */}
         <div className="fixed inset-0 pointer-events-none z-0">
-          {useIsHomePath() && <Silk color="#AD9686" opacity={0.15} />}
+          {useIsHomePath() && <Silk color="#AD9686" />}
           <Atmosphere count={60} color="#AD9686" size={0.008} opacity={0.2} />
           {/* Subtle gradient for depth - much lighter */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
@@ -74,25 +74,25 @@ export function PageLayout({children, layout}: LayoutProps) {
           </a>
         </div>
 
-        <div className="relative z-10 flex flex-col items-center lg:py-8 transition-all duration-700">
-          <div className="w-full max-w-[1800px] flex flex-col relative mx-auto my-0 px-4 md:px-8">
+        <div className="relative z-10 flex flex-col items-center transition-all duration-700">
+          <div className="w-full max-w-[1800px] flex flex-col relative mx-auto my-0">
             <Header
               title={layout?.shop.name || 'Formé Haus'}
               menu={headerMenu || undefined}
             />
-            <main role="main" id="mainContent" className="flex-grow">
+            <main role="main" id="mainContent" className="flex-grow" style={{paddingTop: 'var(--navbar-height)'}}>
               <AnimatePresence mode="popLayout">
                 <motion.div
                   key={location.pathname}
-                  initial={{opacity: 0, y: 20}}
+                  initial={{opacity: 0, y: 8}}
                   animate={{opacity: 1, y: 0}}
-                  exit={{opacity: 0, y: -20}}
-                  transition={{duration: 0.5, ease: [0.22, 1, 0.36, 1]}}
+                  exit={{opacity: 0, y: -8}}
+                  transition={{duration: 0.4, ease: [0.25, 0.1, 0.25, 1]}}
                 >
                   {useIsHomePath() ? (
                     children
                   ) : (
-                    <div className="bg-[#F9F5F0] text-[#4A3C31] shadow-[0_0_100px_rgba(255,255,255,0.3)] lg:rounded-t-[2rem] min-h-[50vh] p-6 md:p-12">
+                    <div className="bg-[#F9F5F0] text-[#4A3C31] shadow-[0_0_80px_rgba(255,255,255,0.15)] lg:rounded-t-[2rem] min-h-[50vh]">
                       {children}
                     </div>
                   )}
@@ -296,9 +296,9 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
       {/* Bronze Accent Line at Top */}
       <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
 
-      <div className="relative z-10 py-16 px-6 md:px-12 lg:px-24">
+      <div className="relative z-10 py-16" style={{padding: '4rem var(--page-gutter)'}}>
         {/* Newsletter */}
-        <div className="max-w-[1920px] mx-auto mb-12 pb-12 border-b border-[#a87441]/15">
+        <div className="max-w-[1440px] mx-auto mb-12 pb-12 border-b border-[#a87441]/10">
           <div className="max-w-md">
             <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium mb-2">
               {t('footer.newsletter', 'Stay in the Loop')}
@@ -314,7 +314,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
         </div>
 
         {/* Main Footer Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 w-full max-w-[1920px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 w-full max-w-[1440px] mx-auto">
           {/* COL 1: Brand & Slogan */}
           <div className="lg:col-span-4 flex flex-col gap-6">
             {/* Brand Logo */}
@@ -411,10 +411,10 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
         </div>
 
         {/* Divider */}
-        <div className="max-w-[1920px] mx-auto my-12 h-[1px] bg-gradient-to-r from-transparent via-[#a87441]/20 to-transparent" />
+        <div className="max-w-[1440px] mx-auto my-12 h-[1px] bg-gradient-to-r from-transparent via-[#a87441]/20 to-transparent" />
 
         {/* Footer Bottom Line */}
-        <div className="max-w-[1920px] mx-auto text-center text-[11px] font-sans tracking-[0.08em] text-[#8B8076]">
+        <div className="max-w-[1440px] mx-auto text-center text-[11px] font-sans tracking-[0.08em] text-[#8B8076]">
           <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-6">
             <span className="font-medium text-[#F0EAE6]/80">
               &copy; Formé Haus FH Establishment
