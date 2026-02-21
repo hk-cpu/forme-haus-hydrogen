@@ -2,6 +2,7 @@ import {useFetcher, Link as RemixLink} from '@remix-run/react';
 import {useEffect, useRef, useState} from 'react';
 import {Image, Money} from '@shopify/hydrogen';
 import {useDebounce} from 'react-use';
+
 import {Input} from '~/components/Input';
 
 export const NO_PREDICTIVE_SEARCH_RESULTS: NormalizedPredictiveSearchResults = {
@@ -96,7 +97,7 @@ export function PredictiveSearch({
 
         {searchTerm && totalResults === 0 && fetcher.state === 'idle' && (
           <div className="text-center text-[#F0EAE6]/40 text-sm mt-12">
-            No results found for "{searchTerm}"
+            No results found for &quot;{searchTerm}&quot;
           </div>
         )}
 

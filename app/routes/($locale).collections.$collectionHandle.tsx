@@ -2,7 +2,6 @@ import {json} from '@remix-run/server-runtime';
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {useLoaderData} from '@remix-run/react';
 import {motion} from 'framer-motion';
-
 import type {
   Filter,
   ProductCollectionSortKeys,
@@ -60,9 +59,8 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     [] as ProductFilter[],
   );
 
-  let {collection, collections} = await context.storefront.query(
-    COLLECTION_QUERY,
-    {
+  const {collection: fetchedCollection, collections} =
+    await context.storefront.query(COLLECTION_QUERY, {
       variables: {
         ...paginationVariables,
         handle: collectionHandle,
@@ -73,12 +71,19 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
         language: context.storefront.i18n.language,
       },
       cache: CacheShort(),
-    },
-  );
+    });
+
+  let collection = fetchedCollection;
 
   if (collection) {
-    console.log('[DEBUG] Collection found:', collection.handle, 'Products:', collection.products?.nodes?.length);
+    console.log(
+      '[DEBUG] Collection found:',
+      collection.handle,
+      'Products:',
+      collection.products?.nodes?.length,
+    );
   } else {
+    // eslint-disable-next-line no-console
     console.log('[DEBUG] Collection NOT found for handle:', collectionHandle);
   }
 
@@ -97,7 +102,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
           handle: 'all',
           filters: [
             ...filters,
-            ...(collectionHandle === 'sale' ? [{ tag: 'sale' }] : []),
+            ...(collectionHandle === 'sale' ? [{tag: 'sale'}] : []),
           ],
           sortKey:
             collectionHandle === 'new-in' || collectionHandle === 'new'
@@ -118,9 +123,9 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
       const lang = context.storefront.i18n.language === 'AR' ? 'AR' : 'EN';
       // @ts-ignore
       let title = translations[lang]['nav.newIn'];
-      if(collectionHandle === 'sunglasses') title = 'Sunglasses';
-      if(collectionHandle === 'sale') title = 'Sale';
-      
+      if (collectionHandle === 'sunglasses') title = 'Sunglasses' as any;
+      if (collectionHandle === 'sale') title = 'Sale' as any;
+
       collection.title = title;
       collection.description = '';
     }
@@ -307,14 +312,28 @@ export default function Collection() {
                 <nav className="flex items-center justify-center gap-6 mt-14 pt-8 border-t border-[#4A3C31]/10">
                   {hasPreviousPage ? (
                     <PreviousLink className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31] border border-[#4A3C31]/20 hover:border-[#a87441] hover:text-[#a87441] transition-colors duration-300">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
                         <path d="M19 12H5M12 19l-7-7 7-7" />
                       </svg>
                       {isLoading ? t('collection.loading') : 'Previous'}
                     </PreviousLink>
                   ) : (
                     <span className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/30 border border-[#4A3C31]/10 cursor-not-allowed">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
                         <path d="M19 12H5M12 19l-7-7 7-7" />
                       </svg>
                       Previous
@@ -324,14 +343,28 @@ export default function Collection() {
                   {hasNextPage ? (
                     <NextLink className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31] border border-[#4A3C31]/20 hover:border-[#a87441] hover:text-[#a87441] transition-colors duration-300">
                       {isLoading ? t('collection.loading') : 'Next'}
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
                         <path d="M5 12h14M12 5l7 7-7 7" />
                       </svg>
                     </NextLink>
                   ) : (
                     <span className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/30 border border-[#4A3C31]/10 cursor-not-allowed">
                       Next
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
                         <path d="M5 12h14M12 5l7 7-7 7" />
                       </svg>
                     </span>

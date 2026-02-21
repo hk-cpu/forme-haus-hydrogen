@@ -516,7 +516,6 @@ export default function Product3DViewer({
                 children: defaultHotspots.map((hotspot, index) => (
                   <button
                     key={index}
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore - slot is a valid attribute for model-viewer
                     slot={`hotspot-${index}`}
                     data-position={hotspot.position}

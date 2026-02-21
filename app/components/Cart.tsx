@@ -18,8 +18,8 @@ import type {
   CartLine,
   CartLineUpdateInput,
 } from '@shopify/hydrogen/storefront-api-types';
-
 import {useRouteLoaderData} from '@remix-run/react';
+
 import {Button} from '~/components/Button';
 import {Text, Heading} from '~/components/Text';
 import {Link} from '~/components/Link';
@@ -203,9 +203,10 @@ function CartCheckoutActions({
   checkoutUrl: string;
   cart: CartType;
 }) {
-  if (!checkoutUrl) return null;
   const {t} = useTranslation();
   const rootData = useRouteLoaderData<RootLoader>('root');
+
+  if (!checkoutUrl) return null;
   const storeDomain =
     (rootData?.layout as any)?.shop?.primaryDomain?.url ??
     'https://formehaus.me';

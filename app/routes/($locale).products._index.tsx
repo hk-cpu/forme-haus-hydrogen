@@ -76,15 +76,19 @@ export default function AllProducts() {
       </div>
       <Section>
         <Pagination connection={products}>
-          {({nodes, isLoading, NextLink, PreviousLink, hasPreviousPage, hasNextPage}) => (
+          {({
+            nodes,
+            isLoading,
+            NextLink,
+            PreviousLink,
+            hasPreviousPage,
+            hasNextPage,
+          }) => (
             <>
               {/* Product Grid - 4 columns */}
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-12">
                 {nodes.map((product: any, i: number) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                  />
+                  <ProductCard key={product.id} product={product} />
                 ))}
               </div>
 
@@ -93,14 +97,28 @@ export default function AllProducts() {
                 <nav className="flex items-center justify-center gap-6 mt-14 pt-8 border-t border-[#F0EAE6]/20">
                   {hasPreviousPage ? (
                     <PreviousLink className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] border border-[#F0EAE6]/20 hover:border-[#a87441] hover:text-[#a87441] transition-colors duration-300">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
                         <path d="M19 12H5M12 19l-7-7 7-7" />
                       </svg>
                       {isLoading ? 'Loading...' : 'Previous'}
                     </PreviousLink>
                   ) : (
                     <span className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6]/30 border border-[#F0EAE6]/10 cursor-not-allowed">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
                         <path d="M19 12H5M12 19l-7-7 7-7" />
                       </svg>
                       Previous
@@ -110,14 +128,28 @@ export default function AllProducts() {
                   {hasNextPage ? (
                     <NextLink className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] border border-[#F0EAE6]/20 hover:border-[#a87441] hover:text-[#a87441] transition-colors duration-300">
                       {isLoading ? 'Loading...' : 'Next'}
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
                         <path d="M5 12h14M12 5l7 7-7 7" />
                       </svg>
                     </NextLink>
                   ) : (
                     <span className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6]/30 border border-[#F0EAE6]/10 cursor-not-allowed">
                       Next
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
                         <path d="M5 12h14M12 5l7 7-7 7" />
                       </svg>
                     </span>

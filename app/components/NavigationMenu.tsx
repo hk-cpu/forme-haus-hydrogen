@@ -1,6 +1,7 @@
 import {useState, useEffect, useCallback} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 import {Link} from '@remix-run/react';
+
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
 
@@ -120,7 +121,11 @@ const topLevelItems = [
   {label: 'Accessories', href: '/collections/accessories', hasSubmenu: true},
   {label: 'Shoes', href: '/collections/shoes', hasSubmenu: true},
   {label: 'Beauty', href: '/collections/beauty', hasSubmenu: true},
-  {label: 'Phone Accessories', href: '/collections/phone-accessories', hasSubmenu: true},
+  {
+    label: 'Phone Accessories',
+    href: '/collections/phone-accessories',
+    hasSubmenu: true,
+  },
   {label: 'The Edit', href: '/collections/the-edit', hasSubmenu: false},
   {label: 'Sale', href: '/collections/sale', hasSubmenu: false},
 ];

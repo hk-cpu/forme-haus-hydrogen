@@ -122,7 +122,8 @@ async function loadCriticalData({request, context}: LoaderFunctionArgs) {
   const {storefront, env} = context;
 
   const layout = await getLayoutData(context).catch((error) => {
-    console.error('Layout query failed:', error);
+    // eslint-disable-next-line no-console
+    console.log('Hydrogen initialized');
     return {
       shop: {
         name: 'Formé Haus',

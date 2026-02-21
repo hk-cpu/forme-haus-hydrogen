@@ -1,5 +1,6 @@
 import {useNavigate, useLocation, useRouteLoaderData} from '@remix-run/react';
 import {motion} from 'framer-motion';
+
 import type {RootLoader} from '~/root';
 import {DEFAULT_LOCALE} from '~/lib/utils';
 

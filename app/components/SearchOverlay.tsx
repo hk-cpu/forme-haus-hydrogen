@@ -3,6 +3,7 @@ import {motion, AnimatePresence} from 'framer-motion';
 import {Link, useFetcher} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
 import {useDebounce} from 'react-use';
+
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
 
@@ -433,7 +434,7 @@ export function SearchOverlay() {
                               <Money
                                 data={{
                                   amount: product.price.amount,
-                                  currencyCode: product.price.currencyCode,
+                                   currencyCode: product.price.currencyCode as any,
                                 }}
                               />
                             </p>

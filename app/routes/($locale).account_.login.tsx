@@ -44,15 +44,18 @@ export async function action({context, request}: ActionFunctionArgs) {
 
   try {
     if (formId === 'register') {
-      const {data, errors} = await storefront.mutate(CUSTOMER_CREATE_MUTATION, {
-        variables: {
-          input: {email, password},
+      const {data, errors} = (await storefront.mutate(
+        CUSTOMER_CREATE_MUTATION,
+        {
+          variables: {
+            input: {email, password},
+          },
         },
-      });
+      )) as any;
 
       if (errors?.length) {
         return json(
-          {error: errors[0].message, formId: 'register'},
+          {error: errors[0].message, formId: 'register', success: undefined},
           {status: 400},
         );
       }
@@ -62,6 +65,7 @@ export async function action({context, request}: ActionFunctionArgs) {
           {
             error: data.customerCreate.customerUserErrors[0].message,
             formId: 'register',
+            success: undefined,
           },
           {status: 400},
         );
@@ -70,17 +74,21 @@ export async function action({context, request}: ActionFunctionArgs) {
       return json({
         success: 'Account created. Please check your email to verify.',
         formId: 'register',
+        error: undefined,
       });
     } else {
       // Login
-      const {data, errors} = await storefront.mutate(LOGIN_MUTATION, {
+      const {data, errors} = (await storefront.mutate(LOGIN_MUTATION, {
         variables: {
           input: {email, password},
         },
-      });
+      })) as any;
 
       if (errors?.length) {
-        return json({error: errors[0].message, formId: 'login'}, {status: 400});
+        return json(
+          {error: errors[0].message, formId: 'login', success: undefined},
+          {status: 400},
+        );
       }
 
       if (data?.customerAccessTokenCreate?.customerUserErrors?.length) {
@@ -88,6 +96,7 @@ export async function action({context, request}: ActionFunctionArgs) {
           {
             error: data.customerAccessTokenCreate.customerUserErrors[0].message,
             formId: 'login',
+            success: undefined,
           },
           {status: 400},
         );
@@ -97,7 +106,7 @@ export async function action({context, request}: ActionFunctionArgs) {
 
       if (!customerAccessToken?.accessToken) {
         return json(
-          {error: 'Invalid credentials.', formId: 'login'},
+          {error: 'Invalid credentials.', formId: 'login', success: undefined},
           {status: 401},
         );
       }
@@ -112,7 +121,11 @@ export async function action({context, request}: ActionFunctionArgs) {
     }
   } catch (error: any) {
     return json(
-      {error: error.message || 'Something went wrong.', formId},
+      {
+        error: error.message || 'Something went wrong.',
+        formId,
+        success: undefined,
+      },
       {status: 500},
     );
   }
@@ -128,7 +141,8 @@ export default function Login() {
   const [isRegistering, setIsRegistering] = useState(false);
 
   useEffect(() => {
-    if (data?.formId === 'register' && data?.error) {
+    const actionData = data as any;
+    if (actionData?.formId === 'register' && actionData?.error) {
       setIsRegistering(true);
     }
   }, [data]);
@@ -186,15 +200,15 @@ export default function Login() {
             value={isRegistering ? 'register' : 'login'}
           />
 
-          {data?.error && (
+          {(data as any)?.error && (
             <div className="p-3 text-sm text-red-100 bg-red-900/80 border border-red-100/20 rounded text-center font-light tracking-wide">
-              {data.error}
+              {(data as any).error}
             </div>
           )}
 
-          {data?.success && isRegistering && (
+          {(data as any)?.success && isRegistering && (
             <div className="p-3 text-sm text-[#2C2419] bg-[#a87441]/20 border border-[#a87441]/30 rounded text-center font-medium tracking-wide">
-              {data.success}
+              {(data as any).success}
             </div>
           )}
 

@@ -1,5 +1,6 @@
 node_modules
 build
+.shopify
 dist
 playwright-report
 .hydrogen

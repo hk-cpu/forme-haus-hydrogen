@@ -1,7 +1,9 @@
 import {motion} from 'framer-motion';
-import {ShinyText} from './ShinyText';
 import {useEffect, useState} from 'react';
+
 import {useTranslation} from '~/hooks/useTranslation';
+
+import {ShinyText} from './ShinyText';
 
 export function StatusBanner() {
   const [isVisible, setIsVisible] = useState(false);

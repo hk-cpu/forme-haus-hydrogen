@@ -1,7 +1,10 @@
-import {type MetaArgs, type ActionFunctionArgs} from '@shopify/remix-oxygen';
+import {
+  type MetaFunction,
+  type ActionFunctionArgs,
+} from '@shopify/remix-oxygen';
 import {Form, useActionData, useNavigation, Link} from '@remix-run/react';
 
-export const meta: MetaArgs = () => {
+export const meta: MetaFunction = () => {
   return [{title: 'Recover Password'}];
 };
 
@@ -42,15 +45,16 @@ export default function Recover() {
           </p>
         </div>
         <Form method="post" className="mt-8 space-y-6">
-          {actionData?.error && (
+          {(actionData as any)?.error && (
             <div
               className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50"
               role="alert"
             >
-              <span className="font-medium">Error!</span> {actionData.error}
+              <span className="font-medium">Error!</span>{' '}
+              {(actionData as any).error}
             </div>
           )}
-          {actionData?.success && (
+          {(actionData as any)?.success && (
             <div
               className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50"
               role="alert"

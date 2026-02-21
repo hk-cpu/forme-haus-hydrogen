@@ -1,5 +1,7 @@
-import type {Storefront as HydrogenStorefront} from '@shopify/hydrogen';
-import type {CustomerAccount as HydrogenCustomerAccount} from '@shopify/hydrogen';
+import type {
+  Storefront as HydrogenStorefront,
+  CustomerAccount as HydrogenCustomerAccount,
+} from '@shopify/hydrogen';
 import type {
   CountryCode,
   CurrencyCode,
