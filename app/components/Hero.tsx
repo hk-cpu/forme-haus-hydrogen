@@ -6,7 +6,7 @@ export default function Hero() {
   const {t} = useTranslation();
 
   return (
-    <section className="h-[90vh] flex flex-col items-center justify-center bg-transparent relative overflow-hidden">
+    <section className="h-screen flex flex-col items-center justify-center bg-transparent relative overflow-hidden">
       {/*
           Hero Background is TRANSPARENT to show the global Silk canvas from PageLayout.
           Removed conflicting overlays/gradients.

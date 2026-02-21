@@ -75,7 +75,7 @@ export default function Homepage() {
       <Hero />
 
       {/* Light "Glowing" Theme Content Sheet */}
-      <div className="relative z-20 bg-[#F9F5F0] text-[#8B8076] rounded-t-[3rem] shadow-[0_-20px_60px_-15px_rgba(255,255,255,0.3)] mt-[-5vh] pt-12">
+      <div className="relative z-20 bg-[#F9F5F0] text-[#8B8076] rounded-t-[3rem] shadow-[0_-20px_60px_-15px_rgba(255,255,255,0.3)] pt-12">
         {/* 2. Category Slider (Horizontal Scroll - New In / Categories) */}
         <CategoryBento />
 
