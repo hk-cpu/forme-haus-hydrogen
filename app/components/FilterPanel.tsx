@@ -1,5 +1,6 @@
 import {useState, useCallback} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
+
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
 

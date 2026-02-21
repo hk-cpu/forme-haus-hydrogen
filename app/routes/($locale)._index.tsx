@@ -92,7 +92,7 @@ export default function Homepage() {
         >
           <div className="w-px h-12 bg-gradient-to-b from-transparent via-[#a87441]/60 to-transparent mx-auto" />
           <p className="font-serif text-lg md:text-xl leading-relaxed text-[#4A3C31] font-light italic tracking-wide">
-            "{t('home.brandIntro')}"
+            &quot;{t('home.brandIntro')}&quot;
           </p>
         </motion.section>
 
@@ -117,9 +117,12 @@ export default function Homepage() {
                         '/brand/placeholder-drape.png',
                         '/brand/silk-texture.png',
                       ];
-                      
-                      const displayTitle = c.title === 'Home page' ? 'Where Elegance Begins' : c.title;
-                      
+
+                      const displayTitle =
+                        c.title === 'Home page'
+                          ? 'Where Elegance Begins'
+                          : c.title;
+
                       return (
                         <Link
                           key={c.id}

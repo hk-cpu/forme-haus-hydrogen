@@ -1,5 +1,6 @@
 import {json} from '@remix-run/server-runtime';
 import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+
 import {type NormalizedPredictiveSearchResults} from '~/components/PredictiveSearch';
 import {NO_PREDICTIVE_SEARCH_RESULTS} from '~/components/PredictiveSearch';
 
@@ -29,7 +30,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
 
   const searchResults = normalizePredictiveSearchResults(
     data.predictiveSearch,
-    context.storefront.i18n.locale,
+    context.storefront.i18n.language,
   );
 
   return json({searchResults});

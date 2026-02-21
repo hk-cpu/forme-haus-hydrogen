@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+
 import type {AtmosphereProps} from './Atmosphere.client';
 
 export default function Atmosphere(props: AtmosphereProps) {

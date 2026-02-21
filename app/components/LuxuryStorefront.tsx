@@ -1,13 +1,8 @@
-import {
-  useState,
-  useEffect,
-  useRef,
-  createContext,
-  useContext,
-  ReactNode,
-} from 'react';
+import type {ReactNode} from 'react';
+import {useState, useEffect, useRef, createContext, useContext} from 'react';
 import {motion, AnimatePresence, useScroll, useTransform} from 'framer-motion';
 import {Link} from '@remix-run/react';
+
 import {tokens, Icons} from './Theme';
 
 // ============================================================================
@@ -895,6 +890,10 @@ function SearchOverlay() {
           transition={{duration: 0.3}}
         >
           <div className="search-header">
+            <p className="text-sm text-neutral-500 mb-6">
+              You haven&apos;t searched for anything yet. Try typing something
+              like &quot;shoes&quot; or &quot;t-shirt&quot;.
+            </p>
             <div className="search-input-wrapper">
               <Icons.Search />
               <input
@@ -1388,7 +1387,7 @@ function FilterPanel() {
                       transition={{duration: 0.2}}
                     >
                       {categories.map((cat) => (
-                        <a key={cat} href="#" className="filter-link">
+                        <a key={cat} href="/#" className="filter-link">
                           {cat}
                         </a>
                       ))}
@@ -1452,7 +1451,7 @@ function FilterPanel() {
                       exit={{height: 0, opacity: 0}}
                     >
                       {colors.map((color) => (
-                        <a key={color} href="#" className="filter-color-link">
+                        <a key={color} href="/#" className="filter-color-link">
                           {color}
                         </a>
                       ))}
@@ -1850,7 +1849,7 @@ function LoginOverlay() {
 
                 <div className="login-alt">
                   <span>Or use a one-time login link to Sign In:</span>
-                  <a href="#" className="email-link">
+                  <a href="/#" className="email-link">
                     Email me the link
                   </a>
                 </div>
@@ -2669,7 +2668,7 @@ function FeaturedGrid() {
         transition={{duration: 0.6}}
       >
         <h2 className="featured-title">
-          Explore a Selection of the Maison's Creations
+          Explore a Selection of the Maison&apos;s Creations
         </h2>
         <p className="featured-subtitle">
           Complimentary delivery on all orders
@@ -2851,11 +2850,11 @@ function ProductListingPage() {
 
       <div className="category-description">
         <p>
-          Discover the collection of luxury <a href="#">coats</a> and{' '}
-          <a href="#">jackets</a> for women. From timeless wool overcoats to
+          Discover the collection of luxury <a href="/#">coats</a> and{' '}
+          <a href="/#">jackets</a> for women. From timeless wool overcoats to
           contemporary leather pieces, explore designs that embody refined
           craftsmanship and modern elegance. Each piece in this collection
-          represents the pinnacle of <a href="#">ready-to-wear</a> fashion.
+          represents the pinnacle of <a href="/#">ready-to-wear</a> fashion.
         </p>
       </div>
 
@@ -2987,10 +2986,10 @@ function Footer() {
 
   const socialLinks = [
     {name: 'Instagram', url: 'https://www.instagram.com/formee.haus/'},
-    {name: 'Facebook', url: '#'},
-    {name: 'Twitter', url: '#'},
-    {name: 'YouTube', url: '#'},
-    {name: 'Pinterest', url: '#'},
+    {name: 'Facebook', url: '/#'},
+    {name: 'Twitter', url: '/#'},
+    {name: 'YouTube', url: '/#'},
+    {name: 'Pinterest', url: '/#'},
   ];
 
   return (
@@ -3032,7 +3031,7 @@ function Footer() {
                   transition={{duration: 0.2}}
                 >
                   {section.links.map((link) => (
-                    <a key={link} href="#" className="footer-link">
+                    <a key={link} href="/#" className="footer-link">
                       {link}
                     </a>
                   ))}
@@ -3090,9 +3089,9 @@ function Footer() {
 
       <div className="footer-bottom">
         <div className="footer-legal">
-          <a href="#">Sitemap</a>
-          <a href="#">Legal & Privacy</a>
-          <a href="#">Consumer Rights</a>
+          <a href="/#">Sitemap</a>
+          <a href="/#">Legal & Privacy</a>
+          <a href="/#">Consumer Rights</a>
         </div>
         <div className="footer-locale">
           <button className="locale-btn">

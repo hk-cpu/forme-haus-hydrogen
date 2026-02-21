@@ -161,3 +161,4 @@ const Silk: React.FC<SilkProps> = ({
 };
 
 export default Silk;
+/* eslint-enable react/no-unknown-property */

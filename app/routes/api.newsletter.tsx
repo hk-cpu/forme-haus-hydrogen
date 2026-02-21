@@ -1,6 +1,20 @@
 import {type ActionFunctionArgs} from '@shopify/remix-oxygen';
 import {json} from '@remix-run/server-runtime';
 
+// Define the expected type for the customerCreate mutation result
+interface CustomerCreateMutationResult {
+  customerCreate: {
+    customer?: {
+      id: string;
+      email: string;
+    };
+    userErrors: Array<{
+      field: string[];
+      message: string;
+    }>;
+  };
+}
+
 export async function action({request, context}: ActionFunctionArgs) {
   const formData = await request.formData();
   const email = formData.get('email');
@@ -10,24 +24,25 @@ export async function action({request, context}: ActionFunctionArgs) {
   }
 
   try {
-    const {data, errors} = await context.storefront.mutate(
+    const response = (await context.storefront.mutate(
       CUSTOMER_CREATE_MUTATION,
       {
         variables: {
           input: {
             email,
+            password: Math.random().toString(36).slice(-8), // Dummy password for newsletter-only signup
             acceptsMarketing: true,
-            emailMarketingConsent: {
-              marketingState: 'SUBSCRIBED',
-              marketingOptInLevel: 'SINGLE_OPT_IN',
-            },
           },
         },
       },
-    );
+    )) as any;
+
+    const data = response?.data;
+    const errors = response?.errors;
 
     if (errors) {
-      console.error('Newsletter API Error:', errors);
+      // eslint-disable-next-line no-console
+      console.log('Newsletter form data:', formData);
       return json({error: errors[0].message}, {status: 400});
     }
 
@@ -43,12 +58,14 @@ export async function action({request, context}: ActionFunctionArgs) {
         return json({success: true, message: 'You are already subscribed.'});
       }
 
+      // eslint-disable-next-line no-console
       console.error('Customer Create Errors:', userErrors);
       return json({error: userErrors[0].message}, {status: 400});
     }
 
     return json({success: true, message: 'Thank you for subscribing.'});
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Newsletter API Exception:', error);
     return json(
       {error: 'Failed to subscribe. Please try again.'},

@@ -1,5 +1,6 @@
 import {useFetcher} from '@remix-run/react';
 import {useEffect, useRef} from 'react';
+
 import {useTranslation} from '~/hooks/useTranslation';
 
 export function Newsletter() {

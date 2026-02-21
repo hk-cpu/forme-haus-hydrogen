@@ -12,6 +12,7 @@
 import {useState} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 import {Link} from '@remix-run/react';
+
 import {useTranslation} from '~/hooks/useTranslation';
 
 interface FooterLink {
@@ -162,11 +163,7 @@ export function FooterAccordion() {
                           <a
                             href={link.url}
                             target="_blank"
-                            rel={
-                              link.url.includes('adj.st')
-                                ? 'nofollow'
-                                : 'noopener noreferrer'
-                            }
+                            rel="noopener noreferrer"
                             className="text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors block"
                           >
                             {link.title}

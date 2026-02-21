@@ -13,6 +13,7 @@
 
 import {useState, useRef, useEffect, lazy, Suspense} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
+
 import {tokens} from './Theme';
 
 // Lazy load the heavy components for performance

@@ -1,5 +1,6 @@
 import {Link} from '@remix-run/react';
 import {motion} from 'framer-motion';
+
 import {useTranslation} from '~/hooks/useTranslation';
 
 export default function Hero() {

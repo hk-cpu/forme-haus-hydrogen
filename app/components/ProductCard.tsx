@@ -2,6 +2,7 @@ import {useState, useEffect, useRef, useCallback} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 import {Link} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
+
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
 
@@ -82,10 +83,12 @@ interface ProductCardProps {
       };
     };
     images: {
-      nodes: Array<{
-        url: string;
-        altText: string;
-      }>;
+      nodes: Array<
+        {
+          url: string;
+          altText?: string | null;
+        } & Record<string, any>
+      >;
     };
     tags?: string[];
     availableForSale?: boolean;
@@ -97,6 +100,7 @@ interface ProductCardProps {
   };
   quickAdd?: boolean;
   index?: number;
+  loading?: 'eager' | 'lazy';
 }
 
 /**
@@ -214,7 +218,11 @@ export function ProductCard({
               animate={{opacity: 1, scale: 1}}
               exit={{opacity: 0, scale: 0.95}}
               transition={{duration: 0.4, ease: 'easeOut'}}
-              className={`w-full h-full ${!product.availableForSale ? 'blur-md opacity-70 grayscale-[30%]' : ''}`}
+              className={`w-full h-full ${
+                !product.availableForSale
+                  ? 'blur-md opacity-70 grayscale-[30%]'
+                  : ''
+              }`}
             >
               {images.length > 0 ? (
                 <Image
@@ -372,7 +380,7 @@ export function ProductCard({
             <p className="text-[#4A3C31] font-medium transition-all duration-300 group-hover:text-[#a87441]">
               {product.priceRange?.minVariantPrice ? (
                 <span className="flex items-center gap-1.5">
-                  <Money data={product.priceRange.minVariantPrice} />
+                  <Money data={product.priceRange.minVariantPrice as any} />
                   {product.availableForSale !== false && (
                     <span className="text-[10px] text-[#8B8076] font-normal lowercase tracking-wide">
                       {t('cart.vatIncluded', '(vat included)')}

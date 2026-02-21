@@ -1,10 +1,5 @@
-import {
-  createContext,
-  useContext,
-  useReducer,
-  ReactNode,
-  useEffect,
-} from 'react';
+import type {ReactNode} from 'react';
+import {createContext, useContext, useReducer, useEffect} from 'react';
 
 // ============================================================================
 // UI STATE TYPES
@@ -234,9 +229,13 @@ export function UIProvider({children}: {children: ReactNode}) {
         try {
           const parsed = JSON.parse(saved);
           if (Array.isArray(parsed)) {
-            dispatch({type: 'SET_WISHLIST', productIds: parsed});
+            const productIds = parsed.filter(
+              (id: unknown): id is string => typeof id === 'string',
+            );
+            dispatch({type: 'SET_WISHLIST', productIds});
           }
         } catch (e) {
+          // eslint-disable-next-line no-console
           console.error('Failed to parse wishlist from localStorage');
         }
       }

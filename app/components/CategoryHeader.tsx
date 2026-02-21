@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 import {Link, useLocation} from '@remix-run/react';
+
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
 
@@ -130,8 +131,10 @@ export function CategoryHeader({
             {dropdownOpen && (
               <>
                 {/* Backdrop to close dropdown */}
-                <div
-                  className="fixed inset-0 z-10"
+                <button
+                  type="button"
+                  aria-label="Close dropdown"
+                  className="fixed inset-0 z-10 w-full h-full cursor-default"
                   onClick={() => setDropdownOpen(false)}
                 />
                 <motion.div
@@ -169,9 +172,7 @@ export function CategoryHeader({
           className="flex items-center gap-2 px-4 py-2 bg-[#a87441]/10 hover:bg-[#a87441]/20 rounded-lg text-[#F0EAE6] transition-colors"
         >
           <Icons.Filter />
-          <span className="text-sm font-medium">
-            {t('filter.filters', 'Filters')}
-          </span>
+          <span className="text-sm font-medium">{t('filter.filters')}</span>
         </button>
       </div>
     </div>

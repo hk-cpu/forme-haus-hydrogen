@@ -4,11 +4,13 @@ import {Image} from '@shopify/hydrogen';
 import {Menu, Search, ShoppingBag, User} from 'lucide-react';
 import {useWindowScroll} from 'react-use';
 import {motion, AnimatePresence} from 'framer-motion';
+
 import {useIsHomePath} from '~/lib/utils';
 import type {RootLoader} from '~/root';
-import LanguageSwitch from './LanguageSwitch';
 import type {EnhancedMenu} from '~/lib/utils';
 import {useTranslation} from '~/hooks/useTranslation';
+
+import LanguageSwitch from './LanguageSwitch';
 
 export function Header({
   title,
@@ -138,7 +140,8 @@ export function Header({
                           className="block px-5 py-3 text-[11px] uppercase tracking-[0.12em] text-[#F0EAE6]/70 hover:text-[#a87441] hover:bg-[#a87441]/5 transition-all duration-200 group/link"
                         >
                           <span className="relative">
-                            {subItem.title === 'CATALOG' || subItem.title === 'Catalog'
+                            {subItem.title === 'CATALOG' ||
+                            subItem.title === 'Catalog'
                               ? 'COLLECTIONS'
                               : subItem.title}
                             <span className="absolute -bottom-0.5 left-0 rtl:left-auto rtl:right-0 w-0 h-[1px] bg-[#a87441] group-hover/link:w-full transition-all duration-300" />

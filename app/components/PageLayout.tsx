@@ -9,7 +9,6 @@ import {Link} from '~/components/Link';
 import {Cart} from '~/components/Cart';
 import {CartLoading} from '~/components/CartLoading';
 import {Drawer, useDrawer} from '~/components/Drawer';
-
 import {type EnhancedMenu, useIsHomePath} from '~/lib/utils';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
 import type {RootLoader} from '~/root';
@@ -18,12 +17,10 @@ import Silk from '~/components/Silk';
 import Atmosphere from '~/components/Atmosphere';
 import {PredictiveSearch} from '~/components/PredictiveSearch';
 import {NavigationMenu} from '~/components/NavigationMenu';
-
 import {SearchOverlay} from '~/components/SearchOverlay';
 import {AccountOverlay} from '~/components/AccountOverlay';
 import {FilterPanel} from '~/components/FilterPanel';
 import {useUI} from '~/context/UIContext';
-
 import {useTranslation} from '~/hooks/useTranslation';
 import {Newsletter} from '~/components/Newsletter';
 import PaymentBadges from '~/components/PaymentBadges';
@@ -62,7 +59,7 @@ export function PageLayout({children, layout}: LayoutProps) {
       <div className="flex flex-col min-h-screen relative bg-[#121212]">
         {/* Background Layer (Z-0) */}
         <div className="fixed inset-0 pointer-events-none z-0">
-          {useIsHomePath() && <Silk color="#AD9686" opacity={0.15} />}
+          {useIsHomePath() && <Silk color="#AD9686" />}
           <Atmosphere count={60} color="#AD9686" size={0.008} opacity={0.2} />
           {/* Subtle gradient for depth - much lighter */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />

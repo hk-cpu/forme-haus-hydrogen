@@ -152,9 +152,11 @@ export default function Product() {
   // Sets the search param to the selected variant without navigation
   // only when no search params are set in the url
   // Prevent "Default Title" from appearing in URL for single-variant products
-  if (selectedVariant.title !== 'Default Title') {
-    useSelectedOptionInUrlParam(selectedVariant.selectedOptions);
-  }
+  useSelectedOptionInUrlParam(
+    selectedVariant.title !== 'Default Title'
+      ? selectedVariant.selectedOptions
+      : [],
+  );
 
   // Get the product options array
   const productOptions = getProductOptions({

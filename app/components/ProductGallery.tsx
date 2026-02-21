@@ -32,7 +32,7 @@ export function ProductGallery({
 
           // Make every 3rd image span full width on desktop for variety, or keep it simple grid
           // For now, let's do a simple clean grid but with improved spacing/aspect ratio
-          const isFullWidth = i % 3 === 0 && i !== 0; 
+          const isFullWidth = i % 3 === 0 && i !== 0;
 
           return (
             <div
@@ -53,7 +53,9 @@ export function ProductGallery({
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-[#8B8076]/20 font-serif italic">No Image</div>
+                    <div className="text-[#8B8076]/20 font-serif italic">
+                      No Image
+                    </div>
                   </div>
                 )}
               </div>
