@@ -389,10 +389,10 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
                   800 123 456
                 </a>
                 <a
-                  href="mailto:care@formehaus.com"
+                  href="mailto:info@formehaus.me"
                   className="text-sm text-[#AA9B8F] hover:text-[#a87441] transition-colors"
                 >
-                  care@formehaus.com
+                  info@formehaus.me
                 </a>
               </div>
             </div>

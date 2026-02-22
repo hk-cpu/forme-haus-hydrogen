@@ -30,7 +30,8 @@ import {GenericError} from '~/components/GenericError';
 import {NotFound} from '~/components/NotFound';
 import Silk from '~/components/Silk';
 import SmoothScroll from '~/components/SmoothScroll';
-import favicon from '~/assets/favicon.svg';
+// Brand favicon served from /public/favicon.png
+const favicon = '/favicon.png';
 import {seoPayload} from '~/lib/seo.server';
 import styles from '~/styles/app.css?url';
 import futuristicStyles from '~/styles/futuristic-polish.css?url';
@@ -110,7 +111,7 @@ export const links: LinksFunction = () => {
       rel: 'preconnect',
       href: 'https://shop.app',
     },
-    {rel: 'icon', type: 'image/svg+xml', href: favicon},
+    {rel: 'icon', type: 'image/png', href: favicon},
     {
       rel: 'preconnect',
       href: 'https://fonts.googleapis.com',

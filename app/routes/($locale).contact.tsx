@@ -73,8 +73,8 @@ export default function ContactPage() {
       icon: Mail,
       title: 'Email Us',
       description: "We'll get back to you as soon as possible",
-      value: 'care@formehaus.com',
-      href: 'mailto:care@formehaus.com',
+      value: 'info@formehaus.me',
+      href: 'mailto:info@formehaus.me',
       action: 'Send Email',
     },
   ];
@@ -342,7 +342,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-serif text-lg text-[#4A3C31]">
-                      @forme.haus
+                      @formee.haus
                     </h3>
                     <p className="text-[11px] text-[#8B8076]">
                       Follow our journey
@@ -350,7 +350,7 @@ export default function ContactPage() {
                   </div>
                 </div>
                 <a
-                  href="https://www.instagram.com/forme.haus/"
+                  href="https://www.instagram.com/formee.haus/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-5 py-2 bg-[#121212] text-white text-[11px] uppercase tracking-wider rounded-lg
@@ -365,15 +365,24 @@ export default function ContactPage() {
                 behind-the-scenes moments.
               </p>
 
-              {/* Instagram Preview Grid */}
-              <div className="grid grid-cols-4 gap-2 mt-6">
-                {[1, 2, 3, 4].map((i) => (
+              {/* Live Instagram Posts */}
+              <div className="grid grid-cols-3 gap-2 mt-6">
+                {[
+                  'https://www.instagram.com/p/DR_9yG3DKpr/embed/',
+                  'https://www.instagram.com/p/DR_96jbjCDY/embed/',
+                  'https://www.instagram.com/p/DR_9_GYDFpD/embed/',
+                ].map((url, i) => (
                   <div
                     key={i}
-                    className="aspect-square rounded-lg bg-[#F5F0EB] flex items-center justify-center
-                      hover:bg-[#a87441]/10 transition-colors cursor-pointer"
+                    className="aspect-square rounded-lg overflow-hidden bg-[#F5F0EB]"
                   >
-                    <Instagram className="w-5 h-5 text-[#8B8076]/30" />
+                    <iframe
+                      src={url}
+                      className="w-full h-full border-0"
+                      allowTransparency
+                      loading="lazy"
+                      title={`Instagram post ${i + 1}`}
+                    />
                   </div>
                 ))}
               </div>
