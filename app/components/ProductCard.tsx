@@ -15,8 +15,8 @@ const Icons = {
     className?: string;
   }) => (
     <svg
-      width="20"
-      height="20"
+      width="24"
+      height="24"
       viewBox="0 0 24 24"
       fill={filled ? 'currentColor' : 'none'}
       stroke="currentColor"
@@ -275,10 +275,10 @@ export function ProductCard({
             initial={false}
             animate={isWishlisted ? {scale: [1, 1.2, 1]} : {}}
             transition={{duration: 0.3}}
-            className={`absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 z-20 shadow-md ${
+            className={`absolute top-3 right-3 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 z-20 shadow-md ${
               isWishlisted
                 ? 'bg-[#a87441] text-white'
-                : 'bg-white/80 text-[#4A3C31] opacity-40 group-hover:opacity-100 hover:bg-[#a87441] hover:text-white backdrop-blur-sm'
+                : 'bg-white/90 text-[#4A3C31] opacity-60 group-hover:opacity-100 hover:bg-[#a87441] hover:text-white backdrop-blur-sm'
             }`}
             aria-label={
               isWishlisted
@@ -365,27 +365,27 @@ export function ProductCard({
         </div>
 
         {/* Product Info */}
-        <div className="space-y-1.5 px-0.5">
-          <h3 className="font-serif text-[#F0EAE6] text-[14px] md:text-[15px] leading-snug group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] transition-all duration-300 line-clamp-2">
+        <div className="space-y-2 px-1 mt-4">
+          <h3 className="font-serif text-[#2a2118] text-[16px] md:text-[18px] leading-snug group-hover:text-[#a87441] transition-all duration-300 line-clamp-2 tracking-wide">
             {product.title}
           </h3>
           <div className="flex items-baseline gap-2 flex-wrap">
-            <p className="text-[#F0EAE6] text-[13px] font-medium transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
+            <p className="text-[#4A3C31] text-[15px] font-semibold transition-all duration-300 group-hover:text-[#a87441]">
               {product.priceRange?.minVariantPrice ? (
                 <span className="flex items-baseline gap-1.5">
                   <Money data={product.priceRange.minVariantPrice as any} />
                   {product.availableForSale !== false && (
-                    <span className="text-[9px] text-[#AA9B8F] font-normal lowercase tracking-wide">
+                    <span className="text-[10px] text-[#8B8076] font-normal lowercase tracking-wide">
                       {t('cart.vatIncluded', '(vat included)')}
                     </span>
                   )}
                 </span>
               ) : (
-                <span className="text-sm text-[#AA9B8F]">Price unavailable</span>
+                <span className="text-sm text-[#8B8076]">Price unavailable</span>
               )}
             </p>
             {hasDiscount && (
-              <p className="text-[#AA9B8F] text-[12px] line-through">
+              <p className="text-[#AA9B8F] text-[13px] line-through">
                 <Money data={product.compareAtPriceRange!.minVariantPrice} />
               </p>
             )}
