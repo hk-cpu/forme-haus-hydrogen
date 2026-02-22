@@ -210,11 +210,11 @@ export function ProductCard({
           <AnimatePresence mode="wait">
             <motion.div
               key={currentImage}
-              initial={{opacity: 0, scale: 1.1}}
-              animate={{opacity: 1, scale: 1}}
-              exit={{opacity: 0, scale: 0.95}}
+              initial={{opacity: 0}}
+              animate={{opacity: 1}}
+              exit={{opacity: 0}}
               transition={{duration: 0.4, ease: 'easeOut'}}
-              className={`w-full h-full ${!product.availableForSale ? 'blur-md opacity-70 grayscale-[30%]' : ''}`}
+              className={`w-full h-full ${isHovered ? 'animate-breathe-zoom' : ''}`}
             >
               {images.length > 0 ? (
                 <Image
@@ -241,8 +241,8 @@ export function ProductCard({
           {/* Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
 
-          {/* Coming Soon Overlay for Out of Stock */}
-          {!product.availableForSale && (
+          {/* Coming Soon Overlay - only for products without a valid price */}
+          {!product.availableForSale && !product.priceRange?.minVariantPrice?.amount && (
             <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/40 backdrop-blur-sm">
               <span className="font-serif text-xl italic text-white/90 tracking-wide">
                 {t('product.comingSoon', 'Coming Soon')}
@@ -366,11 +366,11 @@ export function ProductCard({
 
         {/* Product Info */}
         <div className="space-y-1.5 px-0.5">
-          <h3 className="font-serif text-[#4A3C31] text-[14px] md:text-[15px] leading-snug group-hover:text-[#a87441] transition-colors duration-300 line-clamp-2">
+          <h3 className="font-serif text-[#F0EAE6] text-[14px] md:text-[15px] leading-snug group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] transition-all duration-300 line-clamp-2">
             {product.title}
           </h3>
           <div className="flex items-baseline gap-2 flex-wrap">
-            <p className="text-[#4A3C31] text-[13px] font-medium transition-colors duration-300 group-hover:text-[#a87441]">
+            <p className="text-[#F0EAE6] text-[13px] font-medium transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
               {product.priceRange?.minVariantPrice ? (
                 <span className="flex items-baseline gap-1.5">
                   <Money data={product.priceRange.minVariantPrice as any} />

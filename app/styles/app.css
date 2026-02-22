@@ -389,6 +389,16 @@ button:active:not(:disabled),
   position: relative;
 }
 
+/* Breathing Zoom Animation for Product Cards */
+@keyframes breathe-zoom {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.animate-breathe-zoom {
+  animation: breathe-zoom 3s ease-in-out infinite;
+}
+
 @utility animate-pulse-slow {
   animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

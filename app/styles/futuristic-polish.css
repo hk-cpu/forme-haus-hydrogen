@@ -1282,7 +1282,7 @@
 }
 
 .fp-img-zoom:hover img {
-  transform: scale(1.08);
+  transform: none;
 }
 
 /* Image with Bronze Tint on Hover */

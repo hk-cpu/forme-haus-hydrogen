@@ -130,9 +130,7 @@ function CategoryCard({
 
           {/* Image with CSS Zoom Animation */}
           <div
-            className={`w-full h-full transition-transform duration-[4000ms] ease-in-out ${
-              isHovered ? 'scale-[1.15]' : 'scale-100'
-            }`}
+            className="w-full h-full transition-transform duration-[4000ms] ease-in-out"
           >
             <img
               src={cat.image}
