@@ -228,7 +228,7 @@ function Layout({children}: {children?: React.ReactNode}) {
         <style
           dangerouslySetInnerHTML={{
             __html: `
-          html, body { background: linear-gradient(135deg, #1f1a16 0%, #2a2320 25%, #1e1915 50%, #261f1a 75%, #1a1714 100%); background-attachment: fixed; }
+          html, body { background-color: #121212; }
         `,
           }}
         />
