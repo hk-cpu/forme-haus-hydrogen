@@ -56,7 +56,7 @@ export function PageLayout({children, layout}: LayoutProps) {
 
   return (
     <>
-      <div className="flex flex-col min-h-screen relative bg-transparent">
+      <div className="flex flex-col min-h-screen relative bg-[#1a1714]">
         {/* Background Layer (Z-0) */}
         <div className="fixed inset-0 pointer-events-none z-0">
           <div className="absolute inset-0" style={{transition: 'opacity 0.8s ease'}}>

@@ -228,7 +228,7 @@ function Layout({children}: {children?: React.ReactNode}) {
         <style
           dangerouslySetInnerHTML={{
             __html: `
-          html, body { background-color: transparent; }
+          html, body { background-color: #1a1714; }
         `,
           }}
         />
