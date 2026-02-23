@@ -168,7 +168,7 @@
 /* Light mode override removed to enforce luxury dark aesthetic */
 
 body {
-  background: var(--background) !important;
+  background: transparent !important;
   color: var(--foreground);
   font-family: var(--font-sans);
   font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
@@ -561,7 +561,7 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: #121212;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
