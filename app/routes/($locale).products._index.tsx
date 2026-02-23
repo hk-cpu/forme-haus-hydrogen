@@ -67,7 +67,7 @@ export default function AllProducts() {
   const {products} = useLoaderData<typeof loader>();
 
   return (
-    <div className="min-h-screen bg-[#4A3C31] text-[#F0EAE6]">
+    <div className="min-h-screen bg-[#4A3C31]/80 backdrop-blur-sm text-[#F0EAE6]">
       <div className="py-24 text-center">
         <h1 className="font-serif italic font-light text-5xl md:text-6xl text-[#F0EAE6] mb-4">
           All Products

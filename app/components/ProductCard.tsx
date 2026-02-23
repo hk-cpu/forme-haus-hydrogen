@@ -366,26 +366,26 @@ export function ProductCard({
 
         {/* Product Info */}
         <div className="space-y-2 px-1 mt-4">
-          <h3 className="font-serif text-[#2a2118] text-[16px] md:text-[18px] leading-snug group-hover:text-[#a87441] transition-all duration-300 line-clamp-2 tracking-wide">
+          <h3 className="font-serif text-current text-[16px] md:text-[18px] leading-snug group-hover:text-[#a87441] transition-all duration-300 line-clamp-2 tracking-wide">
             {product.title}
           </h3>
           <div className="flex items-baseline gap-2 flex-wrap">
-            <p className="text-[#4A3C31] text-[15px] font-semibold transition-all duration-300 group-hover:text-[#a87441]">
+            <p className="text-current text-[15px] font-semibold transition-all duration-300 group-hover:text-[#a87441]">
               {product.priceRange?.minVariantPrice ? (
                 <span className="flex items-baseline gap-1.5">
                   <Money data={product.priceRange.minVariantPrice as any} />
                   {product.availableForSale !== false && (
-                    <span className="text-[10px] text-[#8B8076] font-normal lowercase tracking-wide">
+                    <span className="text-[10px] opacity-60 font-normal lowercase tracking-wide">
                       {t('cart.vatIncluded', '(vat included)')}
                     </span>
                   )}
                 </span>
               ) : (
-                <span className="text-sm text-[#8B8076]">Price unavailable</span>
+                <span className="text-sm opacity-50">Price unavailable</span>
               )}
             </p>
             {hasDiscount && (
-              <p className="text-[#AA9B8F] text-[13px] line-through">
+              <p className="opacity-50 text-[13px] line-through">
                 <Money data={product.compareAtPriceRange!.minVariantPrice} />
               </p>
             )}
