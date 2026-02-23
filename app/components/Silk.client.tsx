@@ -78,7 +78,11 @@ void main() {
                                    0.02 * tOffset) +
                            sin(20.0 * (tex.x + tex.y - 0.1 * tOffset)));
 
+  // Ensure a minimum brightness floor so the silk never goes fully black
+  pattern = max(pattern, 0.25);
+
   vec4 col = vec4(uColor, 1.0) * vec4(pattern) - rnd / 15.0 * uNoiseIntensity;
+  col.rgb = max(col.rgb, vec3(0.06)); // absolute min so no pure black
   col.a = 1.0;
   gl_FragColor = col;
 }
@@ -154,7 +158,7 @@ const Silk: React.FC<SilkProps> = ({
   );
 
   return (
-    <Canvas dpr={[1, 2]} frameloop="always">
+    <Canvas dpr={[1, 2]} frameloop="always" gl={{ alpha: true }} style={{ background: 'transparent' }}>
       <SilkPlane ref={meshRef} uniforms={uniforms} />
     </Canvas>
   );
