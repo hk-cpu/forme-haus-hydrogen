@@ -59,7 +59,7 @@ export function PageLayout({children, layout}: LayoutProps) {
       <div className="flex flex-col min-h-screen relative bg-transparent">
         {/* Background Layer (Z-0) */}
         <div className="fixed inset-0 pointer-events-none z-0">
-          <div className="opacity-100" style={{transition: 'opacity 0.8s ease'}}>
+          <div className="absolute inset-0" style={{transition: 'opacity 0.8s ease'}}>
             <Silk color="#AD9686" speed={useIsHomePath() ? 5 : 3} />
           </div>
           <Atmosphere count={60} color="#AD9686" size={0.008} opacity={0.2} />

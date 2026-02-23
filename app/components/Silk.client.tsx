@@ -78,11 +78,11 @@ void main() {
                                    0.02 * tOffset) +
                            sin(20.0 * (tex.x + tex.y - 0.1 * tOffset)));
 
-  // Ensure a minimum brightness floor so the silk never goes fully black
-  pattern = max(pattern, 0.25);
+  // Ensure a minimum brightness floor so the silk never goes dark/black
+  pattern = max(pattern, 0.55);
 
   vec4 col = vec4(uColor, 1.0) * vec4(pattern) - rnd / 15.0 * uNoiseIntensity;
-  col.rgb = max(col.rgb, vec3(0.06)); // absolute min so no pure black
+  col.rgb = max(col.rgb, vec3(0.15)); // absolute min - visible warm brown
   col.a = 1.0;
   gl_FragColor = col;
 }
