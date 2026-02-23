@@ -84,7 +84,7 @@ interface ProductCardProps {
     images: {
       nodes: Array<{
         url: string;
-        altText: string;
+        altText?: string | null;
       }>;
     };
     tags?: string[];
