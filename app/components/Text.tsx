@@ -30,9 +30,9 @@ export function Text({
   };
 
   const sizes: Record<string, string> = {
-    lead: 'text-lead font-medium',
-    copy: 'text-copy',
-    fine: 'text-fine subpixel-antialiased',
+    lead: 'text-lead font-medium font-sans',
+    copy: 'text-copy font-sans',
+    fine: 'text-fine subpixel-antialiased font-sans',
   };
 
   const widths: Record<string, string> = {
@@ -72,10 +72,10 @@ export function Heading({
   width?: 'default' | 'narrow' | 'wide';
 } & React.HTMLAttributes<HTMLHeadingElement>) {
   const sizes = {
-    display: 'font-bold text-display',
-    heading: 'font-bold text-heading',
-    lead: 'font-bold text-lead',
-    copy: 'font-medium text-copy',
+    display: 'font-serif italic font-light text-display',
+    heading: 'font-serif italic font-light text-heading',
+    lead: 'font-serif italic font-light text-lead',
+    copy: 'font-sans font-medium text-copy',
   };
 
   const widths = {
@@ -147,7 +147,7 @@ export function Section({
   return (
     <Component {...props} className={styles}>
       {heading && (
-        <Heading size="lead" className={padding === 'y' ? paddings['x'] : ''}>
+        <Heading size="lead" className={`${padding === 'y' ? paddings['x'] : ''} text-2xl md:text-3xl`}>
           {heading}
         </Heading>
       )}
