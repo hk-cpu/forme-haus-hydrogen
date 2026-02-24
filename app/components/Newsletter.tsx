@@ -34,6 +34,8 @@ export function Newsletter() {
           <input
             type="email"
             name="email"
+            id="newsletter-email"
+            autoComplete="email"
             placeholder={t('footer.emailPlaceholder', {
               defaultValue: 'Enter your email',
             } as any)}
