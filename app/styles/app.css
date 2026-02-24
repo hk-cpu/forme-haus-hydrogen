@@ -396,7 +396,7 @@ button:active:not(:disabled),
 }
 
 .animate-breathe-zoom {
-  animation: breathe-zoom 3s ease-in-out infinite;
+  animation: breathe-zoom 6s ease-in-out infinite;
 }
 
 @utility animate-pulse-slow {

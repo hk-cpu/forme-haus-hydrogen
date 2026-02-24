@@ -107,7 +107,7 @@ const SilkPlane = forwardRef<Mesh, SilkPlaneProps>(function SilkPlane(
       const material = mesh.current.material as ShaderMaterial & {
         uniforms: SilkUniforms;
       };
-      material.uniforms.uTime.value += 0.1 * delta;
+      material.uniforms.uTime.value += 0.3 * delta;
     }
   });
 

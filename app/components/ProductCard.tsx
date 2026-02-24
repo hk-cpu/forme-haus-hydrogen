@@ -214,7 +214,7 @@ export function ProductCard({
               animate={{opacity: 1}}
               exit={{opacity: 0}}
               transition={{duration: 0.4, ease: 'easeOut'}}
-              className={`w-full h-full ${isHovered ? 'animate-breathe-zoom' : ''}`}
+              className="w-full h-full animate-breathe-zoom"
             >
               {images.length > 0 ? (
                 <Image
