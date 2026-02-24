@@ -68,6 +68,9 @@
   --color-cream: var(--cream);
   --color-silk: var(--silk);
 
+  --font-serif: 'Cormorant Garamond', 'Georgia', serif;
+  --font-sans: 'DM Sans', 'Helvetica Neue', 'Arial', sans-serif;
+
   /* Formé Haus Brand Colors */
   --color-brand: var(--bronze);
   --color-brand-foreground: #ffffff;
