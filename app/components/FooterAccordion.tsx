@@ -61,7 +61,7 @@ const footerSections: FooterSection[] = [
     id: 'about',
     title: 'About',
     links: [
-      {id: '6', title: 'Our Story', url: '/pages/about', isExternal: false},
+      {id: '6', title: 'Our Story', url: '/contact', isExternal: false},
       {
         id: '7',
         title: 'Privacy Policy',

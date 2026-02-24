@@ -360,7 +360,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
                   About
                 </h4>
                 <nav className="grid gap-2.5">
-                  <Link to="/pages/about" className={linkClass}>
+                  <Link to="/contact" className={linkClass}>
                     Our Story
                   </Link>
                   <Link to="/policies/privacy-policy" className={linkClass}>
