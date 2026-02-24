@@ -16,19 +16,21 @@ export function ProductSwimlane({
   if (!products?.nodes?.length) return null;
 
   return (
-    <section className="py-12 md:py-16" {...props}>
+    <section className="py-12 md:py-16 overflow-hidden" {...props}>
       <div className="text-center mb-8 md:mb-10">
         <h2 className="font-serif italic text-2xl md:text-3xl text-current tracking-wide">
           {title}
         </h2>
         <div className="w-16 h-px bg-[#a87441]/50 mx-auto mt-4" />
       </div>
-      <div className="swimlane hiddenScroll md:pb-8 md:scroll-px-8 lg:scroll-px-12 md:px-8 lg:px-12 flex gap-4 px-4">
-        {products.nodes.slice(0, count).map((product) => (
-          <div key={product.id} className="snap-start w-72 md:w-80 flex-shrink-0">
-            <ProductCard product={product as any} />
-          </div>
-        ))}
+      <div className="overflow-x-auto scrollbar-hide px-6 md:px-8 lg:px-12">
+        <div className="flex gap-4 md:gap-6 w-max pb-4">
+          {products.nodes.slice(0, count).map((product) => (
+            <div key={product.id} className="w-56 md:w-64 lg:w-72 flex-shrink-0">
+              <ProductCard product={product as any} />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
