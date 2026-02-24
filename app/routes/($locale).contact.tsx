@@ -365,25 +365,22 @@ export default function ContactPage() {
                 behind-the-scenes moments.
               </p>
 
-              {/* Live Instagram Posts */}
+              {/* Instagram Posts Links */}
               <div className="grid grid-cols-3 gap-2 mt-6">
                 {[
-                  'https://www.instagram.com/p/DR_9yG3DKpr/embed/',
-                  'https://www.instagram.com/p/DR_96jbjCDY/embed/',
-                  'https://www.instagram.com/p/DR_9_GYDFpD/embed/',
+                  'https://www.instagram.com/p/DR_9yG3DKpr/',
+                  'https://www.instagram.com/p/DR_96jbjCDY/',
+                  'https://www.instagram.com/p/DR_9_GYDFpD/',
                 ].map((url, i) => (
-                  <div
+                  <a
                     key={i}
-                    className="aspect-square rounded-lg overflow-hidden bg-[#F5F0EB]"
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="aspect-square rounded-lg overflow-hidden bg-gradient-to-br from-[#a87441]/20 via-[#8B5E3C]/15 to-[#4A3C31]/20 flex items-center justify-center group hover:from-[#a87441]/30 hover:to-[#4A3C31]/30 transition-all duration-300"
                   >
-                    <iframe
-                      src={url}
-                      className="w-full h-full border-0"
-                      allowTransparency
-                      loading="lazy"
-                      title={`Instagram post ${i + 1}`}
-                    />
-                  </div>
+                    <Instagram className="w-6 h-6 text-[#a87441]/60 group-hover:text-[#a87441] group-hover:scale-110 transition-all duration-300" />
+                  </a>
                 ))}
               </div>
             </div>
