@@ -89,40 +89,39 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
       collectionHandle === 'sunglasses' ||
       collectionHandle === 'sale')
   ) {
-    const {collection: allCollection} = await context.storefront.query(
-      COLLECTION_QUERY,
+    // Fallback: query all products directly since the collection handle doesn't exist
+    const {products: allProducts} = await context.storefront.query(
+      ALL_PRODUCTS_FALLBACK_QUERY,
       {
         variables: {
-          ...paginationVariables,
-          handle: 'all',
-          filters: [
-            ...filters,
-            ...(collectionHandle === 'sale' ? [{ tag: 'sale' }] : []),
-          ],
-          sortKey:
-            collectionHandle === 'new-in' || collectionHandle === 'new'
-              ? 'CREATED'
-              : 'BEST_SELLING',
-          reverse:
-            collectionHandle === 'new-in' || collectionHandle === 'new'
-              ? true
-              : false,
+          first: 16,
           country: context.storefront.i18n.country,
           language: context.storefront.i18n.language,
         },
       },
     );
 
-    if (allCollection) {
-      collection = allCollection;
+    if (allProducts?.nodes?.length) {
       const lang = context.storefront.i18n.language === 'AR' ? 'AR' : 'EN';
       // @ts-ignore
       let title: string = translations[lang]['nav.newIn'] as string;
       if(collectionHandle === 'sunglasses') title = 'Sunglasses';
       if(collectionHandle === 'sale') title = 'Sale';
-      
-      collection.title = title;
-      collection.description = '';
+
+      // Create a synthetic collection object
+      collection = {
+        id: `synthetic-${collectionHandle}`,
+        handle: collectionHandle,
+        title,
+        description: '',
+        seo: {title, description: ''},
+        image: null,
+        products: {
+          nodes: allProducts.nodes,
+          filters: [],
+          pageInfo: allProducts.pageInfo,
+        },
+      } as any;
     }
   }
 
@@ -499,3 +498,24 @@ function getSortValuesFromParam(sortParam: SortParam | null): {
       };
   }
 }
+
+const ALL_PRODUCTS_FALLBACK_QUERY = `#graphql
+  query AllProductsFallback(
+    $country: CountryCode
+    $language: LanguageCode
+    $first: Int!
+  ) @inContext(country: $country, language: $language) {
+    products(first: $first, sortKey: CREATED_AT, reverse: true) {
+      nodes {
+        ...ProductCard
+      }
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+  ${PRODUCT_CARD_FRAGMENT}
+` as const;
