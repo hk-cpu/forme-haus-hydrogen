@@ -1,6 +1,6 @@
 import {json} from '@remix-run/server-runtime';
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData} from '@remix-run/react';
+import {useLoaderData, Link, useLocation} from '@remix-run/react';
 import {motion} from 'framer-motion';
 
 import type {
@@ -197,9 +197,28 @@ export default function Collection() {
   const {collection, appliedFilters, collections} =
     useLoaderData<typeof loader>();
   const {t} = useTranslation();
+  const location = useLocation();
 
   // Collection hero image
   const heroImage = collection.image?.url;
+
+  // Phone Accessories sub-nav: show tabs on phone-related collection pages
+  const phoneAccessoriesHandles = ['phone-cases', 'phone-straps', 'case-strap-bundles'];
+  const isPhoneAccessoriesCategory = phoneAccessoriesHandles.includes(collection.handle);
+
+  const phoneSubNavTabs = [
+    {label: 'Phone Cases', href: '/collections/phone-cases'},
+    {label: 'Phone Straps', href: '/collections/phone-straps'},
+    {label: 'Case+Strap Bundles', href: '/collections/case-strap-bundles'},
+  ];
+
+  // Display title: rename "Phone Cases" → "Phone Accessories" for the parent category
+  const displayTitle = collection.handle === 'phone-cases'
+    ? 'Phone Accessories'
+    : collection.title;
+
+  // Hide description on phone-cases collection per spec
+  const showDescription = collection.description && collection.handle !== 'phone-cases';
 
   return (
     <div className="min-h-screen bg-[#F9F5F0]">
@@ -209,7 +228,7 @@ export default function Collection() {
           <>
             <motion.img
               src={heroImage}
-              alt={collection.title}
+              alt={displayTitle}
               className="w-full h-full object-cover"
               initial={{scale: 1.03}}
               animate={{scale: 1}}
@@ -232,9 +251,9 @@ export default function Collection() {
               Collection
             </span>
             <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#F0EAE6] tracking-tight mb-3" style={{letterSpacing: '0.02em'}}>
-              {collection.title}
+              {displayTitle}
             </h1>
-            {collection.description && (
+            {showDescription && (
               <p className="max-w-lg mx-auto text-[#F0EAE6]/55 text-sm font-light tracking-wide leading-relaxed">
                 {collection.description}
               </p>
@@ -243,30 +262,64 @@ export default function Collection() {
         </div>
       </div>
 
-      {/* ─── Breadcrumb ─── */}
-      <nav
-        aria-label="Breadcrumb"
-        className="max-w-[1440px] mx-auto pt-5 pb-2"
-        style={{padding: '1.25rem var(--page-gutter) 0.5rem'}}
-      >
-        <ol className="flex items-center gap-2 text-[11px] uppercase tracking-[0.15em] text-[#8B7355]">
-          <li>
-            <a href="/" className="hover:text-[#a87441] transition-colors duration-200">
-              Home
-            </a>
-          </li>
-          <li aria-hidden="true" className="text-[#8B7355]/40">›</li>
-          <li>
-            <a href="/collections" className="hover:text-[#a87441] transition-colors duration-200">
-              Collections
-            </a>
-          </li>
-          <li aria-hidden="true" className="text-[#8B7355]/40">›</li>
-          <li className="text-[#4A3C31] font-medium truncate max-w-[180px]">
-            {collection.title}
-          </li>
-        </ol>
-      </nav>
+      {/* ─── Sub-Navigation Tabs (Phone Accessories) or Breadcrumb ─── */}
+      {isPhoneAccessoriesCategory ? (
+        <nav
+          aria-label="Category navigation"
+          className="max-w-[1440px] mx-auto pt-5 pb-2"
+          style={{padding: '1.25rem var(--page-gutter) 0.5rem'}}
+        >
+          <div className="flex items-center gap-6 md:gap-8">
+            {phoneSubNavTabs.map((tab) => {
+              const isActive = location.pathname === tab.href;
+              return (
+                <Link
+                  key={tab.href}
+                  to={tab.href}
+                  className={`relative text-[12px] md:text-[13px] uppercase tracking-[0.12em] pb-2 transition-colors duration-300 ${
+                    isActive
+                      ? 'text-[#4A3C31] font-medium'
+                      : 'text-[#8B7355] hover:text-[#a87441]'
+                  }`}
+                >
+                  {tab.label}
+                  {isActive && (
+                    <motion.span
+                      layoutId="phone-tab-underline"
+                      className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#a87441]"
+                      transition={{duration: 0.3, ease: [0.25, 0.1, 0.25, 1]}}
+                    />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+      ) : (
+        <nav
+          aria-label="Breadcrumb"
+          className="max-w-[1440px] mx-auto pt-5 pb-2"
+          style={{padding: '1.25rem var(--page-gutter) 0.5rem'}}
+        >
+          <ol className="flex items-center gap-2 text-[11px] uppercase tracking-[0.15em] text-[#8B7355]">
+            <li>
+              <a href="/" className="hover:text-[#a87441] transition-colors duration-200">
+                Home
+              </a>
+            </li>
+            <li aria-hidden="true" className="text-[#8B7355]/40">&rsaquo;</li>
+            <li>
+              <a href="/collections" className="hover:text-[#a87441] transition-colors duration-200">
+                Collections
+              </a>
+            </li>
+            <li aria-hidden="true" className="text-[#8B7355]/40">&rsaquo;</li>
+            <li className="text-[#4A3C31] font-medium truncate max-w-[180px]">
+              {displayTitle}
+            </li>
+          </ol>
+        </nav>
+      )}
 
       {/* ─── Sort / Filter Toolbar ─── */}
       <div className="sticky z-30 bg-[#F9F5F0]/[0.97] backdrop-blur-xl border-b border-[#4A3C31]/8" style={{top: 'var(--navbar-height)'}}>

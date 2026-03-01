@@ -1,11 +1,12 @@
 import {useState, useEffect, useRef, Suspense} from 'react';
 import {Link, NavLink, Await, useRouteLoaderData} from '@remix-run/react';
-import {Menu, Search, ShoppingBag, User} from 'lucide-react';
+import {Menu, Search, ShoppingBag, User, Heart} from 'lucide-react';
 import {motion} from 'framer-motion';
 import type {RootLoader} from '~/root';
 import LanguageSwitch from './LanguageSwitch';
 import type {EnhancedMenu} from '~/lib/utils';
 import {useTranslation} from '~/hooks/useTranslation';
+import {useUI} from '~/context/UIContext';
 
 export function Header({
   title: _title,
@@ -53,16 +54,20 @@ export function Header({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Default Nav Links if menu is missing
-  const defaultLinks = [
-    {id: '1', title: t('nav.newIn'), to: '/collections/new'},
-    {id: '2', title: t('nav.collections'), to: '/collections'},
-    {id: '3', title: t('nav.designers'), to: '/pages/designers'},
-    {id: '4', title: t('nav.clothing'), to: '/collections/clothing'},
-    {id: '5', title: t('nav.shoes'), to: '/collections/shoes'},
+  const {state: uiState} = useUI();
+
+  // Hardcoded navigation per spec
+  const navItems = [
+    {id: '1', title: 'SHOP ALL', to: '/collections'},
+    {id: '2', title: 'Phone Cases', to: '/collections/phone-cases'},
+    {id: '3', title: 'Phone Straps', to: '/collections/phone-straps'},
+    {id: '4', title: 'Case+Strap Bundles', to: '/collections/case-strap-bundles'},
+    {id: '5', title: 'Sunglasses', to: '/collections/sunglasses'},
+    {id: '6', title: 'SALE', to: '/collections/sale'},
+    {id: '7', title: 'FAQ', to: '/pages/faqs'},
   ];
 
-  const items = menu?.items?.length ? menu.items : defaultLinks;
+  const items = navItems;
 
   return (
     <motion.header
@@ -105,9 +110,7 @@ export function Header({
                 {({isActive}) => (
                   <>
                     <span className="relative z-10">
-                      {item.title === 'CATALOG' || item.title === 'Catalog'
-                        ? 'COLLECTIONS'
-                        : item.title}
+                      {item.title}
                     </span>
                     {/* Animated underline */}
                     <motion.span
@@ -198,64 +201,105 @@ export function Header({
           </Link>
         </motion.div>
 
-        {/* Right Actions */}
-        <div className="flex items-center gap-5 md:gap-6">
+        {/* Right Actions — Ounass-style labeled icons */}
+        <div className="flex items-center gap-4 md:gap-6">
           <div className="hidden md:flex">
             <LanguageSwitch />
           </div>
 
+          {/* Search (icon only, no label) */}
           <motion.button
             onClick={openSearch}
-            className="text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded-full"
+            className="text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded-full md:hidden"
             whileHover={{scale: 1.05}}
             whileTap={{scale: 0.95}}
             aria-label="Search"
           >
             <Search strokeWidth={1.5} className="w-5 h-5" />
-            <span className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
           </motion.button>
 
+          {/* Search (desktop with label) */}
           <motion.button
-            onClick={openCart}
-            className="text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded-full"
-            whileHover={{scale: 1.05}}
-            whileTap={{scale: 0.95}}
-            aria-label="Cart"
+            onClick={openSearch}
+            className="hidden md:flex flex-col items-center gap-1 text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 relative group focus:outline-none"
+            whileHover={{scale: 1.03}}
+            whileTap={{scale: 0.97}}
+            aria-label="Search"
           >
-            <ShoppingBag strokeWidth={1.5} className="w-5 h-5" />
-            <Suspense fallback={null}>
-              <Await resolve={rootData?.cart}>
-                {(cart: any) =>
-                  cart?.totalQuantity ? (
-                    <motion.span
-                      initial={{scale: 0}}
-                      animate={{scale: 1}}
-                      className="absolute -top-0.5 -right-0.5 text-[9px] bg-[#a87441] text-white rounded-full w-4 h-4 flex items-center justify-center font-medium shadow-lg"
-                    >
-                      {cart.totalQuantity}
-                    </motion.span>
-                  ) : null
-                }
-              </Await>
-            </Suspense>
-            <span className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
+            <Search strokeWidth={1.5} className="w-[18px] h-[18px]" />
+            <span className="text-[9px] uppercase tracking-[0.12em] font-light">Search</span>
           </motion.button>
 
-          {/* Account Icon (Desktop) */}
+          {/* Account (desktop with label) */}
           <motion.div
-            whileHover={{scale: 1.05}}
-            whileTap={{scale: 0.95}}
+            whileHover={{scale: 1.03}}
+            whileTap={{scale: 0.97}}
             className="hidden md:block"
           >
             <Link
               to="/account"
-              className="flex items-center justify-center text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative group"
+              className="flex flex-col items-center gap-1 text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300"
               aria-label="Account"
             >
-              <User strokeWidth={1.5} className="w-5 h-5" />
-              <span className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
+              <User strokeWidth={1.5} className="w-[18px] h-[18px]" />
+              <span className="text-[9px] uppercase tracking-[0.12em] font-light">Account</span>
             </Link>
           </motion.div>
+
+          {/* Wishlist (desktop with label + counter) */}
+          <motion.div
+            whileHover={{scale: 1.03}}
+            whileTap={{scale: 0.97}}
+            className="hidden md:block"
+          >
+            <Link
+              to="/wishlist"
+              className="flex flex-col items-center gap-1 text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 relative"
+              aria-label="Wishlist"
+            >
+              <Heart strokeWidth={1.5} className="w-[18px] h-[18px]" />
+              <span className="text-[9px] uppercase tracking-[0.12em] font-light">
+                Wishlist ({uiState.wishlist?.length || 0})
+              </span>
+            </Link>
+          </motion.div>
+
+          {/* Bag (with label + counter) */}
+          <motion.button
+            onClick={openCart}
+            className="flex flex-col items-center gap-1 text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 relative group focus:outline-none"
+            whileHover={{scale: 1.03}}
+            whileTap={{scale: 0.97}}
+            aria-label="Bag"
+          >
+            <div className="relative">
+              <ShoppingBag strokeWidth={1.5} className="w-[18px] h-[18px]" />
+              <Suspense fallback={null}>
+                <Await resolve={rootData?.cart}>
+                  {(cart: any) =>
+                    cart?.totalQuantity ? (
+                      <motion.span
+                        initial={{scale: 0}}
+                        animate={{scale: 1}}
+                        className="absolute -top-1.5 -right-2 text-[8px] bg-[#a87441] text-white rounded-full w-3.5 h-3.5 flex items-center justify-center font-medium shadow-lg"
+                      >
+                        {cart.totalQuantity}
+                      </motion.span>
+                    ) : null
+                  }
+                </Await>
+              </Suspense>
+            </div>
+            <Suspense fallback={<span className="text-[9px] uppercase tracking-[0.12em] font-light">Bag (0)</span>}>
+              <Await resolve={rootData?.cart}>
+                {(cart: any) => (
+                  <span className="text-[9px] uppercase tracking-[0.12em] font-light">
+                    Bag ({cart?.totalQuantity || 0})
+                  </span>
+                )}
+              </Await>
+            </Suspense>
+          </motion.button>
         </div>
       </div>
     </motion.header>

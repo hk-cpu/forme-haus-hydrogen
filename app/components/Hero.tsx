@@ -53,23 +53,25 @@ export default function Hero() {
                 fetchPriority="high"
               />
 
-              {/* Animated Silk Accent Lines */}
+              {/* Animated Silk Accent Line — positioned between FORMÉ and HAUS */}
               <svg
-                className="absolute inset-0 w-full h-full pointer-events-none"
+                className="absolute inset-0 w-full h-full pointer-events-none z-20"
                 viewBox="0 0 400 200"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                preserveAspectRatio="xMidYMid meet"
               >
+                {/* The line sits at y≈140 to align between FORMÉ and HAUS in the logo */}
                 <motion.path
-                  d="M0,100 Q100,80 200,100 T400,100"
-                  stroke="url(#heroSilkGradient)"
-                  strokeWidth="2"
+                  d="M-20,140 C60,136 120,144 200,140 C280,136 340,144 420,140"
+                  stroke="url(#heroSilkShimmer)"
+                  strokeWidth="1"
                   fill="none"
                   strokeLinecap="round"
                   initial={{pathLength: 0, opacity: 0}}
                   animate={{
                     pathLength: 1,
-                    opacity: 0.5,
+                    opacity: [0, 0.6, 0.6],
                   }}
                   transition={{
                     pathLength: {
@@ -77,20 +79,27 @@ export default function Hero() {
                       delay: 0.8,
                       ease: [0.16, 1, 0.3, 1],
                     },
-                    opacity: {duration: 1, delay: 0.8},
+                    opacity: {duration: 1.5, delay: 0.8},
                   }}
                 />
                 <defs>
-                  <linearGradient
-                    id="heroSilkGradient"
-                    x1="0%"
-                    y1="0%"
-                    x2="100%"
-                    y2="0%"
-                  >
-                    <stop offset="0%" stopColor="#a87441" stopOpacity="0" />
-                    <stop offset="50%" stopColor="#a87441" stopOpacity="1" />
-                    <stop offset="100%" stopColor="#a87441" stopOpacity="0" />
+                  {/* Flowing shimmer gradient that slides across the line */}
+                  <linearGradient id="heroSilkShimmer" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#a87441" stopOpacity="0">
+                      <animate attributeName="stop-opacity" values="0;0.3;0" dur="4s" repeatCount="indefinite" />
+                    </stop>
+                    <stop offset="20%" stopColor="#a87441" stopOpacity="0.4">
+                      <animate attributeName="stop-opacity" values="0.4;0.8;0.4" dur="4s" repeatCount="indefinite" begin="0.4s" />
+                    </stop>
+                    <stop offset="50%" stopColor="#d4a574" stopOpacity="1">
+                      <animate attributeName="stop-opacity" values="0.6;1;0.6" dur="4s" repeatCount="indefinite" begin="0.8s" />
+                    </stop>
+                    <stop offset="80%" stopColor="#a87441" stopOpacity="0.4">
+                      <animate attributeName="stop-opacity" values="0.4;0.8;0.4" dur="4s" repeatCount="indefinite" begin="1.2s" />
+                    </stop>
+                    <stop offset="100%" stopColor="#a87441" stopOpacity="0">
+                      <animate attributeName="stop-opacity" values="0;0.3;0" dur="4s" repeatCount="indefinite" begin="1.6s" />
+                    </stop>
                   </linearGradient>
                 </defs>
               </svg>

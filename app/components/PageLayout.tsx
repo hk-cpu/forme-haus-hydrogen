@@ -298,12 +298,12 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
         <div className="max-w-[1440px] mx-auto mb-12 pb-12 border-b border-[#a87441]/10">
           <div className="max-w-md">
             <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium mb-2">
-              {t('footer.newsletter', 'Stay in the Loop')}
+              {t('footer.newsletter', 'Join the Haus')}
             </h4>
             <p className="text-[12px] text-[#AA9B8F] mb-4">
               {t(
                 'footer.newsletterDesc',
-                'New arrivals, exclusive offers, and more.',
+                'Be the first to know about new drops, exclusive offers, and Haus updates.',
               )}
             </p>
             <Newsletter />
@@ -330,69 +330,62 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
             </p>
           </div>
 
-          {/* COL 2: Navigation Links */}
-          <div className="lg:col-span-5">
-            <div className="grid grid-cols-2 md:grid-cols-2 gap-8">
-              {/* Customer Care */}
-              <div className="space-y-4">
-                <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
-                  Customer Care
-                </h4>
-                <nav className="grid gap-2.5">
-                  <Link to="/contact" className={linkClass}>
-                    Contact
-                  </Link>
-                  <Link to="/pages/faqs" className={linkClass}>
-                    FAQs
-                  </Link>
-                  <Link to="/policies/shipping-policy" className={linkClass}>
-                    Shipping & Returns
-                  </Link>
-                  <Link to="/account/orders" className={linkClass}>
-                    Track Order
-                  </Link>
-                </nav>
-              </div>
-
-              {/* About */}
-              <div className="space-y-4">
-                <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
-                  About
-                </h4>
-                <nav className="grid gap-2.5">
-                  <Link to="/contact" className={linkClass}>
-                    Our Story
-                  </Link>
-                  <Link to="/policies/privacy-policy" className={linkClass}>
-                    Privacy Policy
-                  </Link>
-                  <Link to="/policies/terms-of-service" className={linkClass}>
-                    Terms
-                  </Link>
-                </nav>
-              </div>
+          {/* COL 2: Customer Care Links */}
+          <div className="lg:col-span-4">
+            <div className="space-y-4">
+              <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
+                Customer Care
+              </h4>
+              <nav className="grid gap-2.5">
+                <Link to="/contact" className={linkClass}>
+                  Contact Us
+                </Link>
+                <Link to="/policies/shipping-policy" className={linkClass}>
+                  Shipping & Delivery Policy
+                </Link>
+                <Link to="/policies/refund-policy" className={linkClass}>
+                  Return and Exchange Policy
+                </Link>
+                <Link to="/policies/privacy-policy" className={linkClass}>
+                  Privacy Policy
+                </Link>
+              </nav>
             </div>
           </div>
 
-          {/* COL 3: Contact & Payments */}
-          <div className="lg:col-span-3 flex flex-col gap-5">
-            {/* Get in Touch */}
+          {/* COL 3: Follow Us & Payments */}
+          <div className="lg:col-span-4 flex flex-col gap-5">
+            {/* Follow Us */}
             <div className="space-y-3">
               <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
-                Get in Touch
+                Follow Us
               </h4>
-              <div className="grid gap-1.5">
+              <div className="flex items-center gap-4">
+                {/* Instagram */}
                 <a
-                  href="tel:+966800123456"
-                  className="text-sm text-[#AA9B8F] hover:text-[#a87441] transition-colors"
+                  href="https://instagram.com/formehaus"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-300"
+                  aria-label="Instagram"
                 >
-                  800 123 456
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                  </svg>
                 </a>
+                {/* TikTok */}
                 <a
-                  href="mailto:info@formehaus.me"
-                  className="text-sm text-[#AA9B8F] hover:text-[#a87441] transition-colors"
+                  href="https://tiktok.com/@formehaus"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-300"
+                  aria-label="TikTok"
                 >
-                  info@formehaus.me
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3.15 15a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.55a8.18 8.18 0 0 0 4.76 1.52V6.69h-1z" />
+                  </svg>
                 </a>
               </div>
             </div>

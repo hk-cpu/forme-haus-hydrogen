@@ -75,6 +75,7 @@ interface ProductCardProps {
     id: string;
     handle: string;
     title: string;
+    vendor?: string;
     priceRange: {
       minVariantPrice: {
         amount: string;
@@ -93,6 +94,14 @@ interface ProductCardProps {
       minVariantPrice: {
         amount: string;
       };
+    };
+    variants?: {
+      nodes: Array<{
+        selectedOptions: Array<{
+          name: string;
+          value: string;
+        }>;
+      }>;
     };
   };
   quickAdd?: boolean;
@@ -364,19 +373,51 @@ export function ProductCard({
           )}
         </div>
 
-        {/* Product Info */}
-        <div className="space-y-2 px-1 mt-4">
-          <h3 className="font-serif text-current text-[16px] md:text-[18px] leading-snug group-hover:text-[#a87441] transition-all duration-300 line-clamp-2 tracking-wide">
-            {product.title}
+        {/* Product Info — 4-line standardized format */}
+        <div className="space-y-1 px-1 mt-4">
+          {/* Line 1: Brand / Vendor */}
+          {product.vendor && (
+            <p className="text-[10px] uppercase tracking-[0.15em] text-[#8B8076] font-medium">
+              {product.vendor}
+            </p>
+          )}
+
+          {/* Line 2: Product Name (parsed from title) */}
+          <h3 className="font-serif text-current text-[15px] md:text-[16px] leading-snug group-hover:text-[#a87441] transition-all duration-300 line-clamp-2 tracking-wide">
+            {(() => {
+              // Extract product name: split on " - " and take the first part
+              const parts = product.title.split(' - ');
+              return parts[0].trim();
+            })()}
           </h3>
-          <div className="flex items-baseline gap-2 flex-wrap">
-            <p className="text-current text-[15px] font-semibold transition-all duration-300 group-hover:text-[#a87441]">
+
+          {/* Line 3: Color / Variant */}
+          {(() => {
+            // Try variant selectedOptions first, then parse from title
+            const colorOption = product.variants?.nodes?.[0]?.selectedOptions?.find(
+              (opt) => opt.name.toLowerCase() === 'color' || opt.name.toLowerCase() === 'colour',
+            );
+            const colorFromTitle = product.title.includes(' - ')
+              ? product.title.split(' - ').slice(1).join(' - ').trim()
+              : null;
+            const color = colorOption?.value || colorFromTitle;
+
+            return color ? (
+              <p className="text-[12px] text-[#8B8076] tracking-wide">
+                {color}
+              </p>
+            ) : null;
+          })()}
+
+          {/* Line 4: Price */}
+          <div className="flex items-baseline gap-2 flex-wrap pt-0.5">
+            <p className="text-current text-[14px] font-semibold transition-all duration-300 group-hover:text-[#a87441]">
               {product.priceRange?.minVariantPrice ? (
                 <span className="flex items-baseline gap-1.5">
                   <Money data={product.priceRange.minVariantPrice as any} />
                   {product.availableForSale !== false && (
                     <span className="text-[10px] opacity-60 font-normal lowercase tracking-wide">
-                      {t('cart.vatIncluded', '(vat included)')}
+                      {t('cart.vatIncluded', '(VAT included)')}
                     </span>
                   )}
                 </span>
@@ -385,7 +426,7 @@ export function ProductCard({
               )}
             </p>
             {hasDiscount && (
-              <p className="opacity-50 text-[13px] line-through">
+              <p className="opacity-50 text-[12px] line-through">
                 <Money data={product.compareAtPriceRange!.minVariantPrice} />
               </p>
             )}
