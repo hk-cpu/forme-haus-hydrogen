@@ -70,12 +70,11 @@ export function ProductGallery({
   if (images.length === 1) {
     return (
       <div className={`${className}`}>
-        <div className="aspect-[3/4] overflow-hidden rounded-xl bg-[#F5F2ED] shadow-xl">
+        <div className="aspect-square md:aspect-[4/5] overflow-hidden rounded-xl bg-[#F5F2ED] shadow-xl">
           <Image
             data={images[0]}
-            aspectRatio="3/4"
             sizes="(min-width: 768px) 60vw, 90vw"
-            className="w-full h-full object-contain p-4"
+            className="w-full h-full object-contain p-6"
           />
         </div>
       </div>
@@ -171,7 +170,7 @@ export function ProductGallery({
       {/* 3D Carousel Container */}
       <div className="relative w-full" style={{perspective: '1400px'}}>
         {/* Main Carousel */}
-        <div className="relative aspect-[3/4] md:aspect-[4/5] flex items-center justify-center">
+        <div className="relative aspect-square md:aspect-[4/5] flex items-center justify-center">
           {images.map((image, index) => {
             const style = getCardStyle(index);
 
@@ -201,9 +200,8 @@ export function ProductGallery({
                 <div className="w-full h-full rounded-xl overflow-hidden bg-[#F5F2ED] shadow-2xl">
                   <Image
                     data={image}
-                    aspectRatio="3/4"
                     sizes="(min-width: 768px) 50vw, 80vw"
-                    className="w-full h-full object-contain p-4"
+                    className="w-full h-full object-contain p-5"
                   />
                 </div>
               </motion.div>

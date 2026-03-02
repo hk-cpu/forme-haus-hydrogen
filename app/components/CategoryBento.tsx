@@ -90,7 +90,7 @@ function CategoryCard({category, isRTL, index}: {category: Category; isRTL: bool
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent pointer-events-none" />
 
         {/* Content */}
-        <div className="absolute inset-0 flex flex-col justify-end p-6 z-10">
+        <div className="absolute inset-0 flex flex-col justify-end p-6 z-10 pointer-events-none">
           <motion.div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
             <h3 className="text-lg md:text-xl font-serif mb-1 transition-all duration-500 text-[#F0EAE6] group-hover:text-[#D4AF87]">
               {isRTL ? category.titleAr : category.title}

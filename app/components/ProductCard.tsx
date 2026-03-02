@@ -88,11 +88,20 @@ interface ProductCardProps {
       }>;
     };
     tags?: string[];
+    vendor?: string;
     availableForSale?: boolean;
     compareAtPriceRange?: {
       minVariantPrice: {
         amount: string;
       };
+    };
+    variants?: {
+      nodes: Array<{
+        selectedOptions: Array<{
+          name: string;
+          value: string;
+        }>;
+      }>;
     };
   };
   quickAdd?: boolean;
@@ -117,6 +126,16 @@ export function ProductCard({
   const isWishlisted = isInWishlist(product.id);
   const isNew = product.tags?.includes('new') || false;
   const isSale = product.tags?.includes('sale') || false;
+
+  // Parse title: "The Olive - Mocha Tort" → name: "The Olive", color: "Mocha Tort"
+  const titleParts = product.title.split(' - ');
+  const productName = titleParts[0]?.trim() || product.title;
+  const colorFromTitle = titleParts.length > 1 ? titleParts.slice(1).join(' - ').trim() : '';
+  // Fallback: check variant selectedOptions for "Color"
+  const colorFromVariant = product.variants?.nodes?.[0]?.selectedOptions?.find(
+    (opt) => opt.name.toLowerCase() === 'color',
+  )?.value;
+  const productColor = colorFromTitle || colorFromVariant || '';
   const slideshowRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Calculate discount if compareAtPrice exists
@@ -224,7 +243,7 @@ export function ProductCard({
                     width: 600,
                     height: 800,
                   }}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain p-3 md:p-4"
                   sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
                   loading={index < 4 ? 'eager' : 'lazy'}
                 />
@@ -365,12 +384,20 @@ export function ProductCard({
         </div>
 
         {/* Product Info */}
-        <div className="space-y-2 px-1 mt-4">
-          <h3 className="font-serif text-current text-[16px] md:text-[18px] leading-snug group-hover:text-[#a87441] transition-all duration-300 line-clamp-2 tracking-wide">
-            {product.title}
+        <div className="space-y-1.5 px-1 mt-4">
+          {/* Line 1: Product Name */}
+          <h3 className="font-serif text-current text-[15px] md:text-[17px] leading-snug group-hover:text-[#a87441] transition-all duration-300 line-clamp-1 tracking-wide">
+            {productName}
           </h3>
-          <div className="flex items-baseline gap-2 flex-wrap">
-            <p className="text-current text-[15px] font-semibold transition-all duration-300 group-hover:text-[#a87441]">
+          {/* Line 2: Color */}
+          {productColor && (
+            <p className="text-[12px] text-[#8B8076] tracking-wide line-clamp-1">
+              {productColor}
+            </p>
+          )}
+          {/* Line 3: Price */}
+          <div className="flex items-baseline gap-2 flex-wrap pt-0.5">
+            <p className="text-current text-[14px] font-semibold transition-all duration-300 group-hover:text-[#a87441]">
               {product.priceRange?.minVariantPrice ? (
                 <span className="flex items-baseline gap-1.5">
                   <Money data={product.priceRange.minVariantPrice as any} />
@@ -385,7 +412,7 @@ export function ProductCard({
               )}
             </p>
             {hasDiscount && (
-              <p className="opacity-50 text-[13px] line-through">
+              <p className="opacity-50 text-[12px] line-through">
                 <Money data={product.compareAtPriceRange!.minVariantPrice} />
               </p>
             )}
