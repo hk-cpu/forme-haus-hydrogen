@@ -224,7 +224,7 @@ export function ProductCard({
                     width: 600,
                     height: 800,
                   }}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                   sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
                   loading={index < 4 ? 'eager' : 'lazy'}
                 />
