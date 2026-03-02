@@ -117,16 +117,31 @@ export function PredictiveSearch({
                         onClick={onClose}
                         className="flex items-center gap-4"
                       >
-                        {/* Stealth Mode: Placeholder */}
+                        {/* Image */}
                         <div className="w-12 h-16 bg-[#F0EAE6]/5 overflow-hidden border border-white/10 flex items-center justify-center">
-                          <div className="w-full h-full border border-white/5" />
+                          {product.image ? (
+                             <Image
+                               data={product.image}
+                               alt={product.title}
+                               width={48}
+                               height={64}
+                               className="w-full h-full object-cover"
+                             />
+                           ) : (
+                             <div className="w-full h-full border border-white/5" />
+                           )}
                         </div>
 
                         <div>
                           <p className="text-[#F0EAE6] text-sm font-medium group-hover:text-[#C4A484] transition-colors duration-300 font-serif">
-                            COMING SOON
+                            {product.title}
                           </p>
-                          {/* Stealth Mode: Hide Price */}
+                          {/* Price */}
+                          {product.variants?.nodes?.[0]?.price && (
+                             <div className="text-[#F0EAE6]/60 text-xs mt-1">
+                               <Money data={product.variants.nodes[0].price} />
+                             </div>
+                           )}
                         </div>
                       </RemixLink>
                     </li>
@@ -149,7 +164,7 @@ export function PredictiveSearch({
                         onClick={onClose}
                         className="text-[#F0EAE6] hover:text-[#C4A484] transition-colors text-sm"
                       >
-                        COMING SOON
+                        {collection.title}
                       </RemixLink>
                     </li>
                   ))}
@@ -171,7 +186,7 @@ export function PredictiveSearch({
                         onClick={onClose}
                         className="text-[#F0EAE6] hover:text-[#C4A484] transition-colors text-sm font-serif"
                       >
-                        COMING SOON
+                        {article.title}
                       </RemixLink>
                     </li>
                   ))}

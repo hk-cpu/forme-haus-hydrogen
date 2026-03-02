@@ -211,7 +211,7 @@ export function ProductCard({
     >
       <Link to={`/products/${product.handle}`} className="block">
         {/* Image Container */}
-        <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-[#F5F2EF] mb-3 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.03)] group-hover:shadow-[0_8px_32px_rgba(0,0,0,0.1)] transition-shadow duration-500">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-[#FAF8F5] mb-4 shadow-[0_4px_16px_rgba(0,0,0,0.06)] group-hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] transition-all duration-700">
           {/* Shimmer Effect */}
           <AnimatePresence>
             {isHovered && (
@@ -233,7 +233,7 @@ export function ProductCard({
               animate={{opacity: 1}}
               exit={{opacity: 0}}
               transition={{duration: 0.4, ease: 'easeOut'}}
-              className="w-full h-full transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+              className="absolute inset-0 w-full h-full transition-transform duration-700 ease-out group-hover:scale-[1.06]"
             >
               {images.length > 0 ? (
                 <Image
@@ -243,7 +243,7 @@ export function ProductCard({
                     width: 600,
                     height: 800,
                   }}
-                  className="w-full h-full object-contain p-3 md:p-4"
+                  className="w-full h-full object-contain object-center p-3 md:p-6 drop-shadow-sm"
                   sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
                   loading={index < 4 ? 'eager' : 'lazy'}
                 />

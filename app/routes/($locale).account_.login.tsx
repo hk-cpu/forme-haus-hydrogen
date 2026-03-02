@@ -134,16 +134,22 @@ export default function Login() {
   }, [data]);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-[#F9F5F0] flex flex-col items-center justify-center text-[#2C2419]">
+    <div 
+      className="relative min-h-screen w-full overflow-hidden bg-cover bg-center flex flex-col items-center justify-center text-[#2C2419]"
+      style={{ backgroundImage: 'url("/brand/silk-texture.png")' }}
+    >
+      {/* Dark overlay for contrast */}
+      <div className="absolute inset-0 bg-black/10 backdrop-blur-[2px]"></div>
+
       {/* Ghost Cursor - Client only */}
       <Suspense fallback={null}>
         <GhostCursorEnhanced
-          primaryColor="#0A0A0A"
+          primaryColor="#ffffff"
           secondaryColor="#a87441"
           brightness={0.8}
           edgeIntensity={0.2}
-          trailLength={50}
-          inertia={0.25}
+          trailLength={40}
+          inertia={0.2}
           grainIntensity={0.03}
           bloomStrength={0.4}
           bloomRadius={0.6}
@@ -151,83 +157,98 @@ export default function Login() {
           fadeDelayMs={600}
           fadeDurationMs={1000}
           zIndex={0}
-          mixBlendMode="normal"
+          mixBlendMode="overlay"
           hoverIntensity={2.5}
         />
       </Suspense>
 
-      <div className="relative z-10 flex flex-col items-center gap-8 w-full max-w-[420px] mx-auto px-6 py-16">
-        {/* Logo */}
-        <div className="group cursor-default">
-          <img
-            src="/brand/logo-icon-only.png"
-            alt="Formé Haus"
-            className="w-24 h-auto object-contain opacity-85 transition-opacity duration-700 group-hover:opacity-100"
-          />
-        </div>
-
-        <div className="text-center space-y-2">
-          <h1 className="font-serif text-3xl md:text-4xl text-[#2C2419]" style={{letterSpacing: '0.02em'}}>
-            {isRegistering ? 'Join Formé Haus' : 'Welcome Back'}
-          </h1>
-          <p className="text-[11px] tracking-[0.25em] font-sans text-[#8B8076] uppercase">
-            {isRegistering ? 'Begin Your Journey' : 'Continue Your Journey'}
-          </p>
-        </div>
-
-        {/* Form Card */}
-        <Form
-          method="post"
-          className="w-full space-y-6 bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-xl border border-[#4A3C31]/8 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
-        >
-          <input
-            type="hidden"
-            name="formId"
-            value={isRegistering ? 'register' : 'login'}
-          />
-
-          {data?.error && (
-            <div className="p-3.5 text-[12px] text-[#8B3A3A] bg-[#FDF2F2] border border-[#E8C4C4] rounded-lg text-center tracking-wide">
-              {data.error}
-            </div>
-          )}
-
-          {data?.success && isRegistering && (
-            <div className="p-3.5 text-[12px] text-[#2C2419] bg-[#a87441]/10 border border-[#a87441]/20 rounded-lg text-center tracking-wide">
-              {data.success}
-            </div>
-          )}
-
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium">
-                Email Address
-              </label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                placeholder="you@example.com"
-                required
-                autoComplete="email"
-                className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 px-4 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[13px] tracking-wide rounded-lg"
+      <div className="relative z-10 w-full max-w-[480px] mx-auto px-6 py-12">
+        
+        {/* Unified White Container */}
+        <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-white/50 p-8 md:p-12 overflow-hidden relative">
+          
+          {/* Subtle top glare */}
+          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white to-transparent opacity-80"></div>
+          
+          {/* Logo & Header */}
+          <div className="flex flex-col items-center gap-6 mb-10">
+            <Link to="/" className="group cursor-pointer">
+              <img
+                src="/brand/logo-icon-only.png"
+                alt="Formé Haus"
+                className="w-20 h-20 object-contain opacity-85 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-100"
               />
-            </div>
-            <div>
-              <label htmlFor="password" className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium">
-                Password
-              </label>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Enter your password"
-                required
-                autoComplete={isRegistering ? 'new-password' : 'current-password'}
-                className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 px-4 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[13px] tracking-wide rounded-lg"
-              />
+            </Link>
+
+            <div className="text-center space-y-2">
+              <h1 className="font-serif text-3xl md:text-4xl text-[#2C2419]" style={{letterSpacing: '0.02em'}}>
+                {isRegistering ? 'Join Formé Haus' : 'Welcome Back'}
+              </h1>
+              <p className="text-[11px] tracking-[0.25em] font-sans text-[#8B8076] uppercase">
+                {isRegistering ? 'Begin Your Journey' : 'Continue Your Journey'}
+              </p>
             </div>
           </div>
+
+          {/* Form */}
+          <Form method="post" className="w-full space-y-6">
+            <input
+              type="hidden"
+              name="formId"
+              value={isRegistering ? 'register' : 'login'}
+            />
+
+            {data?.error && (
+              <div className="p-3.5 text-[12px] text-[#8B3A3A] bg-[#FDF2F2] border border-[#E8C4C4] rounded-lg text-center tracking-wide">
+                {data.error}
+              </div>
+            )}
+
+            {data?.success && isRegistering && (
+              <div className="p-3.5 text-[12px] text-[#2C2419] bg-[#a87441]/10 border border-[#a87441]/20 rounded-lg text-center tracking-wide">
+                {data.success}
+              </div>
+            )}
+
+            <div className="space-y-5">
+              {/* Floating Label Input: Email */}
+              <div className="relative group">
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder=" "
+                  required
+                  autoComplete="email"
+                  className="peer w-full bg-[#fcfbf9] border border-[#E5DFD9] pt-6 pb-2 px-4 text-[#2C2419] focus:outline-none focus:border-[#a87441] focus:bg-white focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[14px] font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
+                />
+                <label 
+                  htmlFor="email" 
+                  className="absolute text-[11px] uppercase tracking-[0.2em] text-[#AA9B8F] top-4 left-4 transition-all duration-300 transform -translate-y-2.5 scale-[0.85] origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-[0.85] peer-focus:-translate-y-2.5 peer-focus:text-[#a87441] pointer-events-none"
+                >
+                  Email Address
+                </label>
+              </div>
+
+              {/* Floating Label Input: Password */}
+              <div className="relative group">
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder=" "
+                  required
+                  autoComplete={isRegistering ? 'new-password' : 'current-password'}
+                  className="peer w-full bg-[#fcfbf9] border border-[#E5DFD9] pt-6 pb-2 px-4 text-[#2C2419] focus:outline-none focus:border-[#a87441] focus:bg-white focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[14px] font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
+                />
+                <label 
+                  htmlFor="password" 
+                  className="absolute text-[11px] uppercase tracking-[0.2em] text-[#AA9B8F] top-4 left-4 transition-all duration-300 transform -translate-y-2.5 scale-[0.85] origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-[0.85] peer-focus:-translate-y-2.5 peer-focus:text-[#a87441] pointer-events-none"
+                >
+                  Password
+                </label>
+              </div>
+            </div>
 
           <div className="flex flex-col gap-4 pt-2">
             <button
@@ -264,6 +285,7 @@ export default function Login() {
             </div>
           </div>
         </Form>
+        </div>
       </div>
     </div>
   );

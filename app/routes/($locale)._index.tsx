@@ -53,19 +53,19 @@ export default function Homepage() {
   const {t} = useTranslation();
 
   return (
-    <div className="min-h-screen bg-transparent text-[#F0EAE6]">
+    <div className="min-h-screen bg-transparent text-[#F0EAE6] snap-y-mandatory">
       {/* 1. Hero (Fixed Background Visible) */}
       <Hero />
 
       {/* Light "Glowing" Theme Content Sheet */}
       <div className="relative z-20 bg-[#F9F5F0]/85 backdrop-blur-md text-[#8B8076] rounded-t-[2rem] shadow-[0_-10px_40px_-10px_rgba(255,255,255,0.15)] mt-[-5vh]">
         {/* 2. Category Slider */}
-        <div className="pt-16 md:pt-24">
+        <div className="pt-16 md:pt-24 mobile-snap-section">
           <CategoryBento />
         </div>
 
         {/* 3. The Edit (Editorial Section) */}
-        <div className="py-8 md:py-12">
+        <div className="py-8 md:py-12 mobile-snap-section">
           <EditorialSection />
         </div>
 
@@ -75,7 +75,7 @@ export default function Homepage() {
           whileInView={{opacity: 1, y: 0}}
           viewport={{once: true, margin: '-80px'}}
           transition={{duration: 0.7, ease: [0.25, 0.1, 0.25, 1]}}
-          className="py-16 md:py-24 text-center max-w-2xl mx-auto space-y-8 border-t border-[#8B8076]/10"
+          className="py-16 md:py-24 text-center max-w-2xl mx-auto space-y-8 border-t border-[#8B8076]/10 mobile-snap-section"
         >
           <div className="w-px h-16 bg-gradient-to-b from-transparent via-[#a87441]/40 to-transparent mx-auto" />
           <p className="font-serif text-lg md:text-xl leading-[1.8] text-[#4A3C31] font-light italic tracking-wide px-6">
@@ -84,7 +84,7 @@ export default function Homepage() {
         </motion.section>
 
         {/* 5. Journal Teaser */}
-        <section className="py-16 md:py-24 border-t border-[#8B8076]/10">
+        <section className="py-16 md:py-24 border-t border-[#8B8076]/10 mobile-snap-section">
           <div className="max-w-[1200px] mx-auto" style={{padding: '0 var(--page-gutter)'}}>
             <div className="flex justify-between items-end mb-12 md:mb-16">
               <h2 className="font-serif text-3xl md:text-4xl italic text-[#4A3C31] font-light tracking-wide">

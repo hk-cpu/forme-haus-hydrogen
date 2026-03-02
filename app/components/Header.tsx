@@ -29,6 +29,7 @@ export function Header({
   const location = useLocation();
   
   const isHome = location.pathname === '/' || location.pathname === '/ar';
+  const isCollectionPage = location.pathname.includes('/collections');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,6 +67,16 @@ export function Header({
   ];
 
   const items = menu?.items?.length ? menu.items : defaultLinks;
+  
+  // Header background logic based on scroll state and route
+  const getHeaderBackgroundClass = () => {
+    if (!scrolled) return 'bg-[#121212]/[0.85] backdrop-blur-xl py-5';
+    // When scrolled on collections, use lighter brown. Else dark.
+    if (isCollectionPage) {
+      return 'bg-[#2a1d13]/[0.97] backdrop-blur-2xl py-3 border-b border-[#a87441]/20 shadow-[0_2px_12px_rgba(0,0,0,0.15)]';
+    }
+    return 'bg-[#121212]/[0.97] backdrop-blur-2xl py-3 border-b border-[#a87441]/8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]';
+  };
 
   return (
     <motion.header
@@ -73,12 +84,7 @@ export function Header({
       initial={{y: 0}}
       animate={{y: isVisible ? 0 : -100}}
       transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
-      className={`fixed z-50 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0 group
-            ${
-              scrolled
-                ? 'top-0 w-full bg-[#121212]/[0.97] backdrop-blur-2xl py-3 border-b border-[#a87441]/8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]'
-                : 'top-0 w-full bg-[#121212]/[0.85] backdrop-blur-xl py-5'
-            }`}
+      className={`fixed z-50 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0 group top-0 w-full ${getHeaderBackgroundClass()}`}
       style={{
         WebkitBackdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
         backdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',

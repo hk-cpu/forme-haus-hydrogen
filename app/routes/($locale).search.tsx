@@ -115,7 +115,6 @@ export default function Search() {
                   <ProductCard
                     key={product.id}
                     product={product}
-                    loading={getImageLoadingPriority(i)}
                   />
                 ),
               );

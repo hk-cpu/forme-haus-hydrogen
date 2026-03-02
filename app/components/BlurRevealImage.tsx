@@ -63,7 +63,7 @@ export function BlurRevealImage({
         alt={alt}
         className="absolute inset-0 w-full h-full object-cover"
         loading="lazy"
-        initial={{opacity: 0, filter: 'blur(8px)'}}
+        initial={{opacity: 0, filter: 'blur(5px)'}}
         animate={
           isHovered
             ? {
@@ -73,24 +73,24 @@ export function BlurRevealImage({
             : hasRevealed
               ? {
                   // Idle breathing: very subtle clear peek, not a slideshow
-                  opacity: [0, 0.25, 0.25, 0],
+                  opacity: [0, 0.4, 0.4, 0],
                   filter: [
-                    'blur(6px)',
-                    'blur(3px)',
-                    'blur(3px)',
-                    'blur(6px)',
+                    'blur(4px)',
+                    'blur(2px)',
+                    'blur(2px)',
+                    'blur(4px)',
                   ],
                 }
               : {
                   opacity: 0,
-                  filter: 'blur(8px)',
+                  filter: 'blur(5px)',
                 }
         }
         transition={
           isHovered
             ? {
-                opacity: {duration: 0.8, ease: [0.25, 0.1, 0.25, 1]},
-                filter: {duration: 1.0, ease: [0.25, 0.1, 0.25, 1]},
+                opacity: {duration: 0.9, ease: [0.25, 0.1, 0.25, 1]},
+                filter: {duration: 1.2, ease: [0.4, 0, 0.2, 1]},
               }
             : hasRevealed
               ? {
@@ -101,7 +101,7 @@ export function BlurRevealImage({
                   times: [0, 0.35, 0.65, 1],
                 }
               : {
-                  duration: 0.4,
+                  duration: 0.6,
                 }
         }
       />
