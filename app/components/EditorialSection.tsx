@@ -78,7 +78,7 @@ export default function EditorialSection() {
                 to: '/collections/new-in',
                 title: 'New Arrivals',
                 desc: 'Latest additions to the Haus.',
-                img: '/brand/edit-new-arrivals.png',
+                img: '/brand/edit-new-arrivals.webp',
                 blurImg: '/brand/edit-new-arrivals-blur.png',
               },
             ].map((box, i) => (

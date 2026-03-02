@@ -1,7 +1,7 @@
 import {useState, useEffect, useRef, Suspense} from 'react';
-import {Link, NavLink, Await, useRouteLoaderData} from '@remix-run/react';
+import {Link, NavLink, Await, useRouteLoaderData, useLocation} from '@remix-run/react';
 import {Menu, Search, ShoppingBag, User} from 'lucide-react';
-import {motion} from 'framer-motion';
+import {motion, AnimatePresence} from 'framer-motion';
 import type {RootLoader} from '~/root';
 import LanguageSwitch from './LanguageSwitch';
 import type {EnhancedMenu} from '~/lib/utils';
@@ -26,6 +26,9 @@ export function Header({
   const ticking = useRef(false);
   const rootData = useRouteLoaderData<RootLoader>('root');
   const {t} = useTranslation();
+  const location = useLocation();
+  
+  const isHome = location.pathname === '/' || location.pathname === '/ar';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -154,13 +157,20 @@ export function Header({
 
         {/* Mobile: Menu Toggle + Language */}
         <div className="md:hidden flex items-center gap-4">
-          <motion.button
-            onClick={openMenu}
-            className="text-[#F0EAE6]/80 hover:text-[#a87441] transition-colors duration-300 p-2 -m-2"
-            whileTap={{scale: 0.95}}
-          >
-            <Menu strokeWidth={1.5} className="w-6 h-6" />
-          </motion.button>
+          <AnimatePresence>
+            {!isHome && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                onClick={openMenu}
+                className="text-[#F0EAE6]/80 hover:text-[#a87441] transition-colors duration-300 p-2 -m-2"
+                whileTap={{scale: 0.95}}
+              >
+                <Menu strokeWidth={1.5} className="w-6 h-6" />
+              </motion.button>
+            )}
+          </AnimatePresence>
           <LanguageSwitch />
         </div>
 

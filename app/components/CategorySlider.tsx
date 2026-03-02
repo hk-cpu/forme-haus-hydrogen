@@ -30,14 +30,18 @@ const CATEGORIES = [
   {
     id: 5,
     title: 'Sunglasses',
-    image: '/brand/sunglasses.png',
-    url: '/collections/sunglasses',
+    subtitle: 'Shade & Style',
+    image: '/brand/sunglasses.webp',
+    url: '/collections/sunglasses', // Changed from href to url to match existing structure
+    theme: 'light',
   },
   {
     id: 6,
-    title: 'Sale',
-    image: '/brand/edit-new-arrivals.png',
-    url: '/collections/sale',
+    title: 'The Edit',
+    subtitle: 'Curated Selections',
+    image: '/brand/edit-new-arrivals.webp',
+    url: '/collections/the-edit', // Changed from href to url to match existing structure
+    theme: 'dark',
   },
 ];
 
