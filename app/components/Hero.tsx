@@ -7,41 +7,33 @@ export default function Hero() {
 
   return (
     <section className="h-[85vh] md:h-[90vh] min-h-[500px] max-h-[900px] flex flex-col items-center justify-center bg-transparent relative overflow-hidden">
-      {/*
-          Hero Background is TRANSPARENT to show the global Silk canvas from PageLayout.
-          Removed conflicting overlays/gradients.
-      */}
-
       <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
-        <div className="absolute inset-0 pointer-events-none">
-          {/* FocalPoint 3D Element Removed for Minimal Silk Aesthetic */}
-        </div>
-
         <div className="text-center px-6 z-20 relative">
-          {/* Brand Logo with Silk Animation */}
+          {/* Brand Logo + Motion Line */}
           <motion.div
             initial={{opacity: 0, scale: 0.9}}
             animate={{opacity: 1, scale: 1}}
             transition={{duration: 1.5, ease: [0.16, 1, 0.3, 1]}}
             className="mb-12 relative"
           >
+            {/* Wide container for the motion line to extend beyond logo */}
             <div className="relative inline-block">
-              {/* Silk Glow Effect */}
+              {/* Soft glow halo behind logo */}
               <motion.div
                 className="absolute inset-0 opacity-0"
                 animate={{
-                  opacity: [0, 0.3, 0],
-                  scale: [0.95, 1.05, 0.95],
+                  opacity: [0, 0.25, 0],
+                  scale: [0.96, 1.04, 0.96],
                 }}
                 transition={{
-                  duration: 6,
+                  duration: 7,
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
                 style={{
-                  filter: 'blur(40px)',
+                  filter: 'blur(50px)',
                   background:
-                    'radial-gradient(ellipse at center, rgba(168, 116, 65, 0.6) 0%, transparent 70%)',
+                    'radial-gradient(ellipse at center, rgba(168, 116, 65, 0.5) 0%, transparent 65%)',
                 }}
               />
 
@@ -53,80 +45,117 @@ export default function Hero() {
                 fetchPriority="high"
               />
 
-              {/* Animated Silk Accent Lines */}
-              <svg
-                className="absolute inset-0 w-full h-full pointer-events-none"
-                viewBox="0 0 400 200"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+              {/*
+                Motion Line — threads through the gap between the FH monogram
+                and "FORMÉ HAUS" text. Positioned at ~52% from top of the logo
+                (the visual gap). Extends 40% beyond each side of the logo for
+                a dramatic cinematic feel.
+              */}
+              <div
+                className="absolute left-[-40%] right-[-40%] z-20 pointer-events-none"
+                style={{top: '52%'}}
               >
-                <motion.path
-                  d="M0,100 Q100,80 200,100 T400,100"
-                  stroke="url(#heroSilkGradient)"
-                  strokeWidth="2"
+                <svg
+                  className="w-full"
+                  viewBox="0 0 1800 24"
                   fill="none"
-                  strokeLinecap="round"
-                  initial={{pathLength: 0, opacity: 0}}
-                  animate={{
-                    pathLength: 1,
-                    opacity: 0.5,
-                  }}
-                  transition={{
-                    pathLength: {
-                      duration: 2,
-                      delay: 0.8,
-                      ease: [0.16, 1, 0.3, 1],
-                    },
-                    opacity: {duration: 1, delay: 0.8},
-                  }}
-                />
-                <defs>
-                  <linearGradient
-                    id="heroSilkGradient"
-                    x1="0%"
-                    y1="0%"
-                    x2="100%"
-                    y2="0%"
+                  preserveAspectRatio="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  {/* Main motion line — gentle sine wave */}
+                  <motion.path
+                    d="M0,12 C300,12 350,6 600,6 S900,18 1200,18 S1500,6 1800,12"
+                    stroke="url(#motionLineGrad)"
+                    strokeWidth="1.5"
+                    fill="none"
+                    strokeLinecap="round"
+                    initial={{pathLength: 0, opacity: 0}}
+                    animate={{pathLength: 1, opacity: 1}}
+                    transition={{
+                      pathLength: {
+                        duration: 2.4,
+                        delay: 0.6,
+                        ease: [0.16, 1, 0.3, 1],
+                      },
+                      opacity: {duration: 0.8, delay: 0.6},
+                    }}
+                  />
+                  {/* Faint secondary echo line */}
+                  <motion.path
+                    d="M0,12 C300,12 350,6 600,6 S900,18 1200,18 S1500,6 1800,12"
+                    stroke="url(#motionLineGrad)"
+                    strokeWidth="0.5"
+                    fill="none"
+                    strokeLinecap="round"
+                    initial={{pathLength: 0, opacity: 0}}
+                    animate={{pathLength: 1, opacity: 0.3}}
+                    transition={{
+                      pathLength: {
+                        duration: 2.4,
+                        delay: 1.0,
+                        ease: [0.16, 1, 0.3, 1],
+                      },
+                      opacity: {duration: 0.8, delay: 1.0},
+                    }}
+                    style={{transform: 'translateY(3px)'}}
+                  />
+                  {/* Traveling light particle along the line */}
+                  <motion.circle
+                    r="2"
+                    fill="#a87441"
+                    initial={{opacity: 0}}
+                    animate={{opacity: [0, 0.8, 0]}}
+                    transition={{
+                      duration: 3,
+                      delay: 2.0,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
                   >
-                    <stop offset="0%" stopColor="#a87441" stopOpacity="0" />
-                    <stop offset="50%" stopColor="#a87441" stopOpacity="1" />
-                    <stop offset="100%" stopColor="#a87441" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-              </svg>
+                    <animateMotion
+                      dur="4s"
+                      begin="2s"
+                      repeatCount="indefinite"
+                      path="M0,12 C300,12 350,6 600,6 S900,18 1200,18 S1500,6 1800,12"
+                    />
+                  </motion.circle>
+                  <defs>
+                    <linearGradient
+                      id="motionLineGrad"
+                      x1="0%"
+                      y1="0%"
+                      x2="100%"
+                      y2="0%"
+                    >
+                      <stop offset="0%" stopColor="#a87441" stopOpacity="0" />
+                      <stop offset="15%" stopColor="#a87441" stopOpacity="0.4" />
+                      <stop offset="50%" stopColor="#a87441" stopOpacity="0.9" />
+                      <stop offset="85%" stopColor="#a87441" stopOpacity="0.4" />
+                      <stop offset="100%" stopColor="#a87441" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
             </div>
           </motion.div>
 
+          {/* CTA Button */}
           <motion.div
             initial={{opacity: 0}}
             animate={{opacity: 1}}
             transition={{delay: 1, duration: 1}}
-            className="group/cta"
           >
             <Link
               to="/collections/new-in"
               className="relative inline-flex items-center justify-center px-14 py-4 overflow-hidden group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded-sm"
             >
-              {/* Border frame */}
-              <span className="absolute inset-0 border border-[#a87441]/40 group-hover/btn:border-[#a87441] group-focus-visible/btn:border-[#a87441] transition-all duration-700" />
-
-              {/* Shimmer effect */}
+              <span className="absolute inset-0 border border-[#a87441]/40 group-hover/btn:border-[#a87441] transition-all duration-700" />
               <motion.span
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-[#a87441]/20 to-transparent"
-                animate={{
-                  x: ['-200%', '200%'],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
+                animate={{x: ['-200%', '200%']}}
+                transition={{duration: 3, repeat: Infinity, ease: 'linear'}}
               />
-
-              {/* Background on hover */}
               <span className="absolute inset-0 bg-[#a87441]/0 group-hover/btn:bg-[#a87441]/10 backdrop-blur-sm transition-all duration-700" />
-
-              {/* Text */}
               <span className="relative text-[10px] uppercase tracking-[0.3em] font-light text-[#F0EAE6]/90 group-hover/btn:text-[#a87441] group-hover/btn:tracking-[0.35em] transition-all duration-700">
                 {t('hero.cta')}
               </span>
@@ -134,8 +163,6 @@ export default function Hero() {
           </motion.div>
         </div>
       </div>
-
-
     </section>
   );
 }

@@ -19,6 +19,7 @@ import {
 import invariant from 'tiny-invariant';
 
 import {ProductCard} from '~/components/ProductCard';
+import {CategoryHeader} from '~/components/CategoryHeader';
 import SortMenu, {
   type SortParam,
   FILTER_URL_PREFIX,
@@ -243,55 +244,39 @@ export default function Collection() {
         </div>
       </div>
 
-      {/* ─── Breadcrumb ─── */}
-      <nav
-        aria-label="Breadcrumb"
-        className="max-w-[1440px] mx-auto pt-5 pb-2"
-        style={{padding: '1.25rem var(--page-gutter) 0.5rem'}}
-      >
-        <ol className="flex items-center gap-2 text-[11px] uppercase tracking-[0.15em] text-[#8B7355]">
-          <li>
-            <a href="/" className="hover:text-[#a87441] transition-colors duration-200">
-              Home
-            </a>
-          </li>
-          <li aria-hidden="true" className="text-[#8B7355]/40">›</li>
-          <li>
-            <a href="/collections" className="hover:text-[#a87441] transition-colors duration-200">
-              Collections
-            </a>
-          </li>
-          <li aria-hidden="true" className="text-[#8B7355]/40">›</li>
-          <li className="text-[#4A3C31] font-medium truncate max-w-[180px]">
-            {collection.title}
-          </li>
-        </ol>
-      </nav>
+      {/* ─── Category Navigation Tabs ─── */}
+      <CategoryHeader
+        currentCategory={collection.title}
+        productCount={collection.products.nodes.length}
+        collectionHandle={collection.handle}
+      />
 
-      {/* ─── Sort / Filter Toolbar ─── */}
-      <div className="sticky z-30 bg-[#F9F5F0]/[0.97] backdrop-blur-xl border-b border-[#4A3C31]/8" style={{top: 'var(--navbar-height)'}}>
-        <div className="max-w-[1440px] mx-auto py-3 flex items-center justify-between" style={{padding: '0.75rem var(--page-gutter)'}}>
-          <span className="text-[11px] uppercase tracking-[0.2em] text-[#8B7355] font-light">
-            {collection.products.nodes.length}{' '}
-            {collection.products.nodes.length === 1
-              ? t('collection.item')
-              : t('collection.items')}
-          </span>
-          <div className="flex items-center gap-4">
-            <SortMenu />
-            {appliedFilters.length > 0 && (
-              <div className="flex items-center gap-2">
-                {appliedFilters.map((filter, i) => (
-                  <span
-                    key={i}
-                    className="text-[10px] uppercase tracking-wider px-2.5 py-1 bg-[#4A3C31]/6 text-[#4A3C31] rounded"
-                  >
-                    {filter.label}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
+      {/* ─── Sort / Applied Filters Bar ─── */}
+      <div className="max-w-[1440px] mx-auto py-3 flex items-center justify-between" style={{padding: '0.75rem var(--page-gutter)'}}>
+        <nav
+          aria-label="Breadcrumb"
+          className="flex items-center gap-2 text-[11px] uppercase tracking-[0.15em] text-[#8B7355]"
+        >
+          <a href="/" className="hover:text-[#a87441] transition-colors duration-200">Home</a>
+          <span aria-hidden="true" className="text-[#8B7355]/40">›</span>
+          <a href="/collections" className="hover:text-[#a87441] transition-colors duration-200">Collections</a>
+          <span aria-hidden="true" className="text-[#8B7355]/40">›</span>
+          <span className="text-[#4A3C31] font-medium truncate max-w-[180px]">{collection.title}</span>
+        </nav>
+        <div className="flex items-center gap-4">
+          <SortMenu />
+          {appliedFilters.length > 0 && (
+            <div className="flex items-center gap-2">
+              {appliedFilters.map((filter, i) => (
+                <span
+                  key={i}
+                  className="text-[10px] uppercase tracking-wider px-2.5 py-1 bg-[#4A3C31]/6 text-[#4A3C31] rounded-full"
+                >
+                  {filter.label}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

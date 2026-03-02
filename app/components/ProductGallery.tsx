@@ -75,7 +75,7 @@ export function ProductGallery({
             data={images[0]}
             aspectRatio="3/4"
             sizes="(min-width: 768px) 60vw, 90vw"
-            className="w-full h-full object-contain p-4 animate-breathe-zoom"
+            className="w-full h-full object-cover"
           />
         </div>
       </div>
@@ -203,9 +203,7 @@ export function ProductGallery({
                     data={image}
                     aspectRatio="3/4"
                     sizes="(min-width: 768px) 50vw, 80vw"
-                    className={`w-full h-full object-contain p-4 ${
-                      index === activeIndex ? 'animate-breathe-zoom' : ''
-                    }`}
+                    className="w-full h-full object-cover"
                   />
                 </div>
               </motion.div>

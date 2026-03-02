@@ -8,6 +8,7 @@ import {motion} from 'framer-motion';
 import Hero from '~/components/Hero';
 import CategoryBento from '~/components/CategoryBento';
 import EditorialSection from '~/components/EditorialSection';
+import {BlurRevealImage} from '~/components/BlurRevealImage';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
 import {useTranslation} from '~/hooks/useTranslation';
@@ -195,17 +196,20 @@ export default function Homepage() {
               {[
                 {
                   title: t('journal.modernWardrobe'),
-                  img: '/brand/journal-identity.png',
+                  img: '/brand/journal-wardrobe.png',
+                  blurImg: '/brand/journal-wardrobe-blur.png',
                   to: '/journal',
                 },
                 {
                   title: t('journal.everydayElegance'),
-                  img: '/brand/journal-motion.png',
+                  img: '/brand/journal-elegance.png',
+                  blurImg: '/brand/journal-elegance-blur.png',
                   to: '/journal',
                 },
                 {
                   title: t('journal.behindCraft'),
-                  img: '/brand/journal-hero.png',
+                  img: '/brand/journal-selection.png',
+                  blurImg: '/brand/journal-selection-blur.png',
                   to: '/journal',
                 },
               ].map((item, i) => (
@@ -221,10 +225,12 @@ export default function Homepage() {
                     className="space-y-4 cursor-pointer group block"
                   >
                     <div className="aspect-[16/10] relative overflow-hidden bg-[#EDE8E3] rounded-lg">
-                      <img
+                      <BlurRevealImage
                         src={item.img}
+                        blurSrc={item.blurImg}
                         alt={item.title}
-                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.03] opacity-90 group-hover:opacity-100"
+                        className="absolute inset-0 w-full h-full"
+                        breatheDuration={5.5 + i * 0.7}
                       />
                     </div>
                     <h3 className="font-serif text-lg md:text-xl text-[#4A3C31] font-light tracking-wide group-hover:text-[#a87441] transition-colors duration-500">

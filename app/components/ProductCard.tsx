@@ -214,7 +214,7 @@ export function ProductCard({
               animate={{opacity: 1}}
               exit={{opacity: 0}}
               transition={{duration: 0.4, ease: 'easeOut'}}
-              className="w-full h-full animate-breathe-zoom"
+              className="w-full h-full transition-transform duration-700 ease-out group-hover:scale-[1.04]"
             >
               {images.length > 0 ? (
                 <Image
@@ -224,7 +224,7 @@ export function ProductCard({
                     width: 600,
                     height: 800,
                   }}
-                    className="w-full h-full object-contain p-2"
+                  className="w-full h-full object-cover"
                   sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
                   loading={index < 4 ? 'eager' : 'lazy'}
                 />
