@@ -1,13 +1,13 @@
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {defer} from '@remix-run/server-runtime';
-import {useLoaderData, Link} from '@remix-run/react';
-import {getSeoMeta} from '@shopify/hydrogen';
+import {Suspense} from 'react';
+import {Await, useLoaderData, Link} from '@remix-run/react';
+import {getSeoMeta, Image} from '@shopify/hydrogen';
 import {motion} from 'framer-motion';
 
 import Hero from '~/components/Hero';
 import CategoryBento from '~/components/CategoryBento';
 import EditorialSection from '~/components/EditorialSection';
-import {BlurRevealImage} from '~/components/BlurRevealImage';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
 import {useTranslation} from '~/hooks/useTranslation';
@@ -26,8 +26,9 @@ export async function loader(args: LoaderFunctionArgs) {
   }
 
   const criticalData = await loadCriticalData(args);
+  const deferredData = loadDeferredData(args);
 
-  return defer({...criticalData});
+  return defer({...deferredData, ...criticalData});
 }
 
 async function loadCriticalData({context, request}: LoaderFunctionArgs) {
@@ -39,6 +40,25 @@ async function loadCriticalData({context, request}: LoaderFunctionArgs) {
   };
 }
 
+function loadDeferredData({context}: LoaderFunctionArgs) {
+  const {language, country} = context.storefront.i18n;
+
+  const featuredCollections = context.storefront
+    .query(FEATURED_COLLECTIONS_QUERY, {
+      variables: {
+        country,
+        language,
+      },
+    })
+    .catch((error: unknown) => {
+      console.error(error);
+      return null;
+    });
+
+  return {
+    featuredCollections,
+  };
+}
 
 export const meta = ({matches}: MetaArgs<typeof loader>) => {
   // @ts-ignore
@@ -46,6 +66,7 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 };
 
 export default function Homepage() {
+  const {featuredCollections} = useLoaderData<typeof loader>();
   const {t} = useTranslation();
 
   return (
@@ -65,33 +86,99 @@ export default function Homepage() {
           <EditorialSection />
         </div>
 
-        {/* 4. Brand Introduction / About Us */}
+        {/* 4. Brand Introduction */}
         <motion.section
           initial={{opacity: 0, y: 20}}
           whileInView={{opacity: 1, y: 0}}
           viewport={{once: true, margin: '-80px'}}
           transition={{duration: 0.7, ease: [0.25, 0.1, 0.25, 1]}}
-          className="py-16 md:py-24 max-w-2xl mx-auto space-y-6 border-t border-[#8B8076]/10 px-6"
+          className="py-16 md:py-24 text-center max-w-2xl mx-auto space-y-8 border-t border-[#8B8076]/10"
         >
           <div className="w-px h-16 bg-gradient-to-b from-transparent via-[#a87441]/40 to-transparent mx-auto" />
-          <div className="text-center space-y-4 text-[15px] md:text-[16px] leading-[1.8] text-[#4A3C31] font-light tracking-wide">
-            <p>
-              <span className="font-serif italic text-lg">FORM&#201; HAUS</span> Collection is an Australian Tech Accessory brand owned, run and led by women.
-            </p>
-            <p>
-              We create purposeful pieces for our everyday wardrobe. A collection of fashion and tech accessories, including{' '}
-              <Link to="/collections/phone-cases" className="text-[#a87441] hover:underline">phone cases</Link>,{' '}
-              <Link to="/collections/phone-straps" className="text-[#a87441] hover:underline">phone straps</Link>,{' '}
-              key chains, suction plates and screen protectors, helping you to always stay connected.
-            </p>
-            <p>
-              We offer 48 hour dispatch, international shipping, and free shipping on domestic orders over $70.
-            </p>
-            <p className="font-serif italic text-[#a87441]">
-              Meet Louve: the hands free solution for your iPhone!
-            </p>
-          </div>
+          <p className="font-serif text-lg md:text-xl leading-[1.8] text-[#4A3C31] font-light italic tracking-wide px-6">
+            &ldquo;{t('home.brandIntro')}&rdquo;
+          </p>
         </motion.section>
+
+        {/* 5. Featured Collections */}
+        <section className="py-16 md:py-24 border-t border-[#8B8076]/10">
+          <div className="max-w-[1200px] mx-auto" style={{padding: '0 var(--page-gutter)'}}>
+            <Suspense
+              fallback={
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {[0,1,2].map(i => (
+                    <div key={i} className="aspect-[3/4] rounded-lg luxury-skeleton" />
+                  ))}
+                </div>
+              }
+            >
+              <Await resolve={featuredCollections}>
+                {(response) => {
+                  const collections = (response?.collections?.nodes || []).slice(0, 3);
+                  return (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      {collections.map((c: any, i: number) => {
+                        const placeholders = [
+                          '/brand/atelier-mood.png',
+                          '/brand/placeholder-drape.png',
+                          '/brand/silk-texture.png',
+                        ];
+                        const displayTitle = c.title === 'Home page' ? 'Where Elegance Begins' : c.title;
+                        return (
+                          <motion.div
+                            key={c.id}
+                            initial={{opacity: 0, y: 20}}
+                            whileInView={{opacity: 1, y: 0}}
+                            viewport={{once: true}}
+                            transition={{delay: i * 0.1, duration: 0.6, ease: [0.25, 0.1, 0.25, 1]}}
+                          >
+                            <Link
+                              to={`/collections/${c.handle}`}
+                              className="group relative aspect-[3/4] bg-[#EDE8E3] overflow-hidden block rounded-lg"
+                            >
+                              {c.image ? (
+                                <div className="absolute inset-0 overflow-hidden">
+                                  <motion.div
+                                    className="w-full h-full"
+                                    whileHover={{scale: 1.03}}
+                                    transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}
+                                  >
+                                    <Image
+                                      data={c.image}
+                                      sizes="(min-width: 45em) 33vw, 100vw"
+                                      className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-700"
+                                    />
+                                  </motion.div>
+                                </div>
+                              ) : (
+                                <div className="absolute inset-0">
+                                  <img
+                                    src={placeholders[i % placeholders.length]}
+                                    alt="Collection Preview"
+                                    className="w-full h-full object-cover opacity-90 group-hover:scale-103 transition-transform duration-1000"
+                                  />
+                                </div>
+                              )}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+                              <div className="absolute inset-0 flex flex-col items-center justify-end pb-10 gap-4 z-10">
+                                <h3 className="font-serif text-2xl italic text-white drop-shadow-md text-center px-6">
+                                  {displayTitle}
+                                </h3>
+                                <span className="text-[10px] uppercase tracking-[0.2em] text-white/90 border border-white/40 px-5 py-2.5 backdrop-blur-sm group-hover:bg-white group-hover:text-[#4A3C31] transition-all duration-500">
+                                  View Collection
+                                </span>
+                              </div>
+                            </Link>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+                  );
+                }}
+              </Await>
+            </Suspense>
+          </div>
+        </section>
 
         {/* 6. Journal Teaser */}
         <section className="py-16 md:py-24 border-t border-[#8B8076]/10">
@@ -108,24 +195,18 @@ export default function Homepage() {
               {[
                 {
                   title: t('journal.modernWardrobe'),
-                  img: '/brand/journal-wardrobe.png',
-                  blurImg: '/brand/journal-wardrobe-blur.png',
+                  img: '/brand/journal-identity.png',
                   to: '/journal',
-                  cycle: 5,
                 },
                 {
                   title: t('journal.everydayElegance'),
-                  img: '/brand/journal-elegance.png',
-                  blurImg: '/brand/journal-elegance-blur.png',
+                  img: '/brand/journal-motion.png',
                   to: '/journal',
-                  cycle: 5.6,
                 },
                 {
                   title: t('journal.behindCraft'),
-                  img: '/brand/journal-selection.png',
-                  blurImg: '/brand/journal-selection-blur.png',
+                  img: '/brand/journal-hero.png',
                   to: '/journal',
-                  cycle: 4.8,
                 },
               ].map((item, i) => (
                 <motion.div
@@ -140,12 +221,10 @@ export default function Homepage() {
                     className="space-y-4 cursor-pointer group block"
                   >
                     <div className="aspect-[16/10] relative overflow-hidden bg-[#EDE8E3] rounded-lg">
-                      <BlurRevealImage
+                      <img
                         src={item.img}
-                        blurSrc={item.blurImg}
                         alt={item.title}
-                        className="w-full h-full"
-                        cycleDuration={item.cycle}
+                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.03] opacity-90 group-hover:opacity-100"
                       />
                     </div>
                     <h3 className="font-serif text-lg md:text-xl text-[#4A3C31] font-light tracking-wide group-hover:text-[#a87441] transition-colors duration-500">
@@ -172,3 +251,24 @@ const HOMEPAGE_SEO_QUERY = `#graphql
   }
 ` as const;
 
+// @see: https://shopify.dev/api/storefront/current/queries/collections
+export const FEATURED_COLLECTIONS_QUERY = `#graphql
+  query homepageFeaturedCollections($country: CountryCode, $language: LanguageCode)
+  @inContext(country: $country, language: $language) {
+    collections(
+      first: 3
+    ) {
+      nodes {
+        id
+        title
+        handle
+        image {
+          altText
+          width
+          height
+          url
+        }
+      }
+    }
+  }
+` as const;

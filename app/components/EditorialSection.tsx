@@ -1,6 +1,5 @@
 import {Link} from '@remix-run/react';
 import {motion} from 'framer-motion';
-import {BlurRevealImage} from '~/components/BlurRevealImage';
 
 export default function EditorialSection() {
   return (
@@ -31,19 +30,17 @@ export default function EditorialSection() {
           transition={{duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1]}}
           className="grid grid-cols-1 lg:grid-cols-3 gap-4"
         >
-          {/* Large Feature — Modern Essentials */}
+          {/* Large Feature */}
           <Link
             to="/collections/new-in"
             className="lg:col-span-2 relative aspect-[16/9] lg:aspect-auto lg:min-h-[540px] overflow-hidden rounded-lg group cursor-pointer block"
           >
-            <BlurRevealImage
-              src="/brand/edit-modern-essentials.png"
-              blurSrc="/brand/edit-modern-essentials-blur.png"
+            <img
+              src="/brand/journal-hero.png"
               alt="Modern Essentials"
-              className="w-full h-full"
-              cycleDuration={6}
+              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.03]"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-8 md:p-10 pointer-events-none">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-8 md:p-10">
               <span className="text-white/70 text-[10px] uppercase tracking-[0.2em] mb-2">
                 Explore
               </span>
@@ -57,47 +54,20 @@ export default function EditorialSection() {
             </div>
           </Link>
 
-          {/* Side Column — 3 Boxes with blur-reveal */}
+          {/* Side Column - 3 Boxes */}
           <div className="flex flex-col gap-4 h-full">
             {[
-              {
-                to: '/collections/sunglasses',
-                title: 'Sun Ready',
-                desc: 'For golden hours and everyday light',
-                img: '/brand/edit-sun-ready.png',
-                blurImg: '/brand/edit-sun-ready-blur.png',
-                cycle: 5.5,
-              },
-              {
-                to: '/collections/phone-cases',
-                title: 'Carry It Your Way',
-                desc: 'Hands-free. Effortless. Elevated.',
-                img: '/brand/edit-carry.png',
-                blurImg: '/brand/edit-carry-blur.png',
-                cycle: 4.8,
-              },
-              {
-                to: '/collections/new-in',
-                title: 'New Arrivals',
-                desc: 'Latest additions to the Haus.',
-                img: '/brand/edit-new-arrivals.png',
-                blurImg: '/brand/edit-new-arrivals-blur.png',
-                cycle: 5.2,
-              },
+              {to: '/collections/sunglasses', title: 'Sun Ready', desc: 'For golden hours and everyday light', gradient: 'from-[#F5E6D3] to-[#E3D8D1]'},
+              {to: '/collections/phone-cases', title: 'Carry It Your Way', desc: 'Hands-free. Effortless. Elevated.', gradient: 'from-[#E8DDD4] to-[#D4C5B9]'},
+              {to: '/collections/new-in', title: 'New Arrivals', desc: 'Latest additions to the Haus.', gradient: 'from-[#D48B60] to-[#C07A52]'},
             ].map((box) => (
               <Link
                 key={box.to + box.title}
                 to={box.to}
                 className="relative flex-1 overflow-hidden rounded-lg group cursor-pointer min-h-[150px] block"
               >
-                <BlurRevealImage
-                  src={box.img}
-                  blurSrc={box.blurImg}
-                  alt={box.title}
-                  className="w-full h-full"
-                  cycleDuration={box.cycle}
-                />
-                <div className="absolute inset-0 bg-black/25 group-hover:bg-black/10 transition-colors duration-500 flex flex-col items-center justify-center text-center p-4 pointer-events-none">
+                <div className={`absolute inset-0 bg-gradient-to-br ${box.gradient}`} />
+                <div className="absolute inset-0 bg-black/15 group-hover:bg-black/5 transition-colors duration-500 flex flex-col items-center justify-center text-center p-4">
                   <h4 className="font-serif text-xl md:text-2xl text-white italic drop-shadow-md mb-1">
                     {box.title}
                   </h4>

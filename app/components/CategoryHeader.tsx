@@ -66,12 +66,15 @@ const Icons = {
 
 // Sibling categories data
 const siblingCategories = [
-  {id: 'all', label: 'Shop All', href: '/collections'},
-  {id: 'phone-cases', label: 'Phone Cases', href: '/collections/phone-cases'},
-  {id: 'phone-straps', label: 'Phone Straps', href: '/collections/phone-straps'},
-  {id: 'case-strap-bundles', label: 'Case+Strap Bundles', href: '/collections/case-strap-bundles'},
-  {id: 'sunglasses', label: 'Sunglasses', href: '/collections/sunglasses'},
-  {id: 'sale', label: 'Sale', href: '/collections/sale'},
+  {id: 'all', label: 'All Ready-to-Wear', href: '/collections/all'},
+  {id: 'dresses', label: 'Dresses', href: '/collections/dresses'},
+  {id: 'tops', label: 'Tops', href: '/collections/tops'},
+  {id: 'blazers', label: 'Blazers', href: '/collections/blazers'},
+  {id: 'pants', label: 'Pants', href: '/collections/pants'},
+  {id: 'skirts', label: 'Skirts', href: '/collections/skirts'},
+  {id: 'outerwear', label: 'Outerwear', href: '/collections/outerwear'},
+  {id: 'knitwear', label: 'Knitwear', href: '/collections/knitwear'},
+  {id: 'activewear', label: 'Activewear', href: '/collections/activewear'},
 ];
 
 /**
