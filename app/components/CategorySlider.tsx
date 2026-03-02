@@ -6,25 +6,25 @@ const CATEGORIES = [
   {
     id: 1,
     title: 'New In',
-    image: '/brand/new-in.png',
+    image: '/brand/new-in.webp',
     url: '/collections/new-in',
   },
   {
     id: 2,
     title: 'Phone Cases',
-    image: '/brand/phone-accessories.png',
+    image: '/brand/phone-accessories.webp',
     url: '/collections/phone-cases',
   },
   {
     id: 3,
     title: 'Phone Straps',
-    image: '/brand/edit-carry.png',
+    image: '/brand/edit-carry.webp',
     url: '/collections/phone-straps',
   },
   {
     id: 4,
     title: 'Case+Strap Bundles',
-    image: '/brand/edit-modern-essentials.png',
+    image: '/brand/edit-modern-essentials.webp',
     url: '/collections/case-strap-bundles',
   },
   {

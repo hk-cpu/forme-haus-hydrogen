@@ -37,7 +37,7 @@ export default function EditorialSection() {
             className="lg:col-span-2 relative aspect-[16/9] lg:aspect-auto lg:min-h-[540px] overflow-hidden rounded-lg group cursor-pointer block"
           >
             <BlurRevealImage
-              src="/brand/edit-modern-essentials.png"
+              src="/brand/edit-modern-essentials.webp"
               blurSrc="/brand/edit-modern-essentials-blur.png"
               alt="Modern Essentials"
               className="absolute inset-0 w-full h-full"
@@ -64,14 +64,14 @@ export default function EditorialSection() {
                 to: '/collections/sunglasses',
                 title: 'Sun Ready',
                 desc: 'For golden hours and everyday light',
-                img: '/brand/edit-sun-ready.png',
-                blurImg: '/brand/edit-sun-ready-blur.png',
+                img: '/brand/edit-sun-ready.webp',
+                blurImg: '/brand/edit-sun-ready-blur.webp',
               },
               {
                 to: '/collections/phone-cases',
                 title: 'Carry It Your Way',
                 desc: 'Hands-free. Effortless. Elevated.',
-                img: '/brand/edit-carry.png',
+                img: '/brand/edit-carry.webp',
                 blurImg: '/brand/edit-carry-blur.png',
               },
               {
@@ -79,7 +79,7 @@ export default function EditorialSection() {
                 title: 'New Arrivals',
                 desc: 'Latest additions to the Haus.',
                 img: '/brand/edit-new-arrivals.webp',
-                blurImg: '/brand/edit-new-arrivals-blur.png',
+                blurImg: '/brand/edit-new-arrivals-blur.webp',
               },
             ].map((box, i) => (
               <Link

@@ -98,14 +98,14 @@ export default function Homepage() {
               {[
                 {
                   title: t('journal.modernWardrobe'),
-                  img: '/brand/journal-wardrobe.png',
-                  blurImg: '/brand/journal-wardrobe-blur.png',
+                  img: '/brand/journal-wardrobe.webp',
+                  blurImg: '/brand/journal-wardrobe-blur.webp',
                   to: '/journal',
                 },
                 {
                   title: t('journal.everydayElegance'),
-                  img: '/brand/journal-elegance.png',
-                  blurImg: '/brand/journal-elegance-blur.png',
+                  img: '/brand/journal-elegance.webp',
+                  blurImg: '/brand/journal-elegance-blur.webp',
                   to: '/journal',
                 },
                 {
