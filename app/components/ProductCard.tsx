@@ -255,8 +255,7 @@ export function ProductCard({
             </motion.div>
           </AnimatePresence>
 
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
+          {/* Gradient Overlay Removed */}
 
           {/* Coming Soon Overlay - only for products without a valid price */}
           {!product.availableForSale && !product.priceRange?.minVariantPrice?.amount && (

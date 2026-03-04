@@ -6,8 +6,8 @@ test.describe('Cart', () => {
   test('From home to checkout flow', async ({page}) => {
     // Home => New In => First product
     await page.goto(`/`);
-    await page.locator(`header nav a:text-is("New In")`).click();
-    await page.locator(`main a[href*="/products/"] >> nth=0`).click();
+    await page.locator(`header nav a:has-text("New In")`).click();
+    await page.locator(`main a[href*="/products/"]`).first().click();
 
     const firstItemPrice = normalizePrice(
       await page.locator(`[data-test=price]`).textContent(),
@@ -37,8 +37,8 @@ test.describe('Cart', () => {
 
     // Close cart drawer => Phone Cases => First product
     await page.locator('[data-test=close-cart]').click();
-    await page.locator(`header nav a:text-is("Phone Cases")`).click();
-    await page.locator(`main a[href*="/products/"] >> nth=0`).click();
+    await page.locator(`header nav a:has-text("Phone Cases")`).click();
+    await page.locator(`main a[href*="/products/"]`).first().click();
 
     const secondItemPrice = normalizePrice(
       await page.locator(`[data-test=price]`).textContent(),
