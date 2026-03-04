@@ -228,7 +228,7 @@ export default function Collection() {
     <div className="min-h-screen bg-[#F9F5F0]">
       {/* ─── Hero Banner ─── */}
       <div 
-        className="relative w-full h-[30vh] md:h-[38vh] min-h-[220px] max-h-[380px] overflow-hidden"
+        className={`relative w-full overflow-hidden ${heroFit === 'contain' ? '' : 'h-[30vh] md:h-[38vh] min-h-[220px] max-h-[380px]'}`}
         style={heroBg ? {backgroundColor: heroBg} : {}}
       >
         {heroImage ? (
@@ -236,7 +236,7 @@ export default function Collection() {
             <motion.img
               src={heroImage}
               alt={collection.title}
-              className={`w-full h-full object-${heroFit}`}
+              className={`w-full ${heroFit === 'contain' ? 'h-auto block' : 'h-full object-cover'}`}
               initial={{scale: 1.03}}
               animate={{scale: 1}}
               transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}

@@ -27,8 +27,8 @@ const CATEGORIES: Category[] = [
   },
   {
     id: 2,
-    title: 'Phone Cases',
-    titleAr: 'حافظات الهاتف',
+    title: 'Phone Accessories',
+    titleAr: 'إكسسوارات الهاتف',
     image: '/brand/phone-accessories.webp',
     blurImage: '/brand/phone-accessories-blur.webp',
     url: '/collections/phone-cases',
