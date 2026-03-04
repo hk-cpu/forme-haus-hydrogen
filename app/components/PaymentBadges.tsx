@@ -90,7 +90,7 @@ function TabbyIcon() {
 
 export default function PaymentBadges() {
   return (
-    <div className="flex items-center gap-4 flex-nowrap">
+    <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
       <MadaIcon />
       <VisaIcon />
       <MastercardIcon />

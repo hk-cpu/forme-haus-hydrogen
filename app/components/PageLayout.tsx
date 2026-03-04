@@ -37,6 +37,7 @@ export function PageLayout({children, layout}: LayoutProps) {
   const {headerMenu, footerMenu} = layout || {};
   const [scrollY, setScrollY] = useState(0);
   const location = useLocation();
+  const {state} = useUI();
 
   useEffect(() => {
     let ticking = false;
@@ -71,7 +72,7 @@ export function PageLayout({children, layout}: LayoutProps) {
           </a>
         </div>
 
-        <div className="relative z-10 flex flex-col items-center transition-all duration-700">
+        <div className={`relative z-10 flex flex-col items-center transition-all duration-700 ${state.isCartOpen || state.isSearchOpen ? 'blur-[2px] scale-[0.995] pointer-events-none' : ''}`}>
           <div className="w-full max-w-[1800px] flex flex-col relative mx-auto my-0">
             <Header
               title={layout?.shop.name || 'Formé Haus'}
@@ -412,7 +413,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
 
         {/* Footer Bottom Line */}
         <div className="max-w-[1440px] mx-auto text-center text-[11px] font-sans tracking-[0.08em] text-[#8B8076]">
-          <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-6">
+          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-2 sm:gap-4 lg:gap-6">
             <span className="font-medium text-[#F0EAE6]/80">
               &copy; Formé Haus FH Establishment
             </span>

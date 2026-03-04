@@ -247,7 +247,7 @@ export function ProductGallery({
               data={image}
               aspectRatio="1/1"
               sizes="80px"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain p-1 bg-[#F5F2ED]"
             />
           </button>
         ))}

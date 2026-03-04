@@ -1,6 +1,6 @@
-import {useRef, Suspense} from 'react';
+import {useRef, Suspense, useState, useEffect} from 'react';
 import {Disclosure, Listbox} from '@headlessui/react';
-import {motion} from 'framer-motion';
+import {motion, AnimatePresence} from 'framer-motion';
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {defer} from '@remix-run/server-runtime';
 import {useLoaderData, Await} from '@remix-run/react';
@@ -164,6 +164,22 @@ export default function Product() {
     selectedOrFirstAvailableVariant: selectedVariant,
   });
 
+  // Mobile sticky ATC
+  const atcSentinelRef = useRef<HTMLDivElement>(null);
+  const [showStickyAtc, setShowStickyAtc] = useState(false);
+  const isOutOfStock = !selectedVariant?.availableForSale;
+
+  useEffect(() => {
+    const el = atcSentinelRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowStickyAtc(!entry.isIntersecting),
+      {threshold: 0, rootMargin: '0px 0px -80px 0px'},
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <Section className="px-0 md:px-8 lg:px-12">
@@ -196,7 +212,7 @@ export default function Product() {
               <div className="grid gap-3">
                 <Heading
                   as="h1"
-                  className="whitespace-normal font-serif text-4xl md:text-5xl lg:text-7xl text-[#2a2118] font-thin leading-[0.9] tracking-tight mb-2"
+                  className="whitespace-normal font-serif text-3xl md:text-4xl lg:text-4xl text-[#2a2118] font-thin leading-[0.95] tracking-tight mb-2 hyphens-auto"
                 >
                   {title}
                 </Heading>
@@ -238,6 +254,7 @@ export default function Product() {
                 )}
               </div>
             </section>
+            <div ref={atcSentinelRef} className="h-px w-full" />
           </div>
         </div>
       </Section>
@@ -266,6 +283,33 @@ export default function Product() {
           ],
         }}
       />
+      <AnimatePresence>
+        {showStickyAtc && !isOutOfStock && (
+          <motion.div
+            initial={{y: 80, opacity: 0}}
+            animate={{y: 0, opacity: 1}}
+            exit={{y: 80, opacity: 0}}
+            transition={{duration: 0.35, ease: [0.16, 1, 0.3, 1]}}
+            className="fixed bottom-0 left-0 right-0 z-[200] md:hidden bg-[#F9F5F0] border-t border-[#8B8076]/20 px-4 py-3 flex items-center gap-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]"
+          >
+            <div className="flex-1 min-w-0">
+              <p className="font-serif text-[13px] text-[#2a2118] leading-tight truncate">{title}</p>
+              <Money
+                withoutTrailingZeros
+                data={selectedVariant!.price!}
+                as="p"
+                className="text-[11px] text-[#8B8076] mt-0.5"
+              />
+            </div>
+            <AddToCartButton
+              lines={[{merchandiseId: selectedVariant!.id!, quantity: 1}]}
+              className="bg-[#2a2118] text-[#F0EAE6] px-6 py-3 text-[11px] uppercase tracking-[0.15em] rounded-sm shrink-0 transition-colors hover:bg-[#4A3C31] focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2"
+            >
+              {t('product.addToCart')}
+            </AddToCartButton>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

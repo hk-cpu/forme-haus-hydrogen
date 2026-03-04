@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import {Link} from '@remix-run/react';
 import {motion} from 'framer-motion';
 
@@ -68,6 +69,7 @@ const itemVariants = {
 };
 
 function CategoryCard({category, isRTL, index}: {category: Category; isRTL: boolean; index: number}) {
+  const [isHovered, setIsHovered] = useState(false);
   // Stagger the breathing duration so cards don't pulse in sync
   const breatheDurations = [5, 5.8, 6.6];
 
@@ -75,6 +77,8 @@ function CategoryCard({category, isRTL, index}: {category: Category; isRTL: bool
     <motion.div
       variants={itemVariants}
       className="relative group aspect-[3/4] overflow-hidden rounded-lg"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <Link to={category.url} className="block w-full h-full">
         {/* Background: BlurReveal camera-focus effect */}
@@ -84,6 +88,7 @@ function CategoryCard({category, isRTL, index}: {category: Category; isRTL: bool
           alt={isRTL ? category.titleAr : category.title}
           className="absolute inset-0 w-full h-full"
           breatheDuration={breatheDurations[index % breatheDurations.length]}
+          isHovered={isHovered}
         />
 
         {/* Dark gradient overlay */}
@@ -119,7 +124,7 @@ export default function CategoryBento() {
   const {isRTL, t} = useTranslation();
 
   return (
-    <section className="pb-16 md:pb-24 border-b border-[#8B8076]/10">
+    <section className="pb-10 md:pb-14 border-b border-[#8B8076]/10">
       <div className="max-w-[1200px] mx-auto" style={{padding: '0 var(--page-gutter)'}}>
         {/* Section Header */}
         <motion.div
@@ -127,7 +132,7 @@ export default function CategoryBento() {
           whileInView={{opacity: 1, y: 0}}
           viewport={{once: true}}
           transition={{duration: 0.5, ease: [0.25, 0.1, 0.25, 1]}}
-          className="mb-10 md:mb-12"
+          className="mb-6 md:mb-8"
         >
           <h2 className="font-serif text-3xl md:text-4xl text-[#4A3C31] mb-3">
             {isRTL ? 'تسوّق حسب الفئة' : t('home.categorySlider')}
@@ -141,7 +146,7 @@ export default function CategoryBento() {
           initial="hidden"
           whileInView="visible"
           viewport={{once: true}}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
         >
           {CATEGORIES.map((category, i) => (
             <CategoryCard key={category.id} category={category} isRTL={isRTL} index={i} />
@@ -154,11 +159,11 @@ export default function CategoryBento() {
           whileInView={{opacity: 1}}
           viewport={{once: true}}
           transition={{delay: 0.4}}
-          className="mt-10 md:mt-12 text-center"
+          className="mt-8 md:mt-10 text-center"
         >
           <Link
             to="/collections"
-            className="inline-flex items-center gap-3 px-7 py-3.5 border border-[#a87441]/25 text-[#a87441] hover:bg-[#a87441] hover:text-white transition-all duration-500 rounded-full text-[11px] uppercase tracking-[0.2em] group"
+            className="inline-flex items-center gap-3 px-7 py-3.5 min-h-[48px] border border-[#a87441]/25 text-[#a87441] hover:bg-[#a87441] hover:text-white transition-all duration-500 rounded-full text-[11px] uppercase tracking-[0.2em] group"
           >
             <span>{isRTL ? 'عرض الكل' : t('general.viewAll')}</span>
             <svg

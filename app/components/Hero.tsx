@@ -6,7 +6,7 @@ export default function Hero() {
   const {t} = useTranslation();
 
   return (
-    <section className="h-[85vh] md:h-[90vh] min-h-[500px] max-h-[900px] flex flex-col items-center justify-center bg-transparent relative overflow-hidden mobile-snap-section">
+    <section className="h-[70vh] md:h-[75vh] min-h-[400px] max-h-[700px] flex flex-col items-center justify-center bg-transparent relative overflow-hidden mobile-snap-section">
       <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
         <div className="text-center px-6 z-20 relative">
           {/* Brand Logo + Motion Line */}
@@ -14,7 +14,7 @@ export default function Hero() {
             initial={{opacity: 0, scale: 0.9}}
             animate={{opacity: 1, scale: 1}}
             transition={{duration: 1.5, ease: [0.16, 1, 0.3, 1]}}
-            className="mb-12 relative"
+            className="mb-8 relative"
           >
             {/* Wide container for the motion line to extend beyond logo */}
             <div className="relative inline-block">
@@ -40,7 +40,7 @@ export default function Hero() {
               <img
                 src="/brand/logo-full.png"
                 alt="FORMÉ HAUS - Where Essence Meets Elegance"
-                className="w-auto h-24 sm:h-32 md:h-44 lg:h-52 object-contain relative z-10 drop-shadow-2xl"
+                className="w-auto h-16 sm:h-20 md:h-28 lg:h-40 object-contain relative z-10 drop-shadow-2xl"
                 loading="eager"
                 fetchPriority="high"
               />
@@ -52,7 +52,7 @@ export default function Hero() {
                 a dramatic cinematic feel.
               */}
               <div
-                className="absolute left-[-40%] right-[-40%] z-20 pointer-events-none"
+                className="absolute left-[-40%] right-[-40%] z-20 pointer-events-none hidden md:block"
                 style={{top: '52%'}}
               >
                 <svg
@@ -139,6 +139,16 @@ export default function Hero() {
             </div>
           </motion.div>
 
+          {/* Brand Tagline */}
+          <motion.p
+            initial={{opacity: 0, y: 6}}
+            animate={{opacity: 1, y: 0}}
+            transition={{delay: 1.8, duration: 1.2, ease: [0.16, 1, 0.3, 1]}}
+            className="text-[10px] uppercase tracking-[0.35em] text-[#AA9B8F]/70 mb-6 font-light"
+          >
+            {t('hero.tagline', 'Where Essence Meets Elegance')}
+          </motion.p>
+
           {/* CTA Button */}
           <motion.div
             initial={{opacity: 0}}
@@ -147,7 +157,7 @@ export default function Hero() {
           >
             <Link
               to="/collections/new-in"
-              className="relative inline-flex items-center justify-center px-14 py-4 overflow-hidden group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded-sm"
+              className="relative inline-flex items-center justify-center px-8 sm:px-14 py-4 min-h-[48px] overflow-hidden group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded-sm"
             >
               <span className="absolute inset-0 border border-[#a87441]/40 group-hover/btn:border-[#a87441] transition-all duration-700" />
               <motion.span

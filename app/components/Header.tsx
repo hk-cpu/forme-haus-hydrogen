@@ -59,11 +59,9 @@ export function Header({
 
   // Default Nav Links if menu is missing
   const defaultLinks = [
-    {id: '1', title: t('nav.newIn'), to: '/collections/new'},
-    {id: '2', title: t('nav.collections'), to: '/collections'},
-    {id: '3', title: t('nav.designers'), to: '/pages/designers'},
-    {id: '4', title: t('nav.clothing'), to: '/collections/clothing'},
-    {id: '5', title: t('nav.shoes'), to: '/collections/shoes'},
+    {id: '1', title: t('nav.newIn', 'New In'), to: '/collections/new-in'},
+    {id: '2', title: t('nav.phoneCases', 'Phone Cases'), to: '/collections/phone-cases'},
+    {id: '3', title: t('nav.sunglasses', 'Sunglasses'), to: '/collections/sunglasses'},
   ];
 
   const items = menu?.items?.length ? menu.items : defaultLinks;
@@ -163,20 +161,15 @@ export function Header({
 
         {/* Mobile: Menu Toggle + Language */}
         <div className="md:hidden flex items-center gap-4">
-          <AnimatePresence>
-            {!isHome && (
-              <motion.button
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                onClick={openMenu}
-                className="text-[#F0EAE6]/80 hover:text-[#a87441] transition-colors duration-300 p-2 -m-2"
-                whileTap={{scale: 0.95}}
-              >
-                <Menu strokeWidth={1.5} className="w-6 h-6" />
-              </motion.button>
-            )}
-          </AnimatePresence>
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            onClick={openMenu}
+            className="text-[#F0EAE6]/80 hover:text-[#a87441] transition-colors duration-300 p-2 -m-2"
+            whileTap={{scale: 0.95}}
+          >
+            <Menu strokeWidth={1.5} className="w-6 h-6" />
+          </motion.button>
           <LanguageSwitch />
         </div>
 

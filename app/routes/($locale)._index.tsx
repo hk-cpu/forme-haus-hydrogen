@@ -60,7 +60,7 @@ export default function Homepage() {
       {/* Light "Glowing" Theme Content Sheet */}
       <div className="relative z-20 bg-[#F9F5F0]/85 backdrop-blur-md text-[#8B8076] rounded-t-[2rem] shadow-[0_-10px_40px_-10px_rgba(255,255,255,0.15)] mt-[-5vh]">
         {/* 2. Category Slider */}
-        <div className="pt-16 md:pt-24 mobile-snap-section">
+        <div className="pt-10 md:pt-14 mobile-snap-section">
           <CategoryBento />
         </div>
 
@@ -75,7 +75,7 @@ export default function Homepage() {
           whileInView={{opacity: 1, y: 0}}
           viewport={{once: true, margin: '-80px'}}
           transition={{duration: 0.7, ease: [0.25, 0.1, 0.25, 1]}}
-          className="py-16 md:py-24 text-center max-w-2xl mx-auto space-y-8 border-t border-[#8B8076]/10 mobile-snap-section"
+          className="py-10 md:py-14 text-center max-w-2xl mx-auto space-y-6 border-t border-[#8B8076]/10 mobile-snap-section"
         >
           <div className="w-px h-16 bg-gradient-to-b from-transparent via-[#a87441]/40 to-transparent mx-auto" />
           <p className="font-serif text-lg md:text-xl leading-[1.8] text-[#4A3C31] font-light italic tracking-wide px-6">
@@ -84,9 +84,9 @@ export default function Homepage() {
         </motion.section>
 
         {/* 5. Journal Teaser */}
-        <section className="py-16 md:py-24 border-t border-[#8B8076]/10 mobile-snap-section">
+        <section className="py-10 md:py-14 border-t border-[#8B8076]/10 mobile-snap-section">
           <div className="max-w-[1200px] mx-auto" style={{padding: '0 var(--page-gutter)'}}>
-            <div className="flex justify-between items-end mb-12 md:mb-16">
+            <div className="flex justify-between items-end mb-8 md:mb-10">
               <h2 className="font-serif text-3xl md:text-4xl italic text-[#4A3C31] font-light tracking-wide">
                 {t('home.journal')}
               </h2>
@@ -94,7 +94,7 @@ export default function Homepage() {
                 {t('home.editorial.label')}
               </span>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
               {[
                 {
                   title: t('journal.modernWardrobe'),

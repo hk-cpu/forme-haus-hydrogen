@@ -205,7 +205,7 @@ export default function Collection() {
   return (
     <div className="min-h-screen bg-[#F9F5F0]">
       {/* ─── Hero Banner ─── */}
-      <div className="relative w-full h-[40vh] md:h-[50vh] min-h-[280px] max-h-[480px] overflow-hidden">
+      <div className="relative w-full h-[30vh] md:h-[38vh] min-h-[220px] max-h-[380px] overflow-hidden">
         {heroImage ? (
           <>
             <motion.img
@@ -222,7 +222,7 @@ export default function Collection() {
           <div className="w-full h-full bg-gradient-to-br from-[#2a2118] via-[#1a1510] to-[#0f0d0a]" />
         )}
         {/* Title overlay */}
-        <div className="absolute inset-0 flex flex-col items-center justify-end pb-10 md:pb-14 px-6">
+        <div className="absolute inset-0 flex flex-col items-center justify-end pb-6 md:pb-10 px-6">
           <motion.div
             className="text-center"
             initial={{opacity: 0, y: 16}}
@@ -232,7 +232,7 @@ export default function Collection() {
             <span className="block text-[10px] uppercase tracking-[0.35em] text-[#a87441] font-light mb-3">
               Collection
             </span>
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#F0EAE6] tracking-tight mb-3" style={{letterSpacing: '0.02em'}}>
+            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#F0EAE6] tracking-tight mb-3" style={{letterSpacing: '0.02em'}}>
               {collection.title}
             </h1>
             {collection.description && (

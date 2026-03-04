@@ -220,18 +220,14 @@ p {
 /* ── Global Page Container ── */
 .luxury-container {
   max-width: var(--container-max);
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: var(--page-gutter);
-  padding-right: var(--page-gutter);
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
 }
 
 .luxury-container-wide {
   max-width: var(--container-wide);
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: var(--page-gutter);
-  padding-right: var(--page-gutter);
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
 }
 
 /* ── Scroll Progress Bar ── */
@@ -287,9 +283,11 @@ button:active:not(:disabled),
 
 /* ── Minimum touch targets on mobile ── */
 @media (max-width: 768px) {
-  button, a, [role="button"] {
+  /* Apply touch targets only to standalone interactive elements, not inline links */
+  nav a,
+  button:not([class*="absolute"]),
+  [role="button"] {
     min-height: 44px;
-    min-width: 44px;
   }
 
   input, select, textarea {
@@ -656,17 +654,14 @@ h6 {
   /* Body text never below 14px */
   body { font-size: clamp(0.875rem, 2.5vw, 1rem); }
 
-  /* Mobile Scroll Snapping - Auto Lock on segments */
+  /* Mobile Scroll Snapping - Gentle proximity snap (never traps users) */
   .snap-y-mandatory {
-    height: 100vh;
-    overflow-y: auto;
-    scroll-snap-type: y mandatory;
+    scroll-snap-type: y proximity;
     scroll-behavior: smooth;
   }
-  
+
   .mobile-snap-section {
     scroll-snap-align: start;
-    scroll-snap-stop: always;
   }
 
   /* Scrollbar thinner on mobile */

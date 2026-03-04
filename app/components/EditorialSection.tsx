@@ -18,7 +18,7 @@ export default function EditorialSection() {
           </h2>
           <Link
             to="/journal"
-            className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076] hover:text-[#a87441] transition-colors duration-300"
+            className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 py-3 inline-flex items-center min-h-[44px]"
           >
             View All Stories
           </Link>
@@ -85,7 +85,7 @@ export default function EditorialSection() {
               <Link
                 key={box.to + box.title}
                 to={box.to}
-                className="relative flex-1 overflow-hidden rounded-lg group cursor-pointer min-h-[150px] block"
+                className="relative flex-1 overflow-hidden rounded-lg group cursor-pointer min-h-[150px] aspect-[16/9] lg:aspect-auto block"
               >
                 <BlurRevealImage
                   src={box.img}

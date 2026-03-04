@@ -45,7 +45,7 @@ export function Newsletter() {
           <button
             type="submit"
             disabled={fetcher.state === 'submitting'}
-            className="text-[#a87441] text-xs uppercase tracking-widest hover:text-[#F0EAE6] hover:tracking-[0.2em] transition-all duration-300 disabled:opacity-50 ml-2 focus:outline-none focus-visible:text-[#F0EAE6]"
+            className="text-[#a87441] text-xs uppercase tracking-widest hover:text-[#F0EAE6] hover:tracking-[0.2em] transition-all duration-300 disabled:opacity-50 ml-2 focus:outline-none focus-visible:text-[#F0EAE6] min-h-[44px] min-w-[44px] flex items-center justify-center px-2"
           >
             {fetcher.state === 'submitting'
               ? t('footer.submitting', {defaultValue: 'Sending...'} as any)

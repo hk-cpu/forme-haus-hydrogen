@@ -353,7 +353,7 @@ function CartLineItem({line}: {line: CartLine}) {
               width={112}
               height={112}
               data={merchandise.image}
-              className="w-24 h-24 md:w-28 md:h-28 bg-[#1A1A1A] rounded-lg overflow-hidden object-cover hover:opacity-90 transition-opacity"
+              className="w-24 h-24 md:w-28 md:h-28 bg-[#1A1A1A] rounded-lg overflow-hidden object-contain p-1.5 hover:opacity-90 transition-opacity"
               alt={merchandise.product?.title || ''}
             />
           </Link>

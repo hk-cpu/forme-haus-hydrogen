@@ -211,7 +211,7 @@ export function ProductCard({
     >
       <Link to={`/products/${product.handle}`} className="block">
         {/* Image Container */}
-        <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-[#FAF8F5] mb-4 shadow-[0_4px_16px_rgba(0,0,0,0.06)] group-hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] transition-all duration-700">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-[#FAF8F5] mb-4 shadow-[0_4px_16px_rgba(0,0,0,0.06)] group-hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] transition-all duration-700" style={{contain: 'layout style paint'}}>
           {/* Shimmer Effect */}
           <AnimatePresence>
             {isHovered && (
@@ -424,3 +424,16 @@ export function ProductCard({
 }
 
 export default ProductCard;
+
+export function ProductCardSkeleton({index = 0}: {index?: number}) {
+  return (
+    <div style={{animationDelay: `${index * 80}ms`}}>
+      <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-[#F0EAE6] mb-4 luxury-skeleton" />
+      <div className="space-y-1.5 px-1 mt-4">
+        <div className="h-4 w-3/4 rounded bg-[#F0EAE6] luxury-skeleton" />
+        <div className="h-3 w-1/2 rounded bg-[#F0EAE6] luxury-skeleton mt-1" />
+        <div className="h-3.5 w-1/3 rounded bg-[#F0EAE6] luxury-skeleton mt-1" />
+      </div>
+    </div>
+  );
+}
