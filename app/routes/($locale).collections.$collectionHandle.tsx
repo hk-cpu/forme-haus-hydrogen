@@ -199,8 +199,26 @@ export default function Collection() {
     useLoaderData<typeof loader>();
   const {t} = useTranslation();
 
-  // Collection hero image
-  const heroImage = collection.image?.url;
+  // Collection hero image overrides
+  const HERO_OVERRIDES: Record<string, {src: string; hideTitle?: boolean}> = {
+    sunglasses: {
+      src: '/assets/heros/sunglasses-hero.png',
+      hideTitle: true,
+    },
+    'phone-cases': {
+      src: '/assets/heros/phone-accessories-hero.png',
+    },
+    'phone-straps': {
+      src: '/assets/heros/phone-accessories-hero.png',
+    },
+    'case-strap-bundles': {
+      src: '/assets/heros/phone-accessories-hero.png',
+    },
+  };
+
+  const override = HERO_OVERRIDES[collection.handle];
+  const heroImage = override?.src || collection.image?.url;
+  const hideTitle = override?.hideTitle;
 
   return (
     <div className="min-h-screen bg-[#F9F5F0]">
@@ -222,26 +240,28 @@ export default function Collection() {
           <div className="w-full h-full bg-gradient-to-br from-[#2a2118] via-[#1a1510] to-[#0f0d0a]" />
         )}
         {/* Title overlay */}
-        <div className="absolute inset-0 flex flex-col items-center justify-end pb-6 md:pb-10 px-6">
-          <motion.div
-            className="text-center"
-            initial={{opacity: 0, y: 16}}
-            animate={{opacity: 1, y: 0}}
-            transition={{delay: 0.2, duration: 0.6, ease: [0.25, 0.1, 0.25, 1]}}
-          >
-            <span className="block text-[10px] uppercase tracking-[0.35em] text-[#a87441] font-light mb-3">
-              Collection
-            </span>
-            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#F0EAE6] tracking-tight mb-3" style={{letterSpacing: '0.02em'}}>
-              {collection.title}
-            </h1>
-            {collection.description && (
-              <p className="max-w-lg mx-auto text-[#F0EAE6]/55 text-sm font-light tracking-wide leading-relaxed">
-                {collection.description}
-              </p>
-            )}
-          </motion.div>
-        </div>
+        {!hideTitle && (
+          <div className="absolute inset-0 flex flex-col items-center justify-end pb-6 md:pb-10 px-6">
+            <motion.div
+              className="text-center"
+              initial={{opacity: 0, y: 16}}
+              animate={{opacity: 1, y: 0}}
+              transition={{delay: 0.2, duration: 0.6, ease: [0.25, 0.1, 0.25, 1]}}
+            >
+              <span className="block text-[10px] uppercase tracking-[0.35em] text-[#a87441] font-light mb-3">
+                Collection
+              </span>
+              <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#F0EAE6] tracking-tight mb-3" style={{letterSpacing: '0.02em'}}>
+                {collection.title}
+              </h1>
+              {collection.description && (
+                <p className="max-w-lg mx-auto text-[#F0EAE6]/55 text-sm font-light tracking-wide leading-relaxed">
+                  {collection.description}
+                </p>
+              )}
+            </motion.div>
+          </div>
+        )}
       </div>
 
       {/* ─── Category Navigation Tabs ─── */}

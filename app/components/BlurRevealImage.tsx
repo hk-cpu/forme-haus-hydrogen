@@ -11,6 +11,8 @@ interface BlurRevealImageProps {
   showVignette?: boolean;
   /** External hover control from parent card — prevents mouseleave on sibling elements */
   isHovered?: boolean;
+  objectFit?: 'cover' | 'contain';
+  objectPosition?: string;
 }
 
 /**
@@ -33,6 +35,8 @@ export function BlurRevealImage({
   revealOnScroll = true,
   showVignette = false,
   isHovered: externalHover,
+  objectFit = 'cover',
+  objectPosition = 'center',
 }: BlurRevealImageProps) {
   const [internalHover, setInternalHover] = useState(false);
   const [phase, setPhase] = useState<'hidden' | 'reveal' | 'idle'>('hidden');
@@ -115,7 +119,8 @@ export function BlurRevealImage({
         src={blurSrc}
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full object-cover"
+        className={`absolute inset-0 w-full h-full object-${objectFit}`}
+        style={{objectPosition}}
         loading="lazy"
       />
 
@@ -123,9 +128,9 @@ export function BlurRevealImage({
       <motion.img
         src={src}
         alt={alt}
-        className="absolute inset-0 w-full h-full object-cover"
+        className={`absolute inset-0 w-full h-full object-${objectFit}`}
         loading="lazy"
-        style={{willChange: 'filter, transform, opacity'}}
+        style={{willChange: 'filter, transform, opacity', objectPosition}}
         initial={hiddenAnimate}
         animate={currentAnimate}
         transition={currentTransition}

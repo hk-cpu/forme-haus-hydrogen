@@ -42,6 +42,7 @@ export default function EditorialSection() {
               alt="Modern Essentials"
               className="absolute inset-0 w-full h-full"
               breatheDuration={7}
+              objectPosition="center 20%"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-8 md:p-10 pointer-events-none z-10">
               <span className="text-white/70 text-[10px] uppercase tracking-[0.2em] mb-2">
@@ -66,6 +67,7 @@ export default function EditorialSection() {
                 desc: 'For golden hours and everyday light',
                 img: '/brand/edit-sun-ready.webp',
                 blurImg: '/brand/edit-sun-ready-blur.webp',
+                pos: 'center',
               },
               {
                 to: '/collections/phone-cases',
@@ -73,6 +75,7 @@ export default function EditorialSection() {
                 desc: 'Hands-free. Effortless. Elevated.',
                 img: '/brand/edit-carry.webp',
                 blurImg: '/brand/edit-carry-blur.png',
+                pos: 'center 30%',
               },
               {
                 to: '/collections/new-in',
@@ -80,12 +83,13 @@ export default function EditorialSection() {
                 desc: 'Latest additions to the Haus.',
                 img: '/brand/edit-new-arrivals.webp',
                 blurImg: '/brand/edit-new-arrivals-blur.webp',
+                pos: 'center 40%',
               },
             ].map((box, i) => (
               <Link
                 key={box.to + box.title}
                 to={box.to}
-                className="relative flex-1 overflow-hidden rounded-lg group cursor-pointer min-h-[150px] aspect-[16/9] lg:aspect-auto block"
+                className="relative flex-1 overflow-hidden rounded-lg group cursor-pointer min-h-[180px] aspect-[4/3] lg:aspect-auto block shadow-sm border border-[#4A3C31]/5"
               >
                 <BlurRevealImage
                   src={box.img}
@@ -93,6 +97,7 @@ export default function EditorialSection() {
                   alt={box.title}
                   className="absolute inset-0 w-full h-full"
                   breatheDuration={5 + i * 0.8}
+                  objectPosition={box.pos}
                 />
                 <div className="absolute inset-0 bg-black/25 group-hover:bg-black/10 transition-colors duration-500 flex flex-col items-center justify-center text-center p-4 pointer-events-none z-10">
                   <h4 className="font-serif text-xl md:text-2xl text-white italic drop-shadow-md mb-1">
