@@ -200,10 +200,12 @@ export default function Collection() {
   const {t} = useTranslation();
 
   // Collection hero image overrides
-  const HERO_OVERRIDES: Record<string, {src: string; hideTitle?: boolean}> = {
+  const HERO_OVERRIDES: Record<string, {src: string; hideTitle?: boolean; fit?: 'cover' | 'contain'; bg?: string}> = {
     sunglasses: {
       src: '/assets/heros/sunglasses-hero.png',
       hideTitle: true,
+      fit: 'contain',
+      bg: '#E2E2E2',
     },
     'phone-cases': {
       src: '/assets/heros/phone-accessories-hero.png',
@@ -219,22 +221,29 @@ export default function Collection() {
   const override = HERO_OVERRIDES[collection.handle];
   const heroImage = override?.src || collection.image?.url;
   const hideTitle = override?.hideTitle;
+  const heroFit = override?.fit || 'cover';
+  const heroBg = override?.bg || '';
 
   return (
     <div className="min-h-screen bg-[#F9F5F0]">
       {/* ─── Hero Banner ─── */}
-      <div className="relative w-full h-[30vh] md:h-[38vh] min-h-[220px] max-h-[380px] overflow-hidden">
+      <div 
+        className="relative w-full h-[30vh] md:h-[38vh] min-h-[220px] max-h-[380px] overflow-hidden"
+        style={heroBg ? {backgroundColor: heroBg} : {}}
+      >
         {heroImage ? (
           <>
             <motion.img
               src={heroImage}
               alt={collection.title}
-              className="w-full h-full object-cover"
+              className={`w-full h-full object-${heroFit}`}
               initial={{scale: 1.03}}
               animate={{scale: 1}}
               transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#1a1510]/70 via-[#1a1510]/15 to-transparent" />
+            {heroFit === 'cover' && (
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1a1510]/70 via-[#1a1510]/15 to-transparent" />
+            )}
           </>
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-[#2a2118] via-[#1a1510] to-[#0f0d0a]" />
