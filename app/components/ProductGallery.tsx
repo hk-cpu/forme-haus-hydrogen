@@ -27,8 +27,6 @@ export function ProductGallery({
       id: m.id,
       url: (m as any).image?.url || '',
       altText: m.alt || 'Product image',
-      width: (m as any).image?.width || 800,
-      height: (m as any).image?.height || 1000,
     }))
     .filter((img) => img.url);
 

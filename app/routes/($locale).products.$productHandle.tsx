@@ -202,10 +202,10 @@ export default function Product() {
           </Breadcrumb>
         </div>
 
-        <div className="grid items-start md:gap-6 lg:gap-20 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid items-start md:gap-6 lg:gap-12 md:grid-cols-2">
           <ProductGallery
             media={media.nodes}
-            className="w-full lg:col-span-2"
+            className="w-full"
           />
           <div className="sticky md:top-24 md:h-[calc(100vh-6rem)] hiddenScroll md:overflow-y-auto">
             <section className="flex flex-col w-full max-w-xl gap-10 p-6 md:pl-10 lg:pl-16 md:mx-auto md:max-w-none">
