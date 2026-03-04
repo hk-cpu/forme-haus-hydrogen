@@ -139,7 +139,67 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 export default function Product() {
   const {product, shop, recommended, variants, storeDomain} =
     useLoaderData<typeof loader>();
-  const {media, title, vendor, descriptionHtml} = product;
+  const {
+    media,
+    title,
+    vendor,
+    descriptionHtml,
+    frameShape,
+    gender,
+    frameMaterial,
+    lensDescription,
+    lensMaterial,
+    uvProtection,
+    frameWidth,
+    frameHeight,
+    lensWidth,
+    noseBridge,
+    templeLength,
+    productCode,
+    warranty,
+    polarised,
+    measurementImage,
+  } = product;
+
+  const specifications = [
+    {label: 'Frame Shape', value: frameShape?.value},
+    {label: 'Gender', value: gender?.value},
+    {label: 'Frame Material', value: frameMaterial?.value},
+    {label: 'Lens Description', value: lensDescription?.value},
+    {label: 'Lens Material', value: lensMaterial?.value},
+    {label: 'UV Protection', value: uvProtection?.value},
+    {label: 'Frame Width', value: frameWidth?.value},
+    {label: 'Frame Height', value: frameHeight?.value},
+    {label: 'Lens Width', value: lensWidth?.value},
+    {label: 'Nose Bridge', value: noseBridge?.value},
+    {label: 'Temple Length', value: templeLength?.value},
+    {label: 'Product Code', value: productCode?.value},
+    {label: 'Warranty', value: warranty?.value},
+    {label: 'Polarised', value: polarised?.value},
+  ].filter((spec) => spec.value);
+
+  const mImage = measurementImage?.reference?.image?.url;
+
+  const specsHtml = (
+    <div className="space-y-4">
+      {specifications.length > 0 && (
+        <ul className="space-y-1.5 list-none m-0 p-0">
+          {specifications.map((s) => (
+            <li key={s.label} className="flex text-[13px]">
+              <span className="w-1/2 font-medium text-[#4A3C31]">{s.label}:</span>
+              <span className="w-1/2 text-[#8B8076]">{s.value}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {mImage && (
+        <div className="pt-4 border-t border-[#8B8076]/10">
+          <p className="text-[11px] uppercase tracking-widest text-[#4A3C31] mb-2 font-medium">Measurement Image</p>
+          <img src={mImage} alt="Measurement Guide" className="w-full h-auto rounded-lg bg-[#FAF8F5] p-4" />
+        </div>
+      )}
+    </div>
+  );
   const {t} = useTranslation();
   const {shippingPolicy, refundPolicy} = shop;
 
@@ -236,6 +296,12 @@ export default function Product() {
                   <ProductDetail
                     title={t('product.details')}
                     content={descriptionHtml}
+                  />
+                )}
+                {(specifications.length > 0 || mImage) && (
+                  <ProductDetail
+                    title={t('product.specifications', 'Specifications')}
+                    content={specsHtml as any}
                   />
                 )}
                 {shippingPolicy?.body && (
@@ -585,10 +651,16 @@ function ProductDetail({
           </Disclosure.Button>
 
           <Disclosure.Panel className={'pt-4 grid gap-2'}>
-            <div
-              className="prose text-[#5C5046]/80 text-sm font-sans leading-loose tracking-wide"
-              dangerouslySetInnerHTML={{__html: content}}
-            />
+            {typeof content === 'string' ? (
+              <div
+                className="prose text-[#5C5046]/80 text-sm font-sans leading-loose tracking-wide"
+                dangerouslySetInnerHTML={{__html: content}}
+              />
+            ) : (
+              <div className="text-[#5C5046]/80 text-sm font-sans leading-loose tracking-wide">
+                {content}
+              </div>
+            )}
             {learnMore && (
               <div className="">
                 <Link
@@ -652,6 +724,29 @@ const PRODUCT_FRAGMENT = `#graphql
     description
     encodedVariantExistence
     encodedVariantAvailability
+    frameShape: metafield(namespace: "custom", key: "frame_shape") { value }
+    gender: metafield(namespace: "custom", key: "gender") { value }
+    frameMaterial: metafield(namespace: "custom", key: "frame_material") { value }
+    lensDescription: metafield(namespace: "custom", key: "lens_description") { value }
+    lensMaterial: metafield(namespace: "custom", key: "lens_material") { value }
+    uvProtection: metafield(namespace: "custom", key: "uv_protection") { value }
+    frameWidth: metafield(namespace: "custom", key: "frame_width") { value }
+    frameHeight: metafield(namespace: "custom", key: "frame_height") { value }
+    lensWidth: metafield(namespace: "custom", key: "lens_width") { value }
+    noseBridge: metafield(namespace: "custom", key: "nose_bridge") { value }
+    templeLength: metafield(namespace: "custom", key: "temple_length") { value }
+    productCode: metafield(namespace: "custom", key: "product_code") { value }
+    warranty: metafield(namespace: "custom", key: "warranty") { value }
+    polarised: metafield(namespace: "custom", key: "polarised") { value }
+    measurementImage: metafield(namespace: "custom", key: "measurement_image") {
+      reference {
+        ... on MediaImage {
+          image {
+            url
+          }
+        }
+      }
+    }
     options {
       name
       optionValues {

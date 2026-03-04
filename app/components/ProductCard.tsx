@@ -211,7 +211,7 @@ export function ProductCard({
     >
       <Link to={`/products/${product.handle}`} className="block">
         {/* Image Container */}
-        <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-white mb-4 shadow-sm border border-[#EAE4DC] group-hover:shadow-md transition-all duration-700" style={{contain: 'layout style paint'}}>
+        <div className="relative aspect-square overflow-hidden rounded-lg bg-[#F9F9F9] mb-4 shadow-sm border border-[#EAE4DC] group-hover:shadow-md transition-all duration-700" style={{contain: 'layout style paint'}}>
           {/* Shimmer Effect */}
           <AnimatePresence>
             {isHovered && (
