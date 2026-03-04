@@ -4,11 +4,10 @@ import {formatPrice, normalizePrice} from './utils';
 
 test.describe('Cart', () => {
   test('From home to checkout flow', async ({page}) => {
-    // Home => Collections => First collection => First product
+    // Home => New In => First product
     await page.goto(`/`);
-    await page.locator(`header nav a:text-is("Collections")`).click();
-    await page.locator(`[data-test=collection-grid] a  >> nth=0`).click();
-    await page.locator(`[data-test=product-grid] a  >> nth=0`).click();
+    await page.locator(`header nav a:text-is("New In")`).click();
+    await page.locator(`main a[href*="/products/"] >> nth=0`).click();
 
     const firstItemPrice = normalizePrice(
       await page.locator(`[data-test=price]`).textContent(),
@@ -36,10 +35,10 @@ test.describe('Cart', () => {
       'should increase quantity',
     ).toContainText('2');
 
-    // Close cart drawer => Products => First product
+    // Close cart drawer => Phone Cases => First product
     await page.locator('[data-test=close-cart]').click();
-    await page.locator(`header nav a:text-is("Products")`).click();
-    await page.locator(`[data-test=product-grid] a  >> nth=0`).click();
+    await page.locator(`header nav a:text-is("Phone Cases")`).click();
+    await page.locator(`main a[href*="/products/"] >> nth=0`).click();
 
     const secondItemPrice = normalizePrice(
       await page.locator(`[data-test=price]`).textContent(),
