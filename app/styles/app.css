@@ -178,12 +178,17 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  overscroll-behavior: none;
   overflow-x: hidden;
+  /* Enable smooth touch scrolling */
+  touch-action: pan-y pan-x pinch-zoom;
+  -webkit-overflow-scrolling: touch;
 }
 
 html {
   overflow-x: hidden;
+  /* Ensure smooth scrolling on all devices */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ── Text Selection ── */
@@ -641,9 +646,11 @@ h6 {
     --page-gutter: clamp(1rem, 4vw, 1.5rem);
   }
 
-  /* Prevent horizontal overflow */
+  /* Prevent horizontal overflow but allow vertical touch scroll */
   html, body {
     overflow-x: hidden;
+    touch-action: pan-y pinch-zoom;
+    -webkit-overflow-scrolling: touch;
   }
 
   /* Mobile typography scaling */
