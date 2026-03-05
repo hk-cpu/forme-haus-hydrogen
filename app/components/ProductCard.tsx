@@ -151,6 +151,20 @@ export function ProductCard({
   const isWishlisted = isInWishlist(product.id);
   const isNew = product.tags?.includes('new') || false;
   const isSale = product.tags?.includes('sale') || false;
+  
+  // Extract iPhone models from tags (e.g., "iphone-17-pro", "iphone-17-pro-max")
+  const iPhoneModels = product.tags
+    ?.filter(tag => tag.toLowerCase().startsWith('iphone-'))
+    ?.map(tag => {
+      const match = tag.match(/iphone-?(\d+)-?(pro-?max|pro|max|plus|mini)/i);
+      if (match) {
+        const [, number, model] = match;
+        return `iPhone ${number} ${model.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}`;
+      }
+      // Simple fallback for tags like "iphone-17-pro"
+      return tag.replace(/iphone-?/i, 'iPhone ').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    }) || [];
+  
   const slideshowRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Parse title: "The Olive - Mocha Tort" → name: "The Olive", color: "Mocha Tort"
@@ -490,6 +504,18 @@ export function ProductCard({
 
         {/* Product Info */}
         <div className="space-y-1.5 px-1 mt-4">
+          {/* Brand Badge - LOUVE Collection */}
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] uppercase tracking-[0.15em] text-[#a87441] font-medium">
+              LOUVE Collection
+            </span>
+            {iPhoneModels.length > 0 && (
+              <span className="text-[9px] px-2 py-0.5 bg-[#a87441]/10 text-[#a87441] rounded-full">
+                {iPhoneModels[0]}
+              </span>
+            )}
+          </div>
+          
           {/* Product Name */}
           <h3 className="font-serif text-[#F0EAE6] text-[15px] md:text-[17px] leading-snug group-hover:text-[#a87441] transition-colors duration-300 line-clamp-1 tracking-wide">
             {productName}
@@ -500,6 +526,25 @@ export function ProductCard({
             <p className="text-[12px] text-[#8B8076] tracking-wide line-clamp-1">
               {productColor}
             </p>
+          )}
+          
+          {/* iPhone Model Compatibility */}
+          {iPhoneModels.length > 1 && (
+            <div className="flex flex-wrap gap-1 mt-1">
+              {iPhoneModels.slice(1, 3).map((model, idx) => (
+                <span 
+                  key={idx}
+                  className="text-[9px] px-1.5 py-0.5 bg-[#1A1A1A] text-[#8B8076] rounded border border-[#8B8076]/20"
+                >
+                  {model}
+                </span>
+              ))}
+              {iPhoneModels.length > 3 && (
+                <span className="text-[9px] px-1.5 py-0.5 text-[#8B8076]">
+                  +{iPhoneModels.length - 3} more
+                </span>
+              )}
+            </div>
           )}
           
           {/* Price Row */}

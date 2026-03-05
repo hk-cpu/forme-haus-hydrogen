@@ -85,85 +85,101 @@ export default function Register() {
         </div>
 
         {/* Form Card */}
-        <Form
-          method="post"
-          className="w-full space-y-6 bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-xl border border-[#4A3C31]/8 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
-        >
-          {actionData?.error && (
-            <div className="p-3.5 text-[12px] text-[#8B3A3A] bg-[#FDF2F2] border border-[#E8C4C4] rounded-lg text-center tracking-wide">
-              {actionData.error}
+        {actionData?.success ? (
+          <div className="w-full bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-xl border border-[#4A3C31]/8 shadow-[0_4px_24px_rgba(0,0,0,0.06)] text-center space-y-6">
+            <div className="w-16 h-16 rounded-full bg-[#a87441]/15 flex items-center justify-center mx-auto">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#a87441" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
             </div>
-          )}
-
-          {actionData?.success && (
-            <div className="p-3.5 text-[12px] text-[#2C2419] bg-[#a87441]/10 border border-[#a87441]/20 rounded-lg text-center tracking-wide">
-              Account created! Please check your email to verify.
+            <div className="space-y-2">
+              <h2 className="font-serif text-2xl text-[#2C2419]">Account Created</h2>
+              <p className="text-[13px] text-[#8B8076] leading-relaxed">
+                Please check your email to verify your account, then sign in.
+              </p>
             </div>
-          )}
+            <Link
+              to="/account/login"
+              className="inline-block w-full py-4 bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] transition-all duration-300 rounded-lg font-medium"
+            >
+              Sign In
+            </Link>
+          </div>
+        ) : (
+          <Form
+            method="post"
+            className="w-full space-y-6 bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-xl border border-[#4A3C31]/8 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
+          >
+            {actionData?.error && (
+              <div className="p-3.5 text-[12px] text-[#8B3A3A] bg-[#FDF2F2] border border-[#E8C4C4] rounded-lg text-center tracking-wide">
+                {actionData.error}
+              </div>
+            )}
 
-          <div className="space-y-4">
-            {/* Email */}
-            <div>
-              <label htmlFor="email-address" className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium">
-                Email Address
-              </label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                placeholder="you@example.com"
-                className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 px-4 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[13px] tracking-wide rounded-lg"
-              />
-            </div>
-
-            {/* Password */}
-            <div>
-              <label htmlFor="password" className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium">
-                Password
-              </label>
-              <div className="relative">
+            <div className="space-y-4">
+              {/* Email */}
+              <div>
+                <label htmlFor="email-address" className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium">
+                  Email Address
+                </label>
                 <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  autoComplete="new-password"
+                  id="email-address"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
                   required
-                  placeholder="Create a strong password"
-                  className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 pl-4 pr-12 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[13px] tracking-wide rounded-lg"
+                  placeholder="you@example.com"
+                  className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 px-4 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[13px] tracking-wide rounded-lg"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#8B8076] hover:text-[#a87441] transition-colors duration-200"
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
-                >
-                  {showPassword ? <EyeClosed /> : <EyeOpen />}
-                </button>
+              </div>
+
+              {/* Password */}
+              <div>
+                <label htmlFor="password" className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    autoComplete="new-password"
+                    required
+                    placeholder="Create a strong password"
+                    className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 pl-4 pr-12 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[13px] tracking-wide rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#8B8076] hover:text-[#a87441] transition-colors duration-200"
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showPassword ? <EyeClosed /> : <EyeOpen />}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="flex flex-col gap-4 pt-2">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full py-4 bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] transition-all duration-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-            >
-              {isSubmitting ? 'Creating Account...' : 'Create Account'}
-            </button>
-
-            <div className="flex flex-col items-center gap-3 pt-2">
-              <Link
-                to="/account/login"
-                className="text-[10px] uppercase tracking-[0.15em] text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 font-semibold"
+            <div className="flex flex-col gap-4 pt-2">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full py-4 bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] transition-all duration-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
               >
-                Already have an account? Sign In
-              </Link>
+                {isSubmitting ? 'Creating Account...' : 'Create Account'}
+              </button>
+
+              <div className="flex flex-col items-center gap-3 pt-2">
+                <Link
+                  to="/account/login"
+                  className="text-[10px] uppercase tracking-[0.15em] text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 font-semibold"
+                >
+                  Already have an account? Sign In
+                </Link>
+              </div>
             </div>
-          </div>
-        </Form>
+          </Form>
+        )}
       </div>
     </div>
   );

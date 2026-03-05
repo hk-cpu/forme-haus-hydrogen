@@ -1,4 +1,3 @@
-import {useState} from 'react';
 import {motion} from 'framer-motion';
 import {
   Mail,
@@ -8,8 +7,59 @@ import {
   ArrowRight,
   Send,
 } from 'lucide-react';
+import {
+  Form,
+  useActionData,
+  useNavigation,
+} from '@remix-run/react';
+import {json, type ActionFunctionArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 
 import {useTranslation} from '~/hooks/useTranslation';
+
+export async function loader({context}: LoaderFunctionArgs) {
+  return json({storeDomain: context.env.PUBLIC_STORE_DOMAIN});
+}
+
+export async function action({request, context}: ActionFunctionArgs) {
+  const formData = await request.formData();
+  const name = String(formData.get('name') ?? '').trim();
+  const email = String(formData.get('email') ?? '').trim();
+  const subject = String(formData.get('subject') ?? '').trim();
+  const message = String(formData.get('message') ?? '').trim();
+
+  if (!name || !email || !subject || !message) {
+    return json({error: 'Please fill in all fields.'}, {status: 400});
+  }
+
+  try {
+    const body = new URLSearchParams({
+      form_type: 'contact',
+      utf8: '✓',
+      'contact[name]': name,
+      'contact[email]': email,
+      'contact[subject]': subject,
+      'contact[body]': message,
+    });
+
+    const res = await fetch(
+      `https://${context.env.PUBLIC_STORE_DOMAIN}/contact`,
+      {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: body.toString(),
+      },
+    );
+
+    // Shopify returns 200/302 on success, 4xx on error
+    if (!res.ok && res.status >= 500) {
+      return json({error: 'Unable to send message. Please try again.'}, {status: 500});
+    }
+
+    return json({success: true});
+  } catch {
+    return json({error: 'Unable to send message. Please try again.'}, {status: 500});
+  }
+}
 
 export const handle = {
   seo: {
@@ -42,23 +92,10 @@ const itemVariants = {
 
 export default function ContactPage() {
   const {t} = useTranslation();
-  const [formState, setFormState] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    // Simulate submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
-    setSubmitted(true);
-  };
+  const actionData = useActionData<typeof action>() as any;
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === 'submitting';
+  const submitted = actionData?.success === true;
 
   const contactMethods = [
     {
@@ -93,7 +130,7 @@ export default function ContactPage() {
               Get in Touch
             </span>
             <h1 className="font-serif text-4xl md:text-6xl italic text-[#4A3C31] mb-6">
-              We&quot;re Here for You
+              We&apos;re Here for You
             </h1>
           </motion.div>
 
@@ -186,6 +223,16 @@ export default function ContactPage() {
               Fill out the form below and we&apos;ll get back to you shortly.
             </p>
 
+            {actionData?.error && (
+              <motion.div
+                initial={{opacity: 0, y: -8}}
+                animate={{opacity: 1, y: 0}}
+                className="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-[13px] text-red-700 text-center"
+              >
+                {actionData.error}
+              </motion.div>
+            )}
+
             {submitted ? (
               <motion.div
                 initial={{opacity: 0, scale: 0.95}}
@@ -204,7 +251,7 @@ export default function ContactPage() {
                 </p>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <Form method="post" className="space-y-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
                     <label
@@ -215,12 +262,9 @@ export default function ContactPage() {
                     </label>
                     <input
                       id="contact-name"
+                      name="name"
                       type="text"
                       required
-                      value={formState.name}
-                      onChange={(e) =>
-                        setFormState({...formState, name: e.target.value})
-                      }
                       className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3
                         text-[#4A3C31] placeholder-[#8B8076]/50
                         focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/20
@@ -237,12 +281,9 @@ export default function ContactPage() {
                     </label>
                     <input
                       id="contact-email"
+                      name="email"
                       type="email"
                       required
-                      value={formState.email}
-                      onChange={(e) =>
-                        setFormState({...formState, email: e.target.value})
-                      }
                       className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3
                         text-[#4A3C31] placeholder-[#8B8076]/50
                         focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/20
@@ -261,12 +302,9 @@ export default function ContactPage() {
                   </label>
                   <input
                     id="contact-subject"
+                    name="subject"
                     type="text"
                     required
-                    value={formState.subject}
-                    onChange={(e) =>
-                      setFormState({...formState, subject: e.target.value})
-                    }
                     className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3
                       text-[#4A3C31] placeholder-[#8B8076]/50
                       focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/20
@@ -284,12 +322,9 @@ export default function ContactPage() {
                   </label>
                   <textarea
                     id="contact-message"
+                    name="message"
                     required
                     rows={5}
-                    value={formState.message}
-                    onChange={(e) =>
-                      setFormState({...formState, message: e.target.value})
-                    }
                     className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3
                       text-[#4A3C31] placeholder-[#8B8076]/50 resize-none
                       focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/20
@@ -318,7 +353,7 @@ export default function ContactPage() {
                     </>
                   )}
                 </button>
-              </form>
+              </Form>
             )}
           </motion.div>
 
