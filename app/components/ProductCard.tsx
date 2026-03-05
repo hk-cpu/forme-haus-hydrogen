@@ -1,11 +1,13 @@
 import {useState, useEffect, useRef, useCallback} from 'react';
-import {motion, AnimatePresence} from 'framer-motion';
-import {Link} from '@remix-run/react';
+import {motion, AnimatePresence, useMotionValue, useTransform, useSpring} from 'framer-motion';
+import {Link, useFetcher} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
 
-// Icons
+// ============================================================================
+// PREMIUM ICONS
+// ============================================================================
 const Icons = {
   Heart: ({
     filled = false,
@@ -23,49 +25,61 @@ const Icons = {
       strokeWidth="1.5"
       className={className}
     >
-      <path d="M12 21C12 21 3 14 3 8.5C3 5.5 5.5 3 8.5 3C10.24 3 11.91 3.81 12 5C12.09 3.81 13.76 3 15.5 3C18.5 3 21 5.5 21 8.5C21 14 12 21 12 21Z" />
+      <motion.path
+        d="M12 21C12 21 3 14 3 8.5C3 5.5 5.5 3 8.5 3C10.24 3 11.91 3.81 12 5C12.09 3.81 13.76 3 15.5 3C18.5 3 21 5.5 21 8.5C21 14 12 21 12 21Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={false}
+        animate={filled ? {scale: [1, 1.2, 1]} : {scale: 1}}
+      />
     </svg>
   ),
-  ChevronLeft: () => (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <path d="M15 18l-6-6 6-6" />
+  ChevronLeft: ({className = ''}: {className?: string}) => (
+    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   ),
-  ChevronRight: () => (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <path d="M9 18l6-6-6-6" />
+  ChevronRight: ({className = ''}: {className?: string}) => (
+    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   ),
-  Bag: () => (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      <path d="M6 6h12l1 15H5L6 6z" />
-      <path d="M9 6V5a3 3 0 0 1 6 0v1" />
+  Bag: ({className = ''}: {className?: string}) => (
+    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M6 6h12l1 15H5L6 6z" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M9 6V5a3 3 0 0 1 6 0v1" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   ),
-  Sparkles: () => (
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
+  Sparkles: ({className = ''}: {className?: string}) => (
+    <svg className={className} width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/>
+    </svg>
+  ),
+  Tag: ({className = ''}: {className?: string}) => (
+    <svg className={className} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+      <line x1="7" y1="7" x2="7.01" y2="7"/>
+    </svg>
+  ),
+  Eye: ({className = ''}: {className?: string}) => (
+    <svg className={className} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="12" cy="12" r="3"/>
+    </svg>
+  ),
+  Check: ({className = ''}: {className?: string}) => (
+    <svg className={className} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <polyline points="20 6 9 17 4 12" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  Loading: ({className = ''}: {className?: string}) => (
+    <svg className={`${className} animate-spin`} width="18" height="18" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeDasharray="31.42 31.42" strokeDashoffset="10"/>
+    </svg>
+  ),
+  ArrowRight: ({className = ''}: {className?: string}) => (
+    <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   ),
 };
@@ -97,6 +111,7 @@ interface ProductCardProps {
     };
     variants?: {
       nodes: Array<{
+        id: string;
         selectedOptions: Array<{
           name: string;
           value: string;
@@ -109,48 +124,72 @@ interface ProductCardProps {
 }
 
 /**
- * ProductCard - Polished luxury product card
+ * ProductCard – Polished luxury product card with rich micro-interactions
  */
 export function ProductCard({
   product,
   quickAdd = true,
   index = 0,
 }: ProductCardProps) {
-  const {toggleWishlist, isInWishlist} = useUI();
+  const {toggleWishlist, isInWishlist, addToCart} = useUI();
   const {isRTL, t} = useTranslation();
+  const fetcher = useFetcher();
+  
   const [currentImage, setCurrentImage] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [showAdded, setShowAdded] = useState(false);
+  
+  // Mouse tracking for 3D tilt effect
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [3, -3]), {stiffness: 300, damping: 30});
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-3, 3]), {stiffness: 300, damping: 30});
 
   const images = product.images?.nodes || [];
   const hasMultipleImages = images.length > 1;
   const isWishlisted = isInWishlist(product.id);
   const isNew = product.tags?.includes('new') || false;
   const isSale = product.tags?.includes('sale') || false;
+  const slideshowRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Parse title: "The Olive - Mocha Tort" → name: "The Olive", color: "Mocha Tort"
   const titleParts = product.title.split(' - ');
   const productName = titleParts[0]?.trim() || product.title;
   const colorFromTitle = titleParts.length > 1 ? titleParts.slice(1).join(' - ').trim() : '';
-  // Fallback: check variant selectedOptions for "Color"
   const colorFromVariant = product.variants?.nodes?.[0]?.selectedOptions?.find(
     (opt) => opt.name.toLowerCase() === 'color',
   )?.value;
   const productColor = colorFromTitle || colorFromVariant || '';
-  const slideshowRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Calculate discount if compareAtPrice exists
+  // Calculate discount
   const hasDiscount =
     product.compareAtPriceRange?.minVariantPrice?.amount &&
     product.priceRange?.minVariantPrice?.amount &&
     parseFloat(product.compareAtPriceRange.minVariantPrice.amount) >
       parseFloat(product.priceRange.minVariantPrice.amount);
 
-  // Auto-slideshow: cycle images every 2s while hovered
+  // 3D tilt effect handler
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+    setIsHovered(false);
+    stopSlideshow();
+    setCurrentImage(0);
+  };
+
+  // Auto-slideshow
   const startSlideshow = useCallback(() => {
     if (!hasMultipleImages || slideshowRef.current) return;
     slideshowRef.current = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length);
-    }, 2000);
+    }, 1800);
   }, [hasMultipleImages, images.length]);
 
   const stopSlideshow = useCallback(() => {
@@ -160,7 +199,6 @@ export function ProductCard({
     }
   }, []);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => stopSlideshow();
   }, [stopSlideshow]);
@@ -168,12 +206,6 @@ export function ProductCard({
   const handleMouseEnter = () => {
     setIsHovered(true);
     startSlideshow();
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    stopSlideshow();
-    setCurrentImage(0);
   };
 
   const nextImage = (e: React.MouseEvent) => {
@@ -194,46 +226,79 @@ export function ProductCard({
     toggleWishlist(product.id);
   };
 
+  const handleQuickAdd = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const variant = product.variants?.nodes?.[0];
+    if (!variant?.id) return;
+
+    setIsAdding(true);
+    
+    // Simulate add to cart action
+    await new Promise(resolve => setTimeout(resolve, 600));
+    
+    // Submit cart action
+    fetcher.submit(
+      {
+        cartAction: 'ADD_TO_CART',
+        lines: JSON.stringify([{merchandiseId: variant.id, quantity: 1}]),
+      },
+      {method: 'POST', action: '/cart'},
+    );
+    
+    setIsAdding(false);
+    setShowAdded(true);
+    setTimeout(() => setShowAdded(false), 2000);
+  };
+
   return (
     <motion.div
       className="group relative"
       style={{direction: isRTL ? 'rtl' : 'ltr'}}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      initial={{opacity: 0, y: 20}}
+      onMouseMove={handleMouseMove}
+      initial={{opacity: 0, y: 30}}
       animate={{opacity: 1, y: 0}}
-      whileHover={{y: -3}}
       transition={{
-        duration: 0.5,
-        delay: index * 0.08,
+        duration: 0.6,
+        delay: index * 0.1,
         ease: [0.25, 0.1, 0.25, 1],
       }}
     >
       <Link to={`/products/${product.handle}`} className="block">
-        {/* Image Container */}
-        <div className="relative aspect-square overflow-hidden rounded-lg bg-[#F9F9F9] mb-4 shadow-sm border border-[#EAE4DC] group-hover:shadow-md transition-all duration-700" style={{contain: 'layout style paint'}}>
-          {/* Shimmer Effect */}
+        {/* Image Container with 3D Tilt */}
+        <motion.div 
+          className="relative aspect-square overflow-hidden rounded-xl bg-gradient-to-br from-[#F9F9F9] to-[#F0EAE6] mb-4 shadow-sm border border-[#EAE4DC] group-hover:shadow-xl transition-shadow duration-700"
+          style={{
+            rotateX: isHovered ? rotateX : 0,
+            rotateY: isHovered ? rotateY : 0,
+            transformPerspective: 1000,
+          }}
+        >
+          {/* Premium Shimmer Effect */}
           <AnimatePresence>
             {isHovered && (
               <motion.div
                 initial={{x: '-100%', opacity: 0}}
-                animate={{x: '100%', opacity: [0, 0.3, 0]}}
+                animate={{x: '100%', opacity: [0, 0.15, 0]}}
                 exit={{opacity: 0}}
-                transition={{duration: 0.8, ease: 'easeInOut'}}
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent z-20 pointer-events-none"
+                transition={{duration: 1, ease: 'easeInOut'}}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent z-20 pointer-events-none"
               />
             )}
           </AnimatePresence>
 
-          {/* Product Image with smooth transition */}
+          {/* Product Image with smooth crossfade */}
           <AnimatePresence mode="wait">
             <motion.div
               key={currentImage}
-              initial={{opacity: 0}}
-              animate={{opacity: 1}}
-              exit={{opacity: 0}}
-              transition={{duration: 0.4, ease: 'easeOut'}}
-              className="absolute inset-0 w-full h-full transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+              initial={{opacity: 0, scale: 1.05}}
+              animate={{opacity: 1, scale: 1}}
+              exit={{opacity: 0, scale: 0.95}}
+              transition={{duration: 0.5, ease: [0.25, 0.1, 0.25, 1]}}
+              className="absolute inset-0 w-full h-full"
             >
               {images.length > 0 ? (
                 <Image
@@ -241,7 +306,7 @@ export function ProductCard({
                     url: images[currentImage].url,
                     altText: images[currentImage].altText || product.title,
                   }}
-                  className="w-full h-full object-contain object-center p-3 md:p-6 drop-shadow-sm"
+                  className="w-full h-full object-contain object-center p-3 md:p-5 drop-shadow-sm transition-transform duration-700 ease-out group-hover:scale-105"
                   sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
                   loading={index < 4 ? 'eager' : 'lazy'}
                 />
@@ -255,62 +320,65 @@ export function ProductCard({
             </motion.div>
           </AnimatePresence>
 
-          {/* Gradient Overlay Removed */}
+          {/* Subtle Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10" />
 
-          {/* Coming Soon Overlay - only for products without a valid price */}
+          {/* Coming Soon Overlay */}
           {!product.availableForSale && !product.priceRange?.minVariantPrice?.amount && (
-            <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-              <span className="font-serif text-xl italic text-white/90 tracking-wide">
+            <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+              <motion.span 
+                initial={{opacity: 0, scale: 0.9}}
+                animate={{opacity: 1, scale: 1}}
+                className="font-serif text-xl italic text-white/90 tracking-wide"
+              >
                 {t('product.comingSoon', 'Coming Soon')}
-              </span>
+              </motion.span>
             </div>
           )}
 
-          {/* New Badge */}
-          {isNew && (
-            <motion.span
-              initial={{opacity: 0, x: -20}}
-              animate={{opacity: 1, x: 0}}
-              className="absolute top-3 left-3 px-3 py-1.5 bg-[#a87441] text-white text-[10px] uppercase tracking-widest rounded-full flex items-center gap-1.5 shadow-lg z-20"
-            >
-              <Icons.Sparkles />
-              {t('product.new', 'New')}
-            </motion.span>
-          )}
+          {/* New Badge with animation */}
+          <AnimatePresence>
+            {isNew && (
+              <motion.span
+                initial={{opacity: 0, x: -20, scale: 0.8}}
+                animate={{opacity: 1, x: 0, scale: 1}}
+                exit={{opacity: 0, x: -20}}
+                className="absolute top-3 left-3 px-3 py-1.5 bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-white text-[10px] uppercase tracking-widest rounded-full flex items-center gap-1.5 shadow-lg z-20"
+              >
+                <Icons.Sparkles />
+                {t('product.new', 'New')}
+              </motion.span>
+            )}
+          </AnimatePresence>
 
           {/* Sale Badge */}
           {isSale && !isNew && (
-            <span className="absolute top-3 left-3 px-3 py-1.5 bg-red-600/90 text-white text-[10px] uppercase tracking-widest rounded-full shadow-lg z-20">
+            <motion.span 
+              initial={{opacity: 0, scale: 0.8}}
+              animate={{opacity: 1, scale: 1}}
+              className="absolute top-3 left-3 px-3 py-1.5 bg-red-500/90 text-white text-[10px] uppercase tracking-widest rounded-full flex items-center gap-1.5 shadow-lg z-20"
+            >
+              <Icons.Tag />
               {t('product.sale', 'Sale')}
-            </span>
+            </motion.span>
           )}
 
           {/* Wishlist Button with heart animation */}
           <motion.button
             onClick={handleWishlist}
-            initial={false}
-            animate={isWishlisted ? {scale: [1, 1.2, 1]} : {}}
-            transition={{duration: 0.3}}
-            className={`absolute top-3 right-3 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 z-20 shadow-md ${
+            className={`absolute top-3 right-3 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 z-30 shadow-md ${
               isWishlisted
                 ? 'bg-[#a87441] text-white'
-                : 'bg-white/90 text-[#4A3C31] opacity-60 group-hover:opacity-100 hover:bg-[#a87441] hover:text-white backdrop-blur-sm'
+                : 'bg-white/95 text-[#4A3C31] opacity-0 group-hover:opacity-100 hover:bg-[#a87441] hover:text-white backdrop-blur-sm'
             }`}
-            aria-label={
-              isWishlisted
-                ? t('product.removeFromWishlist')
-                : t('product.addToWishlist')
-            }
+            whileHover={{scale: 1.1}}
+            whileTap={{scale: 0.9}}
+            aria-label={isWishlisted ? t('product.removeFromWishlist') : t('product.addToWishlist')}
           >
-            <Icons.Heart
-              filled={isWishlisted}
-              className={`transition-all duration-300 ${
-                isWishlisted ? 'scale-110' : ''
-              }`}
-            />
+            <Icons.Heart filled={isWishlisted} />
           </motion.button>
 
-          {/* Image Navigation Arrows (hover-only on desktop) */}
+          {/* Image Navigation Arrows */}
           <AnimatePresence>
             {hasMultipleImages && isHovered && (
               <>
@@ -318,8 +386,9 @@ export function ProductCard({
                   initial={{opacity: 0, x: -10}}
                   animate={{opacity: 1, x: 0}}
                   exit={{opacity: 0, x: -10}}
+                  transition={{duration: 0.2}}
                   onClick={prevImage}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 text-[#4A3C31] flex items-center justify-center backdrop-blur-sm hover:bg-[#a87441] hover:text-white transition-colors z-20 shadow-md"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 text-[#4A3C31] flex items-center justify-center backdrop-blur-sm hover:bg-[#a87441] hover:text-white transition-colors z-20 shadow-md"
                   aria-label={t('product.prevImage', 'Previous image')}
                 >
                   <Icons.ChevronLeft />
@@ -328,8 +397,9 @@ export function ProductCard({
                   initial={{opacity: 0, x: 10}}
                   animate={{opacity: 1, x: 0}}
                   exit={{opacity: 0, x: 10}}
+                  transition={{duration: 0.2}}
                   onClick={nextImage}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 text-[#4A3C31] flex items-center justify-center backdrop-blur-sm hover:bg-[#a87441] hover:text-white transition-colors z-20 shadow-md"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 text-[#4A3C31] flex items-center justify-center backdrop-blur-sm hover:bg-[#a87441] hover:text-white transition-colors z-20 shadow-md"
                   aria-label={t('product.nextImage', 'Next image')}
                 >
                   <Icons.ChevronRight />
@@ -338,11 +408,11 @@ export function ProductCard({
             )}
           </AnimatePresence>
 
-          {/* Image Dots (always visible for mobile discoverability) */}
+          {/* Image Dots Indicator */}
           {hasMultipleImages && (
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
               {images.slice(0, 5).map((_, idx) => (
-                <button
+                <motion.button
                   key={idx}
                   onClick={(e) => {
                     e.preventDefault();
@@ -351,71 +421,120 @@ export function ProductCard({
                   }}
                   className={`h-1.5 rounded-full transition-all duration-300 ${
                     idx === currentImage
-                      ? 'bg-[#a87441] w-6'
-                      : 'bg-white/50 w-1.5 hover:bg-white/80'
+                      ? 'bg-[#a87441] w-5'
+                      : 'bg-white/70 w-1.5 hover:bg-white'
                   }`}
-                  aria-label={`${t('product.goToImage', 'Go to image')} ${
-                    idx + 1
-                  }`}
+                  whileHover={{scale: 1.2}}
+                  aria-label={`${t('product.goToImage', 'Go to image')} ${idx + 1}`}
                 />
               ))}
             </div>
           )}
 
           {/* Quick Add Button */}
-          {quickAdd && product.availableForSale !== false && (
-            <motion.button
-              initial={{opacity: 0, y: 12}}
-              animate={{opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 12}}
-              transition={{duration: 0.3, ease: [0.25, 0.1, 0.25, 1]}}
-              className="absolute bottom-4 left-4 right-4 bg-[#a87441]/95 hover:bg-[#8B5E3C] text-white py-3 rounded-md font-medium text-[12px] uppercase tracking-[0.1em] flex items-center justify-center gap-2 transition-colors duration-300 backdrop-blur-sm z-20"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-            >
-              <Icons.Bag />
-              {t('product.quickAdd', 'Quick Add')}
-            </motion.button>
-          )}
-        </div>
+          <AnimatePresence>
+            {quickAdd && product.availableForSale !== false && (
+              <motion.button
+                initial={{opacity: 0, y: 20}}
+                animate={{opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20}}
+                exit={{opacity: 0, y: 20}}
+                transition={{duration: 0.3, ease: [0.25, 0.1, 0.25, 1]}}
+                onClick={handleQuickAdd}
+                disabled={isAdding}
+                className={`absolute bottom-3 left-3 right-3 py-3 rounded-lg font-medium text-[11px] uppercase tracking-[0.12em] flex items-center justify-center gap-2 transition-all duration-300 backdrop-blur-md z-20 shadow-lg ${
+                  showAdded
+                    ? 'bg-green-600 text-white'
+                    : 'bg-[#a87441]/95 hover:bg-[#8B5E3C] text-white'
+                }`}
+              >
+                <AnimatePresence mode="wait">
+                  {isAdding ? (
+                    <motion.span
+                      key="loading"
+                      initial={{opacity: 0}}
+                      animate={{opacity: 1}}
+                      exit={{opacity: 0}}
+                      className="flex items-center gap-2"
+                    >
+                      <Icons.Loading />
+                      Adding...
+                    </motion.span>
+                  ) : showAdded ? (
+                    <motion.span
+                      key="added"
+                      initial={{opacity: 0, scale: 0.8}}
+                      animate={{opacity: 1, scale: 1}}
+                      exit={{opacity: 0}}
+                      className="flex items-center gap-2"
+                    >
+                      <Icons.Check />
+                      Added
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="add"
+                      initial={{opacity: 0}}
+                      animate={{opacity: 1}}
+                      exit={{opacity: 0}}
+                      className="flex items-center gap-2"
+                    >
+                      <Icons.Bag />
+                      {t('product.quickAdd', 'Quick Add')}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </motion.button>
+            )}
+          </AnimatePresence>
+        </motion.div>
 
         {/* Product Info */}
         <div className="space-y-1.5 px-1 mt-4">
-          {/* Line 1: Product Name */}
-          <h3 className="font-serif text-current text-[15px] md:text-[17px] leading-snug group-hover:text-[#a87441] transition-all duration-300 line-clamp-1 tracking-wide">
+          {/* Product Name */}
+          <h3 className="font-serif text-[#F0EAE6] text-[15px] md:text-[17px] leading-snug group-hover:text-[#a87441] transition-colors duration-300 line-clamp-1 tracking-wide">
             {productName}
           </h3>
-          {/* Line 2: Color */}
+          
+          {/* Color */}
           {productColor && (
             <p className="text-[12px] text-[#8B8076] tracking-wide line-clamp-1">
               {productColor}
             </p>
           )}
-          {/* Line 3: Price */}
+          
+          {/* Price Row */}
           <div className="flex items-baseline gap-2 flex-wrap pt-0.5">
-            <p className="text-current text-[14px] font-semibold transition-all duration-300 group-hover:text-[#a87441]">
+            <p className="text-[#F0EAE6] text-[14px] font-semibold transition-all duration-300 group-hover:text-[#a87441] flex items-baseline gap-1.5">
               {product.priceRange?.minVariantPrice ? (
-                <span className="flex items-baseline gap-1.5">
+                <>
                   <Money data={product.priceRange.minVariantPrice as any} />
                   {product.availableForSale !== false && (
                     <span className="text-[10px] opacity-60 font-normal lowercase tracking-wide">
                       {t('cart.vatIncluded', '(vat included)')}
                     </span>
                   )}
-                </span>
+                </>
               ) : (
                 <span className="text-sm opacity-50">Price unavailable</span>
               )}
             </p>
+            
             {hasDiscount && (
-              <p className="opacity-50 text-[12px] line-through">
+              <p className="text-[#8B8076] text-[12px] line-through">
                 <Money data={product.compareAtPriceRange!.minVariantPrice} />
               </p>
             )}
           </div>
         </div>
       </Link>
+
+      {/* Hover indicator line */}
+      <motion.div
+        className="absolute -bottom-1 left-0 h-[2px] bg-gradient-to-r from-[#a87441] to-[#d4af87] rounded-full"
+        initial={{width: 0}}
+        animate={{width: isHovered ? '40%' : 0}}
+        transition={{duration: 0.4, ease: [0.25, 0.1, 0.25, 1]}}
+      />
     </motion.div>
   );
 }
@@ -424,13 +543,20 @@ export default ProductCard;
 
 export function ProductCardSkeleton({index = 0}: {index?: number}) {
   return (
-    <div style={{animationDelay: `${index * 80}ms`}}>
-      <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-[#F0EAE6] mb-4 luxury-skeleton" />
-      <div className="space-y-1.5 px-1 mt-4">
-        <div className="h-4 w-3/4 rounded bg-[#F0EAE6] luxury-skeleton" />
-        <div className="h-3 w-1/2 rounded bg-[#F0EAE6] luxury-skeleton mt-1" />
-        <div className="h-3.5 w-1/3 rounded bg-[#F0EAE6] luxury-skeleton mt-1" />
+    <motion.div 
+      initial={{opacity: 0, y: 20}}
+      animate={{opacity: 1, y: 0}}
+      transition={{delay: index * 0.08}}
+      style={{animationDelay: `${index * 80}ms`}}
+    >
+      <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-[#1A1A1A] mb-4">
+        <div className="absolute inset-0 luxury-skeleton" />
       </div>
-    </div>
+      <div className="space-y-1.5 px-1 mt-4">
+        <div className="h-4 w-3/4 rounded bg-[#1A1A1A] luxury-skeleton" />
+        <div className="h-3 w-1/2 rounded bg-[#1A1A1A] luxury-skeleton mt-1" />
+        <div className="h-3.5 w-1/3 rounded bg-[#1A1A1A] luxury-skeleton mt-1" />
+      </div>
+    </motion.div>
   );
 }

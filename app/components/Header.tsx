@@ -1,11 +1,57 @@
-import {useState, useEffect, useRef, Suspense} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {Link, NavLink, Await, useRouteLoaderData, useLocation} from '@remix-run/react';
-import {Menu, Search, ShoppingBag, User} from 'lucide-react';
 import {motion, AnimatePresence} from 'framer-motion';
 import type {RootLoader} from '~/root';
 import LanguageSwitch from './LanguageSwitch';
 import type {EnhancedMenu} from '~/lib/utils';
 import {useTranslation} from '~/hooks/useTranslation';
+
+// ============================================================================
+// PREMIUM HEADER ICONS
+// ============================================================================
+const Icons = {
+  Menu: ({className = ''}: {className?: string}) => (
+    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <line x1="3" y1="6" x2="21" y2="6" strokeLinecap="round"/>
+      <line x1="3" y1="12" x2="21" y2="12" strokeLinecap="round"/>
+      <line x1="3" y1="18" x2="21" y2="18" strokeLinecap="round"/>
+    </svg>
+  ),
+  Search: ({className = ''}: {className?: string}) => (
+    <svg className={className} width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <circle cx="11" cy="11" r="8" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="m21 21-4.35-4.35" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  Bag: ({className = ''}: {className?: string}) => (
+    <svg className={className} width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M6 6h12l1 15H5L6 6z" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M9 6V5a3 3 0 0 1 6 0v1" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  User: ({className = ''}: {className?: string}) => (
+    <svg className={className} width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="12" cy="7" r="4" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  ChevronDown: ({className = ''}: {className?: string}) => (
+    <svg className={className} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <polyline points="6 9 12 15 18 9" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  Home: ({className = ''}: {className?: string}) => (
+    <svg className={className} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" strokeLinecap="round" strokeLinejoin="round"/>
+      <polyline points="9 22 9 12 15 12 15 22" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  Heart: ({className = ''}: {className?: string}) => (
+    <svg className={className} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+};
 
 export function Header({
   title: _title,
@@ -22,6 +68,7 @@ export function Header({
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const lastScrollY = useRef(0);
   const ticking = useRef(false);
   const rootData = useRouteLoaderData<RootLoader>('root');
@@ -40,7 +87,7 @@ export function Header({
         const currentY = window.scrollY;
         setScrolled(currentY > 20);
 
-        // Only hide/show after a meaningful scroll delta (10px threshold)
+        // Only Hide/Show after meaningful scroll delta
         const delta = currentY - lastScrollY.current;
         if (delta > 10 && currentY > 100) {
           setIsVisible(false);
@@ -57,19 +104,18 @@ export function Header({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Default Nav Links if menu is missing
+  // Default Nav Links
   const defaultLinks = [
-    {id: '1', title: t('nav.newIn', 'New In'), to: '/collections/new-in'},
+    {id: '1', title: t('nav.newIn', 'New In'), to: '/collections/new-in', icon: Icons.Heart},
     {id: '2', title: t('nav.phoneCases', 'Phone Cases'), to: '/collections/phone-cases'},
     {id: '3', title: t('nav.sunglasses', 'Sunglasses'), to: '/collections/sunglasses'},
   ];
 
   const items = menu?.items?.length ? menu.items : defaultLinks;
   
-  // Header background logic based on scroll state and route
+  // Header background logic
   const getHeaderBackgroundClass = () => {
     if (!scrolled) return 'bg-[#121212]/[0.85] backdrop-blur-xl py-5';
-    // When scrolled on collections, use lighter brown. Else dark.
     if (isCollectionPage) {
       return 'bg-[#2a1d13]/[0.97] backdrop-blur-2xl py-3 border-b border-[#a87441]/20 shadow-[0_2px_12px_rgba(0,0,0,0.15)]';
     }
@@ -79,9 +125,9 @@ export function Header({
   return (
     <motion.header
       role="banner"
-      initial={{y: 0}}
-      animate={{y: isVisible ? 0 : -100}}
-      transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
+      initial={{y: -100, opacity: 0}}
+      animate={{y: isVisible ? 0 : -100, opacity: isVisible ? 1 : 0}}
+      transition={{duration: 0.5, ease: [0.16, 1, 0.3, 1]}}
       className={`fixed z-50 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0 group top-0 w-full ${getHeaderBackgroundClass()}`}
       style={{
         WebkitBackdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
@@ -90,19 +136,21 @@ export function Header({
     >
       <div className="container mx-auto px-6 lg:px-16 flex items-center justify-between relative z-50">
         {/* Desktop Navigation - Left Side */}
-        <nav className="hidden md:flex items-center gap-10">
+        <nav className="hidden md:flex items-center gap-8">
           {items.map((item: any, index: number) => (
             <motion.div
               key={item.id}
               className="h-full flex items-center relative group/item"
               initial={{opacity: 0, y: -20}}
               animate={{opacity: 1, y: 0}}
-              transition={{delay: index * 0.06, duration: 0.4}}
+              transition={{delay: index * 0.08, duration: 0.4}}
+              onMouseEnter={() => item?.items?.length > 0 && setActiveDropdown(item.id)}
+              onMouseLeave={() => setActiveDropdown(null)}
             >
               <NavLink
                 to={item.to}
                 className={({isActive}) =>
-                  `relative text-[11px] uppercase tracking-[0.25em] font-light transition-all duration-300 py-2 ${
+                  `relative text-[11px] uppercase tracking-[0.25em] font-light transition-all duration-300 py-2 flex items-center gap-2 ${
                     isActive
                       ? 'text-[#a87441]'
                       : 'text-[#F0EAE6]/80 hover:text-[#a87441]'
@@ -116,9 +164,18 @@ export function Header({
                         ? 'COLLECTIONS'
                         : item.title}
                     </span>
+                    
+                    {/* Active indicator dot */}
+                    <motion.span
+                      className="absolute -right-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[#a87441]"
+                      initial={{scale: 0, opacity: 0}}
+                      animate={{scale: isActive ? 1 : 0, opacity: isActive ? 1 : 0}}
+                      transition={{duration: 0.2}}
+                    />
+                    
                     {/* Animated underline */}
                     <motion.span
-                      className="absolute bottom-0 left-0 rtl:left-auto rtl:right-0 h-[1px] bg-[#a87441]"
+                      className="absolute bottom-0 left-0 rtl:left-auto rtl:right-0 h-[1px] bg-gradient-to-r from-[#a87441] to-[#d4af87]"
                       initial={{width: 0}}
                       animate={{width: isActive ? '100%' : 0}}
                       whileHover={{width: '100%'}}
@@ -128,33 +185,49 @@ export function Header({
                 )}
               </NavLink>
 
-              {/* Compact Dropdown - Only if has children */}
-              {item?.items?.length > 0 && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-300 -translate-y-2 group-hover/item:translate-y-0 min-w-[220px]">
-                  <div className="bg-[#1A1A1A]/98 backdrop-blur-2xl border border-[#a87441]/20 rounded-xl shadow-2xl shadow-black/50 py-2 overflow-hidden">
-                    {item.items.map((subItem: any, subIndex: number) => (
-                      <motion.div
-                        key={subItem.id}
-                        initial={{opacity: 0, x: -10}}
-                        animate={{opacity: 1, x: 0}}
-                        transition={{delay: subIndex * 0.05}}
-                      >
-                        <Link
-                          to={subItem.to}
-                          className="block px-5 py-3 text-[11px] uppercase tracking-[0.12em] text-[#F0EAE6]/70 hover:text-[#a87441] hover:bg-[#a87441]/5 transition-all duration-200 group/link"
+              {/* Enhanced Dropdown */}
+              <AnimatePresence>
+                {item?.items?.length > 0 && activeDropdown === item.id && (
+                  <motion.div
+                    initial={{opacity: 0, y: 10, scale: 0.95}}
+                    animate={{opacity: 1, y: 0, scale: 1}}
+                    exit={{opacity: 0, y: 10, scale: 0.95}}
+                    transition={{duration: 0.2, ease: 'easeOut'}}
+                    className="absolute top-full left-1/2 -translate-x-1/2 pt-3 min-w-[240px]"
+                  >
+                    <div className="bg-[#1A1A1A]/98 backdrop-blur-2xl border border-[#a87441]/20 rounded-2xl shadow-2xl shadow-black/50 py-3 overflow-hidden">
+                      {/* Dropdown header */}
+                      <div className="px-5 py-2 border-b border-[#a87441]/10 mb-2">
+                        <span className="text-[10px] uppercase tracking-widest text-[#a87441]">
+                          {item.title}
+                        </span>
+                      </div>
+                      
+                      {item.items.map((subItem: any, subIndex: number) => (
+                        <motion.div
+                          key={subItem.id}
+                          initial={{opacity: 0, x: -10}}
+                          animate={{opacity: 1, x: 0}}
+                          transition={{delay: subIndex * 0.05}}
                         >
-                          <span className="relative">
-                            {subItem.title === 'CATALOG' || subItem.title === 'Catalog'
-                              ? 'COLLECTIONS'
-                              : subItem.title}
-                            <span className="absolute -bottom-0.5 left-0 rtl:left-auto rtl:right-0 w-0 h-[1px] bg-[#a87441] group-hover/link:w-full transition-all duration-300" />
-                          </span>
-                        </Link>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              )}
+                          <Link
+                            to={subItem.to}
+                            className="flex items-center gap-3 px-5 py-3 text-[11px] uppercase tracking-[0.12em] text-[#F0EAE6]/70 hover:text-[#a87441] hover:bg-[#a87441]/5 transition-all duration-200 group/link"
+                          >
+                            <span className="w-1 h-1 rounded-full bg-[#a87441]/30 group-hover/link:bg-[#a87441] transition-colors" />
+                            <span className="relative">
+                              {subItem.title === 'CATALOG' || subItem.title === 'Catalog'
+                                ? 'COLLECTIONS'
+                                : subItem.title}
+                            </span>
+                            <Icons.ChevronDown className="w-3 h-3 ml-auto opacity-0 group-hover/link:opacity-100 -rotate-90 transition-all" />
+                          </Link>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           ))}
         </nav>
@@ -162,13 +235,15 @@ export function Header({
         {/* Mobile: Menu Toggle + Language */}
         <div className="md:hidden flex items-center gap-4">
           <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{opacity: 0, scale: 0.8}}
+            animate={{opacity: 1, scale: 1}}
             onClick={openMenu}
             className="text-[#F0EAE6]/80 hover:text-[#a87441] transition-colors duration-300 p-2 -m-2"
+            whileHover={{scale: 1.05}}
             whileTap={{scale: 0.95}}
+            aria-label="Open menu"
           >
-            <Menu strokeWidth={1.5} className="w-6 h-6" />
+            <Icons.Menu />
           </motion.button>
           <LanguageSwitch />
         </div>
@@ -176,12 +251,9 @@ export function Header({
         {/* Centered Logo */}
         <motion.div
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-          initial={{opacity: 0, scale: 0.95}}
-          animate={{
-            opacity: 1,
-            scale: 1,
-          }}
-          transition={{duration: 0.5}}
+          initial={{opacity: 0, scale: 0.9}}
+          animate={{opacity: 1, scale: 1}}
+          transition={{duration: 0.6, delay: 0.2}}
         >
           <Link to="/" className="block relative group/logo">
             <motion.div
@@ -199,8 +271,7 @@ export function Header({
                 className="absolute inset-0 opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500 pointer-events-none"
                 style={{
                   filter: 'blur(20px)',
-                  background:
-                    'radial-gradient(ellipse at center, rgba(168, 116, 65, 0.5) 0%, transparent 70%)',
+                  background: 'radial-gradient(ellipse at center, rgba(168, 116, 65, 0.5) 0%, transparent 70%)',
                 }}
               />
             </motion.div>
@@ -208,51 +279,54 @@ export function Header({
         </motion.div>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-5 md:gap-6">
+        <div className="flex items-center gap-4 md:gap-5">
           <div className="hidden md:flex">
             <LanguageSwitch />
           </div>
 
+          {/* Search */}
           <motion.button
             onClick={openSearch}
-            className="text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded-full"
-            whileHover={{scale: 1.05}}
+            className="relative text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 group"
+            whileHover={{scale: 1.1}}
             whileTap={{scale: 0.95}}
             aria-label="Search"
           >
-            <Search strokeWidth={1.5} className="w-5 h-5" />
+            <Icons.Search />
             <span className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
           </motion.button>
 
+          {/* Cart */}
           <motion.button
             onClick={openCart}
-            className="text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded-full"
-            whileHover={{scale: 1.05}}
+            className="relative text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 group"
+            whileHover={{scale: 1.1}}
             whileTap={{scale: 0.95}}
             aria-label="Cart"
           >
-            <ShoppingBag strokeWidth={1.5} className="w-5 h-5" />
-            <Suspense fallback={null}>
+            <Icons.Bag />
+            <AnimatePresence>
               <Await resolve={rootData?.cart}>
                 {(cart: any) =>
                   cart?.totalQuantity ? (
                     <motion.span
                       initial={{scale: 0}}
                       animate={{scale: 1}}
-                      className="absolute -top-0.5 -right-0.5 text-[9px] bg-[#a87441] text-white rounded-full w-4 h-4 flex items-center justify-center font-medium shadow-lg"
+                      exit={{scale: 0}}
+                      className="absolute -top-0.5 -right-0.5 text-[9px] bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-white rounded-full w-4 h-4 flex items-center justify-center font-medium shadow-lg"
                     >
-                      {cart.totalQuantity}
+                      {cart.totalQuantity > 9 ? '9+' : cart.totalQuantity}
                     </motion.span>
                   ) : null
                 }
               </Await>
-            </Suspense>
+            </AnimatePresence>
             <span className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
           </motion.button>
 
-          {/* Account Icon (Desktop) */}
+          {/* Account (Desktop) */}
           <motion.div
-            whileHover={{scale: 1.05}}
+            whileHover={{scale: 1.1}}
             whileTap={{scale: 0.95}}
             className="hidden md:block"
           >
@@ -261,12 +335,21 @@ export function Header({
               className="flex items-center justify-center text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative group"
               aria-label="Account"
             >
-              <User strokeWidth={1.5} className="w-5 h-5" />
+              <Icons.User />
               <span className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
             </Link>
           </motion.div>
         </div>
       </div>
+
+      {/* Scroll Progress Bar */}
+      <motion.div 
+        className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-[#a87441] to-[#d4af87]"
+        style={{ 
+          width: scrolled ? '100%' : '0%',
+          transition: 'width 0.3s ease'
+        }}
+      />
     </motion.header>
   );
 }
