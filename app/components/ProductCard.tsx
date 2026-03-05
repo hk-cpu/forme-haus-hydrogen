@@ -131,7 +131,7 @@ export function ProductCard({
   quickAdd = true,
   index = 0,
 }: ProductCardProps) {
-  const {toggleWishlist, isInWishlist, addToCart} = useUI();
+  const {toggleWishlist, isInWishlist} = useUI();
   const {isRTL, t} = useTranslation();
   const fetcher = useFetcher();
   

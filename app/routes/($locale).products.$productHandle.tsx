@@ -204,15 +204,15 @@ export default function Product() {
   const {shippingPolicy, refundPolicy} = shop;
 
   // Extract iPhone models from tags (e.g., "iphone-17-pro", "iphone-17-pro-max")
-  const iPhoneModels = product.tags
-    ?.filter(tag => tag.toLowerCase().startsWith('iphone-'))
-    ?.map(tag => {
+  const iPhoneModels: string[] = product.tags
+    ?.filter((tag: string) => tag.toLowerCase().startsWith('iphone-'))
+    ?.map((tag: string) => {
       const match = tag.match(/iphone-?(\d+)-?(pro-?max|pro|max|plus|mini)/i);
       if (match) {
         const [, number, model] = match;
-        return `iPhone ${number} ${model.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}`;
+        return `iPhone ${number} ${model.replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}`;
       }
-      return tag.replace(/iphone-?/i, 'iPhone ').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+      return tag.replace(/iphone-?/i, 'iPhone ').replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase());
     }) || [];
 
   // Optimistically selects a variant with given available variant information
@@ -289,7 +289,7 @@ export default function Product() {
                   </span>
                   {iPhoneModels.length > 0 && (
                     <div className="flex gap-1.5">
-                      {iPhoneModels.slice(0, 2).map((model, idx) => (
+                      {iPhoneModels.slice(0, 2).map((model: string, idx: number) => (
                         <span 
                           key={idx}
                           className="text-[10px] px-2.5 py-1 bg-[#a87441]/10 text-[#a87441] rounded-full font-medium"
