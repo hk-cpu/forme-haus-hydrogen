@@ -10,19 +10,36 @@ export default function LanguageSwitch() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Check if current language is Arabic
   const isArabic = locale.language === 'AR';
 
   function toggleLanguage() {
     const currentPath = location.pathname;
+    const search = location.search || '';
 
+    // Supported locale prefixes
+    const localePrefixes = ['/ar-sa', '/en-sa', '/en-us', '/en-ad', '/en-at', '/en-au'];
+    
     if (isArabic) {
-      // Switch from Arabic to English: remove /ar-sa prefix
-      const newPath = currentPath.replace(/^\/ar-sa/, '') || '/';
-      navigate(newPath + location.search);
+      // Switch from Arabic to English (default)
+      // Remove any locale prefix
+      let newPath = currentPath;
+      for (const prefix of localePrefixes) {
+        newPath = newPath.replace(new RegExp(`^${prefix}`), '');
+      }
+      // Ensure we have at least a root path
+      newPath = newPath || '/';
+      navigate(`${newPath}${search}`);
     } else {
-      // Switch to Arabic: add /ar-sa prefix
-      const cleanPath = currentPath.replace(/^\/en-sa/, '') || '/';
-      navigate(`/ar-sa${cleanPath}${location.search}`);
+      // Switch to Arabic
+      // First remove any existing English locale prefix
+      let cleanPath = currentPath;
+      for (const prefix of localePrefixes) {
+        cleanPath = cleanPath.replace(new RegExp(`^${prefix}`), '');
+      }
+      cleanPath = cleanPath || '/';
+      // Add Arabic locale prefix
+      navigate(`/ar-sa${cleanPath === '/' ? '' : cleanPath}${search}`);
     }
   }
 
@@ -64,7 +81,7 @@ export default function LanguageSwitch() {
         }`}
         style={{fontFamily: '"IBM Plex Sans Arabic", sans-serif'}}
       >
-        عر
+        عربي
       </span>
     </button>
   );

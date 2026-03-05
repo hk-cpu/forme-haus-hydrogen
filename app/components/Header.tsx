@@ -233,7 +233,7 @@ export function Header({
         </nav>
 
         {/* Mobile: Menu Toggle + Language */}
-        <div className="md:hidden flex items-center gap-4">
+        <div className="md:hidden flex items-center gap-5">
           <motion.button
             initial={{opacity: 0, scale: 0.8}}
             animate={{opacity: 1, scale: 1}}
@@ -282,7 +282,7 @@ export function Header({
         </motion.div>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-4 md:gap-5">
+        <div className="flex items-center gap-6 md:gap-8">
           <div className="hidden md:flex">
             <LanguageSwitch />
           </div>
@@ -298,7 +298,7 @@ export function Header({
             <Icons.Search />
             <span className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
             {/* Tooltip */}
-            <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[9px] uppercase tracking-wider text-[#a87441] opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+            <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[9px] uppercase tracking-wider text-[#a87441] opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
               Search
             </span>
           </motion.button>
@@ -330,7 +330,7 @@ export function Header({
             </AnimatePresence>
             <span className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
             {/* Tooltip */}
-            <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[9px] uppercase tracking-wider text-[#a87441] opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+            <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[9px] uppercase tracking-wider text-[#a87441] opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
               Bag
             </span>
           </motion.button>
@@ -349,7 +349,7 @@ export function Header({
               <Icons.User />
               <span className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
               {/* Tooltip */}
-              <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[9px] uppercase tracking-wider text-[#a87441] opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+              <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[9px] uppercase tracking-wider text-[#a87441] opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
                 Account
               </span>
             </Link>
