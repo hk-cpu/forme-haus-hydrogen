@@ -88,7 +88,10 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     (collectionHandle === 'new-in' ||
       collectionHandle === 'new' ||
       collectionHandle === 'sunglasses' ||
-      collectionHandle === 'sale')
+      collectionHandle === 'sale' ||
+      collectionHandle === 'phone-cases' ||
+      collectionHandle === 'phone-straps' ||
+      collectionHandle === 'case-strap-bundles')
   ) {
     // Fallback: query all products directly since the collection handle doesn't exist
     const {products: allProducts} = await context.storefront.query(
@@ -108,6 +111,9 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
       let title: string = translations[lang]['nav.newIn'] as string;
       if(collectionHandle === 'sunglasses') title = 'Sunglasses';
       if(collectionHandle === 'sale') title = 'Sale';
+      if(collectionHandle === 'phone-cases') title = 'Phone Cases';
+      if(collectionHandle === 'phone-straps') title = 'Phone Straps';
+      if(collectionHandle === 'case-strap-bundles') title = 'Case+Strap Bundles';
 
       // Create a synthetic collection object
       collection = {
