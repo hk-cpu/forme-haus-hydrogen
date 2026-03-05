@@ -355,10 +355,10 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
                 </nav>
               </div>
 
-              {/* About */}
+              {/* Our Story */}
               <div className="space-y-4">
                 <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
-                  About
+                  Our Story
                 </h4>
                 <nav className="grid gap-2.5">
                   <Link to="/contact" className={linkClass}>

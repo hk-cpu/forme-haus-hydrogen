@@ -18,12 +18,12 @@ export const translations = {
     'nav.home': 'Home',
     'nav.sale': 'Sale',
     'nav.journal': 'Journal',
-    'nav.about': 'About',
+    'nav.about': 'Our Story',
 
     // Header & Actions
-    'header.search': '',
-    'header.cart': 'Cart',
-    'header.account': 'Account',
+    'header.search': 'Search',
+    'header.cart': 'Shopping Bag',
+    'header.account': 'My Account',
     'header.menu': 'Menu',
 
     // Hero

@@ -238,12 +238,15 @@ export function Header({
             initial={{opacity: 0, scale: 0.8}}
             animate={{opacity: 1, scale: 1}}
             onClick={openMenu}
-            className="text-[#F0EAE6]/80 hover:text-[#a87441] transition-colors duration-300 p-2 -m-2"
+            className="text-[#F0EAE6]/80 hover:text-[#a87441] transition-colors duration-300 p-2 -m-2 flex flex-col items-center group"
             whileHover={{scale: 1.05}}
             whileTap={{scale: 0.95}}
             aria-label="Open menu"
           >
             <Icons.Menu />
+            <span className="absolute -bottom-4 text-[8px] uppercase tracking-wider text-[#a87441] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              Menu
+            </span>
           </motion.button>
           <LanguageSwitch />
         </div>
@@ -287,22 +290,26 @@ export function Header({
           {/* Search */}
           <motion.button
             onClick={openSearch}
-            className="relative text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 group"
+            className="relative text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 group flex flex-col items-center"
             whileHover={{scale: 1.1}}
             whileTap={{scale: 0.95}}
             aria-label="Search"
           >
             <Icons.Search />
             <span className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
+            {/* Tooltip */}
+            <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[9px] uppercase tracking-wider text-[#a87441] opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+              Search
+            </span>
           </motion.button>
 
-          {/* Cart */}
+          {/* Cart / Shopping Bag */}
           <motion.button
             onClick={openCart}
-            className="relative text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 group"
+            className="relative text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 group flex flex-col items-center"
             whileHover={{scale: 1.1}}
             whileTap={{scale: 0.95}}
-            aria-label="Cart"
+            aria-label="Shopping Bag"
           >
             <Icons.Bag />
             <AnimatePresence>
@@ -322,6 +329,10 @@ export function Header({
               </Await>
             </AnimatePresence>
             <span className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
+            {/* Tooltip */}
+            <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[9px] uppercase tracking-wider text-[#a87441] opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+              Bag
+            </span>
           </motion.button>
 
           {/* Account (Desktop) */}
@@ -332,11 +343,15 @@ export function Header({
           >
             <Link
               to="/account"
-              className="flex items-center justify-center text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative group"
-              aria-label="Account"
+              className="flex flex-col items-center text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative group"
+              aria-label="My Account"
             >
               <Icons.User />
               <span className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
+              {/* Tooltip */}
+              <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[9px] uppercase tracking-wider text-[#a87441] opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                Account
+              </span>
             </Link>
           </motion.div>
         </div>

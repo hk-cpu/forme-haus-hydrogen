@@ -2974,7 +2974,7 @@ function Footer() {
     },
     {
       id: 'about',
-      title: 'About',
+      title: 'Our Story',
       links: ['The Maison', 'Sustainability', 'Careers', 'Press'],
     },
     {
