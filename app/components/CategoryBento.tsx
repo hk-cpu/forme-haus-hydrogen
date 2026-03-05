@@ -76,12 +76,12 @@ function CategoryCard({category, isRTL, index}: {category: Category; isRTL: bool
   return (
     <motion.div
       variants={itemVariants}
-      className="relative group aspect-[3/4] overflow-hidden rounded-lg"
+      className="relative group aspect-[4/3] overflow-hidden rounded-xl bg-[#F5F2ED]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link to={category.url} className="block w-full h-full">
-        {/* Background: BlurReveal camera-focus effect */}
+        {/* Background: BlurReveal camera-focus effect with contain to prevent cropping */}
         <BlurRevealImage
           src={category.image}
           blurSrc={category.blurImage}
@@ -89,6 +89,7 @@ function CategoryCard({category, isRTL, index}: {category: Category; isRTL: bool
           className="absolute inset-0 w-full h-full"
           breatheDuration={breatheDurations[index % breatheDurations.length]}
           isHovered={isHovered}
+          objectFit="contain"
         />
 
         {/* Dark gradient overlay */}
