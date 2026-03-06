@@ -125,14 +125,18 @@ export function Header({
 
   return (
     <>
-      <TopBar />
+      {/* TopBar - positioned above header */}
+      <div className="hidden md:block fixed top-0 left-0 right-0 z-[60]">
+        <TopBar />
+      </div>
       <motion.header
         role="banner"
         initial={{y: -100, opacity: 0}}
         animate={{y: isVisible ? 0 : -100, opacity: isVisible ? 1 : 0}}
         transition={{duration: 0.5, ease: [0.16, 1, 0.3, 1]}}
-        className={`fixed z-50 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0 group w-full md:top-10 ${getHeaderBackgroundClass()}`}
+        className={`fixed z-50 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0 group w-full ${getHeaderBackgroundClass()}`}
         style={{
+          top: 0,
           WebkitBackdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
           backdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
         }}

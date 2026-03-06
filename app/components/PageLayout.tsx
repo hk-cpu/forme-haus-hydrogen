@@ -78,7 +78,7 @@ export function PageLayout({children, layout}: LayoutProps) {
               title={layout?.shop.name || 'Formé Haus'}
               menu={headerMenu || undefined}
             />
-            <main role="main" id="mainContent" className="flex-grow pt-[72px] md:pt-[112px]">
+            <main role="main" id="mainContent" className="flex-grow" style={{paddingTop: 'var(--navbar-height)'}}>
               <AnimatePresence mode="popLayout">
                 <motion.div
                   key={location.pathname}
