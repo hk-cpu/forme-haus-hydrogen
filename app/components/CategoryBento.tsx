@@ -50,19 +50,19 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.06,
+      staggerChildren: 0.1,
       delayChildren: 0.1,
     },
   },
 };
 
 const itemVariants = {
-  hidden: {opacity: 0, y: 30},
+  hidden: {opacity: 0, y: 40},
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.6,
+      duration: 0.7,
       ease: [0.16, 1, 0.3, 1] as const,
     },
   },
@@ -70,18 +70,17 @@ const itemVariants = {
 
 function CategoryCard({category, isRTL, index}: {category: Category; isRTL: boolean; index: number}) {
   const [isHovered, setIsHovered] = useState(false);
-  // Stagger the breathing duration so cards don't pulse in sync
   const breatheDurations = [5, 5.8, 6.6];
 
   return (
     <motion.div
       variants={itemVariants}
-      className="relative group aspect-[4/3] overflow-hidden rounded-xl bg-[#F5F2ED]"
+      className="relative group aspect-[3/4] md:aspect-[4/5] overflow-hidden rounded-2xl"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link to={category.url} className="block w-full h-full">
-        {/* Background: BlurReveal camera-focus effect with contain to prevent cropping */}
+        {/* Full-bleed background image - no white overlay */}
         <BlurRevealImage
           src={category.image}
           blurSrc={category.blurImage}
@@ -89,33 +88,63 @@ function CategoryCard({category, isRTL, index}: {category: Category; isRTL: bool
           className="absolute inset-0 w-full h-full"
           breatheDuration={breatheDurations[index % breatheDurations.length]}
           isHovered={isHovered}
-          objectFit="contain"
+          objectFit="cover"
         />
 
-        {/* Dark gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent pointer-events-none" />
+        {/* Elegant gradient overlay - darker at bottom for text */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
-        {/* Content */}
-        <div className="absolute inset-0 flex flex-col justify-end p-6 z-10 pointer-events-none">
-          <motion.div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-            <h3 className="text-lg md:text-xl font-serif mb-1 transition-all duration-500 text-[#F0EAE6] group-hover:text-[#D4AF87]">
+        {/* Subtle vignette */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-30"
+          style={{
+            background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.4) 100%)'
+          }}
+        />
+
+        {/* Content - positioned at bottom left */}
+        <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 z-10 pointer-events-none">
+          <motion.div 
+            className="transform transition-transform duration-500"
+            initial={false}
+            animate={{y: isHovered ? -4 : 0}}
+          >
+            <h3 className="text-xl md:text-2xl font-serif text-white mb-2 tracking-wide">
               {isRTL ? category.titleAr : category.title}
             </h3>
-            <div className="h-px w-0 group-hover:w-12 bg-[#D4AF87] transition-all duration-500" />
+            <motion.div 
+              className="h-[1px] bg-[#D4AF87] origin-left"
+              initial={{width: 0}}
+              animate={{width: isHovered ? 48 : 0}}
+              transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
+            />
           </motion.div>
-
-          {/* Hover Arrow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <div className="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center backdrop-blur-sm">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-white">
-                <path d={isRTL ? 'M19 12H5M12 19l-7-7 7-7' : 'M5 12h14M12 5l7 7-7 7'} />
-              </svg>
-            </div>
-          </div>
         </div>
 
-        {/* Border Glow on Hover */}
-        <div className="absolute inset-0 rounded-lg border border-white/0 group-hover:border-[#D4AF87]/20 transition-colors duration-500 pointer-events-none" />
+        {/* Hover Arrow - centered */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+          <motion.div 
+            className="w-14 h-14 rounded-full border border-white/40 flex items-center justify-center backdrop-blur-md bg-black/20"
+            initial={{opacity: 0, scale: 0.8}}
+            animate={{opacity: isHovered ? 1 : 0, scale: isHovered ? 1 : 0.8}}
+            transition={{duration: 0.3, ease: [0.16, 1, 0.3, 1]}}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-white">
+              <path d={isRTL ? 'M19 12H5M12 19l-7-7 7-7' : 'M5 12h14M12 5l7 7-7 7'} strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </motion.div>
+        </div>
+
+        {/* Scale effect on hover */}
+        <motion.div 
+          className="absolute inset-0 pointer-events-none"
+          initial={false}
+          animate={{scale: isHovered ? 1.05 : 1}}
+          transition={{duration: 0.7, ease: [0.16, 1, 0.3, 1]}}
+          style={{
+            background: isHovered ? 'rgba(168, 116, 65, 0.05)' : 'transparent'
+          }}
+        />
       </Link>
     </motion.div>
   );
@@ -141,13 +170,13 @@ export default function CategoryBento() {
           <div className="h-px w-20 bg-gradient-to-r from-[#a87441] to-transparent" />
         </motion.div>
 
-        {/* Bento Grid — equal gaps all sides */}
+        {/* Bento Grid - equal gaps all sides */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{once: true}}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+          viewport={{once: true, margin: "-100px"}}
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5"
         >
           {CATEGORIES.map((category, i) => (
             <CategoryCard key={category.id} category={category} isRTL={isRTL} index={i} />
