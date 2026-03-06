@@ -33,6 +33,9 @@
   --navbar-height-scrolled: 60px;
   --navbar-bg: rgba(18, 18, 18, 0.97);
   --navbar-bg-top: rgba(18, 18, 18, 0.85);
+  
+  /* ── Top Bar ── */
+  --topbar-height: 40px;
 
   /* ── Luxury Easing ── */
   --ease-luxe: cubic-bezier(0.25, 0.1, 0.25, 1);

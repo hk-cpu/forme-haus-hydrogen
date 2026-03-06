@@ -7,6 +7,8 @@ import {motion} from 'framer-motion';
 import Hero from '~/components/Hero';
 import CategoryBento from '~/components/CategoryBento';
 import EditorialSection from '~/components/EditorialSection';
+import {StatsSection} from '~/components/StatsSection';
+import {FAQSection} from '~/components/FAQSection';
 import {BlurRevealImage} from '~/components/BlurRevealImage';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
@@ -83,7 +85,12 @@ export default function Homepage() {
           </p>
         </motion.section>
 
-        {/* 5. Journal Teaser */}
+        {/* 5. Stats Section */}
+        <div className="mobile-snap-section">
+          <StatsSection />
+        </div>
+
+        {/* 6. Journal Teaser */}
         <section className="py-10 md:py-14 border-t border-[#8B8076]/10 mobile-snap-section">
           <div className="max-w-[1200px] mx-auto" style={{padding: '0 var(--page-gutter)'}}>
             <div className="flex justify-between items-end mb-8 md:mb-10">
@@ -144,6 +151,11 @@ export default function Homepage() {
             </div>
           </div>
         </section>
+
+        {/* 7. FAQ Section */}
+        <div className="mobile-snap-section">
+          <FAQSection />
+        </div>
       </div>
     </div>
   );

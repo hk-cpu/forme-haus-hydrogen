@@ -45,6 +45,18 @@ export const translations = {
     'home.newsletter.subtitle': 'Join the list for exclusive updates',
     'home.shopCollection': 'Shop Collection',
 
+    // Top Bar
+    'topBar.promo': 'Free shipping on orders over 299 SAR',
+
+    // Stats Section
+    'stats.title': 'Our Numbers',
+
+    // FAQ Section
+    'faq.title': 'FAQs',
+    'faq.subtitle': 'Here are answers to our most common questions. If you need further help, feel free to reach out.',
+    'faq.stillHaveQuestions': 'Still have questions?',
+    'faq.contactUs': 'Contact Us',
+
     // Journal
     'journal.modernWardrobe': 'The Modern Wardrobe Edit',
     'journal.everydayElegance': 'Everyday Elegance',
@@ -234,6 +246,18 @@ export const translations = {
     'home.newsletter.title': 'قريباً',
     'home.newsletter.subtitle': 'سجّلي لتصلك آخر التحديثات الحصرية',
     'home.shopCollection': 'تسوّق المجموعة',
+
+    // Top Bar
+    'topBar.promo': 'شحن مجاني للطلبات فوق 299 ر.س',
+
+    // Stats Section
+    'stats.title': 'أرقامنا',
+
+    // FAQ Section
+    'faq.title': 'الأسئلة الشائعة',
+    'faq.subtitle': 'إليك الإجابات على الأسئلة الأكثر شيوعاً. إذا كنت بحاجة إلى مزيد من المساعدة، فلا تتردد في التواصل معنا.',
+    'faq.stillHaveQuestions': 'ما زلت لديك أسئلة؟',
+    'faq.contactUs': 'تواصل معنا',
 
     // Journal
     'journal.modernWardrobe': 'تحرير خزانة الملابس العصرية',

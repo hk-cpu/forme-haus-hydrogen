@@ -1,5 +1,6 @@
 import {Link} from '@remix-run/react';
 import {motion} from 'framer-motion';
+import {SplitText} from '~/components/SplitText';
 import {useTranslation} from '~/hooks/useTranslation';
 
 export default function Hero() {
@@ -139,25 +140,26 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* Brand Tagline */}
-          <motion.p
-            initial={{opacity: 0, y: 6}}
-            animate={{opacity: 1, y: 0}}
-            transition={{delay: 1.8, duration: 1.2, ease: [0.16, 1, 0.3, 1]}}
-            className="text-[10px] uppercase tracking-[0.35em] text-[#AA9B8F]/70 mb-6 font-light"
-          >
-            {t('hero.tagline', 'Where Essence Meets Elegance')}
-          </motion.p>
+          {/* Brand Tagline with Split Text Animation */}
+          <div className="mb-6">
+            <SplitText
+              text={t('hero.tagline', 'Where Essence Meets Elegance')}
+              className="text-[10px] uppercase tracking-[0.35em] text-[#AA9B8F]/70 font-light"
+              delay={1.8}
+              staggerDelay={0.04}
+              duration={0.5}
+            />
+          </div>
 
-          {/* CTA Button */}
+          {/* CTA Button with Icon */}
           <motion.div
-            initial={{opacity: 0}}
-            animate={{opacity: 1}}
-            transition={{delay: 1, duration: 1}}
+            initial={{opacity: 0, y: 10}}
+            animate={{opacity: 1, y: 0}}
+            transition={{delay: 2.2, duration: 0.8, ease: [0.16, 1, 0.3, 1]}}
           >
             <Link
               to="/collections/new-in"
-              className="relative inline-flex items-center justify-center px-8 sm:px-14 py-4 min-h-[48px] overflow-hidden group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded-sm"
+              className="relative inline-flex items-center justify-center gap-3 px-8 sm:px-14 py-4 min-h-[48px] overflow-hidden group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded-sm"
             >
               <span className="absolute inset-0 border border-[#a87441]/40 group-hover/btn:border-[#a87441] transition-all duration-700" />
               <motion.span
@@ -167,8 +169,20 @@ export default function Hero() {
               />
               <span className="absolute inset-0 bg-[#a87441]/0 group-hover/btn:bg-[#a87441]/10 backdrop-blur-sm transition-all duration-700" />
               <span className="relative text-[10px] uppercase tracking-[0.3em] font-light text-[#F0EAE6]/90 group-hover/btn:text-[#a87441] group-hover/btn:tracking-[0.35em] transition-all duration-700">
-                {t('hero.cta')}
+                {t('hero.cta', 'Explore Collection')}
               </span>
+              {/* Arrow Icon */}
+              <motion.svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                className="relative text-[#F0EAE6]/70 group-hover/btn:text-[#a87441] group-hover/btn:translate-x-1 transition-all duration-500"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
+              </motion.svg>
             </Link>
           </motion.div>
         </div>

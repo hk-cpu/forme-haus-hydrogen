@@ -3,6 +3,7 @@ import {Link, NavLink, Await, useRouteLoaderData, useLocation} from '@remix-run/
 import {motion, AnimatePresence} from 'framer-motion';
 import type {RootLoader} from '~/root';
 import LanguageSwitch from './LanguageSwitch';
+import TopBar from './TopBar';
 import type {EnhancedMenu} from '~/lib/utils';
 import {useTranslation} from '~/hooks/useTranslation';
 
@@ -123,17 +124,20 @@ export function Header({
   };
 
   return (
-    <motion.header
-      role="banner"
-      initial={{y: -100, opacity: 0}}
-      animate={{y: isVisible ? 0 : -100, opacity: isVisible ? 1 : 0}}
-      transition={{duration: 0.5, ease: [0.16, 1, 0.3, 1]}}
-      className={`fixed z-50 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0 group top-0 w-full ${getHeaderBackgroundClass()}`}
-      style={{
-        WebkitBackdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
-        backdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
-      }}
-    >
+    <>
+      <TopBar />
+      <motion.header
+        role="banner"
+        initial={{y: -100, opacity: 0}}
+        animate={{y: isVisible ? 0 : -100, opacity: isVisible ? 1 : 0}}
+        transition={{duration: 0.5, ease: [0.16, 1, 0.3, 1]}}
+        className={`fixed z-50 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0 group w-full ${getHeaderBackgroundClass()}`}
+        style={{
+          top: 'var(--topbar-height, 0px)',
+          WebkitBackdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
+          backdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
+        }}
+      >
       <div className="container mx-auto px-6 lg:px-16 flex items-center justify-between relative z-50">
         {/* Desktop Navigation - Left Side */}
         <nav className="hidden md:flex items-center gap-8">
@@ -366,5 +370,6 @@ export function Header({
         }}
       />
     </motion.header>
+    </>
   );
 }
