@@ -131,9 +131,8 @@ export function Header({
         initial={{y: -100, opacity: 0}}
         animate={{y: isVisible ? 0 : -100, opacity: isVisible ? 1 : 0}}
         transition={{duration: 0.5, ease: [0.16, 1, 0.3, 1]}}
-        className={`fixed z-50 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0 group w-full ${getHeaderBackgroundClass()}`}
+        className={`fixed z-50 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0 group w-full md:top-10 ${getHeaderBackgroundClass()}`}
         style={{
-          top: 'var(--topbar-height, 0px)',
           WebkitBackdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
           backdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
         }}
@@ -294,26 +293,24 @@ export function Header({
           {/* Search */}
           <motion.button
             onClick={openSearch}
-            className="relative text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 group flex flex-col items-center"
+            className="relative text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2"
             whileHover={{scale: 1.1}}
             whileTap={{scale: 0.95}}
             aria-label="Search"
+            title="Search"
           >
             <Icons.Search />
-            <span className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
-            {/* Tooltip */}
-            <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[9px] uppercase tracking-wider text-[#a87441] opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-              Search
-            </span>
+            <span className="absolute inset-0 bg-[#a87441]/0 hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
           </motion.button>
 
           {/* Cart / Shopping Bag */}
           <motion.button
             onClick={openCart}
-            className="relative text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 group flex flex-col items-center"
+            className="relative text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2"
             whileHover={{scale: 1.1}}
             whileTap={{scale: 0.95}}
             aria-label="Shopping Bag"
+            title="Bag"
           >
             <Icons.Bag />
             <AnimatePresence>
@@ -332,11 +329,7 @@ export function Header({
                 }
               </Await>
             </AnimatePresence>
-            <span className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
-            {/* Tooltip */}
-            <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[9px] uppercase tracking-wider text-[#a87441] opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-              Bag
-            </span>
+            <span className="absolute inset-0 bg-[#a87441]/0 hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
           </motion.button>
 
           {/* Account (Desktop) */}
@@ -347,15 +340,12 @@ export function Header({
           >
             <Link
               to="/account"
-              className="flex flex-col items-center text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative group"
+              className="flex items-center justify-center text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative"
               aria-label="My Account"
+              title="Account"
             >
               <Icons.User />
-              <span className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
-              {/* Tooltip */}
-              <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[9px] uppercase tracking-wider text-[#a87441] opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-                Account
-              </span>
+              <span className="absolute inset-0 bg-[#a87441]/0 hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
             </Link>
           </motion.div>
         </div>
