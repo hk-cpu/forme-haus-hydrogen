@@ -46,97 +46,13 @@ export default function Hero() {
                 fetchPriority="high"
               />
 
-              {/*
-                Motion Line — threads through the gap between the FH monogram
-                and "FORMÉ HAUS" text. Positioned at ~52% from top of the logo
-                (the visual gap). Extends 40% beyond each side of the logo for
-                a dramatic cinematic feel.
-              */}
-              <div
-                className="absolute left-[-40%] right-[-40%] z-20 pointer-events-none hidden md:block"
-                style={{top: '52%'}}
-              >
-                <svg
-                  className="w-full"
-                  viewBox="0 0 1800 24"
-                  fill="none"
-                  preserveAspectRatio="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  {/* Main motion line — gentle sine wave */}
-                  <motion.path
-                    d="M0,12 C300,12 350,6 600,6 S900,18 1200,18 S1500,6 1800,12"
-                    stroke="url(#motionLineGrad)"
-                    strokeWidth="1.5"
-                    fill="none"
-                    strokeLinecap="round"
-                    initial={{pathLength: 0, opacity: 0}}
-                    animate={{pathLength: 1, opacity: 1}}
-                    transition={{
-                      pathLength: {
-                        duration: 2.4,
-                        delay: 0.6,
-                        ease: [0.16, 1, 0.3, 1],
-                      },
-                      opacity: {duration: 0.8, delay: 0.6},
-                    }}
-                  />
-                  {/* Faint secondary echo line */}
-                  <motion.path
-                    d="M0,12 C300,12 350,6 600,6 S900,18 1200,18 S1500,6 1800,12"
-                    stroke="url(#motionLineGrad)"
-                    strokeWidth="0.5"
-                    fill="none"
-                    strokeLinecap="round"
-                    initial={{pathLength: 0, opacity: 0}}
-                    animate={{pathLength: 1, opacity: 0.3}}
-                    transition={{
-                      pathLength: {
-                        duration: 2.4,
-                        delay: 1.0,
-                        ease: [0.16, 1, 0.3, 1],
-                      },
-                      opacity: {duration: 0.8, delay: 1.0},
-                    }}
-                    style={{transform: 'translateY(3px)'}}
-                  />
-                  {/* Traveling light particle along the line */}
-                  <motion.circle
-                    r="2"
-                    fill="#a87441"
-                    initial={{opacity: 0}}
-                    animate={{opacity: [0, 0.8, 0]}}
-                    transition={{
-                      duration: 3,
-                      delay: 2.0,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                    }}
-                  >
-                    <animateMotion
-                      dur="4s"
-                      begin="2s"
-                      repeatCount="indefinite"
-                      path="M0,12 C300,12 350,6 600,6 S900,18 1200,18 S1500,6 1800,12"
-                    />
-                  </motion.circle>
-                  <defs>
-                    <linearGradient
-                      id="motionLineGrad"
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="0%"
-                    >
-                      <stop offset="0%" stopColor="#a87441" stopOpacity="0" />
-                      <stop offset="15%" stopColor="#a87441" stopOpacity="0.4" />
-                      <stop offset="50%" stopColor="#a87441" stopOpacity="0.9" />
-                      <stop offset="85%" stopColor="#a87441" stopOpacity="0.4" />
-                      <stop offset="100%" stopColor="#a87441" stopOpacity="0" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </div>
+              {/* Decorative accent line */}
+              <motion.div
+                className="absolute left-[-20%] right-[-20%] top-1/2 h-px bg-gradient-to-r from-transparent via-[#a87441]/30 to-transparent hidden md:block"
+                initial={{scaleX: 0, opacity: 0}}
+                animate={{scaleX: 1, opacity: 1}}
+                transition={{duration: 1.5, delay: 0.8, ease: [0.16, 1, 0.3, 1]}}
+              />
             </div>
           </motion.div>
 

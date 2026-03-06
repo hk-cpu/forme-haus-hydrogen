@@ -9,7 +9,6 @@ import CategoryBento from '~/components/CategoryBento';
 import EditorialSection from '~/components/EditorialSection';
 import {StatsSection} from '~/components/StatsSection';
 import {FAQSection} from '~/components/FAQSection';
-import {InfinityProductShowcase} from '~/components/InfinityProductShowcase';
 import {BlurRevealImage} from '~/components/BlurRevealImage';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
@@ -67,17 +66,12 @@ export default function Homepage() {
           <CategoryBento />
         </div>
 
-        {/* 3. Infinity Product Showcase */}
-        <div className="mobile-snap-section">
-          <InfinityProductShowcase />
-        </div>
-
-        {/* 4. The Edit (Editorial Section) */}
+        {/* 3. The Edit (Editorial Section) */}
         <div className="py-8 md:py-12 mobile-snap-section">
           <EditorialSection />
         </div>
 
-        {/* 5. Brand Introduction */}
+        {/* 4. Brand Introduction */}
         <motion.section
           initial={{opacity: 0, y: 20}}
           whileInView={{opacity: 1, y: 0}}
@@ -91,12 +85,12 @@ export default function Homepage() {
           </p>
         </motion.section>
 
-        {/* 6. Stats Section */}
+        {/* 5. Stats Section */}
         <div className="mobile-snap-section">
           <StatsSection />
         </div>
 
-        {/* 7. Journal Teaser */}
+        {/* 6. Journal Teaser */}
         <section className="py-10 md:py-14 border-t border-[#8B8076]/10 mobile-snap-section">
           <div className="max-w-[1200px] mx-auto" style={{padding: '0 var(--page-gutter)'}}>
             <div className="flex justify-between items-end mb-8 md:mb-10">
@@ -158,7 +152,7 @@ export default function Homepage() {
           </div>
         </section>
 
-        {/* 7. FAQ Section */}
+        {/* 8. FAQ Section */}
         <div className="mobile-snap-section">
           <FAQSection />
         </div>

@@ -10,6 +10,7 @@ import {
 
 import {Section} from '~/components/Text';
 import {ProductCard} from '~/components/ProductCard';
+import {InfinityProductShowcase} from '~/components/InfinityProductShowcase';
 import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
@@ -68,12 +69,16 @@ export default function AllProducts() {
 
   return (
     <div className="min-h-screen bg-[#4A3C31]/80 backdrop-blur-sm text-[#F0EAE6]">
-      <div className="py-24 text-center">
+      <div className="pt-32 pb-16 text-center">
         <h1 className="font-serif italic font-light text-5xl md:text-6xl text-[#F0EAE6] mb-4">
           All Products
         </h1>
         <div className="w-24 h-px bg-[#a87441]/60 mx-auto" />
       </div>
+      
+      {/* Infinity Product Showcase */}
+      <InfinityProductShowcase />
+      
       <Section>
         <Pagination connection={products}>
           {({
