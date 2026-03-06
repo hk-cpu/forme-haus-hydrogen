@@ -18,7 +18,7 @@ import {
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 
-import {ProductCard} from '~/components/ProductCard';
+import {ProductCardClean} from '~/components/ProductCardClean';
 import {CategoryHeader} from '~/components/CategoryHeader';
 import SortMenu, {
   type SortParam,
@@ -327,22 +327,10 @@ export default function Collection() {
             hasNextPage,
           }) => (
             <>
-              {/* Product Grid - equal gaps all sides */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+              {/* Product Grid - Professional layout */}
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10">
                 {nodes.map((product: any, i: number) => (
-                  <motion.div
-                    key={product.id}
-                    initial={{opacity: 0, y: 16}}
-                    whileInView={{opacity: 1, y: 0}}
-                    viewport={{once: true, margin: '-40px'}}
-                    transition={{
-                      duration: 0.5,
-                      ease: [0.25, 0.1, 0.25, 1],
-                      delay: (i % 4) * 0.05,
-                    }}
-                  >
-                    <ProductCard product={product} index={i} />
-                  </motion.div>
+                  <ProductCardClean key={product.id} product={product} index={i} />
                 ))}
               </div>
 
