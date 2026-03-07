@@ -155,6 +155,7 @@ export function SearchOverlay() {
                   <input
                     ref={inputRef}
                     type="text"
+                    aria-label={t('common.search', 'Search')}
                     className="flex-1 bg-transparent border-none text-[#F0EAE6] text-sm placeholder-[#AA9B8F]/60 outline-none font-sans tracking-wide"
                     placeholder={searchPlaceholders[placeholderIndex]}
                     value={query}

@@ -31,6 +31,8 @@ import {AddToCartButton} from '~/components/AddToCartButton';
 import {Skeleton} from '~/components/Skeleton';
 import {ProductSwimlane} from '~/components/ProductSwimlane';
 import {ProductGallery} from '~/components/ProductGallery';
+import {TrustBadges} from '~/components/TrustBadges';
+import {BundlePricing} from '~/components/BundlePricing';
 import {IconCaret, IconCheck, IconClose} from '~/components/Icon';
 import {getExcerpt} from '~/lib/utils';
 import {seoPayload} from '~/lib/seo.server';
@@ -328,6 +330,16 @@ export default function Product() {
                 selectedVariant={selectedVariant}
                 storeDomain={storeDomain}
               />
+              
+              {/* Bundle Pricing Section */}
+              <div className="mt-6">
+                <BundlePricing variant="cards" />
+              </div>
+              
+              {/* Trust Badges Section */}
+              <div className="mt-6">
+                <TrustBadges variant="full" />
+              </div>
               <div className="grid gap-4 py-8 border-t border-[#8B8076]/20">
                 {descriptionHtml && (
                   <ProductDetail
@@ -538,30 +550,29 @@ export function ProductForm({
                     swatch,
                   }) => (
                     <div key={option.name + name} className="relative">
-                      <Link
-                        {...(!isDifferentProduct ? {rel: 'nofollow'} : {})}
-                        to={`/products/${handle}?${variantUriQuery}`}
-                        preventScrollReset
-                        prefetch="intent"
-                        replace
-                        className={clsx(
-                          'block relative z-10',
-                          available ? 'opacity-100' : 'opacity-40 line-through',
-                        )}
-                      >
-                        <motion.div
-                          whileHover={{scale: 1.05}}
-                          whileTap={{scale: 0.95}}
-                          className={clsx(
-                            'leading-none py-3 px-5 border cursor-pointer transition-all duration-300 text-sm tracking-widest uppercase rounded-none min-w-[3rem] text-center font-light',
-                            selected
-                              ? 'border-[#2a2118] text-[#F9F6F3] bg-[#2a2118]'
-                              : 'border-[#8B8076]/30 text-[#8B8076] hover:border-[#2a2118] hover:text-[#2a2118]',
-                          )}
+                      {!available ? null : (
+                        <Link
+                          {...(!isDifferentProduct ? {rel: 'nofollow'} : {})}
+                          to={`/products/${handle}?${variantUriQuery}`}
+                          preventScrollReset
+                          prefetch="intent"
+                          replace
+                          className="block relative z-10"
                         >
-                          <ProductOptionSwatch swatch={swatch} name={name} />
-                        </motion.div>
-                      </Link>
+                          <motion.div
+                            whileHover={{scale: 1.05}}
+                            whileTap={{scale: 0.95}}
+                            className={clsx(
+                              'leading-none py-3 px-5 border cursor-pointer transition-all duration-300 text-sm tracking-widest uppercase rounded-none min-w-[3rem] text-center font-light',
+                              selected
+                                ? 'border-[#2a2118] text-[#F9F6F3] bg-[#2a2118]'
+                                : 'border-[#8B8076]/30 text-[#8B8076] hover:border-[#2a2118] hover:text-[#2a2118]',
+                            )}
+                          >
+                            <ProductOptionSwatch swatch={swatch} name={name} />
+                          </motion.div>
+                        </Link>
+                      )}
                     </div>
                   ),
                 )

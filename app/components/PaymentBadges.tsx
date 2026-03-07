@@ -3,6 +3,8 @@
  * Clean horizontal single-line layout: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tamara, Tabby
  */
 
+import {motion} from 'framer-motion';
+
 function MadaIcon() {
   return (
     <svg viewBox="0 0 60 20" className="h-5 w-auto" aria-label="Mada">
@@ -88,9 +90,60 @@ function TabbyIcon() {
   );
 }
 
+/**
+ * PaymentLinkButton - Quick payment link for trial orders
+ * Placeholder for payment link integration (Moyasar, HyperPay, etc.)
+ */
+export function PaymentLinkButton({
+  amount,
+  currency = 'SAR',
+  onClick,
+}: {
+  amount: string;
+  currency?: string;
+  onClick?: () => void;
+}) {
+  return (
+    <motion.button
+      whileHover={{scale: 1.02}}
+      whileTap={{scale: 0.98}}
+      onClick={onClick}
+      className="w-full py-3 px-4 bg-[#1B5E20] hover:bg-[#2E7D32] text-white rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-colors"
+    >
+      <svg 
+        width="18" 
+        height="18" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor" 
+        strokeWidth="2"
+      >
+        <rect x="1" y="4" width="22" height="16" rx="2" />
+        <line x1="1" y1="10" x2="23" y2="10" />
+      </svg>
+      Pay {amount} {currency} via Payment Link
+      <span className="text-[10px] opacity-70">(Trial)</span>
+    </motion.button>
+  );
+}
+
+/**
+ * TrustPaymentSection - Combined payment methods and trust indicators
+ */
+export function TrustPaymentSection() {
+  return (
+    <div className="space-y-3">
+      <PaymentBadges />
+      <p className="text-[10px] text-[#8B8076] text-center">
+        All transactions are secured with 256-bit SSL encryption
+      </p>
+    </div>
+  );
+}
+
 export default function PaymentBadges() {
   return (
-    <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
+    <div className="flex items-center gap-3 sm:gap-4 flex-wrap justify-center">
       <MadaIcon />
       <VisaIcon />
       <MastercardIcon />

@@ -8,8 +8,6 @@ import Hero from '~/components/Hero';
 import CategoryBento from '~/components/CategoryBento';
 import EditorialSection from '~/components/EditorialSection';
 import {StatsSection} from '~/components/StatsSection';
-import {FAQSection} from '~/components/FAQSection';
-import {BlurRevealImage} from '~/components/BlurRevealImage';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
 import {useTranslation} from '~/hooks/useTranslation';
@@ -134,12 +132,11 @@ export default function Homepage() {
                     className="space-y-4 cursor-pointer group block"
                   >
                     <div className="aspect-[16/10] relative overflow-hidden bg-[#EDE8E3] rounded-lg">
-                      <BlurRevealImage
+                      <img
                         src={item.img}
-                        blurSrc={item.blurImg}
                         alt={item.title}
-                        className="absolute inset-0 w-full h-full"
-                        breatheDuration={5.5 + i * 0.7}
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        loading="lazy"
                       />
                     </div>
                     <h3 className="font-serif text-lg md:text-xl text-[#4A3C31] font-light tracking-wide group-hover:text-[#a87441] transition-colors duration-500">
@@ -152,10 +149,7 @@ export default function Homepage() {
           </div>
         </section>
 
-        {/* 8. FAQ Section */}
-        <div className="mobile-snap-section">
-          <FAQSection />
-        </div>
+
       </div>
     </div>
   );

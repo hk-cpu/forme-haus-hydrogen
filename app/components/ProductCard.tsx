@@ -4,6 +4,7 @@ import {Link, useFetcher} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
+import {BundlePricing} from './BundlePricing';
 
 // ============================================================================
 // PREMIUM ICONS
@@ -546,6 +547,11 @@ export function ProductCard({
               )}
             </div>
           )}
+          
+          {/* Bundle Pricing Indicator */}
+          <div className="mt-2">
+            <BundlePricing variant="compact" />
+          </div>
           
           {/* Price Row */}
           <div className="flex items-baseline gap-2 flex-wrap pt-0.5">
