@@ -189,7 +189,7 @@ export default function CategoryBento() {
   const {isRTL, t} = useTranslation();
 
   return (
-    <section className="pb-10 md:pb-14 border-b border-[#8B8076]/10">
+    <section className="pb-6 md:pb-8 border-b border-[#8B8076]/10">
       <div
         className="max-w-[1200px] mx-auto"
         style={{padding: '0 var(--page-gutter)'}}
@@ -200,12 +200,12 @@ export default function CategoryBento() {
           whileInView={{opacity: 1, y: 0}}
           viewport={{once: true}}
           transition={{duration: 0.5, ease: [0.25, 0.1, 0.25, 1]}}
-          className="mb-6 md:mb-8"
+          className="mb-4 md:mb-5"
         >
-          <h2 className="font-serif text-3xl md:text-4xl text-[#4A3C31] mb-3">
+          <h2 className="font-serif text-2xl md:text-3xl text-[#4A3C31] mb-2">
             {isRTL ? 'تسوّق حسب الفئة' : t('home.categorySlider')}
           </h2>
-          <div className="h-px w-20 bg-gradient-to-r from-[#a87441] to-transparent" />
+          <div className="h-px w-16 bg-gradient-to-r from-[#a87441] to-transparent" />
         </motion.div>
 
         {/* Bento Grid - equal gaps all sides */}

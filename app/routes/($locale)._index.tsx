@@ -7,7 +7,7 @@ import {motion} from 'framer-motion';
 import Hero from '~/components/Hero';
 import CategoryBento from '~/components/CategoryBento';
 import EditorialSection from '~/components/EditorialSection';
-import {StatsSection} from '~/components/StatsSection';
+import {WhyChooseUs} from '~/components/WhyChooseUs';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
 import {useTranslation} from '~/hooks/useTranslation';
@@ -83,43 +83,40 @@ export default function Homepage() {
           </p>
         </motion.section>
 
-        {/* 5. Stats Section */}
+        {/* 5. Why Choose Us */}
         <div className="mobile-snap-section">
-          <StatsSection />
+          <WhyChooseUs />
         </div>
 
         {/* 6. Journal Teaser */}
-        <section className="py-10 md:py-14 border-t border-[#8B8076]/10 mobile-snap-section">
+        <section className="py-6 md:py-8 border-t border-[#8B8076]/10 mobile-snap-section">
           <div
             className="max-w-[1200px] mx-auto"
             style={{padding: '0 var(--page-gutter)'}}
           >
-            <div className="flex justify-between items-end mb-8 md:mb-10">
-              <h2 className="font-serif text-3xl md:text-4xl italic text-[#4A3C31] font-light tracking-wide">
+            <div className="flex justify-between items-end mb-6">
+              <h2 className="font-serif text-2xl md:text-3xl italic text-[#4A3C31] font-light tracking-wide">
                 {t('home.journal')}
               </h2>
-              <span className="text-[10px] uppercase tracking-[0.3em] text-[#8B8076] font-light hidden md:block">
+              <span className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076] font-light hidden md:block">
                 {t('home.editorial.label')}
               </span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
               {[
                 {
                   title: t('journal.modernWardrobe'),
                   img: '/brand/journal-wardrobe.webp',
-                  blurImg: '/brand/journal-wardrobe-blur.webp',
                   to: '/journal',
                 },
                 {
                   title: t('journal.everydayElegance'),
                   img: '/brand/journal-elegance.webp',
-                  blurImg: '/brand/journal-elegance-blur.webp',
                   to: '/journal',
                 },
                 {
                   title: t('journal.behindCraft'),
                   img: '/brand/journal-selection.png',
-                  blurImg: '/brand/journal-selection-blur.png',
                   to: '/journal',
                 },
               ].map((item, i) => (
@@ -136,20 +133,21 @@ export default function Homepage() {
                 >
                   <Link
                     to={item.to}
-                    className="space-y-4 cursor-pointer group block"
+                    className="space-y-3 cursor-pointer group block"
                   >
-                    <div className="aspect-[16/10] relative overflow-hidden bg-[#EDE8E3] rounded-lg">
+                    {/* Image Container - object-contain for full image */}
+                    <div className="aspect-[4/3] relative overflow-hidden bg-[#EDE8E3] rounded-lg flex items-center justify-center p-3">
                       <img
                         src={item.img}
                         alt={item.title}
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        className="max-w-full max-h-full object-contain transition-transform duration-700 group-hover:scale-105"
                         loading={i < 2 ? 'eager' : 'lazy'}
                         onError={(e) => {
                           (e.target as HTMLImageElement).style.display = 'none';
                         }}
                       />
                     </div>
-                    <h3 className="font-serif text-lg md:text-xl text-[#4A3C31] font-light tracking-wide group-hover:text-[#a87441] transition-colors duration-500">
+                    <h3 className="font-serif text-base md:text-lg text-[#4A3C31] font-light tracking-wide group-hover:text-[#a87441] transition-colors duration-500">
                       {item.title}
                     </h3>
                   </Link>

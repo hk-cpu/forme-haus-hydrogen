@@ -7,7 +7,7 @@ export default function Hero() {
   const {t} = useTranslation();
 
   return (
-    <section className="h-[70vh] md:h-[75vh] min-h-[400px] max-h-[700px] flex flex-col items-center justify-center bg-transparent relative overflow-hidden mobile-snap-section pt-[72px] md:pt-[112px]">
+    <section className="h-[60vh] md:h-[65vh] min-h-[350px] max-h-[600px] flex flex-col items-center justify-center bg-transparent relative overflow-hidden mobile-snap-section pt-[72px] md:pt-[100px]">
       <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
         <div className="text-center px-6 z-20 relative">
           {/* Brand Logo + Motion Line */}

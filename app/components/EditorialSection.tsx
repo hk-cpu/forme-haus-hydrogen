@@ -47,15 +47,17 @@ const EDITORIAL_ITEMS: EditorialItem[] = [
   },
 ];
 
-// Editorial Card Component
+// Editorial Card Component - Full image display without cropping
 function EditorialCard({
   item,
   index,
   className = '',
+  aspectClass = 'aspect-[4/3]',
 }: {
   item: EditorialItem;
   index: number;
   className?: string;
+  aspectClass?: string;
 }) {
   const {isRTL} = useTranslation();
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -67,61 +69,58 @@ function EditorialCard({
       whileInView={{opacity: 1, y: 0}}
       viewport={{once: true, margin: '-50px'}}
       transition={{duration: 0.7, delay: index * 0.1, ease: [0.16, 1, 0.3, 1]}}
-      className={`group relative overflow-hidden rounded-2xl bg-[#2a2118] ${className}`}
+      className={`group relative overflow-hidden rounded-2xl bg-[#E8E4E0] ${className} ${aspectClass}`}
     >
       <Link to={item.url} className="block w-full h-full">
-        {/* Full-bleed background image */}
-        <div className="absolute inset-0">
+        {/* Image Container - Uses object-contain to show full image */}
+        <div className="absolute inset-0 flex items-center justify-center p-2 md:p-4">
           {!imageError ? (
             <img
               src={item.image}
               alt={item.title}
-              className={`w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105 ${
+              className={`max-w-full max-h-full object-contain transition-all duration-700 ease-out group-hover:scale-105 ${
                 imageLoaded ? 'opacity-100' : 'opacity-0'
               }`}
               loading={index < 2 ? 'eager' : 'lazy'}
               onLoad={() => setImageLoaded(true)}
               onError={() => setImageError(true)}
             />
-          ) : null}
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <span className="text-[#8B8076] text-xs uppercase tracking-wider">
+                {item.title}
+              </span>
+            </div>
+          )}
 
-          {/* Loading skeleton / fallback */}
+          {/* Loading skeleton */}
           {!imageLoaded && !imageError && (
-            <div className="absolute inset-0 bg-gradient-to-br from-[#2a2118] to-[#1A1A1A] animate-pulse" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#E8E4E0] to-[#D8D4D0] animate-pulse" />
           )}
         </div>
 
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+        {/* Gradient overlay - positioned at bottom for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
 
-        {/* Vignette */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-40"
-          style={{
-            background:
-              'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.3) 100%)',
-          }}
-        />
-
-        {/* Content */}
-        <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
+        {/* Content - positioned at bottom */}
+        <div className="absolute inset-x-0 bottom-0 p-4 md:p-6">
           <motion.div
             initial={false}
             animate={{y: 0}}
             className="transform transition-transform duration-500"
           >
-            <h3 className="font-serif text-xl md:text-2xl lg:text-3xl text-white mb-2 italic tracking-wide">
+            <h3 className="font-serif text-lg md:text-xl lg:text-2xl text-white mb-1 italic tracking-wide">
               {item.title}
             </h3>
             {item.subtitle && (
-              <p className="text-sm text-white/70 tracking-wide mb-3">
+              <p className="text-xs md:text-sm text-white/70 tracking-wide mb-2">
                 {item.subtitle}
               </p>
             )}
             <motion.div
               className="h-[1px] bg-[#D4AF87] origin-left"
               initial={{width: 0}}
-              whileInView={{width: 40}}
+              whileInView={{width: 30}}
               viewport={{once: true}}
               transition={{delay: 0.3 + index * 0.1, duration: 0.5}}
             />
@@ -129,10 +128,10 @@ function EditorialCard({
         </div>
 
         {/* Hover overlay */}
-        <div className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 transition-colors duration-500" />
+        <div className="absolute inset-0 bg-[#a87441]/0 group-hover:bg-[#a87441]/10 transition-colors duration-500 pointer-events-none" />
 
         {/* Border on hover */}
-        <div className="absolute inset-0 rounded-2xl border border-white/0 group-hover:border-white/20 transition-colors duration-500" />
+        <div className="absolute inset-0 rounded-2xl border border-white/0 group-hover:border-white/20 transition-colors duration-500 pointer-events-none" />
       </Link>
     </motion.div>
   );
@@ -142,7 +141,7 @@ export default function EditorialSection() {
   const {isRTL, t} = useTranslation();
 
   return (
-    <section className="py-8 md:py-12" dir={isRTL ? 'rtl' : 'ltr'}>
+    <section className="py-6 md:py-8" dir={isRTL ? 'rtl' : 'ltr'}>
       <div
         className="max-w-[1400px] mx-auto"
         style={{padding: '0 var(--page-gutter)'}}
@@ -153,77 +152,77 @@ export default function EditorialSection() {
           whileInView={{opacity: 1, y: 0}}
           viewport={{once: true}}
           transition={{duration: 0.5, ease: [0.25, 0.1, 0.25, 1]}}
-          className="flex justify-between items-end mb-8"
+          className="flex justify-between items-end mb-6"
         >
-          <h2 className="font-serif text-3xl md:text-4xl italic text-[#4A3C31]">
+          <h2 className="font-serif text-2xl md:text-3xl italic text-[#4A3C31]">
             The Edit
           </h2>
           <Link
             to="/journal"
-            className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 py-3 inline-flex items-center min-h-[44px]"
+            className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 py-2 inline-flex items-center min-h-[44px]"
           >
             View All Stories
           </Link>
         </motion.div>
 
-        {/* Editorial Grid - Asymmetric Magazine Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5">
-          {/* Large Feature - Left (spans 7 cols, full height) */}
-          <div className="md:col-span-7 md:row-span-2">
+        {/* Editorial Grid - Compact Layout with Full Images */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+          {/* Large Feature - Left */}
+          <div className="md:row-span-2">
             <EditorialCard
               item={EDITORIAL_ITEMS[0]}
               index={0}
-              className="aspect-[4/5] md:aspect-auto md:h-full min-h-[400px] md:min-h-[600px]"
+              aspectClass="aspect-[3/4] md:aspect-[4/5]"
             />
           </div>
 
-          {/* Medium - Top Right (spans 5 cols) */}
-          <div className="md:col-span-5">
+          {/* Top Right */}
+          <div>
             <EditorialCard
               item={EDITORIAL_ITEMS[1]}
               index={1}
-              className="aspect-[16/10] md:aspect-[4/3]"
+              aspectClass="aspect-[16/9]"
             />
           </div>
 
-          {/* Medium - Bottom Right (spans 5 cols) */}
-          <div className="md:col-span-5">
+          {/* Bottom Right */}
+          <div>
             <EditorialCard
               item={EDITORIAL_ITEMS[2]}
               index={2}
-              className="aspect-[16/10] md:aspect-[4/3]"
+              aspectClass="aspect-[16/9]"
             />
           </div>
         </div>
 
         {/* Secondary Row - 3 smaller cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5 mt-4 md:mt-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mt-3 md:mt-4">
           <EditorialCard
             item={EDITORIAL_ITEMS[3]}
             index={3}
-            className="aspect-[4/3]"
+            aspectClass="aspect-[4/3]"
           />
-          {/* Additional editorial items can be added here */}
+          
+          {/* View All Collections Card */}
           <motion.div
             initial={{opacity: 0, y: 20}}
             whileInView={{opacity: 1, y: 0}}
             viewport={{once: true}}
             transition={{delay: 0.4, duration: 0.6}}
-            className="relative overflow-hidden rounded-2xl aspect-[4/3] group"
+            className="relative overflow-hidden rounded-2xl aspect-[4/3] group bg-gradient-to-br from-[#F5F2ED] to-[#E8E4E0]"
           >
             <Link to="/collections" className="block w-full h-full">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#a87441]/20 to-[#8B5E3C]/30" />
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
-                <span className="font-serif text-2xl md:text-3xl text-[#4A3C31] italic mb-2">
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+                <span className="font-serif text-xl md:text-2xl text-[#4A3C31] italic mb-1">
                   View All
                 </span>
-                <span className="text-[11px] uppercase tracking-[0.2em] text-[#8B8076]">
+                <span className="text-[10px] uppercase tracking-[0.15em] text-[#8B8076]">
                   Collections
                 </span>
-                <motion.div className="mt-4 w-10 h-10 rounded-full border border-[#a87441]/30 flex items-center justify-center group-hover:bg-[#a87441] group-hover:text-white transition-all duration-300">
+                <motion.div className="mt-3 w-8 h-8 rounded-full border border-[#a87441]/30 flex items-center justify-center group-hover:bg-[#a87441] group-hover:text-white transition-all duration-300">
                   <svg
-                    width="16"
-                    height="16"
+                    width="14"
+                    height="14"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -241,27 +240,30 @@ export default function EditorialSection() {
             </Link>
           </motion.div>
 
+          {/* Journal Card */}
           <motion.div
             initial={{opacity: 0, y: 20}}
             whileInView={{opacity: 1, y: 0}}
             viewport={{once: true}}
             transition={{delay: 0.5, duration: 0.6}}
-            className="relative overflow-hidden rounded-2xl aspect-[4/3] group"
+            className="relative overflow-hidden rounded-2xl aspect-[4/3] group bg-[#2a2118] hidden md:block"
           >
-            <img
-              src="/brand/journal-wardrobe.webp"
-              alt="Journal"
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
+            <div className="absolute inset-0 flex items-center justify-center p-4">
+              <img
+                src="/brand/journal-wardrobe.webp"
+                alt="Journal"
+                className="max-w-full max-h-full object-contain opacity-80"
+              />
+            </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
             <Link
               to="/journal"
-              className="absolute inset-0 flex flex-col justify-end p-6"
+              className="absolute inset-0 flex flex-col justify-end p-4 md:p-6"
             >
-              <span className="font-serif text-xl md:text-2xl text-white italic">
+              <span className="font-serif text-lg md:text-xl text-white italic">
                 Journal
               </span>
-              <span className="text-sm text-white/70 mt-1">
+              <span className="text-xs text-white/70 mt-0.5">
                 Stories & Inspiration
               </span>
             </Link>
