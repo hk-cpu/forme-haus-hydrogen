@@ -204,14 +204,13 @@ export function InfinityProductShowcase() {
   }, [isHovered, isRTL, isInView]);
 
   return (
-    <section
+    <motion.section
       ref={containerRef}
       className="py-16 md:py-24 overflow-hidden bg-gradient-to-b from-[#F9F5F0] via-[#F5F2ED] to-[#F9F5F0]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onViewportEnter={() => setIsInView(true)}
       onViewportLeave={() => setIsInView(false)}
-      // @ts-ignore - framer-motion viewport props
       dir={isRTL ? 'rtl' : 'ltr'}
     >
       {/* Section Header */}
@@ -310,7 +309,7 @@ export function InfinityProductShowcase() {
           <div className="h-px flex-1 max-w-[200px] bg-gradient-to-l from-transparent to-[#a87441]/20" />
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 
