@@ -3,7 +3,6 @@ import {Link} from '@remix-run/react';
 import {motion} from 'framer-motion';
 
 import {useTranslation} from '~/hooks/useTranslation';
-import {BlurRevealImage} from '~/components/BlurRevealImage';
 
 interface Category {
   id: number;
@@ -70,7 +69,6 @@ const itemVariants = {
 
 function CategoryCard({category, isRTL, index}: {category: Category; isRTL: boolean; index: number}) {
   const [isHovered, setIsHovered] = useState(false);
-  const breatheDurations = [5, 5.8, 6.6];
 
   return (
     <motion.div
@@ -81,14 +79,11 @@ function CategoryCard({category, isRTL, index}: {category: Category; isRTL: bool
     >
       <Link to={category.url} className="block w-full h-full">
         {/* Full-bleed background image - no white overlay */}
-        <BlurRevealImage
+        <img
           src={category.image}
-          blurSrc={category.blurImage}
           alt={isRTL ? category.titleAr : category.title}
-          className="absolute inset-0 w-full h-full"
-          breatheDuration={breatheDurations[index % breatheDurations.length]}
-          isHovered={isHovered}
-          objectFit="cover"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          loading={index === 0 ? 'eager' : 'lazy'}
         />
 
         {/* Elegant gradient overlay - darker at bottom for text */}
