@@ -34,6 +34,13 @@ const EDITORIAL_ITEMS: EditorialItem[] = [
     url: '/collections/phone-cases',
   },
   {
+    id: '4',
+    title: 'New Arrivals',
+    subtitle: 'Latest from the Haus',
+    image: '/brand/edit-new-arrivals.webp',
+    url: '/collections/new-in',
+  },
+  {
     id: '5',
     title: 'The Journal',
     subtitle: 'Stories & Inspiration',
@@ -188,8 +195,8 @@ export default function EditorialSection() {
           </Link>
         </motion.div>
 
-        {/* Simple 2x2 Grid - All equal */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {/* 3x2 Grid - 6 cards total */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {EDITORIAL_ITEMS.map((item, index) => (
             <EditorialCard
               key={item.id}

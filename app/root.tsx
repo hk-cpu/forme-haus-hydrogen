@@ -208,10 +208,10 @@ async function loadCriticalData({request, context}: LoaderFunctionArgs) {
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
 function loadDeferredData({context}: LoaderFunctionArgs) {
-  const {cart, customerAccount} = context;
+  const {cart, session} = context;
 
   return {
-    isLoggedIn: customerAccount.isLoggedIn(),
+    isLoggedIn: Promise.resolve(!!session.get('customerAccessToken')),
     cart: cart.get(),
   };
 }

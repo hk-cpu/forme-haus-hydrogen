@@ -6,21 +6,16 @@ import {
   useOutletContext,
   useNavigation,
 } from '@remix-run/react';
-import type {
-  Customer,
-  CustomerUpdateInput,
-} from '@shopify/hydrogen/customer-account-api-types';
 import invariant from 'tiny-invariant';
 
 import {Button} from '~/components/Button';
 import {Text} from '~/components/Text';
 import {getInputStyleClasses} from '~/lib/utils';
-import {CUSTOMER_UPDATE_MUTATION} from '~/graphql/customer-account/CustomerUpdateMutation';
 
 import {doLogout} from './($locale).account_.logout';
 
 export interface AccountOutletContext {
-  customer: Customer;
+  customer: any;
 }
 
 export interface ActionData {
@@ -50,35 +45,34 @@ export const handle = {
 
 export const action: ActionFunction = async ({request, context, params}) => {
   const formData = await request.formData();
+  const {session, storefront} = context;
 
-  // Double-check current user is logged in.
-  // Will throw a logout redirect if not.
-  if (!(await context.customerAccount.isLoggedIn())) {
+  const customerAccessToken = await session.get('customerAccessToken');
+  if (!customerAccessToken) {
     throw await doLogout(context);
   }
 
   try {
-    const customer: CustomerUpdateInput = {};
+    const customer: Record<string, string> = {};
 
     formDataHas(formData, 'firstName') &&
       (customer.firstName = formData.get('firstName') as string);
     formDataHas(formData, 'lastName') &&
       (customer.lastName = formData.get('lastName') as string);
 
-    const {data, errors} = await context.customerAccount.mutate(
+    const {customerUpdate}: any = await storefront.mutate(
       CUSTOMER_UPDATE_MUTATION,
       {
         variables: {
+          customerAccessToken: customerAccessToken.accessToken,
           customer,
         },
       },
     );
 
-    invariant(!errors?.length, errors?.[0]?.message);
-
     invariant(
-      !data?.customerUpdate?.userErrors?.length,
-      data?.customerUpdate?.userErrors?.[0]?.message,
+      !customerUpdate?.customerUserErrors?.length,
+      customerUpdate?.customerUserErrors?.[0]?.message,
     );
 
     return redirect(params?.locale ? `${params.locale}/account` : '/account');
@@ -91,6 +85,29 @@ export const action: ActionFunction = async ({request, context, params}) => {
     );
   }
 };
+
+const CUSTOMER_UPDATE_MUTATION = `#graphql
+  mutation customerUpdate(
+    $customerAccessToken: String!
+    $customer: CustomerUpdateInput!
+  ) {
+    customerUpdate(
+      customerAccessToken: $customerAccessToken
+      customer: $customer
+    ) {
+      customer {
+        id
+        firstName
+        lastName
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+` as const;
 
 /**
  * Since this component is nested in `accounts/`, it is rendered in a modal via `<Outlet>` in `account.tsx`.

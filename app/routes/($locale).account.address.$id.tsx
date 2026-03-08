@@ -1,5 +1,5 @@
 import {json, redirect} from '@remix-run/server-runtime';
-import {type ActionFunction, type AppLoadContext} from '@shopify/remix-oxygen';
+import {type ActionFunction} from '@shopify/remix-oxygen';
 import {
   Form,
   useActionData,
@@ -8,17 +8,11 @@ import {
   useNavigation,
 } from '@remix-run/react';
 import {flattenConnection} from '@shopify/hydrogen';
-import type {CustomerAddressInput} from '@shopify/hydrogen/customer-account-api-types';
 import invariant from 'tiny-invariant';
 
 import {Button} from '~/components/Button';
 import {Text} from '~/components/Text';
 import {getInputStyleClasses} from '~/lib/utils';
-import {
-  UPDATE_ADDRESS_MUTATION,
-  DELETE_ADDRESS_MUTATION,
-  CREATE_ADDRESS_MUTATION,
-} from '~/graphql/customer-account/CustomerAddressMutations';
 
 import {doLogout} from './($locale).account_.logout';
 import type {AccountOutletContext} from './($locale).account.edit';
@@ -32,57 +26,49 @@ export const handle = {
 };
 
 export const action: ActionFunction = async ({request, context, params}) => {
-  const {customerAccount} = context;
+  const {session, storefront} = context;
   const formData = await request.formData();
 
-  // Double-check current user is logged in.
-  // Will throw a logout redirect if not.
-  if (!(await customerAccount.isLoggedIn())) {
+  const customerAccessToken = await session.get('customerAccessToken');
+  if (!customerAccessToken) {
     throw await doLogout(context);
   }
+  const token = customerAccessToken.accessToken;
 
   const addressId = formData.get('addressId');
   invariant(typeof addressId === 'string', 'You must provide an address id.');
 
   if (request.method === 'DELETE') {
     try {
-      const {data, errors} = await customerAccount.mutate(
+      const {customerAddressDelete}: any = await storefront.mutate(
         DELETE_ADDRESS_MUTATION,
-        {variables: {addressId}},
+        {variables: {customerAccessToken: token, id: addressId}},
       );
 
-      invariant(!errors?.length, errors?.[0]?.message);
-
       invariant(
-        !data?.customerAddressDelete?.userErrors?.length,
-        data?.customerAddressDelete?.userErrors?.[0]?.message,
+        !customerAddressDelete?.customerUserErrors?.length,
+        customerAddressDelete?.customerUserErrors?.[0]?.message,
       );
 
       return redirect(
         params?.locale ? `${params?.locale}/account` : '/account',
       );
     } catch (error: any) {
-      return json(
-        {formError: error.message},
-        {
-          status: 400,
-        },
-      );
+      return json({formError: error.message}, {status: 400});
     }
   }
 
-  const address: CustomerAddressInput = {};
-
-  const keys: (keyof CustomerAddressInput)[] = [
+  const address: Record<string, string> = {};
+  const keys = [
     'lastName',
     'firstName',
     'address1',
     'address2',
     'city',
-    'zoneCode',
-    'territoryCode',
+    'province',
+    'country',
     'zip',
-    'phoneNumber',
+    'phone',
     'company',
   ];
 
@@ -99,67 +85,126 @@ export const action: ActionFunction = async ({request, context, params}) => {
 
   if (addressId === 'add') {
     try {
-      const {data, errors} = await customerAccount.mutate(
+      const {customerAddressCreate}: any = await storefront.mutate(
         CREATE_ADDRESS_MUTATION,
-        {variables: {address, defaultAddress}},
-      );
-
-      invariant(!errors?.length, errors?.[0]?.message);
-
-      invariant(
-        !data?.customerAddressCreate?.userErrors?.length,
-        data?.customerAddressCreate?.userErrors?.[0]?.message,
+        {variables: {customerAccessToken: token, address}},
       );
 
       invariant(
-        data?.customerAddressCreate?.customerAddress?.id,
+        !customerAddressCreate?.customerUserErrors?.length,
+        customerAddressCreate?.customerUserErrors?.[0]?.message,
+      );
+
+      invariant(
+        customerAddressCreate?.customerAddress?.id,
         'Expected customer address to be created',
       );
 
+      // Set as default if checked
+      if (defaultAddress && customerAddressCreate?.customerAddress?.id) {
+        await storefront.mutate(DEFAULT_ADDRESS_MUTATION, {
+          variables: {
+            customerAccessToken: token,
+            addressId: customerAddressCreate.customerAddress.id,
+          },
+        });
+      }
+
       return redirect(
         params?.locale ? `${params?.locale}/account` : '/account',
       );
     } catch (error: any) {
-      return json(
-        {formError: error.message},
-        {
-          status: 400,
-        },
-      );
+      return json({formError: error.message}, {status: 400});
     }
   } else {
     try {
-      const {data, errors} = await customerAccount.mutate(
+      const {customerAddressUpdate}: any = await storefront.mutate(
         UPDATE_ADDRESS_MUTATION,
-        {
-          variables: {
-            address,
-            addressId,
-            defaultAddress,
-          },
-        },
+        {variables: {customerAccessToken: token, id: addressId, address}},
       );
-
-      invariant(!errors?.length, errors?.[0]?.message);
 
       invariant(
-        !data?.customerAddressUpdate?.userErrors?.length,
-        data?.customerAddressUpdate?.userErrors?.[0]?.message,
+        !customerAddressUpdate?.customerUserErrors?.length,
+        customerAddressUpdate?.customerUserErrors?.[0]?.message,
       );
+
+      // Set as default if checked
+      if (defaultAddress) {
+        await storefront.mutate(DEFAULT_ADDRESS_MUTATION, {
+          variables: {customerAccessToken: token, addressId},
+        });
+      }
 
       return redirect(
         params?.locale ? `${params?.locale}/account` : '/account',
       );
     } catch (error: any) {
-      return json(
-        {formError: error.message},
-        {
-          status: 400,
-        },
-      );
+      return json({formError: error.message}, {status: 400});
     }
   }
 };
+
+const CREATE_ADDRESS_MUTATION = `#graphql
+  mutation customerAddressCreate(
+    $customerAccessToken: String!
+    $address: MailingAddressInput!
+  ) {
+    customerAddressCreate(
+      customerAccessToken: $customerAccessToken
+      address: $address
+    ) {
+      customerAddress { id }
+      customerUserErrors { code field message }
+    }
+  }
+` as const;
+
+const UPDATE_ADDRESS_MUTATION = `#graphql
+  mutation customerAddressUpdate(
+    $customerAccessToken: String!
+    $id: ID!
+    $address: MailingAddressInput!
+  ) {
+    customerAddressUpdate(
+      customerAccessToken: $customerAccessToken
+      id: $id
+      address: $address
+    ) {
+      customerAddress { id }
+      customerUserErrors { code field message }
+    }
+  }
+` as const;
+
+const DELETE_ADDRESS_MUTATION = `#graphql
+  mutation customerAddressDelete(
+    $customerAccessToken: String!
+    $id: ID!
+  ) {
+    customerAddressDelete(
+      customerAccessToken: $customerAccessToken
+      id: $id
+    ) {
+      deletedCustomerAddressId
+      customerUserErrors { code field message }
+    }
+  }
+` as const;
+
+const DEFAULT_ADDRESS_MUTATION = `#graphql
+  mutation customerDefaultAddressUpdate(
+    $customerAccessToken: String!
+    $addressId: ID!
+  ) {
+    customerDefaultAddressUpdate(
+      customerAccessToken: $customerAccessToken
+      addressId: $addressId
+    ) {
+      customer { id }
+      customerUserErrors { code field message }
+    }
+  }
+` as const;
 
 export default function EditAddress() {
   const {id: addressId} = useParams();
@@ -167,8 +212,8 @@ export default function EditAddress() {
   const actionData = useActionData<ActionData>();
   const {state} = useNavigation();
   const {customer} = useOutletContext<AccountOutletContext>();
-  const addresses = flattenConnection(customer.addresses);
-  const defaultAddress = customer.defaultAddress;
+  const addresses = flattenConnection(customer.addresses) as any[];
+  const defaultAddress = customer.defaultAddress as any;
   /**
    * When a refresh happens (or a user visits this link directly), the URL
    * is actually stale because it contains a special token. This means the data
@@ -277,14 +322,14 @@ export default function EditAddress() {
           <div className="mt-3">
             <input
               className={getInputStyleClasses()}
-              id="zoneCode"
-              name="zoneCode"
+              id="province"
+              name="province"
               type="text"
               autoComplete="address-level1"
-              placeholder="State / Province (zoneCode)"
+              placeholder="State / Province"
               required
-              aria-label="State / Province (zoneCode)"
-              defaultValue={address?.zoneCode ?? ''}
+              aria-label="State / Province"
+              defaultValue={address?.province ?? ''}
             />
           </div>
           <div className="mt-3">
@@ -303,26 +348,26 @@ export default function EditAddress() {
           <div className="mt-3">
             <input
               className={getInputStyleClasses()}
-              id="territoryCode"
-              name="territoryCode"
+              id="country"
+              name="country"
               type="text"
               autoComplete="country"
-              placeholder="Country (Territory) Code"
+              placeholder="Country"
               required
-              aria-label="Country (Territory) Code"
-              defaultValue={address?.territoryCode ?? ''}
+              aria-label="Country"
+              defaultValue={address?.country ?? ''}
             />
           </div>
           <div className="mt-3">
             <input
               className={getInputStyleClasses()}
               id="phone"
-              name="phoneNumber"
+              name="phone"
               type="tel"
               autoComplete="tel"
               placeholder="Phone"
               aria-label="Phone"
-              defaultValue={address?.phoneNumber ?? ''}
+              defaultValue={address?.phone ?? ''}
             />
           </div>
           <div className="mt-4">
