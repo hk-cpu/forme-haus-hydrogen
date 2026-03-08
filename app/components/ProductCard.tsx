@@ -1,7 +1,7 @@
 import {useState, useEffect, useRef, useCallback} from 'react';
 import {motion, AnimatePresence, useMotionValue, useTransform, useSpring} from 'framer-motion';
 import {Link, useFetcher} from '@remix-run/react';
-import {Image, Money} from '@shopify/hydrogen';
+import {Money} from '@shopify/hydrogen';
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
 import {BundlePricing} from './BundlePricing';
@@ -315,15 +315,15 @@ export function ProductCard({
               transition={{duration: 0.5, ease: [0.25, 0.1, 0.25, 1]}}
               className="absolute inset-0 w-full h-full"
             >
-              {images.length > 0 ? (
-                <Image
-                  data={{
-                    url: images[currentImage].url,
-                    altText: images[currentImage].altText || product.title,
-                  }}
+              {images.length > 0 && images[currentImage]?.url ? (
+                <img
+                  src={images[currentImage].url}
+                  alt={images[currentImage].altText || product.title}
                   className="w-full h-full object-contain object-center p-3 md:p-5 drop-shadow-sm transition-transform duration-700 ease-out group-hover:scale-105"
-                  sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
                   loading={index < 4 ? 'eager' : 'lazy'}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
                 />
               ) : (
                 <div className="w-full h-full bg-[#EDE8E3] flex items-center justify-center">

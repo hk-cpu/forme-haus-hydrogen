@@ -1,5 +1,4 @@
 import {useState, useEffect, useCallback, useRef} from 'react';
-import {Image} from '@shopify/hydrogen';
 import {motion, AnimatePresence, useAnimation} from 'framer-motion';
 
 import type {MediaFragment} from 'storefrontapi.generated';
@@ -185,9 +184,9 @@ export function ProductGallery({
     return (
       <div className={`${className}`}>
         <div className="aspect-square md:aspect-[4/5] overflow-hidden rounded-xl bg-[#F5F2ED] shadow-xl group">
-          <Image
-            data={images[0]}
-            sizes="(min-width: 768px) 60vw, 90vw"
+          <img
+            src={images[0].url}
+            alt={images[0].altText}
             className="w-full h-full object-contain p-6 transition-transform duration-700 group-hover:scale-105"
           />
         </div>
@@ -294,9 +293,9 @@ export function ProductGallery({
               transition={{duration: 0.8, ease: 'easeOut'}}
               className="absolute inset-[-20%] blur-3xl"
             >
-              <Image
-                data={images[activeIndex]}
-                sizes="100vw"
+              <img
+                src={images[activeIndex].url}
+                alt={images[activeIndex].altText}
                 className="w-full h-full object-cover"
               />
             </motion.div>
@@ -361,9 +360,9 @@ export function ProductGallery({
                       }}
                       transition={{type: 'spring', stiffness: 200, damping: 25}}
                     >
-                      <Image
-                        data={image}
-                        sizes="(min-width: 768px) 50vw, 80vw"
+                      <img
+                        src={image.url}
+                        alt={image.altText}
                         className="w-full h-full object-contain p-4 md:p-6"
                       />
                     </motion.div>
@@ -503,10 +502,9 @@ export function ProductGallery({
               whileTap={{scale: 0.95}}
               aria-label={`View image ${index + 1}`}
             >
-              <Image
-                data={image}
-                aspectRatio="1/1"
-                sizes="80px"
+              <img
+                src={image.url}
+                alt={image.altText}
                 className="w-full h-full object-contain p-1.5 bg-[#F5F2ED]"
               />
               
@@ -619,9 +617,9 @@ export function ProductGallery({
               className="max-w-[90vw] max-h-[85vh] w-full h-full flex items-center justify-center"
               onClick={(e) => e.stopPropagation()}
             >
-              <Image
-                data={images[activeIndex]}
-                sizes="90vw"
+              <img
+                src={images[activeIndex].url}
+                alt={images[activeIndex].altText}
                 className="max-w-full max-h-full object-contain"
               />
             </motion.div>
@@ -643,10 +641,9 @@ export function ProductGallery({
                       : 'opacity-50 hover:opacity-100'
                   }`}
                 >
-                  <Image
-                    data={image}
-                    aspectRatio="1/1"
-                    sizes="48px"
+                  <img
+                    src={image.url}
+                    alt={image.altText}
                     className="w-full h-full object-cover"
                   />
                 </button>
