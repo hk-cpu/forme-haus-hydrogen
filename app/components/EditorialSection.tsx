@@ -171,14 +171,41 @@ export default function EditorialSection() {
           ))}
         </div>
 
-        {/* Row 2: 3 equal columns - Landscape aspect */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-          {/* New Arrivals */}
-          <EditorialCard
-            item={EDITORIAL_ITEMS[3]}
-            index={3}
-            aspectClass="aspect-[4/3]"
-          />
+        {/* Row 2: 2 equal columns - Wide landscape */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          {/* New Arrivals - Full width image without cropping */}
+          <motion.div
+            initial={{opacity: 0, y: 20}}
+            whileInView={{opacity: 1, y: 0}}
+            viewport={{once: true}}
+            transition={{delay: 0.3, duration: 0.6}}
+            className="group relative overflow-hidden rounded-2xl bg-[#E8E4E0] aspect-[16/9]"
+          >
+            <Link to={EDITORIAL_ITEMS[3].url} className="block w-full h-full">
+              <div className="absolute inset-0 overflow-hidden">
+                <img
+                  src={EDITORIAL_ITEMS[3].image}
+                  alt={EDITORIAL_ITEMS[3].title}
+                  className="w-full h-full object-contain bg-[#F5F2ED]"
+                  loading="lazy"
+                />
+              </div>
+              {/* Vignette */}
+              <div className="absolute inset-0 shadow-[inset_0_0_60px_rgba(0,0,0,0.15)] pointer-events-none" />
+              {/* Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
+              {/* Content */}
+              <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
+                <h3 className="font-serif text-lg md:text-xl text-white mb-1 italic tracking-wide">
+                  {EDITORIAL_ITEMS[3].title}
+                </h3>
+                <p className="text-xs md:text-sm text-white/70 tracking-wide mb-2">
+                  {EDITORIAL_ITEMS[3].subtitle}
+                </p>
+                <div className="h-[1px] w-8 bg-[#D4AF87]" />
+              </div>
+            </Link>
+          </motion.div>
           
           {/* View All Collections Card */}
           <motion.div
@@ -186,7 +213,7 @@ export default function EditorialSection() {
             whileInView={{opacity: 1, y: 0}}
             viewport={{once: true}}
             transition={{delay: 0.4, duration: 0.6}}
-            className="relative overflow-hidden rounded-2xl aspect-[4/3] group bg-gradient-to-br from-[#F5F2ED] to-[#E8E4E0]"
+            className="relative overflow-hidden rounded-2xl aspect-[16/9] group bg-gradient-to-br from-[#F5F2ED] to-[#E8E4E0]"
           >
             <Link to="/collections" className="block w-full h-full">
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
@@ -214,39 +241,6 @@ export default function EditorialSection() {
                   </svg>
                 </div>
               </div>
-            </Link>
-          </motion.div>
-
-          {/* Journal Card */}
-          <motion.div
-            initial={{opacity: 0, y: 20}}
-            whileInView={{opacity: 1, y: 0}}
-            viewport={{once: true}}
-            transition={{delay: 0.5, duration: 0.6}}
-            className="relative overflow-hidden rounded-2xl aspect-[4/3] group bg-[#2a2118] hidden md:block"
-          >
-            <div className="absolute inset-0 overflow-hidden">
-              <img
-                src="/brand/journal-wardrobe.webp"
-                alt="Journal"
-                className="w-full h-full object-cover opacity-80"
-                style={{
-                  transform: 'scale(1.15)',
-                  transformOrigin: 'center center',
-                }}
-              />
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-            <Link
-              to="/journal"
-              className="absolute inset-0 flex flex-col justify-end p-4 md:p-5"
-            >
-              <span className="font-serif text-lg md:text-xl text-white italic">
-                Journal
-              </span>
-              <span className="text-xs text-white/70 mt-0.5">
-                Stories & Inspiration
-              </span>
             </Link>
           </motion.div>
         </div>
