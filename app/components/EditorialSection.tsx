@@ -60,8 +60,14 @@ function EditorialCard({
   aspectClass?: string;
 }) {
   const {isRTL} = useTranslation();
+  const [mounted, setMounted] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+
+  // Prevent hydration mismatch by only showing dynamic content after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <motion.div
@@ -78,10 +84,9 @@ function EditorialCard({
             <img
               src={item.image}
               alt={item.title}
-              className={`w-full h-full object-cover transition-all duration-700 ease-out ${
-                imageLoaded ? 'opacity-100' : 'opacity-0'
-              }`}
+              className="w-full h-full object-cover transition-opacity duration-700 ease-out"
               style={{
+                opacity: mounted && !imageLoaded ? 0 : 1,
                 transform: 'scale(1.20)',
                 transformOrigin: 'center center',
               }}
@@ -97,8 +102,8 @@ function EditorialCard({
             </div>
           )}
 
-          {/* Loading skeleton */}
-          {!imageLoaded && !imageError && (
+          {/* Loading skeleton - only show after mount to prevent hydration mismatch */}
+          {mounted && !imageLoaded && !imageError && (
             <div className="absolute inset-0 bg-gradient-to-br from-[#E8E4E0] to-[#D8D4D0] animate-pulse" />
           )}
         </div>

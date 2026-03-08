@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {Link} from '@remix-run/react';
 import {motion} from 'framer-motion';
 
@@ -77,8 +77,14 @@ function CategoryCard({
   index: number;
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <motion.div
@@ -93,10 +99,9 @@ function CategoryCard({
           <img
             src={category.image}
             alt={isRTL ? category.titleAr : category.title}
-            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${
-              imageLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
             style={{
+              opacity: mounted && !imageLoaded ? 0 : 1,
               transform: 'scale(1.20)',
               transformOrigin: 'center center',
             }}
@@ -112,8 +117,8 @@ function CategoryCard({
           </div>
         )}
 
-        {/* Loading skeleton */}
-        {!imageLoaded && !imageError && (
+        {/* Loading skeleton - only after mount */}
+        {mounted && !imageLoaded && !imageError && (
           <div className="absolute inset-0 bg-gradient-to-br from-[#2a2118] to-[#1A1A1A] animate-pulse" />
         )}
 
