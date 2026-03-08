@@ -202,15 +202,13 @@ export default function EditorialSection() {
           </div>
         </div>
 
-        {/* Secondary Row - 3 smaller cards with consistent height */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mt-3 md:mt-4 items-stretch">
-          <div className="h-full">
-            <EditorialCard
-              item={EDITORIAL_ITEMS[3]}
-              index={3}
-              aspectClass="aspect-[4/3] h-full"
-            />
-          </div>
+        {/* Secondary Row - 3 smaller cards */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mt-3 md:mt-4">
+          <EditorialCard
+            item={EDITORIAL_ITEMS[3]}
+            index={3}
+            aspectClass="aspect-[4/3]"
+          />
           
           {/* View All Collections Card */}
           <motion.div
@@ -218,7 +216,7 @@ export default function EditorialSection() {
             whileInView={{opacity: 1, y: 0}}
             viewport={{once: true}}
             transition={{delay: 0.4, duration: 0.6}}
-            className="relative overflow-hidden rounded-2xl aspect-[4/3] group bg-gradient-to-br from-[#F5F2ED] to-[#E8E4E0] h-full"
+            className="relative overflow-hidden rounded-2xl aspect-[4/3] group bg-gradient-to-br from-[#F5F2ED] to-[#E8E4E0]"
             <Link to="/collections" className="block w-full h-full">
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
                 <span className="font-serif text-xl md:text-2xl text-[#4A3C31] italic mb-1">
@@ -254,7 +252,7 @@ export default function EditorialSection() {
             whileInView={{opacity: 1, y: 0}}
             viewport={{once: true}}
             transition={{delay: 0.5, duration: 0.6}}
-            className="relative overflow-hidden rounded-2xl aspect-[4/3] group bg-[#2a2118] hidden md:block h-full"
+            className="relative overflow-hidden rounded-2xl aspect-[4/3] group bg-[#2a2118] hidden md:block"
           >
             <div className="absolute inset-0 overflow-hidden">
               <img
