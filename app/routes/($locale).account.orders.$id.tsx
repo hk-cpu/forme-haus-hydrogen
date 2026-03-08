@@ -11,7 +11,7 @@ import {OrderStepper} from '~/components/OrderStepper';
 import {CACHE_NONE} from '~/data/cache';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
-  return [{title: `Order ${data?.order?.name}`}];
+  return [{title: `Order ${(data as any)?.order?.name}`}];
 };
 
 export async function loader({request, context, params}: LoaderFunctionArgs) {
@@ -42,18 +42,18 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       throw redirect('/account/login');
     }
 
-    const orders = flattenConnection(customer.orders);
+    const orders = flattenConnection(customer.orders) as any[];
     const order = orders.find((o: any) => o.id === targetOrderId);
 
     if (!order) {
       throw new Response('Order not found', {status: 404});
     }
 
-    const lineItems = flattenConnection(order.lineItems);
+    const lineItems = flattenConnection(order.lineItems) as any[];
 
     const discountApplications = flattenConnection(
       order.discountApplications,
-    );
+    ) as any[];
     const firstDiscount = discountApplications[0]?.value;
     const discountValue =
       firstDiscount?.__typename === 'MoneyV2' && firstDiscount;
@@ -61,7 +61,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       firstDiscount?.__typename === 'PricingPercentageValue' &&
       firstDiscount?.percentage;
 
-    const fulfillmentStatus = order.fulfillmentStatus || 'UNFULFILLED';
+    const fulfillmentStatus = (order.fulfillmentStatus as string) || 'UNFULFILLED';
 
     return json(
       {
