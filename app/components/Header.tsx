@@ -410,8 +410,8 @@ export function Header({
           </motion.div>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-4 md:gap-6 lg:gap-8">
-            <div className="hidden md:flex">
+          <div className="flex items-center gap-3 md:gap-4">
+            <div className="hidden md:flex mr-1">
               <LanguageSwitch />
             </div>
 
