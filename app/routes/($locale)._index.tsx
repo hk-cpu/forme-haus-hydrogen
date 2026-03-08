@@ -136,7 +136,10 @@ export default function Homepage() {
                         src={item.img}
                         alt={item.title}
                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        loading="lazy"
+                        loading={i < 2 ? 'eager' : 'lazy'}
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
                       />
                     </div>
                     <h3 className="font-serif text-lg md:text-xl text-[#4A3C31] font-light tracking-wide group-hover:text-[#a87441] transition-colors duration-500">

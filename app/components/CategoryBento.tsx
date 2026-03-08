@@ -69,22 +69,41 @@ const itemVariants = {
 
 function CategoryCard({category, isRTL, index}: {category: Category; isRTL: boolean; index: number}) {
   const [isHovered, setIsHovered] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   return (
     <motion.div
       variants={itemVariants}
-      className="relative group aspect-[3/4] md:aspect-[4/5] overflow-hidden rounded-2xl"
+      className="relative group aspect-[3/4] md:aspect-[4/5] overflow-hidden rounded-2xl bg-[#2a2118]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link to={category.url} className="block w-full h-full">
         {/* Full-bleed background image - no white overlay */}
-        <img
-          src={category.image}
-          alt={isRTL ? category.titleAr : category.title}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          loading={index === 0 ? 'eager' : 'lazy'}
-        />
+        {!imageError ? (
+          <img
+            src={category.image}
+            alt={isRTL ? category.titleAr : category.title}
+            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            loading={index === 0 ? 'eager' : 'lazy'}
+            onLoad={() => setImageLoaded(true)}
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center bg-[#1A1A1A]">
+            <span className="text-[#8B8076] text-xs uppercase tracking-wider">
+              {isRTL ? category.titleAr : category.title}
+            </span>
+          </div>
+        )}
+        
+        {/* Loading skeleton */}
+        {!imageLoaded && !imageError && (
+          <div className="absolute inset-0 bg-gradient-to-br from-[#2a2118] to-[#1A1A1A] animate-pulse" />
+        )}
 
         {/* Elegant gradient overlay - darker at bottom for text */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />

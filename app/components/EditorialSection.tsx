@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import {Link} from '@remix-run/react';
 import {motion} from 'framer-motion';
 import {useTranslation} from '~/hooks/useTranslation';
@@ -57,6 +58,8 @@ function EditorialCard({
   className?: string;
 }) {
   const {isRTL} = useTranslation();
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   return (
     <motion.div
@@ -64,17 +67,28 @@ function EditorialCard({
       whileInView={{opacity: 1, y: 0}}
       viewport={{once: true, margin: '-50px'}}
       transition={{duration: 0.7, delay: index * 0.1, ease: [0.16, 1, 0.3, 1]}}
-      className={`group relative overflow-hidden rounded-2xl ${className}`}
+      className={`group relative overflow-hidden rounded-2xl bg-[#2a2118] ${className}`}
     >
       <Link to={item.url} className="block w-full h-full">
         {/* Full-bleed background image */}
         <div className="absolute inset-0">
-          <img
-            src={item.image}
-            alt={item.title}
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-            loading="lazy"
-          />
+          {!imageError ? (
+            <img
+              src={item.image}
+              alt={item.title}
+              className={`w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105 ${
+                imageLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
+              loading={index < 2 ? 'eager' : 'lazy'}
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageError(true)}
+            />
+          ) : null}
+          
+          {/* Loading skeleton / fallback */}
+          {!imageLoaded && !imageError && (
+            <div className="absolute inset-0 bg-gradient-to-br from-[#2a2118] to-[#1A1A1A] animate-pulse" />
+          )}
         </div>
 
         {/* Gradient overlay */}
