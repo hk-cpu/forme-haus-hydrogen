@@ -34,11 +34,11 @@ const EDITORIAL_ITEMS: EditorialItem[] = [
     url: '/collections/phone-cases',
   },
   {
-    id: '4',
-    title: 'New Arrivals',
-    subtitle: 'Latest from the Haus',
-    image: '/brand/edit-new-arrivals.webp',
-    url: '/collections/new-in',
+    id: '5',
+    title: 'The Journal',
+    subtitle: 'Stories & Inspiration',
+    image: '/brand/journal-wardrobe.webp',
+    url: '/journal',
   },
 ];
 
@@ -46,15 +46,12 @@ const EDITORIAL_ITEMS: EditorialItem[] = [
 function EditorialCard({
   item,
   index,
-  aspectClass = 'aspect-[4/3]',
 }: {
   item: EditorialItem;
   index: number;
-  aspectClass?: string;
 }) {
   const [mounted, setMounted] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -66,34 +63,25 @@ function EditorialCard({
       whileInView={{opacity: 1, y: 0}}
       viewport={{once: true, margin: '-50px'}}
       transition={{duration: 0.7, delay: index * 0.1, ease: [0.16, 1, 0.3, 1]}}
-      className={`group relative overflow-hidden rounded-2xl bg-[#E8E4E0] ${aspectClass}`}
+      className="group relative overflow-hidden rounded-2xl bg-[#E8E4E0] aspect-[3/4]"
     >
       <Link to={item.url} className="block w-full h-full">
-        {/* Image Container */}
+        {/* Image Container - All same aspect, zoomed to hide watermark */}
         <div className="absolute inset-0 overflow-hidden">
-          {!imageError ? (
-            <img
-              src={item.image}
-              alt={item.title}
-              className="w-full h-full object-cover transition-opacity duration-700"
-              style={{
-                opacity: mounted && !imageLoaded ? 0 : 1,
-                transform: 'scale(1.15)',
-                transformOrigin: 'center center',
-              }}
-              loading={index < 2 ? 'eager' : 'lazy'}
-              onLoad={() => setImageLoaded(true)}
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <span className="text-[#8B8076] text-xs uppercase tracking-wider">
-                {item.title}
-              </span>
-            </div>
-          )}
+          <img
+            src={item.image}
+            alt={item.title}
+            className="w-full h-full object-cover transition-opacity duration-700"
+            style={{
+              opacity: mounted && !imageLoaded ? 0 : 1,
+              transform: 'scale(1.15)',
+              transformOrigin: 'center center',
+            }}
+            loading={index < 2 ? 'eager' : 'lazy'}
+            onLoad={() => setImageLoaded(true)}
+          />
 
-          {mounted && !imageLoaded && !imageError && (
+          {mounted && !imageLoaded && (
             <div className="absolute inset-0 bg-gradient-to-br from-[#E8E4E0] to-[#D8D4D0] animate-pulse" />
           )}
         </div>
@@ -131,6 +119,47 @@ function EditorialCard({
   );
 }
 
+// Simple CTA Card
+function CTACard() {
+  return (
+    <motion.div
+      initial={{opacity: 0, y: 20}}
+      whileInView={{opacity: 1, y: 0}}
+      viewport={{once: true}}
+      transition={{delay: 0.4, duration: 0.6}}
+      className="relative overflow-hidden rounded-2xl aspect-[3/4] group bg-gradient-to-br from-[#F5F2ED] to-[#E8E4E0]"
+    >
+      <Link to="/collections" className="block w-full h-full">
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+          <span className="font-serif text-xl md:text-2xl text-[#4A3C31] italic mb-1">
+            View All
+          </span>
+          <span className="text-[10px] uppercase tracking-[0.15em] text-[#8B8076]">
+            Collections
+          </span>
+          <div className="mt-3 w-8 h-8 rounded-full border border-[#a87441]/30 flex items-center justify-center group-hover:bg-[#a87441] group-hover:text-white transition-all duration-300">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              className="text-[#a87441] group-hover:text-white"
+            >
+              <path
+                d="M5 12h14M12 5l7 7-7 7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
+
 export default function EditorialSection() {
   const {isRTL, t} = useTranslation();
 
@@ -159,65 +188,16 @@ export default function EditorialSection() {
           </Link>
         </motion.div>
 
-        {/* Row 1: 3 equal columns - Portrait aspect */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {EDITORIAL_ITEMS.slice(0, 3).map((item, index) => (
+        {/* Simple 2x2 Grid - All equal */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {EDITORIAL_ITEMS.map((item, index) => (
             <EditorialCard
               key={item.id}
               item={item}
               index={index}
-              aspectClass="aspect-[3/4]"
             />
           ))}
-        </div>
-
-        {/* Row 2: Full width New Arrivals with natural image aspect + View All side by side on larger screens */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-          {/* New Arrivals - Spans 2 columns, uses portrait aspect like row 1 */}
-          <div className="md:col-span-2">
-            <EditorialCard
-              item={EDITORIAL_ITEMS[3]}
-              index={3}
-              aspectClass="aspect-[3/4] md:aspect-[16/10]"
-            />
-          </div>
-          
-          {/* View All Collections Card */}
-          <motion.div
-            initial={{opacity: 0, y: 20}}
-            whileInView={{opacity: 1, y: 0}}
-            viewport={{once: true}}
-            transition={{delay: 0.4, duration: 0.6}}
-            className="relative overflow-hidden rounded-2xl aspect-[3/4] md:aspect-[16/10] group bg-gradient-to-br from-[#F5F2ED] to-[#E8E4E0]"
-          >
-            <Link to="/collections" className="block w-full h-full">
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
-                <span className="font-serif text-xl md:text-2xl text-[#4A3C31] italic mb-1">
-                  View All
-                </span>
-                <span className="text-[10px] uppercase tracking-[0.15em] text-[#8B8076]">
-                  Collections
-                </span>
-                <div className="mt-3 w-8 h-8 rounded-full border border-[#a87441]/30 flex items-center justify-center group-hover:bg-[#a87441] group-hover:text-white transition-all duration-300">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    className="text-[#a87441] group-hover:text-white"
-                  >
-                    <path
-                      d="M5 12h14M12 5l7 7-7 7"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </Link>
-          </motion.div>
+          <CTACard />
         </div>
       </div>
     </section>
