@@ -1,6 +1,6 @@
 import {json} from '@remix-run/server-runtime';
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData} from '@remix-run/react';
+import {useLoaderData, useRouteError, isRouteErrorResponse, Link as RemixLink} from '@remix-run/react';
 import {motion} from 'framer-motion';
 
 import type {
@@ -77,19 +77,12 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     },
   );
 
-  if (collection) {
-    console.log(
-      '[DEBUG] Collection found:',
-      collection.handle,
-      'Products:',
-      collection.products?.nodes?.length,
-    );
-  } else {
-    console.log('[DEBUG] Collection NOT found for handle:', collectionHandle);
+  if (!collection) {
+    throw new Response('Collection not found', {status: 404});
   }
 
   if (
-    (!collection || collection.products.nodes.length === 0) &&
+    (collection.products.nodes.length === 0) &&
     (collectionHandle === 'new-in' ||
       collectionHandle === 'new' ||
       collectionHandle === 'sunglasses' ||
@@ -603,3 +596,27 @@ const ALL_PRODUCTS_FALLBACK_QUERY = `#graphql
   }
   ${PRODUCT_CARD_FRAGMENT}
 ` as const;
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  const is404 = isRouteErrorResponse(error) && error.status === 404;
+
+  return (
+    <div className="flex flex-col items-center justify-center py-20 px-6 text-center min-h-[50vh]">
+      <h1 className="font-serif text-3xl md:text-4xl text-[#4A3C31] mb-4">
+        {is404 ? 'Collection Not Found' : 'Something went wrong'}
+      </h1>
+      <p className="text-[#8B8076] mb-8 max-w-md">
+        {is404
+          ? "We couldn't find this collection. It may have been removed or renamed."
+          : 'There was an error loading this collection. Please try again.'}
+      </p>
+      <RemixLink
+        to="/collections"
+        className="inline-block bg-[#a87441] text-white text-xs uppercase tracking-[0.2em] px-8 py-3 hover:bg-[#8B5E34] transition-colors"
+      >
+        View All Collections
+      </RemixLink>
+    </div>
+  );
+}

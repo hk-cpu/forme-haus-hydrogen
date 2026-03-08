@@ -1,5 +1,5 @@
 ﻿import {Await, useRouteLoaderData, useLocation} from '@remix-run/react';
-import {Suspense, useEffect, useState} from 'react';
+import {Suspense, useEffect} from 'react';
 import {CartForm} from '@shopify/hydrogen';
 import {motion, AnimatePresence} from 'framer-motion';
 
@@ -35,25 +35,8 @@ type LayoutProps = {
 
 export function PageLayout({children, layout}: LayoutProps) {
   const {headerMenu, footerMenu} = layout || {};
-  const [scrollY, setScrollY] = useState(0);
   const location = useLocation();
   const {state} = useUI();
-
-  useEffect(() => {
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          setScrollY(window.scrollY);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, {passive: true});
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   return (
     <>
@@ -239,7 +222,7 @@ function MenuMobileNav({
   menu: EnhancedMenu;
   onClose: () => void;
 }) {
-  const {isRTL} = useTranslation();
+  const {t, isRTL} = useTranslation();
   return (
     <nav className="grid gap-6 p-6 sm:gap-8 sm:px-12 sm:py-8">
       {/* Top level menu items */}
@@ -283,7 +266,7 @@ function MenuMobileNav({
           className="flex items-center gap-3 text-[#AA9B8F] hover:text-[#F0EAE6] transition-colors"
         >
           <span className="uppercase tracking-widest text-sm">
-            Account / Sign In
+            {t('nav.account', 'Account / Sign In')}
           </span>
         </Link>
       </motion.div>
@@ -354,38 +337,38 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
               {/* Customer Care */}
               <div className="space-y-4">
                 <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
-                  Customer Care
+                  {t('footer.customerCare', 'Customer Care')}
                 </h4>
                 <nav className="grid gap-2.5">
                   <Link to="/contact" className={linkClass}>
-                    Contact
+                    {t('footer.contact', 'Contact')}
                   </Link>
                   <Link to="/pages/faqs" className={linkClass}>
-                    FAQs
+                    {t('footer.faqs', 'FAQs')}
                   </Link>
                   <Link to="/policies/shipping-policy" className={linkClass}>
-                    Shipping & Returns
+                    {t('footer.shipping', 'Shipping & Returns')}
                   </Link>
                   <Link to="/account/orders" className={linkClass}>
-                    Track Order
+                    {t('footer.trackOrder', 'Track Order')}
                   </Link>
                 </nav>
               </div>
 
-              {/* Our Story */}
+              {/* About */}
               <div className="space-y-4">
                 <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
-                  Our Story
+                  {t('footer.about', 'About')}
                 </h4>
                 <nav className="grid gap-2.5">
-                  <Link to="/contact" className={linkClass}>
-                    Our Story
+                  <Link to="/pages/about" className={linkClass}>
+                    {t('footer.ourStory', 'Our Story')}
                   </Link>
                   <Link to="/policies/privacy-policy" className={linkClass}>
-                    Privacy Policy
+                    {t('footer.privacy', 'Privacy Policy')}
                   </Link>
                   <Link to="/policies/terms-of-service" className={linkClass}>
-                    Terms
+                    {t('footer.terms', 'Terms')}
                   </Link>
                 </nav>
               </div>
@@ -397,7 +380,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
             {/* Get in Touch */}
             <div className="space-y-3">
               <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
-                Get in Touch
+                {t('footer.getInTouch', 'Get in Touch')}
               </h4>
               <div className="grid gap-1.5">
                 <a
@@ -418,7 +401,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
             {/* Payments */}
             <div className="space-y-2">
               <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
-                Payments
+                {t('footer.payments', 'Payments')}
               </h4>
               <PaymentBadges />
             </div>

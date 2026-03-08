@@ -3,7 +3,7 @@ import {Disclosure, Listbox} from '@headlessui/react';
 import {motion, AnimatePresence} from 'framer-motion';
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {defer} from '@remix-run/server-runtime';
-import {useLoaderData, Await} from '@remix-run/react';
+import {useLoaderData, Await, useRouteError, isRouteErrorResponse, Link as RemixLink} from '@remix-run/react';
 import {
   getSeoMeta,
   Money,
@@ -918,4 +918,28 @@ async function getRecommendedProducts(
   mergedProducts.splice(originalProduct, 1);
 
   return {nodes: mergedProducts};
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  const is404 = isRouteErrorResponse(error) && error.status === 404;
+
+  return (
+    <div className="flex flex-col items-center justify-center py-20 px-6 text-center min-h-[50vh]">
+      <h1 className="font-serif text-3xl md:text-4xl text-[#4A3C31] mb-4">
+        {is404 ? 'Product Not Found' : 'Something went wrong'}
+      </h1>
+      <p className="text-[#8B8076] mb-8 max-w-md">
+        {is404
+          ? "We couldn't find the product you're looking for. It may have been removed or is no longer available."
+          : 'There was an error loading this product. Please try again.'}
+      </p>
+      <RemixLink
+        to="/collections/all"
+        className="inline-block bg-[#a87441] text-white text-xs uppercase tracking-[0.2em] px-8 py-3 hover:bg-[#8B5E34] transition-colors"
+      >
+        Browse Products
+      </RemixLink>
+    </div>
+  );
 }

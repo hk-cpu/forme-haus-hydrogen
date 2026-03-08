@@ -72,15 +72,19 @@ function EditorialCard({
       className={`group relative overflow-hidden rounded-2xl bg-[#E8E4E0] ${className} ${aspectClass}`}
     >
       <Link to={item.url} className="block w-full h-full">
-        {/* Image Container - Uses object-contain to show full image */}
-        <div className="absolute inset-0 flex items-center justify-center p-2 md:p-4">
+        {/* Image Container - Zoomed to hide Gemini watermark at edges */}
+        <div className="absolute inset-0 overflow-hidden">
           {!imageError ? (
             <img
               src={item.image}
               alt={item.title}
-              className={`max-w-full max-h-full object-contain transition-all duration-700 ease-out group-hover:scale-105 ${
+              className={`w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 ${
                 imageLoaded ? 'opacity-100' : 'opacity-0'
               }`}
+              style={{
+                transform: imageLoaded ? 'scale(1.12)' : 'scale(1.12)',
+                transformOrigin: 'center center',
+              }}
               loading={index < 2 ? 'eager' : 'lazy'}
               onLoad={() => setImageLoaded(true)}
               onError={() => setImageError(true)}
@@ -98,6 +102,9 @@ function EditorialCard({
             <div className="absolute inset-0 bg-gradient-to-br from-[#E8E4E0] to-[#D8D4D0] animate-pulse" />
           )}
         </div>
+
+        {/* Vignette overlay to smoothly blend edges */}
+        <div className="absolute inset-0 shadow-[inset_0_0_60px_rgba(0,0,0,0.15)] pointer-events-none" />
 
         {/* Gradient overlay - positioned at bottom for text readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
@@ -248,11 +255,15 @@ export default function EditorialSection() {
             transition={{delay: 0.5, duration: 0.6}}
             className="relative overflow-hidden rounded-2xl aspect-[4/3] group bg-[#2a2118] hidden md:block"
           >
-            <div className="absolute inset-0 flex items-center justify-center p-4">
+            <div className="absolute inset-0 overflow-hidden">
               <img
                 src="/brand/journal-wardrobe.webp"
                 alt="Journal"
-                className="max-w-full max-h-full object-contain opacity-80"
+                className="w-full h-full object-cover opacity-80"
+                style={{
+                  transform: 'scale(1.12)',
+                  transformOrigin: 'center center',
+                }}
               />
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />

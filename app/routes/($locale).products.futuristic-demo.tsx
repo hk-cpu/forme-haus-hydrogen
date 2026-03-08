@@ -7,6 +7,8 @@
 import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {useLoaderData} from '@remix-run/react';
 
+export const meta = () => [{name: 'robots', content: 'noindex, nofollow'}];
+
 import FuturisticProductOverlay from '~/components/FuturisticProductOverlay';
 import ProductDetailPage from '~/components/ProductDetailPage';
 

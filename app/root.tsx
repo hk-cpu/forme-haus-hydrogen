@@ -12,6 +12,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
   useRouteLoaderData,
   useRouteError,
   type ShouldRevalidateFunction,
@@ -71,6 +72,22 @@ function ScrollProgress() {
       aria-valuemin={0}
       aria-valuemax={100}
     />
+  );
+}
+
+/** Emits hreflang alternate links for English (default) and Arabic */
+function HreflangLinks() {
+  const {pathname} = useLocation();
+  // Strip any existing locale prefix to get the base path
+  const basePath = pathname.replace(/^\/(ar-sa|en-sa)\b/i, '') || '/';
+  const origin = 'https://formehaus.me';
+
+  return (
+    <>
+      <link rel="alternate" hrefLang="en" href={`${origin}${basePath}`} />
+      <link rel="alternate" hrefLang="ar" href={`${origin}/ar-sa${basePath}`} />
+      <link rel="alternate" hrefLang="x-default" href={`${origin}${basePath}`} />
+    </>
   );
 }
 
@@ -151,9 +168,7 @@ export async function loader(args: LoaderFunctionArgs) {
 async function loadCriticalData({request, context}: LoaderFunctionArgs) {
   const {storefront, env} = context;
 
-  const layout = await getLayoutData(context).catch((error) => {
-    // eslint-disable-next-line no-console
-    console.log('Hydrogen initialized');
+  const layout = await getLayoutData(context).catch(() => {
     return {
       shop: {
         name: 'Formé Haus',
@@ -179,7 +194,7 @@ async function loadCriticalData({request, context}: LoaderFunctionArgs) {
     consent: {
       checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
-      withPrivacyBanner: false,
+      withPrivacyBanner: true,
       country: storefront.i18n.country,
       language: storefront.i18n.language,
     },
@@ -220,6 +235,7 @@ function Layout({children}: {children?: React.ReactNode}) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
+        <HreflangLinks />
         <link rel="stylesheet" href={styles}></link>
         <link rel="stylesheet" href={futuristicStyles}></link>
         <style

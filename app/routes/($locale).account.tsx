@@ -5,6 +5,9 @@ import {
   useLoaderData,
   useMatches,
   useOutlet,
+  useRouteError,
+  isRouteErrorResponse,
+  Link as RemixLink,
 } from '@remix-run/react';
 import {Suspense} from 'react';
 import {defer, redirect} from '@remix-run/server-runtime';
@@ -269,5 +272,29 @@ function Orders({orders}: OrderCardsProps) {
         <OrderCard order={order} key={order.id} />
       ))}
     </ul>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  const is404 = isRouteErrorResponse(error) && error.status === 404;
+
+  return (
+    <div className="flex flex-col items-center justify-center py-20 px-6 text-center min-h-[50vh]">
+      <h1 className="font-serif text-3xl md:text-4xl text-[#4A3C31] mb-4">
+        {is404 ? 'Page Not Found' : 'Account Error'}
+      </h1>
+      <p className="text-[#8B8076] mb-8 max-w-md">
+        {is404
+          ? "We couldn't find the page you're looking for."
+          : 'There was an error loading your account. Please try signing in again.'}
+      </p>
+      <RemixLink
+        to="/account/login"
+        className="inline-block bg-[#a87441] text-white text-xs uppercase tracking-[0.2em] px-8 py-3 hover:bg-[#8B5E34] transition-colors"
+      >
+        Sign In
+      </RemixLink>
+    </div>
   );
 }

@@ -1,6 +1,8 @@
 import {useState} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 
+export const meta = () => [{name: 'robots', content: 'noindex, nofollow'}];
+
 import LuxuryStorefront, {
   StoreProvider,
   Header,

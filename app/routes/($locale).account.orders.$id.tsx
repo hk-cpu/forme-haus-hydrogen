@@ -337,7 +337,7 @@ export default function OrderRoute() {
               eligible products in accordance with Saudi Commerce Ministry
               regulations.
               <br />
-              Commercial Registration: 1010XXXXXX
+              Commercial Registration: 7051891369
             </Text>
           </div>
         </div>

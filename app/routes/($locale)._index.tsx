@@ -135,17 +135,23 @@ export default function Homepage() {
                     to={item.to}
                     className="space-y-3 cursor-pointer group block"
                   >
-                    {/* Image Container - object-contain for full image */}
-                    <div className="aspect-[4/3] relative overflow-hidden bg-[#EDE8E3] rounded-lg flex items-center justify-center p-3">
+                    {/* Image Container - zoomed to hide watermark */}
+                    <div className="aspect-[4/3] relative overflow-hidden bg-[#EDE8E3] rounded-lg">
                       <img
                         src={item.img}
                         alt={item.title}
-                        className="max-w-full max-h-full object-contain transition-transform duration-700 group-hover:scale-105"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        style={{
+                          transform: 'scale(1.12)',
+                          transformOrigin: 'center center',
+                        }}
                         loading={i < 2 ? 'eager' : 'lazy'}
                         onError={(e) => {
                           (e.target as HTMLImageElement).style.display = 'none';
                         }}
                       />
+                      {/* Vignette to blend edges */}
+                      <div className="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.1)] pointer-events-none" />
                     </div>
                     <h3 className="font-serif text-base md:text-lg text-[#4A3C31] font-light tracking-wide group-hover:text-[#a87441] transition-colors duration-500">
                       {item.title}

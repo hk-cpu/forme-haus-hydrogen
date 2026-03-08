@@ -88,14 +88,18 @@ function CategoryCard({
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link to={category.url} className="block w-full h-full">
-        {/* Full-bleed background image - no white overlay */}
+        {/* Full-bleed background image - zoomed to hide watermark */}
         {!imageError ? (
           <img
             src={category.image}
             alt={isRTL ? category.titleAr : category.title}
-            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${
+            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
+            style={{
+              transform: 'scale(1.1)',
+              transformOrigin: 'center center',
+            }}
             loading={index === 0 ? 'eager' : 'lazy'}
             onLoad={() => setImageLoaded(true)}
             onError={() => setImageError(true)}
