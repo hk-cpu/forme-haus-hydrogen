@@ -372,7 +372,7 @@ export default function Collection() {
           }) => (
             <>
               {/* Product Grid - Professional layout */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-3 gap-y-6 md:gap-x-4 md:gap-y-8 lg:gap-x-5 lg:gap-y-10">
                 {nodes.map((product: any, i: number) => (
                   <ProductCardClean
                     key={product.id}

@@ -1,7 +1,6 @@
 import {useRef, useEffect, useState} from 'react';
 import {motion, useScroll, useTransform, useSpring} from 'framer-motion';
 import {Link} from '@remix-run/react';
-import {Image, Money} from '@shopify/hydrogen';
 import {useTranslation} from '~/hooks/useTranslation';
 
 interface Product {
@@ -212,6 +211,7 @@ export function InfinityProductShowcase() {
       onMouseLeave={() => setIsHovered(false)}
       onViewportEnter={() => setIsInView(true)}
       onViewportLeave={() => setIsInView(false)}
+      // @ts-ignore - framer-motion viewport props
       dir={isRTL ? 'rtl' : 'ltr'}
     >
       {/* Section Header */}

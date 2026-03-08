@@ -1,7 +1,7 @@
 import {useState, useEffect, useRef, useCallback} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 import {Link, useFetcher} from '@remix-run/react';
-import {Image, Money} from '@shopify/hydrogen';
+import {Money} from '@shopify/hydrogen';
 import {useTranslation} from '~/hooks/useTranslation';
 
 interface ProductCardCleanProps {
@@ -110,15 +110,15 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
               transition={{duration: 0.3}}
               className="absolute inset-0 w-full h-full"
             >
-              {images.length > 0 ? (
-                <Image
-                  data={{
-                    url: images[currentImage].url,
-                    altText: images[currentImage].altText || product.title,
-                  }}
+              {images.length > 0 && images[currentImage]?.url ? (
+                <img
+                  src={images[currentImage].url}
+                  alt={images[currentImage].altText || product.title}
                   className="w-full h-full object-contain object-center p-4 md:p-6 transition-transform duration-500 ease-out group-hover:scale-105"
-                  sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
                   loading={index < 8 ? 'eager' : 'lazy'}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
