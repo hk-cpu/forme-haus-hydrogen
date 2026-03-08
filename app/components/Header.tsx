@@ -237,7 +237,7 @@ export function Header({
         </nav>
 
         {/* Mobile: Menu Toggle + Language */}
-        <div className="md:hidden flex items-center gap-5">
+        <div className="md:hidden flex items-center gap-4">
           <motion.button
             initial={{opacity: 0, scale: 0.8}}
             animate={{opacity: 1, scale: 1}}
@@ -245,11 +245,11 @@ export function Header({
             className="text-[#F0EAE6]/80 hover:text-[#a87441] transition-colors duration-300 p-2 -m-2 flex flex-col items-center group"
             whileHover={{scale: 1.05}}
             whileTap={{scale: 0.95}}
-            aria-label="Open menu"
+            aria-label={t('nav.menu', 'Menu')}
           >
             <Icons.Menu />
-            <span className="absolute -bottom-4 text-[8px] uppercase tracking-wider text-[#a87441] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              Menu
+            <span className="mt-1 text-[9px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300">
+              {t('nav.menu', 'Menu')}
             </span>
           </motion.button>
           <LanguageSwitch />
@@ -286,7 +286,7 @@ export function Header({
         </motion.div>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-6 md:gap-8">
+        <div className="flex items-center gap-4 md:gap-6 lg:gap-8">
           <div className="hidden md:flex">
             <LanguageSwitch />
           </div>
@@ -294,26 +294,32 @@ export function Header({
           {/* Search */}
           <motion.button
             onClick={openSearch}
-            className="relative text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2"
-            whileHover={{scale: 1.1}}
+            className="relative text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 flex flex-col items-center group"
+            whileHover={{scale: 1.05}}
             whileTap={{scale: 0.95}}
-            aria-label="Search"
-            title="Search"
+            aria-label={t('nav.search', 'Search')}
+            title={t('nav.search', 'Search')}
           >
             <Icons.Search />
-            <span className="absolute inset-0 bg-[#a87441]/0 hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
+            <span className="mt-1 text-[9px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
+              {t('nav.search', 'Search')}
+            </span>
+            <span className="absolute inset-0 bg-[#a87441]/0 hover:bg-[#a87441]/10 rounded-full transition-colors duration-300 -z-10" />
           </motion.button>
 
           {/* Cart / Shopping Bag */}
           <motion.button
             onClick={openCart}
-            className="relative text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2"
-            whileHover={{scale: 1.1}}
+            className="relative text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 flex flex-col items-center group"
+            whileHover={{scale: 1.05}}
             whileTap={{scale: 0.95}}
-            aria-label="Shopping Bag"
-            title="Bag"
+            aria-label={t('nav.cart', 'Cart')}
+            title={t('nav.cart', 'Cart')}
           >
             <Icons.Bag />
+            <span className="mt-1 text-[9px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
+              {t('nav.cart', 'Cart')}
+            </span>
             <AnimatePresence>
               <Await resolve={rootData?.cart}>
                 {(cart: any) =>
@@ -322,7 +328,7 @@ export function Header({
                       initial={{scale: 0}}
                       animate={{scale: 1}}
                       exit={{scale: 0}}
-                      className="absolute -top-0.5 -right-0.5 text-[9px] bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-white rounded-full w-4 h-4 flex items-center justify-center font-medium shadow-lg"
+                      className="absolute -top-0.5 right-0 lg:right-2 text-[9px] bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-white rounded-full w-4 h-4 flex items-center justify-center font-medium shadow-lg"
                     >
                       {cart.totalQuantity > 9 ? '9+' : cart.totalQuantity}
                     </motion.span>
@@ -330,23 +336,26 @@ export function Header({
                 }
               </Await>
             </AnimatePresence>
-            <span className="absolute inset-0 bg-[#a87441]/0 hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
+            <span className="absolute inset-0 bg-[#a87441]/0 hover:bg-[#a87441]/10 rounded-full transition-colors duration-300 -z-10" />
           </motion.button>
 
           {/* Account (Desktop) */}
           <motion.div
-            whileHover={{scale: 1.1}}
+            whileHover={{scale: 1.05}}
             whileTap={{scale: 0.95}}
             className="hidden md:block"
           >
             <Link
               to="/account"
-              className="flex items-center justify-center text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative"
-              aria-label="My Account"
-              title="Account"
+              className="flex flex-col items-center text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 relative group"
+              aria-label={t('nav.account', 'Account')}
+              title={t('nav.account', 'Account')}
             >
               <Icons.User />
-              <span className="absolute inset-0 bg-[#a87441]/0 hover:bg-[#a87441]/10 rounded-full transition-colors duration-300" />
+              <span className="mt-1 text-[9px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
+                {t('nav.account', 'Account')}
+              </span>
+              <span className="absolute inset-0 bg-[#a87441]/0 hover:bg-[#a87441]/10 rounded-full transition-colors duration-300 -z-10" />
             </Link>
           </motion.div>
         </div>
