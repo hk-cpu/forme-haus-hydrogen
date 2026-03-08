@@ -3,17 +3,15 @@ import {json, redirect} from '@remix-run/server-runtime';
 import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {useLoaderData, type MetaFunction} from '@remix-run/react';
 import {Money, Image, flattenConnection} from '@shopify/hydrogen';
-import type {FulfillmentStatus} from '@shopify/hydrogen/customer-account-api-types';
 
-import type {OrderFragment} from 'customer-accountapi.generated';
 import {statusMessage} from '~/lib/utils';
 import {Link} from '~/components/Link';
 import {Heading, PageHeader, Text} from '~/components/Text';
-import {CUSTOMER_ORDER_QUERY} from '~/graphql/customer-account/CustomerOrderQuery';
 import {OrderStepper} from '~/components/OrderStepper';
+import {CACHE_NONE} from '~/data/cache';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
-  return [{title: `Order ${(data as any)?.order?.name}`}];
+  return [{title: `Order ${data?.order?.name}`}];
 };
 
 export async function loader({request, context, params}: LoaderFunctionArgs) {
@@ -21,58 +19,160 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     return redirect(params?.locale ? `${params.locale}/account` : '/account');
   }
 
-  const queryParams = new URL(request.url).searchParams;
-  const orderToken = queryParams.get('key');
+  const {session, storefront} = context;
+  const customerAccessToken = await session.get('customerAccessToken');
+
+  if (!customerAccessToken) {
+    return redirect('/account/login');
+  }
 
   try {
-    const orderId = orderToken
-      ? `gid://shopify/Order/${params.id}?key=${orderToken}`
-      : `gid://shopify/Order/${params.id}`;
+    const targetOrderId = `gid://shopify/Order/${params.id}`;
 
-    const {data, errors} = await context.customerAccount.query(
-      CUSTOMER_ORDER_QUERY,
-      {variables: {orderId}},
-    );
+    const {customer} = await storefront.query(CUSTOMER_ORDERS_QUERY, {
+      variables: {
+        customerAccessToken: customerAccessToken.accessToken,
+        country: storefront.i18n.country,
+        language: storefront.i18n.language,
+      },
+      cache: storefront.CacheNone(),
+    });
 
-    if (errors?.length || !data?.order || !data?.order?.lineItems) {
-      throw new Error('order information');
+    if (!customer) {
+      throw redirect('/account/login');
     }
 
-    const order: OrderFragment = data.order;
+    const orders = flattenConnection(customer.orders);
+    const order = orders.find((o: any) => o.id === targetOrderId);
+
+    if (!order) {
+      throw new Response('Order not found', {status: 404});
+    }
 
     const lineItems = flattenConnection(order.lineItems);
 
-    const discountApplications = flattenConnection(order.discountApplications);
-
+    const discountApplications = flattenConnection(
+      order.discountApplications,
+    );
     const firstDiscount = discountApplications[0]?.value;
-
     const discountValue =
       firstDiscount?.__typename === 'MoneyV2' && firstDiscount;
-
     const discountPercentage =
       firstDiscount?.__typename === 'PricingPercentageValue' &&
       firstDiscount?.percentage;
 
-    const fulfillments = flattenConnection(order.fulfillments);
+    const fulfillmentStatus = order.fulfillmentStatus || 'UNFULFILLED';
 
-    const fulfillmentStatus =
-      fulfillments.length > 0
-        ? fulfillments[0].status
-        : ('OPEN' as FulfillmentStatus);
-
-    return json({
-      order,
-      lineItems,
-      discountValue,
-      discountPercentage,
-      fulfillmentStatus,
-    });
+    return json(
+      {
+        order,
+        lineItems,
+        discountValue,
+        discountPercentage,
+        fulfillmentStatus,
+      },
+      {
+        headers: {
+          'Cache-Control': CACHE_NONE,
+        },
+      },
+    );
   } catch (error) {
+    if (error instanceof Response) throw error;
     throw new Response(error instanceof Error ? error.message : undefined, {
       status: 404,
     });
   }
 }
+
+// Storefront API query — fetches orders through customer, no redirect through shopify.com
+const CUSTOMER_ORDERS_QUERY = `#graphql
+  query CustomerOrdersForDetail(
+    $customerAccessToken: String!
+    $country: CountryCode
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
+    customer(customerAccessToken: $customerAccessToken) {
+      orders(first: 250, sortKey: PROCESSED_AT, reverse: true) {
+        edges {
+          node {
+            id
+            name
+            orderNumber
+            processedAt
+            financialStatus
+            fulfillmentStatus
+            currentTotalPrice {
+              amount
+              currencyCode
+            }
+            currentSubtotalPrice {
+              amount
+              currencyCode
+            }
+            currentTotalTax {
+              amount
+              currencyCode
+            }
+            totalShippingPrice {
+              amount
+              currencyCode
+            }
+            shippingAddress {
+              name
+              formatted
+            }
+            discountApplications(first: 10) {
+              edges {
+                node {
+                  value {
+                    __typename
+                    ... on MoneyV2 {
+                      amount
+                      currencyCode
+                    }
+                    ... on PricingPercentageValue {
+                      percentage
+                    }
+                  }
+                }
+              }
+            }
+            lineItems(first: 100) {
+              edges {
+                node {
+                  title
+                  quantity
+                  variant {
+                    title
+                    image {
+                      url
+                      altText
+                      width
+                      height
+                    }
+                    price {
+                      amount
+                      currencyCode
+                    }
+                  }
+                  originalTotalPrice {
+                    amount
+                    currencyCode
+                  }
+                  discountedTotalPrice {
+                    amount
+                    currencyCode
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+` as const;
 
 export default function OrderRoute() {
   const {
@@ -82,6 +182,7 @@ export default function OrderRoute() {
     discountPercentage,
     fulfillmentStatus,
   } = useLoaderData<typeof loader>();
+
   return (
     <div>
       <PageHeader heading="Order detail">
@@ -100,10 +201,10 @@ export default function OrderRoute() {
       <div className="w-full p-6 sm:grid-cols-1 md:p-8 lg:p-12 lg:py-6">
         <div>
           <Text as="h3" size="lead">
-            Order No. {order.name}
+            Order No. {(order as any).name}
           </Text>
           <Text className="mt-2" as="p">
-            Placed on {new Date(order.processedAt!).toDateString()}
+            Placed on {new Date((order as any).processedAt!).toDateString()}
           </Text>
           <div className="grid items-start gap-12 sm:grid-cols-1 md:grid-cols-4 md:gap-16 sm:divide-y sm:divide-gray-200">
             <table className="min-w-full my-8 divide-y divide-gray-300 md:col-span-3">
@@ -136,14 +237,14 @@ export default function OrderRoute() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {lineItems.map((lineItem) => (
-                  <tr key={lineItem.id}>
+                {(lineItems as any[]).map((lineItem: any, index: number) => (
+                  <tr key={lineItem.variant?.id || index}>
                     <td className="w-full py-4 pl-0 pr-3 align-top sm:align-middle max-w-0 sm:w-auto sm:max-w-none">
                       <div className="flex gap-6">
-                        {lineItem?.image && (
+                        {lineItem.variant?.image && (
                           <div className="w-24 card-image aspect-square">
                             <Image
-                              data={lineItem.image}
+                              data={lineItem.variant.image}
                               width={96}
                               height={96}
                             />
@@ -152,7 +253,7 @@ export default function OrderRoute() {
                         <div className="flex-col justify-center hidden lg:flex">
                           <Text as="p">{lineItem.title}</Text>
                           <Text size="fine" className="mt-1" as="p">
-                            {lineItem.variantTitle}
+                            {lineItem.variant?.title}
                           </Text>
                         </div>
                         <dl className="grid">
@@ -162,13 +263,15 @@ export default function OrderRoute() {
                               {lineItem.title}
                             </Heading>
                             <Text size="fine" className="mt-1">
-                              {lineItem.variantTitle}
+                              {lineItem.variant?.title}
                             </Text>
                           </dd>
                           <dt className="sr-only">Price</dt>
                           <dd className="truncate sm:hidden">
                             <Text size="fine" className="mt-4">
-                              <Money data={lineItem.price!} />
+                              {lineItem.variant?.price && (
+                                <Money data={lineItem.variant.price} />
+                              )}
                             </Text>
                           </dd>
                           <dt className="sr-only">Quantity</dt>
@@ -181,21 +284,23 @@ export default function OrderRoute() {
                       </div>
                     </td>
                     <td className="hidden px-3 py-4 text-right align-top sm:align-middle sm:table-cell">
-                      <Money data={lineItem.price!} />
+                      {lineItem.variant?.price && (
+                        <Money data={lineItem.variant.price} />
+                      )}
                     </td>
                     <td className="hidden px-3 py-4 text-right align-top sm:align-middle sm:table-cell">
                       {lineItem.quantity}
                     </td>
                     <td className="px-3 py-4 text-right align-top sm:align-middle sm:table-cell">
                       <Text>
-                        <Money data={lineItem.totalDiscount!} />
+                        <Money data={lineItem.discountedTotalPrice || lineItem.originalTotalPrice} />
                       </Text>
                     </td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
-                {((discountValue && discountValue.amount) ||
+                {((discountValue && (discountValue as any).amount) ||
                   discountPercentage) && (
                   <tr>
                     <th
@@ -217,7 +322,7 @@ export default function OrderRoute() {
                           -{discountPercentage}% OFF
                         </span>
                       ) : (
-                        discountValue && <Money data={discountValue!} />
+                        discountValue && <Money data={discountValue as any} />
                       )}
                     </td>
                   </tr>
@@ -237,7 +342,7 @@ export default function OrderRoute() {
                     <Text>Subtotal</Text>
                   </th>
                   <td className="pt-6 pl-3 pr-4 text-right md:pr-3">
-                    <Money data={order.subtotal!} />
+                    <Money data={(order as any).currentSubtotalPrice} />
                   </td>
                 </tr>
                 <tr>
@@ -255,8 +360,8 @@ export default function OrderRoute() {
                     <Text>Shipping</Text>
                   </th>
                   <td className="pt-4 pl-3 pr-4 text-right md:pr-3">
-                    {order.totalShipping ? (
-                      <Money data={order.totalShipping} />
+                    {(order as any).totalShippingPrice?.amount !== '0.0' ? (
+                      <Money data={(order as any).totalShippingPrice} />
                     ) : (
                       <Text>Free</Text>
                     )}
@@ -277,7 +382,7 @@ export default function OrderRoute() {
                     <Text>Tax (VAT 15%)</Text>
                   </th>
                   <td className="pt-4 pl-3 pr-4 text-right md:pr-3">
-                    <Money data={order.totalTax!} />
+                    <Money data={(order as any).currentTotalTax} />
                   </td>
                 </tr>
                 <tr>
@@ -295,7 +400,7 @@ export default function OrderRoute() {
                     <Text>Total</Text>
                   </th>
                   <td className="pt-4 pl-3 pr-4 font-semibold text-right md:pr-3">
-                    <Money data={order.totalPrice!} />
+                    <Money data={(order as any).currentTotalPrice} />
                   </td>
                 </tr>
               </tfoot>
@@ -304,19 +409,17 @@ export default function OrderRoute() {
               <Heading size="copy" className="font-semibold" as="h3">
                 Shipping Address
               </Heading>
-              {order?.shippingAddress ? (
+              {(order as any)?.shippingAddress ? (
                 <ul className="mt-6">
                   <li>
-                    <Text>{order.shippingAddress.name}</Text>
+                    <Text>{(order as any).shippingAddress.name}</Text>
                   </li>
-                  {order?.shippingAddress?.formatted ? (
-                    order.shippingAddress.formatted.map((line: string) => (
+                  {(order as any).shippingAddress.formatted?.map(
+                    (line: string) => (
                       <li key={line}>
                         <Text>{line}</Text>
                       </li>
-                    ))
-                  ) : (
-                    <></>
+                    ),
                   )}
                 </ul>
               ) : (
@@ -327,7 +430,7 @@ export default function OrderRoute() {
                 <Heading size="copy" className="font-semibold mb-4" as="h3">
                   Tracking
                 </Heading>
-                <OrderStepper status={fulfillmentStatus!} />
+                <OrderStepper status={fulfillmentStatus as string} />
               </div>
             </div>
           </div>

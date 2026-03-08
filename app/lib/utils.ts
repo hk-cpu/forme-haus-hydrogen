@@ -238,17 +238,26 @@ export const getInputStyleClasses = (isError?: string | null) => {
   }`;
 };
 
-export function statusMessage(status: FulfillmentStatus) {
-  const translations: Record<FulfillmentStatus, string> = {
+export function statusMessage(status: string) {
+  const translations: Record<string, string> = {
+    // Customer Account API statuses
     SUCCESS: 'Success',
     PENDING: 'Pending',
     OPEN: 'Open',
     FAILURE: 'Failure',
     ERROR: 'Error',
     CANCELLED: 'Cancelled',
+    // Storefront API statuses
+    FULFILLED: 'Fulfilled',
+    UNFULFILLED: 'Unfulfilled',
+    PARTIALLY_FULFILLED: 'Partially Fulfilled',
+    RESTOCKED: 'Restocked',
+    IN_PROGRESS: 'In Progress',
+    ON_HOLD: 'On Hold',
+    SCHEDULED: 'Scheduled',
   };
   try {
-    return translations?.[status];
+    return translations?.[status] ?? status;
   } catch (error) {
     return status;
   }

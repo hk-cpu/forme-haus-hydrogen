@@ -173,20 +173,24 @@ export default function EditorialSection() {
 
         {/* Row 2: 2 equal columns - Wide landscape */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          {/* New Arrivals - Full width image without cropping */}
+          {/* New Arrivals - Zoomed to hide watermark */}
           <motion.div
             initial={{opacity: 0, y: 20}}
             whileInView={{opacity: 1, y: 0}}
             viewport={{once: true}}
             transition={{delay: 0.3, duration: 0.6}}
-            className="group relative overflow-hidden rounded-2xl bg-[#E8E4E0] aspect-[16/9]"
+            className="group relative overflow-hidden rounded-2xl bg-[#2a2118] aspect-[16/9]"
           >
             <Link to={EDITORIAL_ITEMS[3].url} className="block w-full h-full">
               <div className="absolute inset-0 overflow-hidden">
                 <img
                   src={EDITORIAL_ITEMS[3].image}
                   alt={EDITORIAL_ITEMS[3].title}
-                  className="w-full h-full object-contain bg-[#F5F2ED]"
+                  className="w-full h-full object-cover"
+                  style={{
+                    transform: 'scale(1.18)',
+                    transformOrigin: 'center center',
+                  }}
                   loading="lazy"
                 />
               </div>

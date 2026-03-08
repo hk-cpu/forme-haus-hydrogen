@@ -1,19 +1,37 @@
 import {flattenConnection, Image} from '@shopify/hydrogen';
 
-import type {OrderCardFragment} from 'customer-accountapi.generated';
 import {Heading, Text} from '~/components/Text';
 import {Link} from '~/components/Link';
 import {statusMessage} from '~/lib/utils';
 
-export function OrderCard({order}: {order: OrderCardFragment}) {
+// Storefront API order type (from customer.orders query)
+type StorefrontOrder = {
+  id: string;
+  orderNumber: number;
+  processedAt: string;
+  financialStatus: string;
+  fulfillmentStatus: string;
+  currentTotalPrice: {amount: string; currencyCode: string};
+  lineItems: {
+    edges: Array<{
+      node: {
+        title: string;
+        variant?: {
+          image?: {url: string; altText?: string; width?: number; height?: number};
+        };
+      };
+    }>;
+  };
+};
+
+export function OrderCard({order}: {order: StorefrontOrder}) {
   if (!order?.id) return null;
 
-  const [legacyOrderId, key] = order!.id!.split('/').pop()!.split('?');
-  const lineItems = flattenConnection(order?.lineItems);
-  const fulfillmentStatus = flattenConnection(order?.fulfillments)[0]?.status;
-  const url = key
-    ? `/account/orders/${legacyOrderId}?${key}`
-    : `/account/orders/${legacyOrderId}`;
+  const legacyOrderId = order.id.split('/').pop();
+  const lineItems = flattenConnection(order.lineItems);
+  const fulfillmentStatus = order.fulfillmentStatus;
+  const url = `/account/orders/${legacyOrderId}`;
+  const firstImage = lineItems[0]?.variant?.image;
 
   return (
     <li className="grid text-center border border-[#F0EAE6]/10 rounded-sm bg-[#121212]/30 backdrop-blur-sm transition-all hover:bg-[#121212]/50">
@@ -22,20 +40,20 @@ export function OrderCard({order}: {order: OrderCardFragment}) {
         to={url}
         prefetch="intent"
       >
-        {lineItems[0].image && (
+        {firstImage && (
           <div className="aspect-square bg-white/5 overflow-hidden">
             <Image
               width={168}
               height={168}
               className="w-full h-full object-cover transition-transform duration-700 ease-out hover:scale-105"
-              alt={lineItems[0].image?.altText ?? 'Order image'}
-              src={lineItems[0].image.url}
+              alt={firstImage.altText ?? 'Order image'}
+              src={firstImage.url}
             />
           </div>
         )}
         <div
           className={`flex-col justify-center text-left ${
-            !lineItems[0].image && 'md:col-span-2'
+            !firstImage && 'md:col-span-2'
           }`}
         >
           <Heading
@@ -55,7 +73,7 @@ export function OrderCard({order}: {order: OrderCardFragment}) {
                 size="fine"
                 className="text-[#F0EAE6]/60 uppercase tracking-widest text-xs"
               >
-                Order No. {order.number}
+                Order No. {order.orderNumber}
               </Text>
             </dd>
             <dt className="sr-only">Order Date</dt>
@@ -73,12 +91,12 @@ export function OrderCard({order}: {order: OrderCardFragment}) {
                 <dd className="mt-2">
                   <span
                     className={`px-3 py-1 text-[10px] uppercase tracking-widest font-medium rounded-full ${
-                      fulfillmentStatus === 'SUCCESS'
+                      fulfillmentStatus === 'FULFILLED'
                         ? 'bg-[#C4A484]/20 text-[#C4A484] border border-[#C4A484]/20'
                         : 'bg-white/5 text-[#F0EAE6]/60 border border-white/10'
                     }`}
                   >
-                    <Text size="fine">{statusMessage(fulfillmentStatus)}</Text>
+                    <Text size="fine">{statusMessage(fulfillmentStatus as any)}</Text>
                   </span>
                 </dd>
               </>
@@ -101,31 +119,3 @@ export function OrderCard({order}: {order: OrderCardFragment}) {
   );
 }
 
-export const ORDER_CARD_FRAGMENT = `#graphql
-  fragment OrderCard on Order {
-    id
-    orderNumber
-    processedAt
-    financialStatus
-    fulfillmentStatus
-    currentTotalPrice {
-      amount
-      currencyCode
-    }
-    lineItems(first: 2) {
-      edges {
-        node {
-          variant {
-            image {
-              url
-              altText
-              height
-              width
-            }
-          }
-          title
-        }
-      }
-    }
-  }
-`;
