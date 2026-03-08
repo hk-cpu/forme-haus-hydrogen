@@ -72,10 +72,15 @@ export const loader = async ({
     });
   }
 
+  // Filter out system collections that shouldn't be shown
+  const filteredNodes = collections.nodes.filter(
+    (c: any) => c.handle !== 'home-page' && c.handle !== 'homepage' && c.handle !== 'frontpage'
+  );
+
   // Prepend synthetic collections to the nodes
   collections = {
     ...collections,
-    nodes: [...syntheticCollections, ...collections.nodes],
+    nodes: [...syntheticCollections, ...filteredNodes],
   };
 
   const seo = seoPayload.listCollections({
@@ -148,6 +153,11 @@ function CollectionCard({
   collection: Collection;
   loading?: HTMLImageElement['loading'];
 }) {
+  // Skip rendering system collections
+  if (collection.handle === 'home-page' || collection.handle === 'homepage' || collection.handle === 'frontpage') {
+    return null;
+  }
+  
   const imgSrc = COLLECTION_HEROS[collection.handle] || collection.image?.url;
 
   return (
