@@ -217,6 +217,7 @@ export default function EditorialSection() {
             viewport={{once: true}}
             transition={{delay: 0.4, duration: 0.6}}
             className="relative overflow-hidden rounded-2xl aspect-[4/3] group bg-gradient-to-br from-[#F5F2ED] to-[#E8E4E0]"
+          >
             <Link to="/collections" className="block w-full h-full">
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
                 <span className="font-serif text-xl md:text-2xl text-[#4A3C31] italic mb-1">
