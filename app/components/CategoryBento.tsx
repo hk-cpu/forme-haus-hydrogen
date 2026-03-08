@@ -88,7 +88,7 @@ function CategoryCard({
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link to={category.url} className="block w-full h-full">
-        {/* Full-bleed background image - zoomed to hide watermark */}
+        {/* Full-bleed background image - zoomed 20% to hide watermark */}
         {!imageError ? (
           <img
             src={category.image}
@@ -97,7 +97,7 @@ function CategoryCard({
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
             style={{
-              transform: 'scale(1.1)',
+              transform: 'scale(1.20)',
               transformOrigin: 'center center',
             }}
             loading={index === 0 ? 'eager' : 'lazy'}

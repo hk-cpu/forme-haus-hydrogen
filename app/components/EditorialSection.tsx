@@ -72,17 +72,17 @@ function EditorialCard({
       className={`group relative overflow-hidden rounded-2xl bg-[#E8E4E0] ${className} ${aspectClass}`}
     >
       <Link to={item.url} className="block w-full h-full">
-        {/* Image Container - Zoomed to hide Gemini watermark at edges */}
+        {/* Image Container - Zoomed 20% to hide Gemini watermark at edges */}
         <div className="absolute inset-0 overflow-hidden">
           {!imageError ? (
             <img
               src={item.image}
               alt={item.title}
-              className={`w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 ${
+              className={`w-full h-full object-cover transition-all duration-700 ease-out ${
                 imageLoaded ? 'opacity-100' : 'opacity-0'
               }`}
               style={{
-                transform: imageLoaded ? 'scale(1.12)' : 'scale(1.12)',
+                transform: 'scale(1.20)',
                 transformOrigin: 'center center',
               }}
               loading={index < 2 ? 'eager' : 'lazy'}
@@ -103,8 +103,8 @@ function EditorialCard({
           )}
         </div>
 
-        {/* Vignette overlay to smoothly blend edges */}
-        <div className="absolute inset-0 shadow-[inset_0_0_60px_rgba(0,0,0,0.15)] pointer-events-none" />
+        {/* Vignette overlay to hide cropped edges */}
+        <div className="absolute inset-0 shadow-[inset_0_0_80px_rgba(0,0,0,0.25)] pointer-events-none" />
 
         {/* Gradient overlay - positioned at bottom for text readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
@@ -260,7 +260,7 @@ export default function EditorialSection() {
                 alt="Journal"
                 className="w-full h-full object-cover opacity-80"
                 style={{
-                  transform: 'scale(1.12)',
+                  transform: 'scale(1.20)',
                   transformOrigin: 'center center',
                 }}
               />

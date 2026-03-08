@@ -135,14 +135,14 @@ export default function Homepage() {
                     to={item.to}
                     className="space-y-3 cursor-pointer group block"
                   >
-                    {/* Image Container - zoomed to hide watermark */}
+                    {/* Image Container - zoomed 20% to hide watermark */}
                     <div className="aspect-[4/3] relative overflow-hidden bg-[#EDE8E3] rounded-lg">
                       <img
                         src={item.img}
                         alt={item.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        className="w-full h-full object-cover"
                         style={{
-                          transform: 'scale(1.12)',
+                          transform: 'scale(1.20)',
                           transformOrigin: 'center center',
                         }}
                         loading={i < 2 ? 'eager' : 'lazy'}
@@ -150,8 +150,8 @@ export default function Homepage() {
                           (e.target as HTMLImageElement).style.display = 'none';
                         }}
                       />
-                      {/* Vignette to blend edges */}
-                      <div className="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.1)] pointer-events-none" />
+                      {/* Vignette to hide cropped edges */}
+                      <div className="absolute inset-0 shadow-[inset_0_0_50px_rgba(0,0,0,0.2)] pointer-events-none" />
                     </div>
                     <h3 className="font-serif text-base md:text-lg text-[#4A3C31] font-light tracking-wide group-hover:text-[#a87441] transition-colors duration-500">
                       {item.title}
