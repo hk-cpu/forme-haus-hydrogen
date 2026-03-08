@@ -72,7 +72,15 @@ function CounterNumber({value, suffix}: {value: number; suffix: string}) {
 }
 
 // Single stat card
-function StatCard({stat, index, isRTL}: {stat: Stat; index: number; isRTL: boolean}) {
+function StatCard({
+  stat,
+  index,
+  isRTL,
+}: {
+  stat: Stat;
+  index: number;
+  isRTL: boolean;
+}) {
   return (
     <motion.div
       initial={{opacity: 0, y: 30}}
@@ -95,7 +103,7 @@ function StatCard({stat, index, isRTL}: {stat: Stat; index: number; isRTL: boole
           >
             <CounterNumber value={stat.value} suffix={stat.suffix} />
           </motion.div>
-          
+
           {/* Decorative line */}
           <motion.div
             className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2px] bg-gradient-to-r from-transparent via-[#a87441] to-transparent"
@@ -116,7 +124,8 @@ function StatCard({stat, index, isRTL}: {stat: Stat; index: number; isRTL: boole
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl"
         style={{
-          background: 'radial-gradient(ellipse at center, rgba(168, 116, 65, 0.05) 0%, transparent 70%)',
+          background:
+            'radial-gradient(ellipse at center, rgba(168, 116, 65, 0.05) 0%, transparent 70%)',
         }}
       />
     </motion.div>
@@ -134,7 +143,10 @@ export function StatsSection() {
       className="py-12 md:py-16 border-t border-b border-[#8B8076]/10"
       dir={isRTL ? 'rtl' : 'ltr'}
     >
-      <div className="max-w-[1200px] mx-auto" style={{padding: '0 var(--page-gutter)'}}>
+      <div
+        className="max-w-[1200px] mx-auto"
+        style={{padding: '0 var(--page-gutter)'}}
+      >
         {/* Section Header */}
         <motion.div
           initial={{opacity: 0, y: 20}}

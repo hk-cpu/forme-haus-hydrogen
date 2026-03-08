@@ -147,7 +147,12 @@ export function Section({
   return (
     <Component {...props} className={styles}>
       {heading && (
-        <Heading size="lead" className={`${padding === 'y' ? paddings['x'] : ''} text-2xl md:text-3xl`}>
+        <Heading
+          size="lead"
+          className={`${
+            padding === 'y' ? paddings['x'] : ''
+          } text-2xl md:text-3xl`}
+        >
           {heading}
         </Heading>
       )}

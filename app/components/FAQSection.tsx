@@ -16,43 +16,55 @@ const FAQS: FAQ[] = [
     id: '1',
     question: 'Do you offer international shipping?',
     questionAr: 'هل تقدمون الشحن الدولي؟',
-    answer: 'Currently, we ship within Saudi Arabia only. We are working on expanding to GCC countries soon. Stay tuned for updates!',
-    answerAr: 'حالياً، نقوم بالشحن داخل المملكة العربية السعودية فقط. نعمل على التوسع في دول الخليج قريباً. تابعنا للتحديثات!',
+    answer:
+      'Currently, we ship within Saudi Arabia only. We are working on expanding to GCC countries soon. Stay tuned for updates!',
+    answerAr:
+      'حالياً، نقوم بالشحن داخل المملكة العربية السعودية فقط. نعمل على التوسع في دول الخليج قريباً. تابعنا للتحديثات!',
   },
   {
     id: '2',
     question: 'What iPhone models do you support?',
     questionAr: 'ما هي موديلات iPhone التي تدعمونها؟',
-    answer: 'We support iPhone 12 through iPhone 16 Pro Max, including Plus and Pro models. Each product page lists compatible models.',
-    answerAr: 'ندعم iPhone 12 حتى iPhone 16 Pro Max، بما في ذلك موديلات Plus و Pro. تدرج كل صفحة منتج الموديلات المتوافقة.',
+    answer:
+      'We support iPhone 12 through iPhone 16 Pro Max, including Plus and Pro models. Each product page lists compatible models.',
+    answerAr:
+      'ندعم iPhone 12 حتى iPhone 16 Pro Max، بما في ذلك موديلات Plus و Pro. تدرج كل صفحة منتج الموديلات المتوافقة.',
   },
   {
     id: '3',
     question: 'How long does shipping take?',
     questionAr: 'كم تستغرق عملية الشحن؟',
-    answer: 'Orders within Riyadh are delivered within 1-2 business days. Other cities in Saudi Arabia take 2-5 business days depending on location.',
-    answerAr: 'يتم توصيل الطلبات داخل الرياض خلال 1-2 يوم عمل. المدن الأخرى في السعودية تستغرق 2-5 أيام عمل حسب الموقع.',
+    answer:
+      'Orders within Riyadh are delivered within 1-2 business days. Other cities in Saudi Arabia take 2-5 business days depending on location.',
+    answerAr:
+      'يتم توصيل الطلبات داخل الرياض خلال 1-2 يوم عمل. المدن الأخرى في السعودية تستغرق 2-5 أيام عمل حسب الموقع.',
   },
   {
     id: '4',
     question: 'What is your return policy?',
     questionAr: 'ما هي سياسة الإرجاع لديكم؟',
-    answer: 'We accept returns within 14 days of delivery for unused items in original packaging. Contact our customer service to initiate a return.',
-    answerAr: 'نقبل الإرجاع خلال 14 يوماً من التوصيل للمنتجات غير المستخدمة في عبوتها الأصلية. تواصل مع خدمة العملاء لبدء عملية الإرجاع.',
+    answer:
+      'We accept returns within 14 days of delivery for unused items in original packaging. Contact our customer service to initiate a return.',
+    answerAr:
+      'نقبل الإرجاع خلال 14 يوماً من التوصيل للمنتجات غير المستخدمة في عبوتها الأصلية. تواصل مع خدمة العملاء لبدء عملية الإرجاع.',
   },
   {
     id: '5',
     question: 'Are your phone cases protective?',
     questionAr: 'هل حافظات الهاتف لديكم واقية؟',
-    answer: 'Yes! Our cases feature raised edges to protect the screen and camera, shock-absorbing materials, and precise cutouts for full functionality.',
-    answerAr: 'نعم! تتميز حافظاتنا بحواف مرتفعة لحماية الشاشة والكاميرا، ومواد ماصة للصدمات، وفتحات دقيقة للوظائف الكاملة.',
+    answer:
+      'Yes! Our cases feature raised edges to protect the screen and camera, shock-absorbing materials, and precise cutouts for full functionality.',
+    answerAr:
+      'نعم! تتميز حافظاتنا بحواف مرتفعة لحماية الشاشة والكاميرا، ومواد ماصة للصدمات، وفتحات دقيقة للوظائف الكاملة.',
   },
   {
     id: '6',
     question: 'Do you offer wholesale or bulk orders?',
     questionAr: 'هل تقدمون طلبات الجملة أو الكميات الكبيرة؟',
-    answer: 'Yes, we offer special pricing for bulk orders and corporate gifting. Contact us at wholesale@formehaus.me for more information.',
-    answerAr: 'نعم، نقدم أسعاراً خاصة للطلبات بالجملة والهدايا التسويقية. تواصل معنا على wholesale@formehaus.me للمزيد من المعلومات.',
+    answer:
+      'Yes, we offer special pricing for bulk orders and corporate gifting. Contact us at wholesale@formehaus.me for more information.',
+    answerAr:
+      'نعم، نقدم أسعاراً خاصة للطلبات بالجملة والهدايا التسويقية. تواصل معنا على wholesale@formehaus.me للمزيد من المعلومات.',
   },
 ];
 
@@ -145,7 +157,10 @@ export function FAQSection() {
 
   return (
     <section className="py-12 md:py-16" dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className="max-w-[1200px] mx-auto" style={{padding: '0 var(--page-gutter)'}}>
+      <div
+        className="max-w-[1200px] mx-auto"
+        style={{padding: '0 var(--page-gutter)'}}
+      >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
           {/* Left: Header */}
           <motion.div
@@ -161,19 +176,26 @@ export function FAQSection() {
             <p className="text-sm text-[#8B8076] mb-6 leading-relaxed">
               {isRTL
                 ? 'إليك الإجابات على الأسئلة الأكثر شيوعاً. إذا كنت بحاجة إلى مزيد من المساعدة، فلا تتردد في التواصل معنا.'
-                : t('faq.subtitle', 'Here are answers to our most common questions. If you need further help, feel free to reach out.')}
+                : t(
+                    'faq.subtitle',
+                    'Here are answers to our most common questions. If you need further help, feel free to reach out.',
+                  )}
             </p>
 
             {/* Contact CTA */}
             <div className="hidden lg:block">
               <p className="text-xs text-[#8B8076] uppercase tracking-wider mb-3">
-                {isRTL ? 'ما زلت لديك سؤال؟' : t('faq.stillHaveQuestions', 'Still have questions?')}
+                {isRTL
+                  ? 'ما زلت لديك سؤال؟'
+                  : t('faq.stillHaveQuestions', 'Still have questions?')}
               </p>
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 text-sm text-[#a87441] hover:text-[#8B5E3C] transition-colors group"
               >
-                <span>{isRTL ? 'تواصل معنا' : t('faq.contactUs', 'Contact Us')}</span>
+                <span>
+                  {isRTL ? 'تواصل معنا' : t('faq.contactUs', 'Contact Us')}
+                </span>
                 <motion.svg
                   width="16"
                   height="16"
@@ -184,7 +206,11 @@ export function FAQSection() {
                   className={`${isRTL ? 'rotate-180' : ''}`}
                   whileHover={{x: isRTL ? -4 : 4}}
                 >
-                  <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                  <path
+                    d="M5 12h14M12 5l7 7-7 7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </motion.svg>
               </Link>
             </div>
@@ -207,13 +233,17 @@ export function FAQSection() {
             {/* Mobile Contact CTA */}
             <div className="lg:hidden mt-6 text-center">
               <p className="text-xs text-[#8B8076] uppercase tracking-wider mb-2">
-                {isRTL ? 'ما زلت لديك سؤال؟' : t('faq.stillHaveQuestions', 'Still have questions?')}
+                {isRTL
+                  ? 'ما زلت لديك سؤال؟'
+                  : t('faq.stillHaveQuestions', 'Still have questions?')}
               </p>
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 text-sm text-[#a87441] hover:text-[#8B5E3C] transition-colors"
               >
-                <span>{isRTL ? 'تواصل معنا' : t('faq.contactUs', 'Contact Us')}</span>
+                <span>
+                  {isRTL ? 'تواصل معنا' : t('faq.contactUs', 'Contact Us')}
+                </span>
                 <svg
                   width="16"
                   height="16"
@@ -223,7 +253,11 @@ export function FAQSection() {
                   strokeWidth="2"
                   className={isRTL ? 'rotate-180' : ''}
                 >
-                  <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                  <path
+                    d="M5 12h14M12 5l7 7-7 7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </Link>
             </div>

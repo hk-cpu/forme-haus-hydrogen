@@ -185,7 +185,7 @@ export function FooterAccordion() {
           </div>
         ))}
       </div>
-      
+
       {/* Brand Attribution - Legal Protection */}
       <div className="border-t border-[#a87441]/10 py-6 px-5">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">

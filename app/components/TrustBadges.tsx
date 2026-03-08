@@ -1,6 +1,6 @@
 /**
  * TrustBadges Component
- * 
+ *
  * Saudi e-commerce trust indicators for pre-launch compliance:
  * - Maroof (Saudi Commercial Registration verification)
  * - Muwathooq (Consumer protection trust mark)
@@ -23,8 +23,8 @@ interface TrustBadgesProps {
 // Maroof Logo SVG (Saudi Commercial Registration)
 function MaroofIcon({className = ''}: {className?: string}) {
   return (
-    <svg 
-      viewBox="0 0 80 32" 
+    <svg
+      viewBox="0 0 80 32"
       className={`h-8 w-auto ${className}`}
       aria-label="Maroof Verified"
     >
@@ -71,14 +71,21 @@ function MaroofIcon({className = ''}: {className?: string}) {
 // Muwathooq Logo SVG (Consumer Protection Trust Mark)
 function MuwathooqIcon({className = ''}: {className?: string}) {
   return (
-    <svg 
-      viewBox="0 0 80 32" 
+    <svg
+      viewBox="0 0 80 32"
       className={`h-8 w-auto ${className}`}
       aria-label="Muwathooq Trusted"
     >
       {/* Circular badge */}
       <circle cx="16" cy="16" r="14" fill="#C62828" />
-      <circle cx="16" cy="16" r="11" fill="none" stroke="#fff" strokeWidth="1.5" />
+      <circle
+        cx="16"
+        cy="16"
+        r="11"
+        fill="none"
+        stroke="#fff"
+        strokeWidth="1.5"
+      />
       {/* Star */}
       <path
         d="M16 8l2 5h5l-4 3 1.5 5-4.5-3-4.5 3 1.5-5-4-3h5z"
@@ -111,8 +118,8 @@ function MuwathooqIcon({className = ''}: {className?: string}) {
 // Secure Payment Icon
 function SecurePaymentIcon({className = ''}: {className?: string}) {
   return (
-    <svg 
-      viewBox="0 0 24 24" 
+    <svg
+      viewBox="0 0 24 24"
       className={`h-5 w-5 ${className}`}
       fill="none"
       stroke="currentColor"
@@ -128,8 +135,8 @@ function SecurePaymentIcon({className = ''}: {className?: string}) {
 // Trial Order Ready Icon
 function TrialOrderIcon({className = ''}: {className?: string}) {
   return (
-    <svg 
-      viewBox="0 0 24 24" 
+    <svg
+      viewBox="0 0 24 24"
       className={`h-5 w-5 ${className}`}
       fill="none"
       stroke="currentColor"
@@ -155,7 +162,7 @@ export function TrustBadges({
   // Compact version for product cards/checkout
   if (variant === 'compact') {
     return (
-      <div 
+      <div
         className={`flex items-center gap-3 ${className}`}
         dir={isRTL ? 'rtl' : 'ltr'}
       >
@@ -166,15 +173,24 @@ export function TrustBadges({
             title={isRTL ? 'متجر معتمد من معروف' : 'Maroof Verified Store'}
           >
             <svg viewBox="0 0 20 20" className="w-4 h-4">
-              <path d="M10 2l6 3v6c0 4-3 6-6 7-3-1-6-3-6-7V5l6-3z" fill="#1B5E20" />
-              <path d="M7 10l2 2 4-4" stroke="#fff" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+              <path
+                d="M10 2l6 3v6c0 4-3 6-6 7-3-1-6-3-6-7V5l6-3z"
+                fill="#1B5E20"
+              />
+              <path
+                d="M7 10l2 2 4-4"
+                stroke="#fff"
+                strokeWidth="1.5"
+                fill="none"
+                strokeLinecap="round"
+              />
             </svg>
             <span className="text-[10px] font-medium text-[#1B5E20]">
               {isRTL ? 'معروف' : 'Maroof'}
             </span>
           </motion.div>
         )}
-        
+
         {showSecurePayment && (
           <motion.div
             whileHover={{scale: 1.05}}
@@ -193,14 +209,14 @@ export function TrustBadges({
   // Footer version - minimal
   if (variant === 'footer') {
     return (
-      <div 
+      <div
         className={`flex items-center gap-4 ${className}`}
         dir={isRTL ? 'rtl' : 'ltr'}
       >
         {showMaroof && (
-          <a 
-            href="https://maroof.sa" 
-            target="_blank" 
+          <a
+            href="https://maroof.sa"
+            target="_blank"
             rel="noopener noreferrer"
             className="opacity-70 hover:opacity-100 transition-opacity"
           >
@@ -208,8 +224,8 @@ export function TrustBadges({
           </a>
         )}
         {showMuwathooq && (
-          <a 
-            href="#" 
+          <a
+            href="#"
             className="opacity-70 hover:opacity-100 transition-opacity"
           >
             <MuwathooqIcon className="h-6" />
@@ -264,8 +280,12 @@ export function TrustBadges({
               <TrialOrderIcon className="h-4 w-4 text-[#a87441]" />
             </div>
             <div className="text-[10px] leading-tight">
-              <p className="font-medium">{isRTL ? 'جاهز للتجربة' : 'Trial Ready'}</p>
-              <p className="text-[#8B8076]">{isRTL ? 'توصيل سريع' : 'Fast Delivery'}</p>
+              <p className="font-medium">
+                {isRTL ? 'جاهز للتجربة' : 'Trial Ready'}
+              </p>
+              <p className="text-[#8B8076]">
+                {isRTL ? 'توصيل سريع' : 'Fast Delivery'}
+              </p>
             </div>
           </div>
         )}
@@ -274,10 +294,9 @@ export function TrustBadges({
       {/* Payment Links Placeholder */}
       <div className="mt-3 pt-3 border-t border-[#8B8076]/10">
         <p className="text-[10px] text-[#8B8076] text-center">
-          {isRTL 
+          {isRTL
             ? 'طرق دفع متعددة: مدى، فيزا، ماستركارد، آبل باي، تابي، تمارا'
-            : 'Multiple payment options: Mada, Visa, Mastercard, Apple Pay, Tabby, Tamara'
-          }
+            : 'Multiple payment options: Mada, Visa, Mastercard, Apple Pay, Tabby, Tamara'}
         </p>
       </div>
     </motion.div>

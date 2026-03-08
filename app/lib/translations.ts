@@ -53,7 +53,8 @@ export const translations = {
 
     // FAQ Section
     'faq.title': 'FAQs',
-    'faq.subtitle': 'Here are answers to our most common questions. If you need further help, feel free to reach out.',
+    'faq.subtitle':
+      'Here are answers to our most common questions. If you need further help, feel free to reach out.',
     'faq.stillHaveQuestions': 'Still have questions?',
     'faq.contactUs': 'Contact Us',
 
@@ -255,7 +256,8 @@ export const translations = {
 
     // FAQ Section
     'faq.title': 'الأسئلة الشائعة',
-    'faq.subtitle': 'إليك الإجابات على الأسئلة الأكثر شيوعاً. إذا كنت بحاجة إلى مزيد من المساعدة، فلا تتردد في التواصل معنا.',
+    'faq.subtitle':
+      'إليك الإجابات على الأسئلة الأكثر شيوعاً. إذا كنت بحاجة إلى مزيد من المساعدة، فلا تتردد في التواصل معنا.',
     'faq.stillHaveQuestions': 'ما زلت لديك أسئلة؟',
     'faq.contactUs': 'تواصل معنا',
 

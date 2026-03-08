@@ -1,6 +1,10 @@
 import {useState, useEffect, useRef} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
-import {Link as RemixLink, useFetcher, useRouteLoaderData} from '@remix-run/react';
+import {
+  Link as RemixLink,
+  useFetcher,
+  useRouteLoaderData,
+} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
 import {useDebounce} from 'react-use';
 import {useUI} from '~/context/UIContext';
@@ -9,19 +13,40 @@ import type {RootLoader} from '~/root';
 
 const Icons = {
   Search: () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
       <circle cx="10" cy="10" r="7" />
       <line x1="15" y1="15" x2="21" y2="21" />
     </svg>
   ),
   Close: () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <line x1="4" y1="4" x2="20" y2="20" />
       <line x1="20" y1="4" x2="4" y2="20" />
     </svg>
   ),
   ArrowRight: () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
       <path d="M5 12h14M12 5l7 7-7 7" />
     </svg>
   ),
@@ -103,7 +128,11 @@ export function SearchOverlay() {
   // Predictive search — locale-aware URL
   const search = () => {
     if (!query || query.length < 2) return;
-    fetcher.load(`${pathPrefix}/api/predictive-search?q=${encodeURIComponent(query)}&limit=6`);
+    fetcher.load(
+      `${pathPrefix}/api/predictive-search?q=${encodeURIComponent(
+        query,
+      )}&limit=6`,
+    );
   };
 
   useDebounce(search, 300, [query]);
@@ -186,7 +215,6 @@ export function SearchOverlay() {
             {/* Results Dropdown */}
             <div className="bg-[#151515]/[0.98] backdrop-blur-2xl max-h-[65vh] overflow-y-auto">
               <div className="container mx-auto px-6 lg:px-16 py-5">
-
                 {/* Search Results */}
                 {hasResults ? (
                   <motion.div
@@ -199,7 +227,9 @@ export function SearchOverlay() {
                         {t('search.results', 'Results')} ({totalResults})
                       </span>
                       <RemixLink
-                        to={`${pathPrefix}/search?q=${encodeURIComponent(query)}`}
+                        to={`${pathPrefix}/search?q=${encodeURIComponent(
+                          query,
+                        )}`}
                         className="text-[#a87441] text-[11px] uppercase tracking-[0.15em] hover:text-[#D4AF87] transition-colors flex items-center gap-1"
                         onClick={handleClose}
                       >
@@ -239,7 +269,9 @@ export function SearchOverlay() {
                               </h4>
                               {product.priceRange?.minVariantPrice && (
                                 <p className="text-[#AA9B8F] text-xs mt-0.5">
-                                  <Money data={product.priceRange.minVariantPrice} />
+                                  <Money
+                                    data={product.priceRange.minVariantPrice}
+                                  />
                                 </p>
                               )}
                             </RemixLink>

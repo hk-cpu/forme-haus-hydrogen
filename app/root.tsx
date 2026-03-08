@@ -48,7 +48,8 @@ function ScrollProgress() {
 
   const handleScroll = useCallback(() => {
     const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const docHeight =
+      document.documentElement.scrollHeight - window.innerHeight;
     if (docHeight > 0) {
       setProgress((scrollTop / docHeight) * 100);
     }

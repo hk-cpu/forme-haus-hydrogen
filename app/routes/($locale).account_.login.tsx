@@ -44,11 +44,14 @@ export async function action({context, request}: ActionFunctionArgs) {
 
   try {
     if (formId === 'register') {
-      const {data, errors}: any = await storefront.mutate(CUSTOMER_CREATE_MUTATION, {
-        variables: {
-          input: {email, password},
+      const {data, errors}: any = await storefront.mutate(
+        CUSTOMER_CREATE_MUTATION,
+        {
+          variables: {
+            input: {email, password},
+          },
         },
-      });
+      );
 
       if (errors?.length) {
         return json(
@@ -134,9 +137,9 @@ export default function Login() {
   }, [data]);
 
   return (
-    <div 
+    <div
       className="relative min-h-screen w-full overflow-hidden bg-cover bg-center flex flex-col items-center justify-center text-[#2C2419]"
-      style={{ backgroundImage: 'url("/brand/silk-texture.png")' }}
+      style={{backgroundImage: 'url("/brand/silk-texture.png")'}}
     >
       {/* Dark overlay for contrast */}
       <div className="absolute inset-0 bg-black/10 backdrop-blur-[2px]"></div>
@@ -163,13 +166,11 @@ export default function Login() {
       </Suspense>
 
       <div className="relative z-10 w-full max-w-[480px] mx-auto px-6 py-12">
-        
         {/* Unified White Container */}
         <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-white/50 p-8 md:p-12 overflow-hidden relative">
-          
           {/* Subtle top glare */}
           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white to-transparent opacity-80"></div>
-          
+
           {/* Logo & Header */}
           <div className="flex flex-col items-center gap-6 mb-10">
             <Link to="/" className="group cursor-pointer">
@@ -181,7 +182,10 @@ export default function Login() {
             </Link>
 
             <div className="text-center space-y-2">
-              <h1 className="font-serif text-3xl md:text-4xl text-[#2C2419]" style={{letterSpacing: '0.02em'}}>
+              <h1
+                className="font-serif text-3xl md:text-4xl text-[#2C2419]"
+                style={{letterSpacing: '0.02em'}}
+              >
                 {isRegistering ? 'Join Formé Haus' : 'Welcome Back'}
               </h1>
               <p className="text-[11px] tracking-[0.25em] font-sans text-[#8B8076] uppercase">
@@ -222,8 +226,8 @@ export default function Login() {
                   autoComplete="email"
                   className="peer w-full bg-[#fcfbf9] border border-[#E5DFD9] pt-6 pb-2 px-4 text-[#2C2419] focus:outline-none focus:border-[#a87441] focus:bg-white focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[14px] font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
                 />
-                <label 
-                  htmlFor="email" 
+                <label
+                  htmlFor="email"
                   className="absolute text-[11px] uppercase tracking-[0.2em] text-[#AA9B8F] top-4 left-4 transition-all duration-300 transform -translate-y-2.5 scale-[0.85] origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-[0.85] peer-focus:-translate-y-2.5 peer-focus:text-[#a87441] pointer-events-none"
                 >
                   Email Address
@@ -238,11 +242,13 @@ export default function Login() {
                   id="password"
                   placeholder=" "
                   required
-                  autoComplete={isRegistering ? 'new-password' : 'current-password'}
+                  autoComplete={
+                    isRegistering ? 'new-password' : 'current-password'
+                  }
                   className="peer w-full bg-[#fcfbf9] border border-[#E5DFD9] pt-6 pb-2 px-4 text-[#2C2419] focus:outline-none focus:border-[#a87441] focus:bg-white focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[14px] font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
                 />
-                <label 
-                  htmlFor="password" 
+                <label
+                  htmlFor="password"
                   className="absolute text-[11px] uppercase tracking-[0.2em] text-[#AA9B8F] top-4 left-4 transition-all duration-300 transform -translate-y-2.5 scale-[0.85] origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-[0.85] peer-focus:-translate-y-2.5 peer-focus:text-[#a87441] pointer-events-none"
                 >
                   Password
@@ -250,41 +256,41 @@ export default function Login() {
               </div>
             </div>
 
-          <div className="flex flex-col gap-4 pt-2">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full py-4 bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] transition-all duration-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-            >
-              {isSubmitting
-                ? 'Processing...'
-                : isRegistering
-                ? 'Create Account'
-                : 'Sign In'}
-            </button>
-
-            <div className="flex flex-col items-center gap-3 pt-2">
-              {!isRegistering && (
-                <Link
-                  to="/account/recover"
-                  className="text-[10px] uppercase tracking-[0.15em] text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-300"
-                >
-                  Forgot Password?
-                </Link>
-              )}
-
+            <div className="flex flex-col gap-4 pt-2">
               <button
-                type="button"
-                onClick={() => setIsRegistering(!isRegistering)}
-                className="text-[10px] uppercase tracking-[0.15em] text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 font-semibold"
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full py-4 bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] transition-all duration-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
               >
-                {isRegistering
-                  ? 'Already have an account? Sign In'
-                  : 'New to Formé Haus? Create Account'}
+                {isSubmitting
+                  ? 'Processing...'
+                  : isRegistering
+                  ? 'Create Account'
+                  : 'Sign In'}
               </button>
+
+              <div className="flex flex-col items-center gap-3 pt-2">
+                {!isRegistering && (
+                  <Link
+                    to="/account/recover"
+                    className="text-[10px] uppercase tracking-[0.15em] text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-300"
+                  >
+                    Forgot Password?
+                  </Link>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => setIsRegistering(!isRegistering)}
+                  className="text-[10px] uppercase tracking-[0.15em] text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 font-semibold"
+                >
+                  {isRegistering
+                    ? 'Already have an account? Sign In'
+                    : 'New to Formé Haus? Create Account'}
+                </button>
+              </div>
             </div>
-          </div>
-        </Form>
+          </Form>
         </div>
       </div>
     </div>

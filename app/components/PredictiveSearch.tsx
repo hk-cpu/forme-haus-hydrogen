@@ -120,16 +120,16 @@ export function PredictiveSearch({
                         {/* Image */}
                         <div className="w-12 h-16 bg-[#F0EAE6]/5 overflow-hidden border border-white/10 flex items-center justify-center">
                           {product.image ? (
-                             <Image
-                               data={product.image}
-                               alt={product.title}
-                               width={48}
-                               height={64}
-                               className="w-full h-full object-cover"
-                             />
-                           ) : (
-                             <div className="w-full h-full border border-white/5" />
-                           )}
+                            <Image
+                              data={product.image}
+                              alt={product.title}
+                              width={48}
+                              height={64}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full border border-white/5" />
+                          )}
                         </div>
 
                         <div>
@@ -138,10 +138,10 @@ export function PredictiveSearch({
                           </p>
                           {/* Price */}
                           {product.variants?.nodes?.[0]?.price && (
-                             <div className="text-[#F0EAE6]/60 text-xs mt-1">
-                               <Money data={product.variants.nodes[0].price} />
-                             </div>
-                           )}
+                            <div className="text-[#F0EAE6]/60 text-xs mt-1">
+                              <Money data={product.variants.nodes[0].price} />
+                            </div>
+                          )}
                         </div>
                       </RemixLink>
                     </li>

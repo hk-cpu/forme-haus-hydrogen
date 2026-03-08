@@ -47,9 +47,9 @@ export const loader = async ({
 
   // Inject synthetic collections (New In, Sale) if they don't exist natively.
   const existingHandles = collections.nodes.map((c: any) => c.handle);
-  
+
   const syntheticCollections = [];
-  
+
   if (!existingHandles.includes('new-in')) {
     syntheticCollections.push({
       id: 'synthetic-new-in',
@@ -98,11 +98,15 @@ export default function Collections() {
     <div className="min-h-screen bg-[#F9F5F0] py-16">
       <div className="mx-auto max-w-[1440px] px-[var(--page-gutter)]">
         <div className="mb-12 text-center">
-          <span className="block text-[10px] uppercase tracking-[0.35em] text-[#a87441] mb-4">Discover</span>
-          <h1 className="font-serif text-4xl md:text-5xl text-[#4A3C31]">All Collections</h1>
+          <span className="block text-[10px] uppercase tracking-[0.35em] text-[#a87441] mb-4">
+            Discover
+          </span>
+          <h1 className="font-serif text-4xl md:text-5xl text-[#4A3C31]">
+            All Collections
+          </h1>
           <div className="mx-auto mt-6 h-px w-20 bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
         </div>
-        
+
         <Pagination connection={collections}>
           {({nodes, isLoading, PreviousLink, NextLink}) => (
             <>
@@ -168,7 +172,9 @@ function CollectionCard({
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-80" />
       <div className="absolute bottom-6 left-6 right-6">
-        <h3 className="font-serif text-2xl text-[#F0EAE6]">{collection.title}</h3>
+        <h3 className="font-serif text-2xl text-[#F0EAE6]">
+          {collection.title}
+        </h3>
         <div className="mt-2 h-px w-0 bg-[#D4AF87] transition-all duration-500 group-hover:w-12" />
       </div>
     </Link>

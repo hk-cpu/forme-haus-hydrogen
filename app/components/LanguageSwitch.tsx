@@ -18,8 +18,15 @@ export default function LanguageSwitch() {
     const search = location.search || '';
 
     // Supported locale prefixes
-    const localePrefixes = ['/ar-sa', '/en-sa', '/en-us', '/en-ad', '/en-at', '/en-au'];
-    
+    const localePrefixes = [
+      '/ar-sa',
+      '/en-sa',
+      '/en-us',
+      '/en-ad',
+      '/en-at',
+      '/en-au',
+    ];
+
     if (isArabic) {
       // Switch from Arabic to English (default)
       // Remove any locale prefix

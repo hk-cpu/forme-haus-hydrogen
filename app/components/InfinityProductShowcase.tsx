@@ -249,7 +249,11 @@ export function InfinityProductShowcase() {
               className={isRTL ? 'rotate-180' : ''}
               whileHover={{x: isRTL ? -4 : 4}}
             >
-              <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M5 12h14M12 5l7 7-7 7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </motion.svg>
           </Link>
         </motion.div>
@@ -261,23 +265,26 @@ export function InfinityProductShowcase() {
         <div
           className="absolute left-0 top-0 bottom-0 w-20 md:w-40 z-10 pointer-events-none"
           style={{
-            background: 'linear-gradient(to right, #F9F5F0 0%, transparent 100%)',
+            background:
+              'linear-gradient(to right, #F9F5F0 0%, transparent 100%)',
           }}
         />
         <div
           className="absolute right-0 top-0 bottom-0 w-20 md:w-40 z-10 pointer-events-none"
           style={{
-            background: 'linear-gradient(to left, #F9F5F0 0%, transparent 100%)',
+            background:
+              'linear-gradient(to left, #F9F5F0 0%, transparent 100%)',
           }}
         />
 
         {/* Scrolling Track */}
-        <motion.div
-          className="flex py-4"
-          style={{x: smoothX}}
-        >
+        <motion.div className="flex py-4" style={{x: smoothX}}>
           {LOOP_PRODUCTS.map((product, index) => (
-            <ProductCard key={`${product.id}-${index}`} product={product} index={index} />
+            <ProductCard
+              key={`${product.id}-${index}`}
+              product={product}
+              index={index}
+            />
           ))}
         </motion.div>
 

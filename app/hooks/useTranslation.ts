@@ -22,7 +22,12 @@ export function useTranslation() {
   const isRTL = lang === 'AR';
 
   function t(key: TranslationKey | string, defaultText?: string): string {
-    return translations[lang][key as TranslationKey] ?? translations.EN[key as TranslationKey] ?? defaultText ?? key;
+    return (
+      translations[lang][key as TranslationKey] ??
+      translations.EN[key as TranslationKey] ??
+      defaultText ??
+      key
+    );
   }
 
   return {t, lang, isRTL, dir: isRTL ? ('rtl' as const) : ('ltr' as const)};

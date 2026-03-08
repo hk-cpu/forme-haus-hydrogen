@@ -26,18 +26,12 @@
         "name": "chromium",
         "testDir": "C:/Users/futte/FORME-HAUS/FORME-HAUS-main/forme-haus-static/forme-haus-hydrogen/tests",
         "testIgnore": [],
-        "testMatch": [
-          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
-        ],
+        "testMatch": ["**/*.@(spec|test).?(c|m)[jt]s?(x)"],
         "timeout": 30000
       }
     ],
     "quiet": false,
-    "reporter": [
-      [
-        "json"
-      ]
-    ],
+    "reporter": [["json"]],
     "reportSlowTests": {
       "max": 5,
       "threshold": 300000

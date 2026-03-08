@@ -44,14 +44,32 @@ export async function action({context, request}: ActionFunctionArgs) {
 
 // Eye icon SVGs
 const EyeOpen = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
     <circle cx="12" cy="12" r="3" />
   </svg>
 );
 
 const EyeClosed = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
     <line x1="1" y1="1" x2="23" y2="23" />
   </svg>
@@ -76,7 +94,10 @@ export default function Register() {
         </a>
 
         <div className="text-center space-y-2">
-          <h1 className="font-serif text-3xl md:text-4xl text-[#2C2419]" style={{letterSpacing: '0.02em'}}>
+          <h1
+            className="font-serif text-3xl md:text-4xl text-[#2C2419]"
+            style={{letterSpacing: '0.02em'}}
+          >
             Join Formé Haus
           </h1>
           <p className="text-[11px] tracking-[0.25em] font-sans text-[#8B8076] uppercase">
@@ -88,12 +109,23 @@ export default function Register() {
         {actionData?.success ? (
           <div className="w-full bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-xl border border-[#4A3C31]/8 shadow-[0_4px_24px_rgba(0,0,0,0.06)] text-center space-y-6">
             <div className="w-16 h-16 rounded-full bg-[#a87441]/15 flex items-center justify-center mx-auto">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#a87441" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#a87441"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M20 6L9 17l-5-5" />
               </svg>
             </div>
             <div className="space-y-2">
-              <h2 className="font-serif text-2xl text-[#2C2419]">Account Created</h2>
+              <h2 className="font-serif text-2xl text-[#2C2419]">
+                Account Created
+              </h2>
               <p className="text-[13px] text-[#8B8076] leading-relaxed">
                 Please check your email to verify your account, then sign in.
               </p>
@@ -119,7 +151,10 @@ export default function Register() {
             <div className="space-y-4">
               {/* Email */}
               <div>
-                <label htmlFor="email-address" className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium">
+                <label
+                  htmlFor="email-address"
+                  className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium"
+                >
                   Email Address
                 </label>
                 <input
@@ -135,7 +170,10 @@ export default function Register() {
 
               {/* Password */}
               <div>
-                <label htmlFor="password" className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium">
+                <label
+                  htmlFor="password"
+                  className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium"
+                >
                   Password
                 </label>
                 <div className="relative">
@@ -152,7 +190,9 @@ export default function Register() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#8B8076] hover:text-[#a87441] transition-colors duration-200"
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    aria-label={
+                      showPassword ? 'Hide password' : 'Show password'
+                    }
                   >
                     {showPassword ? <EyeClosed /> : <EyeOpen />}
                   </button>

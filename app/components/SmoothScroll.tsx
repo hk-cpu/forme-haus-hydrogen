@@ -7,7 +7,9 @@ export default function SmoothScroll() {
   useEffect(() => {
     // Detect touch devices (mobile/tablet)
     const checkTouch = () => {
-      setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+      setIsTouchDevice(
+        'ontouchstart' in window || navigator.maxTouchPoints > 0,
+      );
     };
     checkTouch();
 

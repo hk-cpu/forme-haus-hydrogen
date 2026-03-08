@@ -60,7 +60,10 @@ export function PageLayout({children, layout}: LayoutProps) {
       <div className="flex flex-col min-h-screen relative">
         {/* Background Layer (Z-0) */}
         <div className="fixed inset-0 pointer-events-none z-0">
-          <div className="absolute inset-0" style={{transition: 'opacity 0.8s ease'}}>
+          <div
+            className="absolute inset-0"
+            style={{transition: 'opacity 0.8s ease'}}
+          >
             <Silk color="#AD9686" speed={useIsHomePath() ? 5 : 3} />
           </div>
           <Atmosphere count={60} color="#AD9686" size={0.008} opacity={0.2} />
@@ -72,13 +75,24 @@ export function PageLayout({children, layout}: LayoutProps) {
           </a>
         </div>
 
-        <div className={`relative z-10 flex flex-col items-center transition-all duration-700 ${state.isCartOpen || state.isSearchOpen ? 'blur-[2px] scale-[0.995] pointer-events-none' : ''}`}>
+        <div
+          className={`relative z-10 flex flex-col items-center transition-all duration-700 ${
+            state.isCartOpen || state.isSearchOpen
+              ? 'blur-[2px] scale-[0.995] pointer-events-none'
+              : ''
+          }`}
+        >
           <div className="w-full max-w-[1800px] flex flex-col relative mx-auto my-0">
             <Header
               title={layout?.shop.name || 'Formé Haus'}
               menu={headerMenu || undefined}
             />
-            <main role="main" id="mainContent" className="flex-grow" style={{paddingTop: 'var(--navbar-height)'}}>
+            <main
+              role="main"
+              id="mainContent"
+              className="flex-grow"
+              style={{paddingTop: 'var(--navbar-height)'}}
+            >
               <AnimatePresence mode="popLayout">
                 <motion.div
                   key={location.pathname}
@@ -294,7 +308,10 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
       {/* Bronze Accent Line at Top */}
       <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
 
-      <div className="relative z-10 py-16" style={{padding: '4rem var(--page-gutter)'}}>
+      <div
+        className="relative z-10 py-16"
+        style={{padding: '4rem var(--page-gutter)'}}
+      >
         {/* Newsletter */}
         <div className="max-w-[1440px] mx-auto mb-12 pb-12 border-b border-[#a87441]/10">
           <div className="max-w-md">

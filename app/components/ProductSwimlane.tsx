@@ -26,7 +26,10 @@ export function ProductSwimlane({
       <div className="overflow-x-auto scrollbar-hide px-6 md:px-8 lg:px-12">
         <div className="flex gap-4 md:gap-6 w-max pb-4">
           {products.nodes.slice(0, count).map((product) => (
-            <div key={product.id} className="w-56 md:w-64 lg:w-72 flex-shrink-0">
+            <div
+              key={product.id}
+              className="w-56 md:w-64 lg:w-72 flex-shrink-0"
+            >
               <ProductCard product={product as any} />
             </div>
           ))}

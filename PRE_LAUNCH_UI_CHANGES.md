@@ -9,11 +9,13 @@ This document summarizes all the UI changes made based on client feedback for th
 ### 1. Image Sizing & Layout
 
 #### **Removed Blur Reveal Effect**
+
 - **File**: `app/routes/($locale)._index.tsx`
 - **Change**: Replaced `BlurRevealImage` component with regular `<img>` tags in the Journal section
 - **Result**: Journal teaser images now load normally without the camera autofocus blur effect
 
 #### **New Component: `ProductImageLayout.tsx`**
+
 - **Location**: `app/components/ProductImageLayout.tsx`
 - **Features**:
   - **Photo 1**: Wide landscape-oriented container (`aspect-[21/9]` or `aspect-[16/9]`)
@@ -24,15 +26,16 @@ This document summarizes all the UI changes made based on client feedback for th
   - **Standard images**: Smaller containers with `object-contain` padding
 
 **Usage Example**:
+
 ```tsx
 import {ProductImageLayout} from '~/components/ProductImageLayout';
 
 <ProductImageLayout
   images={productImages}
-  landscapePosition="top"      // 'top' or 'bottom'
-  landscapeImageIndex={0}      // Which image to use as landscape
-  modelImageIndices={[1, 2]}   // Which images are model shots
-/>
+  landscapePosition="top" // 'top' or 'bottom'
+  landscapeImageIndex={0} // Which image to use as landscape
+  modelImageIndices={[1, 2]} // Which images are model shots
+/>;
 ```
 
 ---
@@ -40,18 +43,21 @@ import {ProductImageLayout} from '~/components/ProductImageLayout';
 ### 2. Content & UI Cleanup
 
 #### **Removed FAQ Section**
+
 - **File**: `app/routes/($locale)._index.tsx`
 - **Change**: Completely removed `<FAQSection />` component and its import
 - **Result**: Homepage no longer displays FAQ accordion (directs to policy pages instead)
 
 #### **Removed Crossed-Out Variant Boxes**
+
 - **File**: `app/routes/($locale).products.$productHandle.tsx`
 - **Change**: Instead of showing unavailable variants with strikethrough styling (`opacity-40 line-through`), they are now completely hidden
 - **Code Change**:
+
   ```tsx
   // Before:
   className={clsx('...', available ? 'opacity-100' : 'opacity-40 line-through')}
-  
+
   // After:
   {!available ? null : (<Link>...</Link>)}
   ```
@@ -61,6 +67,7 @@ import {ProductImageLayout} from '~/components/ProductImageLayout';
 ### 3. Pre-Launch Preparations
 
 #### **New Component: `TrustBadges.tsx`**
+
 - **Location**: `app/components/TrustBadges.tsx`
 - **Features**:
   - **Maroof Badge**: Saudi Commercial Registration verification
@@ -69,11 +76,13 @@ import {ProductImageLayout} from '~/components/ProductImageLayout';
   - **Payment Methods**: Shows supported payment options
 
 **Variants**:
+
 - `variant="full"` - Complete badge section for product pages
 - `variant="compact"` - Minimal version for product cards
 - `variant="footer"` - Footer-friendly horizontal layout
 
 **Usage Example**:
+
 ```tsx
 import {TrustBadges} from '~/components/TrustBadges';
 
@@ -85,6 +94,7 @@ import {TrustBadges} from '~/components/TrustBadges';
 ```
 
 #### **New Component: `BundlePricing.tsx`**
+
 - **Location**: `app/components/BundlePricing.tsx`
 - **Features**:
   - **Tiered Pricing**: Quantity discounts (1 item, 2 items with 10% off, 3 items with 15% off)
@@ -92,11 +102,13 @@ import {TrustBadges} from '~/components/TrustBadges';
   - **Savings Calculator**: Shows amount saved when selecting bundles
 
 **Variants**:
+
 - `variant="tiers"` - Radio button style quantity selector with discounts
 - `variant="cards"` - Visual bundle cards with "Popular"/"Best Value" badges
 - `variant="compact"` - Small inline indicator for product cards
 
 **Usage Example**:
+
 ```tsx
 import {BundlePricing} from '~/components/BundlePricing';
 
@@ -108,6 +120,7 @@ import {BundlePricing} from '~/components/BundlePricing';
 ```
 
 #### **Updated `PaymentBadges.tsx`**
+
 - **Location**: `app/components/PaymentBadges.tsx`
 - **New Features**:
   - `PaymentLinkButton` component for trial order payment links
@@ -115,11 +128,15 @@ import {BundlePricing} from '~/components/BundlePricing';
   - Support for: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tamara, Tabby
 
 **Usage Example**:
+
 ```tsx
-import {PaymentLinkButton, TrustPaymentSection} from '~/components/PaymentBadges';
+import {
+  PaymentLinkButton,
+  TrustPaymentSection,
+} from '~/components/PaymentBadges';
 
 // For trial orders
-<PaymentLinkButton amount="149" currency="SAR" onClick={handlePayment} />
+<PaymentLinkButton amount="149" currency="SAR" onClick={handlePayment} />;
 ```
 
 ---
@@ -127,6 +144,7 @@ import {PaymentLinkButton, TrustPaymentSection} from '~/components/PaymentBadges
 ### 4. Product Page Integration
 
 #### **Updated Product Page**
+
 - **File**: `app/routes/($locale).products.$productHandle.tsx`
 - **Changes**:
   1. Added imports for `TrustBadges` and `BundlePricing`
@@ -134,6 +152,7 @@ import {PaymentLinkButton, TrustPaymentSection} from '~/components/PaymentBadges
   3. Inserted `<TrustBadges variant="full" />` below BundlePricing
 
 #### **Updated Product Card**
+
 - **File**: `app/components/ProductCard.tsx`
 - **Changes**:
   1. Added `BundlePricing` import
@@ -150,14 +169,17 @@ import {PaymentLinkButton, TrustPaymentSection} from '~/components/PaymentBadges
 ## 📝 Modified Files
 
 1. **`app/routes/($locale)._index.tsx`**
+
    - Removed FAQSection
    - Replaced BlurRevealImage with regular img tags
 
 2. **`app/routes/($locale).products.$productHandle.tsx`**
+
    - Added TrustBadges and BundlePricing components
    - Removed crossed-out unavailable variant boxes
 
 3. **`app/components/ProductCard.tsx`**
+
    - Added compact BundlePricing indicator
 
 4. **`app/components/PaymentBadges.tsx`**
@@ -169,6 +191,7 @@ import {PaymentLinkButton, TrustPaymentSection} from '~/components/PaymentBadges
 ## 🎨 Design Tokens Used
 
 All new components follow the existing design system:
+
 - **Brand Gold**: `#a87441` / `#D4AF87`
 - **Dark Text**: `#4A3C31`
 - **Muted Text**: `#8B8076`
@@ -182,24 +205,26 @@ All new components follow the existing design system:
 ## 🔧 Configuration Notes
 
 ### For Image Layout Testing:
+
 To use the new ProductImageLayout on a product page, temporarily replace `ProductGallery` with:
 
 ```tsx
 import {SimpleProductGallery} from '~/components/ProductImageLayout';
 
 // In your component
-<SimpleProductGallery 
-  images={media.nodes.map(m => ({
+<SimpleProductGallery
+  images={media.nodes.map((m) => ({
     url: m.image?.url,
     altText: m.alt,
     width: m.image?.width,
     height: m.image?.height,
   }))}
   layout="mixed"
-/>
+/>;
 ```
 
 ### For Payment Links Integration:
+
 The `PaymentLinkButton` is a placeholder. To integrate with a real payment provider (Moyasar, HyperPay, etc.):
 
 1. Replace the `onClick` handler with API call
@@ -223,4 +248,4 @@ The `PaymentLinkButton` is a placeholder. To integrate with a real payment provi
 
 ---
 
-*Changes implemented for Forme Haus pre-launch, March 2026*
+_Changes implemented for Forme Haus pre-launch, March 2026_

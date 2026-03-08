@@ -115,9 +115,7 @@ function CategoryCard({
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 pointer-events-none" />
 
           {/* Image with CSS Zoom Animation */}
-          <div
-            className="w-full h-full transition-transform duration-[4000ms] ease-in-out"
-          >
+          <div className="w-full h-full transition-transform duration-[4000ms] ease-in-out">
             <img
               src={cat.image}
               alt={cat.title}

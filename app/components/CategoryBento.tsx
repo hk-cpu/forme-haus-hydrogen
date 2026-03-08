@@ -67,7 +67,15 @@ const itemVariants = {
   },
 };
 
-function CategoryCard({category, isRTL, index}: {category: Category; isRTL: boolean; index: number}) {
+function CategoryCard({
+  category,
+  isRTL,
+  index,
+}: {
+  category: Category;
+  isRTL: boolean;
+  index: number;
+}) {
   const [isHovered, setIsHovered] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
@@ -99,7 +107,7 @@ function CategoryCard({category, isRTL, index}: {category: Category; isRTL: bool
             </span>
           </div>
         )}
-        
+
         {/* Loading skeleton */}
         {!imageLoaded && !imageError && (
           <div className="absolute inset-0 bg-gradient-to-br from-[#2a2118] to-[#1A1A1A] animate-pulse" />
@@ -109,16 +117,17 @@ function CategoryCard({category, isRTL, index}: {category: Category; isRTL: bool
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
         {/* Subtle vignette */}
-        <div 
+        <div
           className="absolute inset-0 pointer-events-none opacity-30"
           style={{
-            background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.4) 100%)'
+            background:
+              'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.4) 100%)',
           }}
         />
 
         {/* Content - positioned at bottom left */}
         <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 z-10 pointer-events-none">
-          <motion.div 
+          <motion.div
             className="transform transition-transform duration-500"
             initial={false}
             animate={{y: isHovered ? -4 : 0}}
@@ -126,7 +135,7 @@ function CategoryCard({category, isRTL, index}: {category: Category; isRTL: bool
             <h3 className="text-xl md:text-2xl font-serif text-white mb-2 tracking-wide">
               {isRTL ? category.titleAr : category.title}
             </h3>
-            <motion.div 
+            <motion.div
               className="h-[1px] bg-[#D4AF87] origin-left"
               initial={{width: 0}}
               animate={{width: isHovered ? 48 : 0}}
@@ -137,26 +146,38 @@ function CategoryCard({category, isRTL, index}: {category: Category; isRTL: bool
 
         {/* Hover Arrow - centered */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-          <motion.div 
+          <motion.div
             className="w-14 h-14 rounded-full border border-white/40 flex items-center justify-center backdrop-blur-md bg-black/20"
             initial={{opacity: 0, scale: 0.8}}
             animate={{opacity: isHovered ? 1 : 0, scale: isHovered ? 1 : 0.8}}
             transition={{duration: 0.3, ease: [0.16, 1, 0.3, 1]}}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-white">
-              <path d={isRTL ? 'M19 12H5M12 19l-7-7 7-7' : 'M5 12h14M12 5l7 7-7 7'} strokeLinecap="round" strokeLinejoin="round" />
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              className="text-white"
+            >
+              <path
+                d={isRTL ? 'M19 12H5M12 19l-7-7 7-7' : 'M5 12h14M12 5l7 7-7 7'}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </motion.div>
         </div>
 
         {/* Scale effect on hover */}
-        <motion.div 
+        <motion.div
           className="absolute inset-0 pointer-events-none"
           initial={false}
           animate={{scale: isHovered ? 1.05 : 1}}
           transition={{duration: 0.7, ease: [0.16, 1, 0.3, 1]}}
           style={{
-            background: isHovered ? 'rgba(168, 116, 65, 0.05)' : 'transparent'
+            background: isHovered ? 'rgba(168, 116, 65, 0.05)' : 'transparent',
           }}
         />
       </Link>
@@ -169,7 +190,10 @@ export default function CategoryBento() {
 
   return (
     <section className="pb-10 md:pb-14 border-b border-[#8B8076]/10">
-      <div className="max-w-[1200px] mx-auto" style={{padding: '0 var(--page-gutter)'}}>
+      <div
+        className="max-w-[1200px] mx-auto"
+        style={{padding: '0 var(--page-gutter)'}}
+      >
         {/* Section Header */}
         <motion.div
           initial={{opacity: 0, y: 16}}
@@ -189,11 +213,16 @@ export default function CategoryBento() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{once: true, margin: "-100px"}}
+          viewport={{once: true, margin: '-100px'}}
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5"
         >
           {CATEGORIES.map((category, i) => (
-            <CategoryCard key={category.id} category={category} isRTL={isRTL} index={i} />
+            <CategoryCard
+              key={category.id}
+              category={category}
+              isRTL={isRTL}
+              index={i}
+            />
           ))}
         </motion.div>
 

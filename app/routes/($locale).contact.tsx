@@ -7,12 +7,12 @@ import {
   ArrowRight,
   Send,
 } from 'lucide-react';
+import {Form, useActionData, useNavigation} from '@remix-run/react';
 import {
-  Form,
-  useActionData,
-  useNavigation,
-} from '@remix-run/react';
-import {json, type ActionFunctionArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+  json,
+  type ActionFunctionArgs,
+  type LoaderFunctionArgs,
+} from '@shopify/remix-oxygen';
 
 import {useTranslation} from '~/hooks/useTranslation';
 
@@ -52,12 +52,18 @@ export async function action({request, context}: ActionFunctionArgs) {
 
     // Shopify returns 200/302 on success, 4xx on error
     if (!res.ok && res.status >= 500) {
-      return json({error: 'Unable to send message. Please try again.'}, {status: 500});
+      return json(
+        {error: 'Unable to send message. Please try again.'},
+        {status: 500},
+      );
     }
 
     return json({success: true});
   } catch {
-    return json({error: 'Unable to send message. Please try again.'}, {status: 500});
+    return json(
+      {error: 'Unable to send message. Please try again.'},
+      {status: 500},
+    );
   }
 }
 

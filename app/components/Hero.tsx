@@ -51,7 +51,11 @@ export default function Hero() {
                 className="absolute left-[-20%] right-[-20%] top-1/2 h-px bg-gradient-to-r from-transparent via-[#a87441]/30 to-transparent hidden md:block"
                 initial={{scaleX: 0, opacity: 0}}
                 animate={{scaleX: 1, opacity: 1}}
-                transition={{duration: 1.5, delay: 0.8, ease: [0.16, 1, 0.3, 1]}}
+                transition={{
+                  duration: 1.5,
+                  delay: 0.8,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
               />
             </div>
           </motion.div>
@@ -97,7 +101,11 @@ export default function Hero() {
                 strokeWidth="1.5"
                 className="relative text-[#F0EAE6]/70 group-hover/btn:text-[#a87441] group-hover/btn:translate-x-1 transition-all duration-500"
               >
-                <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
+                <path
+                  d="M5 12h14M12 5l7 7-7 7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </motion.svg>
             </Link>
           </motion.div>

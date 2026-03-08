@@ -19,7 +19,7 @@ export async function action({request, context}: ActionFunctionArgs) {
             acceptsMarketing: true,
           } as any,
         },
-      }
+      },
     );
 
     if (errors) {

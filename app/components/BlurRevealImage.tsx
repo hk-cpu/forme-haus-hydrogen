@@ -80,9 +80,18 @@ export function BlurRevealImage({
   // Hover: snap to clarity with spring overshoot
   const hoverAnimate = {opacity: 1, filter: 'blur(0px)', scale: 1.04};
   const hoverTransition = {
-    opacity: {duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as [number,number,number,number]},
-    filter: {duration: 0.6, ease: [0.4, 0, 0.2, 1] as [number,number,number,number]},
-    scale: {duration: 0.75, ease: [0.34, 1.56, 0.64, 1] as [number,number,number,number]},
+    opacity: {
+      duration: 0.5,
+      ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
+    },
+    filter: {
+      duration: 0.6,
+      ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
+    },
+    scale: {
+      duration: 0.75,
+      ease: [0.34, 1.56, 0.64, 1] as [number, number, number, number],
+    },
   };
 
   const hiddenAnimate = {opacity: 0, filter: 'blur(10px)', scale: 1};
@@ -90,18 +99,18 @@ export function BlurRevealImage({
   const currentAnimate = isHovered
     ? hoverAnimate
     : phase === 'idle'
-      ? idleAnimate
-      : phase === 'reveal'
-        ? revealAnimate
-        : hiddenAnimate;
+    ? idleAnimate
+    : phase === 'reveal'
+    ? revealAnimate
+    : hiddenAnimate;
 
   const currentTransition = isHovered
     ? hoverTransition
     : phase === 'idle'
-      ? idleTransition
-      : phase === 'reveal'
-        ? revealTransition
-        : {duration: 0.3};
+    ? idleTransition
+    : phase === 'reveal'
+    ? revealTransition
+    : {duration: 0.3};
 
   const handleAnimationComplete = () => {
     if (phase === 'reveal') setPhase('idle');
@@ -111,8 +120,12 @@ export function BlurRevealImage({
     <div
       ref={containerRef}
       className={`relative overflow-hidden ${className}`}
-      onMouseEnter={() => { if (externalHover === undefined) setInternalHover(true); }}
-      onMouseLeave={() => { if (externalHover === undefined) setInternalHover(false); }}
+      onMouseEnter={() => {
+        if (externalHover === undefined) setInternalHover(true);
+      }}
+      onMouseLeave={() => {
+        if (externalHover === undefined) setInternalHover(false);
+      }}
     >
       {/* Layer 1: Pre-blurred — always visible resting state */}
       <img

@@ -35,23 +35,21 @@ interface ProductCardCleanProps {
  * ProductCardClean - Clean, professional product card for collection pages
  * Designed for light backgrounds with clear price visibility
  */
-export function ProductCardClean({
-  product,
-  index = 0,
-}: ProductCardCleanProps) {
+export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
   const {isRTL} = useTranslation();
-  
+
   const [currentImage, setCurrentImage] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const images = product.images?.nodes || [];
   const hasMultipleImages = images.length > 1;
-  
+
   const slideshowRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Parse title for color
   const titleParts = product.title.split(' - ');
   const productName = titleParts[0]?.trim() || product.title;
-  const productColor = titleParts.length > 1 ? titleParts.slice(1).join(' - ').trim() : '';
+  const productColor =
+    titleParts.length > 1 ? titleParts.slice(1).join(' - ').trim() : '';
 
   // Calculate discount
   const hasDiscount =
@@ -82,12 +80,22 @@ export function ProductCardClean({
     <motion.div
       className="group relative"
       style={{direction: isRTL ? 'rtl' : 'ltr'}}
-      onMouseEnter={() => { setIsHovered(true); startSlideshow(); }}
-      onMouseLeave={() => { setIsHovered(false); stopSlideshow(); }}
+      onMouseEnter={() => {
+        setIsHovered(true);
+        startSlideshow();
+      }}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        stopSlideshow();
+      }}
       initial={{opacity: 0, y: 20}}
       whileInView={{opacity: 1, y: 0}}
       viewport={{once: true, margin: '-50px'}}
-      transition={{duration: 0.5, delay: (index % 8) * 0.05, ease: [0.25, 0.1, 0.25, 1]}}
+      transition={{
+        duration: 0.5,
+        delay: (index % 8) * 0.05,
+        ease: [0.25, 0.1, 0.25, 1],
+      }}
     >
       <Link to={`/products/${product.handle}`} className="block">
         {/* Image Container - Clean white background */}
@@ -131,9 +139,14 @@ export function ProductCardClean({
               {images.slice(0, 4).map((_, idx) => (
                 <button
                   key={idx}
-                  onClick={(e) => { e.preventDefault(); setCurrentImage(idx); }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentImage(idx);
+                  }}
                   className={`h-1 rounded-full transition-all ${
-                    idx === currentImage ? 'bg-[#a87441] w-4' : 'bg-[#4A3C31]/30 w-1'
+                    idx === currentImage
+                      ? 'bg-[#a87441] w-4'
+                      : 'bg-[#4A3C31]/30 w-1'
                   }`}
                 />
               ))}
@@ -156,24 +169,24 @@ export function ProductCardClean({
           <h3 className="text-[15px] text-[#4A3C31] font-medium leading-snug group-hover:text-[#a87441] transition-colors line-clamp-1">
             {productName}
           </h3>
-          
+
           {/* Color */}
           {productColor && (
-            <p className="text-[13px] text-[#8B8076]">
-              {productColor}
-            </p>
+            <p className="text-[13px] text-[#8B8076]">{productColor}</p>
           )}
-          
+
           {/* Price Row */}
           <div className="flex items-center gap-2 pt-0.5">
             <p className="text-[15px] font-semibold text-[#4A3C31]">
               {product.priceRange?.minVariantPrice ? (
                 <Money data={product.priceRange.minVariantPrice as any} />
               ) : (
-                <span className="text-sm text-[#8B8076]">Price unavailable</span>
+                <span className="text-sm text-[#8B8076]">
+                  Price unavailable
+                </span>
               )}
             </p>
-            
+
             {hasDiscount && (
               <p className="text-[13px] text-[#8B8076] line-through">
                 <Money data={product.compareAtPriceRange!.minVariantPrice} />

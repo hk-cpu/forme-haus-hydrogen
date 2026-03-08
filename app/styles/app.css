@@ -14,14 +14,14 @@
   --silk: #ad9686;
 
   /* ── Luxury Spacing Scale (8px base) ── */
-  --space-1: 0.5rem;   /* 8px */
-  --space-2: 1rem;     /* 16px */
-  --space-3: 1.5rem;   /* 24px */
-  --space-4: 2rem;     /* 32px */
-  --space-5: 3rem;     /* 48px */
-  --space-6: 4rem;     /* 64px */
-  --space-7: 6rem;     /* 96px */
-  --space-8: 8rem;     /* 128px */
+  --space-1: 0.5rem; /* 8px */
+  --space-2: 1rem; /* 16px */
+  --space-3: 1.5rem; /* 24px */
+  --space-4: 2rem; /* 32px */
+  --space-5: 3rem; /* 48px */
+  --space-6: 4rem; /* 64px */
+  --space-7: 6rem; /* 96px */
+  --space-8: 8rem; /* 128px */
 
   /* ── Page Gutters (responsive) ── */
   --page-gutter: clamp(1.25rem, 4vw, 6rem);
@@ -33,7 +33,7 @@
   --navbar-height-scrolled: 60px;
   --navbar-bg: rgba(18, 18, 18, 0.97);
   --navbar-bg-top: rgba(18, 18, 18, 0.85);
-  
+
   /* ── Top Bar ── */
   --topbar-height: 40px;
 
@@ -49,9 +49,9 @@
   --dur-slow: 700ms;
 
   /* ── Shadows (floating on silk) ── */
-  --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
-  --shadow-elevated: 0 4px 24px rgba(0,0,0,0.08);
-  --shadow-hover: 0 8px 32px rgba(0,0,0,0.12);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+  --shadow-elevated: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.12);
 
   /* ── Border Radius ── */
   --radius-sm: 4px;
@@ -206,11 +206,18 @@ html {
 }
 
 /* ── Luxury Typography Refinements ── */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   letter-spacing: 0.02em;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-display: swap;
 }
 
@@ -251,24 +258,29 @@ p {
 }
 
 /* ── Image Fade-in on Load ── */
-img[loading="lazy"] {
+img[loading='lazy'] {
   opacity: 0;
   transition: opacity 0.6s var(--ease-luxe);
 }
 
-img[loading="lazy"].loaded,
-img[loading="lazy"]:not([data-loading]) {
+img[loading='lazy'].loaded,
+img[loading='lazy']:not([data-loading]) {
   opacity: 1;
 }
 
 /* ── Skeleton Shimmer (luxury slow) ── */
 @keyframes luxury-shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .luxury-skeleton {
-  background: linear-gradient(90deg,
+  background: linear-gradient(
+    90deg,
     rgba(168, 116, 65, 0.04) 25%,
     rgba(168, 116, 65, 0.08) 50%,
     rgba(168, 116, 65, 0.04) 75%
@@ -279,7 +291,7 @@ img[loading="lazy"]:not([data-loading]) {
 
 /* ── Button Tactile Press ── */
 button:active:not(:disabled),
-[role="button"]:active:not(:disabled) {
+[role='button']:active:not(:disabled) {
   transform: scale(0.97);
   transition: transform 100ms var(--ease-luxe);
 }
@@ -293,12 +305,14 @@ button:active:not(:disabled),
 @media (max-width: 768px) {
   /* Apply touch targets only to standalone interactive elements, not inline links */
   nav a,
-  button:not([class*="absolute"]),
-  [role="button"] {
+  button:not([class*='absolute']),
+  [role='button'] {
     min-height: 44px;
   }
 
-  input, select, textarea {
+  input,
+  select,
+  textarea {
     font-size: 16px; /* Prevents iOS zoom */
     min-height: 48px;
   }
@@ -400,8 +414,13 @@ button:active:not(:disabled),
 
 /* Breathing Zoom Animation for Product Cards */
 @keyframes breathe-zoom {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 .animate-breathe-zoom {
@@ -650,19 +669,28 @@ h6 {
   }
 
   /* Prevent horizontal overflow but allow vertical touch scroll */
-  html, body {
+  html,
+  body {
     overflow-x: hidden;
     touch-action: pan-y pinch-zoom;
     -webkit-overflow-scrolling: touch;
   }
 
   /* Mobile typography scaling */
-  h1 { font-size: clamp(1.75rem, 5vw, 3.5rem); }
-  h2 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
-  h3 { font-size: clamp(1.25rem, 3.5vw, 2rem); }
+  h1 {
+    font-size: clamp(1.75rem, 5vw, 3.5rem);
+  }
+  h2 {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  h3 {
+    font-size: clamp(1.25rem, 3.5vw, 2rem);
+  }
 
   /* Body text never below 14px */
-  body { font-size: clamp(0.875rem, 2.5vw, 1rem); }
+  body {
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+  }
 
   /* Mobile Scroll Snapping - Gentle proximity snap (never traps users) */
   .snap-y-mandatory {
@@ -675,7 +703,9 @@ h6 {
   }
 
   /* Scrollbar thinner on mobile */
-  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
 }
 
 /* ── Small Mobile (< 360px) ── */

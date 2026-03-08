@@ -43,7 +43,10 @@ export default function Recover() {
         </a>
 
         <div className="text-center space-y-2">
-          <h1 className="font-serif text-3xl md:text-4xl text-[#2C2419]" style={{letterSpacing: '0.02em'}}>
+          <h1
+            className="font-serif text-3xl md:text-4xl text-[#2C2419]"
+            style={{letterSpacing: '0.02em'}}
+          >
             Recover Access
           </h1>
           <p className="text-[11px] tracking-[0.25em] font-sans text-[#8B8076] uppercase">
@@ -64,14 +67,18 @@ export default function Recover() {
 
           {actionData?.success && (
             <div className="p-3.5 text-[12px] text-[#2C2419] bg-[#a87441]/10 border border-[#a87441]/20 rounded-lg text-center tracking-wide leading-relaxed">
-              Check your inbox — a reset link has been sent to your email address.
+              Check your inbox — a reset link has been sent to your email
+              address.
             </div>
           )}
 
           {!actionData?.success && (
             <div className="space-y-4">
               <div>
-                <label htmlFor="email-address" className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium">
+                <label
+                  htmlFor="email-address"
+                  className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium"
+                >
                   Email Address
                 </label>
                 <input

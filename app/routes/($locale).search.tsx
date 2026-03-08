@@ -112,10 +112,7 @@ export default function Search() {
             {({nodes, isLoading, NextLink, PreviousLink}) => {
               const itemsMarkup = (nodes as ProductCardFragment[]).map(
                 (product, i) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                  />
+                  <ProductCard key={product.id} product={product} />
                 ),
               );
 

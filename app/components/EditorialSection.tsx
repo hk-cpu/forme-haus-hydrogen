@@ -84,7 +84,7 @@ function EditorialCard({
               onError={() => setImageError(true)}
             />
           ) : null}
-          
+
           {/* Loading skeleton / fallback */}
           {!imageLoaded && !imageError && (
             <div className="absolute inset-0 bg-gradient-to-br from-[#2a2118] to-[#1A1A1A] animate-pulse" />
@@ -143,7 +143,10 @@ export default function EditorialSection() {
 
   return (
     <section className="py-8 md:py-12" dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className="max-w-[1400px] mx-auto" style={{padding: '0 var(--page-gutter)'}}>
+      <div
+        className="max-w-[1400px] mx-auto"
+        style={{padding: '0 var(--page-gutter)'}}
+      >
         {/* Section Header */}
         <motion.div
           initial={{opacity: 0, y: 16}}
@@ -189,7 +192,7 @@ export default function EditorialSection() {
               item={EDITORIAL_ITEMS[2]}
               index={2}
               className="aspect-[16/10] md:aspect-[4/3]"
-          />
+            />
           </div>
         </div>
 
@@ -217,9 +220,7 @@ export default function EditorialSection() {
                 <span className="text-[11px] uppercase tracking-[0.2em] text-[#8B8076]">
                   Collections
                 </span>
-                <motion.div
-                  className="mt-4 w-10 h-10 rounded-full border border-[#a87441]/30 flex items-center justify-center group-hover:bg-[#a87441] group-hover:text-white transition-all duration-300"
-                >
+                <motion.div className="mt-4 w-10 h-10 rounded-full border border-[#a87441]/30 flex items-center justify-center group-hover:bg-[#a87441] group-hover:text-white transition-all duration-300">
                   <svg
                     width="16"
                     height="16"
@@ -229,13 +230,17 @@ export default function EditorialSection() {
                     strokeWidth="1.5"
                     className="text-[#a87441] group-hover:text-white"
                   >
-                    <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                    <path
+                      d="M5 12h14M12 5l7 7-7 7"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </motion.div>
               </div>
             </Link>
           </motion.div>
-          
+
           <motion.div
             initial={{opacity: 0, y: 20}}
             whileInView={{opacity: 1, y: 0}}
@@ -249,11 +254,16 @@ export default function EditorialSection() {
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-            <Link to="/journal" className="absolute inset-0 flex flex-col justify-end p-6">
+            <Link
+              to="/journal"
+              className="absolute inset-0 flex flex-col justify-end p-6"
+            >
               <span className="font-serif text-xl md:text-2xl text-white italic">
                 Journal
               </span>
-              <span className="text-sm text-white/70 mt-1">Stories & Inspiration</span>
+              <span className="text-sm text-white/70 mt-1">
+                Stories & Inspiration
+              </span>
             </Link>
           </motion.div>
         </div>

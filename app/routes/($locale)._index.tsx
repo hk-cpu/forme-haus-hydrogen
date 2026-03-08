@@ -90,7 +90,10 @@ export default function Homepage() {
 
         {/* 6. Journal Teaser */}
         <section className="py-10 md:py-14 border-t border-[#8B8076]/10 mobile-snap-section">
-          <div className="max-w-[1200px] mx-auto" style={{padding: '0 var(--page-gutter)'}}>
+          <div
+            className="max-w-[1200px] mx-auto"
+            style={{padding: '0 var(--page-gutter)'}}
+          >
             <div className="flex justify-between items-end mb-8 md:mb-10">
               <h2 className="font-serif text-3xl md:text-4xl italic text-[#4A3C31] font-light tracking-wide">
                 {t('home.journal')}
@@ -125,7 +128,11 @@ export default function Homepage() {
                   initial={{opacity: 0, y: 20}}
                   whileInView={{opacity: 1, y: 0}}
                   viewport={{once: true}}
-                  transition={{delay: i * 0.08, duration: 0.5, ease: [0.25, 0.1, 0.25, 1]}}
+                  transition={{
+                    delay: i * 0.08,
+                    duration: 0.5,
+                    ease: [0.25, 0.1, 0.25, 1],
+                  }}
                 >
                   <Link
                     to={item.to}
@@ -151,8 +158,6 @@ export default function Homepage() {
             </div>
           </div>
         </section>
-
-
       </div>
     </div>
   );
@@ -167,4 +172,3 @@ const HOMEPAGE_SEO_QUERY = `#graphql
     }
   }
 ` as const;
-

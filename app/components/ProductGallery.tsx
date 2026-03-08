@@ -8,52 +8,136 @@ import type {MediaFragment} from 'storefrontapi.generated';
 // ============================================================================
 const Icons = {
   ChevronLeft: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   ),
   ChevronRight: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   ),
   Play: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M8 5v14l11-7z"/>
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path d="M8 5v14l11-7z" />
     </svg>
   ),
   Pause: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
     </svg>
   ),
   Expand: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <path
+        d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   ZoomIn: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <circle cx="11" cy="11" r="8"/>
-      <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <circle cx="11" cy="11" r="8" />
+      <path
+        d="M21 21l-4.35-4.35M11 8v6M8 11h6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   ZoomOut: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <circle cx="11" cy="11" r="8"/>
-      <path d="M21 21l-4.35-4.35M8 11h6" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <circle cx="11" cy="11" r="8" />
+      <path
+        d="M21 21l-4.35-4.35M8 11h6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   Close: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <path
+        d="M18 6L6 18M6 6l12 12"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   ImageIcon: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <rect x="3" y="3" width="18" height="18" rx="2"/>
-      <circle cx="8.5" cy="8.5" r="1.5"/>
-      <path d="M21 15l-5-5L5 21" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <circle cx="8.5" cy="8.5" r="1.5" />
+      <path d="M21 15l-5-5L5 21" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   ),
 };
@@ -75,7 +159,9 @@ export function ProductGallery({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
   const [mousePosition, setMousePosition] = useState({x: 0.5, y: 0.5});
-  const [touchStart, setTouchStart] = useState<{x: number; y: number} | null>(null);
+  const [touchStart, setTouchStart] = useState<{x: number; y: number} | null>(
+    null,
+  );
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
@@ -98,10 +184,13 @@ export function ProductGallery({
   const startAutoPlay = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
     if (!isAutoPlaying || isHovered) return;
-    
-    intervalRef.current = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % total);
-    }, isHovered ? 6000 : 4000);
+
+    intervalRef.current = setInterval(
+      () => {
+        setActiveIndex((prev) => (prev + 1) % total);
+      },
+      isHovered ? 6000 : 4000,
+    );
   }, [total, isHovered, isAutoPlaying]);
 
   const stopAutoPlay = useCallback(() => {
@@ -118,11 +207,14 @@ export function ProductGallery({
     return () => stopAutoPlay();
   }, [total, startAutoPlay, stopAutoPlay]);
 
-  const goTo = useCallback((index: number) => {
-    setActiveIndex(index);
-    stopAutoPlay();
-    startAutoPlay();
-  }, [startAutoPlay, stopAutoPlay]);
+  const goTo = useCallback(
+    (index: number) => {
+      setActiveIndex(index);
+      stopAutoPlay();
+      startAutoPlay();
+    },
+    [startAutoPlay, stopAutoPlay],
+  );
 
   const goNext = useCallback(() => {
     goTo((activeIndex + 1) % total);
@@ -154,7 +246,7 @@ export function ProductGallery({
     if (!touchStart) return;
     const dx = touchStart.x - e.changedTouches[0].clientX;
     const dy = touchStart.y - e.changedTouches[0].clientY;
-    
+
     if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
       if (dx > 0) goNext();
       else goPrev();
@@ -305,7 +397,7 @@ export function ProductGallery({
         {/* 3D Carousel Container */}
         <div className="relative w-full" style={{perspective: '1600px'}}>
           {/* Main Carousel */}
-          <div 
+          <div
             ref={containerRef}
             className="relative aspect-square md:aspect-[4/5] flex items-center justify-center cursor-grab active:cursor-grabbing"
             onMouseMove={handleMouseMove}
@@ -318,7 +410,9 @@ export function ProductGallery({
               return (
                 <motion.div
                   key={image.id || index}
-                  className={`absolute w-[70%] md:w-[62%] h-full ${isActive ? 'cursor-pointer' : 'cursor-pointer'}`}
+                  className={`absolute w-[70%] md:w-[62%] h-full ${
+                    isActive ? 'cursor-pointer' : 'cursor-pointer'
+                  }`}
                   animate={{
                     x: style.x,
                     scale: style.scale,
@@ -341,7 +435,7 @@ export function ProductGallery({
                     else if (!isActive) goTo(index);
                   }}
                 >
-                  <motion.div 
+                  <motion.div
                     className="w-full h-full rounded-2xl overflow-hidden bg-gradient-to-br from-[#F5F2ED] to-[#E8E4DD] shadow-2xl"
                     whileHover={isActive ? {scale: 1.02} : {}}
                     transition={{duration: 0.3}}
@@ -349,15 +443,19 @@ export function ProductGallery({
                     {/* Image with zoom capability */}
                     <motion.div
                       className="w-full h-full"
-                      animate={isActive && isZoomed ? {
-                        scale: 2,
-                        x: (0.5 - mousePosition.x) * 50 + '%',
-                        y: (0.5 - mousePosition.y) * 50 + '%',
-                      } : {
-                        scale: 1,
-                        x: 0,
-                        y: 0,
-                      }}
+                      animate={
+                        isActive && isZoomed
+                          ? {
+                              scale: 2,
+                              x: (0.5 - mousePosition.x) * 50 + '%',
+                              y: (0.5 - mousePosition.y) * 50 + '%',
+                            }
+                          : {
+                              scale: 1,
+                              x: 0,
+                              y: 0,
+                            }
+                      }
                       transition={{type: 'spring', stiffness: 200, damping: 25}}
                     >
                       <img
@@ -373,7 +471,11 @@ export function ProductGallery({
                         className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent pointer-events-none"
                         initial={{x: '-100%', opacity: 0}}
                         animate={{x: '100%', opacity: [0, 0.5, 0]}}
-                        transition={{duration: 2, repeat: Infinity, repeatDelay: 3}}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          repeatDelay: 3,
+                        }}
                       />
                     )}
                   </motion.div>
@@ -408,7 +510,10 @@ export function ProductGallery({
 
           {/* Navigation Arrows with hover effects */}
           <motion.button
-            onClick={(e) => { e.stopPropagation(); goPrev(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              goPrev();
+            }}
             className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center text-[#2a2118] shadow-lg border border-white/20 group"
             whileHover={{scale: 1.1, x: -2}}
             whileTap={{scale: 0.95}}
@@ -416,9 +521,12 @@ export function ProductGallery({
           >
             <Icons.ChevronLeft className="transition-transform group-hover:-translate-x-0.5" />
           </motion.button>
-          
+
           <motion.button
-            onClick={(e) => { e.stopPropagation(); goNext(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              goNext();
+            }}
             className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center text-[#2a2118] shadow-lg border border-white/20 group"
             whileHover={{scale: 1.1, x: 2}}
             whileTap={{scale: 0.95}}
@@ -433,8 +541,8 @@ export function ProductGallery({
             <motion.button
               onClick={toggleAutoPlay}
               className={`w-10 h-10 rounded-full backdrop-blur-md flex items-center justify-center shadow-lg border transition-colors ${
-                isAutoPlaying 
-                  ? 'bg-[#a87441] text-white border-[#a87441]' 
+                isAutoPlaying
+                  ? 'bg-[#a87441] text-white border-[#a87441]'
                   : 'bg-white/90 text-[#2a2118] border-white/20 hover:bg-white'
               }`}
               whileHover={{scale: 1.05}}
@@ -481,7 +589,8 @@ export function ProductGallery({
             <div className="bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-white/20 flex items-center gap-2">
               <Icons.ImageIcon className="text-[#a87441]" />
               <span className="text-sm font-medium text-[#2a2118]">
-                {activeIndex + 1} <span className="text-[#8B8076]">/</span> {total}
+                {activeIndex + 1} <span className="text-[#8B8076]">/</span>{' '}
+                {total}
               </span>
             </div>
           </div>
@@ -507,7 +616,7 @@ export function ProductGallery({
                 alt={image.altText}
                 className="w-full h-full object-contain p-1.5 bg-[#F5F2ED]"
               />
-              
+
               {/* Active indicator glow */}
               {index === activeIndex && (
                 <motion.div
@@ -574,7 +683,10 @@ export function ProductGallery({
               initial={{opacity: 0, y: -20}}
               animate={{opacity: 1, y: 0}}
               exit={{opacity: 0, y: -20}}
-              onClick={(e) => { e.stopPropagation(); setIsFullscreen(false); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsFullscreen(false);
+              }}
               className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-colors z-10"
               whileHover={{scale: 1.1}}
               whileTap={{scale: 0.95}}
@@ -587,7 +699,10 @@ export function ProductGallery({
               initial={{opacity: 0, x: -20}}
               animate={{opacity: 1, x: 0}}
               exit={{opacity: 0, x: -20}}
-              onClick={(e) => { e.stopPropagation(); goPrev(); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                goPrev();
+              }}
               className="absolute left-6 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-colors"
               whileHover={{scale: 1.1}}
               whileTap={{scale: 0.95}}
@@ -599,7 +714,10 @@ export function ProductGallery({
               initial={{opacity: 0, x: 20}}
               animate={{opacity: 1, x: 0}}
               exit={{opacity: 0, x: 20}}
-              onClick={(e) => { e.stopPropagation(); goNext(); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                goNext();
+              }}
               className="absolute right-6 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-colors"
               whileHover={{scale: 1.1}}
               whileTap={{scale: 0.95}}
@@ -634,7 +752,10 @@ export function ProductGallery({
               {images.map((image, index) => (
                 <button
                   key={index}
-                  onClick={(e) => { e.stopPropagation(); goTo(index); }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goTo(index);
+                  }}
                   className={`w-12 h-12 rounded-lg overflow-hidden transition-all ${
                     index === activeIndex
                       ? 'ring-2 ring-[#a87441] scale-110'

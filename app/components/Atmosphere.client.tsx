@@ -76,7 +76,12 @@ function Sparkles({
 const Atmosphere: React.FC<AtmosphereProps> = (props) => {
   return (
     <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-      <Canvas camera={{position: [0, 0, 5], fov: 75}} dpr={[1, 2]} gl={{ alpha: true }} style={{ background: 'transparent' }}>
+      <Canvas
+        camera={{position: [0, 0, 5], fov: 75}}
+        dpr={[1, 2]}
+        gl={{alpha: true}}
+        style={{background: 'transparent'}}
+      >
         <Sparkles {...props} />
       </Canvas>
     </div>

@@ -84,10 +84,7 @@ export function SplitText({
   const parts = splitText();
 
   return (
-    <Component
-      ref={ref as any}
-      className={`inline-block ${className}`}
-    >
+    <Component ref={ref as any} className={`inline-block ${className}`}>
       <motion.span
         variants={containerVariants}
         initial="hidden"
@@ -161,7 +158,11 @@ interface ScrambleTextProps {
   delay?: number;
 }
 
-export function ScrambleText({text, className = '', delay = 0}: ScrambleTextProps) {
+export function ScrambleText({
+  text,
+  className = '',
+  delay = 0,
+}: ScrambleTextProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, {once: true, amount: 0.5});
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';

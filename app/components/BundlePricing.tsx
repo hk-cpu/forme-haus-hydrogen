@@ -1,6 +1,6 @@
 /**
  * BundlePricing Component
- * 
+ *
  * Displays bundle deals and quantity discounts for pre-launch:
  * - Buy X, Get Y deals
  * - Volume pricing tiers
@@ -119,7 +119,7 @@ export function BundlePricing({
 }: BundlePricingProps) {
   const {isRTL, t} = useTranslation();
   const [selectedId, setSelectedId] = useState<string>(
-    variant === 'cards' ? 'case-strap' : 'single'
+    variant === 'cards' ? 'case-strap' : 'single',
   );
 
   const handleSelect = (id: string) => {
@@ -130,7 +130,7 @@ export function BundlePricing({
   // Compact version for product cards
   if (variant === 'compact') {
     return (
-      <div 
+      <div
         className={`flex items-center gap-2 ${className}`}
         dir={isRTL ? 'rtl' : 'ltr'}
       >
@@ -138,8 +138,8 @@ export function BundlePricing({
           whileHover={{scale: 1.02}}
           className="flex items-center gap-1.5 px-2 py-1 bg-[#a87441]/10 rounded-md"
         >
-          <svg 
-            viewBox="0 0 24 24" 
+          <svg
+            viewBox="0 0 24 24"
             className="w-3.5 h-3.5 text-[#a87441]"
             fill="none"
             stroke="currentColor"
@@ -161,14 +161,16 @@ export function BundlePricing({
   // Tiered pricing (quantity selector style)
   if (variant === 'tiers') {
     return (
-      <div 
+      <div
         className={`bg-[#F9F5F0] rounded-xl p-4 ${className}`}
         dir={isRTL ? 'rtl' : 'ltr'}
       >
         <p className="text-xs font-medium text-[#4A3C31] mb-3">
-          {isRTL ? 'اختر الكمية (توفر خصم)' : 'Select Quantity (Discount Available)'}
+          {isRTL
+            ? 'اختر الكمية (توفر خصم)'
+            : 'Select Quantity (Discount Available)'}
         </p>
-        
+
         <div className="space-y-2">
           {DEFAULT_TIERS.map((tier) => (
             <motion.button
@@ -183,11 +185,13 @@ export function BundlePricing({
               }`}
             >
               <div className="flex items-center gap-3">
-                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                  selectedId === tier.id
-                    ? 'border-[#a87441]'
-                    : 'border-[#8B8076]/30'
-                }`}>
+                <div
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                    selectedId === tier.id
+                      ? 'border-[#a87441]'
+                      : 'border-[#8B8076]/30'
+                  }`}
+                >
                   {selectedId === tier.id && (
                     <div className="w-2.5 h-2.5 rounded-full bg-[#a87441]" />
                   )}
@@ -203,7 +207,7 @@ export function BundlePricing({
                   )}
                 </div>
               </div>
-              
+
               <div className="text-right">
                 <span className="text-sm font-semibold text-[#4A3C31]">
                   {tier.price} {currencyCode}
@@ -228,10 +232,33 @@ export function BundlePricing({
               className="mt-3 p-2 bg-green-50 rounded-lg border border-green-100"
             >
               <p className="text-xs text-center text-green-700">
-                {isRTL 
-                  ? `توفير ${DEFAULT_TIERS.find(t => t.id === selectedId)?.comparePrice ? parseInt(DEFAULT_TIERS.find(t => t.id === selectedId)!.comparePrice!) - parseInt(DEFAULT_TIERS.find(t => t.id === selectedId)!.price) : 0} ريال`
-                  : `You save ${DEFAULT_TIERS.find(t => t.id === selectedId)?.comparePrice ? parseInt(DEFAULT_TIERS.find(t => t.id === selectedId)!.comparePrice!) - parseInt(DEFAULT_TIERS.find(t => t.id === selectedId)!.price) : 0} SAR`
-                }
+                {isRTL
+                  ? `توفير ${
+                      DEFAULT_TIERS.find((t) => t.id === selectedId)
+                        ?.comparePrice
+                        ? parseInt(
+                            DEFAULT_TIERS.find((t) => t.id === selectedId)!
+                              .comparePrice!,
+                          ) -
+                          parseInt(
+                            DEFAULT_TIERS.find((t) => t.id === selectedId)!
+                              .price,
+                          )
+                        : 0
+                    } ريال`
+                  : `You save ${
+                      DEFAULT_TIERS.find((t) => t.id === selectedId)
+                        ?.comparePrice
+                        ? parseInt(
+                            DEFAULT_TIERS.find((t) => t.id === selectedId)!
+                              .comparePrice!,
+                          ) -
+                          parseInt(
+                            DEFAULT_TIERS.find((t) => t.id === selectedId)!
+                              .price,
+                          )
+                        : 0
+                    } SAR`}
               </p>
             </motion.div>
           )}
@@ -242,10 +269,7 @@ export function BundlePricing({
 
   // Card style (bundle combos)
   return (
-    <div 
-      className={`${className}`}
-      dir={isRTL ? 'rtl' : 'ltr'}
-    >
+    <div className={`${className}`} dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="flex items-center justify-between mb-3">
         <p className="text-xs font-medium text-[#4A3C31]">
           {isRTL ? 'اختر الباقة' : 'Choose Your Bundle'}
@@ -277,11 +301,13 @@ export function BundlePricing({
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                  selectedId === bundle.id
-                    ? 'border-[#a87441]'
-                    : 'border-[#8B8076]/30'
-                }`}>
+                <div
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
+                    selectedId === bundle.id
+                      ? 'border-[#a87441]'
+                      : 'border-[#8B8076]/30'
+                  }`}
+                >
                   {selectedId === bundle.id && (
                     <div className="w-2.5 h-2.5 rounded-full bg-[#a87441]" />
                   )}
@@ -291,7 +317,11 @@ export function BundlePricing({
                     {isRTL ? bundle.titleAr : bundle.title}
                   </p>
                   {bundle.subtitle && (
-                    <p className={`text-[10px] ${bundle.popular ? 'text-[#a87441]' : 'text-green-600'}`}>
+                    <p
+                      className={`text-[10px] ${
+                        bundle.popular ? 'text-[#a87441]' : 'text-green-600'
+                      }`}
+                    >
                       {isRTL ? bundle.subtitleAr : bundle.subtitle}
                     </p>
                   )}
@@ -316,11 +346,11 @@ export function BundlePricing({
       {/* Bundle benefits */}
       <div className="mt-3 flex flex-wrap gap-2">
         {[
-          { icon: '🚚', text: isRTL ? 'شحن مجاني' : 'Free Shipping' },
-          { icon: '🎁', text: isRTL ? 'تغليف هدية' : 'Gift Wrap' },
-          { icon: '↩️', text: isRTL ? 'إرجاع سهل' : 'Easy Returns' },
+          {icon: '🚚', text: isRTL ? 'شحن مجاني' : 'Free Shipping'},
+          {icon: '🎁', text: isRTL ? 'تغليف هدية' : 'Gift Wrap'},
+          {icon: '↩️', text: isRTL ? 'إرجاع سهل' : 'Easy Returns'},
         ].map((benefit, i) => (
-          <span 
+          <span
             key={i}
             className="text-[10px] px-2 py-1 bg-[#8B8076]/10 text-[#8B8076] rounded-full"
           >

@@ -130,7 +130,8 @@ export function ProductCard({
   // Parse title: "The Olive - Mocha Tort" ΓåÆ name: "The Olive", color: "Mocha Tort"
   const titleParts = product.title.split(' - ');
   const productName = titleParts[0]?.trim() || product.title;
-  const colorFromTitle = titleParts.length > 1 ? titleParts.slice(1).join(' - ').trim() : '';
+  const colorFromTitle =
+    titleParts.length > 1 ? titleParts.slice(1).join(' - ').trim() : '';
   // Fallback: check variant selectedOptions for "Color"
   const colorFromVariant = product.variants?.nodes?.[0]?.selectedOptions?.find(
     (opt) => opt.name.toLowerCase() === 'color',
@@ -261,13 +262,14 @@ export function ProductCard({
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
 
           {/* Coming Soon Overlay - only for products without a valid price */}
-          {!product.availableForSale && !product.priceRange?.minVariantPrice?.amount && (
-            <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-              <span className="font-serif text-xl italic text-white/90 tracking-wide">
-                {t('product.comingSoon', 'Coming Soon')}
-              </span>
-            </div>
-          )}
+          {!product.availableForSale &&
+            !product.priceRange?.minVariantPrice?.amount && (
+              <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                <span className="font-serif text-xl italic text-white/90 tracking-wide">
+                  {t('product.comingSoon', 'Coming Soon')}
+                </span>
+              </div>
+            )}
 
           {/* New Badge */}
           {isNew && (

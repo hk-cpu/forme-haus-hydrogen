@@ -188,7 +188,9 @@ export default function Product() {
         <ul className="space-y-1.5 list-none m-0 p-0">
           {specifications.map((s) => (
             <li key={s.label} className="flex text-[13px]">
-              <span className="w-1/2 font-medium text-[#4A3C31]">{s.label}:</span>
+              <span className="w-1/2 font-medium text-[#4A3C31]">
+                {s.label}:
+              </span>
               <span className="w-1/2 text-[#8B8076]">{s.value}</span>
             </li>
           ))}
@@ -196,8 +198,14 @@ export default function Product() {
       )}
       {mImage && (
         <div className="pt-4 border-t border-[#8B8076]/10">
-          <p className="text-[11px] uppercase tracking-widest text-[#4A3C31] mb-2 font-medium">Measurement Image</p>
-          <img src={mImage} alt="Measurement Guide" className="w-full h-auto rounded-lg bg-[#FAF8F5] p-4" />
+          <p className="text-[11px] uppercase tracking-widest text-[#4A3C31] mb-2 font-medium">
+            Measurement Image
+          </p>
+          <img
+            src={mImage}
+            alt="Measurement Guide"
+            className="w-full h-auto rounded-lg bg-[#FAF8F5] p-4"
+          />
         </div>
       )}
     </div>
@@ -206,16 +214,22 @@ export default function Product() {
   const {shippingPolicy, refundPolicy} = shop;
 
   // Extract iPhone models from tags (e.g., "iphone-17-pro", "iphone-17-pro-max")
-  const iPhoneModels: string[] = product.tags
-    ?.filter((tag: string) => tag.toLowerCase().startsWith('iphone-'))
-    ?.map((tag: string) => {
-      const match = tag.match(/iphone-?(\d+)-?(pro-?max|pro|max|plus|mini)/i);
-      if (match) {
-        const [, number, model] = match;
-        return `iPhone ${number} ${model.replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}`;
-      }
-      return tag.replace(/iphone-?/i, 'iPhone ').replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase());
-    }) || [];
+  const iPhoneModels: string[] =
+    product.tags
+      ?.filter((tag: string) => tag.toLowerCase().startsWith('iphone-'))
+      ?.map((tag: string) => {
+        const match = tag.match(/iphone-?(\d+)-?(pro-?max|pro|max|plus|mini)/i);
+        if (match) {
+          const [, number, model] = match;
+          return `iPhone ${number} ${model
+            .replace(/-/g, ' ')
+            .replace(/\b\w/g, (l: string) => l.toUpperCase())}`;
+        }
+        return tag
+          .replace(/iphone-?/i, 'iPhone ')
+          .replace(/-/g, ' ')
+          .replace(/\b\w/g, (l: string) => l.toUpperCase());
+      }) || [];
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
@@ -277,10 +291,7 @@ export default function Product() {
         </div>
 
         <div className="grid items-start md:gap-6 lg:gap-12 md:grid-cols-2">
-          <ProductGallery
-            media={media.nodes}
-            className="w-full"
-          />
+          <ProductGallery media={media.nodes} className="w-full" />
           <div className="sticky md:top-24 md:h-[calc(100vh-6rem)] hiddenScroll md:overflow-y-auto">
             <section className="flex flex-col w-full max-w-xl gap-10 p-6 md:pl-10 lg:pl-16 md:mx-auto md:max-w-none">
               <div className="grid gap-3">
@@ -291,14 +302,16 @@ export default function Product() {
                   </span>
                   {iPhoneModels.length > 0 && (
                     <div className="flex gap-1.5">
-                      {iPhoneModels.slice(0, 2).map((model: string, idx: number) => (
-                        <span 
-                          key={idx}
-                          className="text-[10px] px-2.5 py-1 bg-[#a87441]/10 text-[#a87441] rounded-full font-medium"
-                        >
-                          {model}
-                        </span>
-                      ))}
+                      {iPhoneModels
+                        .slice(0, 2)
+                        .map((model: string, idx: number) => (
+                          <span
+                            key={idx}
+                            className="text-[10px] px-2.5 py-1 bg-[#a87441]/10 text-[#a87441] rounded-full font-medium"
+                          >
+                            {model}
+                          </span>
+                        ))}
                       {iPhoneModels.length > 2 && (
                         <span className="text-[10px] px-2 py-1 text-[#8B8076]">
                           +{iPhoneModels.length - 2} more
@@ -307,14 +320,14 @@ export default function Product() {
                     </div>
                   )}
                 </div>
-                
+
                 <Heading
                   as="h1"
                   className="whitespace-normal font-serif text-3xl md:text-4xl lg:text-4xl text-[#2a2118] font-thin leading-[0.95] tracking-tight mb-2 hyphens-auto"
                 >
                   {title}
                 </Heading>
-                
+
                 {vendor && vendor !== 'LOUVE Collection' && (
                   <Text
                     className={
@@ -330,12 +343,12 @@ export default function Product() {
                 selectedVariant={selectedVariant}
                 storeDomain={storeDomain}
               />
-              
+
               {/* Bundle Pricing Section */}
               <div className="mt-6">
                 <BundlePricing variant="cards" />
               </div>
-              
+
               {/* Trust Badges Section */}
               <div className="mt-6">
                 <TrustBadges variant="full" />
@@ -408,7 +421,9 @@ export default function Product() {
             className="fixed bottom-0 left-0 right-0 z-[200] md:hidden bg-[#F9F5F0] border-t border-[#8B8076]/20 px-4 py-3 flex items-center gap-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]"
           >
             <div className="flex-1 min-w-0">
-              <p className="font-serif text-[13px] text-[#2a2118] leading-tight truncate">{title}</p>
+              <p className="font-serif text-[13px] text-[#2a2118] leading-tight truncate">
+                {title}
+              </p>
               <Money
                 withoutTrailingZeros
                 data={selectedVariant!.price!}

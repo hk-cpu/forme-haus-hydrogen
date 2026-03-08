@@ -14,17 +14,33 @@ const PHONE_HANDLES = ['phone-cases', 'phone-straps', 'case-strap-bundles'];
 const TOP_LEVEL_CATEGORIES = [
   {id: 'shop-all', label: 'Shop All', href: '/collections'},
   {id: 'phone-cases', label: 'Phone Cases', href: '/collections/phone-cases'},
-  {id: 'phone-straps', label: 'Phone Straps', href: '/collections/phone-straps'},
-  {id: 'bundles', label: 'Case+Strap Bundles', href: '/collections/case-strap-bundles'},
+  {
+    id: 'phone-straps',
+    label: 'Phone Straps',
+    href: '/collections/phone-straps',
+  },
+  {
+    id: 'bundles',
+    label: 'Case+Strap Bundles',
+    href: '/collections/case-strap-bundles',
+  },
   {id: 'sunglasses', label: 'Sunglasses', href: '/collections/sunglasses'},
   {id: 'sale', label: 'Sale', href: '/collections/sale'},
 ];
 
 const PHONE_SUBCATEGORIES = [
-  {id: 'all-phone', label: 'All Phone Accessories', href: '/collections/phone-cases'},
+  {
+    id: 'all-phone',
+    label: 'All Phone Accessories',
+    href: '/collections/phone-cases',
+  },
   {id: 'phone-cases', label: 'Cases', href: '/collections/phone-cases'},
   {id: 'phone-straps', label: 'Straps', href: '/collections/phone-straps'},
-  {id: 'bundles', label: 'Case+Strap Bundles', href: '/collections/case-strap-bundles'},
+  {
+    id: 'bundles',
+    label: 'Case+Strap Bundles',
+    href: '/collections/case-strap-bundles',
+  },
 ];
 
 /**
@@ -48,15 +64,21 @@ export function CategoryHeader({
   const location = useLocation();
 
   // Choose context-aware category list
-  const isPhoneContext = collectionHandle && PHONE_HANDLES.includes(collectionHandle);
-  const categories = isPhoneContext ? PHONE_SUBCATEGORIES : TOP_LEVEL_CATEGORIES;
+  const isPhoneContext =
+    collectionHandle && PHONE_HANDLES.includes(collectionHandle);
+  const categories = isPhoneContext
+    ? PHONE_SUBCATEGORIES
+    : TOP_LEVEL_CATEGORIES;
 
   return (
     <div
       className="sticky z-40 bg-[#F9F5F0]/[0.97] backdrop-blur-xl border-b border-[#4A3C31]/8"
       style={{top: 'var(--navbar-height)', direction: isRTL ? 'rtl' : 'ltr'}}
     >
-      <div className="max-w-[1440px] mx-auto flex items-center justify-between" style={{padding: '0 var(--page-gutter)'}}>
+      <div
+        className="max-w-[1440px] mx-auto flex items-center justify-between"
+        style={{padding: '0 var(--page-gutter)'}}
+      >
         {/* Scrollable Tab Bar */}
         <nav
           className="flex items-center gap-1 overflow-x-auto scrollbar-hide py-3 -mx-1"
@@ -95,7 +117,10 @@ export function CategoryHeader({
         <div className="flex items-center gap-4 shrink-0 pl-4">
           {productCount !== undefined && (
             <span className="text-[11px] uppercase tracking-[0.15em] text-[#8B7355] hidden sm:block">
-              {productCount} {productCount === 1 ? t('collection.item') : t('collection.items')}
+              {productCount}{' '}
+              {productCount === 1
+                ? t('collection.item')
+                : t('collection.items')}
             </span>
           )}
           <button

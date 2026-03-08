@@ -34,72 +34,222 @@ import type {RootLoader} from '~/root';
 // ============================================================================
 const Icons = {
   Bag: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M6 6h12l1 15H5L6 6z" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M9 6V5a3 3 0 0 1 6 0v1" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <path
+        d="M6 6h12l1 15H5L6 6z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9 6V5a3 3 0 0 1 6 0v1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   Trash: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <path
+        d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   Minus: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <line x1="5" y1="12" x2="19" y2="12" strokeLinecap="round"/>
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <line x1="5" y1="12" x2="19" y2="12" strokeLinecap="round" />
     </svg>
   ),
   Plus: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <line x1="12" y1="5" x2="12" y2="19" strokeLinecap="round"/>
-      <line x1="5" y1="12" x2="19" y2="12" strokeLinecap="round"/>
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <line x1="12" y1="5" x2="12" y2="19" strokeLinecap="round" />
+      <line x1="5" y1="12" x2="19" y2="12" strokeLinecap="round" />
     </svg>
   ),
   Tag: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" strokeLinecap="round" strokeLinejoin="round"/>
-      <line x1="7" y1="7" x2="7.01" y2="7"/>
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <path
+        d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <line x1="7" y1="7" x2="7.01" y2="7" />
     </svg>
   ),
   Truck: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <rect x="1" y="3" width="15" height="13"/>
-      <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
-      <circle cx="5.5" cy="18.5" r="2.5"/>
-      <circle cx="18.5" cy="18.5" r="2.5"/>
+    <svg
+      className={className}
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <rect x="1" y="3" width="15" height="13" />
+      <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+      <circle cx="5.5" cy="18.5" r="2.5" />
+      <circle cx="18.5" cy="18.5" r="2.5" />
     </svg>
   ),
   Gift: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <polyline points="20 12 20 22 4 22 4 12" strokeLinecap="round" strokeLinejoin="round"/>
-      <rect x="2" y="7" width="20" height="5"/>
-      <line x1="12" y1="22" x2="12" y2="7"/>
-      <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <polyline
+        points="20 12 20 22 4 22 4 12"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <rect x="2" y="7" width="20" height="5" />
+      <line x1="12" y1="22" x2="12" y2="7" />
+      <path
+        d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   Check: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <polyline points="20 6 9 17 4 12" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <polyline
+        points="20 6 9 17 4 12"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   Lock: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-      <path d="M7 11V7a5 5 0 0 1 10 0v4" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+      <path
+        d="M7 11V7a5 5 0 0 1 10 0v4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   ArrowRight: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <line x1="5" y1="12" x2="19" y2="12" strokeLinecap="round" strokeLinejoin="round"/>
-      <polyline points="12 5 19 12 12 19" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <line
+        x1="5"
+        y1="12"
+        x2="19"
+        y2="12"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <polyline
+        points="12 5 19 12 12 19"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   Shopping: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" strokeLinecap="round" strokeLinejoin="round"/>
-      <line x1="3" y1="6" x2="21" y2="6" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M16 10a4 4 0 0 1-8 0" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="64"
+      height="64"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1"
+    >
+      <path
+        d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <line
+        x1="3"
+        y1="6"
+        x2="21"
+        y2="6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M16 10a4 4 0 0 1-8 0"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
 };
@@ -194,7 +344,10 @@ function CartDiscounts({
               whileHover={{scale: 1.1}}
               whileTap={{scale: 0.95}}
             >
-              <IconRemove aria-hidden="true" className="w-4 h-4 text-[#8B8076]" />
+              <IconRemove
+                aria-hidden="true"
+                className="w-4 h-4 text-[#8B8076]"
+              />
             </motion.button>
           </UpdateDiscountForm>
         </motion.div>
@@ -351,11 +504,17 @@ function CartCheckoutActions({
       {/* Terms */}
       <p className="text-[10px] text-center text-[#8B8076]/60">
         {t('cart.terms', 'By proceeding, you agree to our')}{' '}
-        <a href="/policies/terms-of-service" className="text-[#a87441] hover:underline">
+        <a
+          href="/policies/terms-of-service"
+          className="text-[#a87441] hover:underline"
+        >
           {t('cart.termsLink', 'Terms')}
         </a>{' '}
         {t('cart.and', 'and')}{' '}
-        <a href="/policies/refund-policy" className="text-[#a87441] hover:underline">
+        <a
+          href="/policies/refund-policy"
+          className="text-[#a87441] hover:underline"
+        >
           {t('cart.refundsLink', 'Refund Policy')}
         </a>
       </p>
@@ -375,7 +534,8 @@ function CartSummary({
   const {t} = useTranslation();
 
   const summary = {
-    drawer: 'grid gap-5 p-6 border-t border-[#a87441]/20 bg-gradient-to-t from-[#0F0F0F] to-[#121212]',
+    drawer:
+      'grid gap-5 p-6 border-t border-[#a87441]/20 bg-gradient-to-t from-[#0F0F0F] to-[#121212]',
     page: 'sticky top-nav grid gap-6 p-4 md:px-6 md:translate-y-4 bg-primary/5 rounded-xl w-full',
   };
 
@@ -409,7 +569,9 @@ function CartSummary({
       {/* Shipping Note */}
       <div className="flex items-center gap-2 text-[#8B8076] text-xs">
         <Icons.Truck className="w-4 h-4" />
-        <p>{t('cart.shippingNote', 'Shipping and taxes calculated at checkout')}</p>
+        <p>
+          {t('cart.shippingNote', 'Shipping and taxes calculated at checkout')}
+        </p>
       </div>
 
       {/* Additional Content (Discounts, etc.) */}
@@ -438,7 +600,11 @@ function CartLineItem({line, index}: {line: CartLine; index?: number}) {
       initial={{opacity: 0, y: 20, scale: 0.95}}
       animate={{opacity: 1, y: 0, scale: 1}}
       exit={{opacity: 0, x: -50, height: 0, marginBottom: 0}}
-      transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: (index || 0) * 0.05}}
+      transition={{
+        duration: 0.4,
+        ease: [0.16, 1, 0.3, 1],
+        delay: (index || 0) * 0.05,
+      }}
       key={id}
       className="flex gap-4 pb-6 border-b border-[#a87441]/10 last:border-0 last:pb-0"
       style={{
@@ -446,10 +612,7 @@ function CartLineItem({line, index}: {line: CartLine; index?: number}) {
       }}
     >
       {/* Product Image */}
-      <motion.div 
-        className="flex-shrink-0"
-        whileHover={{scale: 1.02}}
-      >
+      <motion.div className="flex-shrink-0" whileHover={{scale: 1.02}}>
         {merchandise.image ? (
           <Link to={`/products/${merchandise.product.handle}`}>
             <div className="w-24 h-24 md:w-28 md:h-28 bg-gradient-to-br from-[#1A1A1A] to-[#0F0F0F] rounded-xl overflow-hidden border border-[#8B8076]/10 hover:border-[#a87441]/30 transition-colors">
@@ -571,7 +734,10 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
             whileTap={{scale: 0.9}}
           >
             <Icons.Minus />
-            <OptimisticInput id={optimisticId} data={{quantity: prevQuantity}} />
+            <OptimisticInput
+              id={optimisticId}
+              data={{quantity: prevQuantity}}
+            />
           </motion.button>
         </UpdateCartButton>
 
@@ -591,7 +757,10 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
             whileTap={{scale: 0.9}}
           >
             <Icons.Plus />
-            <OptimisticInput id={optimisticId} data={{quantity: nextQuantity}} />
+            <OptimisticInput
+              id={optimisticId}
+              data={{quantity: nextQuantity}}
+            />
           </motion.button>
         </UpdateCartButton>
       </div>
@@ -667,7 +836,7 @@ function CartEmpty({
   return (
     <div ref={scrollRef} className={container[layout]} hidden={hidden}>
       {layout === 'drawer' ? (
-        <motion.div 
+        <motion.div
           className="flex flex-col items-center text-center"
           initial={{opacity: 0, y: 20}}
           animate={{opacity: 1, y: 0}}
@@ -690,7 +859,7 @@ function CartEmpty({
               transition={{duration: 3, repeat: Infinity}}
             />
           </motion.div>
-          
+
           <h3 className="font-serif text-2xl text-[#F0EAE6] mb-3">
             {t('cart.emptyTitle', 'Your bag is empty')}
           </h3>
@@ -700,7 +869,7 @@ function CartEmpty({
               'Discover our exclusive collections and find something you love.',
             )}
           </p>
-          
+
           <motion.button
             onClick={onClose}
             className="bg-gradient-to-r from-[#a87441] to-[#8B5E3C] hover:from-[#8B5E3C] hover:to-[#a87441] text-white font-medium px-8 py-4 rounded-xl transition-all flex items-center gap-2 shadow-lg shadow-[#a87441]/20"

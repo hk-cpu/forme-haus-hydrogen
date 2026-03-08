@@ -10,7 +10,14 @@ function MadaIcon() {
     <svg viewBox="0 0 60 20" className="h-5 w-auto" aria-label="Mada">
       <path d="M8 6h6l-3 7h-6l3-7z" fill="#009B3A" />
       <path d="M13 6h6l-3 7h-6l3-7z" fill="#00589B" />
-      <text x="32" y="13" fontSize="8" fontWeight="700" fill="#00589B" fontFamily="Arial, sans-serif">
+      <text
+        x="32"
+        y="13"
+        fontSize="8"
+        fontWeight="700"
+        fill="#00589B"
+        fontFamily="Arial, sans-serif"
+      >
         mada
       </text>
     </svg>
@@ -20,7 +27,15 @@ function MadaIcon() {
 function VisaIcon() {
   return (
     <svg viewBox="0 0 60 20" className="h-5 w-auto" aria-label="Visa">
-      <text x="30" y="14" fontSize="10" fontWeight="800" fill="#1A1F71" fontFamily="Arial, sans-serif" textAnchor="middle">
+      <text
+        x="30"
+        y="14"
+        fontSize="10"
+        fontWeight="800"
+        fill="#1A1F71"
+        fontFamily="Arial, sans-serif"
+        textAnchor="middle"
+      >
         VISA
       </text>
     </svg>
@@ -49,7 +64,14 @@ function ApplePayIcon() {
         fill="#fff"
         transform="scale(0.5) translate(12,2)"
       />
-      <text x="38" y="14" fontSize="9" fontWeight="600" fill="#fff" fontFamily="Arial, sans-serif">
+      <text
+        x="38"
+        y="14"
+        fontSize="9"
+        fontWeight="600"
+        fill="#fff"
+        fontFamily="Arial, sans-serif"
+      >
         Pay
       </text>
     </svg>
@@ -59,10 +81,26 @@ function ApplePayIcon() {
 function STCPayIcon() {
   return (
     <svg viewBox="0 0 40 20" className="h-5 w-auto" aria-label="STC Pay">
-      <text x="20" y="9" fontSize="6" fontWeight="800" fill="#4F008C" fontFamily="Arial, sans-serif" textAnchor="middle">
+      <text
+        x="20"
+        y="9"
+        fontSize="6"
+        fontWeight="800"
+        fill="#4F008C"
+        fontFamily="Arial, sans-serif"
+        textAnchor="middle"
+      >
         STC
       </text>
-      <text x="20" y="16" fontSize="5" fontWeight="600" fill="#4F008C" fontFamily="Arial, sans-serif" textAnchor="middle">
+      <text
+        x="20"
+        y="16"
+        fontSize="5"
+        fontWeight="600"
+        fill="#4F008C"
+        fontFamily="Arial, sans-serif"
+        textAnchor="middle"
+      >
         pay
       </text>
     </svg>
@@ -72,7 +110,15 @@ function STCPayIcon() {
 function TamaraIcon() {
   return (
     <svg viewBox="0 0 60 20" className="h-5 w-auto" aria-label="Tamara">
-      <text x="28" y="13" fontSize="8" fontWeight="700" fill="#F0EAE6" fontFamily="Arial, sans-serif" textAnchor="middle">
+      <text
+        x="28"
+        y="13"
+        fontSize="8"
+        fontWeight="700"
+        fill="#F0EAE6"
+        fontFamily="Arial, sans-serif"
+        textAnchor="middle"
+      >
         tamara
       </text>
       <circle cx="50" cy="10" r="2.5" fill="#F5A623" />
@@ -83,7 +129,15 @@ function TamaraIcon() {
 function TabbyIcon() {
   return (
     <svg viewBox="0 0 50 20" className="h-5 w-auto" aria-label="Tabby">
-      <text x="25" y="13" fontSize="8" fontWeight="700" fill="#D4FB54" fontFamily="Arial, sans-serif" textAnchor="middle">
+      <text
+        x="25"
+        y="13"
+        fontSize="8"
+        fontWeight="700"
+        fill="#D4FB54"
+        fontFamily="Arial, sans-serif"
+        textAnchor="middle"
+      >
         tabby
       </text>
     </svg>
@@ -110,12 +164,12 @@ export function PaymentLinkButton({
       onClick={onClick}
       className="w-full py-3 px-4 bg-[#1B5E20] hover:bg-[#2E7D32] text-white rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-colors"
     >
-      <svg 
-        width="18" 
-        height="18" 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="currentColor" 
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
         strokeWidth="2"
       >
         <rect x="1" y="4" width="22" height="16" rx="2" />

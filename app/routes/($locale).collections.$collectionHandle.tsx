@@ -78,7 +78,12 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   );
 
   if (collection) {
-    console.log('[DEBUG] Collection found:', collection.handle, 'Products:', collection.products?.nodes?.length);
+    console.log(
+      '[DEBUG] Collection found:',
+      collection.handle,
+      'Products:',
+      collection.products?.nodes?.length,
+    );
   } else {
     console.log('[DEBUG] Collection NOT found for handle:', collectionHandle);
   }
@@ -109,11 +114,12 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
       const lang = context.storefront.i18n.language === 'AR' ? 'AR' : 'EN';
       // @ts-ignore
       let title: string = translations[lang]['nav.newIn'] as string;
-      if(collectionHandle === 'sunglasses') title = 'Sunglasses';
-      if(collectionHandle === 'sale') title = 'Sale';
-      if(collectionHandle === 'phone-cases') title = 'Phone Cases';
-      if(collectionHandle === 'phone-straps') title = 'Phone Straps';
-      if(collectionHandle === 'case-strap-bundles') title = 'Case+Strap Bundles';
+      if (collectionHandle === 'sunglasses') title = 'Sunglasses';
+      if (collectionHandle === 'sale') title = 'Sale';
+      if (collectionHandle === 'phone-cases') title = 'Phone Cases';
+      if (collectionHandle === 'phone-straps') title = 'Phone Straps';
+      if (collectionHandle === 'case-strap-bundles')
+        title = 'Case+Strap Bundles';
 
       // Create a synthetic collection object
       collection = {
@@ -206,7 +212,10 @@ export default function Collection() {
   const {t} = useTranslation();
 
   // Collection hero image overrides
-  const HERO_OVERRIDES: Record<string, {src: string; hideTitle?: boolean; fit?: 'cover' | 'contain'; bg?: string}> = {
+  const HERO_OVERRIDES: Record<
+    string,
+    {src: string; hideTitle?: boolean; fit?: 'cover' | 'contain'; bg?: string}
+  > = {
     sunglasses: {
       src: '/assets/heros/sunglasses-hero.png',
       hideTitle: true,
@@ -233,8 +242,12 @@ export default function Collection() {
   return (
     <div className="min-h-screen bg-[#F9F5F0]">
       {/* ─── Hero Banner ─── */}
-      <div 
-        className={`relative w-full overflow-hidden ${heroFit === 'contain' ? '' : 'h-[30vh] md:h-[38vh] min-h-[220px] max-h-[380px]'}`}
+      <div
+        className={`relative w-full overflow-hidden ${
+          heroFit === 'contain'
+            ? ''
+            : 'h-[30vh] md:h-[38vh] min-h-[220px] max-h-[380px]'
+        }`}
         style={heroBg ? {backgroundColor: heroBg} : {}}
       >
         {heroImage ? (
@@ -242,7 +255,9 @@ export default function Collection() {
             <motion.img
               src={heroImage}
               alt={collection.title}
-              className={`w-full ${heroFit === 'contain' ? 'h-auto block' : 'h-full object-cover'}`}
+              className={`w-full ${
+                heroFit === 'contain' ? 'h-auto block' : 'h-full object-cover'
+              }`}
               initial={{scale: 1.03}}
               animate={{scale: 1}}
               transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}
@@ -261,12 +276,19 @@ export default function Collection() {
               className="text-center"
               initial={{opacity: 0, y: 16}}
               animate={{opacity: 1, y: 0}}
-              transition={{delay: 0.2, duration: 0.6, ease: [0.25, 0.1, 0.25, 1]}}
+              transition={{
+                delay: 0.2,
+                duration: 0.6,
+                ease: [0.25, 0.1, 0.25, 1],
+              }}
             >
               <span className="block text-[10px] uppercase tracking-[0.35em] text-[#a87441] font-light mb-3">
                 Collection
               </span>
-              <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#F0EAE6] tracking-tight mb-3" style={{letterSpacing: '0.02em'}}>
+              <h1
+                className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#F0EAE6] tracking-tight mb-3"
+                style={{letterSpacing: '0.02em'}}
+              >
                 {collection.title}
               </h1>
               {collection.description && (
@@ -287,16 +309,35 @@ export default function Collection() {
       />
 
       {/* ─── Sort / Applied Filters Bar ─── */}
-      <div className="max-w-[1440px] mx-auto py-3 flex items-center justify-between" style={{padding: '0.75rem var(--page-gutter)'}}>
+      <div
+        className="max-w-[1440px] mx-auto py-3 flex items-center justify-between"
+        style={{padding: '0.75rem var(--page-gutter)'}}
+      >
         <nav
           aria-label="Breadcrumb"
           className="flex items-center gap-2 text-[11px] uppercase tracking-[0.15em] text-[#8B7355]"
         >
-          <a href="/" className="hover:text-[#a87441] transition-colors duration-200">Home</a>
-          <span aria-hidden="true" className="text-[#8B7355]/40">›</span>
-          <a href="/collections" className="hover:text-[#a87441] transition-colors duration-200">Collections</a>
-          <span aria-hidden="true" className="text-[#8B7355]/40">›</span>
-          <span className="text-[#4A3C31] font-medium truncate max-w-[180px]">{collection.title}</span>
+          <a
+            href="/"
+            className="hover:text-[#a87441] transition-colors duration-200"
+          >
+            Home
+          </a>
+          <span aria-hidden="true" className="text-[#8B7355]/40">
+            ›
+          </span>
+          <a
+            href="/collections"
+            className="hover:text-[#a87441] transition-colors duration-200"
+          >
+            Collections
+          </a>
+          <span aria-hidden="true" className="text-[#8B7355]/40">
+            ›
+          </span>
+          <span className="text-[#4A3C31] font-medium truncate max-w-[180px]">
+            {collection.title}
+          </span>
         </nav>
         <div className="flex items-center gap-4">
           <SortMenu />
@@ -316,7 +357,10 @@ export default function Collection() {
       </div>
 
       {/* ─── Product Grid ─── */}
-      <main className="max-w-[1440px] mx-auto py-10 md:py-16" style={{padding: '2.5rem var(--page-gutter)'}}>
+      <main
+        className="max-w-[1440px] mx-auto py-10 md:py-16"
+        style={{padding: '2.5rem var(--page-gutter)'}}
+      >
         <Pagination connection={collection.products}>
           {({
             nodes,
@@ -330,7 +374,11 @@ export default function Collection() {
               {/* Product Grid - Professional layout */}
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10">
                 {nodes.map((product: any, i: number) => (
-                  <ProductCardClean key={product.id} product={product} index={i} />
+                  <ProductCardClean
+                    key={product.id}
+                    product={product}
+                    index={i}
+                  />
                 ))}
               </div>
 
@@ -339,14 +387,28 @@ export default function Collection() {
                 <nav className="flex items-center justify-center gap-6 mt-16 pt-8 border-t border-[#4A3C31]/8">
                   {hasPreviousPage ? (
                     <PreviousLink className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31] border border-[#4A3C31]/15 hover:border-[#a87441] hover:text-[#a87441] transition-all duration-300 rounded">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
                         <path d="M19 12H5M12 19l-7-7 7-7" />
                       </svg>
                       {isLoading ? t('collection.loading') : 'Previous'}
                     </PreviousLink>
                   ) : (
                     <span className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/25 border border-[#4A3C31]/8 cursor-not-allowed rounded">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
                         <path d="M19 12H5M12 19l-7-7 7-7" />
                       </svg>
                       Previous
@@ -356,14 +418,28 @@ export default function Collection() {
                   {hasNextPage ? (
                     <NextLink className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31] border border-[#4A3C31]/15 hover:border-[#a87441] hover:text-[#a87441] transition-all duration-300 rounded">
                       {isLoading ? t('collection.loading') : 'Next'}
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
                         <path d="M5 12h14M12 5l7 7-7 7" />
                       </svg>
                     </NextLink>
                   ) : (
                     <span className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/25 border border-[#4A3C31]/8 cursor-not-allowed rounded">
                       Next
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
                         <path d="M5 12h14M12 5l7 7-7 7" />
                       </svg>
                     </span>

@@ -1,6 +1,6 @@
 /**
  * ProductImageLayout Component
- * 
+ *
  * Custom image layouts for product pages based on client feedback:
  * - Photo 1: Wide landscape-oriented box (position: top or bottom)
  * - Photo 2 & 3: Model shots with object-fit: contain (full model visible, no cropping)
@@ -28,8 +28,8 @@ interface ImageConfig {
 interface ProductImageLayoutProps {
   images: ProductImage[];
   landscapePosition?: 'top' | 'bottom';
-  landscapeImageIndex?: number;  // Which image to use as the landscape one (default: 0)
-  modelImageIndices?: number[];  // Which images are model shots (default: [1, 2])
+  landscapeImageIndex?: number; // Which image to use as the landscape one (default: 0)
+  modelImageIndices?: number[]; // Which images are model shots (default: [1, 2])
   className?: string;
 }
 
@@ -80,13 +80,7 @@ function LandscapeImage({
 }
 
 // Model image with object-fit: contain (full model visible)
-function ModelImage({
-  image,
-  index,
-}: {
-  image: ProductImage;
-  index: number;
-}) {
+function ModelImage({image, index}: {image: ProductImage; index: number}) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
 
@@ -102,7 +96,7 @@ function ModelImage({
       className="w-full"
     >
       {/* Model container - 4:5 aspect ratio with contain fit */}
-      <div 
+      <div
         className="relative w-full aspect-[4/5] md:aspect-[3/4] rounded-xl overflow-hidden bg-[#F9F7F4] shadow-sm cursor-zoom-in"
         onClick={() => setIsZoomed(!isZoomed)}
       >
@@ -152,7 +146,10 @@ function ModelImage({
                 className="text-[#4A3C31]"
               >
                 <circle cx="11" cy="11" r="8" />
-                <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" strokeLinecap="round" />
+                <path
+                  d="M21 21l-4.35-4.35M11 8v6M8 11h6"
+                  strokeLinecap="round"
+                />
               </svg>
             </motion.div>
           )}
@@ -193,13 +190,7 @@ function ModelImage({
 }
 
 // Standard product image (for remaining images)
-function StandardImage({
-  image,
-  index,
-}: {
-  image: ProductImage;
-  index: number;
-}) {
+function StandardImage({image, index}: {image: ProductImage; index: number}) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
@@ -218,7 +209,7 @@ function StandardImage({
         {!isLoaded && (
           <div className="absolute inset-0 bg-gradient-to-r from-[#EDE8E3] via-[#F5F2ED] to-[#EDE8E3] animate-pulse" />
         )}
-        
+
         <img
           src={image.url}
           alt={image.altText || 'Product image'}
@@ -242,16 +233,11 @@ export function ProductImageLayout({
   if (!images || images.length === 0) return null;
 
   // Filter out the special images from the standard grid
-  const specialIndices = new Set([
-    landscapeImageIndex,
-    ...modelImageIndices,
-  ]);
-  
+  const specialIndices = new Set([landscapeImageIndex, ...modelImageIndices]);
+
   const standardImages = images.filter((_, i) => !specialIndices.has(i));
   const landscapeImage = images[landscapeImageIndex];
-  const modelImages = modelImageIndices
-    .map(i => images[i])
-    .filter(Boolean);
+  const modelImages = modelImageIndices.map((i) => images[i]).filter(Boolean);
 
   return (
     <div className={`space-y-4 ${className}`}>
@@ -283,7 +269,7 @@ export function ProductImageLayout({
       )}
 
       {/* Additional images in a smaller row */}
-      {standardImages.length > (4 - modelImages.length) && (
+      {standardImages.length > 4 - modelImages.length && (
         <div className="grid grid-cols-4 gap-2">
           {standardImages.slice(4 - modelImages.length).map((image, idx) => (
             <motion.div

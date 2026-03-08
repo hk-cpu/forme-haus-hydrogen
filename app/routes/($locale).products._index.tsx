@@ -43,8 +43,10 @@ export async function loader({
       id: 'all-products',
       title: 'All Products',
       handle: 'products',
-      descriptionHtml: 'Discover our complete collection of luxury phone accessories',
-      description: 'Discover our complete collection of luxury phone accessories',
+      descriptionHtml:
+        'Discover our complete collection of luxury phone accessories',
+      description:
+        'Discover our complete collection of luxury phone accessories',
       seo: {
         title: 'All Products | Formé Haus',
         description: 'Browse all luxury phone cases, straps, and accessories',
@@ -87,11 +89,11 @@ export default function AllProducts() {
             className="w-full h-full object-cover"
           />
         </motion.div>
-        
+
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#1a1510]/80 via-[#1a1510]/30 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1a1510]/40 to-transparent" />
-        
+
         {/* Content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <motion.span
@@ -121,24 +123,30 @@ export default function AllProducts() {
 
       {/* Infinity Product Showcase */}
       <InfinityProductShowcase />
-      
+
       {/* Product Grid Section */}
       <Section className="py-12 md:py-16">
         {/* Section Header */}
-        <div className="max-w-[1440px] mx-auto mb-8" style={{padding: '0 var(--page-gutter)'}}>
+        <div
+          className="max-w-[1440px] mx-auto mb-8"
+          style={{padding: '0 var(--page-gutter)'}}
+        >
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <h2 className="font-serif text-2xl md:text-3xl text-[#4A3C31]">
                 {isRTL ? 'جميع المنتجات' : 'Browse All'}
               </h2>
               <p className="text-sm text-[#8B8076] mt-1">
-                {products.nodes.length} {products.nodes.length === 1 ? 'item' : 'items'}
+                {products.nodes.length}{' '}
+                {products.nodes.length === 1 ? 'item' : 'items'}
               </p>
             </div>
-            
+
             {/* Breadcrumb */}
             <nav className="flex items-center gap-2 text-[11px] uppercase tracking-[0.15em] text-[#8B8076]">
-              <a href="/" className="hover:text-[#a87441] transition-colors">Home</a>
+              <a href="/" className="hover:text-[#a87441] transition-colors">
+                Home
+              </a>
               <span className="text-[#8B8076]/40">›</span>
               <span className="text-[#4A3C31]">All Products</span>
             </nav>
@@ -156,10 +164,17 @@ export default function AllProducts() {
           }) => (
             <>
               {/* Product Grid */}
-              <div className="max-w-[1440px] mx-auto" style={{padding: '0 var(--page-gutter)'}}>
+              <div
+                className="max-w-[1440px] mx-auto"
+                style={{padding: '0 var(--page-gutter)'}}
+              >
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10">
                   {nodes.map((product: any, i: number) => (
-                    <ProductCardClean key={product.id} product={product} index={i} />
+                    <ProductCardClean
+                      key={product.id}
+                      product={product}
+                      index={i}
+                    />
                   ))}
                 </div>
               </div>
@@ -169,14 +184,28 @@ export default function AllProducts() {
                 <nav className="flex items-center justify-center gap-4 mt-16 pt-8 border-t border-[#4A3C31]/10">
                   {hasPreviousPage ? (
                     <PreviousLink className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31] border border-[#4A3C31]/20 hover:border-[#a87441] hover:text-[#a87441] transition-all duration-300 rounded-full">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
                         <path d="M19 12H5M12 19l-7-7 7-7" />
                       </svg>
                       {isLoading ? 'Loading...' : 'Previous'}
                     </PreviousLink>
                   ) : (
                     <span className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/30 border border-[#4A3C31]/10 cursor-not-allowed rounded-full">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
                         <path d="M19 12H5M12 19l-7-7 7-7" />
                       </svg>
                       Previous
@@ -186,14 +215,28 @@ export default function AllProducts() {
                   {hasNextPage ? (
                     <NextLink className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31] border border-[#4A3C31]/20 hover:border-[#a87441] hover:text-[#a87441] transition-all duration-300 rounded-full">
                       {isLoading ? 'Loading...' : 'Next'}
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
                         <path d="M5 12h14M12 5l7 7-7 7" />
                       </svg>
                     </NextLink>
                   ) : (
                     <span className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/30 border border-[#4A3C31]/10 cursor-not-allowed rounded-full">
                       Next
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
                         <path d="M5 12h14M12 5l7 7-7 7" />
                       </svg>
                     </span>

@@ -1,6 +1,12 @@
 {
   "include": ["./**/*.d.ts", "./**/*.ts", "./**/*.tsx"],
-  "exclude": ["node_modules", "dist", "playwright.config.ts", "form-haus-hyd", "get-shit-done"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "playwright.config.ts",
+    "form-haus-hyd",
+    "get-shit-done"
+  ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "isolatedModules": true,

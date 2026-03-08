@@ -1,5 +1,11 @@
 import {useState, useEffect, useRef, useCallback} from 'react';
-import {motion, AnimatePresence, useMotionValue, useTransform, useSpring} from 'framer-motion';
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useTransform,
+  useSpring,
+} from 'framer-motion';
 import {Link, useFetcher} from '@remix-run/react';
 import {Money} from '@shopify/hydrogen';
 import {useUI} from '~/context/UIContext';
@@ -36,51 +42,148 @@ const Icons = {
     </svg>
   ),
   ChevronLeft: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   ),
   ChevronRight: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   ),
   Bag: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M6 6h12l1 15H5L6 6z" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M9 6V5a3 3 0 0 1 6 0v1" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <path
+        d="M6 6h12l1 15H5L6 6z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9 6V5a3 3 0 0 1 6 0v1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   Sparkles: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/>
+    <svg
+      className={className}
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
     </svg>
   ),
   Tag: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
-      <line x1="7" y1="7" x2="7.01" y2="7"/>
+    <svg
+      className={className}
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+      <line x1="7" y1="7" x2="7.01" y2="7" />
     </svg>
   ),
   Eye: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" strokeLinecap="round" strokeLinejoin="round"/>
-      <circle cx="12" cy="12" r="3"/>
+    <svg
+      className={className}
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <path
+        d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="12" cy="12" r="3" />
     </svg>
   ),
   Check: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <polyline points="20 6 9 17 4 12" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <polyline
+        points="20 6 9 17 4 12"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   Loading: ({className = ''}: {className?: string}) => (
-    <svg className={`${className} animate-spin`} width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeDasharray="31.42 31.42" strokeDashoffset="10"/>
+    <svg
+      className={`${className} animate-spin`}
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeDasharray="31.42 31.42"
+        strokeDashoffset="10"
+      />
     </svg>
   ),
   ArrowRight: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <path
+        d="M5 12h14M12 5l7 7-7 7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
 };
@@ -135,43 +238,56 @@ export function ProductCard({
   const {toggleWishlist, isInWishlist} = useUI();
   const {isRTL, t} = useTranslation();
   const fetcher = useFetcher();
-  
+
   const [currentImage, setCurrentImage] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [showAdded, setShowAdded] = useState(false);
-  
+
   // Mouse tracking for 3D tilt effect
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [3, -3]), {stiffness: 300, damping: 30});
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-3, 3]), {stiffness: 300, damping: 30});
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [3, -3]), {
+    stiffness: 300,
+    damping: 30,
+  });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-3, 3]), {
+    stiffness: 300,
+    damping: 30,
+  });
 
   const images = product.images?.nodes || [];
   const hasMultipleImages = images.length > 1;
   const isWishlisted = isInWishlist(product.id);
   const isNew = product.tags?.includes('new') || false;
   const isSale = product.tags?.includes('sale') || false;
-  
+
   // Extract iPhone models from tags (e.g., "iphone-17-pro", "iphone-17-pro-max")
-  const iPhoneModels = product.tags
-    ?.filter(tag => tag.toLowerCase().startsWith('iphone-'))
-    ?.map(tag => {
-      const match = tag.match(/iphone-?(\d+)-?(pro-?max|pro|max|plus|mini)/i);
-      if (match) {
-        const [, number, model] = match;
-        return `iPhone ${number} ${model.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}`;
-      }
-      // Simple fallback for tags like "iphone-17-pro"
-      return tag.replace(/iphone-?/i, 'iPhone ').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-    }) || [];
-  
+  const iPhoneModels =
+    product.tags
+      ?.filter((tag) => tag.toLowerCase().startsWith('iphone-'))
+      ?.map((tag) => {
+        const match = tag.match(/iphone-?(\d+)-?(pro-?max|pro|max|plus|mini)/i);
+        if (match) {
+          const [, number, model] = match;
+          return `iPhone ${number} ${model
+            .replace(/-/g, ' ')
+            .replace(/\b\w/g, (l) => l.toUpperCase())}`;
+        }
+        // Simple fallback for tags like "iphone-17-pro"
+        return tag
+          .replace(/iphone-?/i, 'iPhone ')
+          .replace(/-/g, ' ')
+          .replace(/\b\w/g, (l) => l.toUpperCase());
+      }) || [];
+
   const slideshowRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Parse title: "The Olive - Mocha Tort" → name: "The Olive", color: "Mocha Tort"
   const titleParts = product.title.split(' - ');
   const productName = titleParts[0]?.trim() || product.title;
-  const colorFromTitle = titleParts.length > 1 ? titleParts.slice(1).join(' - ').trim() : '';
+  const colorFromTitle =
+    titleParts.length > 1 ? titleParts.slice(1).join(' - ').trim() : '';
   const colorFromVariant = product.variants?.nodes?.[0]?.selectedOptions?.find(
     (opt) => opt.name.toLowerCase() === 'color',
   )?.value;
@@ -244,15 +360,15 @@ export function ProductCard({
   const handleQuickAdd = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     const variant = product.variants?.nodes?.[0];
     if (!variant?.id) return;
 
     setIsAdding(true);
-    
+
     // Simulate add to cart action
-    await new Promise(resolve => setTimeout(resolve, 600));
-    
+    await new Promise((resolve) => setTimeout(resolve, 600));
+
     // Submit cart action
     fetcher.submit(
       {
@@ -261,7 +377,7 @@ export function ProductCard({
       },
       {method: 'POST', action: '/cart'},
     );
-    
+
     setIsAdding(false);
     setShowAdded(true);
     setTimeout(() => setShowAdded(false), 2000);
@@ -284,7 +400,7 @@ export function ProductCard({
     >
       <Link to={`/products/${product.handle}`} className="block">
         {/* Image Container with 3D Tilt */}
-        <motion.div 
+        <motion.div
           className="relative aspect-square overflow-hidden rounded-xl bg-gradient-to-br from-[#F9F9F9] to-[#F0EAE6] mb-4 shadow-sm border border-[#EAE4DC] group-hover:shadow-xl transition-shadow duration-700"
           style={{
             rotateX: isHovered ? rotateX : 0,
@@ -339,17 +455,18 @@ export function ProductCard({
           <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10" />
 
           {/* Coming Soon Overlay */}
-          {!product.availableForSale && !product.priceRange?.minVariantPrice?.amount && (
-            <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-              <motion.span 
-                initial={{opacity: 0, scale: 0.9}}
-                animate={{opacity: 1, scale: 1}}
-                className="font-serif text-xl italic text-white/90 tracking-wide"
-              >
-                {t('product.comingSoon', 'Coming Soon')}
-              </motion.span>
-            </div>
-          )}
+          {!product.availableForSale &&
+            !product.priceRange?.minVariantPrice?.amount && (
+              <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                <motion.span
+                  initial={{opacity: 0, scale: 0.9}}
+                  animate={{opacity: 1, scale: 1}}
+                  className="font-serif text-xl italic text-white/90 tracking-wide"
+                >
+                  {t('product.comingSoon', 'Coming Soon')}
+                </motion.span>
+              </div>
+            )}
 
           {/* New Badge with animation */}
           <AnimatePresence>
@@ -368,7 +485,7 @@ export function ProductCard({
 
           {/* Sale Badge */}
           {isSale && !isNew && (
-            <motion.span 
+            <motion.span
               initial={{opacity: 0, scale: 0.8}}
               animate={{opacity: 1, scale: 1}}
               className="absolute top-3 left-3 px-3 py-1.5 bg-red-500/90 text-white text-[10px] uppercase tracking-widest rounded-full flex items-center gap-1.5 shadow-lg z-20"
@@ -388,7 +505,11 @@ export function ProductCard({
             }`}
             whileHover={{scale: 1.1}}
             whileTap={{scale: 0.9}}
-            aria-label={isWishlisted ? t('product.removeFromWishlist') : t('product.addToWishlist')}
+            aria-label={
+              isWishlisted
+                ? t('product.removeFromWishlist')
+                : t('product.addToWishlist')
+            }
           >
             <Icons.Heart filled={isWishlisted} />
           </motion.button>
@@ -440,7 +561,9 @@ export function ProductCard({
                       : 'bg-white/70 w-1.5 hover:bg-white'
                   }`}
                   whileHover={{scale: 1.2}}
-                  aria-label={`${t('product.goToImage', 'Go to image')} ${idx + 1}`}
+                  aria-label={`${t('product.goToImage', 'Go to image')} ${
+                    idx + 1
+                  }`}
                 />
               ))}
             </div>
@@ -516,24 +639,24 @@ export function ProductCard({
               </span>
             )}
           </div>
-          
+
           {/* Product Name */}
           <h3 className="font-serif text-[#F0EAE6] text-[15px] md:text-[17px] leading-snug group-hover:text-[#a87441] transition-colors duration-300 line-clamp-1 tracking-wide">
             {productName}
           </h3>
-          
+
           {/* Color */}
           {productColor && (
             <p className="text-[12px] text-[#8B8076] tracking-wide line-clamp-1">
               {productColor}
             </p>
           )}
-          
+
           {/* iPhone Model Compatibility */}
           {iPhoneModels.length > 1 && (
             <div className="flex flex-wrap gap-1 mt-1">
               {iPhoneModels.slice(1, 3).map((model, idx) => (
-                <span 
+                <span
                   key={idx}
                   className="text-[9px] px-1.5 py-0.5 bg-[#1A1A1A] text-[#8B8076] rounded border border-[#8B8076]/20"
                 >
@@ -547,12 +670,12 @@ export function ProductCard({
               )}
             </div>
           )}
-          
+
           {/* Bundle Pricing Indicator */}
           <div className="mt-2">
             <BundlePricing variant="compact" />
           </div>
-          
+
           {/* Price Row */}
           <div className="flex items-baseline gap-2 flex-wrap pt-0.5">
             <p className="text-[#F0EAE6] text-[14px] font-semibold transition-all duration-300 group-hover:text-[#a87441] flex items-baseline gap-1.5">
@@ -569,7 +692,7 @@ export function ProductCard({
                 <span className="text-sm opacity-50">Price unavailable</span>
               )}
             </p>
-            
+
             {hasDiscount && (
               <p className="text-[#8B8076] text-[12px] line-through">
                 <Money data={product.compareAtPriceRange!.minVariantPrice} />
@@ -594,7 +717,7 @@ export default ProductCard;
 
 export function ProductCardSkeleton({index = 0}: {index?: number}) {
   return (
-    <motion.div 
+    <motion.div
       initial={{opacity: 0, y: 20}}
       animate={{opacity: 1, y: 0}}
       transition={{delay: index * 0.08}}
