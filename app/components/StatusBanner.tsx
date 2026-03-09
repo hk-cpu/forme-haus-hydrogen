@@ -31,7 +31,7 @@ export function StatusBanner() {
         shineColor="#a87441"
         color="#AD9686"
         className="font-light"
-        disabled={shouldReduceMotion}
+        disabled={shouldReduceMotion || undefined}
       />
     </motion.div>
   );

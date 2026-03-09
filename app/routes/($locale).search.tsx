@@ -108,7 +108,7 @@ export default function Search() {
       </PageHeader>
       {searchTerm && (
         <p className="text-sm text-[#8B8076] mt-4 px-6 md:px-12 lg:px-16 max-w-7xl mx-auto">
-          {t('search.resultsFor', 'Showing {{count}} results for "{{term}}"', {count: products?.nodes?.length || 0, term: searchTerm})}
+          {t('search.resultsFor', {count: products?.nodes?.length || 0, term: searchTerm})}
         </p>
       )}
       {!searchTerm || noResults ? (
