@@ -628,10 +628,10 @@ export function ProductCard({
 
         {/* Product Info */}
         <div className="space-y-1.5 px-1 mt-4">
-          {/* Brand Badge - LOUVE Collection */}
+          {/* Brand Badge */}
           <div className="flex items-center gap-2">
             <span className="text-[10px] uppercase tracking-[0.15em] text-[#a87441] font-medium">
-              LOUVE Collection
+              {product.vendor || 'Formé Haus'}
             </span>
             {iPhoneModels.length > 0 && (
               <span className="text-[9px] px-2 py-0.5 bg-[#a87441]/10 text-[#a87441] rounded-full">
@@ -723,7 +723,7 @@ export function ProductCardSkeleton({index = 0}: {index?: number}) {
       transition={{delay: index * 0.08}}
       style={{animationDelay: `${index * 80}ms`}}
     >
-      <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-[#1A1A1A] mb-4">
+      <div className="relative aspect-square overflow-hidden rounded-xl bg-[#1A1A1A] mb-4">
         <div className="absolute inset-0 luxury-skeleton" />
       </div>
       <div className="space-y-1.5 px-1 mt-4">

@@ -272,8 +272,8 @@ export default function Product() {
     <>
       <Section className="px-0 md:px-8 lg:px-12">
         {/* Breadcrumb - Added from migration */}
-        <div className="hidden lg:block mb-6 px-4 md:px-0">
-          <Breadcrumb>
+        <div className="block mb-6 px-4 md:px-0">
+          <Breadcrumb variant="light">
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink to="/">Home</BreadcrumbLink>
