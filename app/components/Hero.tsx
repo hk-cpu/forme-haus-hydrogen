@@ -1,14 +1,15 @@
 import {Link} from '@remix-run/react';
-import {motion} from 'framer-motion';
+import {motion, useReducedMotion} from 'framer-motion';
 
 import {SplitText} from '~/components/SplitText';
 import {useTranslation} from '~/hooks/useTranslation';
 
 export default function Hero() {
   const {t} = useTranslation();
+  const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="h-[60vh] md:h-[65vh] min-h-[350px] max-h-[600px] flex flex-col items-center justify-center bg-transparent relative overflow-hidden mobile-snap-section pt-[72px] md:pt-[100px]">
+    <section aria-label="Hero" className="h-[60vh] md:h-[65vh] min-h-[350px] max-h-[600px] flex flex-col items-center justify-center bg-transparent relative overflow-hidden mobile-snap-section pt-[72px] md:pt-[100px]">
       <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
         <div className="text-center px-6 z-20 relative">
           {/* Brand Logo + Motion Line */}
@@ -50,9 +51,9 @@ export default function Hero() {
               {/* Decorative accent line */}
               <motion.div
                 className="absolute left-[-20%] right-[-20%] top-1/2 h-px bg-gradient-to-r from-transparent via-[#a87441]/30 to-transparent hidden md:block"
-                initial={{scaleX: 0, opacity: 0}}
+                initial={shouldReduceMotion ? {scaleX: 1, opacity: 1} : {scaleX: 0, opacity: 0}}
                 animate={{scaleX: 1, opacity: 1}}
-                transition={{
+                transition={shouldReduceMotion ? {duration: 0} : {
                   duration: 1.5,
                   delay: 0.8,
                   ease: [0.16, 1, 0.3, 1],
@@ -74,20 +75,21 @@ export default function Hero() {
 
           {/* CTA Button with Icon */}
           <motion.div
-            initial={{opacity: 0, y: 10}}
+            initial={shouldReduceMotion ? {opacity: 1, y: 0} : {opacity: 0, y: 10}}
             animate={{opacity: 1, y: 0}}
-            transition={{delay: 1.4, duration: 0.8, ease: [0.16, 1, 0.3, 1]}}
+            transition={shouldReduceMotion ? {duration: 0} : {delay: 1.4, duration: 0.8, ease: [0.16, 1, 0.3, 1]}}
           >
             <Link
               to="/collections/new-in"
               className="relative inline-flex items-center justify-center gap-3 px-8 sm:px-14 py-4 min-h-[48px] overflow-hidden group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded-sm"
             >
               <span className="absolute inset-0 border border-[#a87441]/40 group-hover/btn:border-[#a87441] transition-all duration-700" />
+              {!shouldReduceMotion && (
               <motion.span
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-[#a87441]/20 to-transparent"
                 animate={{x: ['-200%', '200%']}}
                 transition={{duration: 3, repeat: Infinity, ease: 'linear'}}
-              />
+              />)}
               <span className="absolute inset-0 bg-[#a87441]/0 group-hover/btn:bg-[#a87441]/10 backdrop-blur-sm transition-all duration-700" />
               <span className="relative text-[10px] uppercase tracking-[0.3em] font-light text-[#F0EAE6]/90 group-hover/btn:text-[#a87441] transition-all duration-700">
                 {t('hero.cta', 'Explore Collection')}

@@ -1,5 +1,5 @@
 ﻿import {Await, useRouteLoaderData, useLocation} from '@remix-run/react';
-import {Suspense, useEffect} from 'react';
+import {Suspense, useEffect, useState} from 'react';
 import {CartForm} from '@shopify/hydrogen';
 import {motion, AnimatePresence} from 'framer-motion';
 
@@ -36,19 +36,31 @@ export function PageLayout({children, layout}: LayoutProps) {
   const {headerMenu, footerMenu} = layout || {};
   const location = useLocation();
   const {state} = useUI();
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  // Check for desktop breakpoint (md: 768px)
+  useEffect(() => {
+    const checkDesktop = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
 
   return (
     <>
       <div className="flex flex-col min-h-screen relative">
         {/* Background Layer (Z-0) */}
         <div className="fixed inset-0 pointer-events-none z-0">
+          {isDesktop && (
           <div
             className="absolute inset-0"
             style={{transition: 'opacity 0.8s ease'}}
           >
             <Silk color="#AD9686" speed={useIsHomePath() ? 5 : 3} />
-          </div>
-          <Atmosphere count={60} color="#AD9686" size={0.008} opacity={0.2} />
+          </div>)}
+          {isDesktop && <Atmosphere count={60} color="#AD9686" size={0.008} opacity={0.2} />}
         </div>
 
         <div className="">

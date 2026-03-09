@@ -166,7 +166,7 @@ export default function EditorialSection() {
   const {isRTL, t} = useTranslation();
 
   return (
-    <section className="py-6 md:py-8" dir={isRTL ? 'rtl' : 'ltr'}>
+    <section aria-label="Editorial" className="py-6 md:py-8" dir={isRTL ? 'rtl' : 'ltr'}>
       <div
         className="max-w-[1200px] mx-auto"
         style={{padding: '0 var(--page-gutter)'}}

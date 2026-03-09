@@ -5,6 +5,7 @@ import {
   useMotionValue,
   useTransform,
   useSpring,
+  useReducedMotion,
 } from 'framer-motion';
 import {Link, useFetcher} from '@remix-run/react';
 import {Money} from '@shopify/hydrogen';
@@ -240,13 +241,14 @@ export function ProductCard({
   const {toggleWishlist, isInWishlist} = useUI();
   const {isRTL, t} = useTranslation();
   const fetcher = useFetcher();
+  const shouldReduceMotion = useReducedMotion();
 
   const [currentImage, setCurrentImage] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [showAdded, setShowAdded] = useState(false);
 
-  // Mouse tracking for 3D tilt effect
+  // Mouse tracking for 3D tilt effect (disabled when reduced motion)
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [3, -3]), {
@@ -302,8 +304,9 @@ export function ProductCard({
     parseFloat(product.compareAtPriceRange.minVariantPrice.amount) >
       parseFloat(product.priceRange.minVariantPrice.amount);
 
-  // 3D tilt effect handler
+  // 3D tilt effect handler (skip when reduced motion)
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (shouldReduceMotion) return;
     const rect = e.currentTarget.getBoundingClientRect();
     mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
     mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
@@ -404,7 +407,7 @@ export function ProductCard({
         {/* Image Container with 3D Tilt */}
         <motion.div
           className="relative aspect-square overflow-hidden rounded-xl bg-gradient-to-br from-[#F9F9F9] to-[#F0EAE6] mb-4 shadow-sm border border-[#EAE4DC] group-hover:shadow-xl transition-shadow duration-700"
-          style={{
+          style={shouldReduceMotion ? undefined : {
             rotateX: isHovered ? rotateX : 0,
             rotateY: isHovered ? rotateY : 0,
             transformPerspective: 1000,

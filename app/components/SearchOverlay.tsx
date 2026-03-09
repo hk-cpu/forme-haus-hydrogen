@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef} from 'react';
+import {useState, useEffect, useRef, useCallback} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 import {
   Link as RemixLink,
@@ -94,6 +94,9 @@ export function SearchOverlay() {
   const [query, setQuery] = useState('');
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const firstFocusableRef = useRef<HTMLElement | null>(null);
+  const lastFocusableRef = useRef<HTMLElement | null>(null);
 
   // Get locale prefix for locale-aware API URL (e.g. '/ar')
   const rootData = useRouteLoaderData<RootLoader>('root');
@@ -115,6 +118,35 @@ export function SearchOverlay() {
     if (state.isSearchOpen) {
       setTimeout(() => inputRef.current?.focus(), 150);
     }
+  }, [state.isSearchOpen]);
+
+  // Focus trap - keep focus within search overlay
+  useEffect(() => {
+    if (!state.isSearchOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+
+      const container = searchContainerRef.current;
+      if (!container) return;
+
+      const focusableElements = container.querySelectorAll<HTMLElement>(
+        'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
+      );
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (e.shiftKey && document.activeElement === firstElement) {
+        e.preventDefault();
+        lastElement?.focus();
+      } else if (!e.shiftKey && document.activeElement === lastElement) {
+        e.preventDefault();
+        firstElement?.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, [state.isSearchOpen]);
 
   // Rotate placeholders
@@ -176,7 +208,7 @@ export function SearchOverlay() {
             transition={{duration: 0.35, ease: [0.25, 0.1, 0.25, 1]}}
           >
             {/* Search Header Bar — h-20 matches pre-scroll header height */}
-            <div className="bg-[#121212]/[0.98] backdrop-blur-2xl border-b border-[#a87441]/15">
+            <div ref={searchContainerRef} role="search" className="bg-[#121212]/[0.98] backdrop-blur-2xl border-b border-[#a87441]/15">
               <div className="container mx-auto px-6 lg:px-16">
                 <div className="flex items-center gap-4 h-20">
                   <span className="text-[#AA9B8F] flex-shrink-0">

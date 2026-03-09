@@ -1,5 +1,5 @@
 import {useState, useRef, useEffect} from 'react';
-import {motion, useInView} from 'framer-motion';
+import {motion, useInView, useReducedMotion} from 'framer-motion';
 
 interface BlurRevealImageProps {
   src: string;
@@ -42,6 +42,7 @@ export function BlurRevealImage({
   const [phase, setPhase] = useState<'hidden' | 'reveal' | 'idle'>('hidden');
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, {once: true, margin: '-60px'});
+  const shouldReduceMotion = useReducedMotion();
 
   const isHovered = externalHover !== undefined ? externalHover : internalHover;
 
@@ -96,7 +97,9 @@ export function BlurRevealImage({
 
   const hiddenAnimate = {opacity: 0, filter: 'blur(10px)', scale: 1};
 
-  const currentAnimate = isHovered
+  const currentAnimate = shouldReduceMotion
+    ? {opacity: 1, filter: 'blur(0px)', scale: 1}
+    : isHovered
     ? hoverAnimate
     : phase === 'idle'
     ? idleAnimate
@@ -104,7 +107,9 @@ export function BlurRevealImage({
     ? revealAnimate
     : hiddenAnimate;
 
-  const currentTransition = isHovered
+  const currentTransition = shouldReduceMotion
+    ? {duration: 0}
+    : isHovered
     ? hoverTransition
     : phase === 'idle'
     ? idleTransition
@@ -143,7 +148,7 @@ export function BlurRevealImage({
         alt={alt}
         className={`absolute inset-0 w-full h-full object-${objectFit}`}
         loading="lazy"
-        style={{willChange: 'filter, transform, opacity', objectPosition}}
+        style={{willChange: phase === 'reveal' ? 'filter, transform, opacity' : 'auto', objectPosition}}
         initial={hiddenAnimate}
         animate={currentAnimate}
         transition={currentTransition}

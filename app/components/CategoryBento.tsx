@@ -198,7 +198,7 @@ export default function CategoryBento() {
   const {isRTL, t} = useTranslation();
 
   return (
-    <section className="pb-6 md:pb-8 border-b border-[#8B8076]/10">
+    <section aria-label="Categories" className="pb-6 md:pb-8 border-b border-[#8B8076]/10">
       <div
         className="max-w-[1200px] mx-auto"
         style={{padding: '0 var(--page-gutter)'}}

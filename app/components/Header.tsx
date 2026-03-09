@@ -270,6 +270,17 @@ export function Header({
                   item?.items?.length > 0 && setActiveDropdown(item.id)
                 }
                 onMouseLeave={() => setActiveDropdown(null)}
+                onFocus={() =>
+                  item?.items?.length > 0 && setActiveDropdown(item.id)
+                }
+                onBlur={(e) => {
+                  // Only close if focus is leaving the dropdown area
+                  const relatedTarget = e.relatedTarget as HTMLElement;
+                  if (!relatedTarget?.closest(`[data-dropdown="${item.id}"]`)) {
+                    setActiveDropdown(null);
+                  }
+                }}
+                data-dropdown={item.id}
               >
                 <NavLink
                   to={item.to}
@@ -280,6 +291,7 @@ export function Header({
                         : 'text-[#F0EAE6]/80 hover:text-[#a87441]'
                     }`
                   }
+                  aria-expanded={item?.items?.length > 0 ? activeDropdown === item.id : undefined}
                 >
                   {({isActive}) => (
                     <>
@@ -321,6 +333,8 @@ export function Header({
                       exit={{opacity: 0, y: 10, scale: 0.95}}
                       transition={{duration: 0.2, ease: 'easeOut'}}
                       className="absolute top-full left-1/2 -translate-x-1/2 pt-3 min-w-[240px]"
+                      onMouseEnter={() => setActiveDropdown(item.id)}
+                      onMouseLeave={() => setActiveDropdown(null)}
                     >
                       <div className="bg-[#1A1A1A]/98 backdrop-blur-2xl border border-[#a87441]/20 rounded-2xl shadow-2xl shadow-black/50 py-3 overflow-hidden">
                         {/* Dropdown header */}

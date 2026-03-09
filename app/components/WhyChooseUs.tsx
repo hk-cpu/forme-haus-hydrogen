@@ -115,6 +115,7 @@ export function WhyChooseUs() {
 
   return (
     <section
+      aria-label="Brand promises"
       className="py-8 md:py-10 border-t border-b border-[#8B8076]/10"
       dir={isRTL ? 'rtl' : 'ltr'}
     >

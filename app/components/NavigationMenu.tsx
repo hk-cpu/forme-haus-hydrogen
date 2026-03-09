@@ -319,6 +319,7 @@ export function NavigationMenu() {
                                   : item.label,
                               )
                             }
+                            aria-expanded={activeCategory === item.label}
                           >
                             <span
                               className={`font-serif text-3xl md:text-4xl tracking-tight transition-all duration-500 ${

@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {motion, AnimatePresence} from 'framer-motion';
+import {motion, AnimatePresence, useReducedMotion} from 'framer-motion';
 
 import {Link} from '~/components/Link';
 import {useUI, promoMessages} from '~/context/UIContext';
@@ -20,17 +20,18 @@ export function PromoBanner() {
   const {state, dispatch} = useUI();
   const {isRTL} = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const shouldReduceMotion = useReducedMotion();
 
-  // Auto-rotate messages
+  // Auto-rotate messages (disabled when reduced motion)
   useEffect(() => {
-    if (state.promoBannerPaused || !state.promoBannerVisible) return;
+    if (shouldReduceMotion || state.promoBannerPaused || !state.promoBannerVisible) return;
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % promoMessages.length);
     }, 4500);
 
     return () => clearInterval(interval);
-  }, [state.promoBannerPaused, state.promoBannerVisible]);
+  }, [shouldReduceMotion, state.promoBannerPaused, state.promoBannerVisible]);
 
   if (!state.promoBannerVisible) return null;
 
@@ -63,10 +64,10 @@ export function PromoBanner() {
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
-            initial={{opacity: 0, y: 8}}
+            initial={shouldReduceMotion ? {opacity: 1, y: 0} : {opacity: 0, y: 8}}
             animate={{opacity: 1, y: 0}}
-            exit={{opacity: 0, y: -8}}
-            transition={{duration: 0.35, ease: [0.4, 0, 0.2, 1]}}
+            exit={shouldReduceMotion ? {opacity: 1, y: 0} : {opacity: 0, y: -8}}
+            transition={shouldReduceMotion ? {duration: 0} : {duration: 0.35, ease: [0.4, 0, 0.2, 1]}}
           >
             <Link to={currentMessage.href} className="promo-link">
               {currentMessage.text}
