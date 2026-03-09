@@ -423,32 +423,6 @@
    SCROLL-TRIGGERED ANIMATIONS
    ============================================================================ */
 
-/* Fade Up Reveal */
-.fp-reveal-up {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s var(--fp-ease-luxe),
-    transform 0.8s var(--fp-ease-luxe);
-}
-
-.fp-reveal-up.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Scale Reveal */
-.fp-reveal-scale {
-  opacity: 0;
-  transform: scale(0.9);
-  transition: opacity 0.6s var(--fp-ease-luxe),
-    transform 0.6s var(--fp-ease-luxe);
-}
-
-.fp-reveal-scale.is-visible {
-  opacity: 1;
-  transform: scale(1);
-}
-
 /* Blur Reveal */
 .fp-reveal-blur {
   opacity: 0;
@@ -464,7 +438,9 @@
   transform: translateY(0);
 }
 
-/* Stagger Children */
+/* Note: .fp-reveal-up and .fp-reveal-scale removed - use Framer Motion instead */
+
+/* Stagger Children */}, {
 .fp-stagger-children > * {
   opacity: 0;
   transform: translateY(20px);
@@ -656,22 +632,12 @@
   transform-style: preserve-3d;
 }
 
-/* Floating Animation */
+/* Floating Animation - uses @keyframes float from app.css */
 .fp-float {
   animation: float 6s ease-in-out infinite;
 }
 
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-/* Subtle Rotation */
+/* Subtle Rotation */}, {
 .fp-rotate-subtle {
   animation: rotateSubtle 20s linear infinite;
 }
@@ -873,8 +839,6 @@
     animation: none;
   }
 
-  .fp-reveal-up,
-  .fp-reveal-scale,
   .fp-reveal-blur,
   .fp-stagger-children > * {
     opacity: 1;
@@ -1272,20 +1236,9 @@
    POLISH LAYER - Image Enhancements
    ============================================================================ */
 
-/* Image Zoom on Hover */
-.fp-img-zoom {
-  overflow: hidden;
-}
+/* Note: .fp-img-zoom removed - use Tailwind group-hover:scale-105 instead */
 
-.fp-img-zoom img {
-  transition: transform 0.7s var(--fp-ease-luxe);
-}
-
-.fp-img-zoom:hover img {
-  transform: none;
-}
-
-/* Image with Bronze Tint on Hover */
+/* Image with Bronze Tint on Hover */}, {
 .fp-img-bronze-tint {
   position: relative;
 }
