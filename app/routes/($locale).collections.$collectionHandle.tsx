@@ -209,6 +209,16 @@ export default function Collection() {
     string,
     {src: string; hideTitle?: boolean; fit?: 'cover' | 'contain'; bg?: string}
   > = {
+    'new-in': {
+      src: '/assets/heros/new-in-hero.png',
+      hideTitle: false,
+      fit: 'cover',
+    },
+    'new': {
+      src: '/assets/heros/new-in-hero.png',
+      hideTitle: false,
+      fit: 'cover',
+    },
     sunglasses: {
       src: '/assets/heros/sunglasses-hero.png',
       hideTitle: true,
