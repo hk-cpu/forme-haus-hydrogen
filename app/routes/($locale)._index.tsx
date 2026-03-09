@@ -1,6 +1,6 @@
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {defer} from '@remix-run/server-runtime';
-import {Link} from '@remix-run/react';
+
 import {getSeoMeta} from '@shopify/hydrogen';
 import {motion} from 'framer-motion';
 
@@ -107,17 +107,14 @@ export default function Homepage() {
                 {
                   title: t('journal.modernWardrobe'),
                   img: '/brand/journal-wardrobe.webp',
-                  to: '/journal',
                 },
                 {
                   title: t('journal.everydayElegance'),
                   img: '/brand/journal-elegance.webp',
-                  to: '/journal',
                 },
                 {
                   title: t('journal.behindCraft'),
                   img: '/brand/journal-selection.png',
-                  to: '/journal',
                 },
               ].map((item, i) => (
                 <motion.div
@@ -131,10 +128,7 @@ export default function Homepage() {
                     ease: [0.25, 0.1, 0.25, 1],
                   }}
                 >
-                  <Link
-                    to={item.to}
-                    className="space-y-3 cursor-pointer group block"
-                  >
+                  <div className="space-y-3 group block">
                     {/* Image Container - zoomed 20% to hide watermark */}
                     <div className="aspect-[4/3] relative overflow-hidden bg-[#EDE8E3] rounded-lg">
                       <img
@@ -153,10 +147,10 @@ export default function Homepage() {
                       {/* Vignette to hide cropped edges */}
                       <div className="absolute inset-0 shadow-[inset_0_0_50px_rgba(0,0,0,0.2)] pointer-events-none" />
                     </div>
-                    <h3 className="font-serif text-base md:text-lg text-[#4A3C31] font-light tracking-wide group-hover:text-[#a87441] transition-colors duration-500">
+                    <h3 className="font-serif text-base md:text-lg text-[#4A3C31] font-light tracking-wide">
                       {item.title}
                     </h3>
-                  </Link>
+                  </div>
                 </motion.div>
               ))}
             </div>
