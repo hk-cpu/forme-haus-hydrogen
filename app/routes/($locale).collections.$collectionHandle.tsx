@@ -98,19 +98,58 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     isSyntheticHandle &&
     (!collection || collection.products.nodes.length === 0)
   ) {
-    // Fallback: query all products directly since the collection handle doesn't exist
-    const {products: allProducts} = await context.storefront.query(
-      ALL_PRODUCTS_FALLBACK_QUERY,
-      {
-        variables: {
-          first: 16,
-          country: context.storefront.i18n.country,
-          language: context.storefront.i18n.language,
-        },
-      },
-    );
+    let fallbackProducts: any = null;
 
-    if (allProducts?.nodes?.length) {
+    if (collectionHandle === 'case-strap-bundles') {
+      // Query products from both phone-cases and phone-straps collections
+      const [casesResult, strapsResult] = await Promise.all([
+        context.storefront.query(COLLECTION_PRODUCTS_QUERY, {
+          variables: {
+            handle: 'phone-cases',
+            first: 8,
+            country: context.storefront.i18n.country,
+            language: context.storefront.i18n.language,
+          },
+        }),
+        context.storefront.query(COLLECTION_PRODUCTS_QUERY, {
+          variables: {
+            handle: 'phone-straps',
+            first: 8,
+            country: context.storefront.i18n.country,
+            language: context.storefront.i18n.language,
+          },
+        }),
+      ]);
+
+      const casesProducts = casesResult?.collection?.products?.nodes || [];
+      const strapsProducts = strapsResult?.collection?.products?.nodes || [];
+      
+      // Combine and deduplicate products
+      const combinedProducts = [...casesProducts, ...strapsProducts];
+      const uniqueProducts = combinedProducts.filter(
+        (product, index, self) => index === self.findIndex((p) => p.id === product.id)
+      );
+
+      fallbackProducts = {
+        nodes: uniqueProducts,
+        pageInfo: {hasPreviousPage: false, hasNextPage: false, startCursor: null, endCursor: null},
+      };
+    } else {
+      // Fallback: query all products directly for other synthetic handles
+      const {products: allProducts} = await context.storefront.query(
+        ALL_PRODUCTS_FALLBACK_QUERY,
+        {
+          variables: {
+            first: 16,
+            country: context.storefront.i18n.country,
+            language: context.storefront.i18n.language,
+          },
+        },
+      );
+      fallbackProducts = allProducts;
+    }
+
+    if (fallbackProducts?.nodes?.length) {
       const lang = context.storefront.i18n.language === 'AR' ? 'AR' : 'EN';
       // @ts-ignore
       let title: string = translations[lang]['nav.newIn'] as string;
@@ -130,9 +169,9 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
         seo: {title, description: ''},
         image: null,
         products: {
-          nodes: allProducts.nodes,
+          nodes: fallbackProducts.nodes,
           filters: [],
-          pageInfo: allProducts.pageInfo,
+          pageInfo: fallbackProducts.pageInfo,
         },
       } as any;
     }
@@ -623,6 +662,30 @@ const ALL_PRODUCTS_FALLBACK_QUERY = `#graphql
         hasNextPage
         startCursor
         endCursor
+      }
+    }
+  }
+  ${PRODUCT_CARD_FRAGMENT}
+` as const;
+
+const COLLECTION_PRODUCTS_QUERY = `#graphql
+  query CollectionProducts(
+    $handle: String!
+    $first: Int!
+    $country: CountryCode
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
+    collection(handle: $handle) {
+      products(first: $first) {
+        nodes {
+          ...ProductCard
+        }
+        pageInfo {
+          hasPreviousPage
+          hasNextPage
+          startCursor
+          endCursor
+        }
       }
     }
   }
