@@ -110,8 +110,8 @@ function CategoryCard({
             onError={() => setImageError(true)}
           />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-[#1A1A1A]">
-            <span className="text-[#8B8076] text-xs uppercase tracking-wider">
+          <div className="absolute inset-0 flex items-center justify-center bg-[#E8E4E0]">
+            <span className="text-[#4A3C31] text-xs uppercase tracking-wider">
               {isRTL ? category.titleAr : category.title}
             </span>
           </div>
@@ -223,7 +223,7 @@ export default function CategoryBento() {
           initial="hidden"
           whileInView="visible"
           viewport={{once: true, margin: '-100px'}}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5"
         >
           {CATEGORIES.map((category, i) => (
             <CategoryCard

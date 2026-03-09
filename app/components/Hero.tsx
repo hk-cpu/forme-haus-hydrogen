@@ -14,7 +14,7 @@ export default function Hero() {
           <motion.div
             initial={{opacity: 0, scale: 0.9}}
             animate={{opacity: 1, scale: 1}}
-            transition={{duration: 1.5, ease: [0.16, 1, 0.3, 1]}}
+            transition={{duration: 1.0, ease: [0.16, 1, 0.3, 1]}}
             className="mb-8 relative"
           >
             {/* Wide container for the motion line to extend beyond logo */}
@@ -65,7 +65,7 @@ export default function Hero() {
             <SplitText
               text={t('hero.tagline', 'Where Essence Meets Elegance')}
               className="text-[10px] uppercase tracking-[0.35em] text-[#AA9B8F]/70 font-light"
-              delay={1.8}
+              delay={1.0}
               staggerDelay={0.04}
               duration={0.5}
             />
@@ -75,7 +75,7 @@ export default function Hero() {
           <motion.div
             initial={{opacity: 0, y: 10}}
             animate={{opacity: 1, y: 0}}
-            transition={{delay: 2.2, duration: 0.8, ease: [0.16, 1, 0.3, 1]}}
+            transition={{delay: 1.4, duration: 0.8, ease: [0.16, 1, 0.3, 1]}}
           >
             <Link
               to="/collections/new-in"
@@ -88,7 +88,7 @@ export default function Hero() {
                 transition={{duration: 3, repeat: Infinity, ease: 'linear'}}
               />
               <span className="absolute inset-0 bg-[#a87441]/0 group-hover/btn:bg-[#a87441]/10 backdrop-blur-sm transition-all duration-700" />
-              <span className="relative text-[10px] uppercase tracking-[0.3em] font-light text-[#F0EAE6]/90 group-hover/btn:text-[#a87441] group-hover/btn:tracking-[0.35em] transition-all duration-700">
+              <span className="relative text-[10px] uppercase tracking-[0.3em] font-light text-[#F0EAE6]/90 group-hover/btn:text-[#a87441] transition-all duration-700">
                 {t('hero.cta', 'Explore Collection')}
               </span>
               {/* Arrow Icon */}

@@ -105,7 +105,7 @@ export function WhyChooseUs() {
               </h3>
 
               {/* Description */}
-              <p className="text-[11px] md:text-xs text-[#8B8076] leading-relaxed">
+              <p className="text-xs md:text-sm text-[#8B8076] leading-relaxed">
                 {isRTL ? item.descriptionAr : item.description}
               </p>
             </motion.div>

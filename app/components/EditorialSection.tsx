@@ -17,7 +17,7 @@ const EDITORIAL_ITEMS: EditorialItem[] = [
     title: 'Modern Essentials',
     subtitle: 'Timeless pieces for everyday elegance',
     image: '/brand/edit-modern-essentials.webp',
-    url: '/collections/new-in',
+    url: '/collections/all',
   },
   {
     id: '2',
@@ -134,7 +134,7 @@ function CTACard() {
       whileInView={{opacity: 1, y: 0}}
       viewport={{once: true}}
       transition={{delay: 0.4, duration: 0.6}}
-      className="relative overflow-hidden rounded-2xl aspect-[3/4] group bg-gradient-to-br from-[#F5F2ED] to-[#E8E4E0]"
+      className="relative overflow-hidden rounded-2xl aspect-[3/4] group bg-gradient-to-br from-[#EDE8E2] to-[#E0DAD2] border border-[#8B8076]/15"
     >
       <Link to="/collections" className="block w-full h-full">
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
@@ -173,7 +173,7 @@ export default function EditorialSection() {
   return (
     <section className="py-6 md:py-8" dir={isRTL ? 'rtl' : 'ltr'}>
       <div
-        className="max-w-[1400px] mx-auto"
+        className="max-w-[1200px] mx-auto"
         style={{padding: '0 var(--page-gutter)'}}
       >
         {/* Section Header */}
