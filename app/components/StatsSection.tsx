@@ -1,5 +1,6 @@
 import {useRef, useEffect, useState} from 'react';
 import {motion, useInView, useSpring, useMotionValue} from 'framer-motion';
+
 import {useTranslation} from '~/hooks/useTranslation';
 
 interface Stat {

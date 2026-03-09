@@ -7,13 +7,13 @@
 import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {useLoaderData} from '@remix-run/react';
 
-export const meta = () => [{name: 'robots', content: 'noindex, nofollow'}];
-
 import FuturisticProductOverlay from '~/components/FuturisticProductOverlay';
 import ProductDetailPage from '~/components/ProductDetailPage';
 
 // Import the futuristic polish CSS
 import '~/styles/futuristic-polish.css';
+
+export const meta = () => [{name: 'robots', content: 'noindex, nofollow'}];
 
 // ============================================================================
 // DEMO PRODUCT DATA

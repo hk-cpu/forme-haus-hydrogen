@@ -175,7 +175,6 @@ export function AccountOverlay() {
     );
   };
 
-
   const benefits = [
     {
       icon: <Icons.Truck />,

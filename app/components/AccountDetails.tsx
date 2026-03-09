@@ -1,10 +1,6 @@
 import {Link} from '~/components/Link';
 
-export function AccountDetails({
-  customer,
-}: {
-  customer: any;
-}) {
+export function AccountDetails({customer}: {customer: any}) {
   const {firstName, lastName, email, phone} = customer;
 
   return (
@@ -38,16 +34,12 @@ export function AccountDetails({
           <div className="mt-4 text-xs text-[#F0EAE6]/50 uppercase tracking-widest">
             Phone number
           </div>
-          <p className="mt-1 text-[#F0EAE6]">
-            {phone || 'N/A'}
-          </p>
+          <p className="mt-1 text-[#F0EAE6]">{phone || 'N/A'}</p>
 
           <div className="mt-4 text-xs text-[#F0EAE6]/50 uppercase tracking-widest">
             Email address
           </div>
-          <p className="mt-1 text-[#F0EAE6]">
-            {email || 'N/A'}
-          </p>
+          <p className="mt-1 text-[#F0EAE6]">{email || 'N/A'}</p>
         </div>
       </div>
     </>

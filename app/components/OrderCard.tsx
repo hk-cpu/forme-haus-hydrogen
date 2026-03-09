@@ -17,7 +17,12 @@ type StorefrontOrder = {
       node: {
         title: string;
         variant?: {
-          image?: {url: string; altText?: string; width?: number; height?: number};
+          image?: {
+            url: string;
+            altText?: string;
+            width?: number;
+            height?: number;
+          };
         };
       };
     }>;
@@ -96,7 +101,9 @@ export function OrderCard({order}: {order: StorefrontOrder}) {
                         : 'bg-white/5 text-[#F0EAE6]/60 border border-white/10'
                     }`}
                   >
-                    <Text size="fine">{statusMessage(fulfillmentStatus as any)}</Text>
+                    <Text size="fine">
+                      {statusMessage(fulfillmentStatus as any)}
+                    </Text>
                   </span>
                 </dd>
               </>
@@ -118,4 +125,3 @@ export function OrderCard({order}: {order: StorefrontOrder}) {
     </li>
   );
 }
-

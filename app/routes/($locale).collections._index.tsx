@@ -8,6 +8,7 @@ import {
   getPaginationVariables,
   getSeoMeta,
 } from '@shopify/hydrogen';
+import {motion} from 'framer-motion';
 
 import {Grid} from '~/components/Grid';
 import {Heading, PageHeader, Section} from '~/components/Text';
@@ -16,7 +17,6 @@ import {Button} from '~/components/Button';
 import {getImageLoadingPriority} from '~/lib/const';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
-import {motion} from 'framer-motion';
 
 // Premium brand images for collections
 const COLLECTION_HEROS: Record<string, string> = {
@@ -74,7 +74,10 @@ export const loader = async ({
 
   // Filter out system collections that shouldn't be shown
   const filteredNodes = collections.nodes.filter(
-    (c: any) => c.handle !== 'home-page' && c.handle !== 'homepage' && c.handle !== 'frontpage'
+    (c: any) =>
+      c.handle !== 'home-page' &&
+      c.handle !== 'homepage' &&
+      c.handle !== 'frontpage',
   );
 
   // Prepend synthetic collections to the nodes
@@ -154,10 +157,14 @@ function CollectionCard({
   loading?: HTMLImageElement['loading'];
 }) {
   // Skip rendering system collections
-  if (collection.handle === 'home-page' || collection.handle === 'homepage' || collection.handle === 'frontpage') {
+  if (
+    collection.handle === 'home-page' ||
+    collection.handle === 'homepage' ||
+    collection.handle === 'frontpage'
+  ) {
     return null;
   }
-  
+
   const imgSrc = COLLECTION_HEROS[collection.handle] || collection.image?.url;
 
   return (

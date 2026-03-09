@@ -7,11 +7,13 @@ import {
   useLocation,
 } from '@remix-run/react';
 import {motion, AnimatePresence} from 'framer-motion';
+
 import type {RootLoader} from '~/root';
-import LanguageSwitch from './LanguageSwitch';
-import TopBar from './TopBar';
 import type {EnhancedMenu} from '~/lib/utils';
 import {useTranslation} from '~/hooks/useTranslation';
+
+import LanguageSwitch from './LanguageSwitch';
+import TopBar from './TopBar';
 
 // ============================================================================
 // PREMIUM HEADER ICONS

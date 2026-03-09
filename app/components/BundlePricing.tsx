@@ -11,6 +11,7 @@
 import {useState} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 import {Money} from '@shopify/hydrogen';
+
 import {useTranslation} from '~/hooks/useTranslation';
 
 interface BundleTier {

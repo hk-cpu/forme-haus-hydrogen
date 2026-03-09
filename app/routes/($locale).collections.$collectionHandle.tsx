@@ -1,8 +1,12 @@
 import {json} from '@remix-run/server-runtime';
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData, useRouteError, isRouteErrorResponse, Link as RemixLink} from '@remix-run/react';
+import {
+  useLoaderData,
+  useRouteError,
+  isRouteErrorResponse,
+  Link as RemixLink,
+} from '@remix-run/react';
 import {motion} from 'framer-motion';
-
 import type {
   Filter,
   ProductCollectionSortKeys,
@@ -61,28 +65,28 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     [] as ProductFilter[],
   );
 
-  let {collection, collections} = await context.storefront.query(
-    COLLECTION_QUERY,
-    {
-      variables: {
-        ...paginationVariables,
-        handle: collectionHandle,
-        filters,
-        sortKey,
-        reverse,
-        country: context.storefront.i18n.country,
-        language: context.storefront.i18n.language,
-      },
-      cache: CacheShort(),
+  const result = await context.storefront.query(COLLECTION_QUERY, {
+    variables: {
+      ...paginationVariables,
+      handle: collectionHandle,
+      filters,
+      sortKey,
+      reverse,
+      country: context.storefront.i18n.country,
+      language: context.storefront.i18n.language,
     },
-  );
+    cache: CacheShort(),
+  });
+
+  let {collection} = result;
+  const {collections} = result;
 
   if (!collection) {
     throw new Response('Collection not found', {status: 404});
   }
 
   if (
-    (collection.products.nodes.length === 0) &&
+    collection.products.nodes.length === 0 &&
     (collectionHandle === 'new-in' ||
       collectionHandle === 'new' ||
       collectionHandle === 'sunglasses' ||
@@ -214,7 +218,7 @@ export default function Collection() {
       hideTitle: false,
       fit: 'cover',
     },
-    'new': {
+    new: {
       src: '/assets/heros/new-in-hero.png',
       hideTitle: false,
       fit: 'cover',
@@ -403,7 +407,7 @@ export default function Collection() {
                       {isLoading ? t('collection.loading') : 'Previous'}
                     </PreviousLink>
                   ) : (
-                    <span 
+                    <span
                       aria-disabled="true"
                       role="button"
                       className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/25 border border-[#4A3C31]/8 cursor-not-allowed rounded"
@@ -437,7 +441,7 @@ export default function Collection() {
                       </svg>
                     </NextLink>
                   ) : (
-                    <span 
+                    <span
                       aria-disabled="true"
                       role="button"
                       className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/25 border border-[#4A3C31]/8 cursor-not-allowed rounded"

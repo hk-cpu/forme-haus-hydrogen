@@ -7,6 +7,7 @@ import {
 } from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
 import {useDebounce} from 'react-use';
+
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
 import type {RootLoader} from '~/root';

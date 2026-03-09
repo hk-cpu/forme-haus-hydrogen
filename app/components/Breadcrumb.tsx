@@ -60,8 +60,9 @@ const BreadcrumbLink = React.forwardRef<
   }
 >(({asChild, className, to, children, ...props}, ref) => {
   const variant = React.useContext(BreadcrumbContext);
-  const hoverClass = variant === 'light' ? 'hover:text-[#4A3C31]' : 'hover:text-[#F0EAE6]';
-  
+  const hoverClass =
+    variant === 'light' ? 'hover:text-[#4A3C31]' : 'hover:text-[#F0EAE6]';
+
   if (to) {
     return (
       <Link

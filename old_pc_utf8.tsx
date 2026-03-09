@@ -2,6 +2,7 @@
 import {motion, AnimatePresence} from 'framer-motion';
 import {Link} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
+
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
 

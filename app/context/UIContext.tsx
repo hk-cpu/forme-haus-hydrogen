@@ -1,10 +1,5 @@
-import {
-  createContext,
-  useContext,
-  useReducer,
-  ReactNode,
-  useEffect,
-} from 'react';
+import type {ReactNode} from 'react';
+import {createContext, useContext, useReducer, useEffect} from 'react';
 
 // ============================================================================
 // UI STATE TYPES

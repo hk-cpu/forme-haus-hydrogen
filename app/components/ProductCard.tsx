@@ -8,8 +8,10 @@ import {
 } from 'framer-motion';
 import {Link, useFetcher} from '@remix-run/react';
 import {Money} from '@shopify/hydrogen';
+
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
+
 import {BundlePricing} from './BundlePricing';
 
 // ============================================================================

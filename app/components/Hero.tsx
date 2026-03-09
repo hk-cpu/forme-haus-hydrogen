@@ -1,5 +1,6 @@
 import {Link} from '@remix-run/react';
 import {motion} from 'framer-motion';
+
 import {SplitText} from '~/components/SplitText';
 import {useTranslation} from '~/hooks/useTranslation';
 

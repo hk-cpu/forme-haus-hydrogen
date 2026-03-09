@@ -61,7 +61,8 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       firstDiscount?.__typename === 'PricingPercentageValue' &&
       firstDiscount?.percentage;
 
-    const fulfillmentStatus = (order.fulfillmentStatus as string) || 'UNFULFILLED';
+    const fulfillmentStatus =
+      (order.fulfillmentStatus as string) || 'UNFULFILLED';
 
     return json(
       {
@@ -293,7 +294,12 @@ export default function OrderRoute() {
                     </td>
                     <td className="px-3 py-4 text-right align-top sm:align-middle sm:table-cell">
                       <Text>
-                        <Money data={lineItem.discountedTotalPrice || lineItem.originalTotalPrice} />
+                        <Money
+                          data={
+                            lineItem.discountedTotalPrice ||
+                            lineItem.originalTotalPrice
+                          }
+                        />
                       </Text>
                     </td>
                   </tr>

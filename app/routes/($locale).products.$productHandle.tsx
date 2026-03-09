@@ -3,7 +3,13 @@ import {Disclosure, Listbox} from '@headlessui/react';
 import {motion, AnimatePresence} from 'framer-motion';
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {defer} from '@remix-run/server-runtime';
-import {useLoaderData, Await, useRouteError, isRouteErrorResponse, Link as RemixLink} from '@remix-run/react';
+import {
+  useLoaderData,
+  Await,
+  useRouteError,
+  isRouteErrorResponse,
+  Link as RemixLink,
+} from '@remix-run/react';
 import {
   getSeoMeta,
   Money,

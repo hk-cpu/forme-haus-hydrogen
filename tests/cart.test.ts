@@ -5,13 +5,13 @@ import {formatPrice, normalizePrice} from './utils';
 test.describe('Cart', () => {
   test('From home to checkout flow', async ({page}) => {
     test.setTimeout(60000); // Increase timeout to 1 minute
-    
+
     // Home => New In => First product
     await page.goto(`/`);
-    
+
     // Wait for navigation to be ready
     await page.waitForSelector('header nav', {timeout: 15000});
-    
+
     // Wait for "New In" link and click
     const newInLink = page.locator('header nav a:has-text("New In")');
     await newInLink.waitFor({state: 'visible', timeout: 15000});
@@ -46,7 +46,7 @@ test.describe('Cart', () => {
 
     // Close cart drawer => Phone Cases => First product
     await page.locator('[data-test=close-cart]').click();
-    
+
     // Wait for Phone Cases link and click
     const phoneCasesLink = page.locator('header nav a:has-text("Phone Cases")');
     await phoneCasesLink.waitFor({state: 'visible', timeout: 15000});

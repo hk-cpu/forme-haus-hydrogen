@@ -1,6 +1,7 @@
 import {useRef, useEffect, useState, useMemo} from 'react';
 import {motion, useScroll, useTransform, useSpring} from 'framer-motion';
 import {Link} from '@remix-run/react';
+
 import {useTranslation} from '~/hooks/useTranslation';
 
 interface Product {
@@ -17,37 +18,139 @@ interface Product {
 // All products from the LUV collection
 const ALL_PRODUCTS: Product[] = [
   // LUV2431792 - THE ROCKY
-  {id: '1', handle: 'the-rocky', title: 'The Rocky', price: {amount: '599.00', currencyCode: 'SAR'}, image: '/products/LUV2431792_1.webp'},
-  {id: '2', handle: 'the-rocky-gold', title: 'The Rocky - Gold', price: {amount: '649.00', currencyCode: 'SAR'}, image: '/products/LUV2431792_2.webp'},
+  {
+    id: '1',
+    handle: 'the-rocky',
+    title: 'The Rocky',
+    price: {amount: '599.00', currencyCode: 'SAR'},
+    image: '/products/LUV2431792_1.webp',
+  },
+  {
+    id: '2',
+    handle: 'the-rocky-gold',
+    title: 'The Rocky - Gold',
+    price: {amount: '649.00', currencyCode: 'SAR'},
+    image: '/products/LUV2431792_2.webp',
+  },
   // LUV2531822 - THE PALOMA
-  {id: '3', handle: 'the-paloma', title: 'The Paloma', price: {amount: '549.00', currencyCode: 'SAR'}, image: '/products/LUV2531822_1.webp'},
-  {id: '4', handle: 'the-paloma-tortoise', title: 'The Paloma - Tortoise', price: {amount: '599.00', currencyCode: 'SAR'}, image: '/products/LUV2531822_2.webp'},
+  {
+    id: '3',
+    handle: 'the-paloma',
+    title: 'The Paloma',
+    price: {amount: '549.00', currencyCode: 'SAR'},
+    image: '/products/LUV2531822_1.webp',
+  },
+  {
+    id: '4',
+    handle: 'the-paloma-tortoise',
+    title: 'The Paloma - Tortoise',
+    price: {amount: '599.00', currencyCode: 'SAR'},
+    image: '/products/LUV2531822_2.webp',
+  },
   // LUV2531823 - THE PALOMA (variant)
-  {id: '5', handle: 'the-paloma-black', title: 'The Paloma - Black', price: {amount: '549.00', currencyCode: 'SAR'}, image: '/products/LUV2531823_1.webp'},
+  {
+    id: '5',
+    handle: 'the-paloma-black',
+    title: 'The Paloma - Black',
+    price: {amount: '549.00', currencyCode: 'SAR'},
+    image: '/products/LUV2531823_1.webp',
+  },
   // LUV2531826 - THE BOSTON
-  {id: '6', handle: 'the-boston', title: 'The Boston', price: {amount: '579.00', currencyCode: 'SAR'}, image: '/products/LUV2531826_1.webp'},
+  {
+    id: '6',
+    handle: 'the-boston',
+    title: 'The Boston',
+    price: {amount: '579.00', currencyCode: 'SAR'},
+    image: '/products/LUV2531826_1.webp',
+  },
   // LUV2531827 - THE BLAIR
-  {id: '7', handle: 'the-blair', title: 'The Blair', price: {amount: '529.00', currencyCode: 'SAR'}, image: '/products/LUV2531827_1.webp'},
+  {
+    id: '7',
+    handle: 'the-blair',
+    title: 'The Blair',
+    price: {amount: '529.00', currencyCode: 'SAR'},
+    image: '/products/LUV2531827_1.webp',
+  },
   // LUV2531828 - THE BLAIR (variant)
-  {id: '8', handle: 'the-blair-cream', title: 'The Blair - Cream', price: {amount: '529.00', currencyCode: 'SAR'}, image: '/products/LUV2531828_1.webp'},
+  {
+    id: '8',
+    handle: 'the-blair-cream',
+    title: 'The Blair - Cream',
+    price: {amount: '529.00', currencyCode: 'SAR'},
+    image: '/products/LUV2531828_1.webp',
+  },
   // LUV2531830 - THE BLAIR (variant)
-  {id: '9', handle: 'the-blair-white', title: 'The Blair - White', price: {amount: '529.00', currencyCode: 'SAR'}, image: '/products/LUV2531830_1.webp'},
+  {
+    id: '9',
+    handle: 'the-blair-white',
+    title: 'The Blair - White',
+    price: {amount: '529.00', currencyCode: 'SAR'},
+    image: '/products/LUV2531830_1.webp',
+  },
   // LUV2543900 - THE OLIVE
-  {id: '10', handle: 'the-olive', title: 'The Olive', price: {amount: '499.00', currencyCode: 'SAR'}, image: '/products/LUV2543900_1.webp'},
+  {
+    id: '10',
+    handle: 'the-olive',
+    title: 'The Olive',
+    price: {amount: '499.00', currencyCode: 'SAR'},
+    image: '/products/LUV2543900_1.webp',
+  },
   // LUV2543901 - THE OLIVE (variant)
-  {id: '11', handle: 'the-olive-mocha', title: 'The Olive - Mocha', price: {amount: '499.00', currencyCode: 'SAR'}, image: '/products/LUV2543901_1.webp'},
+  {
+    id: '11',
+    handle: 'the-olive-mocha',
+    title: 'The Olive - Mocha',
+    price: {amount: '499.00', currencyCode: 'SAR'},
+    image: '/products/LUV2543901_1.webp',
+  },
   // LUV2643911 - THE BELLA
-  {id: '12', handle: 'the-bella', title: 'The Bella', price: {amount: '579.00', currencyCode: 'SAR'}, image: '/products/LUV2643911_1.webp'},
+  {
+    id: '12',
+    handle: 'the-bella',
+    title: 'The Bella',
+    price: {amount: '579.00', currencyCode: 'SAR'},
+    image: '/products/LUV2643911_1.webp',
+  },
   // LUV2643912 - THE BELLA (variant)
-  {id: '13', handle: 'the-bella-black', title: 'The Bella - Black', price: {amount: '579.00', currencyCode: 'SAR'}, image: '/products/LUV2643912_1.webp'},
+  {
+    id: '13',
+    handle: 'the-bella-black',
+    title: 'The Bella - Black',
+    price: {amount: '579.00', currencyCode: 'SAR'},
+    image: '/products/LUV2643912_1.webp',
+  },
   // LUV2643914 - THE BROOKLYN
-  {id: '14', handle: 'the-brooklyn', title: 'The Brooklyn', price: {amount: '549.00', currencyCode: 'SAR'}, image: '/products/LUV2643914_1.webp'},
+  {
+    id: '14',
+    handle: 'the-brooklyn',
+    title: 'The Brooklyn',
+    price: {amount: '549.00', currencyCode: 'SAR'},
+    image: '/products/LUV2643914_1.webp',
+  },
   // LUV2643915 - THE BROOKLYN (variant)
-  {id: '15', handle: 'the-brooklyn-gold', title: 'The Brooklyn - Gold', price: {amount: '599.00', currencyCode: 'SAR'}, image: '/products/LUV2643915_1.webp'},
+  {
+    id: '15',
+    handle: 'the-brooklyn-gold',
+    title: 'The Brooklyn - Gold',
+    price: {amount: '599.00', currencyCode: 'SAR'},
+    image: '/products/LUV2643915_1.webp',
+  },
   // LUV2643919 - THE BANKS
-  {id: '16', handle: 'the-banks', title: 'The Banks', price: {amount: '629.00', currencyCode: 'SAR'}, image: '/products/LUV2643919_1.webp'},
+  {
+    id: '16',
+    handle: 'the-banks',
+    title: 'The Banks',
+    price: {amount: '629.00', currencyCode: 'SAR'},
+    image: '/products/LUV2643919_1.webp',
+  },
   // LUV2643945 - THE BANKS (variant)
-  {id: '17', handle: 'the-banks-silver', title: 'The Banks - Silver', price: {amount: '629.00', currencyCode: 'SAR'}, image: '/products/LUV2643945_1.webp'},
+  {
+    id: '17',
+    handle: 'the-banks-silver',
+    title: 'The Banks - Silver',
+    price: {amount: '629.00', currencyCode: 'SAR'},
+    image: '/products/LUV2643945_1.webp',
+  },
 ];
 
 // Shuffle array using Fisher-Yates algorithm
@@ -135,7 +238,7 @@ export function InfinityProductShowcase() {
 
   // Shuffle products randomly
   const shuffledProducts = useMemo(() => shuffleArray(ALL_PRODUCTS), []);
-  
+
   // Create infinite loop by duplicating products multiple times
   const infiniteProducts = useMemo(() => {
     // Duplicate enough times for seamless infinite scroll
@@ -155,12 +258,12 @@ export function InfinityProductShowcase() {
     let animationId: number;
     let scrollPos = container.scrollLeft;
     const speed = isRTL ? -0.8 : 0.8;
-    const singleSetWidth = (container.scrollWidth / 6);
+    const singleSetWidth = container.scrollWidth / 6;
 
     const animate = () => {
       if (!isDragging) {
         scrollPos += speed;
-        
+
         // Reset position for infinite loop effect
         if (isRTL) {
           if (scrollPos <= 0) {
@@ -171,7 +274,7 @@ export function InfinityProductShowcase() {
             scrollPos = singleSetWidth;
           }
         }
-        
+
         container.scrollLeft = scrollPos;
       }
       animationId = requestAnimationFrame(animate);
@@ -212,7 +315,10 @@ export function InfinityProductShowcase() {
   };
 
   return (
-    <section className="py-12 md:py-16 bg-gradient-to-b from-[#F9F5F0] via-[#F5F2ED] to-[#F9F5F0]" dir={isRTL ? 'rtl' : 'ltr'}>
+    <section
+      className="py-12 md:py-16 bg-gradient-to-b from-[#F9F5F0] via-[#F5F2ED] to-[#F9F5F0]"
+      dir={isRTL ? 'rtl' : 'ltr'}
+    >
       {/* Section Header */}
       <div className="max-w-[1400px] mx-auto px-6 lg:px-16 mb-8 md:mb-10">
         <motion.div
@@ -234,7 +340,9 @@ export function InfinityProductShowcase() {
           </div>
 
           <span className="text-[11px] uppercase tracking-[0.2em] text-[#a87441]">
-            {isRTL ? `${ALL_PRODUCTS.length}+ منتج` : `${ALL_PRODUCTS.length}+ Products`}
+            {isRTL
+              ? `${ALL_PRODUCTS.length}+ منتج`
+              : `${ALL_PRODUCTS.length}+ Products`}
           </span>
         </motion.div>
       </div>
@@ -244,16 +352,24 @@ export function InfinityProductShowcase() {
         {/* Gradient Masks - Left & Right */}
         <div
           className="absolute left-0 top-0 bottom-0 w-16 md:w-32 z-10 pointer-events-none"
-          style={{background: 'linear-gradient(to right, #F9F5F0 0%, transparent 100%)'}}
+          style={{
+            background:
+              'linear-gradient(to right, #F9F5F0 0%, transparent 100%)',
+          }}
         />
         <div
           className="absolute right-0 top-0 bottom-0 w-16 md:w-32 z-10 pointer-events-none"
-          style={{background: 'linear-gradient(to left, #F9F5F0 0%, transparent 100%)'}}
+          style={{
+            background:
+              'linear-gradient(to left, #F9F5F0 0%, transparent 100%)',
+          }}
         />
 
         {/* Scrolling Track */}
         <div
           ref={scrollRef}
+          role="button"
+          tabIndex={0}
           className="flex overflow-x-auto scrollbar-hide cursor-grab active:cursor-grabbing py-4"
           style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}
           onMouseDown={handleMouseDown}
@@ -277,12 +393,34 @@ export function InfinityProductShowcase() {
           animate={{opacity: isDragging ? 0 : 1}}
           transition={{duration: 0.3}}
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
+            <path
+              d="M9 18l6-6-6-6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
           <span>{isRTL ? 'اسحب للتصفح' : 'Drag to browse'}</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
+            <path
+              d="M15 18l-6-6 6-6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </motion.div>
       </div>

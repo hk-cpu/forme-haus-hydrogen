@@ -9,6 +9,7 @@
  */
 
 import {motion} from 'framer-motion';
+
 import {useTranslation} from '~/hooks/useTranslation';
 
 interface TrustBadgesProps {
@@ -224,12 +225,12 @@ export function TrustBadges({
           </a>
         )}
         {showMuwathooq && (
-          <a
-            href="#"
+          <button
+            type="button"
             className="opacity-70 hover:opacity-100 transition-opacity"
           >
             <MuwathooqIcon className="h-6" />
-          </a>
+          </button>
         )}
       </div>
     );

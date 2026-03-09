@@ -1,13 +1,24 @@
 import {motion} from 'framer-motion';
+
 import {useTranslation} from '~/hooks/useTranslation';
 
 const BRAND_PROMISES = [
   {
     id: '1',
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round"/>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        className="w-6 h-6"
+      >
+        <path
+          d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
     title: 'Premium Quality',
@@ -18,9 +29,21 @@ const BRAND_PROMISES = [
   {
     id: '2',
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6">
-        <circle cx="12" cy="12" r="10" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M12 6v6l4 2" strokeLinecap="round" strokeLinejoin="round"/>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        className="w-6 h-6"
+      >
+        <circle
+          cx="12"
+          cy="12"
+          r="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path d="M12 6v6l4 2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
     title: 'Fast Delivery',
@@ -31,10 +54,31 @@ const BRAND_PROMISES = [
   {
     id: '3',
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6">
-        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" strokeLinecap="round" strokeLinejoin="round"/>
-        <polyline points="3.27 6.96 12 12.01 20.73 6.96" strokeLinecap="round" strokeLinejoin="round"/>
-        <line x1="12" y1="22.08" x2="12" y2="12" strokeLinecap="round" strokeLinejoin="round"/>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        className="w-6 h-6"
+      >
+        <path
+          d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <polyline
+          points="3.27 6.96 12 12.01 20.73 6.96"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <line
+          x1="12"
+          y1="22.08"
+          x2="12"
+          y2="12"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
     ),
     title: 'Authentic Design',
@@ -45,8 +89,18 @@ const BRAND_PROMISES = [
   {
     id: '4',
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6">
-        <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" strokeLinecap="round" strokeLinejoin="round"/>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        className="w-6 h-6"
+      >
+        <path
+          d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
     ),
     title: 'Loved by Customers',
@@ -60,7 +114,10 @@ export function WhyChooseUs() {
   const {isRTL} = useTranslation();
 
   return (
-    <section className="py-8 md:py-10 border-t border-b border-[#8B8076]/10" dir={isRTL ? 'rtl' : 'ltr'}>
+    <section
+      className="py-8 md:py-10 border-t border-b border-[#8B8076]/10"
+      dir={isRTL ? 'rtl' : 'ltr'}
+    >
       <div
         className="max-w-[1200px] mx-auto"
         style={{padding: '0 var(--page-gutter)'}}

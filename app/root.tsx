@@ -25,21 +25,21 @@ import {
   type SeoConfig,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
+import {useEffect, useState, useCallback} from 'react';
 
 import {PageLayout} from '~/components/PageLayout';
 import {GenericError} from '~/components/GenericError';
 import {NotFound} from '~/components/NotFound';
 import Silk from '~/components/Silk';
 import SmoothScroll from '~/components/SmoothScroll';
-// Brand favicon served from /public/favicon.png
-const favicon = '/favicon.png';
 import {seoPayload} from '~/lib/seo.server';
 import styles from '~/styles/app.css?url';
 import futuristicStyles from '~/styles/futuristic-polish.css?url';
 import {UIProvider} from '~/context/UIContext';
 
 import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
-import {useEffect, useState, useCallback} from 'react';
+// Brand favicon served from /public/favicon.png
+const favicon = '/favicon.png';
 
 export type RootLoader = typeof loader;
 
@@ -54,7 +54,11 @@ function HreflangLinks() {
     <>
       <link rel="alternate" hrefLang="en" href={`${origin}${basePath}`} />
       <link rel="alternate" hrefLang="ar" href={`${origin}/ar-sa${basePath}`} />
-      <link rel="alternate" hrefLang="x-default" href={`${origin}${basePath}`} />
+      <link
+        rel="alternate"
+        hrefLang="x-default"
+        href={`${origin}${basePath}`}
+      />
     </>
   );
 }

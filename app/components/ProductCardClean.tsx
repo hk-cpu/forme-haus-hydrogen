@@ -2,6 +2,7 @@ import {useState, useEffect, useRef, useCallback} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 import {Link, useFetcher} from '@remix-run/react';
 import {Money} from '@shopify/hydrogen';
+
 import {useTranslation} from '~/hooks/useTranslation';
 
 interface ProductCardCleanProps {

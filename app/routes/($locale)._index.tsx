@@ -1,6 +1,5 @@
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {defer} from '@remix-run/server-runtime';
-
 import {getSeoMeta} from '@shopify/hydrogen';
 import {motion} from 'framer-motion';
 

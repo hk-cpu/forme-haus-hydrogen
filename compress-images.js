@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import sharp from 'sharp';
 import {fileURLToPath} from 'url';
+
+import sharp from 'sharp';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

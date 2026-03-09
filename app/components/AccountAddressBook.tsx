@@ -93,7 +93,10 @@ function Address({
         >
           Edit
         </Link>
-        <Form action={`/account/address/${encodeURIComponent(address.id)}`} method="delete">
+        <Form
+          action={`/account/address/${encodeURIComponent(address.id)}`}
+          method="delete"
+        >
           <input type="hidden" name="addressId" value={address.id} />
           <button className="text-left text-[#F0EAE6]/40 hover:text-red-400 ml-6 text-xs uppercase tracking-widest transition-colors">
             Remove

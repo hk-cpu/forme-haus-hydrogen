@@ -1,4 +1,5 @@
 import {useRouteLoaderData} from '@remix-run/react';
+
 import type {RootLoader} from '~/root';
 import {DEFAULT_LOCALE} from '~/lib/utils';
 import {translations, type TranslationKey} from '~/lib/translations';

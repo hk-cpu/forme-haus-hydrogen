@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import {Link} from '@remix-run/react';
 import {motion} from 'framer-motion';
+
 import {useTranslation} from '~/hooks/useTranslation';
 
 interface EditorialItem {
@@ -50,13 +51,7 @@ const EDITORIAL_ITEMS: EditorialItem[] = [
 ];
 
 // Editorial Card Component
-function EditorialCard({
-  item,
-  index,
-}: {
-  item: EditorialItem;
-  index: number;
-}) {
+function EditorialCard({item, index}: {item: EditorialItem; index: number}) {
   const [mounted, setMounted] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -187,9 +182,7 @@ export default function EditorialSection() {
           <h2 className="font-serif text-2xl md:text-3xl italic text-[#4A3C31]">
             The Edit
           </h2>
-          <span
-            className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076] py-2 inline-flex items-center min-h-[44px]"
-          >
+          <span className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076] py-2 inline-flex items-center min-h-[44px]">
             Editorial
           </span>
         </motion.div>
@@ -197,11 +190,7 @@ export default function EditorialSection() {
         {/* 3x2 Grid - 6 cards total */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {EDITORIAL_ITEMS.map((item, index) => (
-            <EditorialCard
-              key={item.id}
-              item={item}
-              index={index}
-            />
+            <EditorialCard key={item.id} item={item} index={index} />
           ))}
           <CTACard />
         </div>
