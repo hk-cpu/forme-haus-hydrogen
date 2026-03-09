@@ -203,7 +203,7 @@ export default function Login() {
             />
 
             {data?.error && (
-              <div className="p-3.5 text-[12px] text-[#8B3A3A] bg-[#FDF2F2] border border-[#E8C4C4] rounded-lg text-center tracking-wide">
+              <div role="alert" aria-live="assertive" className="p-3.5 text-[12px] text-[#8B3A3A] bg-[#FDF2F2] border border-[#E8C4C4] rounded-lg text-center tracking-wide">
                 {data.error}
               </div>
             )}

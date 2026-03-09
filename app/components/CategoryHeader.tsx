@@ -50,15 +50,19 @@ const PHONE_SUBCATEGORIES = [
  * Context-aware: shows relevant siblings based on current collection.
  * Animated underline follows the active tab via framer-motion layoutId.
  */
+interface CategoryHeaderProps {
+  currentCategory: string;
+  productCount?: number;
+  collectionHandle?: string;
+  activeFiltersCount?: number;
+}
+
 export function CategoryHeader({
   currentCategory,
   productCount,
   collectionHandle,
-}: {
-  currentCategory: string;
-  productCount?: number;
-  collectionHandle?: string;
-}) {
+  activeFiltersCount,
+}: CategoryHeaderProps) {
   const {toggleFilter} = useUI();
   const {isRTL, t} = useTranslation();
   const location = useLocation();
@@ -140,6 +144,11 @@ export function CategoryHeader({
               <line x1="8" y1="18" x2="16" y2="18" />
             </svg>
             {t('filter.filters')}
+            {activeFiltersCount && activeFiltersCount > 0 && (
+              <span className="ml-1 w-5 h-5 flex items-center justify-center bg-[#a87441] text-white text-[10px] rounded-full">
+                {activeFiltersCount}
+              </span>
+            )}
           </button>
         </div>
       </div>

@@ -492,12 +492,12 @@ function CartCheckoutActions({
       <div className="flex items-center justify-center gap-4 py-2">
         <div className="flex items-center gap-1.5 text-[#8B8076] text-[10px]">
           <Icons.Lock className="w-3 h-3" />
-          <span>Secure Checkout</span>
+          <span>{t('cart.secureCheckout', 'Secure Checkout')}</span>
         </div>
         <div className="w-px h-3 bg-[#8B8076]/30" />
         <div className="flex items-center gap-1.5 text-[#8B8076] text-[10px]">
           <Icons.Truck className="w-3 h-3" />
-          <span>Free Shipping</span>
+          <span>{t('cart.freeShipping', 'Free Shipping')}</span>
         </div>
       </div>
 

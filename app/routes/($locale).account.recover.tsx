@@ -60,7 +60,7 @@ export default function Recover() {
           className="w-full space-y-6 bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-xl border border-[#4A3C31]/8 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
         >
           {actionData?.error && (
-            <div className="p-3.5 text-[12px] text-[#8B3A3A] bg-[#FDF2F2] border border-[#E8C4C4] rounded-lg text-center tracking-wide">
+            <div role="alert" aria-live="assertive" className="p-3.5 text-[12px] text-[#8B3A3A] bg-[#FDF2F2] border border-[#E8C4C4] rounded-lg text-center tracking-wide">
               {actionData.error}
             </div>
           )}

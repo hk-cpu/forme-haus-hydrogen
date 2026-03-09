@@ -10,6 +10,7 @@ import {
 } from '@shopify/hydrogen';
 
 import {Heading, PageHeader, Section, Text} from '~/components/Text';
+import {useTranslation} from '~/hooks/useTranslation';
 import {Input} from '~/components/Input';
 import {Grid} from '~/components/Grid';
 import {ProductCard} from '~/components/ProductCard';
@@ -78,6 +79,7 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 };
 
 export default function Search() {
+  const {t} = useTranslation();
   const {searchTerm, products, noResultRecommendations} =
     useLoaderData<typeof loader>();
   const noResults = products?.nodes?.length === 0;
@@ -96,11 +98,19 @@ export default function Search() {
             type="search"
             variant="search"
           />
-          <button className="absolute right-0 py-2" type="submit">
+          <button 
+            className="absolute right-0 py-2 px-4 bg-[#a87441] text-white text-[11px] uppercase tracking-[0.2em] rounded hover:bg-[#8B5E3C] transition-colors" 
+            type="submit"
+          >
             Go
           </button>
         </Form>
       </PageHeader>
+      {searchTerm && (
+        <p className="text-sm text-[#8B8076] mt-4 px-6 md:px-12 lg:px-16 max-w-7xl mx-auto">
+          {t('search.resultsFor', 'Showing {{count}} results for "{{term}}"', {count: products?.nodes?.length || 0, term: searchTerm})}
+        </p>
+      )}
       {!searchTerm || noResults ? (
         <NoResults
           noResults={noResults}

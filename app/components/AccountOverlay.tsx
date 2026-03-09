@@ -1,4 +1,4 @@
-import {useState, useRef} from 'react';
+import {useState, useRef, useEffect} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 import {Link, useFetcher} from '@remix-run/react';
 
@@ -151,6 +151,9 @@ export function AccountOverlay() {
   // Fetchers for auth actions
   const loginFetcher = useFetcher();
   const registerFetcher = useFetcher();
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const firstInputRef = useRef<HTMLInputElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   const handleClose = () => {
     dispatch({type: 'CLOSE_LOGIN'});
@@ -158,6 +161,49 @@ export function AccountOverlay() {
     setLoginPassword('');
     setRegisterPassword('');
   };
+
+  // Focus trap implementation
+  useEffect(() => {
+    if (!state.isLoginOpen) return;
+
+    // Focus first input when overlay opens
+    const timer = setTimeout(() => {
+      firstInputRef.current?.focus();
+    }, 100);
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+
+      const overlay = overlayRef.current;
+      if (!overlay) return;
+
+      const focusableElements = overlay.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (e.shiftKey) {
+        // Shift + Tab
+        if (document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement?.focus();
+        }
+      } else {
+        // Tab
+        if (document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement?.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [state.isLoginOpen]);
 
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
@@ -204,6 +250,7 @@ export function AccountOverlay() {
     <AnimatePresence>
       {state.isLoginOpen && (
         <motion.div
+          ref={overlayRef}
           className="fixed inset-0 bg-[#121212] z-[300] flex flex-col"
           style={{direction: isRTL ? 'rtl' : 'ltr'}}
           role="dialog"
@@ -220,6 +267,7 @@ export function AccountOverlay() {
               {t('account.title', 'My Account')}
             </h2>
             <button
+              ref={closeButtonRef}
               className="p-2 text-[#F0EAE6] hover:text-[#a87441] transition-colors"
               onClick={handleClose}
               aria-label={t('common.close', 'Close')}
@@ -291,6 +339,7 @@ export function AccountOverlay() {
                         {t('account.email', 'Email')} *
                       </label>
                       <input
+                        ref={firstInputRef}
                         type="email"
                         id="signin-email"
                         value={email}

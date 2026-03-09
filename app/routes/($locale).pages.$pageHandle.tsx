@@ -42,7 +42,7 @@ export default function Page() {
       <PageHeader heading={page.title}>
         <div
           dangerouslySetInnerHTML={{__html: page.body}}
-          className="prose dark:prose-invert"
+          className="prose dark:prose-invert max-w-prose mx-auto prose-headings:text-[#4A3C31] prose-a:text-[#a87441] prose-strong:text-[#4A3C31]"
         />
       </PageHeader>
     </>

@@ -132,7 +132,7 @@ export default function Collections() {
                     viewport={{once: true}}
                     transition={{duration: 0.6, delay: i * 0.1}}
                   >
-                    <CollectionCard collection={collection} />
+                    <CollectionCard collection={collection} loading={i < 2 ? 'eager' : 'lazy'} />
                   </motion.div>
                 ))}
               </div>
@@ -178,6 +178,7 @@ function CollectionCard({
           src={imgSrc}
           alt={collection.title}
           className="h-full w-full object-cover"
+          loading={loading}
           initial={{scale: 1}}
           whileHover={{scale: 1.05}}
           transition={{duration: 0.8, ease: [0.25, 0.1, 0.25, 1]}}

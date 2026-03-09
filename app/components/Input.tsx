@@ -2,11 +2,13 @@ import clsx from 'clsx';
 
 export function Input({
   className = '',
+  inputClassName = '',
   type,
   variant,
   ...props
 }: {
   className?: string;
+  inputClassName?: string;
   type?: string;
   variant: 'search' | 'minisearch';
   [key: string]: any;
@@ -18,11 +20,11 @@ export function Input({
       'bg-transparent hidden md:inline-block text-left lg:text-right border-b transition border-transparent -mb-px border-x-0 border-t-0 appearance-none px-0 py-1 focus:ring-transparent placeholder:opacity-20 placeholder:text-inherit focus:placeholder:opacity-10',
   };
 
-  const styles = clsx(variants[variant], className);
+  const inputStyles = clsx(variants[variant], inputClassName);
 
   return (
     <div className={clsx('relative group', className)}>
-      <input type={type} {...props} className={styles} />
+      <input type={type} {...props} className={inputStyles} />
       {variant === 'search' && (
         <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#a87441] transition-all duration-500 group-focus-within:w-full" />
       )}

@@ -72,7 +72,6 @@
   --color-silk: var(--silk);
 
   --font-serif: 'Cormorant Garamond', 'Georgia', serif;
-  --font-sans: 'DM Sans', 'Helvetica Neue', 'Arial', sans-serif;
 
   /* Formé Haus Brand Colors */
   --color-brand: var(--bronze);
@@ -184,14 +183,12 @@ body {
   overflow-x: hidden;
   /* Enable smooth touch scrolling */
   touch-action: pan-y pan-x pinch-zoom;
-  -webkit-overflow-scrolling: touch;
 }
 
 html {
   overflow-x: hidden;
   /* Ensure smooth scrolling on all devices */
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
 }
 
 /* ── Text Selection ── */
@@ -625,7 +622,7 @@ textarea:focus-visible {
 }
 
 /* Remove default outline when using custom focus styles */
-*:focus {
+*:focus:not(:focus-visible) {
   outline: none;
 }
 
@@ -673,7 +670,6 @@ h6 {
   body {
     overflow-x: hidden;
     touch-action: pan-y pinch-zoom;
-    -webkit-overflow-scrolling: touch;
   }
 
   /* Mobile typography scaling */

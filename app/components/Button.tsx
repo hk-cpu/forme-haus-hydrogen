@@ -1,9 +1,40 @@
 import {forwardRef, useState} from 'react';
-import {Link} from '@remix-run/react';
 import {motion} from 'framer-motion';
+import {Link} from '@remix-run/react';
 import clsx from 'clsx';
 
 import {missingClass} from '~/lib/utils';
+
+// Loading spinner component
+const LoadingSpinner = () => (
+  <motion.svg
+    animate={{rotate: 360}}
+    transition={{duration: 1, repeat: Infinity, ease: 'linear'}}
+    className="w-4 h-4 mr-2"
+    viewBox="0 0 24 24"
+    fill="none"
+  >
+    <circle
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeDasharray="31.42 31.42"
+      transform="rotate(-90 12 12)"
+    >
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        from="0 12 12"
+        to="360 12 12"
+        dur="1s"
+        repeatCount="indefinite"
+      />
+    </circle>
+  </motion.svg>
+);
 
 export const Button = forwardRef(
   (
@@ -74,39 +105,8 @@ export const Button = forwardRef(
     const styles = clsx(
       missingClass(className, 'bg-') && variants[variant],
       missingClass(className, 'w-') && widths[width],
-      (loading || disabled) && 'opacity-70 cursor-not-allowed',
+      (loading || disabled) && 'cursor-not-allowed',
       className,
-    );
-
-    // Loading spinner
-    const LoadingSpinner = () => (
-      <motion.svg
-        animate={{rotate: 360}}
-        transition={{duration: 1, repeat: Infinity, ease: 'linear'}}
-        className="w-4 h-4 mr-2"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-        <circle
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeDasharray="31.42 31.42"
-          transform="rotate(-90 12 12)"
-        >
-          <animateTransform
-            attributeName="transform"
-            type="rotate"
-            from="0 12 12"
-            to="360 12 12"
-            dur="1s"
-            repeatCount="indefinite"
-          />
-        </circle>
-      </motion.svg>
     );
 
     // Inline variant special rendering

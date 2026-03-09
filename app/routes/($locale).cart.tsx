@@ -9,6 +9,7 @@ import {CartForm, type CartQueryDataReturn, Analytics} from '@shopify/hydrogen';
 
 import {isLocalPath} from '~/lib/utils';
 import {Cart} from '~/components/Cart';
+import {useTranslation} from '~/hooks/useTranslation';
 
 export async function action({request, context}: ActionFunctionArgs) {
   const {cart} = context;
@@ -84,10 +85,13 @@ export async function loader({context}: LoaderFunctionArgs) {
 
 export default function CartRoute() {
   const cart = useLoaderData<typeof loader>();
+  const {t} = useTranslation();
 
   return (
-    <div className="cart">
-      <h1>Cart</h1>
+    <div className="max-w-[1200px] mx-auto px-6 py-12">
+      <h1 className="text-3xl md:text-4xl font-serif text-[#4A3C31] mb-8">
+        {t('cart.title', 'Cart')}
+      </h1>
       <Cart layout="page" cart={cart} />
       <Analytics.CartView />
     </div>

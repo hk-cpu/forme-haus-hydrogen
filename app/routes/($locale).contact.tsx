@@ -104,14 +104,15 @@ export default function ContactPage() {
   const submitted = actionData?.success === true;
 
   const contactMethods = [
-    {
-      icon: MessageCircle,
-      title: 'WhatsApp',
-      description: 'Instant messaging for quick queries',
-      value: '+966 50 000 0000',
-      href: 'https://wa.me/966500000000',
-      action: 'Chat on WhatsApp',
-    },
+    // WhatsApp hidden until business number is available
+    // {
+    //   icon: MessageCircle,
+    //   title: 'WhatsApp',
+    //   description: 'Instant messaging for quick queries',
+    //   value: '+966 XX XXX XXXX',
+    //   href: 'https://wa.me/966XXXXXXXXX',
+    //   action: 'Chat on WhatsApp',
+    // },
     {
       icon: Mail,
       title: 'Email Us',
@@ -406,7 +407,8 @@ export default function ContactPage() {
                 behind-the-scenes moments.
               </p>
 
-              {/* Instagram Posts Links */}
+              {/* Instagram Posts Links - Hidden until real feed is available */}
+              {/* 
               <div className="grid grid-cols-3 gap-2 mt-6">
                 {[
                   'https://www.instagram.com/p/DR_9yG3DKpr/',
@@ -424,6 +426,7 @@ export default function ContactPage() {
                   </a>
                 ))}
               </div>
+              */}
             </div>
 
             {/* Store Hours */}
