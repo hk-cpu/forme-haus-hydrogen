@@ -58,7 +58,7 @@ export default function Homepage() {
       <Hero />
 
       {/* Light "Glowing" Theme Content Sheet */}
-      <div className="relative z-20 bg-[#F9F5F0]/85 backdrop-blur-md text-[#8B8076] rounded-t-[2rem] shadow-[0_-10px_40px_-10px_rgba(255,255,255,0.15)] mt-[-5vh]">
+      <div className="relative z-20 bg-[#F9F5F0]/85 backdrop-blur-md text-[#4A3C31] rounded-t-[2rem] shadow-[0_-10px_40px_-10px_rgba(255,255,255,0.15)] mt-[-5vh]">
         {/* 2. Category Slider */}
         <div className="pt-10 md:pt-14 mobile-snap-section">
           <CategoryBento />
@@ -102,7 +102,7 @@ export default function Homepage() {
                 {t('home.editorial.label')}
               </span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
               {[
                 {
                   title: t('journal.modernWardrobe'),

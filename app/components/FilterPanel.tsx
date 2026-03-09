@@ -1,5 +1,6 @@
 import {useState, useCallback} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
+import {useNavigate, useLocation} from '@remix-run/react';
 
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
@@ -124,6 +125,8 @@ interface FilterState {
 export function FilterPanel({totalProducts = 156}: {totalProducts?: number}) {
   const {state, dispatch} = useUI();
   const {isRTL, t} = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [expandedSections, setExpandedSections] = useState<string[]>([
     'categories',
     'price',
@@ -176,6 +179,35 @@ export function FilterPanel({totalProducts = 156}: {totalProducts?: number}) {
 
   const handleClose = () => {
     dispatch({type: 'CLOSE_FILTER'});
+  };
+
+  const handleApplyFilters = () => {
+    const params = new URLSearchParams();
+
+    // Add category filters
+    filters.categories.forEach((cat) => {
+      params.append('filter.category', cat);
+    });
+
+    // Add collection filters
+    filters.collections.forEach((col) => {
+      params.append('filter.collection', col);
+    });
+
+    // Add color filters
+    filters.colors.forEach((color) => {
+      params.append('filter.color', color);
+    });
+
+    // Add price range if not default
+    if (filters.priceRange[0] > 0 || filters.priceRange[1] < 50000) {
+      params.set('filter.price.min', filters.priceRange[0].toString());
+      params.set('filter.price.max', filters.priceRange[1].toString());
+    }
+
+    // Navigate with new params
+    navigate(`${location.pathname}?${params.toString()}`);
+    handleClose();
   };
 
   // Calculate active filters count
@@ -525,7 +557,10 @@ export function FilterPanel({totalProducts = 156}: {totalProducts?: number}) {
 
             {/* Footer */}
             <div className="border-t border-[#a87441]/20 px-6 py-4 space-y-3">
-              <button className="w-full bg-[#a87441] hover:bg-[#8B5E3C] text-white font-medium py-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+              <button
+                onClick={handleApplyFilters}
+                className="w-full bg-[#a87441] hover:bg-[#8B5E3C] text-white font-medium py-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+              >
                 {t('filter.showProducts', `Show ${totalProducts} products`)}
               </button>
               <button

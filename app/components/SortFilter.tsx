@@ -271,7 +271,7 @@ function PriceRangeFilter({max, min}: {max?: number; min?: number}) {
           className="text-black"
           type="number"
           value={minPrice ?? ''}
-          placeholder={'$'}
+          placeholder={'SAR'}
           onChange={onChangeMin}
         />
       </label>
@@ -282,7 +282,7 @@ function PriceRangeFilter({max, min}: {max?: number; min?: number}) {
           className="text-black"
           type="number"
           value={maxPrice ?? ''}
-          placeholder={'$'}
+          placeholder={'SAR'}
           onChange={onChangeMax}
         />
       </label>
@@ -339,8 +339,8 @@ export default function SortMenu() {
   const activeItem = items.find((item) => item.key === params.get('sort'));
 
   return (
-    <Menu as="div" className="relative z-40">
-      <Menu.Button className="flex items-center">
+    <Menu as="div" className="relative z-50">
+      <Menu.Button className="flex items-center min-w-[140px]">
         <span className="px-2">
           <span className="px-2 font-medium">Sort by:</span>
           <span>{(activeItem || items[0]).label}</span>

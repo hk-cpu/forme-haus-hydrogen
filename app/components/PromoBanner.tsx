@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
-import {Link} from '@remix-run/react';
+import {Link} from '~/components/Link';
 
 import {useUI, promoMessages} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';

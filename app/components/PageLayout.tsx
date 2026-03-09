@@ -15,7 +15,6 @@ import type {RootLoader} from '~/root';
 import {Header as FormeHeader} from '~/components/Header';
 import Silk from '~/components/Silk';
 import Atmosphere from '~/components/Atmosphere';
-import {PredictiveSearch} from '~/components/PredictiveSearch';
 import {NavigationMenu} from '~/components/NavigationMenu';
 import {SearchOverlay} from '~/components/SearchOverlay';
 import {AccountOverlay} from '~/components/AccountOverlay';
@@ -112,13 +111,6 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
     closeDrawer: closeCart,
   } = useDrawer();
 
-  /* Search Drawer State */
-  const {
-    isOpen: isSearchOpen,
-    openDrawer: openSearch,
-    closeDrawer: closeSearch,
-  } = useDrawer();
-
   const addToCartFetchers = useCartFetchers(CartForm.ACTIONS.LinesAdd);
 
   // toggle cart drawer when adding to cart
@@ -136,19 +128,9 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
     }
   }, [state.isCartOpen, isCartOpen, openCart, closeCart]);
 
-  // Sync UIContext search state with drawer
-  useEffect(() => {
-    if (state.isSearchOpen && !isSearchOpen) {
-      openSearch();
-    } else if (!state.isSearchOpen && isSearchOpen) {
-      closeSearch();
-    }
-  }, [state.isSearchOpen, isSearchOpen, openSearch, closeSearch]);
-
   return (
     <>
       <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
-      <SearchDrawer isOpen={isSearchOpen} onClose={closeSearch} />
       <NavigationMenu />
       <SearchOverlay />
       <AccountOverlay />
@@ -161,22 +143,6 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
         openMenu={toggleMenu}
       />
     </>
-  );
-}
-
-function SearchDrawer({
-  isOpen,
-  onClose,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-}) {
-  return (
-    <Drawer open={isOpen} onClose={onClose} heading="Search" openFrom="right">
-      <div className="grid h-full">
-        <PredictiveSearch isOpen={isOpen} onClose={onClose} />
-      </div>
-    </Drawer>
   );
 }
 
@@ -278,7 +244,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
   const {t} = useTranslation();
 
   const linkClass =
-    'text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-300 inline-block focus:outline-none focus-visible:text-[#a87441]';
+    'text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-300 inline-block py-1.5 focus:outline-none focus-visible:text-[#a87441]';
 
   return (
     <footer
@@ -405,6 +371,47 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
               </h4>
               <PaymentBadges />
             </div>
+          </div>
+        </div>
+
+        {/* Social Links */}
+        <div className="max-w-[1440px] mx-auto mb-8">
+          <div className="flex items-center justify-center gap-4">
+            <a
+              href="https://instagram.com/formehaus"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 text-[#AA9B8F] hover:text-[#a87441] transition-colors"
+              aria-label="Instagram"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" strokeLinecap="round" strokeLinejoin="round" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
+            <a
+              href="https://twitter.com/formehaus"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 text-[#AA9B8F] hover:text-[#a87441] transition-colors"
+              aria-label="Twitter"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+            </a>
+            <a
+              href="https://tiktok.com/@formehaus"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 text-[#AA9B8F] hover:text-[#a87441] transition-colors"
+              aria-label="TikTok"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+              </svg>
+            </a>
           </div>
         </div>
 

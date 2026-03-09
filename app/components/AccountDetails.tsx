@@ -1,12 +1,11 @@
-import type {CustomerDetailsFragment} from 'customer-accountapi.generated';
 import {Link} from '~/components/Link';
 
 export function AccountDetails({
   customer,
 }: {
-  customer: CustomerDetailsFragment;
+  customer: any;
 }) {
-  const {firstName, lastName, emailAddress, phoneNumber} = customer;
+  const {firstName, lastName, email, phone} = customer;
 
   return (
     <>
@@ -40,14 +39,14 @@ export function AccountDetails({
             Phone number
           </div>
           <p className="mt-1 text-[#F0EAE6]">
-            {phoneNumber?.phoneNumber ?? 'N/A'}
+            {phone || 'N/A'}
           </p>
 
           <div className="mt-4 text-xs text-[#F0EAE6]/50 uppercase tracking-widest">
             Email address
           </div>
           <p className="mt-1 text-[#F0EAE6]">
-            {emailAddress?.emailAddress ?? 'N/A'}
+            {email || 'N/A'}
           </p>
         </div>
       </div>

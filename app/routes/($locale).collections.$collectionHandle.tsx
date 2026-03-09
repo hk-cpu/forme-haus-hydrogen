@@ -375,7 +375,7 @@ export default function Collection() {
           }) => (
             <>
               {/* Product Grid - Professional layout */}
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-3 gap-y-6 md:gap-x-4 md:gap-y-8 lg:gap-x-5 lg:gap-y-10">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-x-3 gap-y-6 md:gap-x-4 md:gap-y-8 lg:gap-x-5 lg:gap-y-10">
                 {nodes.map((product: any, i: number) => (
                   <ProductCardClean
                     key={product.id}
@@ -403,7 +403,11 @@ export default function Collection() {
                       {isLoading ? t('collection.loading') : 'Previous'}
                     </PreviousLink>
                   ) : (
-                    <span className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/25 border border-[#4A3C31]/8 cursor-not-allowed rounded">
+                    <span 
+                      aria-disabled="true"
+                      role="button"
+                      className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/25 border border-[#4A3C31]/8 cursor-not-allowed rounded"
+                    >
                       <svg
                         width="14"
                         height="14"
@@ -433,7 +437,11 @@ export default function Collection() {
                       </svg>
                     </NextLink>
                   ) : (
-                    <span className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/25 border border-[#4A3C31]/8 cursor-not-allowed rounded">
+                    <span 
+                      aria-disabled="true"
+                      role="button"
+                      className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/25 border border-[#4A3C31]/8 cursor-not-allowed rounded"
+                    >
                       Next
                       <svg
                         width="14"

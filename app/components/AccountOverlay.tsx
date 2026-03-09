@@ -145,8 +145,8 @@ export function AccountOverlay() {
   const [showPassword, setShowPassword] = useState(false);
   const [activeTab, setActiveTab] = useState<'signin' | 'create'>('signin');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginLinkSent, setLoginLinkSent] = useState(false);
+  const [loginPassword, setLoginPassword] = useState('');
+  const [registerPassword, setRegisterPassword] = useState('');
 
   // Fetchers for auth actions
   const loginFetcher = useFetcher();
@@ -155,14 +155,14 @@ export function AccountOverlay() {
   const handleClose = () => {
     dispatch({type: 'CLOSE_LOGIN'});
     setEmail('');
-    setPassword('');
-    setLoginLinkSent(false);
+    setLoginPassword('');
+    setRegisterPassword('');
   };
 
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
     loginFetcher.submit(
-      {email, password},
+      {email, password: loginPassword},
       {method: 'post', action: '/account/login'},
     );
   };
@@ -170,17 +170,11 @@ export function AccountOverlay() {
   const handleCreateAccount = (e: React.FormEvent) => {
     e.preventDefault();
     registerFetcher.submit(
-      {email, password},
+      {email, password: registerPassword},
       {method: 'post', action: '/account/register'},
     );
   };
 
-  const handleSendLoginLink = () => {
-    if (!email) return;
-    // In a real implementation, this would call the Shopify API
-    setLoginLinkSent(true);
-    setTimeout(() => setLoginLinkSent(false), 5000);
-  };
 
   const benefits = [
     {
@@ -213,6 +207,9 @@ export function AccountOverlay() {
         <motion.div
           className="fixed inset-0 bg-[#121212] z-[300] flex flex-col"
           style={{direction: isRTL ? 'rtl' : 'ltr'}}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Account"
           initial={{opacity: 0}}
           animate={{opacity: 1}}
           exit={{opacity: 0}}
@@ -320,8 +317,8 @@ export function AccountOverlay() {
                         <input
                           type={showPassword ? 'text' : 'password'}
                           id="signin-password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
+                          value={loginPassword}
+                          onChange={(e) => setLoginPassword(e.target.value)}
                           placeholder={t(
                             'account.passwordPlaceholder',
                             '••••••••',
@@ -353,30 +350,6 @@ export function AccountOverlay() {
                       >
                         {t('account.forgotPassword', 'Forgot your password?')}
                       </Link>
-                    </div>
-
-                    {/* One-time Login Link */}
-                    <div className="bg-[#1A1A1A] rounded-lg p-4">
-                      <p className="text-[#AA9B8F] text-sm mb-2">
-                        {t(
-                          'account.loginLink',
-                          'Or use a one-time login link:',
-                        )}
-                      </p>
-                      {loginLinkSent ? (
-                        <div className="flex items-center gap-2 text-[#a87441] text-sm">
-                          <Icons.Check />
-                          {t('account.linkSent', 'Login link sent!')}
-                        </div>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={handleSendLoginLink}
-                          className="text-[#F0EAE6] text-sm hover:text-[#a87441] transition-colors underline underline-offset-4"
-                        >
-                          {t('account.sendLink', 'Email me the link')}
-                        </button>
-                      )}
                     </div>
 
                     {/* Submit */}
@@ -452,8 +425,8 @@ export function AccountOverlay() {
                         <input
                           type={showPassword ? 'text' : 'password'}
                           id="create-password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
+                          value={registerPassword}
+                          onChange={(e) => setRegisterPassword(e.target.value)}
                           placeholder={t(
                             'account.passwordPlaceholder',
                             '••••••••',

@@ -414,7 +414,7 @@ function CartLines({
     y > 0 ? 'border-t border-[#a87441]/10' : '',
     layout === 'page'
       ? 'flex-grow md:translate-y-4'
-      : 'px-6 pb-6 sm-max:pt-2 overflow-auto transition md:px-12',
+      : 'px-6 pb-6 pt-2 sm:pt-0 overflow-auto transition md:px-12',
   ]);
 
   return (
@@ -504,19 +504,19 @@ function CartCheckoutActions({
       {/* Terms */}
       <p className="text-[10px] text-center text-[#8B8076]/60">
         {t('cart.terms', 'By proceeding, you agree to our')}{' '}
-        <a
-          href="/policies/terms-of-service"
+        <Link
+          to="/policies/terms-of-service"
           className="text-[#a87441] hover:underline"
         >
           {t('cart.termsLink', 'Terms')}
-        </a>{' '}
+        </Link>{' '}
         {t('cart.and', 'and')}{' '}
-        <a
-          href="/policies/refund-policy"
+        <Link
+          to="/policies/refund-policy"
           className="text-[#a87441] hover:underline"
         >
           {t('cart.refundsLink', 'Refund Policy')}
-        </a>
+        </Link>
       </p>
     </div>
   );
@@ -728,7 +728,7 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
           <motion.button
             name="decrease-quantity"
             aria-label="Decrease quantity"
-            className="w-9 h-9 flex items-center justify-center text-[#8B8076] hover:text-[#F0EAE6] hover:bg-[#8B8076]/10 disabled:text-[#8B8076]/30 transition-colors"
+            className="w-11 h-11 flex items-center justify-center text-[#8B8076] hover:text-[#F0EAE6] hover:bg-[#8B8076]/10 disabled:text-[#8B8076]/30 transition-colors"
             value={prevQuantity}
             disabled={optimisticQuantity <= 1}
             whileTap={{scale: 0.9}}
@@ -750,7 +750,7 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
 
         <UpdateCartButton lines={[{id: lineId, quantity: nextQuantity}]}>
           <motion.button
-            className="w-9 h-9 flex items-center justify-center text-[#8B8076] hover:text-[#F0EAE6] hover:bg-[#8B8076]/10 transition-colors"
+            className="w-11 h-11 flex items-center justify-center text-[#8B8076] hover:text-[#F0EAE6] hover:bg-[#8B8076]/10 transition-colors"
             name="increase-quantity"
             value={nextQuantity}
             aria-label="Increase quantity"

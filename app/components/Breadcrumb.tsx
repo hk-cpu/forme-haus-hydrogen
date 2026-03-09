@@ -4,27 +4,40 @@ import {Link} from '@remix-run/react';
 import {IconCaret} from '~/components/Icon';
 import {cn} from '~/lib/utils';
 
+type BreadcrumbVariant = 'light' | 'dark';
+
+const BreadcrumbContext = React.createContext<BreadcrumbVariant>('dark');
+
 const Breadcrumb = React.forwardRef<
   HTMLElement,
   React.ComponentPropsWithoutRef<'nav'> & {
     separator?: React.ReactNode;
+    variant?: BreadcrumbVariant;
   }
->(({...props}, ref) => <nav ref={ref} aria-label="breadcrumb" {...props} />);
+>(({variant = 'dark', ...props}, ref) => (
+  <BreadcrumbContext.Provider value={variant}>
+    <nav ref={ref} aria-label="breadcrumb" {...props} />
+  </BreadcrumbContext.Provider>
+));
 Breadcrumb.displayName = 'Breadcrumb';
 
 const BreadcrumbList = React.forwardRef<
   HTMLOListElement,
   React.ComponentPropsWithoutRef<'ol'>
->(({className, ...props}, ref) => (
-  <ol
-    ref={ref}
-    className={cn(
-      'flex flex-wrap items-center gap-1.5 break-words text-sm text-[#F0EAE6]/50 sm:gap-2.5',
-      className,
-    )}
-    {...props}
-  />
-));
+>(({className, ...props}, ref) => {
+  const variant = React.useContext(BreadcrumbContext);
+  return (
+    <ol
+      ref={ref}
+      className={cn(
+        'flex flex-wrap items-center gap-1.5 break-words text-sm sm:gap-2.5',
+        variant === 'light' ? 'text-[#4A3C31]/60' : 'text-[#F0EAE6]/50',
+        className,
+      )}
+      {...props}
+    />
+  );
+});
 BreadcrumbList.displayName = 'BreadcrumbList';
 
 const BreadcrumbItem = React.forwardRef<
@@ -46,11 +59,14 @@ const BreadcrumbLink = React.forwardRef<
     to?: string;
   }
 >(({asChild, className, to, children, ...props}, ref) => {
+  const variant = React.useContext(BreadcrumbContext);
+  const hoverClass = variant === 'light' ? 'hover:text-[#4A3C31]' : 'hover:text-[#F0EAE6]';
+  
   if (to) {
     return (
       <Link
         to={to}
-        className={cn('transition-colors hover:text-[#F0EAE6]', className)}
+        className={cn('transition-colors', hoverClass, className)}
         // @ts-ignore
         ref={ref}
         {...props}
@@ -63,7 +79,7 @@ const BreadcrumbLink = React.forwardRef<
   return (
     <a
       ref={ref}
-      className={cn('transition-colors hover:text-[#F0EAE6]', className)}
+      className={cn('transition-colors', hoverClass, className)}
       {...props}
     >
       {children}
@@ -75,16 +91,23 @@ BreadcrumbLink.displayName = 'BreadcrumbLink';
 const BreadcrumbPage = React.forwardRef<
   HTMLSpanElement,
   React.ComponentPropsWithoutRef<'span'>
->(({className, ...props}, ref) => (
-  <span
-    ref={ref}
-    role="link"
-    aria-disabled="true"
-    aria-current="page"
-    className={cn('font-normal text-[#F0EAE6]', className)}
-    {...props}
-  />
-));
+>(({className, ...props}, ref) => {
+  const variant = React.useContext(BreadcrumbContext);
+  return (
+    <span
+      ref={ref}
+      role="link"
+      aria-disabled="true"
+      aria-current="page"
+      className={cn(
+        'font-normal',
+        variant === 'light' ? 'text-[#4A3C31]' : 'text-[#F0EAE6]',
+        className,
+      )}
+      {...props}
+    />
+  );
+});
 BreadcrumbPage.displayName = 'BreadcrumbPage';
 
 const BreadcrumbSeparator = ({
