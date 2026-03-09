@@ -81,19 +81,22 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   let {collection} = result;
   const {collections} = result;
 
-  if (!collection) {
-    throw new Response('Collection not found', {status: 404});
-  }
+  // Special handles that can use fallback to show all products
+  const SYNTHETIC_HANDLES = [
+    'new-in',
+    'new',
+    'sunglasses',
+    'sale',
+    'phone-cases',
+    'phone-straps',
+    'case-strap-bundles',
+  ];
+  const isSyntheticHandle = SYNTHETIC_HANDLES.includes(collectionHandle);
 
+  // If collection doesn't exist or is empty, create synthetic collection for special handles
   if (
-    collection.products.nodes.length === 0 &&
-    (collectionHandle === 'new-in' ||
-      collectionHandle === 'new' ||
-      collectionHandle === 'sunglasses' ||
-      collectionHandle === 'sale' ||
-      collectionHandle === 'phone-cases' ||
-      collectionHandle === 'phone-straps' ||
-      collectionHandle === 'case-strap-bundles')
+    isSyntheticHandle &&
+    (!collection || collection.products.nodes.length === 0)
   ) {
     // Fallback: query all products directly since the collection handle doesn't exist
     const {products: allProducts} = await context.storefront.query(
@@ -133,6 +136,10 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
         },
       } as any;
     }
+  }
+
+  if (!collection) {
+    throw new Response('Collection not found', {status: 404});
   }
 
   if (!collection) {
@@ -200,7 +207,10 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
 
 export const meta = ({matches}: MetaArgs<typeof loader>) => {
   // @ts-ignore
-  return getSeoMeta(...matches.map((match) => (match.data as any).seo));
+  const seoData = matches
+    .map((match) => (match.data as any)?.seo)
+    .filter(Boolean);
+  return getSeoMeta(...seoData);
 };
 
 export default function Collection() {
