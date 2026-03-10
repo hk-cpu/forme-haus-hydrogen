@@ -1,9 +1,9 @@
 import {useState, useRef, useEffect} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 import {Link, useFetcher} from '@remix-run/react';
-
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
+import {usePrefixPathWithLocale} from '~/lib/utils';
 
 // Icons
 const Icons = {
@@ -142,6 +142,7 @@ const Icons = {
 export function AccountOverlay() {
   const {state, dispatch} = useUI();
   const {isRTL, t} = useTranslation();
+  const prefixPath = usePrefixPathWithLocale;
   const [showPassword, setShowPassword] = useState(false);
   const [activeTab, setActiveTab] = useState<'signin' | 'create'>('signin');
   const [email, setEmail] = useState('');
@@ -209,7 +210,7 @@ export function AccountOverlay() {
     e.preventDefault();
     loginFetcher.submit(
       {email, password: loginPassword},
-      {method: 'post', action: '/account/login'},
+      {method: 'post', action: prefixPath('/account/login')},
     );
   };
 
@@ -217,7 +218,7 @@ export function AccountOverlay() {
     e.preventDefault();
     registerFetcher.submit(
       {email, password: registerPassword},
-      {method: 'post', action: '/account/register'},
+      {method: 'post', action: prefixPath('/account/register')},
     );
   };
 

@@ -28,11 +28,9 @@ export const loader = async ({
     },
   });
 
-  if (!blog?.articles) {
-    throw new Response('Not found', {status: 404});
-  }
+  const rawArticles = blog?.articles ? flattenConnection(blog.articles) : [];
 
-  const articles = (flattenConnection(blog.articles) as ArticleFragment[]).map(
+  const articles = (rawArticles as ArticleFragment[]).map(
     (article) => {
       const {publishedAt} = article;
       return {
@@ -46,7 +44,7 @@ export const loader = async ({
     },
   );
 
-  const seo = seoPayload.blog({blog, url: request.url});
+  const seo = seoPayload.blog({blog: blog || {title: 'Journal'}, url: request.url});
 
   return json({articles, seo});
 };

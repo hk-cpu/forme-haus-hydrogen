@@ -220,21 +220,15 @@ export function IconXMark({
   ...props
 }: React.ComponentProps<typeof Icon>) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="transparent"
-      stroke={stroke}
-      className={clsx('w-5 h-5', props.className)}
-      {...props}
-    >
-      <title>Delete</title>
+    <Icon {...props} fill="transparent" stroke={stroke}>
+      <title>Close</title>
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M6 18L18 6M6 6l12 12"
+        strokeWidth="1.5"
+        d="M5 15L15 5M5 5l10 10"
       />
-    </svg>
+    </Icon>
   );
 }
 

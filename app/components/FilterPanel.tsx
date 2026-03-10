@@ -1,9 +1,11 @@
 import {useState, useCallback} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
-import {useNavigate, useLocation} from '@remix-run/react';
+import {useNavigate, useLocation, useSearchParams} from '@remix-run/react';
+import type {Filter, ProductFilter} from '@shopify/hydrogen/storefront-api-types';
 
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
+import {FILTER_URL_PREFIX} from '~/components/SortFilter';
 
 // Icons
 const Icons = {
@@ -73,33 +75,23 @@ const Icons = {
   ),
 };
 
-// Filter options
-const filterData = {
-  categories: [
-    {id: 'phone-cases', label: 'Phone Cases', count: 0},
-    {id: 'phone-straps', label: 'Phone Straps', count: 0},
-    {id: 'case-strap-bundles', label: 'Case+Strap Bundles', count: 0},
-    {id: 'sunglasses', label: 'Sunglasses', count: 0},
-  ],
-  collections: [
-    {id: 'new', label: 'New Arrivals', count: 0},
-    {id: 'sale', label: 'Sale', count: 0},
-  ],
-  colors: [
-    {id: 'black', label: 'Black', hex: '#1A1A1A'},
-    {id: 'gold', label: 'Gold', hex: '#D4AF37'},
-    {id: 'mocha-tort', label: 'Mocha Tort', hex: '#8B6914'},
-    {id: 'chocolate-glaze', label: 'Chocolate Glaze', hex: '#6B3A2A'},
-    {id: 'brown', label: 'Brown', hex: '#8B4513'},
-    {id: 'beige', label: 'Beige', hex: '#F5F5DC'},
-    {id: 'white', label: 'White', hex: '#FFFFFF'},
-    {id: 'grey', label: 'Grey', hex: '#808080'},
-    {id: 'navy', label: 'Navy', hex: '#000080'},
-    {id: 'pink', label: 'Pink', hex: '#FFB6C1'},
-    {id: 'red', label: 'Red', hex: '#DC143C'},
-    {id: 'green', label: 'Green', hex: '#228B22'},
-  ],
-  sizes: [] as Array<{id: string; label: string}>,
+// Map common color names to Hex to preserve luxury aesthetic
+const COLOR_HEX_MAP: Record<string, string> = {
+  black: '#1A1A1A',
+  gold: '#D4AF37',
+  'mocha tort': '#8B6914',
+  'chocolate glaze': '#6B3A2A',
+  brown: '#8B4513',
+  beige: '#F5F5DC',
+  white: '#FFFFFF',
+  grey: '#808080',
+  navy: '#000080',
+  pink: '#FFB6C1',
+  red: '#DC143C',
+  green: '#228B22',
+  silver: '#C0C0C0',
+  clear: '#EFEFEF',
+  transparent: '#EFEFEF',
 };
 
 interface FilterState {
@@ -111,34 +103,29 @@ interface FilterState {
   onlineOnly: boolean;
 }
 
-/**
- * FilterPanel - Advanced filter panel with slide-in animation
- *
- * Features:
- * - Slide-in from right
- * - Accordion sections: Categories, Collections, Colors, Sizes, Price Range
- * - Toggle for "Available online"
- * - Dual-handle price slider
- * - "Show X products" CTA
- * - Dark luxury theme
- */
-export function FilterPanel({totalProducts = 156}: {totalProducts?: number}) {
+export function FilterPanel({
+  totalProducts = 0,
+  filters = [],
+}: {
+  totalProducts?: number;
+  filters?: Filter[];
+}) {
   const {state, dispatch} = useUI();
   const {isRTL, t} = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const [expandedSections, setExpandedSections] = useState<string[]>([
-    'categories',
-    'price',
-  ]);
-  const [filters, setFilters] = useState<FilterState>({
-    categories: [],
-    collections: [],
-    colors: [],
-    sizes: [],
-    priceRange: [0, 50000],
-    onlineOnly: false,
-  });
+  const [params] = useSearchParams();
+
+  // Initialize expanded sections with the IDs of all filters so they're open by default
+  const [expandedSections, setExpandedSections] = useState<string[]>(
+    filters.map((f) => f.id)
+  );
+
+  // Maintain local state of selected filter JSON string inputs
+  const [selectedInputs, setSelectedInputs] = useState<Set<string>>(new Set());
+  
+  // Initialize price range state if a price filter exists
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 50000]);
 
   const toggleSection = (section: string) => {
     setExpandedSections((prev) =>
@@ -148,33 +135,21 @@ export function FilterPanel({totalProducts = 156}: {totalProducts?: number}) {
     );
   };
 
-  const toggleFilter = useCallback((type: keyof FilterState, id: string) => {
-    setFilters((prev) => {
-      const current = prev[type] as string[];
-      const updated = current.includes(id)
-        ? current.filter((item) => item !== id)
-        : [...current, id];
-      return {...prev, [type]: updated};
+  const toggleFilter = useCallback((input: string) => {
+    setSelectedInputs((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(input)) {
+        newSet.delete(input);
+      } else {
+        newSet.add(input);
+      }
+      return newSet;
     });
   }, []);
 
-  const setOnlineOnly = (value: boolean) => {
-    setFilters((prev) => ({...prev, onlineOnly: value}));
-  };
-
-  const setPriceRange = (range: [number, number]) => {
-    setFilters((prev) => ({...prev, priceRange: range}));
-  };
-
   const clearFilters = () => {
-    setFilters({
-      categories: [],
-      collections: [],
-      colors: [],
-      sizes: [],
-      priceRange: [0, 50000],
-      onlineOnly: false,
-    });
+    setSelectedInputs(new Set());
+    setPriceRange([0, 50000]);
   };
 
   const handleClose = () => {
@@ -182,41 +157,43 @@ export function FilterPanel({totalProducts = 156}: {totalProducts?: number}) {
   };
 
   const handleApplyFilters = () => {
-    const params = new URLSearchParams();
+    const newParams = new URLSearchParams(params);
 
-    // Add category filters
-    filters.categories.forEach((cat) => {
-      params.append('filter.category', cat);
+    // Clear existing filter params except non-filter ones (e.g. sort)
+    Array.from(newParams.keys()).forEach((key) => {
+      if (key.startsWith(FILTER_URL_PREFIX)) {
+        newParams.delete(key);
+      }
     });
 
-    // Add collection filters
-    filters.collections.forEach((col) => {
-      params.append('filter.collection', col);
+    // Add selected inputs back
+    selectedInputs.forEach((inputString) => {
+      try {
+        const parsed = JSON.parse(inputString) as Record<string, unknown>;
+        Object.entries(parsed).forEach(([key, value]) => {
+          newParams.append(`${FILTER_URL_PREFIX}${key}`, JSON.stringify(value));
+        });
+      } catch (e) {
+        console.error('Failed to parse filter input', e);
+      }
     });
 
-    // Add color filters
-    filters.colors.forEach((color) => {
-      params.append('filter.color', color);
-    });
-
-    // Add price range if not default
-    if (filters.priceRange[0] > 0 || filters.priceRange[1] < 50000) {
-      params.set('filter.price.min', filters.priceRange[0].toString());
-      params.set('filter.price.max', filters.priceRange[1].toString());
+    // Add price if modified
+    if (priceRange[0] > 0 || priceRange[1] < 50000) {
+      newParams.set(`${FILTER_URL_PREFIX}price`, JSON.stringify({min: priceRange[0], max: priceRange[1]}));
     }
 
-    // Navigate with new params
-    navigate(`${location.pathname}?${params.toString()}`);
+    // Reset pagination
+    newParams.delete('cursor');
+    newParams.delete('direction');
+
+    navigate(`${location.pathname}?${newParams.toString()}`);
     handleClose();
   };
 
   // Calculate active filters count
   const activeFiltersCount =
-    filters.categories.length +
-    filters.collections.length +
-    filters.colors.length +
-    filters.sizes.length +
-    (filters.onlineOnly ? 1 : 0);
+    selectedInputs.size + (priceRange[0] > 0 || priceRange[1] < 50000 ? 1 : 0);
 
   // Format price
   const formatPrice = (price: number) => {
@@ -289,270 +266,148 @@ export function FilterPanel({totalProducts = 156}: {totalProducts?: number}) {
 
             {/* Content */}
             <div className="flex-1 overflow-y-auto px-6 py-4 space-y-2">
-              {/* Online Only Toggle */}
-              <div className="flex items-center justify-between py-4 border-b border-[#a87441]/10">
-                <span className="text-[#F0EAE6] text-sm">
-                  {t('filter.onlineOnly', 'Available online')}
-                </span>
-                <button
-                  onClick={() => setOnlineOnly(!filters.onlineOnly)}
-                  className={`relative w-12 h-6 rounded-full transition-colors ${
-                    filters.onlineOnly ? 'bg-[#a87441]' : 'bg-[#2A2A2A]'
-                  }`}
-                  aria-label={t('filter.toggleOnline', 'Toggle online only')}
-                >
-                  <motion.span
-                    className="absolute top-1 w-4 h-4 bg-white rounded-full"
-                    initial={false}
-                    animate={{
-                      left: filters.onlineOnly ? 'calc(100% - 20px)' : '4px',
-                    }}
-                    transition={{type: 'spring', stiffness: 500, damping: 30}}
-                  />
-                </button>
-              </div>
+              {filters.map((filter) => {
+                const isColorFilter =
+                  filter.label.toLowerCase() === 'color' || filter.label.toLowerCase() === 'colour';
 
-              {/* Categories */}
-              <FilterSection
-                title={t('filter.categories', 'Categories')}
-                isExpanded={expandedSections.includes('categories')}
-                onToggle={() => toggleSection('categories')}
-              >
-                <div className="space-y-2">
-                  {filterData.categories.map((category) => (
-                    <label
-                      key={category.id}
-                      className="flex items-center justify-between py-2 cursor-pointer group"
-                    >
-                      <span className="flex items-center gap-3">
-                        <span
-                          className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
-                            filters.categories.includes(category.id)
-                              ? 'bg-[#a87441] border-[#a87441]'
-                              : 'border-[#a87441]/30 group-hover:border-[#a87441]'
-                          }`}
-                        >
-                          {filters.categories.includes(category.id) && (
-                            <Icons.Check />
-                          )}
-                        </span>
-                        <span className="text-[#F0EAE6] text-sm">
-                          {category.label}
-                        </span>
-                      </span>
-                      <span className="text-[#AA9B8F] text-xs">
-                        ({category.count})
-                      </span>
-                      <input
-                        type="checkbox"
-                        className="sr-only"
-                        checked={filters.categories.includes(category.id)}
-                        onChange={() => toggleFilter('categories', category.id)}
-                      />
-                    </label>
-                  ))}
-                </div>
-              </FilterSection>
+                return (
+                  <FilterSection
+                    key={filter.id}
+                    title={filter.label}
+                    isExpanded={expandedSections.includes(filter.id)}
+                    onToggle={() => toggleSection(filter.id)}
+                  >
+                    {filter.type === 'PRICE_RANGE' ? (
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-[#AA9B8F]">
+                            {formatPrice(priceRange[0])}
+                          </span>
+                          <span className="text-[#AA9B8F]">
+                            {formatPrice(priceRange[1])}
+                          </span>
+                        </div>
+      
+                        {/* Price Slider */}
+                        <div className="relative h-2 bg-[#2A2A2A] rounded-full">
+                          <div
+                            className="absolute h-full bg-[#a87441] rounded-full"
+                            style={{
+                              left: `${(priceRange[0] / 50000) * 100}%`,
+                              right: `${
+                                100 - (priceRange[1] / 50000) * 100
+                              }%`,
+                            }}
+                          />
+                          <input
+                            type="range"
+                            min={0}
+                            max={50000}
+                            step={100}
+                            value={priceRange[0]}
+                            onChange={(e) =>
+                              setPriceRange([
+                                Math.min(
+                                  Number(e.target.value),
+                                  priceRange[1] - 1000,
+                                ),
+                                priceRange[1],
+                              ])
+                            }
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            style={{pointerEvents: 'auto'}}
+                          />
+                          <input
+                            type="range"
+                            min={0}
+                            max={50000}
+                            step={100}
+                            value={priceRange[1]}
+                            onChange={(e) =>
+                              setPriceRange([
+                                priceRange[0],
+                                Math.max(
+                                  Number(e.target.value),
+                                  priceRange[0] + 1000,
+                                ),
+                              ])
+                            }
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            style={{pointerEvents: 'auto'}}
+                          />
+                        </div>
+                      </div>
+                    ) : isColorFilter ? (
+                      <div className="flex flex-wrap gap-2">
+                        {filter.values.map((option) => {
+                          const inputString = option.input as string;
+                          const isSelected = selectedInputs.has(inputString);
+                          const colorHex = COLOR_HEX_MAP[option.label.toLowerCase()] || '#1A1A1A';
 
-              {/* Collections */}
-              <FilterSection
-                title={t('filter.collections', 'Collections')}
-                isExpanded={expandedSections.includes('collections')}
-                onToggle={() => toggleSection('collections')}
-              >
-                <div className="space-y-2">
-                  {filterData.collections.map((collection) => (
-                    <label
-                      key={collection.id}
-                      className="flex items-center justify-between py-2 cursor-pointer group"
-                    >
-                      <span className="flex items-center gap-3">
-                        <span
-                          className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
-                            filters.collections.includes(collection.id)
-                              ? 'bg-[#a87441] border-[#a87441]'
-                              : 'border-[#a87441]/30 group-hover:border-[#a87441]'
-                          }`}
-                        >
-                          {filters.collections.includes(collection.id) && (
-                            <Icons.Check />
-                          )}
-                        </span>
-                        <span className="text-[#F0EAE6] text-sm">
-                          {collection.label}
-                        </span>
-                      </span>
-                      <span className="text-[#AA9B8F] text-xs">
-                        ({collection.count})
-                      </span>
-                      <input
-                        type="checkbox"
-                        className="sr-only"
-                        checked={filters.collections.includes(collection.id)}
-                        onChange={() =>
-                          toggleFilter('collections', collection.id)
-                        }
-                      />
-                    </label>
-                  ))}
-                </div>
-              </FilterSection>
+                          return (
+                            <button
+                              key={option.id}
+                              onClick={() => toggleFilter(inputString)}
+                              className={`relative w-10 h-10 rounded-full border-2 transition-all ${
+                                isSelected
+                                  ? 'border-[#a87441] scale-110'
+                                  : 'border-transparent hover:scale-105'
+                              }`}
+                              style={{backgroundColor: colorHex}}
+                              title={option.label}
+                              aria-label={option.label}
+                            >
+                              {isSelected && (
+                                <span className="absolute inset-0 flex items-center justify-center mix-blend-difference text-white">
+                                  <Icons.Check />
+                                </span>
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {filter.values.map((option) => {
+                          const inputString = option.input as string;
+                          const isSelected = selectedInputs.has(inputString);
 
-              {/* Colors */}
-              <FilterSection
-                title={t('filter.colors', 'Colors')}
-                isExpanded={expandedSections.includes('colors')}
-                onToggle={() => toggleSection('colors')}
-              >
-                <div className="flex flex-wrap gap-2">
-                  {filterData.colors.map((color) => (
-                    <button
-                      key={color.id}
-                      onClick={() => toggleFilter('colors', color.id)}
-                      className={`relative w-10 h-10 rounded-full border-2 transition-all ${
-                        filters.colors.includes(color.id)
-                          ? 'border-[#a87441] scale-110'
-                          : 'border-transparent hover:scale-105'
-                      }`}
-                      style={{backgroundColor: color.hex}}
-                      title={color.label}
-                      aria-label={color.label}
-                    >
-                      {filters.colors.includes(color.id) && (
-                        <span className="absolute inset-0 flex items-center justify-center">
-                          <Icons.Check />
-                        </span>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </FilterSection>
-
-              {/* Sizes */}
-              <FilterSection
-                title={t('filter.sizes', 'Sizes')}
-                isExpanded={expandedSections.includes('sizes')}
-                onToggle={() => toggleSection('sizes')}
-              >
-                <div className="flex flex-wrap gap-2">
-                  {filterData.sizes.map((size) => (
-                    <button
-                      key={size.id}
-                      onClick={() => toggleFilter('sizes', size.id)}
-                      className={`min-w-[48px] px-3 py-2 rounded-lg border text-sm transition-all ${
-                        filters.sizes.includes(size.id)
-                          ? 'bg-[#a87441] border-[#a87441] text-white'
-                          : 'bg-transparent border-[#a87441]/30 text-[#F0EAE6] hover:border-[#a87441]'
-                      }`}
-                    >
-                      {size.label}
-                    </button>
-                  ))}
-                </div>
-              </FilterSection>
-
-              {/* Price Range */}
-              <FilterSection
-                title={t('filter.price', 'Price Range')}
-                isExpanded={expandedSections.includes('price')}
-                onToggle={() => toggleSection('price')}
-              >
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-[#AA9B8F]">
-                      {formatPrice(filters.priceRange[0])}
-                    </span>
-                    <span className="text-[#AA9B8F]">
-                      {formatPrice(filters.priceRange[1])}
-                    </span>
-                  </div>
-
-                  {/* Price Slider */}
-                  <div className="relative h-2 bg-[#2A2A2A] rounded-full">
-                    <div
-                      className="absolute h-full bg-[#a87441] rounded-full"
-                      style={{
-                        left: `${(filters.priceRange[0] / 50000) * 100}%`,
-                        right: `${
-                          100 - (filters.priceRange[1] / 50000) * 100
-                        }%`,
-                      }}
-                    />
-                    <input
-                      type="range"
-                      min={0}
-                      max={50000}
-                      step={100}
-                      value={filters.priceRange[0]}
-                      onChange={(e) =>
-                        setPriceRange([
-                          Math.min(
-                            Number(e.target.value),
-                            filters.priceRange[1] - 1000,
-                          ),
-                          filters.priceRange[1],
-                        ])
-                      }
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                      style={{pointerEvents: 'auto'}}
-                    />
-                    <input
-                      type="range"
-                      min={0}
-                      max={50000}
-                      step={100}
-                      value={filters.priceRange[1]}
-                      onChange={(e) =>
-                        setPriceRange([
-                          filters.priceRange[0],
-                          Math.max(
-                            Number(e.target.value),
-                            filters.priceRange[0] + 1000,
-                          ),
-                        ])
-                      }
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                      style={{pointerEvents: 'auto'}}
-                    />
-                  </div>
-
-                  {/* Price Inputs */}
-                  <div className="flex items-center gap-4">
-                    <div className="flex-1">
-                      <label className="text-[10px] uppercase tracking-[0.1em] text-[#AA9B8F] mb-1 block">
-                        {t('filter.min', 'Min')}
-                      </label>
-                      <input
-                        type="number"
-                        value={filters.priceRange[0]}
-                        onChange={(e) =>
-                          setPriceRange([
-                            Math.max(0, Number(e.target.value)),
-                            filters.priceRange[1],
-                          ])
-                        }
-                        className="w-full bg-[#1A1A1A] border border-[#a87441]/20 rounded-lg px-3 py-2 text-[#F0EAE6] text-sm focus:border-[#a87441] focus:outline-none"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <label className="text-[10px] uppercase tracking-[0.1em] text-[#AA9B8F] mb-1 block">
-                        {t('filter.max', 'Max')}
-                      </label>
-                      <input
-                        type="number"
-                        value={filters.priceRange[1]}
-                        onChange={(e) =>
-                          setPriceRange([
-                            filters.priceRange[0],
-                            Math.min(50000, Number(e.target.value)),
-                          ])
-                        }
-                        className="w-full bg-[#1A1A1A] border border-[#a87441]/20 rounded-lg px-3 py-2 text-[#F0EAE6] text-sm focus:border-[#a87441] focus:outline-none"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </FilterSection>
+                          return (
+                            <label
+                              key={option.id}
+                              className="flex items-center justify-between py-2 cursor-pointer group"
+                            >
+                              <span className="flex items-center gap-3">
+                                <span
+                                  className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
+                                    isSelected
+                                      ? 'bg-[#a87441] border-[#a87441]'
+                                      : 'border-[#a87441]/30 group-hover:border-[#a87441]'
+                                  }`}
+                                >
+                                  {isSelected && <Icons.Check />}
+                                </span>
+                                <span className="text-[#F0EAE6] text-sm">
+                                  {option.label}
+                                </span>
+                              </span>
+                              <span className="text-[#AA9B8F] text-xs">
+                                ({option.count})
+                              </span>
+                              <input
+                                type="checkbox"
+                                className="sr-only"
+                                checked={isSelected}
+                                onChange={() => toggleFilter(inputString)}
+                              />
+                            </label>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </FilterSection>
+                );
+              })}
             </div>
 
             {/* Footer */}

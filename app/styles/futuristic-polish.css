@@ -440,7 +440,7 @@
 
 /* Note: .fp-reveal-up and .fp-reveal-scale removed - use Framer Motion instead */
 
-/* Stagger Children */}, {
+/* Stagger Children */
 .fp-stagger-children > * {
   opacity: 0;
   transform: translateY(20px);
@@ -637,7 +637,7 @@
   animation: float 6s ease-in-out infinite;
 }
 
-/* Subtle Rotation */}, {
+/* Subtle Rotation */
 .fp-rotate-subtle {
   animation: rotateSubtle 20s linear infinite;
 }
@@ -1238,7 +1238,7 @@
 
 /* Note: .fp-img-zoom removed - use Tailwind group-hover:scale-105 instead */
 
-/* Image with Bronze Tint on Hover */}, {
+/* Image with Bronze Tint on Hover */
 .fp-img-bronze-tint {
   position: relative;
 }

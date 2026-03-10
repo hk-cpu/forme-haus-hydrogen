@@ -83,7 +83,7 @@ export default function Article() {
         )}
         <div
           dangerouslySetInnerHTML={{__html: contentHtml}}
-          className="article"
+          className="article prose dark:prose-invert max-w-prose mx-auto prose-headings:text-[#F0EAE6] prose-a:text-[#a87441] prose-strong:text-[#F0EAE6] px-4"
         />
       </Section>
     </>

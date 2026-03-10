@@ -682,14 +682,14 @@ export function ProductCard({
           </div>
 
           {/* Price Row */}
-          <div className="flex items-baseline gap-2 flex-wrap pt-0.5">
-            <p className="text-[#F0EAE6] text-[14px] font-semibold transition-all duration-300 group-hover:text-[#a87441] flex items-baseline gap-1.5">
+          <div className="flex items-baseline gap-2 flex-wrap pt-0.5 border-t border-[#a87441]/10 mt-2 pt-2">
+            <p className="text-[#F0EAE6] text-[14px] font-medium transition-all duration-300 group-hover:text-[#a87441] flex items-baseline">
               {product.priceRange?.minVariantPrice ? (
                 <>
-                  <Money data={product.priceRange.minVariantPrice as any} />
+                  <Money data={product.priceRange.minVariantPrice as any} withoutCurrency />
                   {product.availableForSale !== false && (
-                    <span className="text-[10px] opacity-60 font-normal lowercase tracking-wide">
-                      {t('cart.vatIncluded', '(vat included)')}
+                    <span className="text-[12px] text-[#8B8076] font-normal tracking-wide ml-1">
+                      SAR (vat included)
                     </span>
                   )}
                 </>

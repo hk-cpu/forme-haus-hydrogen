@@ -260,13 +260,18 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] transition-all duration-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                className="w-full py-4 bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] transition-all duration-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium flex items-center justify-center gap-2"
               >
-                {isSubmitting
-                  ? 'Processing...'
-                  : isRegistering
-                  ? 'Create Account'
-                  : 'Sign In'}
+                {isSubmitting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Processing...
+                  </>
+                ) : isRegistering ? (
+                  'Create Account'
+                ) : (
+                  'Sign In'
+                )}
               </button>
 
               <div className="flex flex-col items-center gap-3 pt-2">

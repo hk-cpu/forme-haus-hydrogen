@@ -58,7 +58,7 @@ export function OrderCard({order}: {order: StorefrontOrder}) {
         )}
         <div
           className={`flex-col justify-center text-left ${
-            !firstImage && 'md:col-span-2'
+            !firstImage ? 'md:col-span-2' : ''
           }`}
         >
           <Heading

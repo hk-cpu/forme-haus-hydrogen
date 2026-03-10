@@ -24,6 +24,7 @@ import invariant from 'tiny-invariant';
 
 import {ProductCardClean} from '~/components/ProductCardClean';
 import {CategoryHeader} from '~/components/CategoryHeader';
+import {FilterPanel} from '~/components/FilterPanel';
 import SortMenu, {
   type SortParam,
   FILTER_URL_PREFIX,
@@ -533,6 +534,13 @@ export default function Collection() {
           }}
         />
       </main>
+
+      <FilterPanel
+        filters={collection.products.filters as any}
+        // Ideally we would get total count from collection.products.pageInfo or similar, 
+        // but passing nodes length for now to show something.
+        totalProducts={collection.products.nodes.length} 
+      />
     </div>
   );
 }

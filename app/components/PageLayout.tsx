@@ -18,7 +18,6 @@ import Atmosphere from '~/components/Atmosphere';
 import {NavigationMenu} from '~/components/NavigationMenu';
 import {SearchOverlay} from '~/components/SearchOverlay';
 import {AccountOverlay} from '~/components/AccountOverlay';
-import {FilterPanel} from '~/components/FilterPanel';
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
 import {Newsletter} from '~/components/Newsletter';
@@ -146,7 +145,6 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
       <NavigationMenu />
       <SearchOverlay />
       <AccountOverlay />
-      <FilterPanel />
       <FormeHeader
         title={title}
         menu={menu}
@@ -273,117 +271,40 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
         className="relative z-10 py-16"
         style={{padding: '4rem var(--page-gutter)'}}
       >
-        {/* Newsletter */}
-        <div className="max-w-[1440px] mx-auto mb-12 pb-12 border-b border-[#a87441]/10">
-          <div className="max-w-md">
-            <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium mb-2">
-              {t('footer.newsletter', 'Stay in the Loop')}
-            </h4>
-            <p className="text-[12px] text-[#AA9B8F] mb-4">
-              {t(
-                'footer.newsletterDesc',
-                'New arrivals, exclusive offers, and more.',
-              )}
-            </p>
-            <Newsletter />
-          </div>
-        </div>
-
-        {/* Main Footer Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 w-full max-w-[1440px] mx-auto">
-          {/* COL 1: Brand & Slogan */}
-          <div className="lg:col-span-4 flex flex-col gap-6">
-            {/* Brand Logo */}
+        {/* Main Footer Content */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-10 w-full max-w-[1440px] mx-auto mb-12 pb-12 border-b border-[#a87441]/10">
+          {/* Brand & Slogan */}
+          <div className="flex flex-col items-center md:items-start gap-3">
             <div className="flex items-center gap-4">
               <img
                 src="/brand/logo-icon-only.png"
                 alt="Formé Haus"
                 className="h-16 w-auto object-contain opacity-90"
               />
-              <h3 className="font-serif text-xl text-[#F0EAE6]">Formé Haus</h3>
-            </div>
-
-            {/* Slogan */}
-            <p className="font-serif text-lg italic text-[#AA9B8F]">
-              {t('footer.description', 'Where Essence Meets Elegance')}
-            </p>
-          </div>
-
-          {/* COL 2: Navigation Links */}
-          <div className="lg:col-span-5">
-            <div className="grid grid-cols-2 md:grid-cols-2 gap-8">
-              {/* Customer Care */}
-              <div className="space-y-4">
-                <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
-                  {t('footer.customerCare', 'Customer Care')}
-                </h4>
-                <nav className="grid gap-2.5">
-                  <Link to="/contact" className={linkClass}>
-                    {t('footer.contact', 'Contact')}
-                  </Link>
-                  <Link to="/pages/faqs" className={linkClass}>
-                    {t('footer.faqs', 'FAQs')}
-                  </Link>
-                  <Link to="/policies/shipping-policy" className={linkClass}>
-                    {t('footer.shipping', 'Shipping & Returns')}
-                  </Link>
-                  <Link to="/account/orders" className={linkClass}>
-                    {t('footer.trackOrder', 'Track Order')}
-                  </Link>
-                </nav>
-              </div>
-
-              {/* About */}
-              <div className="space-y-4">
-                <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
-                  {t('footer.about', 'About')}
-                </h4>
-                <nav className="grid gap-2.5">
-                  <Link to="/pages/about" className={linkClass}>
-                    {t('footer.ourStory', 'Our Story')}
-                  </Link>
-                  <Link to="/policies/privacy-policy" className={linkClass}>
-                    {t('footer.privacy', 'Privacy Policy')}
-                  </Link>
-                  <Link to="/policies/terms-of-service" className={linkClass}>
-                    {t('footer.terms', 'Terms')}
-                  </Link>
-                </nav>
+              <div className="flex flex-col">
+                <h3 className="font-serif text-xl text-[#F0EAE6] leading-tight">Formé Haus</h3>
+                <p className="font-serif text-[12px] italic text-[#AA9B8F] tracking-wide mt-1">
+                  {t('footer.description', 'Where Essence Meets Elegance')}
+                </p>
               </div>
             </div>
           </div>
 
-          {/* COL 3: Contact & Payments */}
-          <div className="lg:col-span-3 flex flex-col gap-5">
-            {/* Get in Touch */}
-            <div className="space-y-3">
-              <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
-                {t('footer.getInTouch', 'Get in Touch')}
-              </h4>
-              <div className="grid gap-1.5">
-                <a
-                  href="tel:+966800123456"
-                  className="text-sm text-[#AA9B8F] hover:text-[#a87441] transition-colors"
-                >
-                  800 123 456
-                </a>
-                <a
-                  href="mailto:info@formehaus.me"
-                  className="text-sm text-[#AA9B8F] hover:text-[#a87441] transition-colors"
-                >
-                  info@formehaus.me
-                </a>
-              </div>
-            </div>
-
-            {/* Payments */}
-            <div className="space-y-2">
-              <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#F0EAE6] font-medium">
-                {t('footer.payments', 'Payments')}
-              </h4>
-              <PaymentBadges />
-            </div>
-          </div>
+          {/* Direct Navigation Links */}
+          <nav className="flex flex-col md:flex-row items-center gap-4 md:gap-8 text-center">
+            <Link to="/contact" className={linkClass}>
+              Contact us
+            </Link>
+            <Link to="/policies/shipping-policy" className={linkClass}>
+              Shipping & Delivery Policy
+            </Link>
+            <Link to="/policies/terms-of-service" className={linkClass}>
+              Return and Exchange Policy
+            </Link>
+            <Link to="/policies/privacy-policy" className={linkClass}>
+              Privacy Policy
+            </Link>
+          </nav>
         </div>
 
         {/* Social Links */}

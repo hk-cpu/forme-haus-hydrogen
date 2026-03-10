@@ -123,9 +123,6 @@ export default function AllProducts() {
         </div>
       </div>
 
-      {/* Infinity Product Showcase — uses real API data */}
-      <InfinityProductShowcase products={products.nodes} />
-
       {/* Product Grid Section */}
       <Section className="py-12 md:py-16">
         {/* Section Header */}

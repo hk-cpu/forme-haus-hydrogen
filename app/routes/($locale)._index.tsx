@@ -71,54 +71,30 @@ export default function Homepage() {
           <EditorialSection />
         </div>
 
-        {/* 4. Brand Introduction */}
-        <motion.section
-          initial={{opacity: 0, y: 20}}
-          whileInView={{opacity: 1, y: 0}}
-          viewport={{once: true, margin: '-80px'}}
-          transition={{duration: 0.7, ease: [0.25, 0.1, 0.25, 1]}}
-          className="py-10 md:py-14 text-center max-w-2xl mx-auto space-y-6 border-t border-[#8B8076]/10 mobile-snap-section"
-        >
-          <div className="w-px h-16 bg-gradient-to-b from-transparent via-[#a87441]/40 to-transparent mx-auto" />
-          <p className="font-serif text-lg md:text-xl leading-[1.8] text-[#4A3C31] font-light italic tracking-wide px-6">
-            &ldquo;{t('home.brandIntro')}&rdquo;
-          </p>
-        </motion.section>
+
 
         {/* 5. Why Choose Us */}
         <div className="mobile-snap-section">
           <WhyChooseUs />
         </div>
 
-        {/* 6. Journal Teaser */}
-        <section className="py-6 md:py-8 border-t border-[#8B8076]/10 mobile-snap-section">
+        {/* 6. JOIN THE HAUS */}
+        <section className="py-10 md:py-14 border-t border-[#8B8076]/10 mobile-snap-section text-center">
           <div
-            className="max-w-[1200px] mx-auto"
+            className="max-w-[1200px] mx-auto space-y-8"
             style={{padding: '0 var(--page-gutter)'}}
           >
-            <div className="flex justify-between items-end mb-6">
-              <h2 className="font-serif text-2xl md:text-3xl italic text-[#4A3C31] font-light tracking-wide">
-                {t('home.journal')}
+            <div className="space-y-4">
+              <h2 className="font-serif text-3xl md:text-4xl text-[#4A3C31] tracking-wider uppercase">
+                JOIN THE HAUS
               </h2>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076] font-light hidden md:block">
-                {t('home.editorial.label')}
-              </span>
+              <h3 className="font-serif text-lg md:text-xl italic text-[#8B8076] font-light tracking-wide">
+                Forme Haus: Where Essence Meets Elegance
+              </h3>
             </div>
+            
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
-              {[
-                {
-                  title: t('journal.modernWardrobe'),
-                  img: '/brand/journal-wardrobe.webp',
-                },
-                {
-                  title: t('journal.everydayElegance'),
-                  img: '/brand/journal-elegance.webp',
-                },
-                {
-                  title: t('journal.behindCraft'),
-                  img: '/brand/journal-selection.png',
-                },
-              ].map((item, i) => (
+              {[1, 2, 3].map((item, i) => (
                 <motion.div
                   key={i}
                   initial={{opacity: 0, y: 20}}
@@ -130,28 +106,10 @@ export default function Homepage() {
                     ease: [0.25, 0.1, 0.25, 1],
                   }}
                 >
-                  <div className="space-y-3 group block">
-                    {/* Image Container - zoomed 20% to hide watermark */}
-                    <div className="aspect-[4/3] relative overflow-hidden bg-[#EDE8E3] rounded-lg">
-                      <img
-                        src={item.img}
-                        alt={item.title}
-                        className="w-full h-full object-cover"
-                        style={{
-                          transform: 'scale(1.20)',
-                          transformOrigin: 'center center',
-                        }}
-                        loading={i < 2 ? 'eager' : 'lazy'}
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).style.display = 'none';
-                        }}
-                      />
-                      {/* Vignette to hide cropped edges */}
-                      <div className="absolute inset-0 shadow-[inset_0_0_50px_rgba(0,0,0,0.2)] pointer-events-none" />
-                    </div>
-                    <h3 className="font-serif text-base md:text-lg text-[#4A3C31] font-light tracking-wide">
-                      {item.title}
-                    </h3>
+                  <div className="aspect-[4/3] relative overflow-hidden bg-[#EDE8E3] rounded-lg flex items-center justify-center border border-[#8B8076]/10">
+                    <span className="text-[#8B8076]/50 uppercase tracking-widest text-[10px]">
+                      Placeholder Image
+                    </span>
                   </div>
                 </motion.div>
               ))}

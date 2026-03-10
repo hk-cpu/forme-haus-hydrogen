@@ -1,4 +1,5 @@
 import {motion} from 'framer-motion';
+import {Link} from '@remix-run/react';
 
 import {useTranslation} from '~/hooks/useTranslation';
 
@@ -132,23 +133,24 @@ export function TopBar() {
     >
       <div className="max-w-[1800px] mx-auto px-6 lg:px-16">
         <div className="flex items-center justify-between h-10">
-          {/* Left: Contact Info */}
-          <div className="flex items-center gap-6">
-            <a
-              href="mailto:info@formehaus.me"
-              className="flex items-center gap-2 text-[11px] text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 group"
-            >
-              <Icons.Email className="group-hover:scale-110 transition-transform" />
-              <span>info@formehaus.me</span>
-            </a>
-            <span className="w-px h-3 bg-[#a87441]/20" />
-            <a
-              href="tel:+966800123456"
-              className="flex items-center gap-2 text-[11px] text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 group"
-            >
-              <Icons.Phone className="group-hover:scale-110 transition-transform" />
-              <span>800 123 456</span>
-            </a>
+          {/* Left: Social Links */}
+          <div className="flex items-center gap-3">
+            {socialLinks.map((social, index) => (
+              <motion.a
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{opacity: 0, y: -5}}
+                animate={{opacity: 1, y: 0}}
+                transition={{delay: 0.1 * index + 0.2}}
+                whileHover={{scale: 1.1}}
+                className="text-[#8B8076] hover:text-[#a87441] transition-colors duration-300"
+                aria-label={social.label}
+              >
+                <social.icon />
+              </motion.a>
+            ))}
           </div>
 
           {/* Center: Promo Text */}
@@ -156,29 +158,19 @@ export function TopBar() {
             initial={{opacity: 0}}
             animate={{opacity: 1}}
             transition={{delay: 0.3}}
-            className="text-[11px] text-[#AA9B8F] tracking-wide hidden lg:block"
+            className="text-[11px] text-[#AA9B8F] tracking-widest uppercase hidden lg:block font-medium"
           >
-            {t('topBar.promo', 'Free shipping on orders over 299 SAR')}
+            {t('topBar.promo', 'Free dispatch within 48 hours')}
           </motion.p>
 
-          {/* Right: Social Links */}
-          <div className="flex items-center gap-1">
-            {socialLinks.map((social, index) => (
-              <motion.a
-                key={social.label}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{opacity: 0, y: -10}}
-                animate={{opacity: 1, y: 0}}
-                transition={{delay: 0.1 * index + 0.2}}
-                whileHover={{scale: 1.1}}
-                className="p-2 text-[#8B8076] hover:text-[#a87441] transition-colors duration-300"
-                aria-label={social.label}
-              >
-                <social.icon />
-              </motion.a>
-            ))}
+          {/* Right: About Us */}
+          <div className="flex items-center gap-6">
+            <Link
+              to="/pages/about"
+              className="text-[10px] uppercase tracking-widest text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 font-medium"
+            >
+              {t('topBar.about', 'About Us')}
+            </Link>
           </div>
         </div>
       </div>

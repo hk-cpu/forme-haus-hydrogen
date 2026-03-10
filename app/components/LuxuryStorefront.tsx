@@ -440,43 +440,18 @@ function Header() {
 
 const menuData = {
   level1: [
-    {id: 'monogram', label: 'Monogram Anniversary', hasChildren: true},
-    {id: 'gifts', label: 'Gifts and Personalization', hasChildren: true},
-    {id: 'new', label: 'New', hasChildren: true},
-    {id: 'bags', label: 'Bags and Small Leather Goods', hasChildren: true},
-    {id: 'women', label: 'Women', hasChildren: true},
-    {id: 'men', label: 'Men', hasChildren: true},
-    {id: 'perfumes', label: 'Perfumes and Beauty', hasChildren: true},
-    {id: 'jewelry', label: 'Jewelry', hasChildren: true},
-    {id: 'watches', label: 'Watches', hasChildren: true},
-    {id: 'travel', label: 'Trunks Travel and Home', hasChildren: true},
-    {id: 'services', label: 'Services', hasChildren: true},
-    {id: 'maison', label: 'The Maison', hasChildren: false},
+    {id: 'new', label: 'New In', hasChildren: false},
+    {id: 'phone-accessories', label: 'Phone Accessories', hasChildren: true},
+    {id: 'sunglasses', label: 'Sunglasses', hasChildren: false},
+    {id: 'the-edit', label: 'The Edit', hasChildren: false},
+    {id: 'sale', label: 'Sale', hasChildren: false},
   ],
-  women: {
+  'phone-accessories': {
     image:
-      'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=80',
-    categories: [
-      'Travel',
-      'Accessories',
-      'Fashion Jewelry',
-      'Clothing',
-      'Shoes',
-      'Perfumes',
-      'Beauté',
-    ],
-  },
-  clothing: {
-    image:
-      'https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=80',
+      'https://images.unsplash.com/photo-1603313011101-320f26a4f6f6?w=800&q=80',
     items: [
-      'Knitwear',
-      'Tops',
-      'Denim',
-      'Dresses',
-      'Pants',
-      'Skirts and Shorts',
-      'Swimwear',
+      'Phone Cases',
+      'Phone Straps',
     ],
   },
 };
@@ -576,7 +551,7 @@ function NavigationMenu() {
                   </motion.div>
                 )}
 
-                {state.menuLevel === 1 && currentCategory === 'Women' && (
+                {state.menuLevel === 1 && currentCategory === 'Phone Accessories' && (
                   <motion.div
                     key="level2"
                     className="menu-level"
@@ -588,48 +563,12 @@ function NavigationMenu() {
                   >
                     <div className="menu-hero">
                       <img
-                        src={menuData.women.image}
-                        alt="Women's Collection"
+                        src={menuData['phone-accessories'].image}
+                        alt="Phone Accessories"
                       />
                     </div>
                     <ul className="menu-list">
-                      {menuData.women.categories.map((cat, index) => (
-                        <motion.li
-                          key={cat}
-                          initial={{opacity: 0, x: -20}}
-                          animate={{opacity: 1, x: 0}}
-                          transition={{delay: index * 0.04}}
-                        >
-                          <button
-                            className="menu-item"
-                            onClick={() =>
-                              dispatch({type: 'NAVIGATE_MENU', category: cat})
-                            }
-                          >
-                            <span>{cat}</span>
-                            <Icons.ChevronRight />
-                          </button>
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </motion.div>
-                )}
-
-                {state.menuLevel === 2 && currentCategory === 'Clothing' && (
-                  <motion.div
-                    key="level3"
-                    className="menu-level"
-                    variants={contentVariants}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                    transition={{duration: 0.3}}
-                  >
-                    <div className="menu-hero">
-                      <img src={menuData.clothing.image} alt="Clothing" />
-                    </div>
-                    <ul className="menu-list">
-                      {menuData.clothing.items.map((item, index) => (
+                      {menuData['phone-accessories'].items.map((item, index) => (
                         <motion.li
                           key={item}
                           initial={{opacity: 0, x: -20}}
@@ -2995,11 +2934,9 @@ function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-breadcrumb">
-        <span>Women</span>
+        <span>Formé Haus</span>
         <span>-</span>
-        <span>Clothing</span>
-        <span>&gt;</span>
-        <span>Coats and Jackets</span>
+        <span>Where Essence Meets Elegance</span>
       </div>
 
       <div className="footer-sections">
