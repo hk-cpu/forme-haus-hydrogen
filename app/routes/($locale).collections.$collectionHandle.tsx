@@ -364,9 +364,9 @@ export default function Collection() {
         collectionHandle={collection.handle}
       />
 
-      {/* ─── Sort / Applied Filters Bar ─── */}
+      {/* ─── Breadcrumb + Sort / Applied Filters Bar ─── */}
       <div
-        className="max-w-[1440px] mx-auto py-3 flex items-center justify-between"
+        className="max-w-[1440px] mx-auto py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
         style={{padding: '0.75rem var(--page-gutter)'}}
       >
         <nav

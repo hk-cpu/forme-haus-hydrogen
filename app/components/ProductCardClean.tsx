@@ -178,19 +178,21 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
 
           {/* Price Row */}
           <div className="flex items-center gap-2 pt-0.5">
-            <p className="text-[15px] font-semibold text-[#4A3C31]">
-              {product.priceRange?.minVariantPrice ? (
-                <Money data={product.priceRange.minVariantPrice as any} />
-              ) : (
-                <span className="text-sm text-[#8B8076]">
-                  Price unavailable
-                </span>
-              )}
-            </p>
-
-            {hasDiscount && (
-              <p className="text-[13px] text-[#8B8076] line-through">
-                <Money data={product.compareAtPriceRange!.minVariantPrice} />
+            {product.priceRange?.minVariantPrice &&
+            parseFloat(product.priceRange.minVariantPrice.amount) > 0 ? (
+              <>
+                <p className="text-[15px] font-semibold text-[#4A3C31]">
+                  <Money data={product.priceRange.minVariantPrice as any} />
+                </p>
+                {hasDiscount && (
+                  <p className="text-[13px] text-[#8B8076] line-through">
+                    <Money data={product.compareAtPriceRange!.minVariantPrice} />
+                  </p>
+                )}
+              </>
+            ) : (
+              <p className="text-[13px] text-[#8B8076] italic">
+                Price TBA
               </p>
             )}
           </div>

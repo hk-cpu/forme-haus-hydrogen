@@ -64,8 +64,10 @@ export async function loader({
 }
 
 export const meta = ({matches}: MetaArgs<typeof loader>) => {
-  // @ts-ignore
-  return getSeoMeta(...matches.map((match) => (match as any).data.seo));
+  const seoData = matches
+    .map((match) => (match.data as any)?.seo)
+    .filter(Boolean);
+  return getSeoMeta(...seoData);
 };
 
 export default function AllProducts() {
@@ -121,8 +123,8 @@ export default function AllProducts() {
         </div>
       </div>
 
-      {/* Infinity Product Showcase */}
-      <InfinityProductShowcase />
+      {/* Infinity Product Showcase — uses real API data */}
+      <InfinityProductShowcase products={products.nodes} />
 
       {/* Product Grid Section */}
       <Section className="py-12 md:py-16">

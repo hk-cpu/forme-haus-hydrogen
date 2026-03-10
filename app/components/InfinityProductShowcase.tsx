@@ -1,157 +1,32 @@
 import {useRef, useEffect, useState, useMemo} from 'react';
-import {motion, useScroll, useTransform, useSpring} from 'framer-motion';
+import {motion} from 'framer-motion';
 import {Link} from '@remix-run/react';
+import {Money} from '@shopify/hydrogen';
 
 import {useTranslation} from '~/hooks/useTranslation';
 
-interface Product {
+interface ShopifyProduct {
   id: string;
   handle: string;
   title: string;
-  price: {
-    amount: string;
-    currencyCode: string;
+  priceRange: {
+    minVariantPrice: {
+      amount: string;
+      currencyCode: string;
+    };
   };
-  image: string;
+  images: {
+    nodes: Array<{
+      url: string;
+      altText?: string | null;
+    }>;
+  };
+  availableForSale?: boolean;
 }
 
-// All products from the LUV collection
-const ALL_PRODUCTS: Product[] = [
-  // LUV2431792 - THE ROCKY
-  {
-    id: '1',
-    handle: 'the-rocky',
-    title: 'The Rocky',
-    price: {amount: '599.00', currencyCode: 'SAR'},
-    image: '/products/LUV2431792_1.webp',
-  },
-  {
-    id: '2',
-    handle: 'the-rocky-gold',
-    title: 'The Rocky - Gold',
-    price: {amount: '649.00', currencyCode: 'SAR'},
-    image: '/products/LUV2431792_2.webp',
-  },
-  // LUV2531822 - THE PALOMA
-  {
-    id: '3',
-    handle: 'the-paloma',
-    title: 'The Paloma',
-    price: {amount: '549.00', currencyCode: 'SAR'},
-    image: '/products/LUV2531822_1.webp',
-  },
-  {
-    id: '4',
-    handle: 'the-paloma-tortoise',
-    title: 'The Paloma - Tortoise',
-    price: {amount: '599.00', currencyCode: 'SAR'},
-    image: '/products/LUV2531822_2.webp',
-  },
-  // LUV2531823 - THE PALOMA (variant)
-  {
-    id: '5',
-    handle: 'the-paloma-black',
-    title: 'The Paloma - Black',
-    price: {amount: '549.00', currencyCode: 'SAR'},
-    image: '/products/LUV2531823_1.webp',
-  },
-  // LUV2531826 - THE BOSTON
-  {
-    id: '6',
-    handle: 'the-boston',
-    title: 'The Boston',
-    price: {amount: '579.00', currencyCode: 'SAR'},
-    image: '/products/LUV2531826_1.webp',
-  },
-  // LUV2531827 - THE BLAIR
-  {
-    id: '7',
-    handle: 'the-blair',
-    title: 'The Blair',
-    price: {amount: '529.00', currencyCode: 'SAR'},
-    image: '/products/LUV2531827_1.webp',
-  },
-  // LUV2531828 - THE BLAIR (variant)
-  {
-    id: '8',
-    handle: 'the-blair-cream',
-    title: 'The Blair - Cream',
-    price: {amount: '529.00', currencyCode: 'SAR'},
-    image: '/products/LUV2531828_1.webp',
-  },
-  // LUV2531830 - THE BLAIR (variant)
-  {
-    id: '9',
-    handle: 'the-blair-white',
-    title: 'The Blair - White',
-    price: {amount: '529.00', currencyCode: 'SAR'},
-    image: '/products/LUV2531830_1.webp',
-  },
-  // LUV2543900 - THE OLIVE
-  {
-    id: '10',
-    handle: 'the-olive',
-    title: 'The Olive',
-    price: {amount: '499.00', currencyCode: 'SAR'},
-    image: '/products/LUV2543900_1.webp',
-  },
-  // LUV2543901 - THE OLIVE (variant)
-  {
-    id: '11',
-    handle: 'the-olive-mocha',
-    title: 'The Olive - Mocha',
-    price: {amount: '499.00', currencyCode: 'SAR'},
-    image: '/products/LUV2543901_1.webp',
-  },
-  // LUV2643911 - THE BELLA
-  {
-    id: '12',
-    handle: 'the-bella',
-    title: 'The Bella',
-    price: {amount: '579.00', currencyCode: 'SAR'},
-    image: '/products/LUV2643911_1.webp',
-  },
-  // LUV2643912 - THE BELLA (variant)
-  {
-    id: '13',
-    handle: 'the-bella-black',
-    title: 'The Bella - Black',
-    price: {amount: '579.00', currencyCode: 'SAR'},
-    image: '/products/LUV2643912_1.webp',
-  },
-  // LUV2643914 - THE BROOKLYN
-  {
-    id: '14',
-    handle: 'the-brooklyn',
-    title: 'The Brooklyn',
-    price: {amount: '549.00', currencyCode: 'SAR'},
-    image: '/products/LUV2643914_1.webp',
-  },
-  // LUV2643915 - THE BROOKLYN (variant)
-  {
-    id: '15',
-    handle: 'the-brooklyn-gold',
-    title: 'The Brooklyn - Gold',
-    price: {amount: '599.00', currencyCode: 'SAR'},
-    image: '/products/LUV2643915_1.webp',
-  },
-  // LUV2643919 - THE BANKS
-  {
-    id: '16',
-    handle: 'the-banks',
-    title: 'The Banks',
-    price: {amount: '629.00', currencyCode: 'SAR'},
-    image: '/products/LUV2643919_1.webp',
-  },
-  // LUV2643945 - THE BANKS (variant)
-  {
-    id: '17',
-    handle: 'the-banks-silver',
-    title: 'The Banks - Silver',
-    price: {amount: '629.00', currencyCode: 'SAR'},
-    image: '/products/LUV2643945_1.webp',
-  },
-];
+interface InfinityProductShowcaseProps {
+  products: ShopifyProduct[];
+}
 
 // Shuffle array using Fisher-Yates algorithm
 function shuffleArray<T>(array: T[]): T[] {
@@ -163,12 +38,18 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
-interface ProductCardProps {
-  product: Product;
+function ProductCard({
+  product,
+  index,
+}: {
+  product: ShopifyProduct;
   index: number;
-}
+}) {
+  const imageUrl = product.images?.nodes?.[0]?.url;
+  const imageAlt = product.images?.nodes?.[0]?.altText || product.title;
+  const price = product.priceRange?.minVariantPrice;
+  const hasPrice = price && parseFloat(price.amount) > 0;
 
-function ProductCard({product, index}: ProductCardProps) {
   return (
     <motion.div
       className="flex-shrink-0 w-[200px] md:w-[240px] lg:w-[280px] px-2"
@@ -185,11 +66,11 @@ function ProductCard({product, index}: ProductCardProps) {
             whileHover={{scale: 1.05}}
             transition={{duration: 0.5, ease: [0.16, 1, 0.3, 1]}}
           >
-            {product.image ? (
+            {imageUrl ? (
               <img
-                src={product.image}
-                alt={product.title}
-                className="w-full h-full object-cover"
+                src={imageUrl}
+                alt={imageAlt}
+                className="w-full h-full object-contain object-center p-4"
                 loading="lazy"
               />
             ) : (
@@ -205,22 +86,21 @@ function ProductCard({product, index}: ProductCardProps) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
           {/* Price Tag - Bottom */}
-          <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
-            <span className="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-[#4A3C31] text-xs font-medium rounded-full">
-              {new Intl.NumberFormat('en-SA', {
-                style: 'currency',
-                currency: product.price.currencyCode,
-              }).format(parseFloat(product.price.amount))}
-            </span>
-          </div>
+          {hasPrice && (
+            <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
+              <span className="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-[#4A3C31] text-xs font-medium rounded-full">
+                <Money data={price as any} />
+              </span>
+            </div>
+          )}
 
           {/* Border on hover */}
           <div className="absolute inset-0 rounded-xl border-2 border-[#a87441]/0 group-hover:border-[#a87441]/30 transition-colors duration-500" />
         </div>
 
-        {/* Product Info */}
+        {/* Product Info - no truncation */}
         <div className="space-y-1 text-center">
-          <h3 className="font-serif text-sm md:text-base text-[#4A3C31] group-hover:text-[#a87441] transition-colors duration-300 line-clamp-1">
+          <h3 className="font-serif text-sm md:text-base text-[#4A3C31] group-hover:text-[#a87441] transition-colors duration-300">
             {product.title}
           </h3>
         </div>
@@ -229,22 +109,33 @@ function ProductCard({product, index}: ProductCardProps) {
   );
 }
 
-export function InfinityProductShowcase() {
-  const {isRTL, t} = useTranslation();
+export function InfinityProductShowcase({
+  products,
+}: InfinityProductShowcaseProps) {
+  const {isRTL} = useTranslation();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
+  // Filter to only in-stock products with images
+  const validProducts = useMemo(
+    () => products.filter((p) => p.images?.nodes?.length > 0),
+    [products],
+  );
+
   // Shuffle products randomly
-  const shuffledProducts = useMemo(() => shuffleArray(ALL_PRODUCTS), []);
+  const shuffledProducts = useMemo(
+    () => shuffleArray(validProducts),
+    [validProducts],
+  );
+
+  const DUPLICATES = 6;
 
   // Create infinite loop by duplicating products multiple times
   const infiniteProducts = useMemo(() => {
-    // Duplicate enough times for seamless infinite scroll
-    const duplicates = 6;
-    let result: Product[] = [];
-    for (let i = 0; i < duplicates; i++) {
+    let result: ShopifyProduct[] = [];
+    for (let i = 0; i < DUPLICATES; i++) {
       result = [...result, ...shuffledProducts];
     }
     return result;
@@ -253,18 +144,17 @@ export function InfinityProductShowcase() {
   // Auto-scroll animation
   useEffect(() => {
     const container = scrollRef.current;
-    if (!container) return;
+    if (!container || validProducts.length === 0) return;
 
     let animationId: number;
     let scrollPos = container.scrollLeft;
     const speed = isRTL ? -0.8 : 0.8;
-    const singleSetWidth = container.scrollWidth / 6;
+    const singleSetWidth = container.scrollWidth / DUPLICATES;
 
     const animate = () => {
       if (!isDragging) {
         scrollPos += speed;
 
-        // Reset position for infinite loop effect
         if (isRTL) {
           if (scrollPos <= 0) {
             scrollPos = singleSetWidth * 4;
@@ -280,7 +170,6 @@ export function InfinityProductShowcase() {
       animationId = requestAnimationFrame(animate);
     };
 
-    // Set initial position
     if (!isRTL) {
       container.scrollLeft = singleSetWidth;
       scrollPos = singleSetWidth;
@@ -291,7 +180,7 @@ export function InfinityProductShowcase() {
 
     animationId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationId);
-  }, [isDragging, isRTL]);
+  }, [isDragging, isRTL, validProducts.length]);
 
   // Mouse drag handlers
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -313,6 +202,8 @@ export function InfinityProductShowcase() {
       scrollRef.current.scrollLeft = scrollLeft - walk;
     }
   };
+
+  if (validProducts.length === 0) return null;
 
   return (
     <section
@@ -341,8 +232,8 @@ export function InfinityProductShowcase() {
 
           <span className="text-[11px] uppercase tracking-[0.2em] text-[#a87441]">
             {isRTL
-              ? `${ALL_PRODUCTS.length}+ منتج`
-              : `${ALL_PRODUCTS.length}+ Products`}
+              ? `${validProducts.length} منتج`
+              : `${validProducts.length} Products`}
           </span>
         </motion.div>
       </div>
@@ -368,7 +259,8 @@ export function InfinityProductShowcase() {
         {/* Scrolling Track */}
         <div
           ref={scrollRef}
-          role="button"
+          role="region"
+          aria-label="Product carousel"
           tabIndex={0}
           className="flex overflow-x-auto scrollbar-hide cursor-grab active:cursor-grabbing py-4"
           style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}
@@ -381,7 +273,7 @@ export function InfinityProductShowcase() {
             <ProductCard
               key={`${product.id}-${index}`}
               product={product}
-              index={index % ALL_PRODUCTS.length}
+              index={index % validProducts.length}
             />
           ))}
         </div>
@@ -423,17 +315,6 @@ export function InfinityProductShowcase() {
             />
           </svg>
         </motion.div>
-      </div>
-
-      {/* Decorative Elements */}
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-16 mt-8 md:mt-10">
-        <div className="flex items-center justify-center gap-4">
-          <div className="h-px flex-1 max-w-[150px] bg-gradient-to-r from-transparent to-[#a87441]/20" />
-          <span className="font-serif text-xs text-[#AA9B8F] italic">
-            {isRTL ? 'تمرير لا نهائي' : 'Infinite Scroll'}
-          </span>
-          <div className="h-px flex-1 max-w-[150px] bg-gradient-to-l from-transparent to-[#a87441]/20" />
-        </div>
       </div>
     </section>
   );

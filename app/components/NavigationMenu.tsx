@@ -22,92 +22,21 @@ interface CategoryData {
 }
 
 const menuCategories: Record<string, CategoryData> = {
-  Women: {
-    editorial:
-      'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=900&q=85&auto=format',
-    tagline: 'Spring/Summer 2026',
+  Sunglasses: {
+    editorial: '/assets/heros/sunglasses-hero.png',
+    tagline: 'LOUVE Collection',
     categories: [
-      {label: 'New Arrivals', href: '/collections/women-new', featured: true},
-      {label: 'Ready-to-Wear', href: '/collections/women'},
-      {label: 'Dresses', href: '/collections/women-dresses'},
-      {label: 'Tops & Blouses', href: '/collections/women-tops'},
-      {label: 'Pants & Skirts', href: '/collections/women-bottoms'},
-      {label: 'Outerwear', href: '/collections/women-outerwear'},
-      {label: 'Knitwear', href: '/collections/women-knitwear'},
-      {label: 'Accessories', href: '/collections/women-accessories'},
-    ],
-  },
-  Men: {
-    editorial:
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&q=85&auto=format',
-    tagline: 'Spring/Summer 2026',
-    categories: [
-      {label: 'New Arrivals', href: '/collections/men-new', featured: true},
-      {label: 'Ready-to-Wear', href: '/collections/men'},
-      {label: 'Shirts', href: '/collections/men-shirts'},
-      {label: 'Pants', href: '/collections/men-pants'},
-      {label: 'Outerwear', href: '/collections/men-outerwear'},
-      {label: 'Knitwear', href: '/collections/men-knitwear'},
-      {label: 'Accessories', href: '/collections/men-accessories'},
-    ],
-  },
-  Clothing: {
-    editorial:
-      'https://images.unsplash.com/photo-1558171813-4c088753af8f?w=900&q=85&auto=format',
-    tagline: 'The Collection',
-    categories: [
-      {label: 'Dresses', href: '/collections/dresses'},
-      {label: 'Tops', href: '/collections/tops'},
-      {label: 'Blazers', href: '/collections/blazers'},
-      {label: 'Pants', href: '/collections/pants'},
-      {label: 'Skirts', href: '/collections/skirts'},
-      {label: 'Knitwear', href: '/collections/knitwear'},
-      {label: 'Outerwear', href: '/collections/outerwear'},
-    ],
-  },
-  Accessories: {
-    editorial:
-      'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=900&q=85&auto=format',
-    tagline: 'Maison Accessories',
-    categories: [
-      {label: 'Bags', href: '/collections/bags', featured: true},
-      {label: 'Jewelry', href: '/collections/jewelry'},
-      {label: 'Scarves', href: '/collections/scarves'},
-      {label: 'Belts', href: '/collections/belts'},
-      {label: 'Sunglasses', href: '/collections/sunglasses'},
-      {label: 'Watches', href: '/collections/watches'},
-    ],
-  },
-  Shoes: {
-    editorial:
-      'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=900&q=85&auto=format',
-    tagline: 'Step Into Elegance',
-    categories: [
-      {label: 'Pumps', href: '/collections/pumps'},
-      {label: 'Boots', href: '/collections/boots'},
-      {label: 'Flats', href: '/collections/flats'},
-      {label: 'Sneakers', href: '/collections/sneakers'},
-      {label: 'Sandals', href: '/collections/sandals'},
-    ],
-  },
-  Beauty: {
-    editorial:
-      'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=900&q=85&auto=format',
-    tagline: 'Beauty & Fragrance',
-    categories: [
-      {label: 'Fragrances', href: '/collections/fragrances', featured: true},
-      {label: 'Skincare', href: '/collections/skincare'},
-      {label: 'Makeup', href: '/collections/makeup'},
-      {label: 'Beauty Tools', href: '/collections/beauty-tools'},
+      {label: 'All Sunglasses', href: '/collections/sunglasses', featured: true},
+      {label: 'New Arrivals', href: '/collections/new-in'},
     ],
   },
   'Phone Accessories': {
-    editorial:
-      'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=900&q=85&auto=format',
+    editorial: '/assets/heros/phone-accessories-hero.png',
     tagline: 'Protect in Style',
     categories: [
       {label: 'Phone Cases', href: '/collections/phone-cases', featured: true},
       {label: 'Phone Straps', href: '/collections/phone-straps'},
+      {label: 'Case+Strap Bundles', href: '/collections/case-strap-bundles'},
     ],
   },
 };
@@ -115,18 +44,14 @@ const menuCategories: Record<string, CategoryData> = {
 // Top-level categories shown in the left panel
 const topLevelItems = [
   {label: 'New In', href: '/collections/new-in', hasSubmenu: false},
-  {label: 'Women', href: '/collections/women', hasSubmenu: true},
-  {label: 'Men', href: '/collections/men', hasSubmenu: true},
-  {label: 'Clothing', href: '/collections/clothing', hasSubmenu: true},
-  {label: 'Accessories', href: '/collections/accessories', hasSubmenu: true},
-  {label: 'Shoes', href: '/collections/shoes', hasSubmenu: true},
-  {label: 'Beauty', href: '/collections/beauty', hasSubmenu: true},
+  {label: 'Sunglasses', href: '/collections/sunglasses', hasSubmenu: true},
   {
     label: 'Phone Accessories',
-    href: '/collections/phone-accessories',
+    href: '/collections/phone-cases',
     hasSubmenu: true,
   },
-  {label: 'The Edit', href: '/collections/the-edit', hasSubmenu: false},
+  {label: 'Bundles', href: '/collections/case-strap-bundles', hasSubmenu: false},
+  {label: 'All Products', href: '/products', hasSubmenu: false},
   {label: 'Sale', href: '/collections/sale', hasSubmenu: false},
 ];
 
@@ -631,12 +556,12 @@ export function NavigationMenu() {
                   800 123 456
                 </a>
                 <Link
-                  to="/stores"
+                  to="/contact"
                   className="text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-300 flex items-center gap-2"
                   onClick={handleClose}
                 >
                   <StoreIcon />
-                  {t('menu.stores')}
+                  {t('footer.contact', 'Contact')}
                 </Link>
 
                 {/* Spacer */}
