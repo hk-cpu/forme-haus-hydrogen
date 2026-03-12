@@ -113,7 +113,7 @@ export default function Collections() {
             Discover
           </span>
           <h1 className="font-serif text-4xl md:text-5xl text-[#4A3C31]">
-            All Collections
+            Phone Accessories
           </h1>
           <div className="mx-auto mt-6 h-px w-20 bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
         </div>

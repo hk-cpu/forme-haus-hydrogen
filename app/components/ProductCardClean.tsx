@@ -22,6 +22,7 @@ interface ProductCardCleanProps {
         altText?: string | null;
       }>;
     };
+    vendor?: string;
     availableForSale?: boolean;
     compareAtPriceRange?: {
       minVariantPrice: {
@@ -165,35 +166,44 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
         </div>
 
         {/* Product Info - Clean layout */}
-        <div className="space-y-1">
-          {/* Product Name */}
-          <h3 className="text-[15px] text-[#4A3C31] font-medium leading-snug group-hover:text-[#a87441] transition-colors line-clamp-1">
+        <div className="space-y-1 mt-3">
+          {/* 1. Designer name */}
+          <div className="text-[11px] uppercase tracking-[0.15em] text-[#a87441] font-medium leading-none">
+            {product.vendor || 'Formé Haus'}
+          </div>
+
+          {/* 2. Product name */}
+          <h3 className="font-serif text-[#4A3C31] text-[15px] md:text-[16px] leading-snug group-hover:text-[#a87441] transition-colors line-clamp-1 mt-1">
             {productName}
           </h3>
 
-          {/* Color */}
-          {productColor && (
-            <p className="text-[13px] text-[#8B8076]">{productColor}</p>
+          {/* 3. Color */}
+          {productColor ? (
+            <p className="text-[13px] text-[#8B8076] h-[19px] line-clamp-1">{productColor}</p>
+          ) : (
+            <div className="h-[19px]" />
           )}
 
-          {/* Price Row */}
-          <div className="flex items-center gap-2 pt-0.5">
-            {product.priceRange?.minVariantPrice &&
-            parseFloat(product.priceRange.minVariantPrice.amount) > 0 ? (
+          {/* 4. Price Row */}
+          <div className="flex items-baseline gap-2 pt-1 border-t border-[#4A3C31]/5 mt-2">
+            {product.priceRange?.minVariantPrice && parseFloat(product.priceRange.minVariantPrice.amount) > 0 ? (
               <>
-                <p className="text-[15px] font-semibold text-[#4A3C31]">
-                  <Money data={product.priceRange.minVariantPrice as any} />
+                <p className="text-[14px] font-medium text-[#4A3C31] flex items-baseline">
+                  <Money data={product.priceRange.minVariantPrice as any} withoutTrailingZeros />
                 </p>
+                {product.availableForSale !== false && (
+                  <span className="text-[11px] text-[#8B8076] font-normal tracking-wide ml-1">
+                    SAR (VAT included)
+                  </span>
+                )}
                 {hasDiscount && (
-                  <p className="text-[13px] text-[#8B8076] line-through">
-                    <Money data={product.compareAtPriceRange!.minVariantPrice} />
+                  <p className="text-[12px] text-[#8B8076] line-through ml-auto">
+                    <Money data={product.compareAtPriceRange!.minVariantPrice} withoutTrailingZeros />
                   </p>
                 )}
               </>
             ) : (
-              <p className="text-[13px] text-[#8B8076] italic">
-                Price TBA
-              </p>
+              <p className="text-[13px] text-[#8B8076] italic">Price TBA</p>
             )}
           </div>
         </div>

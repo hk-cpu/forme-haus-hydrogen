@@ -159,7 +159,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
       if (collectionHandle === 'phone-cases') title = 'Phone Cases';
       if (collectionHandle === 'phone-straps') title = 'Phone Straps';
       if (collectionHandle === 'case-strap-bundles')
-        title = 'Case+Strap Bundles';
+        title = 'Bundles';
 
       // Create a synthetic collection object
       collection = {

@@ -632,76 +632,46 @@ export function ProductCard({
         </motion.div>
 
         {/* Product Info */}
-        <div className="space-y-1.5 px-1 mt-4">
-          {/* Brand Badge */}
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] uppercase tracking-[0.15em] text-[#a87441] font-medium">
-              {product.vendor || 'Formé Haus'}
-            </span>
-            {iPhoneModels.length > 0 && (
-              <span className="text-[9px] px-2 py-0.5 bg-[#a87441]/10 text-[#a87441] rounded-full">
-                {iPhoneModels[0]}
-              </span>
-            )}
+        <div className="space-y-1 mt-4">
+          {/* 1. Designer name */}
+          <div className="text-[11px] uppercase tracking-[0.15em] text-[#a87441] font-medium leading-none">
+            {product.vendor || 'Formé Haus'}
           </div>
 
-          {/* Product Name */}
-          <h3 className="font-serif text-[#F0EAE6] text-[15px] md:text-[17px] leading-snug group-hover:text-[#a87441] transition-colors duration-300 line-clamp-1 tracking-wide">
+          {/* 2. Product name */}
+          <h3 className="font-serif text-[#F0EAE6] text-[15px] md:text-[17px] leading-snug group-hover:text-[#a87441] transition-colors duration-300 line-clamp-1 tracking-wide mt-1">
             {productName}
           </h3>
 
-          {/* Color */}
-          {productColor && (
-            <p className="text-[12px] text-[#8B8076] tracking-wide line-clamp-1">
+          {/* 3. Color */}
+          {productColor ? (
+            <p className="text-[13px] text-[#8B8076] tracking-wide line-clamp-1 h-[19px]">
               {productColor}
             </p>
+          ) : (
+            <div className="h-[19px]" />
           )}
 
-          {/* iPhone Model Compatibility */}
-          {iPhoneModels.length > 1 && (
-            <div className="flex flex-wrap gap-1 mt-1">
-              {iPhoneModels.slice(1, 3).map((model, idx) => (
-                <span
-                  key={idx}
-                  className="text-[9px] px-1.5 py-0.5 bg-[#1A1A1A] text-[#8B8076] rounded border border-[#8B8076]/20"
-                >
-                  {model}
-                </span>
-              ))}
-              {iPhoneModels.length > 3 && (
-                <span className="text-[9px] px-1.5 py-0.5 text-[#8B8076]">
-                  +{iPhoneModels.length - 3} more
-                </span>
-              )}
-            </div>
-          )}
-
-          {/* Bundle Pricing Indicator */}
-          <div className="mt-2">
-            <BundlePricing variant="compact" />
-          </div>
-
-          {/* Price Row */}
-          <div className="flex items-baseline gap-2 flex-wrap pt-0.5 border-t border-[#a87441]/10 mt-2 pt-2">
-            <p className="text-[#F0EAE6] text-[14px] font-medium transition-all duration-300 group-hover:text-[#a87441] flex items-baseline">
-              {product.priceRange?.minVariantPrice ? (
-                <>
-                  <Money data={product.priceRange.minVariantPrice as any} withoutCurrency />
-                  {product.availableForSale !== false && (
-                    <span className="text-[12px] text-[#8B8076] font-normal tracking-wide ml-1">
-                      SAR (vat included)
-                    </span>
-                  )}
-                </>
-              ) : (
-                <span className="text-sm opacity-50">Price unavailable</span>
-              )}
-            </p>
-
-            {hasDiscount && (
-              <p className="text-[#8B8076] text-[12px] line-through">
-                <Money data={product.compareAtPriceRange!.minVariantPrice} />
-              </p>
+          {/* 4. Price */}
+          <div className="flex items-baseline gap-2 pt-0.5 mt-2 border-t border-[#a87441]/10">
+            {product.priceRange?.minVariantPrice && parseFloat(product.priceRange.minVariantPrice.amount) > 0 ? (
+              <>
+                <p className="text-[#F0EAE6] text-[14px] font-medium transition-all duration-300 group-hover:text-[#a87441] flex items-baseline mt-1">
+                  <Money data={product.priceRange.minVariantPrice as any} withoutTrailingZeros />
+                </p>
+                {product.availableForSale !== false && (
+                  <span className="text-[12px] text-[#8B8076] font-normal tracking-wide mt-1">
+                    SAR (VAT included)
+                  </span>
+                )}
+                {hasDiscount && (
+                  <p className="text-[#8B8076] text-[12px] line-through mt-1 ml-auto">
+                    <Money data={product.compareAtPriceRange!.minVariantPrice} withoutTrailingZeros />
+                  </p>
+                )}
+              </>
+            ) : (
+              <p className="text-[13px] text-[#8B8076] italic mt-1">Price TBA</p>
             )}
           </div>
         </div>

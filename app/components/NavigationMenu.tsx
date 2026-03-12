@@ -36,7 +36,7 @@ const menuCategories: Record<string, CategoryData> = {
     categories: [
       {label: 'Phone Cases', href: '/collections/phone-cases', featured: true},
       {label: 'Phone Straps', href: '/collections/phone-straps'},
-      {label: 'Case+Strap Bundles', href: '/collections/case-strap-bundles'},
+      {label: 'Bundles', href: '/collections/case-strap-bundles'},
     ],
   },
 };

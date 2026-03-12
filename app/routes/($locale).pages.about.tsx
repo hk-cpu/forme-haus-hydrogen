@@ -11,10 +11,16 @@ export const meta: MetaFunction = () => {
 export default function AboutPage() {
   return (
     <div className="pt-24 min-h-[70vh] container mx-auto px-6 md:px-12 max-w-4xl pb-24">
-      <PageHeader heading="Our Story" className="mb-12 text-center" />
-      <div className="prose dark:prose-invert max-w-prose mx-auto prose-headings:text-[#4A3C31] prose-headings:font-serif prose-p:text-[#4A3C31]/80 text-center">
+      <PageHeader heading="FORME HAUS" className="mb-12 text-center" />
+      <div className="prose dark:prose-invert max-w-prose mx-auto prose-headings:text-[#4A3C31] prose-headings:font-serif prose-p:text-[#4A3C31]/80 text-center font-light tracking-wide">
         <p className="mb-6 leading-relaxed">
-          FORME HAUS Collection is an Australian Tech Accessory brand owned, run and led by women. We create purposeful pieces for our everyday wardrobe.
+          FORME HAUS Collection is an Australian Tech Accessory brand owned, run and led by women. We create purposeful pieces for our everyday wardrobe. A collection of fashion and tech accessories, including phone cases, phone straps, key chains, suction plates and screen protectors, helping you to always stay connected.
+        </p>
+        <p className="mb-6 leading-relaxed">
+          We offer 48 hour dispatch, international shipping, and free shipping on domestic orders over $70.
+        </p>
+        <p className="font-medium italic text-[#a87441]">
+          Meet Louve: the hands free solution for your iPhone!
         </p>
       </div>
     </div>

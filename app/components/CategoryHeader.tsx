@@ -21,7 +21,7 @@ const TOP_LEVEL_CATEGORIES = [
   },
   {
     id: 'bundles',
-    label: 'Case+Strap Bundles',
+    label: 'Bundles',
     href: '/collections/case-strap-bundles',
   },
   {id: 'sunglasses', label: 'Sunglasses', href: '/collections/sunglasses'},
@@ -38,7 +38,7 @@ const PHONE_SUBCATEGORIES = [
   {id: 'phone-straps', label: 'Straps', href: '/collections/phone-straps'},
   {
     id: 'bundles',
-    label: 'Case+Strap Bundles',
+    label: 'Bundles',
     href: '/collections/case-strap-bundles',
   },
 ];
