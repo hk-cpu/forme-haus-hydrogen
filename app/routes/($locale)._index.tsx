@@ -118,8 +118,8 @@ export default function Homepage() {
                     <img src="/brand/edit-modern-essentials.webp" alt="Forme Haus Editorial 1" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out" loading="lazy" />
                   </motion.div>
                 </div>
-                {/* Bottom-left: smaller square or near-square tile */}
-                <div className="w-[65%] md:w-[55%] aspect-square bg-[#E8E4E0] overflow-hidden rounded-sm">
+                {/* Bottom-left: smaller horizontal tile */}
+                <div className="w-full aspect-square md:aspect-video bg-[#E8E4E0] overflow-hidden rounded-sm">
                   <motion.div initial={{opacity:0, scale: 1.05}} whileInView={{opacity:1, scale:1}} transition={{duration: 0.8, delay: 0.1}} viewport={{once: true}} className="w-full h-full">
                     <img src="/brand/phone-accessories.webp" alt="Forme Haus Editorial 3" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out" loading="lazy" />
                   </motion.div>
@@ -129,13 +129,13 @@ export default function Homepage() {
               {/* Right Column - Narrower */}
               <div className="md:col-span-5 flex flex-col gap-3 md:gap-4">
                 {/* Top-right: tall vertical tile */}
-                <div className="w-[85%] md:w-full ml-auto md:ml-0 aspect-[2/3] md:aspect-[3/5] bg-[#E8E4E0] overflow-hidden rounded-sm">
+                <div className="w-full aspect-[3/4] md:aspect-[9/16] bg-[#E8E4E0] overflow-hidden rounded-sm">
                   <motion.div initial={{opacity:0, scale: 1.05}} whileInView={{opacity:1, scale:1}} transition={{duration: 0.8, delay: 0.2}} viewport={{once: true}} className="w-full h-full">
                     <img src="/brand/sunglasses.webp" alt="Forme Haus Editorial 2" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out" loading="lazy" />
                   </motion.div>
                 </div>
                 {/* Bottom-right: medium horizontal tile */}
-                <div className="w-[90%] md:w-full aspect-[4/3] bg-[#E8E4E0] overflow-hidden rounded-sm mt-auto z-10 transition-transform hover:scale-[1.02] duration-700 ease-out ml-auto md:ml-0 md:-ml-6">
+                <div className="w-full aspect-[4/3] bg-[#E8E4E0] overflow-hidden rounded-sm mt-auto z-10 transition-transform hover:scale-[1.02] duration-700 ease-out">
                   <motion.div initial={{opacity:0, scale: 1.05}} whileInView={{opacity:1, scale:1}} transition={{duration: 0.8, delay: 0.3}} viewport={{once: true}} className="w-full h-full">
                     <img src="/brand/new-in.webp" alt="Forme Haus Editorial 4" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out origin-center" loading="lazy" />
                   </motion.div>
