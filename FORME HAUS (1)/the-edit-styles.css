@@ -1,0 +1,262 @@
+/* ============================================
+   THE EDIT - REDESIGNED GRID STYLES
+   Preserves image aspect ratios, no cropping
+   ============================================ */
+
+/* Container */
+.the-edit {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 80px 40px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.section-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 24px;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0.5px;
+}
+
+.view-all {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #666;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.view-all:hover {
+    color: #1a1a1a;
+}
+
+/* ============================================
+   OPTION 1: BENTO GRID (RECOMMENDED)
+   Balanced layout with varied cell sizes
+   ============================================ */
+.edit-grid-bento {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(2, 350px);
+    gap: 16px;
+}
+
+.edit-grid-bento .edit-item {
+    position: relative;
+    background-color: #eae8e5;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* CRITICAL: object-fit: contain preserves true image aspect ratio */
+.edit-grid-bento .edit-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;  /* ← Preserves aspect ratio, no cropping */
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+.edit-grid-bento .edit-item:hover img {
+    transform: scale(1.02);
+}
+
+/* Grid positioning for 4 images */
+.edit-grid-bento .edit-item:nth-child(1) {
+    /* Woman by pool - larger cell for landscape */
+    grid-column: 1 / 6;
+    grid-row: 1 / 3;
+}
+
+.edit-grid-bento .edit-item:nth-child(2) {
+    /* Woman walking - tall cell for portrait */
+    grid-column: 6 / 9;
+    grid-row: 1 / 3;
+}
+
+.edit-grid-bento .edit-item:nth-child(3) {
+    /* Woman in car - standard cell */
+    grid-column: 9 / 13;
+    grid-row: 1 / 2;
+}
+
+.edit-grid-bento .edit-item:nth-child(4) {
+    /* Close-up with ring - standard cell */
+    grid-column: 9 / 13;
+    grid-row: 2 / 3;
+}
+
+/* ============================================
+   OPTION 2: EQUAL 2x2 GRID
+   All images same size, perfectly aligned
+   ============================================ */
+.edit-grid-2x2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 500px);
+    gap: 16px;
+}
+
+.edit-grid-2x2 .edit-item {
+    position: relative;
+    background-color: #eae8e5;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-grid-2x2 .edit-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;  /* ← Preserves aspect ratio */
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+.edit-grid-2x2 .edit-item:hover img {
+    transform: scale(1.02);
+}
+
+/* ============================================
+   OPTION 3: FEATURED LEFT
+   First image larger, others balanced
+   ============================================ */
+.edit-grid-featured {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: repeat(2, 320px);
+    gap: 16px;
+}
+
+.edit-grid-featured .edit-item {
+    position: relative;
+    background-color: #eae8e5;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-grid-featured .edit-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;  /* ← Preserves aspect ratio */
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+.edit-grid-featured .edit-item:hover img {
+    transform: scale(1.02);
+}
+
+.edit-grid-featured .edit-item:nth-child(1) {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+}
+
+.edit-grid-featured .edit-item:nth-child(2) {
+    grid-column: 2 / 3;
+    grid-row: 1 / 3;
+}
+
+.edit-grid-featured .edit-item:nth-child(3) {
+    grid-column: 3 / 4;
+    grid-row: 1 / 2;
+}
+
+.edit-grid-featured .edit-item:nth-child(4) {
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+}
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+@media (max-width: 1024px) {
+    .edit-grid-bento,
+    .edit-grid-featured {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 400px);
+    }
+
+    .edit-grid-bento .edit-item:nth-child(1),
+    .edit-grid-bento .edit-item:nth-child(2),
+    .edit-grid-bento .edit-item:nth-child(3),
+    .edit-grid-bento .edit-item:nth-child(4),
+    .edit-grid-featured .edit-item:nth-child(1),
+    .edit-grid-featured .edit-item:nth-child(2),
+    .edit-grid-featured .edit-item:nth-child(3),
+    .edit-grid-featured .edit-item:nth-child(4) {
+        grid-column: auto;
+        grid-row: auto;
+    }
+
+    .edit-grid-2x2 {
+        grid-template-rows: repeat(2, 400px);
+    }
+}
+
+@media (max-width: 640px) {
+    .the-edit {
+        padding: 60px 20px;
+    }
+
+    .edit-grid-bento,
+    .edit-grid-2x2,
+    .edit-grid-featured {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, 400px);
+    }
+
+    .edit-grid-bento .edit-item:nth-child(n),
+    .edit-grid-featured .edit-item:nth-child(n) {
+        grid-column: 1 / 2;
+        grid-row: auto;
+    }
+}
+
+/* ============================================
+   JOIN SECTION
+   ============================================ */
+.join-section {
+    text-align: center;
+    padding: 80px 40px;
+    border-top: 1px solid #ddd;
+    margin-top: 40px;
+}
+
+.join-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+}
+
+.join-link {
+    font-size: 12px;
+    color: #666;
+    text-decoration: none;
+    border-bottom: 1px solid #666;
+    padding-bottom: 2px;
+    transition: all 0.3s ease;
+}
+
+.join-link:hover {
+    color: #1a1a1a;
+    border-color: #1a1a1a;
+}
