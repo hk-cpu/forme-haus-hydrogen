@@ -74,57 +74,50 @@ export default function Homepage() {
 
 
 
-        {/* 6. JOIN THE HAUS */}
-        <section className="py-10 md:py-16 border-t border-[#8B8076]/10 mobile-snap-section">
-          <div className="max-w-[1200px] mx-auto" style={{padding: '0 var(--page-gutter)'}}>
-            <div className="space-y-2 text-center mb-10 md:mb-14">
+        {/* 6. JOIN THE HAUS — Newsletter */}
+        <section className="py-14 md:py-20 border-t border-[#8B8076]/10 mobile-snap-section">
+          <div className="max-w-[520px] mx-auto px-6 text-center">
+            <motion.div
+              initial={{opacity: 0, y: 20}}
+              whileInView={{opacity: 1, y: 0}}
+              viewport={{once: true}}
+              transition={{duration: 0.6, ease: [0.16, 1, 0.3, 1]}}
+            >
               <h2 className="font-serif text-3xl md:text-4xl text-[#4A3C31] tracking-wider uppercase">
                 JOIN THE HAUS
               </h2>
-              <div className="flex flex-col items-center gap-1 mt-4">
-                <span className="font-serif text-2xl text-[#4A3C31]">
-                  Forme Haus
+              <div className="flex flex-col items-center gap-1 mt-4 mb-8">
+                <span className="font-serif text-xl text-[#4A3C31]">
+                  Formé Haus
                 </span>
-                <span className="font-serif text-lg md:text-xl italic text-[#8B8076] font-light tracking-wide">
+                <span className="font-serif text-base md:text-lg italic text-[#8B8076] font-light tracking-wide">
                   Where Essence Meets Elegance
                 </span>
               </div>
-            </div>
-            
-            {/* Editorial Grid Base Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 w-full h-auto">
-              {/* Left Column - Wider */}
-              <div className="md:col-span-7 flex flex-col gap-3 md:gap-4">
-                {/* Top-left: dominant large tile */}
-                <div className="w-full aspect-[4/5] bg-[#E8E4E0] overflow-hidden rounded-sm">
-                  <motion.div initial={{opacity:0, scale: 1.05}} whileInView={{opacity:1, scale:1}} transition={{duration: 0.8}} viewport={{once: true}} className="w-full h-full">
-                    <img src="/brand/edit-modern-essentials.webp" alt="Forme Haus Editorial 1" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out" loading="lazy" />
-                  </motion.div>
-                </div>
-                {/* Bottom-left: smaller horizontal tile */}
-                <div className="w-full aspect-square md:aspect-video bg-[#E8E4E0] overflow-hidden rounded-sm">
-                  <motion.div initial={{opacity:0, scale: 1.05}} whileInView={{opacity:1, scale:1}} transition={{duration: 0.8, delay: 0.1}} viewport={{once: true}} className="w-full h-full">
-                    <img src="/brand/phone-accessories.webp" alt="Forme Haus Editorial 3" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out" loading="lazy" />
-                  </motion.div>
-                </div>
-              </div>
-
-              {/* Right Column - Narrower */}
-              <div className="md:col-span-5 flex flex-col gap-3 md:gap-4">
-                {/* Top-right: tall vertical tile */}
-                <div className="w-full aspect-[3/4] md:aspect-[9/16] bg-[#E8E4E0] overflow-hidden rounded-sm">
-                  <motion.div initial={{opacity:0, scale: 1.05}} whileInView={{opacity:1, scale:1}} transition={{duration: 0.8, delay: 0.2}} viewport={{once: true}} className="w-full h-full">
-                    <img src="/brand/sunglasses.webp" alt="Forme Haus Editorial 2" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out" loading="lazy" />
-                  </motion.div>
-                </div>
-                {/* Bottom-right: medium horizontal tile */}
-                <div className="w-full aspect-[4/3] bg-[#E8E4E0] overflow-hidden rounded-sm mt-auto z-10 transition-transform hover:scale-[1.02] duration-700 ease-out">
-                  <motion.div initial={{opacity:0, scale: 1.05}} whileInView={{opacity:1, scale:1}} transition={{duration: 0.8, delay: 0.3}} viewport={{once: true}} className="w-full h-full">
-                    <img src="/brand/new-in.webp" alt="Forme Haus Editorial 4" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out origin-center" loading="lazy" />
-                  </motion.div>
-                </div>
-              </div>
-            </div>
+              <p className="text-sm text-[#8B8076] mb-6 font-light">
+                Be the first to know about new arrivals, exclusive edits, and stories from the Haus.
+              </p>
+              <form
+                className="flex flex-col sm:flex-row gap-3 items-stretch"
+                onSubmit={(e) => e.preventDefault()}
+              >
+                <input
+                  type="email"
+                  placeholder="Your email address"
+                  className="flex-1 px-4 py-3 bg-transparent border border-[#8B8076]/25 rounded-sm text-sm text-[#4A3C31] placeholder:text-[#8B8076]/50 focus:outline-none focus:border-[#a87441]/50 transition-colors"
+                  required
+                />
+                <button
+                  type="submit"
+                  className="px-6 py-3 bg-[#4A3C31] text-[#F0EAE6] text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-[#a87441] transition-colors duration-300 whitespace-nowrap"
+                >
+                  Subscribe
+                </button>
+              </form>
+              <p className="text-[10px] text-[#8B8076]/60 mt-4">
+                We respect your privacy. Unsubscribe anytime.
+              </p>
+            </motion.div>
           </div>
         </section>
       </div>

@@ -288,7 +288,13 @@ export function Header({
                 data-dropdown={item.id}
               >
                 <NavLink
-                  to={item.title === 'CATALOG' || item.title === 'Catalog' ? '/collections' : item.to}
+                  to={
+                    item.title === 'CATALOG' || item.title === 'Catalog'
+                      ? '/collections'
+                      : item.title === 'ABOUT US' || item.title === 'About Us'
+                      ? '/pages/about'
+                      : item.to
+                  }
                   className={({isActive}) =>
                     `relative text-[11px] uppercase tracking-[0.25em] font-light transition-all duration-300 py-2 flex items-center gap-2 ${
                       isActive
@@ -303,6 +309,8 @@ export function Header({
                       <span className="relative z-10">
                         {item.title === 'CATALOG' || item.title === 'Catalog'
                           ? 'COLLECTIONS'
+                          : item.title === 'ABOUT US' || item.title === 'About Us'
+                          ? 'OUR STORY'
                           : item.title}
                       </span>
 
@@ -365,6 +373,9 @@ export function Header({
                                 {subItem.title === 'CATALOG' ||
                                 subItem.title === 'Catalog'
                                   ? 'COLLECTIONS'
+                                  : subItem.title === 'ABOUT US' ||
+                                    subItem.title === 'About Us'
+                                  ? 'OUR STORY'
                                   : subItem.title}
                               </span>
                               <Icons.ChevronDown className="w-3 h-3 ml-auto opacity-0 group-hover/link:opacity-100 -rotate-90 transition-all" />
