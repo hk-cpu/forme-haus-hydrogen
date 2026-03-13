@@ -11,7 +11,7 @@ interface BentoItem {
   subtitle?: string;
 }
 
-// 4 images in asymmetric bento — mapped to brand editorial shots
+// 4 images — staggered masonry mapped to brand editorial shots
 const BENTO_ITEMS: BentoItem[] = [
   {
     image: '/brand/edit-modern-essentials.webp',
@@ -62,7 +62,7 @@ function BentoCard({
         delay: index * 0.1,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className={`group relative overflow-hidden rounded-lg bg-[#E8E4E0] ${className}`}
+      className={`group relative overflow-hidden rounded-[14px] bg-[#E8E4E0] ${className}`}
     >
       <Link to={item.url} className="block w-full h-full">
         <img
@@ -89,7 +89,7 @@ function BentoCard({
         </div>
 
         {/* Hover border */}
-        <div className="absolute inset-0 rounded-lg border border-white/0 group-hover:border-white/15 transition-colors duration-500 pointer-events-none" />
+        <div className="absolute inset-0 rounded-[14px] border border-white/0 group-hover:border-white/15 transition-colors duration-500 pointer-events-none" />
       </Link>
     </motion.div>
   );
@@ -124,31 +124,70 @@ export default function EditorialSection() {
           </span>
         </motion.div>
 
-        {/* Bento Grid — 2 rows, asymmetric columns */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3">
-          {/* Row 1: Large left (~58%) + Smaller right (~42%) */}
+        {/* Mobile: single column stack */}
+        <div className="flex flex-col gap-3 md:hidden">
           <BentoCard
             item={BENTO_ITEMS[0]}
             index={0}
-            className="md:col-span-7 aspect-[4/3] md:aspect-[3/2]"
+            className="aspect-[4/3]"
           />
           <BentoCard
             item={BENTO_ITEMS[1]}
             index={1}
-            className="md:col-span-5 aspect-[4/3] md:aspect-[3/2]"
+            className="aspect-[3/4]"
           />
-
-          {/* Row 2: Smaller left (~42%) + Large right (~58%) */}
           <BentoCard
             item={BENTO_ITEMS[2]}
             index={2}
-            className="md:col-span-5 aspect-[4/3] md:aspect-[3/2]"
+            className="aspect-[4/3]"
           />
           <BentoCard
             item={BENTO_ITEMS[3]}
             index={3}
-            className="md:col-span-7 aspect-[4/3] md:aspect-[3/2]"
+            className="aspect-[4/3]"
           />
+        </div>
+
+        {/*
+          Desktop: staggered two-column masonry
+          Left col (~62%): Car (taller) + Hand/veil (shorter)
+          Right col (~38%): Walking (tall portrait) + Pool (shorter landscape)
+          Split points differ — right col splits lower than left
+        */}
+        <div
+          className="hidden md:grid gap-3"
+          style={{
+            gridTemplateColumns: '62fr 38fr',
+            height: '680px',
+          }}
+        >
+          {/* Left column — flex col with 55/45 split */}
+          <div className="flex flex-col gap-3 min-h-0">
+            <BentoCard
+              item={BENTO_ITEMS[0]}
+              index={0}
+              className="flex-[55] min-h-0"
+            />
+            <BentoCard
+              item={BENTO_ITEMS[2]}
+              index={2}
+              className="flex-[45] min-h-0"
+            />
+          </div>
+
+          {/* Right column — flex col with 65/35 split (staggered) */}
+          <div className="flex flex-col gap-3 min-h-0">
+            <BentoCard
+              item={BENTO_ITEMS[1]}
+              index={1}
+              className="flex-[65] min-h-0"
+            />
+            <BentoCard
+              item={BENTO_ITEMS[3]}
+              index={3}
+              className="flex-[35] min-h-0"
+            />
+          </div>
         </div>
       </div>
     </section>
