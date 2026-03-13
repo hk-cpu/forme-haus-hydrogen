@@ -227,6 +227,11 @@ export function Header({
       title: t('nav.sunglasses', 'Sunglasses'),
       to: '/collections/sunglasses',
     },
+    {
+      id: '4',
+      title: t('nav.collections', 'Collections'),
+      to: '/collections',
+    },
   ];
 
   const items = menu?.items?.length ? menu.items : defaultLinks;
@@ -283,7 +288,7 @@ export function Header({
                 data-dropdown={item.id}
               >
                 <NavLink
-                  to={item.to}
+                  to={item.title === 'CATALOG' || item.title === 'Catalog' ? '/collections' : item.to}
                   className={({isActive}) =>
                     `relative text-[11px] uppercase tracking-[0.25em] font-light transition-all duration-300 py-2 flex items-center gap-2 ${
                       isActive

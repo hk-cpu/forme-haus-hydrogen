@@ -163,13 +163,13 @@ export function TopBar() {
             {t('topBar.promo', 'Free dispatch within 48 hours')}
           </motion.p>
 
-          {/* Right: About Us */}
+          {/* Right: Our Story */}
           <div className="flex items-center gap-6">
             <Link
               to="/pages/about"
               className="text-[10px] uppercase tracking-widest text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 font-medium"
             >
-              {t('topBar.about', 'About Us')}
+              {t('topBar.about', 'Our Story')}
             </Link>
           </div>
         </div>

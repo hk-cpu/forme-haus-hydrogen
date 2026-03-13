@@ -61,7 +61,7 @@ const footerSections: FooterSection[] = [
     id: 'about',
     title: 'Our Story',
     links: [
-      {id: '6', title: 'Our Story', url: '/contact', isExternal: false},
+      {id: '6', title: 'Our Story', url: '/pages/about', isExternal: false},
       {
         id: '7',
         title: 'Privacy Policy',
@@ -125,6 +125,19 @@ export function FooterAccordion() {
       className="w-full border-t border-[#a87441]/20"
       dir={isRTL ? 'rtl' : 'ltr'}
     >
+      {/* Brand Story */}
+      <div className="px-5 py-8 md:py-10 border-b border-[#a87441]/10 max-w-[720px] mx-auto text-center">
+        <h3 className="text-[11px] uppercase tracking-[0.3em] text-[#a87441] font-medium mb-4">
+          FORME HAUS
+        </h3>
+        <p className="text-[12px] leading-relaxed text-[#AA9B8F] font-light">
+          FORME HAUS Collection is an Australian Tech Accessory brand owned, run and led by women. We create purposeful pieces for our everyday wardrobe — phone cases, phone straps, key chains, suction plates and screen protectors, helping you to always stay connected.
+        </p>
+        <p className="text-[11px] text-[#8B8076] mt-3">
+          48 hour dispatch · International shipping · Free shipping on domestic orders over $70
+        </p>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0">
         {footerSections.map((section) => (
           <div

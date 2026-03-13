@@ -61,25 +61,8 @@ export default function Homepage() {
 
       {/* Light "Glowing" Theme Content Sheet */}
       <div className="relative z-20 bg-[#F9F5F0]/85 backdrop-blur-md text-[#4A3C31] rounded-t-[2rem] shadow-[0_-10px_40px_-10px_rgba(255,255,255,0.15)] mt-[-5vh]">
-        {/* 1.5. Brand Story / Top Informational Mention */}
-        <section className="pt-14 md:pt-16 pb-4 px-6 max-w-[800px] mx-auto text-center mobile-snap-section">
-          <h2 className="font-serif text-xl md:text-2xl text-[#4A3C31] tracking-wider uppercase mb-5">
-            FORME HAUS
-          </h2>
-          <div className="space-y-4 text-sm md:text-base text-[#4A3C31]/80 leading-relaxed font-light">
-            <p>
-              FORME HAUS Collection is an Australian Tech Accessory brand owned, run and led by women. We create purposeful pieces for our everyday wardrobe. A collection of fashion and tech accessories, including phone cases, phone straps, key chains, suction plates and screen protectors, helping you to always stay connected.
-            </p>
-            <p>
-              We offer 48 hour dispatch, international shipping, and free shipping on domestic orders over $70.
-            </p>
-            <p className="font-medium italic text-[#a87441]">
-              Meet Louve: the hands free solution for your iPhone!
-            </p>
-          </div>
-        </section>
         {/* 2. Category Slider */}
-        <div className="pt-10 md:pt-14 mobile-snap-section">
+        <div className="pt-14 md:pt-16 mobile-snap-section">
           <CategoryBento />
         </div>
 

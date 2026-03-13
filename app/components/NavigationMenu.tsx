@@ -53,6 +53,7 @@ const topLevelItems = [
   {label: 'Bundles', href: '/collections/case-strap-bundles', hasSubmenu: false},
   {label: 'All Products', href: '/products', hasSubmenu: false},
   {label: 'Sale', href: '/collections/sale', hasSubmenu: false},
+  {label: 'Our Story', href: '/pages/about', hasSubmenu: false},
 ];
 
 // ============================================================================
