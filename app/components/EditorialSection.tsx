@@ -129,63 +129,63 @@ export default function EditorialSection() {
           <BentoCard
             item={BENTO_ITEMS[0]}
             index={0}
-            className="aspect-[4/3]"
+            className="aspect-[17/10]"
           />
           <BentoCard
             item={BENTO_ITEMS[1]}
             index={1}
-            className="aspect-[3/4]"
+            className="aspect-[1/2]"
           />
           <BentoCard
             item={BENTO_ITEMS[2]}
             index={2}
-            className="aspect-[4/3]"
+            className="aspect-[11/10]"
           />
           <BentoCard
             item={BENTO_ITEMS[3]}
             index={3}
-            className="aspect-[4/3]"
+            className="aspect-[3/2]"
           />
         </div>
 
         {/*
           Desktop: staggered two-column masonry
-          Left col (~62%): Car (taller) + Hand/veil (shorter)
-          Right col (~38%): Walking (tall portrait) + Pool (shorter landscape)
-          Split points differ — right col splits lower than left
+          Each cell uses aspect-ratio matching the original image proportions
+          so object-fit: cover shows the full image with zero cropping.
+
+          Left col (~62.5%): Driving 17:10 + Veil 11:10
+          Right col (~37.5%): Walking 1:2 + Pool 3:2
+          The stagger happens naturally — right col splits lower than left.
         */}
         <div
           className="hidden md:grid gap-3"
-          style={{
-            gridTemplateColumns: '62fr 38fr',
-            height: '680px',
-          }}
+          style={{gridTemplateColumns: '5fr 3fr'}}
         >
-          {/* Left column — flex col with 55/45 split */}
-          <div className="flex flex-col gap-3 min-h-0">
+          {/* Left column */}
+          <div className="flex flex-col gap-3">
             <BentoCard
               item={BENTO_ITEMS[0]}
               index={0}
-              className="flex-[55] min-h-0"
+              className="aspect-[17/10]"
             />
             <BentoCard
               item={BENTO_ITEMS[2]}
               index={2}
-              className="flex-[45] min-h-0"
+              className="aspect-[11/10]"
             />
           </div>
 
-          {/* Right column — flex col with 65/35 split (staggered) */}
-          <div className="flex flex-col gap-3 min-h-0">
+          {/* Right column */}
+          <div className="flex flex-col gap-3">
             <BentoCard
               item={BENTO_ITEMS[1]}
               index={1}
-              className="flex-[65] min-h-0"
+              className="aspect-[1/2]"
             />
             <BentoCard
               item={BENTO_ITEMS[3]}
               index={3}
-              className="flex-[35] min-h-0"
+              className="aspect-[3/2]"
             />
           </div>
         </div>
