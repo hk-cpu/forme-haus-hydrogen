@@ -18,6 +18,7 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  assetsInclude: ['**/*.png'],
   ssr: {
     optimizeDeps: {
       include: ['typographic-base', 'fast-deep-equal', 'react-use'],
