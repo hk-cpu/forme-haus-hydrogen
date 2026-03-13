@@ -125,31 +125,84 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-[#F9F5F0]">
-      {/* Hero Section */}
-      <section className="relative py-24 px-6 md:px-12 overflow-hidden">
-        <div className="max-w-4xl mx-auto text-center">
+      {/* Editorial Gallery Hero */}
+      <section className="px-4 md:px-8 py-12">
+        <div className="max-w-[1400px] mx-auto">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 rounded-3xl shadow-sm"
+          >
+            {/* Main Image - Top Left (Large Landscape) */}
+            <div className="md:col-span-3 md:row-span-2 relative group overflow-hidden rounded-xl aspect-[16/10]">
+              <img 
+                src="/editorial/contact-hero-1.png" 
+                alt="Formé Haus Editorial" 
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-500" />
+            </div>
+
+            {/* Tall Image - Right (Narrow Vertical) */}
+            <div className="md:col-span-1 md:row-span-3 relative group overflow-hidden rounded-xl">
+              <img 
+                src="/editorial/contact-hero-2.png" 
+                alt="Formé Haus Lifestyle" 
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-500" />
+            </div>
+
+            {/* Bottom Left - Small Detail (Square-ish) */}
+            <div className="md:col-span-1 relative group overflow-hidden rounded-xl aspect-square">
+              <img 
+                src="/editorial/contact-hero-3.png" 
+                alt="Editorial Detail" 
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-500" />
+            </div>
+
+            {/* Bottom Center - Lifestyle (Wide Rectangle) */}
+            <div className="md:col-span-2 relative group overflow-hidden rounded-xl aspect-[16/8]">
+              <img 
+                src="/editorial/contact-hero-4.png" 
+                alt="Luxury Lifestyle" 
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-500" />
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Header Content */}
+      <section className="relative py-12 px-6 md:px-12 overflow-hidden text-center">
+        <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{opacity: 0, y: 30}}
-            animate={{opacity: 1, y: 0}}
+            whileInView={{opacity: 1, y: 0}}
+            viewport={{once: true}}
             transition={{duration: 0.8}}
           >
             <span className="text-[11px] uppercase tracking-[0.3em] text-[#a87441] mb-4 block">
-              Get in Touch
+              Experience the Haus
             </span>
             <h1 className="font-serif text-4xl md:text-6xl italic text-[#4A3C31] mb-6">
-              We&apos;re Here for You
+              Connect With Us
             </h1>
           </motion.div>
 
           <motion.p
             initial={{opacity: 0, y: 20}}
-            animate={{opacity: 1, y: 0}}
+            whileInView={{opacity: 1, y: 0}}
+            viewport={{once: true}}
             transition={{duration: 0.8, delay: 0.2}}
             className="text-[15px] leading-relaxed text-[#5C5046] max-w-2xl mx-auto mb-12"
           >
-            Whether you&apos;re looking for styling advice, need assistance with
-            your order, or want to learn more about our pieces, our dedicated
-            team is at your service. Experience the Formé Haus standard of care.
+            Our dedicated team is here to assist with styling advice, order inquiries, 
+            or any questions you may have about our curated collections.
           </motion.p>
         </div>
       </section>
