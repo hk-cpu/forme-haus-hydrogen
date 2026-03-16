@@ -11,7 +11,7 @@ interface BentoItem {
   subtitle?: string;
 }
 
-// 4 images — staggered masonry mapped to brand editorial shots
+// 4 images — two-column editorial layout mapped to brand shots
 const BENTO_ITEMS: BentoItem[] = [
   {
     image: '/brand/edit-modern-essentials.webp',
@@ -43,15 +43,11 @@ const BENTO_ITEMS: BentoItem[] = [
   },
 ];
 
-function BentoCard({
-  item,
-  index,
-  className = '',
-}: {
-  item: BentoItem;
-  index: number;
-  className?: string;
-}) {
+/**
+ * TopCard — renders at natural image height (flex-shrink: 0).
+ * The image dictates how tall this cell is.
+ */
+function TopCard({item, index}: {item: BentoItem; index: number}) {
   return (
     <motion.div
       initial={{opacity: 0, y: 20}}
@@ -62,14 +58,63 @@ function BentoCard({
         delay: index * 0.1,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className={`group relative overflow-hidden rounded-[14px] bg-[#E8E4E0] ${className}`}
+      className="group relative shrink-0 overflow-hidden rounded-[14px] bg-[#E8E4E0]"
+    >
+      <Link to={item.url} className="block">
+        <img
+          src={item.image}
+          alt={item.alt}
+          className="w-full h-auto block transition-transform duration-700 ease-out group-hover:scale-105"
+          loading={index < 2 ? 'eager' : 'lazy'}
+        />
+
+        {/* Hover gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+        {/* Content — revealed on hover */}
+        <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+          <h3 className="font-serif text-lg md:text-xl text-white italic tracking-wide">
+            {item.title}
+          </h3>
+          {item.subtitle && (
+            <p className="text-xs text-white/70 tracking-wide mt-1">
+              {item.subtitle}
+            </p>
+          )}
+          <div className="mt-2 h-[1px] w-8 bg-[#D4AF87]" />
+        </div>
+
+        {/* Hover border */}
+        <div className="absolute inset-0 rounded-[14px] border border-white/0 group-hover:border-white/15 transition-colors duration-500 pointer-events-none" />
+      </Link>
+    </motion.div>
+  );
+}
+
+/**
+ * BottomCard — fills remaining column space via flex: 1.
+ * Image uses object-fit: cover + object-position: top center
+ * so it fills the space while anchoring at the top.
+ */
+function BottomCard({item, index}: {item: BentoItem; index: number}) {
+  return (
+    <motion.div
+      initial={{opacity: 0, y: 20}}
+      whileInView={{opacity: 1, y: 0}}
+      viewport={{once: true, margin: '-50px'}}
+      transition={{
+        duration: 0.7,
+        delay: index * 0.1,
+        ease: [0.16, 1, 0.3, 1],
+      }}
+      className="group relative flex-1 overflow-hidden rounded-[14px] bg-[#E8E4E0]"
     >
       <Link to={item.url} className="block w-full h-full">
         <img
           src={item.image}
           alt={item.alt}
-          className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
-          loading={index < 2 ? 'eager' : 'lazy'}
+          className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
+          loading="lazy"
         />
 
         {/* Hover gradient */}
@@ -126,67 +171,28 @@ export default function EditorialSection() {
 
         {/* Mobile: single column stack */}
         <div className="flex flex-col gap-3 md:hidden">
-          <BentoCard
-            item={BENTO_ITEMS[0]}
-            index={0}
-            className="aspect-[17/10]"
-          />
-          <BentoCard
-            item={BENTO_ITEMS[1]}
-            index={1}
-            className="aspect-[1/2]"
-          />
-          <BentoCard
-            item={BENTO_ITEMS[2]}
-            index={2}
-            className="aspect-[11/10]"
-          />
-          <BentoCard
-            item={BENTO_ITEMS[3]}
-            index={3}
-            className="aspect-[3/2]"
-          />
+          <TopCard item={BENTO_ITEMS[0]} index={0} />
+          <TopCard item={BENTO_ITEMS[1]} index={1} />
+          <TopCard item={BENTO_ITEMS[2]} index={2} />
+          <TopCard item={BENTO_ITEMS[3]} index={3} />
         </div>
 
         {/*
-          Desktop: staggered two-column masonry
-          Each cell uses aspect-ratio matching the original image proportions
-          so object-fit: cover shows the full image with zero cropping.
-
-          Left col (~62.5%): Driving 17:10 + Veil 11:10
-          Right col (~37.5%): Walking 1:2 + Pool 3:2
-          The stagger happens naturally — right col splits lower than left.
+          Desktop: flexbox two-column editorial grid
+          Each column: top image at natural height + bottom image fills remaining space.
+          The stagger comes from different top-image heights in each column.
         */}
-        <div
-          className="hidden md:grid gap-3"
-          style={{gridTemplateColumns: '5fr 3fr'}}
-        >
+        <div className="hidden md:flex gap-3" style={{minHeight: '700px'}}>
           {/* Left column */}
-          <div className="flex flex-col gap-3">
-            <BentoCard
-              item={BENTO_ITEMS[0]}
-              index={0}
-              className="aspect-[17/10]"
-            />
-            <BentoCard
-              item={BENTO_ITEMS[2]}
-              index={2}
-              className="aspect-[11/10]"
-            />
+          <div className="flex-1 min-w-0 flex flex-col gap-3">
+            <TopCard item={BENTO_ITEMS[0]} index={0} />
+            <BottomCard item={BENTO_ITEMS[2]} index={2} />
           </div>
 
           {/* Right column */}
-          <div className="flex flex-col gap-3">
-            <BentoCard
-              item={BENTO_ITEMS[1]}
-              index={1}
-              className="aspect-[1/2]"
-            />
-            <BentoCard
-              item={BENTO_ITEMS[3]}
-              index={3}
-              className="aspect-[3/2]"
-            />
+          <div className="flex-1 min-w-0 flex flex-col gap-3">
+            <TopCard item={BENTO_ITEMS[1]} index={1} />
+            <BottomCard item={BENTO_ITEMS[3]} index={3} />
           </div>
         </div>
       </div>

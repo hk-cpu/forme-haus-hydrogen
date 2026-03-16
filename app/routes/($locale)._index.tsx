@@ -6,6 +6,7 @@ import {motion} from 'framer-motion';
 import Hero from '~/components/Hero';
 import CategoryBento from '~/components/CategoryBento';
 import EditorialSection from '~/components/EditorialSection';
+import JournalSection from '~/components/JournalSection';
 import {WhyChooseUs} from '~/components/WhyChooseUs';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
@@ -71,8 +72,10 @@ export default function Homepage() {
           <EditorialSection />
         </div>
 
-
-
+        {/* 4. The Journal */}
+        <div className="py-8 md:py-12 mobile-snap-section">
+          <JournalSection />
+        </div>
 
         {/* 6. JOIN THE HAUS — Newsletter */}
         <section className="py-14 md:py-20 border-t border-[#8B8076]/10 mobile-snap-section">
