@@ -35,17 +35,17 @@ const footerSections: FooterSection[] = [
     id: 'customer-care',
     title: 'Customer Care',
     links: [
-      {id: '1', title: 'Contact', url: '/contact', isExternal: false},
+      {id: '1', title: 'Contact Us', url: '/contact', isExternal: false},
       {id: '2', title: 'FAQs', url: '/pages/faqs', isExternal: false},
       {
         id: '3',
-        title: 'Shipping Policy',
+        title: 'Shipping & Delivery Policy',
         url: '/policies/shipping-policy',
         isExternal: false,
       },
       {
         id: '4',
-        title: 'Returns Policy',
+        title: 'Return & Exchange Policy',
         url: '/policies/refund-policy',
         isExternal: false,
       },
@@ -70,7 +70,7 @@ const footerSections: FooterSection[] = [
       },
       {
         id: '8',
-        title: 'Terms',
+        title: 'Terms & Conditions',
         url: '/policies/terms-of-service',
         isExternal: false,
       },
@@ -88,19 +88,13 @@ const footerSections: FooterSection[] = [
       },
       {
         id: '10',
-        title: 'Terms of Service',
+        title: 'Terms & Conditions',
         url: '/policies/terms-of-service',
         isExternal: false,
       },
       {
         id: '11',
-        title: 'Cookie Policy',
-        url: '/policies/cookie-policy',
-        isExternal: false,
-      },
-      {
-        id: '12',
-        title: 'Return Policy',
+        title: 'Return & Exchange Policy',
         url: '/policies/refund-policy',
         isExternal: false,
       },

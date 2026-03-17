@@ -153,15 +153,8 @@ export function TopBar() {
             ))}
           </div>
 
-          {/* Center: Promo Text */}
-          <motion.p
-            initial={{opacity: 0}}
-            animate={{opacity: 1}}
-            transition={{delay: 0.3}}
-            className="text-[11px] text-[#AA9B8F] tracking-widest uppercase hidden lg:block font-medium"
-          >
-            {t('topBar.promo', 'Free dispatch within 48 hours')}
-          </motion.p>
+          {/* Center spacer */}
+          <div className="flex-1 hidden lg:block" />
 
           {/* Right: Our Story */}
           <div className="flex items-center gap-6">

@@ -440,7 +440,7 @@ function Header() {
 
 const menuData = {
   level1: [
-    {id: 'new', label: 'New In', hasChildren: false},
+    {id: 'new', label: 'New to Haus', hasChildren: false},
     {id: 'phone-accessories', label: 'Phone Accessories', hasChildren: true},
     {id: 'sunglasses', label: 'Sunglasses', hasChildren: false},
     {id: 'the-edit', label: 'The Edit', hasChildren: false},

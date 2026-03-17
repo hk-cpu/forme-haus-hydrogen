@@ -164,9 +164,6 @@ export default function EditorialSection() {
           <h2 className="font-serif text-2xl md:text-3xl italic text-[#4A3C31]">
             The Edit
           </h2>
-          <span className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076] py-2 inline-flex items-center min-h-[44px]">
-            Editorial
-          </span>
         </motion.div>
 
         {/* Mobile: single column stack */}

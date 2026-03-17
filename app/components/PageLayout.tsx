@@ -161,7 +161,7 @@ function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
   if (!rootData) return null;
 
   return (
-    <Drawer open={isOpen} onClose={onClose} heading="Cart" openFrom="right">
+    <Drawer open={isOpen} onClose={onClose} heading="Bag" openFrom="right">
       <div className="grid">
         <Suspense fallback={<CartLoading />}>
           <Await resolve={rootData?.cart}>
@@ -298,11 +298,14 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
             <Link to="/policies/shipping-policy" className={linkClass}>
               Shipping & Delivery Policy
             </Link>
-            <Link to="/policies/terms-of-service" className={linkClass}>
-              Return and Exchange Policy
+            <Link to="/policies/refund-policy" className={linkClass}>
+              Return & Exchange Policy
             </Link>
             <Link to="/policies/privacy-policy" className={linkClass}>
               Privacy Policy
+            </Link>
+            <Link to="/policies/terms-of-service" className={linkClass}>
+              Terms & Conditions
             </Link>
           </nav>
         </div>

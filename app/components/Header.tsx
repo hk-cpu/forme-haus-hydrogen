@@ -213,7 +213,7 @@ export function Header({
   const defaultLinks = [
     {
       id: '1',
-      title: t('nav.newIn', 'New In'),
+      title: t('nav.newIn', 'New to Haus'),
       to: '/collections/new-in',
       icon: Icons.Heart,
     },
@@ -468,12 +468,12 @@ export function Header({
               className="relative text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 flex flex-col items-center group"
               whileHover={{scale: 1.05}}
               whileTap={{scale: 0.95}}
-              aria-label={t('nav.cart', 'Cart')}
-              title={t('nav.cart', 'Cart')}
+              aria-label={t('nav.cart', 'Bag')}
+              title={t('nav.cart', 'Bag')}
             >
               <Icons.Bag />
               <span className="mt-1 text-[9px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
-                {t('nav.cart', 'Cart')}
+                {t('nav.cart', 'Bag')}
               </span>
               <AnimatePresence>
                 <Await resolve={rootData?.cart}>

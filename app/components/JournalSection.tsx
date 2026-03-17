@@ -13,25 +13,25 @@ interface JournalCard {
 
 const JOURNAL_CARDS: JournalCard[] = [
   {
-    image: '/brand/journal-elegance.webp',
-    alt: 'The Art of Effortless Elegance',
-    url: '/journal',
-    title: 'The Art of Effortless Elegance',
-    excerpt: 'Discover the philosophy behind curated simplicity.',
-  },
-  {
     image: '/brand/journal-wardrobe.webp',
-    alt: 'Building a Capsule Wardrobe',
-    url: '/journal',
-    title: 'Building a Capsule Wardrobe',
-    excerpt: 'Fewer pieces, more intention — the Haus way.',
+    alt: 'The Modern Wardrobe Edit',
+    url: '/journal/the-modern-wardrobe-edit',
+    title: 'The Modern Wardrobe Edit',
+    excerpt: 'A wardrobe shaped by clarity and refined instinct.',
   },
   {
-    image: '/brand/journal-hero.png',
-    alt: 'Behind the Haus',
-    url: '/journal',
-    title: 'Behind the Haus',
-    excerpt: 'Stories, craft, and the pursuit of beauty.',
+    image: '/brand/journal-elegance.webp',
+    alt: 'Everyday Elegance',
+    url: '/journal/everyday-elegance',
+    title: 'Everyday Elegance',
+    excerpt: 'Elegance is lived in the in-between moments.',
+  },
+  {
+    image: '/brand/journal-selection.png',
+    alt: 'Behind the Selection',
+    url: '/journal/behind-the-selection',
+    title: 'Behind the Selection',
+    excerpt: 'Every piece begins with careful consideration.',
   },
 ];
 

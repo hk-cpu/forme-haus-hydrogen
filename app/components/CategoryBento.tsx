@@ -17,8 +17,8 @@ interface Category {
 const CATEGORIES: Category[] = [
   {
     id: 1,
-    title: 'New In',
-    titleAr: 'وصل حديثاً',
+    title: 'New to Haus',
+    titleAr: 'جديد في هاوس',
     image: '/brand/new-in.webp',
     blurImage: '/brand/new-in-blur.webp',
     url: '/collections/new-in',
@@ -103,7 +103,7 @@ function CategoryCard({
             style={{
               opacity: mounted && !imageLoaded ? 0 : 1,
               transform: 'scale(1.20)',
-              transformOrigin: 'center center',
+              transformOrigin: category.title === 'Phone Accessories' ? 'center 40%' : 'center center',
             }}
             loading={index === 0 ? 'eager' : 'lazy'}
             onLoad={() => setImageLoaded(true)}

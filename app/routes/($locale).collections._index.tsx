@@ -54,10 +54,10 @@ export const loader = async ({
     syntheticCollections.push({
       id: 'synthetic-new-in',
       handle: 'new-in',
-      title: 'New In',
-      description: 'Latest additions to the Haus.',
+      title: 'New to Haus',
+      description: 'The latest additions to our curated selection.',
       image: null,
-      seo: {title: 'New In', description: ''},
+      seo: {title: 'New to Haus', description: ''},
     });
   }
 

@@ -335,7 +335,7 @@ export const menuData = {
   level1: [
     {
       id: 'new',
-      label: 'New In',
+      label: 'New to Haus',
       hasChildren: false,
       href: '/collections/new-in',
     },

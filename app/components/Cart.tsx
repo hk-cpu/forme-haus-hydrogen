@@ -861,7 +861,7 @@ function CartEmpty({
           </motion.div>
 
           <h3 className="font-serif text-2xl text-[#F0EAE6] mb-3">
-            {t('cart.emptyTitle', 'Your bag is empty')}
+            {t('cart.empty', 'Your bag is empty')}
           </h3>
           <p className="text-[#8B8076] text-sm mb-8 max-w-[260px] leading-relaxed">
             {t(

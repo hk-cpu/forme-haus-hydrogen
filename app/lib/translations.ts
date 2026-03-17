@@ -11,7 +11,7 @@ export const translations = {
     // Navigation
     'nav.shop': 'Shop',
     'nav.collections': 'The Collections',
-    'nav.newIn': 'New In',
+    'nav.newIn': 'New to Haus',
     'nav.designers': 'Designers',
     'nav.clothing': 'Clothing',
     'nav.shoes': 'Shoes',
@@ -88,7 +88,7 @@ export const translations = {
     'notify.success': "Thank you! We'll keep you updated.",
 
     // Product
-    'product.addToCart': 'Add to Cart',
+    'product.addToCart': 'Add to Bag',
     'product.soldOut': 'Sold Out',
     'product.sale': 'Sale',
     'product.new': 'New',
@@ -103,8 +103,8 @@ export const translations = {
     'collection.items': 'Items',
 
     // Cart
-    'cart.title': 'Your Cart',
-    'cart.empty': 'Your cart is empty',
+    'cart.title': 'Your Bag',
+    'cart.empty': 'Your bag is empty',
     'cart.emptyStats':
       "Looks like you haven't added anything yet, let's get you started!",
     'cart.continueShopping': 'Continue Shopping',
@@ -154,7 +154,7 @@ export const translations = {
     'menu.signaturePieces': 'Signature Pieces',
     'menu.weeklyHighlights': 'Weekly Highlights',
     'menu.bestSellers': 'Best Sellers',
-    'menu.cta.shopNewIn': 'Shop New In',
+    'menu.cta.shopNewIn': 'Shop New to Haus',
 
     // Mega Menu - categories (Clothing)
     'menu.dresses': 'Dresses',
@@ -291,7 +291,7 @@ export const translations = {
     'notify.success': 'شكراً! سنبقيك على اطلاع.',
 
     // Product
-    'product.addToCart': 'أضيفي إلى السلة',
+    'product.addToCart': 'أضيفي إلى الحقيبة',
     'product.soldOut': 'نفذت الكمية',
     'product.sale': 'تخفيض',
     'product.new': 'جديد',
@@ -306,8 +306,8 @@ export const translations = {
     'collection.items': 'قطع',
 
     // Cart
-    'cart.title': 'سلة التسوق',
-    'cart.empty': 'سلتك فارغة',
+    'cart.title': 'حقيبتك',
+    'cart.empty': 'حقيبتك فارغة',
     'cart.emptyStats': 'يبدو أنك لم تُضيفي أي شيء بعد، دعينا نبدأ!',
     'cart.continueShopping': 'تابعي التسوق',
     'cart.checkout': 'إتمام الشراء',

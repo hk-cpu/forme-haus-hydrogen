@@ -43,7 +43,7 @@ const menuCategories: Record<string, CategoryData> = {
 
 // Top-level categories shown in the left panel
 const topLevelItems = [
-  {label: 'New In', href: '/collections/new-in', hasSubmenu: false},
+  {label: 'New to Haus', href: '/collections/new-in', hasSubmenu: false},
   {label: 'Sunglasses', href: '/collections/sunglasses', hasSubmenu: true},
   {
     label: 'Phone Accessories',

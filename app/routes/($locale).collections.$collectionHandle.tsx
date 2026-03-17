@@ -156,7 +156,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
       let title: string = translations[lang]['nav.newIn'] as string;
       if (collectionHandle === 'sunglasses') title = 'Sunglasses';
       if (collectionHandle === 'sale') title = 'Sale';
-      if (collectionHandle === 'phone-cases') title = 'Phone Cases';
+      if (collectionHandle === 'phone-cases') title = 'Phone Accessories';
       if (collectionHandle === 'phone-straps') title = 'Phone Straps';
       if (collectionHandle === 'case-strap-bundles')
         title = 'Bundles';
@@ -275,7 +275,7 @@ export default function Collection() {
     },
     sunglasses: {
       src: '/assets/heros/sunglasses-hero.png',
-      hideTitle: true,
+      hideTitle: false,
       fit: 'contain',
       bg: '#E2E2E2',
     },
@@ -289,6 +289,43 @@ export default function Collection() {
       src: '/assets/heros/phone-accessories-hero.png',
     },
   };
+
+  // Collection subtitle overrides — curated copy per landing page
+  const COLLECTION_SUBTITLES: Record<string, {subtitle: string; description?: string}> = {
+    'new-in': {
+      subtitle: 'The latest additions to our curated selection.',
+    },
+    'phone-cases': {
+      subtitle: 'Designed to be carried beautifully.',
+    },
+    'phone-straps': {
+      subtitle: 'Designed to be carried beautifully.',
+    },
+    'case-strap-bundles': {
+      subtitle: 'Designed to be carried beautifully.',
+    },
+    sunglasses: {
+      subtitle: 'For light-filled days and elevated escapes.',
+    },
+    'modern-essentials': {
+      subtitle: 'Foundations shaped by intention and refined for everyday presence.',
+      description: 'Foundations of a refined wardrobe.',
+    },
+    'sun-ready': {
+      subtitle: 'Composed in daylight. Designed for warmth and clarity.',
+      description: 'For golden hours and everyday light.',
+    },
+    'carry-it-your-way': {
+      subtitle: 'Hands-free elegance, carried with ease.',
+      description: 'Hands-free. Effortless. Elevated.',
+    },
+    'new-arrivals': {
+      subtitle: 'Newly introduced. Carefully considered.',
+      description: 'Freshly arrived.',
+    },
+  };
+
+  const collectionSubtitle = COLLECTION_SUBTITLES[collection.handle];
 
   const override = HERO_OVERRIDES[collection.handle];
   const heroImage = override?.src || collection.image?.url;
@@ -348,9 +385,9 @@ export default function Collection() {
               >
                 {collection.title}
               </h1>
-              {collection.description && (
+              {(collectionSubtitle?.subtitle || collection.description) && (
                 <p className="max-w-lg mx-auto text-[#F0EAE6]/55 text-sm font-light tracking-wide leading-relaxed">
-                  {collection.description}
+                  {collectionSubtitle?.subtitle || collection.description}
                 </p>
               )}
             </motion.div>

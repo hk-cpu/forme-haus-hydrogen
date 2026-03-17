@@ -5,7 +5,7 @@ import {useState} from 'react';
 const CATEGORIES = [
   {
     id: 1,
-    title: 'New In',
+    title: 'New to Haus',
     image: '/brand/new-in.webp',
     url: '/collections/new-in',
   },

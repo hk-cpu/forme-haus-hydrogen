@@ -21,10 +21,10 @@ const BRAND_PROMISES = [
         <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
-    title: 'Premium Quality',
-    titleAr: 'جودة متميزة',
-    description: 'Handcrafted with the finest materials for lasting elegance.',
-    descriptionAr: 'مصنوع يدوياً من أجود المواد لأناقة دائمة.',
+    title: 'Curated Selection',
+    titleAr: 'اختيار منسّق',
+    description: 'International designers chosen for refinement and lasting design.',
+    descriptionAr: 'مصممون عالميون تم اختيارهم بعناية للرقي والتصميم الدائم.',
   },
   {
     id: '2',
@@ -46,10 +46,10 @@ const BRAND_PROMISES = [
         <path d="M12 6v6l4 2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
-    title: 'Fast Delivery',
-    titleAr: 'توصيل سريع',
-    description: '1-2 business days delivery within Riyadh.',
-    descriptionAr: 'توصيل خلال 1-2 يوم عمل داخل الرياض.',
+    title: 'Limited Collections',
+    titleAr: 'مجموعات محدودة',
+    description: 'Thoughtfully edited releases in carefully selected quantities.',
+    descriptionAr: 'إصدارات مختارة بعناية بكميات محدودة.',
   },
   {
     id: '3',
@@ -81,10 +81,10 @@ const BRAND_PROMISES = [
         />
       </svg>
     ),
-    title: 'Authentic Design',
-    titleAr: 'تصميم أصيل',
-    description: 'Saudi-designed pieces inspired by modern elegance.',
-    descriptionAr: 'قطع بتصميم سعودي مستوحى من الأناقة العصرية.',
+    title: 'Global Designers',
+    titleAr: 'مصممون عالميون',
+    description: 'A curated mix of emerging and established labels worldwide.',
+    descriptionAr: 'مزيج منسّق من العلامات الناشئة والراسخة حول العالم.',
   },
   {
     id: '4',
@@ -103,10 +103,10 @@ const BRAND_PROMISES = [
         />
       </svg>
     ),
-    title: 'Loved by Customers',
-    titleAr: 'يحبها العملاء',
-    description: 'Join thousands of satisfied customers across Saudi Arabia.',
-    descriptionAr: 'انضم لآلاف العملاء الراضين في جميع أنحاء السعودية.',
+    title: 'Elevated Experience',
+    titleAr: 'تجربة راقية',
+    description: 'A refined journey from discovery to delivery. Premium delivery across Saudi Arabia and the GCC.',
+    descriptionAr: 'رحلة راقية من الاكتشاف إلى التوصيل. توصيل متميز في السعودية ودول الخليج.',
   },
 ];
 
@@ -163,7 +163,7 @@ export function WhyChooseUs() {
               </h3>
 
               {/* Description */}
-              <p className="text-xs md:text-sm text-[#8B8076] leading-relaxed">
+              <p className="text-xs md:text-sm text-[#5C5046] leading-relaxed">
                 {isRTL ? item.descriptionAr : item.description}
               </p>
             </motion.div>
