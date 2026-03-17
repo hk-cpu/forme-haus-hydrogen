@@ -6,7 +6,8 @@ import {
   isRouteErrorResponse,
   Link as RemixLink,
 } from '@remix-run/react';
-import {motion} from 'framer-motion';
+import {useRef} from 'react';
+import {motion, useScroll, useTransform} from 'framer-motion';
 import type {
   Filter,
   ProductCollectionSortKeys,
@@ -258,6 +259,14 @@ export default function Collection() {
     useLoaderData<typeof loader>();
   const {t} = useTranslation();
 
+  const heroRef = useRef<HTMLDivElement>(null);
+  const {scrollYProgress} = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  });
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
+
   // Collection hero image overrides
   const HERO_OVERRIDES: Record<
     string,
@@ -339,25 +348,28 @@ export default function Collection() {
   return (
     <div className="min-h-screen bg-[#F9F5F0]">
       {/* ─── Hero Banner ─── */}
-      <div className="relative w-full h-[30vh] md:h-[38vh] overflow-hidden">
+      <motion.div
+        ref={heroRef}
+        className="relative w-full bg-[#0f0d0a] overflow-hidden"
+        style={{opacity: heroOpacity}}
+      >
         {heroImage ? (
           <>
             <motion.img
               src={heroImage}
               alt={collection.title}
-              className="w-full h-full object-cover"
+              className="w-full h-auto block max-h-[70vh] object-contain mx-auto"
               loading="eager"
               fetchPriority="high"
-              width={1440}
-              height={600}
+              style={{y: heroY}}
               initial={{scale: 1.03}}
               animate={{scale: 1}}
               transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#1a1510]/80 via-[#1a1510]/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0f0d0a]/70 via-transparent to-transparent" />
           </>
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-[#2a2118] via-[#1a1510] to-[#0f0d0a]" />
+          <div className="w-full h-[38vh] bg-gradient-to-br from-[#2a2118] via-[#1a1510] to-[#0f0d0a]" />
         )}
         {/* Title overlay */}
         {!hideTitle && (
@@ -389,7 +401,7 @@ export default function Collection() {
             </motion.div>
           </div>
         )}
-      </div>
+      </motion.div>
 
       {/* ─── Category Navigation Tabs ─── */}
       <CategoryHeader
