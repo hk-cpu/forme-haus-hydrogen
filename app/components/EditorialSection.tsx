@@ -92,8 +92,9 @@ function TopCard({item, index}: {item: BentoItem; index: number}) {
 }
 
 /**
- * BottomCard — renders at natural image height (flex-shrink: 0).
- * The image dictates how tall this cell is.
+ * BottomCard — fills remaining column space via flex: 1.
+ * Image uses object-fit: cover + object-position: center
+ * so it fills the space while keeping focal point centered.
  */
 function BottomCard({item, index}: {item: BentoItem; index: number}) {
   return (
@@ -106,13 +107,13 @@ function BottomCard({item, index}: {item: BentoItem; index: number}) {
         delay: index * 0.1,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="group relative shrink-0 overflow-hidden rounded-[14px] bg-[#E8E4E0]"
+      className="group relative flex-1 overflow-hidden rounded-[14px] bg-[#E8E4E0] min-h-0"
     >
-      <Link to={item.url} className="block">
+      <Link to={item.url} className="block w-full h-full">
         <img
           src={item.image}
           alt={item.alt}
-          className="w-full h-auto block transition-transform duration-700 ease-out group-hover:scale-105"
+          className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
           loading="lazy"
         />
 
@@ -175,9 +176,10 @@ export default function EditorialSection() {
 
         {/*
           Desktop: flexbox two-column editorial grid
-          Each column: images stack at their natural heights.
+          Each column: top image at natural height + bottom image fills remaining space.
+          The stagger comes from different top-image heights in each column.
         */}
-        <div className="hidden md:flex gap-3">
+        <div className="hidden md:flex gap-3" style={{minHeight: '750px'}}>
           {/* Left column */}
           <div className="flex-1 min-w-0 flex flex-col gap-3">
             <TopCard item={BENTO_ITEMS[0]} index={0} />
