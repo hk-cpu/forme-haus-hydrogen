@@ -276,17 +276,22 @@ export default function Collection() {
     sunglasses: {
       src: '/assets/heros/sunglasses-hero-2.png',
       hideTitle: false,
-      fit: 'contain',
-      bg: '#E2E2E2',
+      fit: 'cover',
     },
     'phone-cases': {
       src: '/assets/heros/phone-accessories-hero-1.png',
+      hideTitle: false,
+      fit: 'cover',
     },
     'phone-straps': {
       src: '/assets/heros/phone-accessories-hero-2.png',
+      hideTitle: false,
+      fit: 'cover',
     },
     'case-strap-bundles': {
       src: '/assets/heros/phone-accessories-hero-2.png',
+      hideTitle: false,
+      fit: 'cover',
     },
   };
 
@@ -356,9 +361,7 @@ export default function Collection() {
               animate={{scale: 1}}
               transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}
             />
-            {heroFit === 'cover' && (
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1a1510]/70 via-[#1a1510]/15 to-transparent" />
-            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1a1510]/80 via-[#1a1510]/30 to-transparent" />
           </>
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-[#2a2118] via-[#1a1510] to-[#0f0d0a]" />
