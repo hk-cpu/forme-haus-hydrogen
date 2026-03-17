@@ -24,7 +24,7 @@ interface CategoryData {
 const menuCategories: Record<string, CategoryData> = {
   Sunglasses: {
     editorial: '/assets/heros/sunglasses-hero-2.png',
-    tagline: 'Formé Haus × LOUVE Collection',
+    tagline: 'LOUVE Collection',
     categories: [
       {label: 'All Sunglasses', href: '/collections/sunglasses', featured: true},
       {label: 'New Arrivals', href: '/collections/new-in'},
