@@ -23,15 +23,15 @@ interface CategoryData {
 
 const menuCategories: Record<string, CategoryData> = {
   Sunglasses: {
-    editorial: '/assets/heros/sunglasses-hero.png',
-    tagline: 'LOUVE Collection',
+    editorial: '/assets/heros/sunglasses-hero-2.png',
+    tagline: 'Formé Haus × LOUVE Collection',
     categories: [
       {label: 'All Sunglasses', href: '/collections/sunglasses', featured: true},
       {label: 'New Arrivals', href: '/collections/new-in'},
     ],
   },
   'Phone Accessories': {
-    editorial: '/assets/heros/phone-accessories-hero.png',
+    editorial: '/assets/heros/phone-accessories-hero-1.png',
     tagline: 'Protect in Style',
     categories: [
       {label: 'Phone Cases', href: '/collections/phone-cases', featured: true},

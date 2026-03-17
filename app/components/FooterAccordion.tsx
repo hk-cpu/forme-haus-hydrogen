@@ -198,14 +198,14 @@ export function FooterAccordion() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <span className="text-[11px] uppercase tracking-[0.2em] text-[#a87441] font-semibold">
-              LOUVE Collection
+              Formé Haus × LOUVE Collection
             </span>
             <span className="text-[10px] text-[#8B8076]">
               Premium Phone Accessories
             </span>
           </div>
           <p className="text-[10px] text-[#8B8076]/60 text-center md:text-right">
-            © {new Date().getFullYear()} LOUVE Collection. All rights reserved.
+            © {new Date().getFullYear()} Formé Haus × LOUVE Collection. All rights reserved.
           </p>
         </div>
       </div>

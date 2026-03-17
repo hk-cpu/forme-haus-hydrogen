@@ -274,19 +274,19 @@ export default function Collection() {
       fit: 'cover',
     },
     sunglasses: {
-      src: '/assets/heros/sunglasses-hero.png',
+      src: '/assets/heros/sunglasses-hero-2.png',
       hideTitle: false,
       fit: 'contain',
       bg: '#E2E2E2',
     },
     'phone-cases': {
-      src: '/assets/heros/phone-accessories-hero.png',
+      src: '/assets/heros/phone-accessories-hero-1.png',
     },
     'phone-straps': {
-      src: '/assets/heros/phone-accessories-hero.png',
+      src: '/assets/heros/phone-accessories-hero-2.png',
     },
     'case-strap-bundles': {
-      src: '/assets/heros/phone-accessories-hero.png',
+      src: '/assets/heros/phone-accessories-hero-2.png',
     },
   };
 
