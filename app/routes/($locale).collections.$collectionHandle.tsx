@@ -335,28 +335,17 @@ export default function Collection() {
   const override = HERO_OVERRIDES[collection.handle];
   const heroImage = override?.src || collection.image?.url;
   const hideTitle = override?.hideTitle;
-  const heroFit = override?.fit || 'cover';
-  const heroBg = override?.bg || '';
 
   return (
     <div className="min-h-screen bg-[#F9F5F0]">
       {/* ─── Hero Banner ─── */}
-      <div
-        className={`relative w-full overflow-hidden ${
-          heroFit === 'contain'
-            ? ''
-            : 'h-[30vh] md:h-[38vh] min-h-[220px] max-h-[380px]'
-        }`}
-        style={heroBg ? {backgroundColor: heroBg} : {}}
-      >
+      <div className="relative w-full overflow-hidden">
         {heroImage ? (
           <>
             <motion.img
               src={heroImage}
               alt={collection.title}
-              className={`w-full ${
-                heroFit === 'contain' ? 'h-auto block' : 'h-full object-cover'
-              }`}
+              className="w-full h-auto block"
               initial={{scale: 1.03}}
               animate={{scale: 1}}
               transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}
@@ -364,7 +353,7 @@ export default function Collection() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#1a1510]/80 via-[#1a1510]/30 to-transparent" />
           </>
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-[#2a2118] via-[#1a1510] to-[#0f0d0a]" />
+          <div className="w-full h-[30vh] bg-gradient-to-br from-[#2a2118] via-[#1a1510] to-[#0f0d0a]" />
         )}
         {/* Title overlay */}
         {!hideTitle && (
