@@ -231,6 +231,11 @@ export function Header({
       title: t('nav.collections', 'Collections'),
       to: '/collections',
     },
+    {
+      id: '5',
+      title: t('nav.contact', 'Contact'),
+      to: '/contact',
+    },
   ];
 
   const items = menu?.items?.length ? menu.items : defaultLinks;
