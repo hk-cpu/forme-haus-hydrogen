@@ -184,7 +184,8 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
 
   return {
     isLoggedIn: Promise.resolve(!!session.get('customerAccessToken')),
-    cart: cart.get(),
+    // Swallow cart errors so a failing cart never causes a root 500
+    cart: cart.get().catch(() => null),
   };
 }
 

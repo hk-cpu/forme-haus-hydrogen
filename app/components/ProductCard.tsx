@@ -362,19 +362,14 @@ export function ProductCard({
     toggleWishlist(product.id);
   };
 
-  const handleQuickAdd = async (e: React.MouseEvent) => {
+  const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
     const variant = product.variants?.nodes?.[0];
-    if (!variant?.id) return;
+    if (!variant?.id || isAdding) return;
 
     setIsAdding(true);
-
-    // Simulate add to cart action
-    await new Promise((resolve) => setTimeout(resolve, 600));
-
-    // Submit cart action
     fetcher.submit(
       {
         cartAction: 'ADD_TO_CART',
@@ -382,11 +377,19 @@ export function ProductCard({
       },
       {method: 'POST', action: '/cart'},
     );
-
-    setIsAdding(false);
-    setShowAdded(true);
-    setTimeout(() => setShowAdded(false), 2000);
   };
+
+  // Drive UI state from fetcher, not arbitrary timeouts
+  useEffect(() => {
+    if (fetcher.state === 'idle' && isAdding) {
+      setIsAdding(false);
+      if (!fetcher.data?.error) {
+        setShowAdded(true);
+        const t = setTimeout(() => setShowAdded(false), 2000);
+        return () => clearTimeout(t);
+      }
+    }
+  }, [fetcher.state, fetcher.data, isAdding]);
 
   return (
     <motion.div

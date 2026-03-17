@@ -105,8 +105,8 @@ const BRAND_PROMISES = [
     ),
     title: 'Elevated Experience',
     titleAr: 'تجربة راقية',
-    description: 'A refined journey from discovery to delivery. Premium delivery across Saudi Arabia and the GCC.',
-    descriptionAr: 'رحلة راقية من الاكتشاف إلى التوصيل. توصيل متميز في السعودية ودول الخليج.',
+    description: 'A refined journey from discovery to delivery. Free shipping across Saudi Arabia — GCC coming soon.',
+    descriptionAr: 'رحلة راقية من الاكتشاف إلى التوصيل. شحن مجاني في السعودية — دول الخليج قريباً.',
   },
 ];
 

@@ -1,7 +1,8 @@
 import clsx from 'clsx';
-import {useRef} from 'react';
+import {useRef, lazy, Suspense, useState} from 'react';
 import useScroll from 'react-use/esm/useScroll';
 import {motion, AnimatePresence} from 'framer-motion';
+import {useFetcher} from '@remix-run/react';
 import {
   flattenConnection,
   CartForm,
@@ -12,6 +13,11 @@ import {
   OptimisticInput,
   type CartReturn,
 } from '@shopify/hydrogen';
+
+// Client-only HyperPay widget — lazy loaded to avoid SSR
+const HyperPayWidget = lazy(
+  () => import('~/components/HyperPayWidget.client'),
+);
 import type {
   Cart as CartType,
   CartCost,
@@ -434,6 +440,93 @@ function CartLines({
   );
 }
 
+function HyperPayCheckoutButton({cart}: {cart: CartType}) {
+  const fetcher = useFetcher<{
+    checkoutId?: string;
+    baseUrl?: string;
+    brand?: string;
+    error?: string;
+  }>();
+  const [showWidget, setShowWidget] = useState(false);
+
+  const subtotal = cart.cost?.subtotalAmount?.amount ?? '0';
+  const currency = cart.cost?.subtotalAmount?.currencyCode ?? 'SAR';
+  const merchantTxId = `FH-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+
+  function initiatePayment(brand: string) {
+    fetcher.submit(
+      {amount: subtotal, currency, brand, merchantTxId},
+      {method: 'post', action: '/hyperpay/initiate'},
+    );
+    setShowWidget(true);
+  }
+
+  const hasWidget = fetcher.state === 'idle' && fetcher.data?.checkoutId;
+
+  return (
+    <div>
+      {!showWidget ? (
+        <div className="grid gap-2">
+          {/* mada */}
+          <motion.button
+            type="button"
+            onClick={() => initiatePayment('MADA')}
+            className="w-full py-3.5 rounded-xl bg-[#1B5E20] hover:bg-[#2E7D32] text-white text-[11px] uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
+            whileHover={{scale: 1.01}}
+            whileTap={{scale: 0.99}}
+          >
+            <Icons.Lock className="w-3.5 h-3.5" />
+            Pay with mada
+          </motion.button>
+
+          {/* Visa / Mastercard / Amex */}
+          <motion.button
+            type="button"
+            onClick={() => initiatePayment('CARD')}
+            className="w-full py-3.5 rounded-xl bg-[#1a2744] hover:bg-[#243460] text-white text-[11px] uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
+            whileHover={{scale: 1.01}}
+            whileTap={{scale: 0.99}}
+          >
+            <Icons.Lock className="w-3.5 h-3.5" />
+            Pay with Card (Visa / MC)
+          </motion.button>
+        </div>
+      ) : fetcher.state !== 'idle' ? (
+        <div className="flex items-center justify-center gap-2 py-4 text-[#8B8076] text-sm">
+          <div className="w-4 h-4 rounded-full border-2 border-[#a87441]/30 border-t-[#a87441] animate-spin" />
+          Preparing payment…
+        </div>
+      ) : fetcher.data?.error ? (
+        <div className="p-3 bg-red-400/10 border border-red-400/20 rounded-lg text-red-400 text-xs text-center">
+          {fetcher.data.error}
+          <button
+            onClick={() => setShowWidget(false)}
+            className="block w-full mt-2 text-[#8B8076] hover:text-[#F0EAE6] underline"
+          >
+            Try again
+          </button>
+        </div>
+      ) : hasWidget ? (
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center gap-2 py-4 text-[#8B8076] text-sm">
+              <div className="w-4 h-4 rounded-full border-2 border-[#a87441]/30 border-t-[#a87441] animate-spin" />
+              Loading payment form…
+            </div>
+          }
+        >
+          <HyperPayWidget
+            checkoutId={fetcher.data.checkoutId!}
+            baseUrl={fetcher.data.baseUrl!}
+            brands={fetcher.data.brand === 'MADA' ? 'MADA' : 'VISA MASTER AMEX'}
+            callbackPath="/hyperpay/callback"
+          />
+        </Suspense>
+      ) : null}
+    </div>
+  );
+}
+
 function CartCheckoutActions({
   checkoutUrl,
   cart,
@@ -454,7 +547,7 @@ function CartCheckoutActions({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Checkout Button */}
+      {/* Primary Checkout via Shopify */}
       <motion.a
         href={checkoutUrl}
         target="_self"
@@ -471,6 +564,16 @@ function CartCheckoutActions({
           <Icons.ArrowRight className="w-4 h-4" />
         </Button>
       </motion.a>
+
+      {/* Divider */}
+      <div className="flex items-center gap-3">
+        <div className="flex-1 h-px bg-[#8B8076]/15" />
+        <span className="text-[10px] text-[#8B8076] uppercase tracking-wider">or pay directly</span>
+        <div className="flex-1 h-px bg-[#8B8076]/15" />
+      </div>
+
+      {/* HyperPay — mada + Card */}
+      <HyperPayCheckoutButton cart={cart} />
 
       {/* Shop Pay */}
       {variantIds.length > 0 && (
@@ -522,6 +625,80 @@ function CartCheckoutActions({
   );
 }
 
+// Free shipping threshold in SAR — update to match your Shopify shipping rules
+const FREE_SHIPPING_THRESHOLD = 250;
+
+function FreeShippingBar({subtotal}: {subtotal: string | undefined}) {
+  const amount = parseFloat(subtotal || '0');
+  const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - amount);
+  const progress = Math.min(100, (amount / FREE_SHIPPING_THRESHOLD) * 100);
+  const isFree = remaining === 0;
+
+  return (
+    <div className="px-1 py-3">
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-1.5">
+          <Icons.Truck className="w-3.5 h-3.5 text-[#a87441]" />
+          {isFree ? (
+            <span className="text-[11px] text-[#a87441] font-medium">
+              🎉 You&apos;ve unlocked free shipping!
+            </span>
+          ) : (
+            <span className="text-[11px] text-[#8B8076]">
+              Add{' '}
+              <span className="text-[#F0EAE6] font-semibold">
+                {remaining.toFixed(0)} SAR
+              </span>{' '}
+              for free shipping
+            </span>
+          )}
+        </div>
+        <span className="text-[10px] text-[#8B8076]">
+          {FREE_SHIPPING_THRESHOLD} SAR
+        </span>
+      </div>
+      <div className="h-1 bg-[#8B8076]/15 rounded-full overflow-hidden">
+        <motion.div
+          className="h-full rounded-full bg-gradient-to-r from-[#a87441] to-[#D4AF87]"
+          initial={{width: 0}}
+          animate={{width: `${progress}%`}}
+          transition={{duration: 0.6, ease: [0.16, 1, 0.3, 1]}}
+        />
+      </div>
+    </div>
+  );
+}
+
+function GCCPaymentBadges() {
+  return (
+    <div className="flex items-center justify-center gap-2 flex-wrap py-1">
+      {/* mada */}
+      <div className="px-2 py-1 bg-[#1A1A1A] rounded border border-[#8B8076]/10 flex items-center">
+        <span className="text-[9px] font-bold text-[#1B5E20] tracking-wide">mada</span>
+      </div>
+      {/* STC Pay */}
+      <div className="px-2 py-1 bg-[#1A1A1A] rounded border border-[#8B8076]/10 flex items-center">
+        <span className="text-[9px] font-bold text-purple-400 tracking-wide">STC Pay</span>
+      </div>
+      {/* Apple Pay */}
+      <div className="px-2 py-1 bg-[#1A1A1A] rounded border border-[#8B8076]/10 flex items-center">
+        <svg className="w-7 h-3.5" viewBox="0 0 80 34" fill="white" aria-label="Apple Pay">
+          <path d="M15.1 6.5c-.8.9-2 1.6-3.2 1.5-.2-1.2.5-2.5 1.2-3.3C13.9 3.7 15.2 3 16.3 3c.1 1.3-.4 2.6-1.2 3.5zm1.2 1.8c-1.8-.1-3.3 1-4.1 1s-2.1-1-3.6-.9c-1.8 0-3.5 1-4.4 2.6-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.4 2.6 1.4-.1 1.9-.9 3.5-.9 1.6 0 2.1.9 3.5.9 1.4-.1 2.3-1.3 3.2-2.6.9-1.3 1.3-2.6 1.3-2.7-.1 0-2.4-.9-2.5-3.7 0-2.3 1.9-3.4 2-3.5-.1-1.3-2.1-2.5-3.6-2.6z"/>
+          <text x="28" y="22" fontSize="14" fontWeight="600" fill="white" fontFamily="-apple-system, sans-serif">Pay</text>
+        </svg>
+      </div>
+      {/* Tabby */}
+      <div className="px-2 py-1 bg-[#1A1A1A] rounded border border-[#8B8076]/10 flex items-center">
+        <span className="text-[9px] font-bold text-[#3BB273] tracking-wide">tabby</span>
+      </div>
+      {/* Tamara */}
+      <div className="px-2 py-1 bg-[#1A1A1A] rounded border border-[#8B8076]/10 flex items-center">
+        <span className="text-[9px] font-bold text-[#F6A623] tracking-wide">tamara</span>
+      </div>
+    </div>
+  );
+}
+
 function CartSummary({
   cost,
   layout,
@@ -535,7 +712,7 @@ function CartSummary({
 
   const summary = {
     drawer:
-      'grid gap-5 p-6 border-t border-[#a87441]/20 bg-gradient-to-t from-[#0F0F0F] to-[#121212]',
+      'grid gap-4 p-6 border-t border-[#a87441]/20 bg-gradient-to-t from-[#0F0F0F] to-[#121212]',
     page: 'sticky top-nav grid gap-6 p-4 md:px-6 md:translate-y-4 bg-primary/5 rounded-xl w-full',
   };
 
@@ -544,6 +721,11 @@ function CartSummary({
       <h2 id="summary-heading" className="sr-only">
         Order summary
       </h2>
+
+      {/* Free Shipping Progress Bar — drawer only for cleanliness */}
+      {layout === 'drawer' && (
+        <FreeShippingBar subtotal={cost?.subtotalAmount?.amount} />
+      )}
 
       {/* Subtotal */}
       <div className="flex items-center justify-between py-4 border-b border-[#a87441]/10">
@@ -566,16 +748,18 @@ function CartSummary({
         </Text>
       </div>
 
-      {/* Shipping Note */}
-      <div className="flex items-center gap-2 text-[#8B8076] text-xs">
-        <Icons.Truck className="w-4 h-4" />
-        <p>
-          {t('cart.shippingNote', 'Shipping and taxes calculated at checkout')}
-        </p>
-      </div>
-
       {/* Additional Content (Discounts, etc.) */}
       {children}
+
+      {/* GCC Payment Method Badges */}
+      {layout === 'drawer' && (
+        <div className="pt-1">
+          <p className="text-[9px] text-center text-[#8B8076]/50 uppercase tracking-wider mb-2">
+            Accepted payments
+          </p>
+          <GCCPaymentBadges />
+        </div>
+      )}
     </section>
   );
 }

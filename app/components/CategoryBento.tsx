@@ -144,10 +144,11 @@ function CategoryCard({
             <h3 className="text-xl md:text-2xl font-serif text-white mb-2 tracking-wide">
               {isRTL ? category.titleAr : category.title}
             </h3>
+            {/* Always visible short line on mobile; longer on hover for desktop */}
             <motion.div
               className="h-[1px] bg-[#D4AF87] origin-left"
-              initial={{width: 0}}
-              animate={{width: isHovered ? 48 : 0}}
+              initial={{width: 24}}
+              animate={{width: isHovered ? 48 : 24}}
               transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
             />
           </motion.div>
