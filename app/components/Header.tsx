@@ -13,7 +13,6 @@ import type {EnhancedMenu} from '~/lib/utils';
 import {useTranslation} from '~/hooks/useTranslation';
 
 import LanguageSwitch from './LanguageSwitch';
-import TopBar from './TopBar';
 
 // ============================================================================
 // PREMIUM HEADER ICONS
@@ -247,13 +246,12 @@ export function Header({
 
   return (
     <>
-      <TopBar />
       <motion.header
         role="banner"
         initial={{y: -100, opacity: 0}}
         animate={{y: isVisible ? 0 : -100, opacity: isVisible ? 1 : 0}}
         transition={{duration: 0.5, ease: [0.16, 1, 0.3, 1]}}
-        className={`fixed z-50 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0 group w-full ${scrolled ? 'top-0' : 'md:top-10 top-0'} ${getHeaderBackgroundClass()}`}
+        className={`fixed z-50 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0 group w-full ${'top-0'} ${getHeaderBackgroundClass()}`}
         style={{
           WebkitBackdropFilter: scrolled
             ? 'blur(40px) saturate(1.2)'
