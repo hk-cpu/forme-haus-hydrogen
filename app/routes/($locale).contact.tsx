@@ -329,7 +329,7 @@ export default function ContactPage() {
                         text-[#4A3C31] placeholder-[#8B8076]/50
                         focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/20
                         transition-all outline-none"
-                      placeholder="Sarah Al-Rashid"
+                      placeholder="Your full name"
                     />
                   </div>
                   <div>
@@ -348,7 +348,7 @@ export default function ContactPage() {
                         text-[#4A3C31] placeholder-[#8B8076]/50
                         focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/20
                         transition-all outline-none"
-                      placeholder="sarah@example.com"
+                      placeholder="your@email.com"
                     />
                   </div>
                 </div>
@@ -455,31 +455,36 @@ export default function ContactPage() {
                 </a>
               </div>
 
-              <p className="text-[13px] text-[#5C5046] leading-relaxed">
+              <p className="text-[13px] text-[#5C5046] leading-relaxed mb-5">
                 Discover the latest collections, editorial inspiration, and
                 behind-the-scenes moments.
               </p>
 
-              {/* Instagram Posts Links - Hidden until real feed is available */}
-              {/* 
-              <div className="grid grid-cols-3 gap-2 mt-6">
+              {/* Instagram Post Previews */}
+              <div className="grid grid-cols-3 gap-2">
                 {[
-                  'https://www.instagram.com/p/DR_9yG3DKpr/',
-                  'https://www.instagram.com/p/DR_96jbjCDY/',
-                  'https://www.instagram.com/p/DR_9_GYDFpD/',
-                ].map((url, i) => (
+                  {url: 'https://www.instagram.com/p/DR_9yG3DKpr/', img: '/editorial/contact-hero-1.png'},
+                  {url: 'https://www.instagram.com/p/DR_96jbjCDY/', img: '/editorial/contact-hero-2.png'},
+                  {url: 'https://www.instagram.com/p/DR_9_GYDFpD/', img: '/editorial/contact-hero-3.png'},
+                ].map(({url, img}, i) => (
                   <a
                     key={i}
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="aspect-square rounded-lg overflow-hidden bg-gradient-to-br from-[#a87441]/20 via-[#8B5E3C]/15 to-[#4A3C31]/20 flex items-center justify-center group hover:from-[#a87441]/30 hover:to-[#4A3C31]/30 transition-all duration-300"
+                    className="aspect-square rounded-lg overflow-hidden relative group"
                   >
-                    <Instagram className="w-6 h-6 text-[#a87441]/60 group-hover:text-[#a87441] group-hover:scale-110 transition-all duration-300" />
+                    <img
+                      src={img}
+                      alt={`Formé Haus Instagram post ${i + 1}`}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                      <Instagram className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
                   </a>
                 ))}
               </div>
-              */}
             </div>
 
             {/* Store Hours */}
