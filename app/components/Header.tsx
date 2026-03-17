@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef} from 'react';
+import {useState, useEffect, useRef, Suspense} from 'react';
 import {
   Link,
   NavLink,
@@ -461,36 +461,7 @@ export function Header({
             </motion.button>
 
             {/* Cart / Shopping Bag */}
-            <motion.button
-              onClick={openCart}
-              className="relative text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 flex flex-col items-center group"
-              whileHover={{scale: 1.05}}
-              whileTap={{scale: 0.95}}
-              aria-label={t('nav.cart', 'Bag')}
-              title={t('nav.cart', 'Bag')}
-            >
-              <Icons.Bag />
-              <span className="mt-1 text-[9px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
-                {t('nav.cart', 'Bag')}
-              </span>
-              <AnimatePresence>
-                <Await resolve={rootData?.cart}>
-                  {(cart: any) =>
-                    cart?.totalQuantity ? (
-                      <motion.span
-                        initial={{scale: 0}}
-                        animate={{scale: 1}}
-                        exit={{scale: 0}}
-                        className="absolute -top-0.5 right-0 lg:right-2 text-[9px] bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-white rounded-full w-4 h-4 flex items-center justify-center font-medium shadow-lg"
-                      >
-                        {cart.totalQuantity > 9 ? '9+' : cart.totalQuantity}
-                      </motion.span>
-                    ) : null
-                  }
-                </Await>
-              </AnimatePresence>
-              <span className="absolute inset-0 bg-[#a87441]/0 hover:bg-[#a87441]/10 rounded-full transition-colors duration-300 -z-10" />
-            </motion.button>
+            <CartBagButton openCart={openCart} rootData={rootData} t={t} />
 
             {/* Account (Desktop) */}
             <motion.div
@@ -524,5 +495,110 @@ export function Header({
         />
       </motion.header>
     </>
+  );
+}
+
+// ============================================================================
+// CART BAG BUTTON — shows empty-cart popup when clicked with no items
+// ============================================================================
+function CartBagButton({
+  openCart,
+  rootData,
+  t,
+}: {
+  openCart: () => void;
+  rootData: ReturnType<typeof useRouteLoaderData<RootLoader>>;
+  t: (key: string, fallback?: string) => string;
+}) {
+  const [showEmptyHint, setShowEmptyHint] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function handleEmptyClick() {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setShowEmptyHint(true);
+    timerRef.current = setTimeout(() => setShowEmptyHint(false), 2500);
+  }
+
+  return (
+    <Suspense
+      fallback={
+        <motion.button
+          onClick={openCart}
+          className="relative text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 flex flex-col items-center group"
+          whileHover={{scale: 1.05}}
+          whileTap={{scale: 0.95}}
+          aria-label={t('nav.cart', 'Bag')}
+        >
+          <Icons.Bag />
+          <span className="mt-1 text-[9px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
+            {t('nav.cart', 'Bag')}
+          </span>
+        </motion.button>
+      }
+    >
+      <Await resolve={rootData?.cart}>
+        {(cart: any) => {
+          const isEmpty = !cart?.totalQuantity;
+          return (
+            <motion.button
+              onClick={isEmpty ? handleEmptyClick : openCart}
+              className="relative text-[#F0EAE6]/70 hover:text-[#a87441] transition-all duration-300 p-2 -m-2 flex flex-col items-center group"
+              whileHover={{scale: 1.05}}
+              whileTap={{scale: 0.95}}
+              aria-label={t('nav.cart', 'Bag')}
+              title={t('nav.cart', 'Bag')}
+            >
+              <Icons.Bag />
+              <span className="mt-1 text-[9px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
+                {t('nav.cart', 'Bag')}
+              </span>
+
+              {/* Empty cart popup tooltip */}
+              <AnimatePresence>
+                {showEmptyHint && (
+                  <motion.div
+                    initial={{opacity: 0, y: 6, scale: 0.95}}
+                    animate={{opacity: 1, y: 0, scale: 1}}
+                    exit={{opacity: 0, y: 6, scale: 0.95}}
+                    transition={{duration: 0.18}}
+                    className="absolute top-full right-0 mt-3 w-56 bg-[#1A1A1A] border border-[#a87441]/25 rounded-xl shadow-2xl shadow-black/60 p-4 text-left pointer-events-none z-[400]"
+                  >
+                    {/* Arrow */}
+                    <div className="absolute -top-[7px] right-5 w-3 h-3 bg-[#1A1A1A] border-l border-t border-[#a87441]/25 rotate-45" />
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-full bg-[#a87441]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Icons.Bag className="w-4 h-4 text-[#a87441]/50" />
+                      </div>
+                      <div>
+                        <p className="text-[#F0EAE6] text-[13px] font-medium leading-snug">
+                          Your bag is empty
+                        </p>
+                        <p className="text-[#8B8076] text-[11px] mt-0.5 leading-relaxed">
+                          You haven&apos;t added anything to your cart yet.
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Item count badge */}
+              {cart?.totalQuantity ? (
+                <motion.span
+                  initial={{scale: 0}}
+                  animate={{scale: 1}}
+                  exit={{scale: 0}}
+                  className="absolute -top-0.5 right-0 lg:right-2 text-[9px] bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-white rounded-full w-4 h-4 flex items-center justify-center font-medium shadow-lg"
+                >
+                  {cart.totalQuantity > 9 ? '9+' : cart.totalQuantity}
+                </motion.span>
+              ) : null}
+
+              <span className="absolute inset-0 bg-[#a87441]/0 hover:bg-[#a87441]/10 rounded-full transition-colors duration-300 -z-10" />
+            </motion.button>
+          );
+        }}
+      </Await>
+    </Suspense>
   );
 }

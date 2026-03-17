@@ -62,16 +62,6 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* Brand Tagline with Split Text Animation */}
-          <div className="mb-6" aria-hidden="true">
-            <SplitText
-              text={t('hero.tagline', 'Where Essence Meets Elegance')}
-              className="text-[10px] uppercase tracking-[0.35em] text-[#AA9B8F]/70 font-light"
-              delay={1.0}
-              staggerDelay={0.04}
-              duration={0.5}
-            />
-          </div>
           {/* SEO H1 Tag - Visually hidden but readable by screen readers */}
           <h1 className="sr-only">
             {t('hero.h1', 'Designer Phone Cases & Sunglasses — Saudi Crafted')}

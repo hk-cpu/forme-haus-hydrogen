@@ -339,13 +339,17 @@ export default function Collection() {
   return (
     <div className="min-h-screen bg-[#F9F5F0]">
       {/* ─── Hero Banner ─── */}
-      <div className="relative w-full overflow-hidden">
+      <div className="relative w-full h-[30vh] md:h-[38vh] overflow-hidden">
         {heroImage ? (
           <>
             <motion.img
               src={heroImage}
               alt={collection.title}
-              className="w-full h-auto block"
+              className="w-full h-full object-cover"
+              loading="eager"
+              fetchPriority="high"
+              width={1440}
+              height={600}
               initial={{scale: 1.03}}
               animate={{scale: 1}}
               transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}
@@ -353,7 +357,7 @@ export default function Collection() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#1a1510]/80 via-[#1a1510]/30 to-transparent" />
           </>
         ) : (
-          <div className="w-full h-[30vh] bg-gradient-to-br from-[#2a2118] via-[#1a1510] to-[#0f0d0a]" />
+          <div className="w-full h-full bg-gradient-to-br from-[#2a2118] via-[#1a1510] to-[#0f0d0a]" />
         )}
         {/* Title overlay */}
         {!hideTitle && (
