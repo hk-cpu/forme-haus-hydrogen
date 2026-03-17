@@ -136,40 +136,52 @@ export default function ContactPage() {
           >
             {/* Main Image - Top Left (Large Landscape) */}
             <div className="md:col-span-3 md:row-span-2 relative group overflow-hidden rounded-xl aspect-[16/10]">
-              <img 
-                src="/editorial/contact-hero-1.png" 
-                alt="Formé Haus Editorial" 
+              <img
+                src="/editorial/contact-hero-1.png"
+                alt="Formé Haus Editorial"
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                loading="eager"
+                decoding="async"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
               <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-500" />
             </div>
 
             {/* Tall Image - Right (Narrow Vertical) */}
             <div className="md:col-span-1 md:row-span-3 relative group overflow-hidden rounded-xl">
-              <img 
-                src="/editorial/contact-hero-2.png" 
-                alt="Formé Haus Lifestyle" 
+              <img
+                src="/editorial/contact-hero-2.png"
+                alt="Formé Haus Lifestyle"
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                loading="lazy"
+                decoding="async"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
               <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-500" />
             </div>
 
             {/* Bottom Left - Small Detail (Square-ish) */}
             <div className="md:col-span-1 relative group overflow-hidden rounded-xl aspect-square">
-              <img 
-                src="/editorial/contact-hero-3.png" 
-                alt="Editorial Detail" 
+              <img
+                src="/editorial/contact-hero-3.png"
+                alt="Editorial Detail"
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                loading="lazy"
+                decoding="async"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
               <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-500" />
             </div>
 
             {/* Bottom Center - Lifestyle (Wide Rectangle) */}
             <div className="md:col-span-2 relative group overflow-hidden rounded-xl aspect-[16/8]">
-              <img 
-                src="/editorial/contact-hero-4.png" 
-                alt="Luxury Lifestyle" 
+              <img
+                src="/editorial/contact-hero-4.png"
+                alt="Luxury Lifestyle"
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                loading="lazy"
+                decoding="async"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
               <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-500" />
             </div>
@@ -478,6 +490,9 @@ export default function ContactPage() {
                       src={img}
                       alt={`Formé Haus Instagram post ${i + 1}`}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                      decoding="async"
+                      sizes="(max-width: 768px) 50vw, 25vw"
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                       <Instagram className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -526,6 +541,9 @@ export default function ContactPage() {
             src="/brand/logo-icon-only.png"
             alt="Formé Haus"
             className="h-12 w-auto mx-auto mb-6 opacity-60"
+            loading="lazy"
+            decoding="async"
+            height={48}
           />
           <p className="font-serif text-xl italic text-[#4A3C31]">
             Luxury is in the details.

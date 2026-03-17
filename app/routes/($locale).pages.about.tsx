@@ -46,6 +46,10 @@ export default function AboutPage() {
           initial={{scale: 1.08}}
           animate={{scale: 1}}
           transition={{duration: 1.4, ease: [0.16, 1, 0.3, 1]}}
+          loading="eager"
+          fetchPriority="high"
+          decoding="sync"
+          sizes="(max-width: 768px) 100vw, 50vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#121212]/70 via-[#121212]/30 to-transparent" />
         <div className="absolute inset-0 flex flex-col items-center justify-end pb-12 md:pb-16 px-6">
@@ -140,6 +144,9 @@ export default function AboutPage() {
               src="/brand/edit-carry.webp"
               alt="Formé Haus curated collection"
               className="w-full h-full object-cover"
+              loading="lazy"
+              decoding="async"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
             <div className="absolute inset-0 bg-[#121212]/10" />
           </div>

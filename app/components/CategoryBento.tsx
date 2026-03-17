@@ -99,7 +99,8 @@ function CategoryCard({
           <img
             src={category.image}
             alt={isRTL ? category.titleAr : category.title}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             style={{
               opacity: mounted && !imageLoaded ? 0 : 1,
               transform: 'scale(1.20)',
@@ -119,7 +120,7 @@ function CategoryCard({
 
         {/* Loading skeleton - only after mount */}
         {mounted && !imageLoaded && !imageError && (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#2a2118] to-[#1A1A1A] animate-pulse" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1A1A1A] to-[#2a2a2a]" />
         )}
 
         {/* Elegant gradient overlay - darker at bottom for text */}
@@ -137,7 +138,7 @@ function CategoryCard({
         {/* Content - positioned at bottom left */}
         <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 z-10 pointer-events-none">
           <motion.div
-            className="transform transition-transform duration-500"
+            className="transform transition-transform duration-300"
             initial={false}
             animate={{y: isHovered ? -4 : 0}}
           >

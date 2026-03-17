@@ -126,6 +126,8 @@ export function PredictiveSearch({
                               width={48}
                               height={64}
                               className="w-full h-full object-cover"
+                              sizes="64px"
+                              loading="lazy"
                             />
                           ) : (
                             <div className="w-full h-full border border-white/5" />

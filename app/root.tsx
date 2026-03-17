@@ -93,6 +93,8 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
  */
 export const links: LinksFunction = () => {
   return [
+    // Preload above-fold critical images
+    {rel: 'preload', href: '/brand/logo-icon-only.png', as: 'image'},
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',

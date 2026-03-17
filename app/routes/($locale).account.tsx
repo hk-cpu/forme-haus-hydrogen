@@ -628,6 +628,9 @@ function OrderRow({order, detailed = false}: {order: any; detailed?: boolean}) {
             width={64}
             height={64}
             className="w-full h-full object-contain p-1.5"
+            sizes="64px"
+            loading="lazy"
+            decoding="async"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">

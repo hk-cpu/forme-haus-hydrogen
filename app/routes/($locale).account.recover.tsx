@@ -39,6 +39,11 @@ export default function Recover() {
             src="/brand/logo-icon-only.png"
             alt="Formé Haus"
             className="w-24 h-auto object-contain opacity-85 transition-opacity duration-700 group-hover:opacity-100"
+            loading="eager"
+            fetchPriority="high"
+            decoding="sync"
+            width={40}
+            height={40}
           />
         </a>
 

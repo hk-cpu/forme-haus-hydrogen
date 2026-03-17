@@ -65,14 +65,16 @@ function TopCard({item, index}: {item: BentoItem; index: number}) {
           src={item.image}
           alt={item.alt}
           className="w-full h-auto block transition-transform duration-700 ease-out group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, 50vw"
           loading={index < 2 ? 'eager' : 'lazy'}
+          decoding="async"
         />
 
         {/* Hover gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
         {/* Content — revealed on hover */}
-        <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+        <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
           <h3 className="font-serif text-lg md:text-xl text-white italic tracking-wide">
             {item.title}
           </h3>
@@ -85,7 +87,7 @@ function TopCard({item, index}: {item: BentoItem; index: number}) {
         </div>
 
         {/* Hover border */}
-        <div className="absolute inset-0 rounded-[14px] border border-white/0 group-hover:border-white/15 transition-colors duration-500 pointer-events-none" />
+        <div className="absolute inset-0 rounded-[14px] border border-white/0 group-hover:border-white/15 transition-colors duration-300 pointer-events-none" />
       </Link>
     </motion.div>
   );
@@ -114,14 +116,16 @@ function BottomCard({item, index}: {item: BentoItem; index: number}) {
           src={item.image}
           alt={item.alt}
           className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
+          decoding="async"
         />
 
         {/* Hover gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
         {/* Content — revealed on hover */}
-        <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+        <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
           <h3 className="font-serif text-lg md:text-xl text-white italic tracking-wide">
             {item.title}
           </h3>
@@ -134,7 +138,7 @@ function BottomCard({item, index}: {item: BentoItem; index: number}) {
         </div>
 
         {/* Hover border */}
-        <div className="absolute inset-0 rounded-[14px] border border-white/0 group-hover:border-white/15 transition-colors duration-500 pointer-events-none" />
+        <div className="absolute inset-0 rounded-[14px] border border-white/0 group-hover:border-white/15 transition-colors duration-300 pointer-events-none" />
       </Link>
     </motion.div>
   );

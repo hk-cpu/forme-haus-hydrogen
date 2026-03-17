@@ -383,14 +383,12 @@ export function ProductGallery({
               animate={{opacity: 0.15, scale: 1}}
               exit={{opacity: 0, scale: 0.95}}
               transition={{duration: 0.8, ease: 'easeOut'}}
-              className="absolute inset-[-20%] blur-3xl"
-            >
-              <img
-                src={images[activeIndex].url}
-                alt={images[activeIndex].altText}
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
+              className="absolute inset-[-20%]"
+              style={{
+                background:
+                  'radial-gradient(ellipse at center, rgba(168,116,65,0.18) 0%, rgba(168,116,65,0.06) 40%, transparent 70%)',
+              }}
+            />
           </AnimatePresence>
         </div>
 
@@ -443,6 +441,7 @@ export function ProductGallery({
                     {/* Image with zoom capability */}
                     <motion.div
                       className="w-full h-full"
+                      style={{willChange: 'transform'}}
                       animate={
                         isActive && isZoomed
                           ? {
@@ -462,6 +461,9 @@ export function ProductGallery({
                         src={image.url}
                         alt={image.altText}
                         className="w-full h-full object-contain p-4 md:p-6"
+                        loading="lazy"
+                        decoding="async"
+                        sizes="(max-width: 768px) 100vw, 50vw"
                       />
                     </motion.div>
 
@@ -615,6 +617,9 @@ export function ProductGallery({
                 src={image.url}
                 alt={image.altText}
                 className="w-full h-full object-contain p-1.5 bg-[#F5F2ED]"
+                loading="lazy"
+                decoding="async"
+                sizes="80px"
               />
 
               {/* Active indicator glow */}

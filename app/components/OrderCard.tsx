@@ -53,6 +53,9 @@ export function OrderCard({order}: {order: StorefrontOrder}) {
               className="w-full h-full object-cover transition-transform duration-700 ease-out hover:scale-105"
               alt={firstImage.altText ?? 'Order image'}
               src={firstImage.url}
+              sizes="144px"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         )}

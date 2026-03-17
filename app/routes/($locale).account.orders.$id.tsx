@@ -248,6 +248,9 @@ export default function OrderRoute() {
                               data={lineItem.variant.image}
                               width={96}
                               height={96}
+                              sizes="96px"
+                              loading="lazy"
+                              decoding="async"
                             />
                           </div>
                         )}

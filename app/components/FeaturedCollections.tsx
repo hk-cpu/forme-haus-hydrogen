@@ -34,6 +34,8 @@ export function FeaturedCollections({
                       data={collection.image}
                       sizes="(max-width: 32em) 100vw, 33vw"
                       aspectRatio="3/2"
+                      loading="lazy"
+                      decoding="async"
                     />
                   )}
                 </div>

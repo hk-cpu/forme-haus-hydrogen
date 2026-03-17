@@ -178,6 +178,11 @@ export default function Login() {
                 src="/brand/logo-icon-only.png"
                 alt="Formé Haus"
                 className="w-20 h-20 object-contain opacity-85 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-100"
+                loading="eager"
+                fetchPriority="high"
+                decoding="sync"
+                width={40}
+                height={40}
               />
             </Link>
 

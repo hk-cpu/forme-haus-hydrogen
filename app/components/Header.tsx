@@ -429,6 +429,10 @@ export function Header({
                   src="/brand/logo-icon-only.png"
                   alt="FORMÉ HAUS"
                   className="transition-all duration-500 object-contain h-10 w-10 opacity-90 group-hover/logo:opacity-100"
+                  fetchPriority="high"
+                  width={40}
+                  height={40}
+                  decoding="sync"
                 />
                 {/* Elegant glow effect on hover */}
                 <div

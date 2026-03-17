@@ -804,7 +804,7 @@ function CartLineItem({line, index}: {line: CartLine; index?: number}) {
                 width={112}
                 height={112}
                 data={merchandise.image}
-                className="w-full h-full object-contain p-2 hover:scale-105 transition-transform duration-500"
+                className="w-full h-full object-contain p-2 hover:scale-105 transition-transform transition-opacity duration-500"
                 alt={merchandise.product?.title || ''}
               />
             </div>
@@ -876,16 +876,24 @@ function ItemRemoveButton({lineId}: {lineId: CartLine['id']}) {
         lineIds: [lineId],
       }}
     >
-      <motion.button
-        className="flex items-center gap-2 text-[#8B8076] hover:text-red-400 transition-colors text-xs uppercase tracking-wider group"
-        type="submit"
-        whileHover={{x: 2}}
-        whileTap={{scale: 0.95}}
-      >
-        <Icons.Trash className="w-4 h-4 group-hover:scale-110 transition-transform" />
-        <span>Remove</span>
-      </motion.button>
-      <OptimisticInput id={lineId} data={{action: 'remove'}} />
+      {(fetcher) => (
+        <>
+          <motion.button
+            className={clsx(
+              'flex items-center gap-2 text-[#8B8076] hover:text-red-400 transition-colors text-xs uppercase tracking-wider group',
+              fetcher.state !== 'idle' && 'opacity-50 cursor-not-allowed',
+            )}
+            type="submit"
+            disabled={fetcher.state !== 'idle'}
+            whileHover={{x: 2}}
+            whileTap={{scale: 0.95}}
+          >
+            <Icons.Trash className="w-4 h-4 group-hover:scale-110 transition-transform" />
+            <span>Remove</span>
+          </motion.button>
+          <OptimisticInput id={lineId} data={{action: 'remove'}} />
+        </>
+      )}
     </CartForm>
   );
 }
@@ -909,20 +917,25 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
       </label>
       <div className="flex items-center bg-[#1A1A1A] rounded-xl border border-[#8B8076]/20 overflow-hidden">
         <UpdateCartButton lines={[{id: lineId, quantity: prevQuantity}]}>
-          <motion.button
-            name="decrease-quantity"
-            aria-label="Decrease quantity"
-            className="w-11 h-11 flex items-center justify-center text-[#8B8076] hover:text-[#F0EAE6] hover:bg-[#8B8076]/10 disabled:text-[#8B8076]/30 transition-colors"
-            value={prevQuantity}
-            disabled={optimisticQuantity <= 1}
-            whileTap={{scale: 0.9}}
-          >
-            <Icons.Minus />
-            <OptimisticInput
-              id={optimisticId}
-              data={{quantity: prevQuantity}}
-            />
-          </motion.button>
+          {(fetcher) => (
+            <motion.button
+              name="decrease-quantity"
+              aria-label="Decrease quantity"
+              className={clsx(
+                'w-11 h-11 flex items-center justify-center text-[#8B8076] hover:text-[#F0EAE6] hover:bg-[#8B8076]/10 disabled:text-[#8B8076]/30 transition-colors',
+                fetcher.state !== 'idle' && 'opacity-50 cursor-not-allowed',
+              )}
+              value={prevQuantity}
+              disabled={optimisticQuantity <= 1 || fetcher.state !== 'idle'}
+              whileTap={{scale: 0.9}}
+            >
+              <Icons.Minus />
+              <OptimisticInput
+                id={optimisticId}
+                data={{quantity: prevQuantity}}
+              />
+            </motion.button>
+          )}
         </UpdateCartButton>
 
         <div
@@ -933,19 +946,25 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
         </div>
 
         <UpdateCartButton lines={[{id: lineId, quantity: nextQuantity}]}>
-          <motion.button
-            className="w-11 h-11 flex items-center justify-center text-[#8B8076] hover:text-[#F0EAE6] hover:bg-[#8B8076]/10 transition-colors"
-            name="increase-quantity"
-            value={nextQuantity}
-            aria-label="Increase quantity"
-            whileTap={{scale: 0.9}}
-          >
-            <Icons.Plus />
-            <OptimisticInput
-              id={optimisticId}
-              data={{quantity: nextQuantity}}
-            />
-          </motion.button>
+          {(fetcher) => (
+            <motion.button
+              className={clsx(
+                'w-11 h-11 flex items-center justify-center text-[#8B8076] hover:text-[#F0EAE6] hover:bg-[#8B8076]/10 transition-colors',
+                fetcher.state !== 'idle' && 'opacity-50 cursor-not-allowed',
+              )}
+              name="increase-quantity"
+              value={nextQuantity}
+              aria-label="Increase quantity"
+              disabled={fetcher.state !== 'idle'}
+              whileTap={{scale: 0.9}}
+            >
+              <Icons.Plus />
+              <OptimisticInput
+                id={optimisticId}
+                data={{quantity: nextQuantity}}
+              />
+            </motion.button>
+          )}
         </UpdateCartButton>
       </div>
     </div>
@@ -956,7 +975,9 @@ function UpdateCartButton({
   children,
   lines,
 }: {
-  children: React.ReactNode;
+  children:
+    | React.ReactNode
+    | ((fetcher: ReturnType<typeof useFetcher>) => React.ReactNode);
   lines: CartLineUpdateInput[];
 }) {
   return (

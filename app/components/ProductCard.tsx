@@ -445,6 +445,8 @@ export function ProductCard({
                   alt={images[currentImage].altText || product.title}
                   className="w-full h-full object-contain object-center p-3 md:p-5 drop-shadow-sm transition-transform duration-700 ease-out group-hover:scale-105"
                   loading={index < 4 ? 'eager' : 'lazy'}
+                  decoding="async"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = 'none';
                   }}

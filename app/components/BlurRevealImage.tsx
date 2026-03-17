@@ -139,7 +139,8 @@ export function BlurRevealImage({
         aria-hidden="true"
         className={`absolute inset-0 w-full h-full object-${objectFit}`}
         style={{objectPosition}}
-        loading="lazy"
+        loading="eager"
+        sizes="(max-width: 768px) 100vw, 50vw"
       />
 
       {/* Layer 2: Clear image — focus-pull reveal */}
@@ -148,11 +149,14 @@ export function BlurRevealImage({
         alt={alt}
         className={`absolute inset-0 w-full h-full object-${objectFit}`}
         loading="lazy"
+        decoding="async"
+        sizes="(max-width: 768px) 100vw, 50vw"
         style={{willChange: phase === 'reveal' ? 'filter, transform, opacity' : 'auto', objectPosition}}
         initial={hiddenAnimate}
         animate={currentAnimate}
         transition={currentTransition}
         onAnimationComplete={handleAnimationComplete}
+        onError={() => console.warn(`[BlurRevealImage] Failed to load image: ${src}`)}
       />
 
       {/* Layer 3: Optional vignette (disabled by default when cards have gradient overlays) */}
