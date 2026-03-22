@@ -19,6 +19,7 @@ export const translations = {
     'nav.sale': 'Sale',
     'nav.journal': 'Journal',
     'nav.about': 'Our Story',
+    'nav.contact': 'Contact Us',
 
     // Header & Actions
     'header.search': 'Search',
@@ -127,6 +128,8 @@ export const translations = {
     'search.noResults': 'No results found',
 
     // Product Card
+    'product.addToWishlist': 'Save to Wishlist',
+    'product.removeFromWishlist': 'Remove from Wishlist',
     'product.viewDetails': 'View Details',
     'product.comingSoon': 'COMING SOON',
     'product.details': 'Product Details',
@@ -222,6 +225,7 @@ export const translations = {
     'nav.sale': 'تخفيضات',
     'nav.journal': 'المجلة',
     'nav.about': 'من نحن',
+    'nav.contact': 'تواصل معنا',
 
     // Header & Actions
     'header.search': 'بحث',
@@ -329,6 +333,8 @@ export const translations = {
     'search.noResults': 'لم يتم العثور على نتائج',
 
     // Product Card
+    'product.addToWishlist': 'أضيفي للمفضلة',
+    'product.removeFromWishlist': 'إزالة من المفضلة',
     'product.viewDetails': 'عرض التفاصيل',
     'product.comingSoon': 'قريباً',
     'product.details': 'تفاصيل المنتج',

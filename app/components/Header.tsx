@@ -233,12 +233,25 @@ export function Header({
     },
     {
       id: '5',
-      title: t('nav.contact', 'Contact'),
+      title: t('nav.contact', 'Contact Us'),
       to: '/contact',
     },
   ];
 
-  const items = menu?.items?.length ? menu.items : defaultLinks;
+  const baseItems = menu?.items?.length ? menu.items : defaultLinks;
+  // Always ensure Contact Us is present even when Shopify menu overrides defaultLinks
+  const hasContact = baseItems.some(
+    (item: any) =>
+      item.to === '/contact' ||
+      item.url?.endsWith('/contact') ||
+      item.title?.toLowerCase().includes('contact'),
+  );
+  const items = hasContact
+    ? baseItems
+    : [
+        ...baseItems,
+        {id: 'contact', title: t('nav.contact', 'Contact Us'), to: '/contact'},
+      ];
 
   // Header background logic
   const getHeaderBackgroundClass = () => {

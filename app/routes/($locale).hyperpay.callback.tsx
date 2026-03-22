@@ -36,8 +36,16 @@ export async function loader({request, context}: LoaderFunctionArgs) {
 
   const env = context.env as Record<string, string | undefined>;
   const accessToken = env.HYPERPAY_ACCESS_TOKEN;
-  const entityId = env.HYPERPAY_ENTITY_ID_CARD ?? env.HYPERPAY_ENTITY_ID_MADA;
   const baseUrl = env.HYPERPAY_BASE_URL ?? 'https://eu-test.oppwa.com';
+
+  // Use the same entity ID that was used to create the checkout
+  const brand = (url.searchParams.get('brand') ?? 'CARD').toUpperCase();
+  const entityId =
+    brand === 'MADA'
+      ? (env.HYPERPAY_ENTITY_ID_MADA ?? env.HYPERPAY_ENTITY_ID_CARD)
+      : brand === 'STC' || brand === 'STCPAY'
+      ? (env.HYPERPAY_ENTITY_ID_STCPAY ?? env.HYPERPAY_ENTITY_ID_CARD)
+      : env.HYPERPAY_ENTITY_ID_CARD;
 
   if (!resourcePath) {
     return json({status: 'error', message: 'No payment reference found.'});

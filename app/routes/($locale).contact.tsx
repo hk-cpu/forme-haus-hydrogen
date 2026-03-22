@@ -3,7 +3,6 @@ import {
   Mail,
   Clock,
   Instagram,
-  MessageCircle,
   ArrowRight,
   Send,
 } from 'lucide-react';
@@ -13,8 +12,6 @@ import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
-
-import {useTranslation} from '~/hooks/useTranslation';
 
 export async function loader({context}: LoaderFunctionArgs) {
   return json({storeDomain: context.env.PUBLIC_STORE_DOMAIN});
@@ -97,7 +94,6 @@ const itemVariants = {
 };
 
 export default function ContactPage() {
-  const {t} = useTranslation();
   const actionData = useActionData<typeof action>() as any;
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
@@ -124,18 +120,18 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F9F5F0]">
+    <div className="bg-[#F9F5F0]">
       {/* Editorial Gallery Hero */}
-      <section className="px-4 md:px-8 py-12">
-        <div className="max-w-[1400px] mx-auto">
-          <motion.div 
+      <section className="px-4 md:px-8 pt-4 pb-3">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 rounded-3xl shadow-sm"
+            className="grid grid-cols-4 gap-2 bg-white p-2 rounded-2xl shadow-sm h-[28vh]"
           >
-            {/* Main Image - Top Left (Large Landscape) */}
-            <div className="md:col-span-3 md:row-span-2 relative group overflow-hidden rounded-xl aspect-[16/10]">
+            {/* Main Image */}
+            <div className="col-span-3 relative group overflow-hidden rounded-xl">
               <img
                 src="/editorial/contact-hero-1.png"
                 alt="Formé Haus Editorial"
@@ -147,37 +143,11 @@ export default function ContactPage() {
               <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-500" />
             </div>
 
-            {/* Tall Image - Right (Narrow Vertical) */}
-            <div className="md:col-span-1 md:row-span-3 relative group overflow-hidden rounded-xl">
+            {/* Tall Image - Right */}
+            <div className="col-span-1 relative group overflow-hidden rounded-xl">
               <img
                 src="/editorial/contact-hero-2.png"
                 alt="Formé Haus Lifestyle"
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                loading="lazy"
-                decoding="async"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-              <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-500" />
-            </div>
-
-            {/* Bottom Left - Small Detail (Square-ish) */}
-            <div className="md:col-span-1 relative group overflow-hidden rounded-xl aspect-square">
-              <img
-                src="/editorial/contact-hero-3.png"
-                alt="Editorial Detail"
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                loading="lazy"
-                decoding="async"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-              <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-500" />
-            </div>
-
-            {/* Bottom Center - Lifestyle (Wide Rectangle) */}
-            <div className="md:col-span-2 relative group overflow-hidden rounded-xl aspect-[16/8]">
-              <img
-                src="/editorial/contact-hero-4.png"
-                alt="Luxury Lifestyle"
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"
@@ -190,7 +160,7 @@ export default function ContactPage() {
       </section>
 
       {/* Header Content */}
-      <section className="relative py-12 px-6 md:px-12 overflow-hidden text-center">
+      <section className="relative py-5 px-6 md:px-12 overflow-hidden text-center">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{opacity: 0, y: 30}}
@@ -198,10 +168,10 @@ export default function ContactPage() {
             viewport={{once: true}}
             transition={{duration: 0.8}}
           >
-            <span className="text-[11px] uppercase tracking-[0.3em] text-[#a87441] mb-4 block">
+            <span className="text-[11px] uppercase tracking-[0.3em] text-[#a87441] mb-2 block">
               Experience the Haus
             </span>
-            <h1 className="font-serif text-4xl md:text-6xl italic text-[#4A3C31] mb-6">
+            <h1 className="font-serif text-3xl md:text-4xl italic text-[#4A3C31] mb-2">
               Connect With Us
             </h1>
           </motion.div>
@@ -211,22 +181,21 @@ export default function ContactPage() {
             whileInView={{opacity: 1, y: 0}}
             viewport={{once: true}}
             transition={{duration: 0.8, delay: 0.2}}
-            className="text-[15px] leading-relaxed text-[#5C5046] max-w-2xl mx-auto mb-12"
+            className="text-[13px] leading-relaxed text-[#5C5046] max-w-2xl mx-auto mb-4"
           >
-            Our dedicated team is here to assist with styling advice, order inquiries, 
-            or any questions you may have about our curated collections.
+            Our team is here to assist with styling advice, order inquiries, or any questions about our collections.
           </motion.p>
         </div>
       </section>
 
-      {/* Contact Methods Grid - 2 Cards */}
-      <section className="px-6 md:px-12 pb-16">
+      {/* Contact Methods Grid */}
+      <section className="px-6 md:px-12 pb-4">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{once: true}}
-          className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6"
+          className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4"
         >
           {contactMethods.map((method) => (
             <motion.a
@@ -239,34 +208,25 @@ export default function ContactPage() {
                   : undefined
               }
               variants={itemVariants}
-              className="group relative bg-white rounded-2xl p-8 border border-[#8B8076]/10
+              className="group relative bg-white rounded-2xl p-5 border border-[#8B8076]/10
                 hover:border-[#a87441]/30 hover:shadow-xl hover:shadow-[#a87441]/5
-                transition-all duration-500"
+                transition-all duration-500 flex items-center gap-4"
             >
               {/* Icon */}
               <div
-                className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#a87441]/10 to-[#a87441]/5
-                flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
+                className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#a87441]/10 to-[#a87441]/5
+                flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300"
               >
-                <method.icon className="w-6 h-6 text-[#a87441]" />
+                <method.icon className="w-5 h-5 text-[#a87441]" />
               </div>
 
               {/* Content */}
-              <h3 className="font-serif text-xl text-[#4A3C31] mb-2">
-                {method.title}
-              </h3>
-              <p className="text-[13px] text-[#8B8076] mb-4">
-                {method.description}
-              </p>
-              <p className="text-[15px] font-medium text-[#4A3C31] mb-6">
-                {method.value}
-              </p>
-
-              {/* Action */}
-              <div className="flex items-center gap-2 text-[#a87441] text-[12px] uppercase tracking-wider">
-                <span>{method.action} &rarr;</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <div className="flex-1 min-w-0">
+                <h3 className="font-serif text-base text-[#4A3C31]">{method.title}</h3>
+                <p className="text-[12px] text-[#8B8076] truncate">{method.value}</p>
               </div>
+
+              <ArrowRight className="w-4 h-4 text-[#a87441] group-hover:translate-x-1 transition-transform shrink-0" />
 
               {/* Hover Glow */}
               <div
@@ -279,8 +239,8 @@ export default function ContactPage() {
       </section>
 
       {/* Main Content Grid */}
-      <section className="px-6 md:px-12 py-16 bg-white/50">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
+      <section className="px-6 md:px-12 py-6 bg-white/50">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left: Contact Form */}
           <motion.div
             initial={{opacity: 0, x: -30}}
@@ -288,10 +248,10 @@ export default function ContactPage() {
             viewport={{once: true}}
             transition={{duration: 0.8}}
           >
-            <h2 className="font-serif text-2xl italic text-[#4A3C31] mb-2">
+            <h2 className="font-serif text-xl italic text-[#4A3C31] mb-1">
               Send a Message
             </h2>
-            <p className="text-[13px] text-[#8B8076] mb-8">
+            <p className="text-[12px] text-[#8B8076] mb-5">
               Fill out the form below and we&apos;ll get back to you shortly.
             </p>
 
@@ -323,8 +283,8 @@ export default function ContactPage() {
                 </p>
               </motion.div>
             ) : (
-              <Form method="post" className="space-y-5">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <Form method="post" className="space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
                     <label
                       htmlFor="contact-name"
@@ -396,7 +356,7 @@ export default function ContactPage() {
                     id="contact-message"
                     name="message"
                     required
-                    rows={5}
+                    rows={3}
                     className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3
                       text-[#4A3C31] placeholder-[#8B8076]/50 resize-none
                       focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/20
@@ -435,11 +395,11 @@ export default function ContactPage() {
             whileInView={{opacity: 1, x: 0}}
             viewport={{once: true}}
             transition={{duration: 0.8}}
-            className="space-y-10"
+            className="space-y-4"
           >
             {/* Instagram Follow */}
-            <div className="bg-white rounded-2xl p-8 border border-[#8B8076]/10">
-              <div className="flex items-center justify-between mb-6">
+            <div className="bg-white rounded-2xl p-5 border border-[#8B8076]/10">
+              <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <div
                     className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400
@@ -467,7 +427,7 @@ export default function ContactPage() {
                 </a>
               </div>
 
-              <p className="text-[13px] text-[#5C5046] leading-relaxed mb-5">
+              <p className="text-[12px] text-[#5C5046] leading-relaxed mb-3">
                 Discover the latest collections, editorial inspiration, and
                 behind-the-scenes moments.
               </p>
@@ -503,7 +463,7 @@ export default function ContactPage() {
             </div>
 
             {/* Store Hours */}
-            <div className="bg-[#F5F0EB] rounded-2xl p-6">
+            <div className="bg-[#F5F0EB] rounded-2xl p-4">
               <div className="flex items-center gap-2 mb-4">
                 <Clock className="w-4 h-4 text-[#a87441]" />
                 <span className="text-[11px] uppercase tracking-wider text-[#4A3C31]">
@@ -530,25 +490,10 @@ export default function ContactPage() {
       </section>
 
       {/* Bottom Brand Statement */}
-      <section className="py-16 px-6 text-center">
-        <motion.div
-          initial={{opacity: 0, y: 20}}
-          whileInView={{opacity: 1, y: 0}}
-          viewport={{once: true}}
-          className="max-w-2xl mx-auto"
-        >
-          <img
-            src="/brand/logo-icon-only.png"
-            alt="Formé Haus"
-            className="h-12 w-auto mx-auto mb-6 opacity-60"
-            loading="lazy"
-            decoding="async"
-            height={48}
-          />
-          <p className="font-serif text-xl italic text-[#4A3C31]">
-            Luxury is in the details.
-          </p>
-        </motion.div>
+      <section className="py-6 px-6 text-center">
+        <p className="font-serif text-base italic text-[#8B8076]">
+          Luxury is in the details.
+        </p>
       </section>
     </div>
   );

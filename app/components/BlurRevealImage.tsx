@@ -39,7 +39,7 @@ export function BlurRevealImage({
   objectPosition = 'center',
 }: BlurRevealImageProps) {
   const [internalHover, setInternalHover] = useState(false);
-  const [phase, setPhase] = useState<'hidden' | 'reveal' | 'idle'>('hidden');
+  const [phase, setPhase] = useState<'hidden' | 'reveal' | 'idle'>('idle');
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, {once: true, margin: '-60px'});
   const shouldReduceMotion = useReducedMotion();
@@ -56,7 +56,7 @@ export function BlurRevealImage({
   // Phase 1: single-shot hunt→lock (no repeat = no disappear-on-loop bug)
   const revealAnimate = {
     opacity: [0, 0.35, 1],
-    filter: ['blur(10px)', 'blur(14px)', 'blur(0px)'],
+    filter: ['blur(0px)', 'blur(0px)', 'blur(0px)'],
     scale: [1, 0.997, 1.015],
   };
   const revealTransition = {
@@ -65,17 +65,15 @@ export function BlurRevealImage({
     ease: 'easeInOut' as const,
   };
 
-  // Phase 2: idle breathing — oscillates, never fades to 0
+  // Phase 2: idle — sharp and fully visible immediately, no blur animation
   const idleAnimate = {
-    opacity: [0.55, 0.75, 0.55],
-    filter: ['blur(2.5px)', 'blur(0.5px)', 'blur(2.5px)'],
-    scale: [1.012, 1.018, 1.012],
+    opacity: 1,
+    filter: 'blur(0px)',
+    scale: 1,
   };
   const idleTransition = {
-    duration: breatheDuration,
-    ease: 'easeInOut' as const,
-    repeat: Infinity,
-    repeatType: 'loop' as const,
+    duration: 0.3,
+    ease: 'easeOut' as const,
   };
 
   // Hover: snap to clarity with spring overshoot
@@ -95,7 +93,7 @@ export function BlurRevealImage({
     },
   };
 
-  const hiddenAnimate = {opacity: 0, filter: 'blur(10px)', scale: 1};
+  const hiddenAnimate = {opacity: 0, filter: 'blur(0px)', scale: 1};
 
   const currentAnimate = shouldReduceMotion
     ? {opacity: 1, filter: 'blur(0px)', scale: 1}
@@ -137,7 +135,7 @@ export function BlurRevealImage({
         src={blurSrc}
         alt=""
         aria-hidden="true"
-        className={`absolute inset-0 w-full h-full object-${objectFit}`}
+        className={`absolute inset-0 w-full h-full ${objectFit === 'contain' ? 'object-contain' : 'object-cover'}`}
         style={{objectPosition}}
         loading="eager"
         sizes="(max-width: 768px) 100vw, 50vw"

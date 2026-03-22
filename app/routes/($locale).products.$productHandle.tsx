@@ -475,7 +475,7 @@ export function ProductForm({
   return (
     <div className="grid gap-10">
       <div className="grid gap-4">
-        {productOptions.map((option, optionIndex) => (
+        {productOptions.filter((o) => o.name !== 'Title').map((option, optionIndex) => (
           <div
             key={option.name}
             className="product-options flex flex-col flex-wrap mb-4 gap-y-2 last:mb-0"

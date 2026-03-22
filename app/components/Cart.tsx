@@ -519,7 +519,7 @@ function HyperPayCheckoutButton({cart}: {cart: CartType}) {
             checkoutId={fetcher.data.checkoutId!}
             baseUrl={fetcher.data.baseUrl!}
             brands={fetcher.data.brand === 'MADA' ? 'MADA' : 'VISA MASTER AMEX'}
-            callbackPath="/hyperpay/callback"
+            callbackPath={`/hyperpay/callback?brand=${fetcher.data.brand ?? 'CARD'}`}
           />
         </Suspense>
       ) : null}
