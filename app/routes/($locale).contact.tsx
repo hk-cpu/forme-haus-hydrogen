@@ -1,11 +1,5 @@
 import {motion} from 'framer-motion';
-import {
-  Mail,
-  Clock,
-  Instagram,
-  ArrowRight,
-  Send,
-} from 'lucide-react';
+import {Clock, Instagram, Send} from 'lucide-react';
 import {Form, useActionData, useNavigation} from '@remix-run/react';
 import {
   json,
@@ -72,175 +66,28 @@ export const handle = {
   },
 };
 
-// Animation variants
-const containerVariants = {
-  hidden: {opacity: 0},
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: {opacity: 0, y: 20},
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {duration: 0.6, ease: [0.22, 1, 0.36, 1] as const},
-  },
-};
-
 export default function ContactPage() {
   const actionData = useActionData<typeof action>() as any;
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
   const submitted = actionData?.success === true;
 
-  const contactMethods = [
-    // WhatsApp hidden until business number is available
-    // {
-    //   icon: MessageCircle,
-    //   title: 'WhatsApp',
-    //   description: 'Instant messaging for quick queries',
-    //   value: '+966 XX XXX XXXX',
-    //   href: 'https://wa.me/966XXXXXXXXX',
-    //   action: 'Chat on WhatsApp',
-    // },
-    {
-      icon: Mail,
-      title: 'Email Us',
-      description: "We'll get back to you as soon as possible",
-      value: 'info@formehaus.me',
-      href: 'mailto:info@formehaus.me',
-      action: 'Send Email',
-    },
-  ];
-
   return (
-    <div className="bg-[#F9F5F0]">
-      {/* Editorial Gallery Hero */}
-      <section className="px-4 md:px-8 pt-4 pb-3">
+    <div className="bg-[#F9F5F0] min-h-[calc(100vh-64px)] flex flex-col justify-center">
+      {/* Main Content Grid */}
+      <section className="px-6 md:px-12 py-8 md:py-10">
         <div className="max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="grid grid-cols-4 gap-2 bg-white p-2 rounded-2xl shadow-sm h-[28vh]"
-          >
-            {/* Main Image */}
-            <div className="col-span-3 relative group overflow-hidden rounded-xl">
-              <img
-                src="/editorial/contact-hero-1.png"
-                alt="Formé Haus Editorial"
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                loading="eager"
-                decoding="async"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-              <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-500" />
-            </div>
-
-            {/* Tall Image - Right */}
-            <div className="col-span-1 relative group overflow-hidden rounded-xl">
-              <img
-                src="/editorial/contact-hero-2.png"
-                alt="Formé Haus Lifestyle"
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                loading="lazy"
-                decoding="async"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-              <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-500" />
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Header Content */}
-      <section className="relative py-5 px-6 md:px-12 overflow-hidden text-center">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{opacity: 0, y: 30}}
-            whileInView={{opacity: 1, y: 0}}
-            viewport={{once: true}}
-            transition={{duration: 0.8}}
-          >
-            <span className="text-[11px] uppercase tracking-[0.3em] text-[#a87441] mb-2 block">
+          {/* Page Title — inline above grid */}
+          <div className="mb-5 text-center">
+            <span className="text-[10px] uppercase tracking-[0.3em] text-[#a87441] block mb-1">
               Experience the Haus
             </span>
-            <h1 className="font-serif text-3xl md:text-4xl italic text-[#4A3C31] mb-2">
+            <h1 className="font-serif text-2xl md:text-3xl italic text-[#4A3C31]">
               Connect With Us
             </h1>
-          </motion.div>
-
-          <motion.p
-            initial={{opacity: 0, y: 20}}
-            whileInView={{opacity: 1, y: 0}}
-            viewport={{once: true}}
-            transition={{duration: 0.8, delay: 0.2}}
-            className="text-[13px] leading-relaxed text-[#5C5046] max-w-2xl mx-auto mb-4"
-          >
-            Our team is here to assist with styling advice, order inquiries, or any questions about our collections.
-          </motion.p>
+          </div>
         </div>
-      </section>
-
-      {/* Contact Methods Grid */}
-      <section className="px-6 md:px-12 pb-4">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{once: true}}
-          className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4"
-        >
-          {contactMethods.map((method) => (
-            <motion.a
-              key={method.title}
-              href={method.href}
-              target={method.href.startsWith('http') ? '_blank' : undefined}
-              rel={
-                method.href.startsWith('http')
-                  ? 'noopener noreferrer'
-                  : undefined
-              }
-              variants={itemVariants}
-              className="group relative bg-white rounded-2xl p-5 border border-[#8B8076]/10
-                hover:border-[#a87441]/30 hover:shadow-xl hover:shadow-[#a87441]/5
-                transition-all duration-500 flex items-center gap-4"
-            >
-              {/* Icon */}
-              <div
-                className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#a87441]/10 to-[#a87441]/5
-                flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300"
-              >
-                <method.icon className="w-5 h-5 text-[#a87441]" />
-              </div>
-
-              {/* Content */}
-              <div className="flex-1 min-w-0">
-                <h3 className="font-serif text-base text-[#4A3C31]">{method.title}</h3>
-                <p className="text-[12px] text-[#8B8076] truncate">{method.value}</p>
-              </div>
-
-              <ArrowRight className="w-4 h-4 text-[#a87441] group-hover:translate-x-1 transition-transform shrink-0" />
-
-              {/* Hover Glow */}
-              <div
-                className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#a87441]/5 to-transparent
-                opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-              />
-            </motion.a>
-          ))}
-        </motion.div>
-      </section>
-
-      {/* Main Content Grid */}
-      <section className="px-6 md:px-12 py-6 bg-white/50">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Left: Contact Form */}
           <motion.div
             initial={{opacity: 0, x: -30}}
@@ -248,10 +95,10 @@ export default function ContactPage() {
             viewport={{once: true}}
             transition={{duration: 0.8}}
           >
-            <h2 className="font-serif text-xl italic text-[#4A3C31] mb-1">
+            <h2 className="font-serif text-lg italic text-[#4A3C31] mb-1">
               Send a Message
             </h2>
-            <p className="text-[12px] text-[#8B8076] mb-5">
+            <p className="text-[11px] text-[#8B8076] mb-3">
               Fill out the form below and we&apos;ll get back to you shortly.
             </p>
 
@@ -283,7 +130,7 @@ export default function ContactPage() {
                 </p>
               </motion.div>
             ) : (
-              <Form method="post" className="space-y-3">
+              <Form method="post" className="space-y-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
                     <label
@@ -356,7 +203,7 @@ export default function ContactPage() {
                     id="contact-message"
                     name="message"
                     required
-                    rows={3}
+                    rows={2}
                     className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3
                       text-[#4A3C31] placeholder-[#8B8076]/50 resize-none
                       focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/20
@@ -368,7 +215,7 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-[#4A3C31] text-white py-4 rounded-lg font-medium text-[13px] uppercase tracking-wider
+                  className="w-full bg-[#4A3C31] text-white py-3 rounded-lg font-medium text-[13px] uppercase tracking-wider
                     hover:bg-[#a87441] transition-all duration-300
                     disabled:opacity-50 disabled:cursor-not-allowed
                     flex items-center justify-center gap-2"
@@ -395,10 +242,10 @@ export default function ContactPage() {
             whileInView={{opacity: 1, x: 0}}
             viewport={{once: true}}
             transition={{duration: 0.8}}
-            className="space-y-4"
+            className="space-y-3"
           >
             {/* Instagram Follow */}
-            <div className="bg-white rounded-2xl p-5 border border-[#8B8076]/10">
+            <div className="bg-white rounded-2xl p-4 border border-[#8B8076]/10">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <div
@@ -464,7 +311,7 @@ export default function ContactPage() {
 
             {/* Store Hours */}
             <div className="bg-[#F5F0EB] rounded-2xl p-4">
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-2">
                 <Clock className="w-4 h-4 text-[#a87441]" />
                 <span className="text-[11px] uppercase tracking-wider text-[#4A3C31]">
                   Customer Service Hours
@@ -487,13 +334,6 @@ export default function ContactPage() {
             </div>
           </motion.div>
         </div>
-      </section>
-
-      {/* Bottom Brand Statement */}
-      <section className="py-6 px-6 text-center">
-        <p className="font-serif text-base italic text-[#8B8076]">
-          Luxury is in the details.
-        </p>
       </section>
     </div>
   );
