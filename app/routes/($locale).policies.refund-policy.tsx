@@ -28,85 +28,137 @@ export default function RefundPolicyPage() {
 
         {isArabic ? (
           /* Arabic */
-          <div className="prose max-w-prose mx-auto prose-headings:text-[#4A3C31] prose-headings:font-serif prose-p:text-[#4A3C31]/80 prose-li:text-[#4A3C31]/80 font-light leading-relaxed" dir="rtl">
+          <div
+            className="prose max-w-prose mx-auto prose-headings:text-[#4A3C31] prose-headings:font-serif prose-p:text-[#4A3C31]/80 prose-li:text-[#4A3C31]/80 font-light leading-relaxed"
+            dir="rtl"
+          >
             <p>
-              وفقًا لنظام التجارة الإلكترونية في المملكة العربية السعودية، يحق للعميل طلب الاسترجاع أو الاستبدال خلال <strong>7 أيام</strong> من تاريخ الاستلام.
+              في <strong>Formé Haus</strong> نسعى لضمان رضاكم عن مشترياتكم.
+            </p>
+            <p>
+              وفقًا لنظام التجارة الإلكترونية في المملكة العربية السعودية، يحق
+              للعميل طلب <strong>الاسترجاع أو الاستبدال خلال 7 أيام</strong> من
+              تاريخ الاستلام.
             </p>
 
-            <h3>شروط القبول</h3>
-            <p>يشترط لقبول الطلب:</p>
+            <h3>يشترط لقبول الطلب</h3>
             <ul>
-              <li>أن يكون المنتج غير مستخدم وفي حالته الأصلية</li>
-              <li>إرجاعه مع جميع التغليفات والبطاقات والمرفقات الأصلية</li>
-              <li>تقديم إثبات الشراء</li>
+              <li>أن يكون المنتج <strong>غير مستخدم وفي حالته الأصلية</strong></li>
+              <li>
+                إرجاعه مع <strong>جميع التغليفات والبطاقات والمرفقات الأصلية</strong>
+              </li>
+              <li>تقديم <strong>إثبات الشراء</strong></li>
             </ul>
 
             <h3>المنتجات غير القابلة للاسترجاع</h3>
-            <p>لا يقبل الاسترجاع للمنتجات:</p>
-            <ul>
-              <li>المستخدمة أو المرتدة أو المعدلة</li>
-              <li>النظارات الشمسية أو أغطية الجوال أو الأشرطة أو الإكسسوارات بعد فتحها أو استخدامها</li>
-            </ul>
+            <p>
+              لأسباب تتعلق بالنظافة وسلامة المنتج، لا يمكن استرجاع{' '}
+              <strong>النظارات الشمسية أو أغطية الجوال أو الأشرطة أو الإكسسوارات</strong>{' '}
+              بعد فتحها أو استخدامها.
+            </p>
 
             <h3>المنتجات التالفة أو الخاطئة</h3>
             <p>
-              في حال استلام منتج تالف أو مختلف عن الطلب، يرجى التواصل خلال <strong>48 ساعة</strong> من الاستلام، وسيتم ترتيب الاسترجاع دون رسوم إضافية.
+              في حال استلام منتج تالف أو مختلف عن الطلب، يرجى التواصل خلال{' '}
+              <strong>48 ساعة من الاستلام</strong> وسيتم ترتيب الاسترجاع دون
+              رسوم إضافية.
             </p>
 
-            <p>رسوم الشحن الأصلية غير قابلة للاسترداد في حال تغيير الرأي.</p>
-
-            <p>
-              يتم رد المبلغ إلى وسيلة الدفع الأصلية خلال مدة لا تتجاوز <strong>14 يومًا</strong> من استلام المنتج المرتجع وفحصه.
-            </p>
-
-            <h3>كيفية تقديم طلب استرجاع</h3>
-            <p>
-              لطلب الاسترجاع أو الاستبدال، يرجى التواصل معنا خلال المدة المحددة مع تزويدنا برقم الطلب:
-            </p>
+            <h3>الشحن والاسترداد</h3>
             <ul>
-              <li>البريد الإلكتروني: support@formehaus.me</li>
+              <li>
+                رسوم الشحن الأصلية <strong>غير قابلة للاسترداد</strong> في حال تغيير الرأي
+              </li>
+              <li>تخضع المنتجات المرتجعة <strong>للفحص عند الاستلام</strong></li>
+              <li>
+                يتم رد المبلغ إلى{' '}
+                <strong>وسيلة الدفع الأصلية خلال 14 يومًا</strong> بعد فحص المنتج
+              </li>
             </ul>
+
+            <h3>كيفية طلب الاسترجاع</h3>
+            <p>
+              يرجى التواصل معنا خلال المدة المحددة مع تزويدنا{' '}
+              <strong>برقم الطلب</strong>.
+            </p>
+            <p>
+              <strong>البريد الإلكتروني:</strong>{' '}
+              <a href="mailto:support@formehaus.me">support@formehaus.me</a>
+            </p>
           </div>
         ) : (
           /* English */
           <div className="prose max-w-prose mx-auto prose-headings:text-[#4A3C31] prose-headings:font-serif prose-p:text-[#4A3C31]/80 prose-li:text-[#4A3C31]/80 font-light leading-relaxed">
             <p>
-              In accordance with Saudi E-Commerce Law, customers may request a return or exchange within <strong>7 days</strong> of receiving their order.
+              At <strong>Formé Haus</strong>, we strive to ensure you are
+              satisfied with your purchase.
+            </p>
+            <p>
+              Customers may request a{' '}
+              <strong>return or exchange within 7 days</strong> of receiving
+              their order in accordance with Saudi E-Commerce Law.
             </p>
 
-            <h3>Eligibility</h3>
-            <p>To be eligible:</p>
+            <h3>To Be Eligible for a Return</h3>
             <ul>
-              <li>Item must be unused and in original condition</li>
-              <li>Returned with all original packaging, tags, and accessories</li>
-              <li>Proof of purchase must be provided</li>
+              <li>
+                The item must be{' '}
+                <strong>unused, unworn, and in its original condition</strong>
+              </li>
+              <li>
+                All <strong>original packaging, tags, and accessories</strong>{' '}
+                must be included
+              </li>
+              <li>
+                <strong>Proof of purchase</strong> must be provided
+              </li>
             </ul>
 
             <h3>Non-Returnable Items</h3>
-            <p>Returns are not accepted for:</p>
-            <ul>
-              <li>Used, worn, washed, or altered items</li>
-              <li>Opened or used sunglasses, phone cases, straps, or accessories</li>
-            </ul>
+            <p>
+              For hygiene and product integrity reasons, returns are not
+              accepted for{' '}
+              <strong>
+                sunglasses, phone cases, straps, or accessories
+              </strong>{' '}
+              once opened or used.
+            </p>
 
             <h3>Damaged or Incorrect Items</h3>
             <p>
-              If you receive a damaged, defective, or incorrect item, please contact us within <strong>48 hours</strong> of delivery. Return shipping will be arranged at no cost in such cases.
+              If you receive a damaged, defective, or incorrect item, please
+              contact us within <strong>48 hours of delivery</strong>. Return
+              shipping will be arranged <strong>at no cost</strong> in such
+              cases.
             </p>
 
-            <p>Original shipping fees are non-refundable for change-of-mind returns.</p>
-
-            <p>
-              Approved refunds are issued to the original payment method within <strong>14 days</strong> after receiving and inspecting the returned item.
-            </p>
+            <h3>Shipping &amp; Refunds</h3>
+            <ul>
+              <li>
+                Original shipping fees are{' '}
+                <strong>non-refundable for change-of-mind returns</strong>
+              </li>
+              <li>
+                Returned items are <strong>subject to inspection</strong>
+              </li>
+              <li>
+                Approved refunds are issued to the{' '}
+                <strong>
+                  original payment method within 14 days
+                </strong>{' '}
+                after inspection
+              </li>
+            </ul>
 
             <h3>How to Request a Return</h3>
             <p>
-              To request a return or exchange, please contact us within the eligible period and provide your order number:
+              Please contact us within the eligible period and provide your{' '}
+              <strong>order number</strong>.
             </p>
-            <ul>
-              <li>Email: support@formehaus.me</li>
-            </ul>
+            <p>
+              <strong>Email:</strong>{' '}
+              <a href="mailto:support@formehaus.me">support@formehaus.me</a>
+            </p>
           </div>
         )}
       </div>

@@ -194,7 +194,7 @@ export default function Article() {
             <img
               src={staticArticle.image}
               alt={staticArticle.title}
-              className="w-full h-auto object-cover"
+              className="w-full max-h-[55vh] object-cover object-center"
               loading="eager"
             />
           </motion.div>

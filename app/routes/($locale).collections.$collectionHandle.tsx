@@ -403,12 +403,14 @@ export default function Collection() {
         )}
       </motion.div>
 
-      {/* ─── Category Navigation Tabs ─── */}
-      <CategoryHeader
-        currentCategory={collection.title}
-        productCount={collection.products.nodes.length}
-        collectionHandle={collection.handle}
-      />
+      {/* ─── Category Navigation Tabs ─── (hidden on New to Haus) */}
+      {collection.handle !== 'new-in' && collection.handle !== 'new' && (
+        <CategoryHeader
+          currentCategory={collection.title}
+          productCount={collection.products.nodes.length}
+          collectionHandle={collection.handle}
+        />
+      )}
 
       {/* ─── Breadcrumb + Sort / Applied Filters Bar ─── */}
       <div

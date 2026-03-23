@@ -332,6 +332,27 @@ export default function ContactPage() {
                 </div>
               </div>
             </div>
+
+            {/* New Ways to Connect */}
+            <div className="bg-white rounded-2xl p-4 border border-[#8B8076]/10">
+              <h3 className="font-serif text-base italic text-[#4A3C31] mb-1">
+                New Ways to Connect
+              </h3>
+              <p className="text-[12px] text-[#5C5046] leading-relaxed mb-3">
+                We&apos;re expanding how we connect with you to offer a more seamless and personalized experience.
+              </p>
+              <ul className="space-y-1.5">
+                {['Live Chat', 'Order Updates'].map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-[12px] text-[#8B8076]">
+                    <span className="w-1 h-1 rounded-full bg-[#a87441]/50 shrink-0" />
+                    {item}
+                    <span className="ml-auto text-[10px] uppercase tracking-wider text-[#a87441]/60">
+                      Coming Soon
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </motion.div>
         </div>
       </section>
