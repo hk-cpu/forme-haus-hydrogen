@@ -33,7 +33,7 @@ type LayoutProps = {
 };
 
 // Set WHATSAPP_NUMBER to your actual business number (country code, no +) to enable this button
-const WHATSAPP_NUMBER = '';
+const WHATSAPP_NUMBER = '966533954066';
 
 export function PageLayout({children, layout}: LayoutProps) {
   const {headerMenu, footerMenu} = layout || {};

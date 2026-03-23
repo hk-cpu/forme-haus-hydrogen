@@ -128,7 +128,7 @@ export default function ContactPage() {
             <h3 className="font-serif text-xl text-[#4A3C31] mb-4">WhatsApp</h3>
             <p className="text-[13px] text-[#8B8076] mb-4">Message us directly for quick support.</p>
             <a
-              href="https://wa.me/966800123456"
+              href="https://wa.me/966533954066"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-[#a87441] font-medium text-[13px]"
