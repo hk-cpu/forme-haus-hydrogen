@@ -60,13 +60,13 @@ function NewsletterSection() {
   const isError = fetcher.state === 'idle' && fetcher.data?.error;
 
   return (
-    <section className="py-14 md:py-20 border-t border-[#8B8076]/10 mobile-snap-section">
+    <section className="py-14 md:py-20 border-t border-[#8B8076]/10">
       <div className="max-w-[520px] mx-auto px-6 text-center">
         <motion.div
           initial={{opacity: 0, y: 20}}
           whileInView={{opacity: 1, y: 0}}
           viewport={{once: true}}
-          transition={{duration: 0.6, ease: [0.16, 1, 0.3, 1]}}
+          transition={{duration: 0.6, ease: [0.16, 1, 3, 1]}}
         >
           <h2 className="font-serif text-3xl md:text-4xl text-[#4A3C31] tracking-wider uppercase">
             JOIN THE HAUS
@@ -135,53 +135,39 @@ export default function Homepage() {
   const {t} = useTranslation();
 
   return (
-    <div className="min-h-screen bg-transparent text-[#F0EAE6] fullpage-scroll-container">
-      {/* 1. Hero - Full Viewport */}
-      <section className="fullpage-section">
-        <Hero />
-      </section>
+    <div className="min-h-screen bg-transparent text-[#F0EAE6]">
+      {/* 1. Hero */}
+      <Hero />
 
       {/* Light "Glowing" Theme Content Sheet */}
-      <div className="relative z-20 bg-[#F9F5F0]/85 backdrop-blur-md text-[#4A3C31] rounded-t-[2rem] shadow-[0_-10px_40px_-10px_rgba(255,255,255,0.15)]">
-        {/* 2. Category Slider - Full Viewport */}
-        <section className="fullpage-section light-section" style={{minHeight: '100vh'}}>
-          <div className="w-full flex-1 flex flex-col justify-center">
-            <CategoryBento />
-          </div>
-        </section>
+      <div className="relative z-20 bg-[#F9F5F0]/85 backdrop-blur-md text-[#4A3C31] rounded-t-[2rem] shadow-[0_-10px_40px_-10px_rgba(255,255,255,0.15)] mt-[-5vh]">
+        {/* 2. Category Slider */}
+        <div className="pt-14 md:pt-16">
+          <CategoryBento />
+        </div>
 
-        {/* 3. The Edit (Editorial Section) - Full Viewport */}
-        <section className="fullpage-section light-section" style={{minHeight: '100vh'}}>
-          <div className="w-full flex-1 flex flex-col justify-center">
-            <EditorialSection />
-          </div>
-        </section>
+        {/* 3. The Edit (Editorial Section) */}
+        <div className="py-8 md:py-12">
+          <EditorialSection />
+        </div>
 
-        {/* 4. The Journal - Full Viewport */}
-        <section className="fullpage-section light-section" style={{minHeight: '100vh'}}>
-          <div className="w-full flex-1 flex flex-col justify-center">
-            <JournalSection />
-          </div>
-        </section>
+        {/* 4. The Journal */}
+        <div className="py-8 md:py-12">
+          <JournalSection />
+        </div>
 
-        {/* 5. Why Choose Us - Full Viewport */}
-        <section className="fullpage-section light-section" style={{minHeight: '100vh'}}>
-          <div className="w-full flex-1 flex flex-col justify-center">
-            <WhyChooseUs />
-          </div>
-        </section>
+        {/* 5. Why Choose Us */}
+        <div>
+          <WhyChooseUs />
+        </div>
 
         {/* 5b. Trust Badges — Maroof, Muwathooq, Secure Payment */}
         <div className="py-6 px-6 md:px-8 max-w-[900px] mx-auto">
           <TrustBadges variant="full" />
         </div>
 
-        {/* 6. JOIN THE HAUS — Newsletter - Full Viewport */}
-        <section className="fullpage-section light-section" style={{minHeight: '100vh'}}>
-          <div className="w-full flex-1 flex flex-col justify-center">
-            <NewsletterSection />
-          </div>
-        </section>
+        {/* 6. JOIN THE HAUS — Newsletter */}
+        <NewsletterSection />
       </div>
     </div>
   );
