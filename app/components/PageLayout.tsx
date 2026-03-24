@@ -51,19 +51,22 @@ export function PageLayout({children, layout}: LayoutProps) {
     return () => window.removeEventListener('resize', checkDesktop);
   }, []);
 
+  // Check if we're on the sunglasses collection page
+  const isSunglassesPage = location.pathname.includes('/collections/sunglasses');
+
   return (
     <>
       <div className="flex flex-col min-h-screen relative">
-        {/* Background Layer (Z-0) */}
+        {/* Background Layer (Z-0) - Hidden on sunglasses page */}
         <div className="fixed inset-0 pointer-events-none z-0">
-          {isDesktop && (
+          {isDesktop && !isSunglassesPage && (
           <div
             className="absolute inset-0"
             style={{transition: 'opacity 0.8s ease'}}
           >
             <Silk color="#AD9686" speed={useIsHomePath() ? 5 : 3} />
           </div>)}
-          {isDesktop && <Atmosphere count={60} color="#AD9686" size={0.008} opacity={0.2} />}
+          {isDesktop && !isSunglassesPage && <Atmosphere count={60} color="#AD9686" size={0.008} opacity={0.2} />}
         </div>
 
         <div className="">

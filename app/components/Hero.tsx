@@ -26,8 +26,7 @@ export default function Hero() {
     <section 
       ref={sectionRef}
       aria-label="Hero" 
-      className="h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[65vh] min-h-[300px] sm:min-h-[320px] md:min-h-[350px] max-h-[500px] md:max-h-[600px] flex flex-col items-center justify-center bg-transparent relative overflow-hidden"
-      style={{paddingTop: 'var(--navbar-height)'}}
+      className="h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[65vh] min-h-[300px] sm:min-h-[320px] md:min-h-[350px] max-h-[500px] md:max-h-[600px] flex flex-col items-center justify-center bg-transparent relative overflow-hidden pt-4 md:pt-6"
     >
       <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
         <div className="text-center px-6 z-20 relative">
