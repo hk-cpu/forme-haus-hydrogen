@@ -706,8 +706,15 @@ h6 {
     font-size: clamp(0.875rem, 2.5vw, 1rem);
   }
 
-  /* Mobile Full-Page Snap - Each section fits in viewport */
-  /* Note: Full-page scroll is now handled globally in html element */
+  /* Mobile Scroll Snapping - Gentle proximity snap (never traps users) */
+  .snap-y-mandatory {
+    scroll-snap-type: y proximity;
+    scroll-behavior: smooth;
+  }
+
+  .mobile-snap-section {
+    scroll-snap-align: start;
+  }
 
   /* Scrollbar thinner on mobile */
   ::-webkit-scrollbar {
@@ -734,123 +741,5 @@ h6 {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-}
-
-/* ============================================================================
-   FULL-PAGE SCROLL / SNAP SECTIONS
-   Each section fits entirely within the viewport on scroll
-   ============================================================================ */
-
-/* Enable full-page snap scrolling on the document */
-html {
-  scroll-snap-type: y proximity;
-  scroll-behavior: smooth;
-}
-
-/* Each section takes exactly one viewport */
-.fullpage-section {
-  min-height: 100vh;
-  min-height: 100dvh; /* Dynamic viewport height for mobile */
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Sections within light theme areas */
-.fullpage-section.light-section {
-  padding: 2rem 0;
-}
-
-/* Hero specific - takes full viewport */
-.fullpage-section:first-child {
-  padding-top: 0;
-}
-
-/* Newsletter section - last section */
-.fullpage-section:last-child {
-  padding-bottom: 2rem;
-}
-
-/* Ensure content within sections fits properly */
-.fullpage-section > div {
-  width: 100%;
-  max-height: 100%;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/* ============================================================================
-   DESKTOP FULL-PAGE SCROLL
-   ============================================================================ */
-@media (min-width: 1024px) {
-  html {
-    scroll-snap-type: y mandatory;
-  }
-  
-  .fullpage-section {
-    min-height: 100vh;
-    max-height: 100vh;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-  }
-}
-
-/* ============================================================================
-   TABLET FULL-PAGE SCROLL
-   ============================================================================ */
-@media (min-width: 768px) and (max-width: 1023px) {
-  html {
-    scroll-snap-type: y mandatory;
-  }
-  
-  .fullpage-section {
-    min-height: 100vh;
-    min-height: 100dvh;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-  }
-}
-
-/* ============================================================================
-   MOBILE FULL-PAGE SCROLL
-   ============================================================================ */
-@media (max-width: 767px) {
-  html {
-    scroll-snap-type: y proximity;
-  }
-  
-  .fullpage-section {
-    min-height: 100svh;
-    scroll-snap-align: start;
-  }
-  
-  /* Allow sections to expand on mobile if content is tall */
-  .fullpage-section.light-section {
-    min-height: min-content;
-    min-height: 100svh;
-    padding: 3rem 0;
-  }
-}
-
-/* ============================================================================
-   REDUCED MOTION - Disable snap scrolling for accessibility
-   ============================================================================ */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-snap-type: none;
-    scroll-behavior: auto;
-  }
-  
-  .fullpage-section {
-    scroll-snap-align: none;
-    scroll-snap-stop: normal;
-    min-height: auto;
   }
 }

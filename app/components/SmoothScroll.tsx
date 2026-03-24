@@ -13,20 +13,15 @@ export default function SmoothScroll() {
     };
     checkTouch();
 
-    // Check if full-page scroll is enabled (snap scroll)
-    const hasFullPageScroll = document.querySelector('.fullpage-scroll-container');
-    
-    // Don't initialize Lenis if:
-    // 1. It's a touch device
-    // 2. Full-page snap scrolling is enabled (they conflict)
-    if ('ontouchstart' in window || navigator.maxTouchPoints > 0 || hasFullPageScroll) {
-      // Ensure native scrolling works properly
+    // Don't initialize Lenis on touch devices - use native scrolling
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+      // Ensure touch scrolling works properly
       document.body.style.touchAction = 'pan-y';
       document.documentElement.style.touchAction = 'pan-y';
       return;
     }
 
-    // Initialize Lenis only for desktop (mouse wheel) when no full-page scroll
+    // Initialize Lenis only for desktop (mouse wheel)
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
