@@ -72,7 +72,11 @@ function NewsletterSection() {
             JOIN THE HAUS
           </h2>
           <div className="flex flex-col items-center gap-1 mt-4 mb-8">
-            <span className="font-serif text-xl text-[#4A3C31]">Formé Haus</span>
+            <img
+              src="/brand/logo-icon-only.png"
+              alt="Formé Haus"
+              className="w-16 h-16 object-contain"
+            />
             <span className="font-serif text-base md:text-lg italic text-[#8B8076] font-light tracking-wide">
               Where Essence Meets Elegance
             </span>
