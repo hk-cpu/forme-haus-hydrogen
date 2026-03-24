@@ -268,12 +268,7 @@ export default function Collection() {
   const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
 
   // Collections that use a text-only hero (no image)
-  const TEXT_ONLY_HERO_COLLECTIONS = new Set([
-    'sunglasses',
-    'phone-cases',
-    'phone-straps',
-    'case-strap-bundles',
-  ]);
+  const TEXT_ONLY_HERO_COLLECTIONS = new Set<string>([]);
 
   // Collection hero image overrides
   const HERO_OVERRIDES: Record<
@@ -281,13 +276,33 @@ export default function Collection() {
     {src: string; hideTitle?: boolean; fit?: 'cover' | 'contain'; bg?: string}
   > = {
     'new-in': {
-      src: '/assets/heros/new-in-hero.png',
-      hideTitle: false,
+      src: '/assets/heros/new-in-hero-2.png',
+      hideTitle: true,
       fit: 'cover',
     },
     new: {
-      src: '/assets/heros/new-in-hero.png',
-      hideTitle: false,
+      src: '/assets/heros/new-in-hero-2.png',
+      hideTitle: true,
+      fit: 'cover',
+    },
+    sunglasses: {
+      src: '/assets/heros/sunglasses-hero-3.png',
+      hideTitle: true,
+      fit: 'cover',
+    },
+    'phone-cases': {
+      src: '/assets/heros/phone-accessories-hero-3.png',
+      hideTitle: true,
+      fit: 'cover',
+    },
+    'phone-straps': {
+      src: '/assets/heros/phone-accessories-hero-3.png',
+      hideTitle: true,
+      fit: 'cover',
+    },
+    'case-strap-bundles': {
+      src: '/assets/heros/phone-accessories-hero-3.png',
+      hideTitle: true,
       fit: 'cover',
     },
   };
@@ -372,7 +387,11 @@ export default function Collection() {
         /* Image hero for all other collections */
         <motion.div
           ref={heroRef}
-          className="relative w-full bg-[#0f0d0a] overflow-hidden"
+          className={`relative w-full overflow-hidden ${
+            override?.fit === 'cover'
+              ? 'bg-[#F0EAE6]'
+              : 'bg-[#0f0d0a]'
+          }`}
           style={{opacity: heroOpacity}}
         >
           {heroImage ? (
@@ -380,7 +399,11 @@ export default function Collection() {
               <motion.img
                 src={heroImage}
                 alt={collection.title}
-                className="w-full h-auto block max-h-[70vh] object-contain mx-auto"
+                className={
+                  override?.fit === 'cover'
+                    ? 'w-full h-auto block'
+                    : 'w-full h-auto block max-h-[70vh] object-contain mx-auto'
+                }
                 loading="eager"
                 fetchPriority="high"
                 style={{y: heroY}}
@@ -388,7 +411,9 @@ export default function Collection() {
                 animate={{scale: 1}}
                 transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0f0d0a]/70 via-transparent to-transparent" />
+              {!hideTitle && (
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0f0d0a]/70 via-transparent to-transparent" />
+              )}
             </>
           ) : (
             <div className="w-full h-[38vh] bg-gradient-to-br from-[#2a2118] via-[#1a1510] to-[#0f0d0a]" />
