@@ -163,7 +163,7 @@ export function WhyChooseUs() {
               </h3>
 
               {/* Description */}
-              <p className="text-xs md:text-sm text-[#5C5046] leading-relaxed break-words hyphens-auto">
+              <p className="text-xs md:text-sm text-[#5C5046] leading-relaxed break-words">
                 {isRTL ? item.descriptionAr : item.description}
               </p>
             </motion.div>

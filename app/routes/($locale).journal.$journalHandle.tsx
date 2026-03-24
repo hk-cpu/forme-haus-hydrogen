@@ -29,6 +29,7 @@ const STATIC_ARTICLES: Record<
     title: string;
     body: string[];
     image?: string;
+    extraImages?: string[];
   }
 > = {
   'the-modern-wardrobe-edit': {
@@ -194,7 +195,7 @@ export default function Article() {
             <img
               src={staticArticle.image}
               alt={staticArticle.title}
-              className="w-full max-h-[55vh] object-cover object-center"
+              className="w-full max-h-[40vh] object-cover object-center"
               loading="eager"
             />
           </motion.div>
@@ -218,26 +219,33 @@ export default function Article() {
           ))}
         </motion.article>
 
-        {/* Image placeholder slots for future editorial images */}
-        <div className="mt-16 space-y-8">
-          <div className="aspect-[16/9] bg-[#E8E4E0] rounded-xl flex items-center justify-center">
-            <span className="text-[11px] uppercase tracking-[0.2em] text-[#8B8076]/40">
-              Editorial Image — Coming Soon
-            </span>
+        {/* Extra editorial images — only shown when populated */}
+        {staticArticle.extraImages && staticArticle.extraImages.length > 0 && (
+          <div className="mt-16 space-y-8">
+            {staticArticle.extraImages[0] && (
+              <div className="overflow-hidden rounded-xl">
+                <img
+                  src={staticArticle.extraImages[0]}
+                  alt={staticArticle.title}
+                  className="w-full max-h-[50vh] object-cover object-center"
+                />
+              </div>
+            )}
+            {staticArticle.extraImages.length > 1 && (
+              <div className="grid grid-cols-2 gap-4">
+                {staticArticle.extraImages.slice(1, 3).map((src, i) => (
+                  <div key={i} className="overflow-hidden rounded-xl">
+                    <img
+                      src={src}
+                      alt={`${staticArticle.title} ${i + 2}`}
+                      className="w-full aspect-square object-cover object-center"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="aspect-square bg-[#E8E4E0] rounded-xl flex items-center justify-center">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076]/40">
-                Image Slot
-              </span>
-            </div>
-            <div className="aspect-square bg-[#E8E4E0] rounded-xl flex items-center justify-center">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076]/40">
-                Image Slot
-              </span>
-            </div>
-          </div>
-        </div>
+        )}
 
         {/* Decorative end mark */}
         <div className="mt-16 flex justify-center">

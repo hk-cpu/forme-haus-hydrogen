@@ -135,39 +135,43 @@ export default function Homepage() {
   const {t} = useTranslation();
 
   return (
-    <div className="min-h-screen bg-transparent text-[#F0EAE6] snap-y-mandatory">
-      {/* 1. Hero (Fixed Background Visible) */}
-      <Hero />
+    <div className="min-h-screen bg-transparent text-[#F0EAE6] fullpage-scroll-container">
+      {/* 1. Hero - Full Viewport */}
+      <section className="fullpage-section">
+        <Hero />
+      </section>
 
       {/* Light "Glowing" Theme Content Sheet */}
-      <div className="relative z-20 bg-[#F9F5F0]/85 backdrop-blur-md text-[#4A3C31] rounded-t-[2rem] shadow-[0_-10px_40px_-10px_rgba(255,255,255,0.15)] mt-[-5vh]">
-        {/* 2. Category Slider */}
-        <div className="pt-14 md:pt-16 mobile-snap-section">
+      <div className="relative z-20 bg-[#F9F5F0]/85 backdrop-blur-md text-[#4A3C31] rounded-t-[2rem] shadow-[0_-10px_40px_-10px_rgba(255,255,255,0.15)] fullpage-scroll-container">
+        {/* 2. Category Slider - Full Viewport */}
+        <section className="fullpage-section light-section">
           <CategoryBento />
-        </div>
+        </section>
 
-        {/* 3. The Edit (Editorial Section) */}
-        <div className="py-8 md:py-12 mobile-snap-section">
+        {/* 3. The Edit (Editorial Section) - Full Viewport */}
+        <section className="fullpage-section light-section">
           <EditorialSection />
-        </div>
+        </section>
 
-        {/* 4. The Journal */}
-        <div className="py-8 md:py-12 mobile-snap-section">
+        {/* 4. The Journal - Full Viewport */}
+        <section className="fullpage-section light-section">
           <JournalSection />
-        </div>
+        </section>
 
-        {/* 5. Why Choose Us */}
-        <div className="mobile-snap-section">
+        {/* 5. Why Choose Us - Full Viewport */}
+        <section className="fullpage-section light-section">
           <WhyChooseUs />
-        </div>
+        </section>
 
         {/* 5b. Trust Badges — Maroof, Muwathooq, Secure Payment */}
         <div className="py-6 px-6 md:px-8 max-w-[900px] mx-auto">
           <TrustBadges variant="full" />
         </div>
 
-        {/* 6. JOIN THE HAUS — Newsletter */}
-        <NewsletterSection />
+        {/* 6. JOIN THE HAUS — Newsletter - Full Viewport */}
+        <section className="fullpage-section light-section">
+          <NewsletterSection />
+        </section>
       </div>
     </div>
   );
