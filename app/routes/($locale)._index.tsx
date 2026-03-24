@@ -142,25 +142,33 @@ export default function Homepage() {
       </section>
 
       {/* Light "Glowing" Theme Content Sheet */}
-      <div className="relative z-20 bg-[#F9F5F0]/85 backdrop-blur-md text-[#4A3C31] rounded-t-[2rem] shadow-[0_-10px_40px_-10px_rgba(255,255,255,0.15)] fullpage-scroll-container">
+      <div className="relative z-20 bg-[#F9F5F0]/85 backdrop-blur-md text-[#4A3C31] rounded-t-[2rem] shadow-[0_-10px_40px_-10px_rgba(255,255,255,0.15)]">
         {/* 2. Category Slider - Full Viewport */}
-        <section className="fullpage-section light-section">
-          <CategoryBento />
+        <section className="fullpage-section light-section" style={{minHeight: '100vh'}}>
+          <div className="w-full flex-1 flex flex-col justify-center">
+            <CategoryBento />
+          </div>
         </section>
 
         {/* 3. The Edit (Editorial Section) - Full Viewport */}
-        <section className="fullpage-section light-section">
-          <EditorialSection />
+        <section className="fullpage-section light-section" style={{minHeight: '100vh'}}>
+          <div className="w-full flex-1 flex flex-col justify-center">
+            <EditorialSection />
+          </div>
         </section>
 
         {/* 4. The Journal - Full Viewport */}
-        <section className="fullpage-section light-section">
-          <JournalSection />
+        <section className="fullpage-section light-section" style={{minHeight: '100vh'}}>
+          <div className="w-full flex-1 flex flex-col justify-center">
+            <JournalSection />
+          </div>
         </section>
 
         {/* 5. Why Choose Us - Full Viewport */}
-        <section className="fullpage-section light-section">
-          <WhyChooseUs />
+        <section className="fullpage-section light-section" style={{minHeight: '100vh'}}>
+          <div className="w-full flex-1 flex flex-col justify-center">
+            <WhyChooseUs />
+          </div>
         </section>
 
         {/* 5b. Trust Badges — Maroof, Muwathooq, Secure Payment */}
@@ -169,8 +177,10 @@ export default function Homepage() {
         </div>
 
         {/* 6. JOIN THE HAUS — Newsletter - Full Viewport */}
-        <section className="fullpage-section light-section">
-          <NewsletterSection />
+        <section className="fullpage-section light-section" style={{minHeight: '100vh'}}>
+          <div className="w-full flex-1 flex flex-col justify-center">
+            <NewsletterSection />
+          </div>
         </section>
       </div>
     </div>
