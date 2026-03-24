@@ -1,5 +1,5 @@
 ﻿import {Await, useRouteLoaderData, useLocation} from '@remix-run/react';
-import {Suspense, useEffect, useState} from 'react';
+import {Suspense, useEffect, useMemo, useState} from 'react';
 import {CartForm} from '@shopify/hydrogen';
 import {motion, AnimatePresence} from 'framer-motion';
 
@@ -51,22 +51,31 @@ export function PageLayout({children, layout}: LayoutProps) {
     return () => window.removeEventListener('resize', checkDesktop);
   }, []);
 
-  // Check if we're on the sunglasses collection page
-  const isSunglassesPage = location.pathname.includes('/collections/sunglasses');
+  // Filter logic for Silk background - pages where Silk should be hidden
+  const SILK_EXCLUDED_PATHS = useMemo(() => [
+    '/collections/sunglasses',
+  ], []);
+  
+  const shouldShowSilk = useMemo(() => {
+    return !SILK_EXCLUDED_PATHS.some(path => location.pathname.includes(path));
+  }, [location.pathname, SILK_EXCLUDED_PATHS]);
+  
+  // Check if we're on a collection page to adjust padding
+  const isCollectionPage = location.pathname.includes('/collections/');
 
   return (
     <>
       <div className="flex flex-col min-h-screen relative">
-        {/* Background Layer (Z-0) - Hidden on sunglasses page */}
+        {/* Background Layer (Z-0) - Filtered by page */}
         <div className="fixed inset-0 pointer-events-none z-0">
-          {isDesktop && !isSunglassesPage && (
+          {isDesktop && shouldShowSilk && (
           <div
             className="absolute inset-0"
             style={{transition: 'opacity 0.8s ease'}}
           >
             <Silk color="#AD9686" speed={useIsHomePath() ? 5 : 3} />
           </div>)}
-          {isDesktop && !isSunglassesPage && <Atmosphere count={60} color="#AD9686" size={0.008} opacity={0.2} />}
+          {isDesktop && shouldShowSilk && <Atmosphere count={60} color="#AD9686" size={0.008} opacity={0.2} />}
         </div>
 
         <div className="">
@@ -90,8 +99,8 @@ export function PageLayout({children, layout}: LayoutProps) {
             <main
               role="main"
               id="mainContent"
-              className="flex-grow pb-[72px] md:pb-0"
-              style={{paddingTop: 'var(--navbar-height)'}}
+              className={`flex-grow pb-[72px] md:pb-0 ${isCollectionPage ? '' : ''}`}
+              style={{paddingTop: isCollectionPage ? 0 : 'var(--navbar-height)'}}
             >
               <AnimatePresence mode="popLayout">
                 <motion.div
