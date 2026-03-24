@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import {useRef, lazy, Suspense, useState} from 'react';
+import {useRef, useState} from 'react';
 import useScroll from 'react-use/esm/useScroll';
 import {motion, AnimatePresence} from 'framer-motion';
 import {useFetcher} from '@remix-run/react';
@@ -14,10 +14,7 @@ import {
   type CartReturn,
 } from '@shopify/hydrogen';
 
-// Client-only HyperPay widget — lazy loaded to avoid SSR
-const HyperPayWidget = lazy(
-  () => import('~/components/HyperPayWidget.client'),
-);
+// Tap Payments replaces HyperPay — supports Mada, Visa, MC, AMEX, Apple Pay, STC Pay
 import type {
   Cart as CartType,
   CartCost,
@@ -440,89 +437,60 @@ function CartLines({
   );
 }
 
-function HyperPayCheckoutButton({cart}: {cart: CartType}) {
+function TapPayCheckoutButton({cart}: {cart: CartType}) {
   const fetcher = useFetcher<{
-    checkoutId?: string;
-    baseUrl?: string;
-    brand?: string;
+    chargeId?: string;
+    redirectUrl?: string;
     error?: string;
   }>();
-  const [showWidget, setShowWidget] = useState(false);
 
   const subtotal = cart.cost?.subtotalAmount?.amount ?? '0';
   const currency = cart.cost?.subtotalAmount?.currencyCode ?? 'SAR';
   const merchantTxId = `FH-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 
-  function initiatePayment(brand: string) {
+  function initiatePayment() {
     fetcher.submit(
-      {amount: subtotal, currency, brand, merchantTxId},
-      {method: 'post', action: '/hyperpay/initiate'},
+      {amount: subtotal, currency, merchantTxId, cartId: cart.id || ''},
+      {method: 'post', action: '/tap/initiate'},
     );
-    setShowWidget(true);
   }
 
-  const hasWidget = fetcher.state === 'idle' && fetcher.data?.checkoutId;
+  // Redirect to Tap's hosted payment page when we get the URL
+  if (fetcher.state === 'idle' && fetcher.data?.redirectUrl) {
+    if (typeof window !== 'undefined') {
+      window.location.href = fetcher.data.redirectUrl;
+    }
+  }
 
   return (
     <div>
-      {!showWidget ? (
-        <div className="grid gap-2">
-          {/* mada */}
-          <motion.button
-            type="button"
-            onClick={() => initiatePayment('MADA')}
-            className="w-full py-3.5 rounded-xl bg-[#1B5E20] hover:bg-[#2E7D32] text-white text-[11px] uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
-            whileHover={{scale: 1.01}}
-            whileTap={{scale: 0.99}}
-          >
-            <Icons.Lock className="w-3.5 h-3.5" />
-            Pay with mada
-          </motion.button>
-
-          {/* Visa / Mastercard / Amex */}
-          <motion.button
-            type="button"
-            onClick={() => initiatePayment('CARD')}
-            className="w-full py-3.5 rounded-xl bg-[#1a2744] hover:bg-[#243460] text-white text-[11px] uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
-            whileHover={{scale: 1.01}}
-            whileTap={{scale: 0.99}}
-          >
-            <Icons.Lock className="w-3.5 h-3.5" />
-            Pay with Card (Visa / MC)
-          </motion.button>
-        </div>
-      ) : fetcher.state !== 'idle' ? (
+      {fetcher.state !== 'idle' ? (
         <div className="flex items-center justify-center gap-2 py-4 text-[#8B8076] text-sm">
           <div className="w-4 h-4 rounded-full border-2 border-[#a87441]/30 border-t-[#a87441] animate-spin" />
-          Preparing payment…
+          Preparing secure payment…
         </div>
       ) : fetcher.data?.error ? (
         <div className="p-3 bg-red-400/10 border border-red-400/20 rounded-lg text-red-400 text-xs text-center">
           {fetcher.data.error}
           <button
-            onClick={() => setShowWidget(false)}
+            onClick={() => initiatePayment()}
             className="block w-full mt-2 text-[#8B8076] hover:text-[#F0EAE6] underline"
           >
             Try again
           </button>
         </div>
-      ) : hasWidget ? (
-        <Suspense
-          fallback={
-            <div className="flex items-center justify-center gap-2 py-4 text-[#8B8076] text-sm">
-              <div className="w-4 h-4 rounded-full border-2 border-[#a87441]/30 border-t-[#a87441] animate-spin" />
-              Loading payment form…
-            </div>
-          }
+      ) : (
+        <motion.button
+          type="button"
+          onClick={initiatePayment}
+          className="w-full py-3.5 rounded-xl bg-[#1B5E20] hover:bg-[#2E7D32] text-white text-[11px] uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
+          whileHover={{scale: 1.01}}
+          whileTap={{scale: 0.99}}
         >
-          <HyperPayWidget
-            checkoutId={fetcher.data.checkoutId!}
-            baseUrl={fetcher.data.baseUrl!}
-            brands={fetcher.data.brand === 'MADA' ? 'MADA' : 'VISA MASTER AMEX'}
-            callbackPath={`/hyperpay/callback?brand=${fetcher.data.brand ?? 'CARD'}`}
-          />
-        </Suspense>
-      ) : null}
+          <Icons.Lock className="w-3.5 h-3.5" />
+          Pay with mada / Card / Apple Pay
+        </motion.button>
+      )}
     </div>
   );
 }
@@ -572,8 +540,8 @@ function CartCheckoutActions({
         <div className="flex-1 h-px bg-[#8B8076]/15" />
       </div>
 
-      {/* HyperPay — mada + Card */}
-      <HyperPayCheckoutButton cart={cart} />
+      {/* Tap Payments — mada + Visa/MC + Apple Pay + STC Pay */}
+      <TapPayCheckoutButton cart={cart} />
 
       {/* Shop Pay */}
       {variantIds.length > 0 && (

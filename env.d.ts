@@ -31,6 +31,9 @@ declare global {
     SHOP_ID: string;
     API_BASE_URL: string;
     API_ACCESS_TOKEN: string;
+    // Tap Payments
+    TAP_SECRET_KEY: string;
+    TAP_API_URL: string;
   }
 }
 
