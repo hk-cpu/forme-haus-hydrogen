@@ -108,12 +108,6 @@ export default function Hero() {
                 className="relative inline-flex items-center justify-center gap-3 px-8 sm:px-14 py-4 min-h-[48px] overflow-hidden group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] rounded-sm touch-target"
               >
                 <span className="absolute inset-0 border border-[#a87441]/40 group-hover/btn:border-[#a87441] transition-all duration-700" />
-                {!shouldReduceMotion && (
-                <motion.span
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-[#a87441]/20 to-transparent"
-                  animate={{x: ['-200%', '200%']}}
-                  transition={{duration: 3, repeat: Infinity, ease: 'linear'}}
-                />)}
                 <span className="absolute inset-0 bg-[#a87441]/0 group-hover/btn:bg-[#a87441]/10 backdrop-blur-sm transition-all duration-700" />
                 <span className="relative text-[10px] uppercase tracking-[0.3em] font-light text-[#F0EAE6]/90 group-hover/btn:text-[#a87441] transition-all duration-700">
                   {t('hero.cta', 'Explore Collection')}
