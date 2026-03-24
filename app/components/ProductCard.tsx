@@ -498,20 +498,20 @@ export function ProductCard({
             <motion.span
               initial={{opacity: 0, scale: 0.8}}
               animate={{opacity: 1, scale: 1}}
-              className="absolute top-3 left-3 px-3 py-1.5 bg-red-500/90 text-white text-[10px] uppercase tracking-widest rounded-full flex items-center gap-1.5 shadow-lg z-20"
+              className="absolute top-3 left-3 px-3 py-1.5 bg-red-500/90 text-white text-xs uppercase tracking-widest rounded-full flex items-center gap-1.5 shadow-lg z-20"
             >
               <Icons.Tag />
               {t('product.sale', 'Sale')}
             </motion.span>
           )}
 
-          {/* Wishlist Button with heart animation */}
+          {/* Wishlist Button with heart animation - Always visible on touch devices */}
           <motion.button
             onClick={handleWishlist}
-            className={`absolute top-3 right-3 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 z-30 shadow-md ${
+            className={`absolute top-3 right-3 w-12 h-12 md:w-11 md:h-11 rounded-full flex items-center justify-center transition-all duration-300 z-30 shadow-md touch-target ${
               isWishlisted
                 ? 'bg-[#a87441] text-white'
-                : 'bg-white/95 text-[#4A3C31] opacity-0 group-hover:opacity-100 hover:bg-[#a87441] hover:text-white backdrop-blur-sm'
+                : 'bg-white/95 text-[#4A3C31] opacity-100 md:opacity-0 md:group-hover:opacity-100 hover:bg-[#a87441] hover:text-white backdrop-blur-sm'
             }`}
             whileHover={{scale: 1.1}}
             whileTap={{scale: 0.9}}
@@ -534,7 +534,7 @@ export function ProductCard({
                   exit={{opacity: 0, x: -10}}
                   transition={{duration: 0.2}}
                   onClick={prevImage}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 text-[#4A3C31] flex items-center justify-center backdrop-blur-sm hover:bg-[#a87441] hover:text-white transition-colors z-20 shadow-md"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-11 h-11 md:w-9 md:h-9 rounded-full bg-white/90 text-[#4A3C31] flex items-center justify-center backdrop-blur-sm hover:bg-[#a87441] hover:text-white transition-colors z-20 shadow-md touch-target"
                   aria-label={t('product.prevImage', 'Previous image')}
                 >
                   <Icons.ChevronLeft />
@@ -545,7 +545,7 @@ export function ProductCard({
                   exit={{opacity: 0, x: 10}}
                   transition={{duration: 0.2}}
                   onClick={nextImage}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 text-[#4A3C31] flex items-center justify-center backdrop-blur-sm hover:bg-[#a87441] hover:text-white transition-colors z-20 shadow-md"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 md:w-9 md:h-9 rounded-full bg-white/90 text-[#4A3C31] flex items-center justify-center backdrop-blur-sm hover:bg-[#a87441] hover:text-white transition-colors z-20 shadow-md touch-target"
                   aria-label={t('product.nextImage', 'Next image')}
                 >
                   <Icons.ChevronRight />
@@ -589,7 +589,7 @@ export function ProductCard({
                 transition={{duration: 0.3, ease: [0.25, 0.1, 0.25, 1]}}
                 onClick={handleQuickAdd}
                 disabled={isAdding}
-                className={`absolute bottom-3 left-3 right-3 py-3 rounded-lg font-medium text-[11px] uppercase tracking-[0.12em] flex items-center justify-center gap-2 transition-all duration-300 backdrop-blur-md z-20 shadow-lg ${
+                className={`absolute bottom-3 left-3 right-3 py-3.5 md:py-3 min-h-[48px] rounded-lg font-medium text-xs md:text-[11px] uppercase tracking-[0.12em] flex items-center justify-center gap-2 transition-all duration-300 backdrop-blur-md z-20 shadow-lg touch-target ${
                   showAdded
                     ? 'bg-green-600 text-white'
                     : 'bg-[#a87441]/95 hover:bg-[#8B5E3C] text-white'
@@ -639,38 +639,38 @@ export function ProductCard({
         {/* Product Info */}
         <div className="space-y-1 mt-4">
           {/* 1. Designer name */}
-          <div className="text-[11px] uppercase tracking-[0.15em] text-[#a87441] font-medium leading-none">
+          <div className="text-xs uppercase tracking-[0.15em] text-[#a87441] font-medium leading-none">
             {product.vendor || 'Formé Haus'}
           </div>
 
           {/* 2. Product name */}
-          <h3 className="font-serif text-[#F0EAE6] text-[15px] md:text-[17px] leading-snug group-hover:text-[#a87441] transition-colors duration-300 line-clamp-1 tracking-wide mt-1">
+          <h3 className="font-serif text-[#F0EAE6] text-sm md:text-base leading-snug group-hover:text-[#a87441] transition-colors duration-300 line-clamp-1 tracking-wide mt-1">
             {productName}
           </h3>
 
           {/* 3. Color */}
           {productColor ? (
-            <p className="text-[13px] text-[#8B8076] tracking-wide line-clamp-1 h-[19px]">
+            <p className="text-xs md:text-sm text-[#8B8076] tracking-wide line-clamp-1 min-h-[1.25rem]">
               {productColor}
             </p>
           ) : (
-            <div className="h-[19px]" />
+            <div className="min-h-[1.25rem]" />
           )}
 
           {/* 4. Price */}
           <div className="flex items-baseline gap-2 pt-0.5 mt-2 border-t border-[#a87441]/10">
             {product.priceRange?.minVariantPrice && parseFloat(product.priceRange.minVariantPrice.amount) > 0 ? (
               <>
-                <p className="text-[#F0EAE6] text-[14px] font-medium transition-all duration-300 group-hover:text-[#a87441] flex items-baseline mt-1">
+                <p className="text-[#F0EAE6] text-sm font-medium transition-all duration-300 group-hover:text-[#a87441] flex items-baseline mt-1">
                   <Money data={product.priceRange.minVariantPrice as any} withoutTrailingZeros />
                 </p>
                 {product.availableForSale !== false && (
-                  <span className="text-[12px] text-[#8B8076] font-normal tracking-wide mt-1">
+                  <span className="text-xs text-[#8B8076] font-normal tracking-wide mt-1">
                     SAR (VAT included)
                   </span>
                 )}
                 {hasDiscount && (
-                  <p className="text-[#8B8076] text-[12px] line-through mt-1 ml-auto">
+                  <p className="text-[#8B8076] text-xs line-through mt-1 ml-auto">
                     <Money data={product.compareAtPriceRange!.minVariantPrice} withoutTrailingZeros />
                   </p>
                 )}

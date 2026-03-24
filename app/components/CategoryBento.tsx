@@ -1,8 +1,9 @@
 import {useState, useEffect} from 'react';
 import {Link} from '@remix-run/react';
-import {motion} from 'framer-motion';
+import {motion, useReducedMotion} from 'framer-motion';
 
 import {useTranslation} from '~/hooks/useTranslation';
+import {use3DTilt} from '~/hooks/use3DTilt';
 
 interface Category {
   id: number;
@@ -80,6 +81,10 @@ function CategoryCard({
   const [mounted, setMounted] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+  
+  // 3D tilt effect
+  const {style: tiltStyle, handlers: tiltHandlers} = use3DTilt({maxRotation: 5});
 
   // Prevent hydration mismatch
   useEffect(() => {
@@ -92,105 +97,130 @@ function CategoryCard({
       className="relative group aspect-[3/4] md:aspect-[4/5] overflow-hidden rounded-2xl bg-[#2a2118]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      {...(shouldReduceMotion ? {} : tiltHandlers)}
     >
       <Link to={category.url} className="block w-full h-full">
-        {/* Full-bleed background image - zoomed 20% to hide watermark */}
-        {!imageError ? (
-          <img
-            src={category.image}
-            alt={isRTL ? category.titleAr : category.title}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            style={{
-              opacity: mounted && !imageLoaded ? 0 : 1,
-              transform: 'scale(1.20)',
-              transformOrigin: category.title === 'Phone Accessories' ? 'center 40%' : 'center center',
-            }}
-            loading={index === 0 ? 'eager' : 'lazy'}
-            onLoad={() => setImageLoaded(true)}
-            onError={() => setImageError(true)}
-          />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-[#E8E4E0]">
-            <span className="text-[#4A3C31] text-xs uppercase tracking-wider">
-              {isRTL ? category.titleAr : category.title}
-            </span>
-          </div>
-        )}
-
-        {/* Loading skeleton - only after mount */}
-        {mounted && !imageLoaded && !imageError && (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#1A1A1A] to-[#2a2a2a]" />
-        )}
-
-        {/* Elegant gradient overlay - darker at bottom for text */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
-
-        {/* Subtle vignette */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-30"
-          style={{
-            background:
-              'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.4) 100%)',
-          }}
-        />
-
-        {/* Content - positioned at bottom left */}
-        <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 z-10 pointer-events-none">
-          <motion.div
-            className="transform transition-transform duration-300"
-            initial={false}
-            animate={{y: isHovered ? -4 : 0}}
-          >
-            <h3 className="text-xl md:text-2xl font-serif text-white mb-2 tracking-wide">
-              {isRTL ? category.titleAr : category.title}
-            </h3>
-            {/* Always visible short line on mobile; longer on hover for desktop */}
-            <motion.div
-              className="h-[1px] bg-[#D4AF87] origin-left"
-              initial={{width: 24}}
-              animate={{width: isHovered ? 48 : 24}}
-              transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
-            />
-          </motion.div>
-        </div>
-
-        {/* Hover Arrow - centered */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-          <motion.div
-            className="w-14 h-14 rounded-full border border-white/40 flex items-center justify-center backdrop-blur-md bg-black/20"
-            initial={{opacity: 0, scale: 0.8}}
-            animate={{opacity: isHovered ? 1 : 0, scale: isHovered ? 1 : 0.8}}
-            transition={{duration: 0.3, ease: [0.16, 1, 0.3, 1]}}
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              className="text-white"
-            >
-              <path
-                d={isRTL ? 'M19 12H5M12 19l-7-7 7-7' : 'M5 12h14M12 5l7 7-7 7'}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </motion.div>
-        </div>
-
-        {/* Scale effect on hover */}
+        {/* 3D Tilt Container */}
         <motion.div
-          className="absolute inset-0 pointer-events-none"
-          initial={false}
-          animate={{scale: isHovered ? 1.05 : 1}}
-          transition={{duration: 0.7, ease: [0.16, 1, 0.3, 1]}}
-          style={{
-            background: isHovered ? 'rgba(168, 116, 65, 0.05)' : 'transparent',
+          className="w-full h-full"
+          style={shouldReduceMotion ? {} : {
+            ...tiltStyle,
+            rotateX: isHovered ? tiltStyle.rotateX : 0,
+            rotateY: isHovered ? tiltStyle.rotateY : 0,
           }}
-        />
+        >
+          {/* Full-bleed background image - zoomed 20% to hide watermark */}
+          {!imageError ? (
+            <img
+              src={category.image}
+              alt={isRTL ? category.titleAr : category.title}
+              className="absolute inset-0 w-full h-full object-cover transition-all duration-700"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              style={{
+                opacity: mounted && !imageLoaded ? 0 : 1,
+                transform: isHovered ? 'scale(1.25)' : 'scale(1.20)',
+                transformOrigin: category.title === 'Phone Accessories' ? 'center 40%' : 'center center',
+              }}
+              loading={index === 0 ? 'eager' : 'lazy'}
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center bg-[#E8E4E0]">
+              <span className="text-[#4A3C31] text-xs uppercase tracking-wider">
+                {isRTL ? category.titleAr : category.title}
+              </span>
+            </div>
+          )}
+
+          {/* Loading skeleton - only after mount */}
+          {mounted && !imageLoaded && !imageError && (
+            <div className="absolute inset-0 bg-gradient-to-br from-[#1A1A1A] to-[#2a2a2a]" />
+          )}
+
+          {/* Elegant gradient overlay - darker at bottom for text */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+
+          {/* Subtle vignette */}
+          <div
+            className="absolute inset-0 pointer-events-none opacity-30"
+            style={{
+              background:
+                'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.4) 100%)',
+            }}
+          />
+
+          {/* Cursor-following spotlight effect (desktop only) */}
+          {!shouldReduceMotion && (
+            <motion.div
+              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none hidden md:block"
+              style={{
+                background: 'radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(168,116,65,0.1) 0%, transparent 50%)',
+              }}
+            />
+          )}
+
+          {/* Content - positioned at bottom left - Always visible on mobile */}
+          <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 z-10 pointer-events-none">
+            <motion.div
+              className="transform transition-transform duration-300"
+              initial={false}
+              animate={{y: isHovered ? -4 : 0}}
+            >
+              <h3 className="text-xl md:text-2xl font-serif text-white mb-2 tracking-wide">
+                {isRTL ? category.titleAr : category.title}
+              </h3>
+              {/* Line indicator - Always visible on mobile, hover-only on desktop */}
+              <motion.div
+                className="h-[1px] bg-[#D4AF87] origin-left md:w-6 w-12"
+                initial={false}
+                animate={{width: isHovered ? 48 : 24}}
+                transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
+              />
+            </motion.div>
+          </div>
+
+          {/* Hover Arrow - centered - Always visible on touch */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+            <motion.div
+              className="w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/40 flex items-center justify-center backdrop-blur-md bg-black/20 md:opacity-0 md:group-hover:opacity-100 opacity-100 transition-opacity duration-300"
+              initial={false}
+              animate={{
+                scale: isHovered ? 1 : 0.8,
+                x: isHovered ? (isRTL ? -4 : 4) : 0,
+              }}
+              transition={{duration: 0.3, ease: [0.16, 1, 0.3, 1]}}
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                className="text-white"
+              >
+                <path
+                  d={isRTL ? 'M19 12H5M12 19l-7-7 7-7' : 'M5 12h14M12 5l7 7-7 7'}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </motion.div>
+          </div>
+
+          {/* Enhanced shadow on hover */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none rounded-2xl"
+            initial={false}
+            animate={{
+              boxShadow: isHovered
+                ? '0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(168,116,65,0.1)'
+                : '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+            }}
+            transition={{duration: 0.4}}
+          />
+        </motion.div>
       </Link>
     </motion.div>
   );
@@ -202,7 +232,7 @@ export default function CategoryBento() {
   return (
     <section aria-label="Categories" className="pb-6 md:pb-8 border-b border-[#8B8076]/10">
       <div
-        className="max-w-[1200px] mx-auto"
+        className="max-w-[var(--container-max)] mx-auto"
         style={{padding: '0 var(--page-gutter)'}}
       >
         {/* Section Header */}
@@ -247,7 +277,7 @@ export default function CategoryBento() {
         >
           <Link
             to="/collections"
-            className="inline-flex items-center gap-3 px-7 py-3.5 min-h-[48px] border border-[#a87441]/25 text-[#a87441] hover:bg-[#a87441] hover:text-white transition-all duration-500 rounded-full text-[11px] uppercase tracking-[0.2em] group"
+            className="inline-flex items-center gap-3 px-7 py-3.5 min-h-[48px] border border-[#a87441]/25 text-[#a87441] hover:bg-[#a87441] hover:text-white transition-all duration-500 rounded-full text-[11px] uppercase tracking-[0.2em] group touch-target"
           >
             <span>{isRTL ? 'عرض الكل' : t('general.viewAll')}</span>
             <svg

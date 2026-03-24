@@ -277,9 +277,9 @@ export function Header({
           backdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
         }}
       >
-        <div className="container mx-auto px-6 lg:px-16 flex items-center justify-between relative z-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-16 flex items-center justify-between relative z-50">
           {/* Desktop Navigation - Left Side */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-4 lg:gap-8">
             {items.map((item: any, index: number) => (
               <motion.div
                 key={item.id}
@@ -312,7 +312,7 @@ export function Header({
                       : item.to
                   }
                   className={({isActive}) =>
-                    `relative text-[11px] uppercase tracking-[0.25em] font-light transition-all duration-300 py-2 flex items-center gap-2 ${
+                    `relative text-[10px] lg:text-[11px] uppercase tracking-[0.25em] font-light transition-all duration-300 py-2 flex items-center gap-2 touch-target ${
                       isActive
                         ? 'text-[#a87441]'
                         : 'text-[#F0EAE6]/80 hover:text-[#a87441]'
@@ -361,7 +361,7 @@ export function Header({
                       animate={{opacity: 1, y: 0, scale: 1}}
                       exit={{opacity: 0, y: 10, scale: 0.95}}
                       transition={{duration: 0.2, ease: 'easeOut'}}
-                      className="absolute top-full left-1/2 -translate-x-1/2 pt-3 min-w-[240px]"
+                      className="absolute top-full left-1/2 -translate-x-1/2 pt-3 min-w-[200px] md:min-w-[240px] max-w-[90vw]"
                       onMouseEnter={() => setActiveDropdown(item.id)}
                       onMouseLeave={() => setActiveDropdown(null)}
                     >
@@ -441,7 +441,7 @@ export function Header({
                 <img
                   src="/brand/logo-icon-only.png"
                   alt="FORMÉ HAUS"
-                  className="transition-all duration-500 object-contain h-10 w-10 opacity-90 group-hover/logo:opacity-100"
+                  className="transition-all duration-500 object-contain h-8 w-8 md:h-10 md:w-10 opacity-90 group-hover/logo:opacity-100"
                   fetchPriority="high"
                   width={40}
                   height={40}

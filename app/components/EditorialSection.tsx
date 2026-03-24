@@ -1,7 +1,9 @@
 import {Link} from '@remix-run/react';
-import {motion} from 'framer-motion';
+import {motion, useReducedMotion, useScroll, useTransform} from 'framer-motion';
+import {useRef} from 'react';
 
 import {useTranslation} from '~/hooks/useTranslation';
+import {use3DTilt} from '~/hooks/use3DTilt';
 
 interface BentoItem {
   image: string;
@@ -44,10 +46,13 @@ const BENTO_ITEMS: BentoItem[] = [
 ];
 
 /**
- * TopCard — renders at natural image height (flex-shrink: 0).
- * The image dictates how tall this cell is.
+ * TopCard — renders at natural image height with 3D tilt and parallax
  */
 function TopCard({item, index}: {item: BentoItem; index: number}) {
+  const [isHovered, setIsHovered] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+  const {style: tiltStyle, handlers: tiltHandlers} = use3DTilt({maxRotation: 4});
+  
   return (
     <motion.div
       initial={{opacity: 0, y: 20}}
@@ -59,48 +64,95 @@ function TopCard({item, index}: {item: BentoItem; index: number}) {
         ease: [0.16, 1, 0.3, 1],
       }}
       className="group relative shrink-0 overflow-hidden rounded-[14px] bg-[#E8E4E0]"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      {...(shouldReduceMotion ? {} : tiltHandlers)}
     >
       <Link to={item.url} className="block">
-        {/* Zoomed 20% to hide watermark */}
-        <img
-          src={item.image}
-          alt={item.alt}
-          className="w-full h-auto block transition-transform duration-700 ease-out group-hover:scale-105"
-          style={{transform: 'scale(1.20)', transformOrigin: 'center center'}}
-          sizes="(max-width: 768px) 100vw, 50vw"
-          loading={index < 2 ? 'eager' : 'lazy'}
-          decoding="async"
-        />
+        <motion.div
+          className="relative overflow-hidden"
+          style={shouldReduceMotion ? {} : {
+            rotateX: isHovered ? tiltStyle.rotateX : 0,
+            rotateY: isHovered ? tiltStyle.rotateY : 0,
+            transformPerspective: 1000,
+          }}
+        >
+          {/* Zoomed 20% to hide watermark with parallax zoom */}
+          <motion.img
+            src={item.image}
+            alt={item.alt}
+            className="w-full h-auto block transition-transform duration-700 ease-out"
+            style={{
+              transform: isHovered ? 'scale(1.25)' : 'scale(1.20)',
+              transformOrigin: 'center center',
+            }}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            loading={index < 2 ? 'eager' : 'lazy'}
+            decoding="async"
+          />
 
-        {/* Hover gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+          {/* Hover gradient - enhanced */}
+          <motion.div 
+            className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none"
+            initial={{opacity: 0}}
+            animate={{opacity: isHovered ? 1 : 0}}
+            transition={{duration: 0.3}}
+          />
 
-        {/* Content — revealed on hover */}
-        <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-          <h3 className="font-serif text-lg md:text-xl text-white italic tracking-wide">
-            {item.title}
-          </h3>
-          {item.subtitle && (
-            <p className="text-xs text-white/70 tracking-wide mt-1">
-              {item.subtitle}
-            </p>
-          )}
-          <div className="mt-2 h-[1px] w-8 bg-[#D4AF87]" />
-        </div>
+          {/* Content — always visible on mobile, hover reveal on desktop */}
+          <motion.div 
+            className="absolute inset-x-0 bottom-0 p-4 md:p-5 md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 translate-y-0 opacity-100 transition-all duration-300"
+            initial={false}
+          >
+            <motion.h3 
+              className="font-serif text-lg md:text-xl text-white italic tracking-wide"
+              initial={false}
+              animate={{y: isHovered ? 0 : 4}}
+              transition={{duration: 0.3, delay: 0.05}}
+            >
+              {item.title}
+            </motion.h3>
+            {item.subtitle && (
+              <motion.p 
+                className="text-xs text-white/70 tracking-wide mt-1"
+                initial={false}
+                animate={{y: isHovered ? 0 : 4, opacity: isHovered ? 1 : 0.7}}
+                transition={{duration: 0.3, delay: 0.1}}
+              >
+                {item.subtitle}
+              </motion.p>
+            )}
+            <motion.div 
+              className="mt-2 h-[1px] bg-[#D4AF87]"
+              initial={{width: 24}}
+              animate={{width: isHovered ? 40 : 24}}
+              transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
+            />
+          </motion.div>
 
-        {/* Hover border */}
-        <div className="absolute inset-0 rounded-[14px] border border-white/0 group-hover:border-white/15 transition-colors duration-300 pointer-events-none" />
+          {/* Hover border with glow */}
+          <motion.div 
+            className="absolute inset-0 rounded-[14px] border border-white/0 pointer-events-none"
+            animate={{borderColor: isHovered ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0)'}}
+            transition={{duration: 0.3}}
+            style={{
+              boxShadow: isHovered ? 'inset 0 0 30px rgba(168,116,65,0.1)' : 'none',
+            }}
+          />
+        </motion.div>
       </Link>
     </motion.div>
   );
 }
 
 /**
- * BottomCard — fills remaining column space via flex: 1.
- * Image uses object-fit: cover + object-position: center
- * so it fills the space while keeping focal point centered.
+ * BottomCard — fills remaining column space with 3D effects
  */
 function BottomCard({item, index}: {item: BentoItem; index: number}) {
+  const [isHovered, setIsHovered] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+  const {style: tiltStyle, handlers: tiltHandlers} = use3DTilt({maxRotation: 4});
+  
   return (
     <motion.div
       initial={{opacity: 0, y: 20}}
@@ -112,55 +164,114 @@ function BottomCard({item, index}: {item: BentoItem; index: number}) {
         ease: [0.16, 1, 0.3, 1],
       }}
       className="group relative flex-1 overflow-hidden rounded-[14px] bg-[#E8E4E0] min-h-0"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      {...(shouldReduceMotion ? {} : tiltHandlers)}
     >
       <Link to={item.url} className="block w-full h-full">
-        <img
-          src={item.image}
-          alt={item.alt}
-          className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
-          style={{transform: 'scale(1.20)', transformOrigin: 'center center'}}
-          sizes="(max-width: 768px) 100vw, 33vw"
-          loading="lazy"
-          decoding="async"
-        />
+        <motion.div
+          className="w-full h-full"
+          style={shouldReduceMotion ? {} : {
+            rotateX: isHovered ? tiltStyle.rotateX : 0,
+            rotateY: isHovered ? tiltStyle.rotateY : 0,
+            transformPerspective: 1000,
+          }}
+        >
+          <motion.img
+            src={item.image}
+            alt={item.alt}
+            className="w-full h-full object-cover object-center transition-transform duration-700 ease-out"
+            style={{
+              transform: isHovered ? 'scale(1.25)' : 'scale(1.20)',
+              transformOrigin: 'center center',
+            }}
+            sizes="(max-width: 768px) 100vw, 33vw"
+            loading="lazy"
+            decoding="async"
+          />
 
-        {/* Hover gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+          {/* Hover gradient */}
+          <motion.div 
+            className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none"
+            initial={{opacity: 0}}
+            animate={{opacity: isHovered ? 1 : 0}}
+            transition={{duration: 0.3}}
+          />
 
-        {/* Content — revealed on hover */}
-        <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-          <h3 className="font-serif text-lg md:text-xl text-white italic tracking-wide">
-            {item.title}
-          </h3>
-          {item.subtitle && (
-            <p className="text-xs text-white/70 tracking-wide mt-1">
-              {item.subtitle}
-            </p>
-          )}
-          <div className="mt-2 h-[1px] w-8 bg-[#D4AF87]" />
-        </div>
+          {/* Content — always visible on mobile, hover reveal on desktop */}
+          <motion.div 
+            className="absolute inset-x-0 bottom-0 p-4 md:p-5 md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 translate-y-0 opacity-100 transition-all duration-300"
+          >
+            <motion.h3 
+              className="font-serif text-lg md:text-xl text-white italic tracking-wide"
+              initial={false}
+              animate={{y: isHovered ? 0 : 4}}
+              transition={{duration: 0.3, delay: 0.05}}
+            >
+              {item.title}
+            </motion.h3>
+            {item.subtitle && (
+              <motion.p 
+                className="text-xs text-white/70 tracking-wide mt-1"
+                initial={false}
+                animate={{y: isHovered ? 0 : 4, opacity: isHovered ? 1 : 0.7}}
+                transition={{duration: 0.3, delay: 0.1}}
+              >
+                {item.subtitle}
+              </motion.p>
+            )}
+            <motion.div 
+              className="mt-2 h-[1px] bg-[#D4AF87]"
+              initial={{width: 24}}
+              animate={{width: isHovered ? 40 : 24}}
+              transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
+            />
+          </motion.div>
 
-        {/* Hover border */}
-        <div className="absolute inset-0 rounded-[14px] border border-white/0 group-hover:border-white/15 transition-colors duration-300 pointer-events-none" />
+          {/* Hover border with glow */}
+          <motion.div 
+            className="absolute inset-0 rounded-[14px] border border-white/0 pointer-events-none"
+            animate={{borderColor: isHovered ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0)'}}
+            transition={{duration: 0.3}}
+            style={{
+              boxShadow: isHovered ? 'inset 0 0 30px rgba(168,116,65,0.1)' : 'none',
+            }}
+          />
+        </motion.div>
       </Link>
     </motion.div>
   );
 }
 
+// Import useState
+import {useState} from 'react';
+
 export default function EditorialSection() {
   const {isRTL} = useTranslation();
+  const sectionRef = useRef<HTMLElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+  
+  // Parallax for columns
+  const {scrollYProgress} = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const leftColY = useTransform(scrollYProgress, [0, 1], [0, -30]);
+  const rightColY = useTransform(scrollYProgress, [0, 1], [0, -20]);
 
   return (
     <section
+      ref={sectionRef}
       aria-label="Editorial"
       className="py-6 md:py-8"
       dir={isRTL ? 'rtl' : 'ltr'}
     >
       <div
-        className="max-w-[1200px] mx-auto"
+        className="max-w-[var(--container-max)] mx-auto"
         style={{padding: '0 var(--page-gutter)'}}
       >
-        {/* Section Header */}
+        {/* Section Header with SplitText effect */}
         <motion.div
           initial={{opacity: 0, y: 16}}
           whileInView={{opacity: 1, y: 0}}
@@ -169,7 +280,21 @@ export default function EditorialSection() {
           className="flex justify-between items-end mb-6"
         >
           <h2 className="font-serif text-2xl md:text-3xl italic text-[#4A3C31]">
-            The Edit
+            {'The Edit'.split('').map((char, i) => (
+              <motion.span
+                key={i}
+                initial={{opacity: 0, y: 20}}
+                whileInView={{opacity: 1, y: 0}}
+                viewport={{once: true}}
+                transition={{
+                  duration: 0.5,
+                  delay: i * 0.03,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                {char === ' ' ? '\u00A0' : char}
+              </motion.span>
+            ))}
           </h2>
         </motion.div>
 
@@ -182,22 +307,29 @@ export default function EditorialSection() {
         </div>
 
         {/*
-          Desktop: flexbox two-column editorial grid
+          Desktop: flexbox two-column editorial grid with parallax
           Each column: top image at natural height + bottom image fills remaining space.
-          The stagger comes from different top-image heights in each column.
         */}
-        <div className="hidden md:flex gap-3" style={{minHeight: '750px'}}>
-          {/* Left column */}
-          <div className="flex-1 min-w-0 flex flex-col gap-3">
+        <div 
+          className="hidden md:flex gap-3 min-h-[500px] lg:min-h-[600px] xl:min-h-[750px]"
+        >
+          {/* Left column with parallax */}
+          <motion.div 
+            className="flex-1 min-w-0 flex flex-col gap-3"
+            style={shouldReduceMotion ? {} : {y: leftColY}}
+          >
             <TopCard item={BENTO_ITEMS[0]} index={0} />
             <BottomCard item={BENTO_ITEMS[2]} index={2} />
-          </div>
+          </motion.div>
 
-          {/* Right column */}
-          <div className="flex-1 min-w-0 flex flex-col gap-3">
+          {/* Right column with parallax */}
+          <motion.div 
+            className="flex-1 min-w-0 flex flex-col gap-3"
+            style={shouldReduceMotion ? {} : {y: rightColY}}
+          >
             <TopCard item={BENTO_ITEMS[1]} index={1} />
             <BottomCard item={BENTO_ITEMS[3]} index={3} />
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

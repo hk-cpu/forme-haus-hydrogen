@@ -743,3 +743,344 @@ h6 {
     scroll-behavior: auto !important;
   }
 }
+
+/* ============================================================================
+   RESPONSIVE UTILITY CLASSES
+   ============================================================================ */
+
+/* Touch target utilities */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+@media (max-width: 768px) {
+  .touch-target {
+    min-height: 48px;
+    min-width: 48px;
+  }
+}
+
+/* Icon-only buttons need padding */
+.icon-only {
+  padding: 12px;
+}
+
+/* Container utilities */
+.container-max {
+  max-width: var(--container-max);
+}
+
+.container-wide {
+  max-width: var(--container-wide);
+}
+
+/* ============================================================================
+   Z-INDEX MANAGEMENT
+   ============================================================================ */
+
+.z-dropdown {
+  z-index: 100;
+}
+
+.z-sticky {
+  z-index: 200;
+}
+
+.z-header {
+  z-index: 300;
+}
+
+.z-drawer {
+  z-index: 400;
+}
+
+.z-modal {
+  z-index: 500;
+}
+
+.z-popover {
+  z-index: 600;
+}
+
+.z-toast {
+  z-index: 700;
+}
+
+.z-tooltip {
+  z-index: 800;
+}
+
+/* ============================================================================
+   LANDSCAPE MOBILE SUPPORT
+   ============================================================================ */
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero-landscape {
+    min-height: auto;
+    height: auto;
+    padding-top: 80px;
+    padding-bottom: 40px;
+  }
+}
+
+/* ============================================================================
+   FLUID TYPOGRAPHY
+   ============================================================================ */
+
+.text-fluid-sm {
+  font-size: clamp(0.875rem, 1vw + 0.5rem, 1rem);
+}
+
+.text-fluid-base {
+  font-size: clamp(1rem, 1.2vw + 0.5rem, 1.125rem);
+}
+
+.text-fluid-lg {
+  font-size: clamp(1.125rem, 1.5vw + 0.5rem, 1.25rem);
+}
+
+.text-fluid-xl {
+  font-size: clamp(1.25rem, 2vw + 0.5rem, 1.5rem);
+}
+
+.text-fluid-2xl {
+  font-size: clamp(1.5rem, 2.5vw + 0.5rem, 2rem);
+}
+
+.text-fluid-3xl {
+  font-size: clamp(1.75rem, 3vw + 0.5rem, 2.5rem);
+}
+
+/* ============================================================================
+   SAFE AREA SUPPORT (notch/rounded corners)
+   ============================================================================ */
+
+@supports (padding: max(0px)) {
+  .safe-area-inset {
+    padding-left: max(var(--page-gutter), env(safe-area-inset-left));
+    padding-right: max(var(--page-gutter), env(safe-area-inset-right));
+  }
+  
+  .safe-area-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
+
+/* ============================================================================
+   HIGH CONTRAST MODE SUPPORT
+   ============================================================================ */
+
+@media (prefers-contrast: high) {
+  :root {
+    --bronze: #c9844c;
+    --bronze-light: #e6b87a;
+    --foreground: #ffffff;
+    --background: #000000;
+  }
+  
+  /* Ensure sufficient contrast */
+  .text-\[\#8B8076\] {
+    color: #a89b8f !important;
+  }
+  
+  .border-\[\#a87441\]\/20,
+  .border-\[\#a87441\]\/10 {
+    border-color: rgba(168, 116, 65, 0.5) !important;
+  }
+}
+
+/* ============================================================================
+   REDUCED MOTION UTILITIES
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-safe\:transform {
+    transform: none !important;
+  }
+  
+  .motion-safe\:transition {
+    transition: none !important;
+  }
+  
+  .motion-safe\:animate {
+    animation: none !important;
+  }
+}
+
+/* For elements that should ONLY animate when motion is OK */
+@media (prefers-reduced-motion: no-preference) {
+  .motion-reduce\:hidden {
+    display: none;
+  }
+}
+
+/* ============================================================================
+   3D TRANSFORM UTILITIES
+   ============================================================================ */
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-2000 {
+  perspective: 2000px;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* ============================================================================
+   SHADOW UTILITIES
+   ============================================================================ */
+
+.shadow-card-hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.shadow-glow-bronze {
+  box-shadow: 0 0 20px rgba(168, 116, 65, 0.4), 0 0 40px rgba(168, 116, 65, 0.2);
+}
+
+/* ============================================================================
+   SCROLLBAR STYLING (enhanced)
+   ============================================================================ */
+
+/* Thin scrollbar for webkit browsers */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #a87441, #8b5e3c);
+  border-radius: 2px;
+}
+
+/* ============================================================================
+   ACCESSIBILITY FOCUS STATES
+   ============================================================================ */
+
+.focus-ring:focus-visible {
+  outline: 2px solid #a87441;
+  outline-offset: 2px;
+}
+
+.focus-ring-offset:focus-visible {
+  outline: 2px solid #a87441;
+  outline-offset: 4px;
+}
+
+/* ============================================================================
+   MAGNETIC BUTTON BASE STYLES
+   ============================================================================ */
+
+.magnetic-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.magnetic-button:active {
+  transform: scale(0.97);
+}
+
+/* ============================================================================
+   PARALLAX LAYER UTILITIES
+   ============================================================================ */
+
+.parallax-slow {
+  will-change: transform;
+}
+
+.parallax-medium {
+  will-change: transform;
+}
+
+.parallax-fast {
+  will-change: transform;
+}
+
+/* ============================================================================
+   IMAGE REVEAL UTILITIES
+   ============================================================================ */
+
+.reveal-mask {
+  clip-path: inset(0 0 0 0);
+}
+
+.reveal-mask-bottom {
+  clip-path: inset(100% 0 0 0);
+}
+
+.reveal-mask-top {
+  clip-path: inset(0 0 100% 0);
+}
+
+/* ============================================================================
+   SPLIT TEXT ANIMATION BASE
+   ============================================================================ */
+
+.split-text-char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.split-text-word {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* ============================================================================
+   STAGGER ANIMATION DELAYS
+   ============================================================================ */
+
+.stagger-1 { animation-delay: 0.08s; }
+.stagger-2 { animation-delay: 0.16s; }
+.stagger-3 { animation-delay: 0.24s; }
+.stagger-4 { animation-delay: 0.32s; }
+.stagger-5 { animation-delay: 0.40s; }
+.stagger-6 { animation-delay: 0.48s; }
+
+/* ============================================================================
+   GRADIENT TEXT UTILITIES
+   ============================================================================ */
+
+.text-gradient-bronze {
+  background: linear-gradient(135deg, #a87441 0%, #d4af87 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================================================
+   HOVER LIFT EFFECT
+   ============================================================================ */
+
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+}
+
+@media (min-width: 768px) {
+  .hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
+  }
+}
