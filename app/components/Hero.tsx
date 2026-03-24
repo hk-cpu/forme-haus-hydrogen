@@ -9,7 +9,7 @@ export default function Hero() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section aria-label="Hero" className="h-[60vh] md:h-[65vh] min-h-[350px] max-h-[600px] flex flex-col items-center justify-center bg-transparent relative overflow-hidden mobile-snap-section pt-[72px] md:pt-[100px]">
+    <section aria-label="Hero" className="h-screen min-h-screen flex flex-col items-center justify-center bg-transparent relative overflow-hidden pt-[72px] md:pt-[100px]">
       <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
         <div className="text-center px-6 z-20 relative">
           {/* Brand Logo + Motion Line */}

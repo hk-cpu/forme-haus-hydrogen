@@ -183,7 +183,7 @@ export default function EditorialSection() {
           Each column: top image at natural height + bottom image fills remaining space.
           The stagger comes from different top-image heights in each column.
         */}
-        <div className="hidden md:flex gap-3" style={{minHeight: '750px'}}>
+        <div className="hidden md:flex gap-3" style={{maxHeight: 'calc(100vh - 200px)', height: '600px'}}>
           {/* Left column */}
           <div className="flex-1 min-w-0 flex flex-col gap-3">
             <TopCard item={BENTO_ITEMS[0]} index={0} />
