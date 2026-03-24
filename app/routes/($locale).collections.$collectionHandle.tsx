@@ -401,7 +401,7 @@ export default function Collection() {
                 alt={collection.title}
                 className={
                   override?.fit === 'cover'
-                    ? 'w-full h-auto block'
+                    ? 'w-full h-auto block max-h-[35vh] md:max-h-[40vh] object-contain mx-auto'
                     : 'w-full h-auto block max-h-[70vh] object-contain mx-auto'
                 }
                 loading="eager"
