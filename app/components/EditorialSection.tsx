@@ -61,10 +61,12 @@ function TopCard({item, index}: {item: BentoItem; index: number}) {
       className="group relative shrink-0 overflow-hidden rounded-[14px] bg-[#E8E4E0]"
     >
       <Link to={item.url} className="block">
+        {/* Zoomed 20% to hide watermark */}
         <img
           src={item.image}
           alt={item.alt}
           className="w-full h-auto block transition-transform duration-700 ease-out group-hover:scale-105"
+          style={{transform: 'scale(1.20)', transformOrigin: 'center center'}}
           sizes="(max-width: 768px) 100vw, 50vw"
           loading={index < 2 ? 'eager' : 'lazy'}
           decoding="async"
@@ -116,6 +118,7 @@ function BottomCard({item, index}: {item: BentoItem; index: number}) {
           src={item.image}
           alt={item.alt}
           className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+          style={{transform: 'scale(1.20)', transformOrigin: 'center center'}}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
           decoding="async"
