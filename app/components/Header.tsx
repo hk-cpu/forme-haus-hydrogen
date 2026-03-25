@@ -269,7 +269,7 @@ export function Header({
         initial={{y: -100, opacity: 0}}
         animate={{y: isVisible ? 0 : -100, opacity: isVisible ? 1 : 0}}
         transition={{duration: 0.5, ease: [0.16, 1, 0.3, 1]}}
-        className={`fixed z-50 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex justify-center left-0 right-0 group w-full ${'top-0'} ${getHeaderBackgroundClass()}`}
+        className={`fixed z-50 flex justify-center left-0 right-0 group w-full top-0 ${getHeaderBackgroundClass()}`}
         style={{
           WebkitBackdropFilter: scrolled
             ? 'blur(40px) saturate(1.2)'
@@ -507,12 +507,13 @@ export function Header({
           </div>
         </div>
 
-        {/* Scroll Progress Bar */}
+        {/* Scroll Progress Bar — uses scaleX (GPU composited) instead of width (triggers layout) */}
         <motion.div
-          className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-[#a87441] to-[#d4af87]"
+          className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-[#a87441] to-[#d4af87]"
           style={{
-            width: scrolled ? '100%' : '0%',
-            transition: 'width 0.3s ease',
+            transform: scrolled ? 'scaleX(1)' : 'scaleX(0)',
+            transformOrigin: 'left',
+            transition: 'transform 0.3s ease',
           }}
         />
       </motion.header>
@@ -534,6 +535,13 @@ function CartBagButton({
 }) {
   const [showEmptyHint, setShowEmptyHint] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Clean up timer on unmount to avoid setState on unmounted component
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
 
   function handleEmptyClick() {
     if (timerRef.current) clearTimeout(timerRef.current);

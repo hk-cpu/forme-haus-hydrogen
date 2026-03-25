@@ -15,7 +15,6 @@ import type {
 } from '@shopify/hydrogen/storefront-api-types';
 import {
   Pagination,
-  flattenConnection,
   getPaginationVariables,
   Analytics,
   getSeoMeta,
@@ -81,7 +80,6 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   });
 
   let {collection} = result;
-  const {collections} = result;
 
   // Special handles that can use fallback to show all products
   const SYNTHETIC_HANDLES = [
@@ -241,7 +239,6 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   return json({
     collection,
     appliedFilters,
-    collections: flattenConnection(collections),
     seo,
   });
 }
@@ -255,7 +252,7 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 };
 
 export default function Collection() {
-  const {collection, appliedFilters, collections} =
+  const {collection, appliedFilters} =
     useLoaderData<typeof loader>();
   const {t} = useTranslation();
 
@@ -697,14 +694,6 @@ const COLLECTION_QUERY = `#graphql
           hasNextPage
           endCursor
           startCursor
-        }
-      }
-    }
-    collections(first: 100) {
-      edges {
-        node {
-          title
-          handle
         }
       }
     }

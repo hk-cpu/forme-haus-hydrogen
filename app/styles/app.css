@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap');
 
 /* ── Tailwind v4 brand token registration ──────────────────────────────────
    Exposes brand colors as Tailwind utilities:
@@ -585,7 +584,6 @@ footer a,
 
 .parallax-layer {
   transform: translateZ(0);
-  will-change: transform;
 }
 
 /* Brown neon glow for special elements */
@@ -1002,15 +1000,15 @@ h6 {
    ============================================================================ */
 
 .parallax-slow {
-  will-change: transform;
+  /* will-change applied dynamically via JS when animating */
 }
 
 .parallax-medium {
-  will-change: transform;
+  /* will-change applied dynamically via JS when animating */
 }
 
 .parallax-fast {
-  will-change: transform;
+  /* will-change applied dynamically via JS when animating */
 }
 
 /* ============================================================================
@@ -1035,12 +1033,10 @@ h6 {
 
 .split-text-char {
   display: inline-block;
-  will-change: transform, opacity;
 }
 
 .split-text-word {
   display: inline-block;
-  will-change: transform, opacity;
 }
 
 /* ============================================================================

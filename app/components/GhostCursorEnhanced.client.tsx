@@ -312,12 +312,14 @@ export default function GhostCursorEnhanced({
       fadingRef.current = false;
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, {passive: true});
 
     return () => {
       cancelAnimationFrame(rafRef.current);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
+      // Dispose post-processing passes to prevent GPU memory leak
+      composer.dispose();
       renderer.dispose();
       geometry.dispose();
       material.dispose();

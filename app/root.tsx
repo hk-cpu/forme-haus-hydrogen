@@ -30,7 +30,6 @@ import {useEffect, useState, useCallback} from 'react';
 import {PageLayout} from '~/components/PageLayout';
 import {GenericError} from '~/components/GenericError';
 import {NotFound} from '~/components/NotFound';
-import Silk from '~/components/Silk';
 import SmoothScroll from '~/components/SmoothScroll';
 import {seoPayload} from '~/lib/seo.server';
 import styles from '~/styles/app.css?url';
@@ -93,8 +92,8 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
  */
 export const links: LinksFunction = () => {
   return [
-    // Preload above-fold critical images
-    {rel: 'preload', href: '/brand/logo-icon-only.png', as: 'image'},
+    // Preload above-fold LCP hero image
+    {rel: 'preload', href: '/brand/logo-full.png', as: 'image'},
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
@@ -104,6 +103,7 @@ export const links: LinksFunction = () => {
       href: 'https://shop.app',
     },
     {rel: 'icon', type: 'image/png', href: favicon},
+    // Google Fonts — preconnect + stylesheet (moved out of CSS @import to avoid render-blocking waterfall)
     {
       rel: 'preconnect',
       href: 'https://fonts.googleapis.com',
@@ -112,6 +112,10 @@ export const links: LinksFunction = () => {
       rel: 'preconnect',
       href: 'https://fonts.gstatic.com',
       crossOrigin: 'anonymous' as const,
+    },
+    {
+      rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@300;400;600&display=swap',
     },
   ];
 };

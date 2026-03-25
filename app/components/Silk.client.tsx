@@ -101,13 +101,15 @@ const SilkPlane = forwardRef<Mesh, SilkPlaneProps>(function SilkPlane(
     }
   }, [ref, viewport]);
 
-  useFrame((_state: RootState, delta: number) => {
+  useFrame((state: RootState, delta: number) => {
     const mesh = ref as React.MutableRefObject<Mesh | null>;
     if (mesh.current) {
       const material = mesh.current.material as ShaderMaterial & {
         uniforms: SilkUniforms;
       };
       material.uniforms.uTime.value += 0.3 * delta;
+      // Request next frame (frameloop="demand" requires manual invalidation)
+      state.invalidate();
     }
   });
 
@@ -156,7 +158,7 @@ const Silk: React.FC<SilkProps> = ({
   return (
     <Canvas
       dpr={[1, 2]}
-      frameloop="always"
+      frameloop="demand"
       gl={{alpha: true}}
       style={{background: 'transparent'}}
     >

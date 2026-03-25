@@ -1,5 +1,5 @@
 import type {ReactNode} from 'react';
-import {createContext, useContext, useReducer, useEffect} from 'react';
+import {createContext, useContext, useReducer, useEffect, useMemo, useCallback} from 'react';
 
 // ============================================================================
 // UI STATE TYPES
@@ -297,20 +297,37 @@ export function UIProvider({children}: {children: ReactNode}) {
     }
   }, []);
 
-  // Convenience methods
-  const value: UIContextValue = {
-    state,
-    dispatch,
-    toggleMenu: () => dispatch({type: 'TOGGLE_MENU'}),
-    toggleSearch: () => dispatch({type: 'TOGGLE_SEARCH'}),
-    toggleLogin: () => dispatch({type: 'TOGGLE_LOGIN'}),
-    toggleFilter: () => dispatch({type: 'TOGGLE_FILTER'}),
-    toggleCart: () => dispatch({type: 'TOGGLE_CART'}),
-    closeAllOverlays: () => dispatch({type: 'CLOSE_ALL_OVERLAYS'}),
-    toggleWishlist: (productId: string) =>
-      dispatch({type: 'TOGGLE_WISHLIST', productId}),
-    isInWishlist: (productId: string) => state.wishlist.includes(productId),
-  };
+  // Stable convenience methods (dispatch is stable from useReducer)
+  const toggleMenu = useCallback(() => dispatch({type: 'TOGGLE_MENU'}), [dispatch]);
+  const toggleSearch = useCallback(() => dispatch({type: 'TOGGLE_SEARCH'}), [dispatch]);
+  const toggleLogin = useCallback(() => dispatch({type: 'TOGGLE_LOGIN'}), [dispatch]);
+  const toggleFilter = useCallback(() => dispatch({type: 'TOGGLE_FILTER'}), [dispatch]);
+  const toggleCart = useCallback(() => dispatch({type: 'TOGGLE_CART'}), [dispatch]);
+  const closeAllOverlays = useCallback(() => dispatch({type: 'CLOSE_ALL_OVERLAYS'}), [dispatch]);
+  const toggleWishlist = useCallback(
+    (productId: string) => dispatch({type: 'TOGGLE_WISHLIST', productId}),
+    [dispatch],
+  );
+  const isInWishlist = useCallback(
+    (productId: string) => state.wishlist.includes(productId),
+    [state.wishlist],
+  );
+
+  const value: UIContextValue = useMemo(
+    () => ({
+      state,
+      dispatch,
+      toggleMenu,
+      toggleSearch,
+      toggleLogin,
+      toggleFilter,
+      toggleCart,
+      closeAllOverlays,
+      toggleWishlist,
+      isInWishlist,
+    }),
+    [state, dispatch, toggleMenu, toggleSearch, toggleLogin, toggleFilter, toggleCart, closeAllOverlays, toggleWishlist, isInWishlist],
+  );
 
   return <UIContext.Provider value={value}>{children}</UIContext.Provider>;
 }

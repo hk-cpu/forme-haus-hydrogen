@@ -35,14 +35,22 @@ export function useParallax(options: UseParallaxOptions = {}): MotionValue<numbe
 /**
  * Creates multiple parallax layers with different speeds
  * Useful for creating depth in editorial sections
- * 
+ *
+ * IMPORTANT: speeds array length must be constant between renders (React hooks rule).
+ *
  * @example
  * const [slow, medium, fast] = useParallaxLayers([0.2, 0.5, 0.8]);
  */
 export function useParallaxLayers(speeds: number[]): MotionValue<number>[] {
   const {scrollYProgress} = useScroll();
-  
-  return speeds.map(speed => 
-    useTransform(scrollYProgress, [0, 1], [0, -100 * speed])
-  );
+
+  // Call useTransform for a fixed max of layers (hooks must not be called conditionally)
+  const layer0 = useTransform(scrollYProgress, [0, 1], [0, -100 * (speeds[0] ?? 0)]);
+  const layer1 = useTransform(scrollYProgress, [0, 1], [0, -100 * (speeds[1] ?? 0)]);
+  const layer2 = useTransform(scrollYProgress, [0, 1], [0, -100 * (speeds[2] ?? 0)]);
+  const layer3 = useTransform(scrollYProgress, [0, 1], [0, -100 * (speeds[3] ?? 0)]);
+  const layer4 = useTransform(scrollYProgress, [0, 1], [0, -100 * (speeds[4] ?? 0)]);
+
+  const all = [layer0, layer1, layer2, layer3, layer4];
+  return all.slice(0, speeds.length);
 }

@@ -1,5 +1,5 @@
 ﻿import {Await, useRouteLoaderData, useLocation} from '@remix-run/react';
-import {Suspense, useEffect, useMemo, useState} from 'react';
+import {Suspense, useEffect, useMemo, useCallback, useState} from 'react';
 import {CartForm} from '@shopify/hydrogen';
 import {motion, AnimatePresence} from 'framer-motion';
 
@@ -39,6 +39,7 @@ export function PageLayout({children, layout}: LayoutProps) {
   const {headerMenu, footerMenu} = layout || {};
   const location = useLocation();
   const {state} = useUI();
+  const isHome = useIsHomePath();
   const [isDesktop, setIsDesktop] = useState(false);
 
   // Check for desktop breakpoint (md: 768px)
@@ -52,16 +53,14 @@ export function PageLayout({children, layout}: LayoutProps) {
   }, []);
 
   // Filter logic for Silk background - pages where Silk should be hidden
-  const SILK_EXCLUDED_PATHS = useMemo(() => [
-    '/collections/sunglasses',
-  ], []);
-  
   const shouldShowSilk = useMemo(() => {
-    return !SILK_EXCLUDED_PATHS.some(path => location.pathname.includes(path));
-  }, [location.pathname, SILK_EXCLUDED_PATHS]);
-  
+    return !location.pathname.includes('/collections/sunglasses');
+  }, [location.pathname]);
+
   // Check if we're on a collection page to adjust padding
   const isCollectionPage = location.pathname.includes('/collections/');
+
+  const isOverlayOpen = state.isCartOpen || state.isSearchOpen;
 
   return (
     <>
@@ -73,7 +72,7 @@ export function PageLayout({children, layout}: LayoutProps) {
             className="absolute inset-0"
             style={{transition: 'opacity 0.8s ease'}}
           >
-            <Silk color="#AD9686" speed={useIsHomePath() ? 5 : 3} />
+            <Silk color="#AD9686" speed={isHome ? 5 : 3} />
           </div>)}
           {isDesktop && shouldShowSilk && <Atmosphere count={60} color="#AD9686" size={0.008} opacity={0.2} />}
         </div>
@@ -84,11 +83,14 @@ export function PageLayout({children, layout}: LayoutProps) {
           </a>
         </div>
 
+        {/* Semi-transparent overlay instead of full-page blur (GPU-friendly) */}
+        {isOverlayOpen && (
+          <div className="fixed inset-0 z-[9] bg-black/30 pointer-events-none" />
+        )}
+
         <div
-          className={`relative z-10 flex flex-col items-center transition-all duration-700 ${
-            state.isCartOpen || state.isSearchOpen
-              ? 'blur-[2px] scale-[0.995] pointer-events-none'
-              : ''
+          className={`relative z-10 flex flex-col items-center transition-opacity duration-300 ${
+            isOverlayOpen ? 'opacity-95 pointer-events-none' : ''
           }`}
         >
           <div className="w-full max-w-[1800px] flex flex-col relative mx-auto my-0">
@@ -99,18 +101,18 @@ export function PageLayout({children, layout}: LayoutProps) {
             <main
               role="main"
               id="mainContent"
-              className={`flex-grow pb-[72px] md:pb-0 ${isCollectionPage ? '' : ''}`}
+              className={`flex-grow pb-[72px] md:pb-0`}
               style={{paddingTop: isCollectionPage ? 0 : 'var(--navbar-height)'}}
             >
               <AnimatePresence mode="popLayout">
                 <motion.div
                   key={location.pathname}
-                  initial={{opacity: 0, y: 8}}
-                  animate={{opacity: 1, y: 0}}
-                  exit={{opacity: 0, y: -8}}
-                  transition={{duration: 0.4, ease: [0.25, 0.1, 0.25, 1]}}
+                  initial={{opacity: 0}}
+                  animate={{opacity: 1}}
+                  exit={{opacity: 0}}
+                  transition={{duration: 0.2, ease: [0.25, 0.1, 0.25, 1]}}
                 >
-                  {useIsHomePath() ? (
+                  {isHome ? (
                     children
                   ) : (
                     <div className="bg-[#F9F5F0]/85 backdrop-blur-md text-[#4A3C31] shadow-[0_0_80px_rgba(255,255,255,0.15)] lg:rounded-t-[2rem] min-h-[50vh]">
@@ -168,14 +170,16 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
     openCart();
   }, [addToCartFetchers, isCartOpen, openCart]);
 
-  // Sync UIContext cart state with drawer
+  // Sync UIContext cart state with drawer (one-directional to avoid loop)
   useEffect(() => {
     if (state.isCartOpen && !isCartOpen) {
       openCart();
     } else if (!state.isCartOpen && isCartOpen) {
       closeCart();
     }
-  }, [state.isCartOpen, isCartOpen, openCart, closeCart]);
+    // Only react to UIContext changes, not drawer state
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.isCartOpen]);
 
   return (
     <>

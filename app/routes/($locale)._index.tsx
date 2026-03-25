@@ -1,6 +1,6 @@
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {defer} from '@remix-run/server-runtime';
-import {getSeoMeta} from '@shopify/hydrogen';
+import {getSeoMeta, CacheLong} from '@shopify/hydrogen';
 import {motion} from 'framer-motion';
 import {useFetcher} from '@remix-run/react';
 
@@ -34,7 +34,9 @@ export async function loader(args: LoaderFunctionArgs) {
 }
 
 async function loadCriticalData({context, request}: LoaderFunctionArgs) {
-  const {shop} = await context.storefront.query(HOMEPAGE_SEO_QUERY);
+  const {shop} = await context.storefront.query(HOMEPAGE_SEO_QUERY, {
+    cache: CacheLong(),
+  });
 
   return {
     shop,

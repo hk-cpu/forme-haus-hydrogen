@@ -165,6 +165,11 @@ export function ProductGallery({
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
+  // Refs to avoid stale closures in interval callbacks
+  const isHoveredRef = useRef(isHovered);
+  const isAutoPlayingRef = useRef(isAutoPlaying);
+  isHoveredRef.current = isHovered;
+  isAutoPlayingRef.current = isAutoPlaying;
 
   // Sort images: prioritize lifestyle/human images
   const images = media
@@ -180,19 +185,6 @@ export function ProductGallery({
 
   const total = images.length;
 
-  // Enhanced auto-rotation with smooth physics
-  const startAutoPlay = useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    if (!isAutoPlaying || isHovered) return;
-
-    intervalRef.current = setInterval(
-      () => {
-        setActiveIndex((prev) => (prev + 1) % total);
-      },
-      isHovered ? 6000 : 4000,
-    );
-  }, [total, isHovered, isAutoPlaying]);
-
   const stopAutoPlay = useCallback(() => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -200,12 +192,36 @@ export function ProductGallery({
     }
   }, []);
 
+  // Auto-rotation using refs to prevent stale closure issues
+  const startAutoPlay = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (!isAutoPlayingRef.current || isHoveredRef.current) return;
+
+    intervalRef.current = setInterval(
+      () => {
+        if (!isAutoPlayingRef.current || isHoveredRef.current) {
+          return;
+        }
+        setActiveIndex((prev) => (prev + 1) % total);
+      },
+      4000,
+    );
+  }, [total]);
+
   useEffect(() => {
     if (total > 1) {
       startAutoPlay();
     }
     return () => stopAutoPlay();
   }, [total, startAutoPlay, stopAutoPlay]);
+
+  // Restart/stop autoplay when hover or autoplay state changes
+  useEffect(() => {
+    stopAutoPlay();
+    if (isAutoPlaying && !isHovered && total > 1) {
+      startAutoPlay();
+    }
+  }, [isHovered, isAutoPlaying, total, startAutoPlay, stopAutoPlay]);
 
   const goTo = useCallback(
     (index: number) => {

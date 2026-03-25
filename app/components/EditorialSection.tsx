@@ -1,6 +1,6 @@
 import {Link} from '@remix-run/react';
 import {motion, useReducedMotion, useScroll, useTransform} from 'framer-motion';
-import {useRef} from 'react';
+import {useRef, useState} from 'react';
 
 import {useTranslation} from '~/hooks/useTranslation';
 import {use3DTilt} from '~/hooks/use3DTilt';
@@ -242,9 +242,6 @@ function BottomCard({item, index}: {item: BentoItem; index: number}) {
     </motion.div>
   );
 }
-
-// Import useState
-import {useState} from 'react';
 
 export default function EditorialSection() {
   const {isRTL} = useTranslation();

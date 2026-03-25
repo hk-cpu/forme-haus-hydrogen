@@ -1,22 +1,21 @@
-import {useEffect, useState} from 'react';
+import {Suspense, lazy, useEffect, useState} from 'react';
 
 import type {AtmosphereProps} from './Atmosphere.client';
 
+const AtmosphereClient = lazy(() => import('./Atmosphere.client'));
+
 export default function Atmosphere(props: AtmosphereProps) {
-  const [AtmosphereComponent, setAtmosphereComponent] =
-    useState<React.ComponentType<AtmosphereProps> | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Only import and render on client-side
-    // @ts-ignore
-    import('./Atmosphere.client').then((mod) => {
-      setAtmosphereComponent(() => mod.default);
-    });
+    setMounted(true);
   }, []);
 
-  if (!AtmosphereComponent) {
-    return null; // Return null during SSR and until loaded
-  }
+  if (!mounted) return null;
 
-  return <AtmosphereComponent {...props} />;
+  return (
+    <Suspense fallback={null}>
+      <AtmosphereClient {...props} />
+    </Suspense>
+  );
 }
