@@ -443,6 +443,17 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
           </div>
         </div>
 
+        {/* Payment Methods */}
+        <div className="max-w-[1440px] mx-auto mt-8 mb-4 text-center">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-[#AA9B8F]/60 mb-3">
+            {t('footer.securePayments', 'Secure Payment Methods')}
+          </p>
+          <PaymentBadges />
+          <p className="text-[10px] text-[#8B8076]/50 mt-2">
+            Powered by Tap Payments · 256-bit SSL Encrypted
+          </p>
+        </div>
+
         {/* Divider */}
         <div className="max-w-[1440px] mx-auto my-12 h-[1px] bg-gradient-to-r from-transparent via-[#a87441]/20 to-transparent" />
 

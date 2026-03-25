@@ -395,8 +395,8 @@ export function TrustBadges({
       >
         <p className="text-[10px] text-[#8B8076] text-center">
           {isRTL
-            ? 'طرق دفع متعددة: مدى، فيزا، ماستركارد، آبل باي، تابي، تمارا'
-            : 'Multiple payment options: Mada, Visa, Mastercard, Apple Pay, Tabby, Tamara'}
+            ? 'طرق دفع متعددة عبر Tap: مدى، فيزا، ماستركارد، آبل باي، STC Pay، تابي، تمارا'
+            : 'Secure payments via Tap: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tabby, Tamara'}
         </p>
       </motion.div>
     </motion.div>
