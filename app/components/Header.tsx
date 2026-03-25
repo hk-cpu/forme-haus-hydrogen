@@ -277,7 +277,7 @@ export function Header({
           backdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
         }}
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-16 flex items-center justify-between relative z-50">
+        <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-10 flex items-center justify-between relative z-50">
           {/* Desktop Navigation - Left Side */}
           <nav className="hidden md:flex items-center gap-4 lg:gap-8">
             {items.map((item: any, index: number) => (

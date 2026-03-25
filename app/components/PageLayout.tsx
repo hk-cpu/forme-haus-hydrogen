@@ -93,7 +93,7 @@ export function PageLayout({children, layout}: LayoutProps) {
             isOverlayOpen ? 'opacity-95 pointer-events-none' : ''
           }`}
         >
-          <div className="w-full max-w-[1800px] flex flex-col relative mx-auto my-0">
+          <div className="w-full max-w-[1440px] flex flex-col relative mx-auto my-0">
             <Header
               title={layout?.shop.name || 'Formé Haus'}
               menu={headerMenu || undefined}

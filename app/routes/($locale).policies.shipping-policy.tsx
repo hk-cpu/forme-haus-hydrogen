@@ -9,8 +9,8 @@ export const meta: MetaFunction = () => {
 };
 
 export default function ShippingPolicyPage() {
-  const {language} = useTranslation();
-  const isArabic = language === 'AR';
+  const {lang} = useTranslation();
+  const isArabic = lang === 'AR';
 
   return (
     <div className="min-h-screen bg-[#F9F5F0]">

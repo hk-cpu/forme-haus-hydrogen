@@ -1,4 +1,4 @@
-import {type MetaFunction} from '@remix/remix-oxygen';
+import {type MetaFunction} from '@shopify/remix-oxygen';
 import {routeHeaders} from '~/data/cache';
 import {useTranslation} from '~/hooks/useTranslation';
 
@@ -9,8 +9,8 @@ export const meta: MetaFunction = () => {
 };
 
 export default function RefundPolicyPage() {
-  const {isRTL, language} = useTranslation();
-  const isArabic = language === 'AR';
+  const {lang} = useTranslation();
+  const isArabic = lang === 'AR';
 
   return (
     <div className="min-h-screen bg-[#F9F5F0]">
