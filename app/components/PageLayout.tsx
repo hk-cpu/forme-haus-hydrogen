@@ -352,6 +352,19 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
           </nav>
         </div>
 
+        {/* Newsletter */}
+        <div className="max-w-[1440px] mx-auto mb-12 pb-12 border-b border-[#a87441]/10">
+          <div className="max-w-[420px] mx-auto text-center">
+            <h4 className="font-serif text-lg text-[#F0EAE6] tracking-wider uppercase mb-2">
+              {t('footer.newsletter', 'Join the Haus')}
+            </h4>
+            <p className="text-[12px] text-[#AA9B8F] mb-5 font-light">
+              {t('footer.newsletterDesc', 'Be the first to know about new arrivals, exclusive edits, and stories.')}
+            </p>
+            <Newsletter />
+          </div>
+        </div>
+
         {/* Social Links */}
         <div className="max-w-[1440px] mx-auto mb-8">
           <div className="flex items-center justify-center gap-4">
