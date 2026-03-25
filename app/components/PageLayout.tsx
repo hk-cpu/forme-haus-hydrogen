@@ -115,7 +115,7 @@ export function PageLayout({children, layout}: LayoutProps) {
                   {isHome ? (
                     children
                   ) : (
-                    <div className="bg-[#F9F5F0]/85 backdrop-blur-md text-[#4A3C31] shadow-[0_0_80px_rgba(255,255,255,0.15)] lg:rounded-t-[2rem] min-h-[50vh]">
+                    <div className={`bg-[#F9F5F0]/85 backdrop-blur-md text-[#4A3C31] shadow-[0_0_80px_rgba(255,255,255,0.15)] min-h-[50vh] ${isCollectionPage ? '' : 'lg:rounded-t-[2rem]'}`}>
                       {children}
                     </div>
                   )}
