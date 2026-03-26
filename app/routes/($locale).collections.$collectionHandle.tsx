@@ -270,17 +270,19 @@ export default function Collection() {
   // Collection hero image overrides
   const HERO_OVERRIDES: Record<
     string,
-    {src: string; hideTitle?: boolean; fit?: 'cover' | 'contain'; bg?: string}
+    {src: string; hideTitle?: boolean; fit?: 'cover' | 'contain' | 'auto'; position?: string; bg?: string}
   > = {
     'new-in': {
       src: '/assets/heros/new-in-hero-2.webp',
       hideTitle: true,
-      fit: 'cover',
+      fit: 'auto',
+      position: 'object-[center_15%]',
     },
     new: {
       src: '/assets/heros/new-in-hero-2.webp',
       hideTitle: true,
-      fit: 'cover',
+      fit: 'auto',
+      position: 'object-[center_15%]',
     },
     sunglasses: {
       src: '/assets/heros/sunglasses-hero-3.webp',
@@ -398,8 +400,10 @@ export default function Collection() {
                 alt={collection.title}
                 className={
                   override?.fit === 'cover'
-                    ? 'w-full h-[55vh] md:h-[65vh] object-cover object-[center_60%] block'
-                    : 'w-full h-auto block max-h-[70vh] object-contain mx-auto'
+                    ? `w-full h-auto max-h-[75vh] object-contain ${override.position || 'object-center'} mx-auto block`
+                    : override?.fit === 'auto'
+                    ? `w-full h-auto max-h-[85vh] object-contain ${override.position || 'object-center'} mx-auto block`
+                    : 'w-full h-auto max-h-[75vh] object-contain mx-auto block'
                 }
                 loading="eager"
                 fetchPriority="high"

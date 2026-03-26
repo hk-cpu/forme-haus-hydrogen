@@ -1,12 +1,10 @@
 ﻿import {Await, useRouteLoaderData, useLocation} from '@remix-run/react';
-import {Suspense, useEffect, useMemo, useCallback, useState} from 'react';
+import {Suspense, useEffect, useMemo, useCallback, useState, lazy} from 'react';
 import {CartForm} from '@shopify/hydrogen';
-import {motion, AnimatePresence} from 'framer-motion';
 
 import {type LayoutQuery} from 'storefrontapi.generated';
 import {Text} from '~/components/Text';
 import {Link} from '~/components/Link';
-import {Cart} from '~/components/Cart';
 import {CartLoading} from '~/components/CartLoading';
 import {Drawer, useDrawer} from '~/components/Drawer';
 import {type EnhancedMenu, useIsHomePath} from '~/lib/utils';
@@ -15,14 +13,27 @@ import type {RootLoader} from '~/root';
 import {Header as FormeHeader} from '~/components/Header';
 import Silk from '~/components/Silk';
 import Atmosphere from '~/components/Atmosphere';
-import {NavigationMenu} from '~/components/NavigationMenu';
-import {SearchOverlay} from '~/components/SearchOverlay';
-import {AccountOverlay} from '~/components/AccountOverlay';
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
 import {Newsletter} from '~/components/Newsletter';
 import PaymentBadges from '~/components/PaymentBadges';
-import {MobileBottomNav} from '~/components/MobileBottomNav';
+
+// Lazy-load overlays — invisible on initial render, defers their FM + component JS
+const NavigationMenu = lazy(() =>
+  import('~/components/NavigationMenu').then((m) => ({default: m.NavigationMenu})),
+);
+const SearchOverlay = lazy(() =>
+  import('~/components/SearchOverlay').then((m) => ({default: m.SearchOverlay})),
+);
+const AccountOverlay = lazy(() =>
+  import('~/components/AccountOverlay').then((m) => ({default: m.AccountOverlay})),
+);
+const Cart = lazy(() =>
+  import('~/components/Cart').then((m) => ({default: m.Cart})),
+);
+const MobileBottomNav = lazy(() =>
+  import('~/components/MobileBottomNav').then((m) => ({default: m.MobileBottomNav})),
+);
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -104,14 +115,8 @@ export function PageLayout({children, layout}: LayoutProps) {
               className={`flex-grow pb-[72px] md:pb-0`}
               style={{paddingTop: isCollectionPage ? 0 : 'var(--navbar-height)'}}
             >
-              <AnimatePresence mode="popLayout">
-                <motion.div
-                  key={location.pathname}
-                  initial={{opacity: 0}}
-                  animate={{opacity: 1}}
-                  exit={{opacity: 0}}
-                  transition={{duration: 0.2, ease: [0.25, 0.1, 0.25, 1]}}
-                >
+              {/* CSS page fade-in — replaces AnimatePresence to eliminate FM from critical path */}
+              <div key={location.pathname} className="page-fade-in">
                   {isHome ? (
                     children
                   ) : (
@@ -119,34 +124,28 @@ export function PageLayout({children, layout}: LayoutProps) {
                       {children}
                     </div>
                   )}
-                </motion.div>
-              </AnimatePresence>
+              </div>
             </main>
             <Footer menu={footerMenu || undefined} />
           </div>
         </div>
       {/* WhatsApp Floating Button — set WHATSAPP_NUMBER above to enable */}
       {WHATSAPP_NUMBER && (
-      <motion.a
+      <a
         href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('مرحباً، أريد الاستفسار عن منتج في Formé Haus')}`}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="تواصل معنا عبر واتساب"
-        className="fixed bottom-[80px] right-6 md:bottom-6 z-[400] w-14 h-14 rounded-full bg-[#25D366] shadow-lg shadow-[#25D366]/30 flex items-center justify-center hover:scale-110 active:scale-95 transition-transform duration-200"
-        initial={{scale: 0, opacity: 0}}
-        animate={{scale: 1, opacity: 1}}
-        transition={{delay: 1.5, type: 'spring', stiffness: 260, damping: 20}}
-        whileHover={{scale: 1.1}}
-        whileTap={{scale: 0.95}}
+        className="whatsapp-fab fixed bottom-[80px] right-6 md:bottom-6 z-[400] w-14 h-14 rounded-full bg-[#25D366] shadow-lg shadow-[#25D366]/30 flex items-center justify-center hover:scale-110 active:scale-95 transition-transform duration-200"
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-7 h-7">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
         </svg>
-      </motion.a>
+      </a>
       )}
 
       {/* Mobile bottom navigation — critical for GCC/Saudi mobile-first market */}
-      <MobileBottomNav />
+      <Suspense fallback={null}><MobileBottomNav /></Suspense>
     </div>
     </>
   );
@@ -183,10 +182,12 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
 
   return (
     <>
-      <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
-      <NavigationMenu />
-      <SearchOverlay />
-      <AccountOverlay />
+      <Suspense fallback={null}>
+        <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
+        <NavigationMenu />
+        <SearchOverlay />
+        <AccountOverlay />
+      </Suspense>
       <FormeHeader
         title={title}
         menu={menu}
@@ -242,15 +243,13 @@ function MenuMobileNav({
 }) {
   const {t, isRTL} = useTranslation();
   return (
-    <nav className="grid gap-6 p-6 sm:gap-8 sm:px-12 sm:py-8">
+    <nav className="grid gap-6 p-6 sm:gap-8 sm:px-12 sm:py-8 menu-stagger">
       {/* Top level menu items */}
       {(menu?.items || []).map((item, index) => (
-        <motion.span
+        <span
           key={item.id}
-          className="block"
-          initial={{opacity: 0, x: isRTL ? 20 : -20}}
-          animate={{opacity: 1, x: 0}}
-          transition={{delay: index * 0.1, duration: 0.5}}
+          className="block menu-stagger-item"
+          style={{'--stagger-index': index} as React.CSSProperties}
         >
           <Link
             to={item.to}
@@ -268,15 +267,13 @@ function MenuMobileNav({
               ? 'COLLECTIONS'
               : item.title}
           </Link>
-        </motion.span>
+        </span>
       ))}
 
       {/* Account Link for Mobile */}
-      <motion.div
-        className="mt-8 pt-8 border-t border-[#a87441]/20"
-        initial={{opacity: 0}}
-        animate={{opacity: 1}}
-        transition={{delay: 0.5, duration: 0.5}}
+      <div
+        className="mt-8 pt-8 border-t border-[#a87441]/20 menu-stagger-item"
+        style={{'--stagger-index': (menu?.items || []).length} as React.CSSProperties}
       >
         <Link
           to="/account"
@@ -287,7 +284,7 @@ function MenuMobileNav({
             {t('nav.account', 'Account / Sign In')}
           </span>
         </Link>
-      </motion.div>
+      </div>
     </nav>
   );
 }

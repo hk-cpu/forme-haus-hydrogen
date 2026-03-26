@@ -1,6 +1,6 @@
 import {Link} from '@remix-run/react';
 import {motion, useReducedMotion, useScroll, useTransform} from 'framer-motion';
-import {useRef} from 'react';
+import {useRef, useState, useEffect} from 'react';
 
 import {useTranslation} from '~/hooks/useTranslation';
 import {useMagneticEffect} from '~/hooks/useMagneticEffect';
@@ -9,12 +9,17 @@ export default function Hero() {
   const {t} = useTranslation();
   const shouldReduceMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
-  
-  // Parallax scroll effect
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  // Parallax scroll effect — only active after hydration
   const {scrollY} = useScroll();
   const logoY = useTransform(scrollY, [0, 500], [0, shouldReduceMotion ? 0 : 100]);
   const logoOpacity = useTransform(scrollY, [0, 300], [1, shouldReduceMotion ? 1 : 0]);
-  
+
   // Magnetic effect for CTA
   const {x: magneticX, y: magneticY, handlers: magneticHandlers} = useMagneticEffect({
     strength: 0.3,
@@ -23,66 +28,82 @@ export default function Hero() {
   });
 
   return (
-    <section 
+    <section
       ref={sectionRef}
-      aria-label="Hero" 
+      aria-label="Hero"
       className="h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[65vh] min-h-[300px] sm:min-h-[320px] md:min-h-[350px] max-h-[500px] md:max-h-[600px] flex flex-col items-center justify-center bg-transparent relative overflow-hidden pt-4 md:pt-6"
     >
       <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
         <div className="text-center px-6 z-20 relative">
-          {/* Brand Logo + Motion Line with Parallax */}
-          <motion.div
-            initial={{opacity: 0, scale: 0.9}}
-            animate={{opacity: 1, scale: 1}}
-            transition={{duration: 1.0, ease: [0.16, 1, 0.3, 1]}}
-            className="mb-8 relative"
-            style={{
-              y: shouldReduceMotion ? 0 : logoY,
-              opacity: logoOpacity,
-            }}
-          >
-            {/* Wide container for the motion line to extend beyond logo */}
-            <div className="relative inline-block">
-              {/* Soft glow halo behind logo */}
-              <motion.div
-                className="absolute inset-0 opacity-0"
-                animate={shouldReduceMotion ? {} : {
-                  opacity: [0, 0.25, 0],
-                  scale: [0.96, 1.04, 0.96],
-                }}
-                transition={{
-                  duration: 7,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                }}
-                style={{
-                  filter: 'blur(50px)',
-                  background:
-                    'radial-gradient(ellipse at center, rgba(168, 116, 65, 0.5) 0%, transparent 65%)',
-                }}
-              />
+          {/* Brand Logo — rendered visible immediately for fast LCP, parallax added after hydration */}
+          {hydrated ? (
+            <motion.div
+              initial={false}
+              className="mb-8 relative hero-logo-entrance"
+              style={{
+                y: shouldReduceMotion ? 0 : logoY,
+                opacity: logoOpacity,
+              }}
+            >
+              <div className="relative inline-block">
+                {/* Soft glow halo behind logo */}
+                <motion.div
+                  className="absolute inset-0 opacity-0"
+                  animate={shouldReduceMotion ? {} : {
+                    opacity: [0, 0.25, 0],
+                    scale: [0.96, 1.04, 0.96],
+                  }}
+                  transition={{
+                    duration: 7,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                  style={{
+                    filter: 'blur(50px)',
+                    background:
+                      'radial-gradient(ellipse at center, rgba(168, 116, 65, 0.5) 0%, transparent 65%)',
+                  }}
+                />
 
-              <img
-                src="/brand/logo-full.webp"
-                alt="FORMÉ HAUS - Where Essence Meets Elegance"
-                className="w-auto h-16 sm:h-20 md:h-24 lg:h-32 xl:h-40 object-contain relative z-10 drop-shadow-2xl"
-                loading="eager"
-                fetchPriority="high"
-              />
+                <img
+                  src="/brand/logo-full.webp"
+                  alt="FORME HAUS - Where Essence Meets Elegance"
+                  className="w-auto h-16 sm:h-20 md:h-24 lg:h-32 xl:h-40 object-contain relative z-10 drop-shadow-2xl"
+                  loading="eager"
+                  fetchPriority="high"
+                  width="640"
+                  height="332"
+                />
 
-              {/* Decorative accent line */}
-              <motion.div
-                className="absolute left-[-20%] right-[-20%] top-1/2 h-px bg-gradient-to-r from-transparent via-[#a87441]/30 to-transparent hidden md:block"
-                initial={shouldReduceMotion ? {scaleX: 1, opacity: 1} : {scaleX: 0, opacity: 0}}
-                animate={{scaleX: 1, opacity: 1}}
-                transition={shouldReduceMotion ? {duration: 0} : {
-                  duration: 1.5,
-                  delay: 0.8,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-              />
+                {/* Decorative accent line */}
+                <motion.div
+                  className="absolute left-[-20%] right-[-20%] top-1/2 h-px bg-gradient-to-r from-transparent via-[#a87441]/30 to-transparent hidden md:block"
+                  initial={shouldReduceMotion ? {scaleX: 1, opacity: 1} : {scaleX: 0, opacity: 0}}
+                  animate={{scaleX: 1, opacity: 1}}
+                  transition={shouldReduceMotion ? {duration: 0} : {
+                    duration: 1.5,
+                    delay: 0.8,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                />
+              </div>
+            </motion.div>
+          ) : (
+            /* SSR/pre-hydration: logo visible immediately via CSS animation — no JS needed for LCP */
+            <div className="mb-8 relative hero-logo-entrance">
+              <div className="relative inline-block">
+                <img
+                  src="/brand/logo-full.webp"
+                  alt="FORME HAUS - Where Essence Meets Elegance"
+                  className="w-auto h-16 sm:h-20 md:h-24 lg:h-32 xl:h-40 object-contain relative z-10 drop-shadow-2xl"
+                  loading="eager"
+                  fetchPriority="high"
+                  width="640"
+                  height="332"
+                />
+              </div>
             </div>
-          </motion.div>
+          )}
 
           {/* SEO H1 Tag - Visually hidden but readable by screen readers */}
           <h1 className="sr-only">
@@ -134,7 +155,7 @@ export default function Hero() {
           </motion.div>
         </div>
       </div>
-      
+
     </section>
   );
 }

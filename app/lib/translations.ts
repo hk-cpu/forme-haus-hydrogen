@@ -77,7 +77,7 @@ export const translations = {
     'footer.privacy': 'Privacy Policy',
     'footer.terms': 'Terms of Service',
     'footer.paymentMethods': 'Secure Payment Methods',
-    'footer.newsletter': 'Stay in the Loop',
+    'footer.newsletter': "Join the' Haus",
     'footer.newsletterDesc': 'New arrivals, exclusive offers, and more.',
     'footer.emailPlaceholder': 'Enter your email',
     'footer.submitting': 'Sending...',

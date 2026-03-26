@@ -1080,3 +1080,93 @@ h6 {
     box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
   }
 }
+
+/* ── Hero Logo CSS Entrance ──────────────────────────────────────────────
+   Pure CSS animation so LCP element is painted immediately without
+   waiting for Framer Motion JS to hydrate. This eliminates the
+   ~1,560ms element render delay flagged by PageSpeed.
+   ────────────────────────────────────────────────────────────────────── */
+.hero-logo-entrance {
+  animation: heroLogoIn 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes heroLogoIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-logo-entrance {
+    animation: none;
+  }
+}
+
+/* ── Page Fade-In ─────────────────────────────────────────────────────
+   Replaces Framer Motion AnimatePresence page transitions.
+   Same 200ms opacity ease as the original motion.div.
+   ──────────────────────────────────────────────────────────────────── */
+.page-fade-in {
+  animation: pageFadeIn 0.2s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── WhatsApp FAB ─────────────────────────────────────────────────────
+   Spring-like pop-in with 1.5s delay, replaces motion.a.
+   ──────────────────────────────────────────────────────────────────── */
+.whatsapp-fab {
+  animation: whatsappPopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 1.5s both;
+}
+
+@keyframes whatsappPopIn {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ── Menu Stagger ─────────────────────────────────────────────────────
+   CSS stagger using custom property --stagger-index, replaces
+   motion.span stagger animation in MenuMobileNav.
+   ──────────────────────────────────────────────────────────────────── */
+.menu-stagger-item {
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: menuItemIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--stagger-index, 0) * 0.1s);
+}
+
+[dir="rtl"] .menu-stagger-item {
+  transform: translateX(20px);
+}
+
+@keyframes menuItemIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+[dir="rtl"] .menu-stagger-item {
+  animation-name: menuItemInRTL;
+}
+
+@keyframes menuItemInRTL {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-fade-in,
+  .whatsapp-fab,
+  .menu-stagger-item {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

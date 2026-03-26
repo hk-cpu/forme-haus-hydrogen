@@ -115,6 +115,8 @@ function CategoryCard({
               src={category.image}
               alt={isRTL ? category.titleAr : category.title}
               className="absolute inset-0 w-full h-full object-cover transition-all duration-700"
+              width="800"
+              height="1000"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               style={{
                 opacity: mounted && !imageLoaded ? 0 : 1,

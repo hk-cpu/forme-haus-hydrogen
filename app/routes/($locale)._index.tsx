@@ -79,11 +79,11 @@ function NewsletterSection() {
               alt="Formé Haus"
               className="w-16 h-16 object-contain"
             />
-            <span className="font-serif text-base md:text-lg italic text-[#8B8076] font-light tracking-wide">
+            <span className="font-serif text-base md:text-lg italic text-[#736659] font-light tracking-wide">
               Where Essence Meets Elegance
             </span>
           </div>
-          <p className="text-sm text-[#8B8076] mb-6 font-light">
+          <p className="text-sm text-[#736659] mb-6 font-light">
             Be the first to know about new arrivals, exclusive edits, and stories from the Haus.
           </p>
 
@@ -107,7 +107,7 @@ function NewsletterSection() {
                 type="email"
                 name="email"
                 placeholder="Your email address"
-                className="flex-1 px-4 py-3 bg-transparent border border-[#8B8076]/25 rounded-sm text-sm text-[#4A3C31] placeholder:text-[#8B8076]/50 focus:outline-none focus:border-[#a87441]/50 transition-colors"
+                className="flex-1 px-4 py-3 bg-transparent border border-[#8B8076]/25 rounded-sm text-sm text-[#4A3C31] placeholder:text-[#736659]/50 focus:outline-none focus:border-[#a87441]/50 transition-colors"
                 required
               />
               <button
@@ -124,7 +124,7 @@ function NewsletterSection() {
             <p className="text-red-400 text-xs mt-2">{fetcher.data?.error}</p>
           )}
 
-          <p className="text-[10px] text-[#8B8076]/60 mt-4">
+          <p className="text-[10px] text-[#736659]/60 mt-4">
             We respect your privacy. Unsubscribe anytime.
           </p>
         </motion.div>

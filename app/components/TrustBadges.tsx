@@ -378,7 +378,7 @@ export function TrustBadges({
               <p className="font-medium">
                 {isRTL ? 'جاهز للتجربة' : 'Trial Ready'}
               </p>
-              <p className="text-[#8B8076]">
+              <p className="text-[#736659]">
                 {isRTL ? 'توصيل سريع' : 'Fast Delivery'}
               </p>
             </div>
@@ -393,7 +393,7 @@ export function TrustBadges({
         animate={{opacity: 1}}
         transition={{delay: 0.5, duration: 0.4}}
       >
-        <p className="text-[10px] text-[#8B8076] text-center">
+        <p className="text-[10px] text-[#736659] text-center">
           {isRTL
             ? 'طرق دفع متعددة عبر Tap: مدى، فيزا، ماستركارد، آبل باي، STC Pay، تابي، تمارا'
             : 'Secure payments via Tap: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tabby, Tamara'}

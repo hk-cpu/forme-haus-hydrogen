@@ -4,7 +4,7 @@ import {oxygen} from '@shopify/mini-oxygen/vite';
 import {vitePlugin as remix} from '@remix-run/dev';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-export default defineConfig({
+export default defineConfig(({isSsrBuild}) => ({
   plugins: [
     hydrogen(),
     oxygen(),
@@ -41,5 +41,19 @@ export default defineConfig({
     // withtout inlining assets as base64:
     assetsInlineLimit: 0,
     sourcemap: false, // Disable sourcemaps to fix framer-motion warnings
+    rollupOptions: isSsrBuild
+      ? {}
+      : {
+          output: {
+            manualChunks(id) {
+              // Isolate framer-motion into its own cacheable chunk
+              if (id.includes('framer-motion')) return 'framer-motion';
+              // Isolate Three.js (already lazy-loaded, but ensure separate cache)
+              if (id.includes('three/')) return 'three';
+              // Isolate react-three into its own chunk
+              if (id.includes('@react-three')) return 'react-three';
+            },
+          },
+        },
   },
-});
+}));

@@ -25,12 +25,12 @@ import {
   type SeoConfig,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
-import {useEffect, useState, useCallback} from 'react';
+import {useEffect, useState, useCallback, lazy, Suspense} from 'react';
 
 import {PageLayout} from '~/components/PageLayout';
 import {GenericError} from '~/components/GenericError';
 import {NotFound} from '~/components/NotFound';
-import SmoothScroll from '~/components/SmoothScroll';
+const SmoothScroll = lazy(() => import('~/components/SmoothScroll'));
 import {seoPayload} from '~/lib/seo.server';
 import styles from '~/styles/app.css?url';
 import futuristicStyles from '~/styles/futuristic-polish.css?url';
@@ -98,10 +98,7 @@ export const links: LinksFunction = () => {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
     },
-    {
-      rel: 'preconnect',
-      href: 'https://shop.app',
-    },
+    // Removed preconnect to shop.app — unused, wasted connection
     {rel: 'icon', type: 'image/png', href: favicon},
     // Google Fonts — preconnect + stylesheet (moved out of CSS @import to avoid render-blocking waterfall)
     {
@@ -113,10 +110,7 @@ export const links: LinksFunction = () => {
       href: 'https://fonts.gstatic.com',
       crossOrigin: 'anonymous' as const,
     },
-    {
-      rel: 'stylesheet',
-      href: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@300;400;600&display=swap',
-    },
+    // Google Fonts deferred to Layout <head> to avoid render-blocking
   ];
 };
 
@@ -217,6 +211,23 @@ function Layout({children}: {children?: React.ReactNode}) {
         <HreflangLinks />
         <link rel="stylesheet" href={styles}></link>
         <link rel="stylesheet" href={futuristicStyles}></link>
+        {/* Deferred Google Fonts — loaded async to avoid render-blocking */}
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@300;400;600&display=swap"
+          as="style"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@300;400;600&display=swap"
+          media="print"
+        />
+        <script
+          nonce={nonce}
+          dangerouslySetInnerHTML={{
+            __html: `document.querySelectorAll('link[media="print"]').forEach(function(l){l.onload=function(){l.media='all'}})`,
+          }}
+        />
         <style
           dangerouslySetInnerHTML={{
             __html: `
@@ -248,7 +259,7 @@ function Layout({children}: {children?: React.ReactNode}) {
         )}
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
-        <SmoothScroll />
+        <Suspense fallback={null}><SmoothScroll /></Suspense>
       </body>
     </html>
   );

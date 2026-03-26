@@ -54,9 +54,11 @@ function Card({card, index}: {card: JournalCard; index: number}) {
             src={card.image}
             alt={card.alt}
             className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+            width="600"
+            height="750"
             loading="lazy"
             decoding="async"
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes="(max-width: 768px) 100vw, 33vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           <div className="absolute inset-0 rounded-[14px] border border-white/0 group-hover:border-white/15 transition-colors duration-500 pointer-events-none" />
@@ -66,7 +68,7 @@ function Card({card, index}: {card: JournalCard; index: number}) {
           <h3 className="font-serif text-base md:text-lg italic text-[#4A3C31] group-hover:text-[#a87441] transition-colors duration-300">
             {card.title}
           </h3>
-          <p className="text-xs text-[#8B8076] mt-1 leading-relaxed">
+          <p className="text-xs text-[#736659] mt-1 leading-relaxed">
             {card.excerpt}
           </p>
         </div>
@@ -103,7 +105,7 @@ export default function JournalSection() {
             to="/journal"
             className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076] hover:text-[#4A3C31] transition-colors duration-300 py-2 inline-flex items-center min-h-[44px]"
           >
-            Read More
+            Read the Journal
           </Link>
         </motion.div>
 
