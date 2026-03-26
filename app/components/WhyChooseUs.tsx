@@ -22,9 +22,9 @@ const BRAND_PROMISES = [
       </svg>
     ),
     title: 'Curated Selection',
-    titleAr: 'اختيار منسّق',
+    titleKey: 'whyUs.curatedTitle',
     description: 'International designers chosen for refinement and lasting design.',
-    descriptionAr: 'مصممون عالميون تم اختيارهم بعناية للرقي والتصميم الدائم.',
+    descKey: 'whyUs.curatedDesc',
   },
   {
     id: '2',
@@ -47,9 +47,9 @@ const BRAND_PROMISES = [
       </svg>
     ),
     title: 'Limited Collections',
-    titleAr: 'مجموعات محدودة',
+    titleKey: 'whyUs.limitedTitle',
     description: 'Thoughtfully edited releases in carefully selected quantities.',
-    descriptionAr: 'إصدارات مختارة بعناية بكميات محدودة.',
+    descKey: 'whyUs.limitedDesc',
   },
   {
     id: '3',
@@ -82,9 +82,9 @@ const BRAND_PROMISES = [
       </svg>
     ),
     title: 'Global Designers',
-    titleAr: 'مصممون عالميون',
+    titleKey: 'whyUs.globalTitle',
     description: 'A curated mix of emerging and established labels worldwide.',
-    descriptionAr: 'مزيج منسّق من العلامات الناشئة والراسخة حول العالم.',
+    descKey: 'whyUs.globalDesc',
   },
   {
     id: '4',
@@ -104,14 +104,14 @@ const BRAND_PROMISES = [
       </svg>
     ),
     title: 'Elevated Experience',
-    titleAr: 'تجربة راقية',
+    titleKey: 'whyUs.elevatedTitle',
     description: 'A refined journey from discovery to delivery. Free shipping across Saudi Arabia — GCC coming soon.',
-    descriptionAr: 'رحلة راقية من الاكتشاف إلى التوصيل. شحن مجاني في السعودية — دول الخليج قريباً.',
+    descKey: 'whyUs.elevatedDesc',
   },
 ];
 
 export function WhyChooseUs() {
-  const {isRTL} = useTranslation();
+  const {t, isRTL} = useTranslation();
 
   return (
     <section
@@ -132,7 +132,7 @@ export function WhyChooseUs() {
           className="text-center mb-8"
         >
           <h2 className="font-serif text-2xl md:text-3xl text-[#4A3C31] mb-2">
-            {isRTL ? 'لماذا تختارنا' : 'Why Choose Us'}
+            {t('whyUs.title', 'Why Choose Us')}
           </h2>
           <div className="h-px w-16 bg-gradient-to-r from-transparent via-[#a87441] to-transparent mx-auto" />
         </motion.div>
@@ -159,12 +159,12 @@ export function WhyChooseUs() {
 
               {/* Title */}
               <h3 className="text-sm md:text-base font-medium text-[#4A3C31] mb-1">
-                {isRTL ? item.titleAr : item.title}
+                {t(item.titleKey, item.title)}
               </h3>
 
               {/* Description */}
               <p className="text-xs md:text-sm text-[#5C5046] leading-relaxed break-words">
-                {isRTL ? item.descriptionAr : item.description}
+                {t(item.descKey, item.description)}
               </p>
             </motion.div>
           ))}

@@ -7,8 +7,7 @@ import {use3DTilt} from '~/hooks/use3DTilt';
 
 interface Category {
   id: number;
-  title: string;
-  titleAr: string;
+  titleKey: string;
   image: string;
   blurImage: string;
   url: string;
@@ -18,8 +17,7 @@ interface Category {
 const CATEGORIES: Category[] = [
   {
     id: 1,
-    title: 'New to Haus',
-    titleAr: 'جديد في هاوس',
+    titleKey: 'category.newInHaus',
     image: '/brand/new-in.webp',
     blurImage: '/brand/new-in-blur.webp',
     url: '/collections/new-in',
@@ -27,8 +25,7 @@ const CATEGORIES: Category[] = [
   },
   {
     id: 2,
-    title: 'Phone Accessories',
-    titleAr: 'إكسسوارات الهاتف',
+    titleKey: 'category.phoneAccessories',
     image: '/brand/phone-accessories.webp',
     blurImage: '/brand/phone-accessories-blur.webp',
     url: '/collections/phone-cases',
@@ -36,8 +33,7 @@ const CATEGORIES: Category[] = [
   },
   {
     id: 3,
-    title: 'Sunglasses',
-    titleAr: 'نظارات شمسية',
+    titleKey: 'nav.sunglasses',
     image: '/brand/sunglasses.webp',
     blurImage: '/brand/sunglasses-blur.webp',
     url: '/collections/sunglasses',
@@ -72,10 +68,12 @@ function CategoryCard({
   category,
   isRTL,
   index,
+  t,
 }: {
   category: Category;
   isRTL: boolean;
   index: number;
+  t: (key: string, fallback?: string) => string;
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -113,7 +111,7 @@ function CategoryCard({
           {!imageError ? (
             <img
               src={category.image}
-              alt={isRTL ? category.titleAr : category.title}
+              alt={t(category.titleKey)}
               className="absolute inset-0 w-full h-full object-cover transition-all duration-700"
               width="800"
               height="1000"
@@ -121,7 +119,7 @@ function CategoryCard({
               style={{
                 opacity: mounted && !imageLoaded ? 0 : 1,
                 transform: isHovered ? 'scale(1.25)' : 'scale(1.20)',
-                transformOrigin: category.title === 'Phone Accessories' ? 'center 40%' : 'center center',
+                transformOrigin: category.titleKey === 'category.phoneAccessories' ? 'center 40%' : 'center center',
               }}
               loading={index === 0 ? 'eager' : 'lazy'}
               onLoad={() => setImageLoaded(true)}
@@ -130,7 +128,7 @@ function CategoryCard({
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-[#E8E4E0]">
               <span className="text-[#4A3C31] text-xs uppercase tracking-wider">
-                {isRTL ? category.titleAr : category.title}
+                {t(category.titleKey)}
               </span>
             </div>
           )}
@@ -170,7 +168,7 @@ function CategoryCard({
               animate={{y: isHovered ? -4 : 0}}
             >
               <h3 className="text-xl md:text-2xl font-serif text-white mb-2 tracking-wide">
-                {isRTL ? category.titleAr : category.title}
+                {t(category.titleKey)}
               </h3>
               {/* Line indicator - Always visible on mobile, hover-only on desktop */}
               <motion.div
@@ -246,7 +244,7 @@ export default function CategoryBento() {
           className="mb-4 md:mb-5"
         >
           <h2 className="font-serif text-2xl md:text-3xl text-[#4A3C31] mb-2">
-            {isRTL ? 'تسوّق حسب الفئة' : t('home.categorySlider')}
+            {t('home.shopByCategory')}
           </h2>
           <div className="h-px w-16 bg-gradient-to-r from-[#a87441] to-transparent" />
         </motion.div>
@@ -265,6 +263,7 @@ export default function CategoryBento() {
               category={category}
               isRTL={isRTL}
               index={i}
+              t={t}
             />
           ))}
         </motion.div>
@@ -281,7 +280,7 @@ export default function CategoryBento() {
             to="/collections"
             className="inline-flex items-center gap-3 px-7 py-3.5 min-h-[48px] border border-[#a87441]/25 text-[#a87441] hover:bg-[#a87441] hover:text-white transition-all duration-500 rounded-full text-[11px] uppercase tracking-[0.2em] group touch-target"
           >
-            <span>{isRTL ? 'عرض الكل' : t('general.viewAll')}</span>
+            <span>{t('general.viewAll')}</span>
             <svg
               width="14"
               height="14"

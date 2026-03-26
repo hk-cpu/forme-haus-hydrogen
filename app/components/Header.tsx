@@ -483,7 +483,7 @@ export function Header({
             </motion.button>
 
             {/* Cart / Shopping Bag */}
-            <CartBagButton openCart={openCart} rootData={rootData} />
+            <CartBagButton openCart={openCart} rootData={rootData} t={t} isRTL={isRTL} />
 
             {/* Account (Desktop) */}
             <motion.div
@@ -528,10 +528,12 @@ function CartBagButton({
   openCart,
   rootData,
   t,
+  isRTL,
 }: {
   openCart: () => void;
   rootData: ReturnType<typeof useRouteLoaderData<RootLoader>>;
   t: (key: string, fallback?: string) => string;
+  isRTL: boolean;
 }) {
   const [showEmptyHint, setShowEmptyHint] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);

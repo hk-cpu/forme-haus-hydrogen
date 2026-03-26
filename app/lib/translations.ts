@@ -220,13 +220,124 @@ export const translations = {
     'checkout.subtotal': 'Subtotal',
     'checkout.shipping': 'Shipping & Taxes Calculated at Checkout',
     'checkout.checkout': 'Continue to Checkout',
+
+    // Category Bento
+    'category.newInHaus': 'New to Haus',
+    'category.phoneAccessories': 'Phone Accessories',
+    'home.shopByCategory': 'Shop by Category',
+
+    // Bundle Pricing
+    'bundle.oneItem': 'One piece',
+    'bundle.twoItems': 'Two pieces',
+    'bundle.threeItems': 'Three pieces',
+    'bundle.caseOnly': 'Case only',
+    'bundle.caseAndStrap': 'Case + Strap',
+    'bundle.save15': 'Save 15%',
+    'bundle.fullBundle': 'Complete Bundle',
+    'bundle.save20': 'Save 20%',
+    'bundle.bestValue': 'Best Value',
+    'bundle.bestSeller': 'Best Seller',
+    'bundle.savings': 'Bundle Savings',
+    'bundle.tieredDiscount': '2+ items: 10% off',
+    'bundle.chooseQty': 'Choose quantity (discount applies)',
+    'bundle.off': 'OFF',
+    'bundle.savingAmount': 'Saving',
+    'bundle.chooseBundle': 'Choose Your Bundle',
+    'bundle.saveMoreWithBundles': 'Save more with bundles',
+    'bundle.freeShipping': 'Free Shipping',
+    'bundle.giftWrap': 'Gift Wrap',
+    'bundle.easyReturns': 'Easy Returns',
+
+    // Stats Section (Detail)
+    'stats.happyCustomer': 'Happy Customer',
+    'stats.premiumProduct': 'Premium Product',
+    'stats.city': 'City',
+    'stats.satisfactionRate': 'Satisfaction Rate',
+    'stats.numbersSpeak': 'Our Numbers Speak',
+
+    // Trust Badges
+    'trust.maroof': 'Maroof',
+    'trust.trusted': 'Trusted',
+    'trust.maroofVerified': 'Maroof Verified Store',
+    'trust.securePayment': 'Secure Payment',
+    'trust.shopWithConfidence': 'Shop with Confidence',
+    'trust.trialReady': 'Trial Ready',
+    'trust.fastDelivery': 'Fast Delivery',
+    'trust.paymentMethods':
+      'Multiple payment methods via Tap: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tabby, Tamara',
+
+    // Why Choose Us
+    'whyUs.title': 'Why Choose Us',
+    'whyUs.curatedTitle': 'Curated Selection',
+    'whyUs.curatedDesc':
+      'Global designers carefully selected for sophistication and timeless design.',
+    'whyUs.limitedTitle': 'Limited Collections',
+    'whyUs.limitedDesc': 'Carefully selected limited-run releases.',
+    'whyUs.globalTitle': 'Global Designers',
+    'whyUs.globalDesc':
+      'A curated mix of emerging and established brands worldwide.',
+    'whyUs.elevatedTitle': 'Elevated Experience',
+    'whyUs.elevatedDesc':
+      'An elevated journey from discovery to delivery. Free shipping in KSA — GCC coming soon.',
+
+    // Account
+    'account.overview': 'Overview',
+    'account.orders': 'Orders',
+    'account.profile': 'Profile',
+    'account.addresses': 'Addresses',
+    'account.welcomeBack': 'Welcome back',
+    'account.memberSince': 'Member since',
+    'account.signOut': 'Sign Out',
+    'account.totalOrders': 'Total Orders',
+    'account.totalSpent': 'Total Spent',
+    'account.savedAddresses': 'Saved Addresses',
+    'account.recentOrders': 'Recent Orders',
+    'account.noOrders': 'No orders yet',
+    'account.startShopping': 'Start Shopping',
+    'account.editProfile': 'Edit Profile',
+    'account.addAddress': 'Add Address',
+    'account.orderHistory': 'Order History',
+    'account.edit': 'Edit',
+    'account.name': 'Name',
+    'account.email': 'Email',
+    'account.phone': 'Phone',
+    'account.noAddresses': 'No addresses saved yet',
+    'account.contactUs': 'Contact Us',
+    'account.returns': 'Returns',
+
+    // Products Index
+    'products.completeCollection': 'The Complete Collection',
+    'products.allProducts': 'All Products',
+    'products.browseAll': 'Browse All',
+
+    // Showcase
+    'showcase.collection': 'The Collection',
+    'showcase.subtitle': 'Discover all our unique products',
+    'showcase.dragToBrowse': 'Drag to browse',
+    'showcase.products': 'Products',
+
+    // Accessibility
+    'a11y.switchToArabic': 'Switch to Arabic',
+    'a11y.mainNavigation': 'Main navigation',
+    'a11y.whatsappContact': 'Contact us on WhatsApp',
+
+    // Language
+    'language.arabic': 'Arabic',
+
+    // WhatsApp
+    'whatsapp.defaultMessage':
+      'Hello, I would like to enquire about a product at Formé Haus',
+
+    // Mobile Bottom Nav
+    'nav.saved': 'Saved',
+    'nav.shopLabel': 'Shop',
   },
   AR: {
     // Navigation
     'nav.shop': 'تسوّق',
     'nav.collections': 'المجموعات',
-    'nav.newIn': 'وصل حديثاً',
-    'nav.designers': 'المصممون',
+    'nav.newIn': 'جديدنا',
+    'nav.designers': 'المصمّمون',
     'nav.clothing': 'ملابس',
     'nav.shoes': 'أحذية',
     'nav.home': 'الرئيسية',
@@ -234,7 +345,7 @@ export const translations = {
     'nav.journal': 'المجلة',
     'nav.about': 'من نحن',
     'nav.contact': 'تواصل معنا',
-    'nav.phoneCases': 'جرابات الهاتف',
+    'nav.phoneCases': 'كفرات الجوال',
     'nav.sunglasses': 'نظارات شمسية',
     'nav.search': 'بحث',
     'nav.account': 'حسابي',
@@ -242,31 +353,31 @@ export const translations = {
 
     // Header & Actions
     'header.search': 'بحث',
-    'header.cart': 'السلة',
+    'header.cart': 'الحقيبة',
     'header.account': 'حسابي',
     'header.menu': 'القائمة',
 
     // Hero
-    'hero.cta': 'استكشفي المجموعة',
+    'hero.cta': 'استكشف المجموعة',
     'hero.scroll': 'مرّر',
 
     // Status Banner
-    'banner.shipping': 'شحن مجاني للطلبات فوق ٣٠٠ ر.س',
+    'banner.shipping': 'شحن مجاني عالمي للطلبات فوق 300 ر.س',
 
     // Homepage Sections
     'home.categorySlider': 'المجموعات',
-    'home.editorial': 'اختيارات المحرر',
+    'home.editorial': 'المختارات',
     'home.brandIntro':
-      'فورميه هاوس وجهة منسّقة مستوحاة من الأناقة العصرية والتفاصيل الراقية والاختيار المدروس.',
+      'Formé Haus وجهة منسّقة مستوحاة من الأناقة العصرية والتفاصيل الراقية والاختيار المدروس.',
     'home.curatedForYou': 'حيث تبدأ الأناقة',
     'home.journal': 'المجلة',
-    'home.editorial.label': 'تحريري',
+    'home.editorial.label': 'Editorial',
     'home.newsletter.title': 'قريباً',
-    'home.newsletter.subtitle': 'سجّلي لتصلك آخر التحديثات الحصرية',
+    'home.newsletter.subtitle': 'سجّل لتصلك آخر التحديثات الحصرية',
     'home.shopCollection': 'تسوّق المجموعة',
 
     // Top Bar
-    'topBar.promo': 'شحن مجاني للطلبات فوق 299 ر.س',
+    'topBar.promo': 'شحن مجاني للطلبات فوق 300 ر.س',
 
     // Stats Section
     'stats.title': 'أرقامنا',
@@ -274,17 +385,17 @@ export const translations = {
     // FAQ Section
     'faq.title': 'الأسئلة الشائعة',
     'faq.subtitle':
-      'إليك الإجابات على الأسئلة الأكثر شيوعاً. إذا كنت بحاجة إلى مزيد من المساعدة، فلا تتردد في التواصل معنا.',
-    'faq.stillHaveQuestions': 'ما زلت لديك أسئلة؟',
+      'إليك الإجابات على الأسئلة الأكثر شيوعاً. إذا كنت بحاجة إلى مزيد من المساعدة، لا تتردد في التواصل معنا.',
+    'faq.stillHaveQuestions': 'هل لديك أسئلة أخرى؟',
     'faq.contactUs': 'تواصل معنا',
 
     // Journal
-    'journal.modernWardrobe': 'تحرير خزانة الملابس العصرية',
+    'journal.modernWardrobe': 'مختارات الخزانة العصرية',
     'journal.everydayElegance': 'أناقة يومية',
-    'journal.behindCraft': 'وراء الاختيار',
+    'journal.behindCraft': 'قصة الاختيار',
 
     // Footer
-    'footer.followUs': 'تابعينا',
+    'footer.followUs': 'تابعونا',
     'footer.mobileApp': 'تطبيق الجوال',
     'footer.comingSoon': 'قريباً',
     'footer.crNo': 'السجل التجاري',
@@ -296,31 +407,31 @@ export const translations = {
     'footer.privacy': 'سياسة الخصوصية',
     'footer.terms': 'الشروط والأحكام',
     'footer.paymentMethods': 'طرق الدفع الآمنة',
-    'footer.newsletter': 'انضمي لنشرتنا',
+    'footer.newsletter': 'انضم إلى عالم Haus',
     'footer.newsletterDesc': 'وصل حديثاً، عروض حصرية، والمزيد.',
-    'footer.emailPlaceholder': 'أدخلي بريدك الإلكتروني',
+    'footer.emailPlaceholder': 'البريد الإلكتروني',
     'footer.submitting': 'جارٍ الإرسال...',
-    'footer.subscribe': 'اشتركي',
+    'footer.subscribe': 'اشتراك',
     'footer.shipping': 'سياسة الشحن والتوصيل',
     'footer.returns': 'سياسة الاسترجاع والاستبدال',
     'footer.registered': 'مسجّل في المملكة العربية السعودية',
 
     // Newsletter / Notify
-    'notify.email': 'أدخلي بريدك الإلكتروني',
-    'notify.submit': 'أعلميني',
-    'notify.success': 'شكراً! سنبقيك على اطلاع.',
+    'notify.email': 'البريد الإلكتروني',
+    'notify.submit': 'أعلمني',
+    'notify.success': 'شكراً! سنُعلمك عند التوفر.',
 
     // Product
-    'product.addToCart': 'أضيفي إلى الحقيبة',
-    'product.soldOut': 'نفذت الكمية',
+    'product.addToCart': 'أضف إلى الحقيبة',
+    'product.soldOut': 'نفدت الكمية',
     'product.sale': 'تخفيض',
     'product.new': 'جديد',
 
     // Collection
-    'collection.loading': 'جاري التحميل...',
+    'collection.loading': 'جارٍ التحميل...',
     'collection.loadPrevious': 'تحميل السابق',
     'collection.loadMore': 'تحميل المزيد',
-    'collection.noProducts': 'لم يتم العثور على منتجات في هذه المجموعة.',
+    'collection.noProducts': 'لا توجد منتجات في هذه المجموعة.',
     'collection.price': 'السعر',
     'collection.item': 'قطعة',
     'collection.items': 'قطع',
@@ -328,28 +439,28 @@ export const translations = {
     // Cart
     'cart.title': 'حقيبتك',
     'cart.empty': 'حقيبتك فارغة',
-    'cart.emptyStats': 'يبدو أنك لم تُضيفي أي شيء بعد، دعينا نبدأ!',
-    'cart.continueShopping': 'تابعي التسوق',
+    'cart.emptyStats': 'يبدو أنك لم تُضف شيئاً بعد. اكتشف مجموعتنا!',
+    'cart.continueShopping': 'متابعة التسوق',
     'cart.checkout': 'إتمام الشراء',
     'cart.subtotal': 'المجموع الفرعي',
     'cart.saudiAddr':
-      'للعملاء في المملكة: يُرجى استخدام العنوان الوطني المكوّن من 8 أرقام لضمان التوصيل.',
-    'cart.terms': 'بإتمام الشراء، أنتِ توافقين على',
+      'للعملاء في المملكة: يُرجى إدخال الرمز البريدي أو العنوان الوطني لضمان التوصيل.',
+    'cart.terms': 'بإتمام الشراء، فإنك توافق على',
     'cart.termsLink': 'شروط الخدمة',
-    'cart.refunds': 'وتُقرّين بمعرفتك بـ',
-    'cart.refundsLink': 'سياسة الاسترجاع',
-    'cart.refundsNote': '(استرجاع خلال ٧ أيام).',
+    'cart.refunds': 'وتُقرّ باطلاعك على',
+    'cart.refundsLink': 'حقوق المستهلك',
+    'cart.refundsNote': '(استرجاع خلال 7 أيام).',
     'cart.discount': 'كود الخصم',
     'cart.applyDiscount': 'تطبيق الخصم',
-    'cart.shopBestSellers': 'تسوّقي الأكثر مبيعاً',
+    'cart.shopBestSellers': 'تسوّق الأكثر مبيعاً',
     'cart.vatIncluded': '(شامل ضريبة القيمة المضافة)',
 
     // Search
-    'search.placeholder': 'ابحثي عن المنتجات...',
-    'search.noResults': 'لم يتم العثور على نتائج',
+    'search.placeholder': 'ابحث عن منتجات...',
+    'search.noResults': 'لا توجد نتائج',
 
     // Product Card
-    'product.addToWishlist': 'أضيفي للمفضلة',
+    'product.addToWishlist': 'أضف للمفضلة',
     'product.removeFromWishlist': 'إزالة من المفضلة',
     'product.viewDetails': 'عرض التفاصيل',
     'product.comingSoon': 'قريباً',
@@ -360,25 +471,25 @@ export const translations = {
 
     // General
     'general.viewAll': 'عرض الكل',
-    'general.learnMore': 'اعرفي المزيد',
+    'general.learnMore': 'اعرف المزيد',
     'general.backToHome': 'العودة للرئيسية',
     'common.close': 'إغلاق',
     country: 'السعودية',
 
     // Mega Menu
     'menu.title': 'القائمة',
-    'menu.explore': 'استكشفي',
+    'menu.explore': 'استكشف',
     'menu.viewAll': 'عرض الكل',
-    'menu.stores': 'ابحثي عن متجر',
+    'menu.stores': 'البحث عن متجر',
     'menu.collection': 'مجموعة',
     'menu.comingSoon': 'قريباً',
     'menu.services': 'الخدمات',
     // Mega Menu - subsections
-    'menu.newArrivals': 'وصل جديد',
+    'menu.newArrivals': 'وصل حديثاً',
     'menu.signaturePieces': 'قطع مميزة',
     'menu.weeklyHighlights': 'مختارات الأسبوع',
-    'menu.bestSellers': 'الأكثر طلبًا',
-    'menu.cta.shopNewIn': 'تسوقي الجديد',
+    'menu.bestSellers': 'الأكثر مبيعاً',
+    'menu.cta.shopNewIn': 'تسوّق الجديد',
 
     // Mega Menu - categories
     'menu.dresses': 'فساتين',
@@ -387,7 +498,7 @@ export const translations = {
     'menu.blazers': 'بليزرات',
     'menu.trousers': 'سراويل',
     'menu.skirts': 'تنانير',
-    'menu.knitwear': 'قطَع محاكة',
+    'menu.knitwear': 'تريكو',
     'menu.outerwear': 'معاطف',
 
     // Occasions
@@ -395,7 +506,7 @@ export const translations = {
     'menu.evening': 'للمساء',
     'menu.casual': 'كاجوال',
     'menu.travel': 'للسفر',
-    'menu.cta.exploreClothing': 'اكتشفي ملابس العمل',
+    'menu.cta.exploreClothing': 'اكتشف الملابس',
 
     // Mega Menu - Accessories
     'menu.jewelry': 'مجوهرات',
@@ -404,34 +515,145 @@ export const translations = {
     'menu.sunglasses': 'نظارات شمسية',
     'menu.leatherGoods': 'إكسسوارات جلدية',
     'menu.hair': 'إكسسوارات شعر',
-    'menu.cta.shopAccessories': 'تسوقي الإكسسوارات',
+    'menu.cta.shopAccessories': 'تسوّق الإكسسوارات',
 
     // The Edit
     'menu.workwearEssentials': 'أساسيات العمل',
     'menu.minimalStaples': 'القطع الأساسية',
     'menu.signatureLooks': 'إطلالات مميزة',
-    'menu.taupeEdit': 'مختارات التوب',
+    'menu.taupeEdit': 'مختارات البيج',
     'menu.everydayElegance': 'أناقة يومية',
-    'menu.cta.shopTheEdit': 'تسوقي المختارات',
+    'menu.cta.shopTheEdit': 'تسوّق المختارات',
 
     // Collections
-    'menu.capsule': 'مجموعات كبسولة',
+    'menu.capsule': 'مجموعة كبسولة',
     'menu.seasonal': 'مجموعة الموسم',
     'menu.limited': 'إصدار محدود',
-    'menu.cta.exploreCollections': 'استكشفي المجموعات',
+    'menu.cta.exploreCollections': 'استكشف المجموعات',
 
     // Product Page (Additional)
-    'pdp.addToBag': 'أضيفي للحقيبة',
-    'pdp.details': 'تفاصيل القطعة',
+    'pdp.addToBag': 'أضف إلى الحقيبة',
+    'pdp.details': 'تفاصيل المنتج',
     'pdp.material': 'الخامة والعناية',
     'pdp.delivery': 'التوصيل والاسترجاع',
-    'pdp.complete': 'نسقي الإطلالة',
+    'pdp.complete': 'أكمل الإطلالة',
     'pdp.selectSize': 'الرجاء اختيار المقاس',
 
     // Checkout (Additional)
     'checkout.summary': 'ملخص الطلب',
-    'checkout.subtotal': 'المجموع الجزئي',
+    'checkout.subtotal': 'المجموع الفرعي',
     'checkout.shipping': 'التوصيل والضرائب تُحسب عند الدفع',
-    'checkout.checkout': 'متابعة الدفع',
+    'checkout.checkout': 'إتمام الطلب',
+
+    // Category Bento
+    'category.newInHaus': 'جديد في Haus',
+    'category.phoneAccessories': 'إكسسوارات الجوال',
+    'home.shopByCategory': 'تسوّق حسب الفئة',
+
+    // Bundle Pricing
+    'bundle.oneItem': 'قطعة واحدة',
+    'bundle.twoItems': 'قطعتان',
+    'bundle.threeItems': 'ثلاث قطع',
+    'bundle.caseOnly': 'الكفر فقط',
+    'bundle.caseAndStrap': 'كفر + حزام',
+    'bundle.save15': 'وفّر 15%',
+    'bundle.fullBundle': 'المجموعة الكاملة',
+    'bundle.save20': 'وفّر 20%',
+    'bundle.bestValue': 'أفضل قيمة',
+    'bundle.bestSeller': 'الأكثر مبيعاً',
+    'bundle.savings': 'خصم على الكمية',
+    'bundle.tieredDiscount': '2+ قطع: خصم 10%',
+    'bundle.chooseQty': 'اختر الكمية (يتوفر خصم)',
+    'bundle.off': 'خصم',
+    'bundle.savingAmount': 'توفير',
+    'bundle.chooseBundle': 'اختر الباقة',
+    'bundle.saveMoreWithBundles': 'وفّر أكثر مع الباقات',
+    'bundle.freeShipping': 'شحن مجاني',
+    'bundle.giftWrap': 'تغليف هدية',
+    'bundle.easyReturns': 'إرجاع سهل',
+
+    // Stats Section (Detail)
+    'stats.happyCustomer': 'عميل سعيد',
+    'stats.premiumProduct': 'منتج متميز',
+    'stats.city': 'مدينة',
+    'stats.satisfactionRate': 'نسبة الرضا',
+    'stats.numbersSpeak': 'أرقامنا تتحدث',
+
+    // Trust Badges
+    'trust.maroof': 'معروف',
+    'trust.trusted': 'موثوق',
+    'trust.maroofVerified': 'متجر معتمد من معروف',
+    'trust.securePayment': 'دفع آمن',
+    'trust.shopWithConfidence': 'تسوّق بثقة',
+    'trust.trialReady': 'جاهز للتجربة',
+    'trust.fastDelivery': 'توصيل سريع',
+    'trust.paymentMethods':
+      'طرق دفع متعددة عبر Tap: مدى، فيزا، ماستركارد، آبل باي، STC Pay، تابي، تمارا',
+
+    // Why Choose Us
+    'whyUs.title': 'لماذا تختارنا',
+    'whyUs.curatedTitle': 'اختيار منسّق',
+    'whyUs.curatedDesc':
+      'مصممون عالميون تم اختيارهم بعناية للرقي والتصميم الدائم.',
+    'whyUs.limitedTitle': 'مجموعات محدودة',
+    'whyUs.limitedDesc': 'إصدارات مختارة بعناية بكميات محدودة.',
+    'whyUs.globalTitle': 'مصممون عالميون',
+    'whyUs.globalDesc':
+      'مزيج منسّق من العلامات الناشئة والراسخة حول العالم.',
+    'whyUs.elevatedTitle': 'تجربة راقية',
+    'whyUs.elevatedDesc':
+      'رحلة راقية من الاكتشاف إلى التوصيل. شحن مجاني في السعودية — دول الخليج قريباً.',
+
+    // Account
+    'account.overview': 'نظرة عامة',
+    'account.orders': 'الطلبات',
+    'account.profile': 'الملف الشخصي',
+    'account.addresses': 'العناوين',
+    'account.welcomeBack': 'أهلاً بك',
+    'account.memberSince': 'عضو منذ',
+    'account.signOut': 'تسجيل الخروج',
+    'account.totalOrders': 'إجمالي الطلبات',
+    'account.totalSpent': 'إجمالي الإنفاق',
+    'account.savedAddresses': 'العناوين المحفوظة',
+    'account.recentOrders': 'آخر الطلبات',
+    'account.noOrders': 'لا توجد طلبات حتى الآن',
+    'account.startShopping': 'تسوّق الآن',
+    'account.editProfile': 'تعديل الملف',
+    'account.addAddress': 'إضافة عنوان',
+    'account.orderHistory': 'سجل الطلبات',
+    'account.edit': 'تعديل',
+    'account.name': 'الاسم',
+    'account.email': 'البريد الإلكتروني',
+    'account.phone': 'رقم الهاتف',
+    'account.noAddresses': 'لم تُحفظ أي عناوين بعد',
+    'account.contactUs': 'التواصل معنا',
+    'account.returns': 'سياسة الإرجاع',
+
+    // Products Index
+    'products.completeCollection': 'المجموعة الكاملة',
+    'products.allProducts': 'جميع المنتجات',
+    'products.browseAll': 'تصفح الكل',
+
+    // Showcase
+    'showcase.collection': 'المجموعة',
+    'showcase.subtitle': 'اكتشف جميع منتجاتنا الفريدة',
+    'showcase.dragToBrowse': 'اسحب للتصفح',
+    'showcase.products': 'منتج',
+
+    // Accessibility
+    'a11y.switchToArabic': 'التبديل إلى العربية',
+    'a11y.mainNavigation': 'التنقل الرئيسي',
+    'a11y.whatsappContact': 'تواصل معنا عبر واتساب',
+
+    // Language
+    'language.arabic': 'عربي',
+
+    // WhatsApp
+    'whatsapp.defaultMessage':
+      'مرحباً، أريد الاستفسار عن منتج في Formé Haus',
+
+    // Mobile Bottom Nav
+    'nav.saved': 'المفضلة',
+    'nav.shopLabel': 'التشكيلات',
   },
 } as const;

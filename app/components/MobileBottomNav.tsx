@@ -14,7 +14,7 @@ import type {RootLoader} from '~/root';
  */
 export function MobileBottomNav() {
   const {state, toggleSearch, toggleCart, toggleLogin} = useUI();
-  const {isRTL} = useTranslation();
+  const {t, isRTL} = useTranslation();
   const rootData = useRouteLoaderData<RootLoader>('root');
   const location = useLocation();
 
@@ -29,7 +29,7 @@ export function MobileBottomNav() {
 
   return (
     <motion.nav
-      aria-label={isRTL ? 'التنقل الرئيسي' : 'Main navigation'}
+      aria-label={t('a11y.mainNavigation', 'Main navigation')}
       className="fixed bottom-0 inset-x-0 z-[350] md:hidden"
       initial={{y: 80, opacity: 0}}
       animate={{y: 0, opacity: 1}}
@@ -45,7 +45,7 @@ export function MobileBottomNav() {
           {/* Home */}
           <NavTab
             to="/"
-            label={isRTL ? 'الرئيسية' : 'Home'}
+            label={t('nav.home', 'Home')}
             isActive={isActive('/')}
           >
             <HomeIcon />
@@ -57,18 +57,18 @@ export function MobileBottomNav() {
               state.isSearchOpen ? 'text-[#a87441]' : 'text-[#8B8076]'
             }`}
             onClick={toggleSearch}
-            aria-label={isRTL ? 'بحث' : 'Search'}
+            aria-label={t('nav.search', 'Search')}
           >
             <SearchIcon />
             <span className="text-[9px] uppercase tracking-wider font-medium">
-              {isRTL ? 'بحث' : 'Search'}
+              {t('nav.search', 'Search')}
             </span>
           </button>
 
           {/* Collections — center focal tab */}
           <NavTab
             to="/collections"
-            label={isRTL ? 'التشكيلات' : 'Shop'}
+            label={t('nav.shopLabel', 'Shop')}
             isActive={isActive('/collections')}
             isFocal
           >
@@ -78,7 +78,7 @@ export function MobileBottomNav() {
           {/* Wishlist */}
           <NavTab
             to="/account/wishlist"
-            label={isRTL ? 'المفضلة' : 'Saved'}
+            label={t('nav.saved', 'Saved')}
             isActive={isActive('/account/wishlist')}
           >
             <WishlistIcon count={state.wishlist.length} />
@@ -90,7 +90,7 @@ export function MobileBottomNav() {
               state.isCartOpen ? 'text-[#a87441]' : 'text-[#8B8076]'
             }`}
             onClick={toggleCart}
-            aria-label={isRTL ? 'سلة التسوق' : 'Cart'}
+            aria-label={t('nav.cart', 'Bag')}
           >
             <span className="relative">
               <CartIcon />
@@ -115,7 +115,7 @@ export function MobileBottomNav() {
               </Suspense>
             </span>
             <span className="text-[9px] uppercase tracking-wider font-medium">
-              {isRTL ? 'سلة' : 'Cart'}
+              {t('nav.cart', 'Bag')}
             </span>
           </button>
         </div>

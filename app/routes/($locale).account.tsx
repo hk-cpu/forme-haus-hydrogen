@@ -163,7 +163,7 @@ type Tab = 'overview' | 'orders' | 'profile' | 'addresses';
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 function Dashboard({customer}: {customer: any}) {
   const [activeTab, setActiveTab] = useState<Tab>('overview');
-  const {isRTL} = useTranslation();
+  const {isRTL, t} = useTranslation();
   const orders = flattenConnection(customer.orders);
   const addresses = flattenConnection(customer.addresses);
   const displayName = customer.firstName
@@ -180,11 +180,11 @@ function Dashboard({customer}: {customer: any}) {
     0,
   );
 
-  const tabs: {id: Tab; label: string; labelAr: string; icon: React.ReactNode}[] = [
+  const tabs: {id: Tab; label: string; labelKey: string; icon: React.ReactNode}[] = [
     {
       id: 'overview',
       label: 'Overview',
-      labelAr: 'نظرة عامة',
+      labelKey: 'account.overview',
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4">
           <rect x="3" y="3" width="7" height="7" rx="1" />
@@ -197,7 +197,7 @@ function Dashboard({customer}: {customer: any}) {
     {
       id: 'orders',
       label: 'Orders',
-      labelAr: 'الطلبات',
+      labelKey: 'account.orders',
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4">
           <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" strokeLinecap="round" strokeLinejoin="round" />
@@ -209,7 +209,7 @@ function Dashboard({customer}: {customer: any}) {
     {
       id: 'profile',
       label: 'Profile',
-      labelAr: 'الملف الشخصي',
+      labelKey: 'account.profile',
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4">
           <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" strokeLinecap="round" strokeLinejoin="round" />
@@ -220,7 +220,7 @@ function Dashboard({customer}: {customer: any}) {
     {
       id: 'addresses',
       label: 'Addresses',
-      labelAr: 'العناوين',
+      labelKey: 'account.addresses',
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4">
           <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round" />
@@ -249,13 +249,13 @@ function Dashboard({customer}: {customer: any}) {
               </div>
               <div>
                 <p className="text-[10px] uppercase tracking-[0.25em] text-[#8B8076] mb-1">
-                  {isRTL ? 'أهلاً بك' : 'Welcome back'}
+                  {t('account.welcomeBack', 'Welcome back')}
                 </p>
                 <h1 className="font-serif text-2xl md:text-3xl text-[#F0EAE6]">
                   {displayName}
                 </h1>
                 <p className="text-xs text-[#8B8076] mt-1">
-                  {isRTL ? `عضو منذ ${memberSince}` : `Member since ${memberSince}`}
+                  {`${t('account.memberSince', 'Member since')} ${memberSince}`}
                 </p>
               </div>
             </div>
@@ -269,7 +269,7 @@ function Dashboard({customer}: {customer: any}) {
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4">
                   <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                {isRTL ? 'تسجيل الخروج' : 'Sign out'}
+                {t('account.signOut', 'Sign out')}
               </button>
             </Form>
           </div>
@@ -291,7 +291,7 @@ function Dashboard({customer}: {customer: any}) {
                 }`}
               >
                 {tab.icon}
-                {isRTL ? tab.labelAr : tab.label}
+                {t(tab.labelKey, tab.label)}
                 {tab.id === 'orders' && orders.length > 0 && (
                   <span className="ml-1 px-1.5 py-0.5 rounded-full bg-[#a87441]/20 text-[#a87441] text-[9px]">
                     {orders.length}
@@ -349,7 +349,7 @@ function OverviewTab({
   totalSpent: number;
   onNavigate: (tab: Tab) => void;
 }) {
-  const {isRTL} = useTranslation();
+  const {isRTL, t} = useTranslation();
   const recentOrders = orders.slice(0, 3);
 
   return (
@@ -357,7 +357,7 @@ function OverviewTab({
       {/* Stats Row */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         <StatCard
-          label={isRTL ? 'إجمالي الطلبات' : 'Total Orders'}
+          label={t('account.totalOrders', 'Total Orders')}
           value={String(orders.length)}
           icon={
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
@@ -368,7 +368,7 @@ function OverviewTab({
           }
         />
         <StatCard
-          label={isRTL ? 'إجمالي الإنفاق' : 'Total Spent'}
+          label={t('account.totalSpent', 'Total Spent')}
           value={`${totalSpent.toFixed(0)} SAR`}
           icon={
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
@@ -378,7 +378,7 @@ function OverviewTab({
           }
         />
         <StatCard
-          label={isRTL ? 'العناوين المحفوظة' : 'Saved Addresses'}
+          label={t('account.savedAddresses', 'Saved Addresses')}
           value={String(customer.addresses?.edges?.length || 0)}
           className="col-span-2 md:col-span-1"
           icon={
@@ -394,14 +394,14 @@ function OverviewTab({
       <div>
         <div className="flex items-center justify-between mb-5">
           <h2 className="font-serif text-xl text-[#F0EAE6]">
-            {isRTL ? 'آخر الطلبات' : 'Recent Orders'}
+            {t('account.recentOrders', 'Recent Orders')}
           </h2>
           {orders.length > 3 && (
             <button
               onClick={() => onNavigate('orders')}
               className="text-[#a87441] text-xs uppercase tracking-wider hover:text-[#D4AF87] transition-colors"
             >
-              {isRTL ? 'عرض الكل' : 'View all'}
+              {t('general.viewAll', 'View all')}
             </button>
           )}
         </div>
@@ -415,13 +415,13 @@ function OverviewTab({
         ) : (
           <EmptyState
             icon="bag"
-            message={isRTL ? 'لا توجد طلبات حتى الآن' : "You haven't placed any orders yet."}
+            message={t('account.noOrders', "You haven't placed any orders yet.")}
             action={
               <Link
                 to="/"
                 className="inline-block mt-4 px-6 py-2.5 bg-[#a87441] text-white text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-[#8B5E3C] transition-colors"
               >
-                {isRTL ? 'تسوق الآن' : 'Start Shopping'}
+                {t('account.startShopping', 'Start Shopping')}
               </Link>
             }
           />
@@ -431,10 +431,10 @@ function OverviewTab({
       {/* Quick Actions */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          {label: isRTL ? 'تعديل الملف' : 'Edit Profile', to: '/account/edit', icon: '✏️'},
-          {label: isRTL ? 'إضافة عنوان' : 'Add Address', to: '/account/address/add', icon: '📍'},
-          {label: isRTL ? 'التواصل معنا' : 'Contact Us', to: '/contact', icon: '💬'},
-          {label: isRTL ? 'سياسة الإرجاع' : 'Returns', to: '/policies/refund-policy', icon: '↩️'},
+          {label: t('account.editProfile', 'Edit Profile'), to: '/account/edit', icon: '✏️'},
+          {label: t('account.addAddress', 'Add Address'), to: '/account/address/add', icon: '📍'},
+          {label: t('account.contactUs', 'Contact Us'), to: '/contact', icon: '💬'},
+          {label: t('account.returns', 'Returns'), to: '/policies/refund-policy', icon: '↩️'},
         ].map((action) => (
           <Link
             key={action.to}
@@ -454,19 +454,19 @@ function OverviewTab({
 
 // ─── Orders Tab ───────────────────────────────────────────────────────────────
 function OrdersTab({orders}: {orders: any[]}) {
-  const {isRTL} = useTranslation();
+  const {t} = useTranslation();
 
   if (!orders.length) {
     return (
       <EmptyState
         icon="bag"
-        message={isRTL ? 'لا توجد طلبات حتى الآن' : "You haven't placed any orders yet."}
+        message={t('account.noOrders', "You haven't placed any orders yet.")}
         action={
           <Link
             to="/"
             className="inline-block mt-4 px-6 py-2.5 bg-[#a87441] text-white text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-[#8B5E3C] transition-colors"
           >
-            {isRTL ? 'تسوق الآن' : 'Start Shopping'}
+            {t('account.startShopping', 'Start Shopping')}
           </Link>
         }
       />
@@ -476,7 +476,7 @@ function OrdersTab({orders}: {orders: any[]}) {
   return (
     <div className="grid gap-3">
       <h2 className="font-serif text-xl text-[#F0EAE6] mb-2">
-        {isRTL ? 'سجل الطلبات' : 'Order History'}
+        {t('account.orderHistory', 'Order History')}
         <span className="text-sm font-sans font-normal text-[#8B8076] ml-3">
           ({orders.length})
         </span>
@@ -490,14 +490,14 @@ function OrdersTab({orders}: {orders: any[]}) {
 
 // ─── Profile Tab ──────────────────────────────────────────────────────────────
 function ProfileTab({customer}: {customer: any}) {
-  const {isRTL} = useTranslation();
+  const {t} = useTranslation();
   const {firstName, lastName, email, phone} = customer;
 
   return (
     <div className="max-w-xl">
       <div className="flex items-center justify-between mb-6">
         <h2 className="font-serif text-xl text-[#F0EAE6]">
-          {isRTL ? 'الملف الشخصي' : 'Profile'}
+          {t('account.profile', 'Profile')}
         </h2>
         <Link
           to="/account/edit"
@@ -507,15 +507,15 @@ function ProfileTab({customer}: {customer: any}) {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-3.5 h-3.5">
             <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          {isRTL ? 'تعديل' : 'Edit'}
+          {t('account.edit', 'Edit')}
         </Link>
       </div>
 
       <div className="bg-[#1A1A1A] border border-[#F0EAE6]/5 rounded-xl overflow-hidden">
         {[
-          {label: isRTL ? 'الاسم' : 'Name', value: firstName || lastName ? `${firstName || ''} ${lastName || ''}`.trim() : '—'},
-          {label: isRTL ? 'البريد الإلكتروني' : 'Email', value: email || '—'},
-          {label: isRTL ? 'رقم الهاتف' : 'Phone', value: phone || '—'},
+          {label: t('account.name', 'Name'), value: firstName || lastName ? `${firstName || ''} ${lastName || ''}`.trim() : '—'},
+          {label: t('account.email', 'Email'), value: email || '—'},
+          {label: t('account.phone', 'Phone'), value: phone || '—'},
         ].map((field, i) => (
           <div
             key={field.label}
@@ -538,13 +538,13 @@ function ProfileTab({customer}: {customer: any}) {
 
 // ─── Addresses Tab ────────────────────────────────────────────────────────────
 function AddressesTab({addresses, customer}: {addresses: any[]; customer: any}) {
-  const {isRTL} = useTranslation();
+  const {t} = useTranslation();
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="font-serif text-xl text-[#F0EAE6]">
-          {isRTL ? 'العناوين المحفوظة' : 'Saved Addresses'}
+          {t('account.savedAddresses', 'Saved Addresses')}
         </h2>
         <Link
           to="/account/address/add"
@@ -554,14 +554,14 @@ function AddressesTab({addresses, customer}: {addresses: any[]; customer: any}) 
             <line x1="12" y1="5" x2="12" y2="19" strokeLinecap="round" />
             <line x1="5" y1="12" x2="19" y2="12" strokeLinecap="round" />
           </svg>
-          {isRTL ? 'إضافة عنوان' : 'Add Address'}
+          {t('account.addAddress', 'Add Address')}
         </Link>
       </div>
 
       {!addresses.length ? (
         <EmptyState
           icon="location"
-          message={isRTL ? 'لم تحفظ أي عنوان بعد' : "You haven't saved any addresses yet."}
+          message={t('account.noAddresses', "You haven't saved any addresses yet.")}
         />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">

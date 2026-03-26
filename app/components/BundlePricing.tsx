@@ -18,7 +18,7 @@ interface BundleTier {
   id: string;
   quantity: number;
   label: string;
-  labelAr: string;
+  labelKey: string;
   discountPercent: number;
   price: string;
   comparePrice?: string;
@@ -27,11 +27,11 @@ interface BundleTier {
 interface BundleOption {
   id: string;
   title: string;
-  titleAr: string;
+  titleKey: string;
   subtitle?: string;
-  subtitleAr?: string;
+  subtitleKey?: string;
   badge?: string;
-  badgeAr?: string;
+  badgeKey?: string;
   price: string;
   comparePrice?: string;
   savings?: string;
@@ -52,7 +52,7 @@ const DEFAULT_TIERS: BundleTier[] = [
     id: 'single',
     quantity: 1,
     label: 'Single',
-    labelAr: 'قطعة واحدة',
+    labelKey: 'bundle.oneItem',
     discountPercent: 0,
     price: '149',
   },
@@ -60,7 +60,7 @@ const DEFAULT_TIERS: BundleTier[] = [
     id: 'double',
     quantity: 2,
     label: 'Double',
-    labelAr: 'قطعتان',
+    labelKey: 'bundle.twoItems',
     discountPercent: 10,
     price: '268',
     comparePrice: '298',
@@ -69,7 +69,7 @@ const DEFAULT_TIERS: BundleTier[] = [
     id: 'triple',
     quantity: 3,
     label: 'Triple',
-    labelAr: 'ثلاث قطع',
+    labelKey: 'bundle.threeItems',
     discountPercent: 15,
     price: '380',
     comparePrice: '447',
@@ -81,17 +81,17 @@ const DEFAULT_BUNDLES: BundleOption[] = [
   {
     id: 'case-only',
     title: 'Case Only',
-    titleAr: 'الكفر فقط',
+    titleKey: 'bundle.caseOnly',
     price: '149',
   },
   {
     id: 'case-strap',
     title: 'Case + Strap',
-    titleAr: 'كفر + حزام',
+    titleKey: 'bundle.caseAndStrap',
     subtitle: 'Save 15%',
-    subtitleAr: 'وفر 15%',
+    subtitleKey: 'bundle.save15',
     badge: 'Popular',
-    badgeAr: 'الأكثر مبيعاً',
+    badgeKey: 'bundle.bestSeller',
     price: '229',
     comparePrice: '268',
     savings: '39',
@@ -100,11 +100,11 @@ const DEFAULT_BUNDLES: BundleOption[] = [
   {
     id: 'complete-set',
     title: 'Complete Set',
-    titleAr: 'المجموعة الكاملة',
+    titleKey: 'bundle.fullBundle',
     subtitle: 'Save 20%',
-    subtitleAr: 'وفر 20%',
+    subtitleKey: 'bundle.save20',
     badge: 'Best Value',
-    badgeAr: 'أفضل قيمة',
+    badgeKey: 'bundle.bestValue',
     price: '319',
     comparePrice: '398',
     savings: '79',
@@ -149,11 +149,11 @@ export function BundlePricing({
             <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
           </svg>
           <span className="text-[10px] font-medium text-[#a87441]">
-            {isRTL ? 'خصم على الكمية' : 'Bundle Savings'}
+            {t('bundle.savings', 'Bundle Savings')}
           </span>
         </motion.div>
         <span className="text-[10px] text-[#8B8076]">
-          {isRTL ? '2+ قطع: خصم 10%' : '2+ items: 10% off'}
+          {t('bundle.tieredDiscount', '2+ items: 10% off')}
         </span>
       </div>
     );
@@ -167,9 +167,7 @@ export function BundlePricing({
         dir={isRTL ? 'rtl' : 'ltr'}
       >
         <p className="text-xs font-medium text-[#4A3C31] mb-3">
-          {isRTL
-            ? 'اختر الكمية (توفر خصم)'
-            : 'Select Quantity (Discount Available)'}
+          {t('bundle.chooseQty', 'Select Quantity (Discount Available)')}
         </p>
 
         <div className="space-y-2">
@@ -199,11 +197,11 @@ export function BundlePricing({
                 </div>
                 <div className="text-left">
                   <span className="text-sm font-medium text-[#4A3C31]">
-                    {isRTL ? tier.labelAr : tier.label}
+                    {t(tier.labelKey, tier.label)}
                   </span>
                   {tier.discountPercent > 0 && (
                     <span className="ml-2 text-[10px] px-1.5 py-0.5 bg-green-100 text-green-700 rounded">
-                      {tier.discountPercent}% {isRTL ? 'خصم' : 'OFF'}
+                      {tier.discountPercent}% {t('bundle.off', 'OFF')}
                     </span>
                   )}
                 </div>
@@ -233,33 +231,13 @@ export function BundlePricing({
               className="mt-3 p-2 bg-green-50 rounded-lg border border-green-100"
             >
               <p className="text-xs text-center text-green-700">
-                {isRTL
-                  ? `توفير ${
-                      DEFAULT_TIERS.find((t) => t.id === selectedId)
-                        ?.comparePrice
-                        ? parseInt(
-                            DEFAULT_TIERS.find((t) => t.id === selectedId)!
-                              .comparePrice!,
-                          ) -
-                          parseInt(
-                            DEFAULT_TIERS.find((t) => t.id === selectedId)!
-                              .price,
-                          )
-                        : 0
-                    } ريال`
-                  : `You save ${
-                      DEFAULT_TIERS.find((t) => t.id === selectedId)
-                        ?.comparePrice
-                        ? parseInt(
-                            DEFAULT_TIERS.find((t) => t.id === selectedId)!
-                              .comparePrice!,
-                          ) -
-                          parseInt(
-                            DEFAULT_TIERS.find((t) => t.id === selectedId)!
-                              .price,
-                          )
-                        : 0
-                    } SAR`}
+                {(() => {
+                  const tier = DEFAULT_TIERS.find((tier) => tier.id === selectedId);
+                  const savings = tier?.comparePrice
+                    ? parseInt(tier.comparePrice) - parseInt(tier.price)
+                    : 0;
+                  return `${t('bundle.savingAmount', 'Saving')} ${savings} ${isRTL ? 'ريال' : 'SAR'}`;
+                })()}
               </p>
             </motion.div>
           )}
@@ -273,10 +251,10 @@ export function BundlePricing({
     <div className={`${className}`} dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="flex items-center justify-between mb-3">
         <p className="text-xs font-medium text-[#4A3C31]">
-          {isRTL ? 'اختر الباقة' : 'Choose Your Bundle'}
+          {t('bundle.chooseBundle', 'Choose Your Bundle')}
         </p>
         <span className="text-[10px] text-[#8B8076]">
-          {isRTL ? 'وفر أكثر مع الباقات' : 'Save more with bundles'}
+          {t('bundle.saveMoreWithBundles', 'Save more with bundles')}
         </span>
       </div>
 
@@ -296,7 +274,7 @@ export function BundlePricing({
             {/* Popular badge */}
             {bundle.popular && (
               <span className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-[#a87441] text-white text-[9px] uppercase tracking-wider rounded-full">
-                {isRTL ? bundle.badgeAr : bundle.badge}
+                {t(bundle.badgeKey!, bundle.badge!)}
               </span>
             )}
 
@@ -315,7 +293,7 @@ export function BundlePricing({
                 </div>
                 <div>
                   <p className="text-sm font-medium text-[#4A3C31]">
-                    {isRTL ? bundle.titleAr : bundle.title}
+                    {t(bundle.titleKey, bundle.title)}
                   </p>
                   {bundle.subtitle && (
                     <p
@@ -323,7 +301,7 @@ export function BundlePricing({
                         bundle.popular ? 'text-[#a87441]' : 'text-green-600'
                       }`}
                     >
-                      {isRTL ? bundle.subtitleAr : bundle.subtitle}
+                      {t(bundle.subtitleKey!, bundle.subtitle!)}
                     </p>
                   )}
                 </div>
@@ -347,9 +325,9 @@ export function BundlePricing({
       {/* Bundle benefits */}
       <div className="mt-3 flex flex-wrap gap-2">
         {[
-          {icon: '🚚', text: isRTL ? 'شحن مجاني' : 'Free Shipping'},
-          {icon: '🎁', text: isRTL ? 'تغليف هدية' : 'Gift Wrap'},
-          {icon: '↩️', text: isRTL ? 'إرجاع سهل' : 'Easy Returns'},
+          {icon: '🚚', text: t('bundle.freeShipping', 'Free Shipping')},
+          {icon: '🎁', text: t('bundle.giftWrap', 'Gift Wrap')},
+          {icon: '↩️', text: t('bundle.easyReturns', 'Easy Returns')},
         ].map((benefit, i) => (
           <span
             key={i}

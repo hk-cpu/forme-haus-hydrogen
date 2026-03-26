@@ -7,7 +7,7 @@ interface Stat {
   value: number;
   suffix: string;
   label: string;
-  labelAr: string;
+  translationKey: string;
 }
 
 const STATS: Stat[] = [
@@ -15,25 +15,25 @@ const STATS: Stat[] = [
     value: 50000,
     suffix: '+',
     label: 'Happy Customers',
-    labelAr: 'عميل سعيد',
+    translationKey: 'stats.happyCustomer',
   },
   {
     value: 100,
     suffix: '+',
     label: 'Premium Products',
-    labelAr: 'منتج متميز',
+    translationKey: 'stats.premiumProduct',
   },
   {
     value: 15,
     suffix: '+',
     label: 'Cities Served',
-    labelAr: 'مدينة',
+    translationKey: 'stats.city',
   },
   {
     value: 99,
     suffix: '%',
     label: 'Satisfaction Rate',
-    labelAr: 'نسبة الرضا',
+    translationKey: 'stats.satisfactionRate',
   },
 ];
 
@@ -102,10 +102,12 @@ function StatCard({
   stat,
   index,
   isRTL,
+  t,
 }: {
   stat: Stat;
   index: number;
   isRTL: boolean;
+  t: (key: string, fallback?: string) => string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, {once: true, amount: 0.5});
@@ -168,7 +170,7 @@ function StatCard({
           animate={isInView ? {opacity: 1, y: 0} : {}}
           transition={{delay: index * 0.1 + 0.6, duration: 0.4}}
         >
-          {isRTL ? stat.labelAr : stat.label}
+          {t(stat.translationKey, stat.label)}
         </motion.p>
       </div>
 
@@ -231,7 +233,7 @@ export function StatsSection() {
           className="text-center mb-10"
         >
           <h2 className="font-serif text-2xl md:text-3xl text-[#4A3C31] mb-2">
-            {(isRTL ? 'أرقامنا تتحدث' : t('stats.title', 'Our Numbers')).split('').map((char, i) => (
+            {t('stats.numbersSpeak', 'Our Numbers Speak').split('').map((char, i) => (
               <motion.span
                 key={i}
                 className="inline-block"
@@ -263,6 +265,7 @@ export function StatsSection() {
               stat={stat}
               index={index}
               isRTL={isRTL}
+              t={t}
             />
           ))}
         </div>
@@ -296,7 +299,7 @@ export function StatsBar() {
                 <CounterNumber value={stat.value} suffix={stat.suffix} isInView={true} />
               </span>
               <span className="text-[10px] uppercase tracking-[0.15em] text-[#8B8076]">
-                {isRTL ? stat.labelAr : stat.label}
+                {t(stat.translationKey, stat.label)}
               </span>
             </motion.div>
           ))}

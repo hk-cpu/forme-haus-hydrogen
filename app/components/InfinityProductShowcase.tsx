@@ -112,7 +112,7 @@ function ProductCard({
 export function InfinityProductShowcase({
   products,
 }: InfinityProductShowcaseProps) {
-  const {isRTL} = useTranslation();
+  const {t, isRTL} = useTranslation();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -221,19 +221,15 @@ export function InfinityProductShowcase({
         >
           <div>
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#4A3C31] mb-2">
-              {isRTL ? 'المجموعة' : 'The Collection'}
+              {t('showcase.collection', 'The Collection')}
             </h2>
             <p className="text-[#8B8076] text-sm md:text-base max-w-md">
-              {isRTL
-                ? 'اكتشفي كل منتجاتنا الفريدة'
-                : 'Explore our complete collection of curated pieces'}
+              {t('showcase.subtitle', 'Discover all our unique products')}
             </p>
           </div>
 
           <span className="text-[11px] uppercase tracking-[0.2em] text-[#a87441]">
-            {isRTL
-              ? `${validProducts.length} منتج`
-              : `${validProducts.length} Products`}
+            {`${validProducts.length} ${t('showcase.products', 'Products')}`}
           </span>
         </motion.div>
       </div>
@@ -299,7 +295,7 @@ export function InfinityProductShowcase({
               strokeLinejoin="round"
             />
           </svg>
-          <span>{isRTL ? 'اسحب للتصفح' : 'Drag to browse'}</span>
+          <span>{t('showcase.dragToBrowse', 'Drag to browse')}</span>
           <svg
             width="16"
             height="16"

@@ -104,7 +104,7 @@ export default function AllProducts() {
             transition={{delay: 0.2, duration: 0.6}}
             className="text-[10px] md:text-xs uppercase tracking-[0.35em] text-[#a87441] font-light mb-3"
           >
-            {isRTL ? 'المجموعة الكاملة' : 'The Complete Collection'}
+            {t('products.completeCollection', 'The Complete Collection')}
           </motion.span>
           <motion.h1
             initial={{opacity: 0, y: 16}}
@@ -112,7 +112,7 @@ export default function AllProducts() {
             transition={{delay: 0.3, duration: 0.6}}
             className="font-serif italic font-light text-4xl md:text-5xl lg:text-6xl text-[#F0EAE6] mb-4"
           >
-            {isRTL ? 'جميع المنتجات' : 'All Products'}
+            {t('products.allProducts', 'All Products')}
           </motion.h1>
           <motion.div
             initial={{scaleX: 0}}
@@ -133,7 +133,7 @@ export default function AllProducts() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <h2 className="font-serif text-2xl md:text-3xl text-[#4A3C31]">
-                {isRTL ? 'جميع المنتجات' : 'Browse All'}
+                {t('products.browseAll', 'Browse All')}
               </h2>
               <p className="text-sm text-[#8B8076] mt-1">
                 {products.nodes.length}{' '}

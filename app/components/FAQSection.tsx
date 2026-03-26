@@ -52,11 +52,11 @@ const FAQS: FAQ[] = [
   {
     id: '5',
     question: 'Are your phone cases protective?',
-    questionAr: 'هل حافظات الهاتف لديكم واقية؟',
+    questionAr: 'هل كفرات الجوال لديكم واقية؟',
     answer:
       'Yes! Our cases feature raised edges to protect the screen and camera, shock-absorbing materials, and precise cutouts for full functionality.',
     answerAr:
-      'نعم! تتميز حافظاتنا بحواف مرتفعة لحماية الشاشة والكاميرا، ومواد ماصة للصدمات، وفتحات دقيقة للوظائف الكاملة.',
+      'نعم! تتميز كفراتنا بحواف مرتفعة لحماية الشاشة والكاميرا، ومواد ماصة للصدمات، وفتحات دقيقة للوظائف الكاملة.',
   },
   {
     id: '6',
@@ -172,12 +172,10 @@ export function FAQSection() {
             className="lg:col-span-4"
           >
             <h2 className="font-serif text-3xl md:text-4xl text-[#4A3C31] mb-4">
-              {isRTL ? 'الأسئلة الشائعة' : t('faq.title', 'FAQs')}
+              {t('faq.title', 'FAQs')}
             </h2>
             <p className="text-sm text-[#8B8076] mb-6 leading-relaxed">
-              {isRTL
-                ? 'إليك الإجابات على الأسئلة الأكثر شيوعاً. إذا كنت بحاجة إلى مزيد من المساعدة، فلا تتردد في التواصل معنا.'
-                : t(
+              {t(
                     'faq.subtitle',
                     'Here are answers to our most common questions. If you need further help, feel free to reach out.',
                   )}
@@ -186,16 +184,14 @@ export function FAQSection() {
             {/* Contact CTA */}
             <div className="hidden lg:block">
               <p className="text-xs text-[#8B8076] uppercase tracking-wider mb-3">
-                {isRTL
-                  ? 'ما زلت لديك سؤال؟'
-                  : t('faq.stillHaveQuestions', 'Still have questions?')}
+                {t('faq.stillHaveQuestions', 'Still have questions?')}
               </p>
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 text-sm text-[#a87441] hover:text-[#8B5E3C] transition-colors group"
               >
                 <span>
-                  {isRTL ? 'تواصل معنا' : t('faq.contactUs', 'Contact Us')}
+                  {t('faq.contactUs', 'Contact Us')}
                 </span>
                 <motion.svg
                   width="16"
@@ -234,16 +230,14 @@ export function FAQSection() {
             {/* Mobile Contact CTA */}
             <div className="lg:hidden mt-6 text-center">
               <p className="text-xs text-[#8B8076] uppercase tracking-wider mb-2">
-                {isRTL
-                  ? 'ما زلت لديك سؤال؟'
-                  : t('faq.stillHaveQuestions', 'Still have questions?')}
+                {t('faq.stillHaveQuestions', 'Still have questions?')}
               </p>
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 text-sm text-[#a87441] hover:text-[#8B5E3C] transition-colors"
               >
                 <span>
-                  {isRTL ? 'تواصل معنا' : t('faq.contactUs', 'Contact Us')}
+                  {t('faq.contactUs', 'Contact Us')}
                 </span>
                 <svg
                   width="16"

@@ -202,7 +202,7 @@ export function TrustBadges({
             variants={itemVariants}
             whileHover={shouldReduceMotion ? {} : {scale: 1.05}}
             className="relative flex items-center gap-1.5 px-2 py-1 bg-[#E8F5E9] rounded-md overflow-hidden group"
-            title={isRTL ? 'متجر معتمد من معروف' : 'Maroof Verified Store'}
+            title={t('trust.maroofVerified', 'Maroof Verified Store')}
           >
             {/* Shimmer effect */}
             <motion.div
@@ -222,7 +222,7 @@ export function TrustBadges({
               />
             </svg>
             <span className="text-[10px] font-medium text-[#1B5E20]">
-              {isRTL ? 'معروف' : 'Maroof'}
+              {t('trust.maroof', 'Maroof')}
             </span>
           </motion.div>
         )}
@@ -235,7 +235,7 @@ export function TrustBadges({
           >
             <SecurePaymentIcon className="h-3.5 w-3.5" />
             <span className="text-[9px] uppercase tracking-wider">
-              {isRTL ? 'دفع آمن' : 'Secure'}
+              {t('trust.securePayment', 'Secure')}
             </span>
           </motion.div>
         )}
@@ -312,7 +312,7 @@ export function TrustBadges({
           <SecurePaymentIcon className="h-4 w-4 text-[#a87441]" />
         </motion.div>
         <span className="text-xs font-medium text-[#4A3C31] uppercase tracking-wider">
-          {isRTL ? 'تسوق بثقة' : 'Shop with Confidence'}
+          {t('trust.shopWithConfidence', 'Shop with Confidence')}
         </span>
       </motion.div>
 
@@ -376,10 +376,10 @@ export function TrustBadges({
             </motion.div>
             <div className="text-[10px] leading-tight">
               <p className="font-medium">
-                {isRTL ? 'جاهز للتجربة' : 'Trial Ready'}
+                {t('trust.trialReady', 'Trial Ready')}
               </p>
               <p className="text-[#736659]">
-                {isRTL ? 'توصيل سريع' : 'Fast Delivery'}
+                {t('trust.fastDelivery', 'Fast Delivery')}
               </p>
             </div>
           </motion.div>
@@ -394,9 +394,7 @@ export function TrustBadges({
         transition={{delay: 0.5, duration: 0.4}}
       >
         <p className="text-[10px] text-[#736659] text-center">
-          {isRTL
-            ? 'طرق دفع متعددة عبر Tap: مدى، فيزا، ماستركارد، آبل باي، STC Pay، تابي، تمارا'
-            : 'Secure payments via Tap: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tabby, Tamara'}
+          {t('trust.paymentMethods', 'Secure payments via Tap: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tabby, Tamara')}
         </p>
       </motion.div>
     </motion.div>

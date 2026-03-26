@@ -51,6 +51,7 @@ export function PageLayout({children, layout}: LayoutProps) {
   const location = useLocation();
   const {state} = useUI();
   const isHome = useIsHomePath();
+  const {t, isRTL} = useTranslation();
   const [isDesktop, setIsDesktop] = useState(false);
 
   // Check for desktop breakpoint (md: 768px)
@@ -132,10 +133,10 @@ export function PageLayout({children, layout}: LayoutProps) {
       {/* WhatsApp Floating Button — set WHATSAPP_NUMBER above to enable */}
       {WHATSAPP_NUMBER && (
       <a
-        href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(isRTL ? 'مرحباً، أريد الاستفسار عن منتج في Formé Haus' : 'Hello, I have a question about a product at Formé Haus')}`}
+        href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(t('whatsapp.defaultMessage', 'Hello, I would like to enquire about a product at Formé Haus'))}`}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={isRTL ? 'تواصل معنا عبر واتساب' : 'Contact us on WhatsApp'}
+        aria-label={t('a11y.whatsappContact', 'Contact us on WhatsApp')}
         className={`whatsapp-fab fixed bottom-[80px] z-[400] w-14 h-14 rounded-full bg-[#25D366] shadow-lg shadow-[#25D366]/30 flex items-center justify-center hover:scale-110 active:scale-95 transition-transform duration-200 ${isRTL ? 'left-6 md:left-6' : 'right-6 md:right-6'}`}
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-7 h-7">
