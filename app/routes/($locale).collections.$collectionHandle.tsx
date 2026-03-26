@@ -87,6 +87,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     'new',
     'sunglasses',
     'sale',
+    'phone',
     'phone-cases',
     'phone-straps',
     'case-strap-bundles',
@@ -155,6 +156,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
       let title: string = translations[lang]['nav.newIn'] as string;
       if (collectionHandle === 'sunglasses') title = 'Sunglasses';
       if (collectionHandle === 'sale') title = 'Sale';
+      if (collectionHandle === 'phone') title = 'Phone Accessories';
       if (collectionHandle === 'phone-cases') title = 'Phone Accessories';
       if (collectionHandle === 'phone-straps') title = 'Phone Straps';
       if (collectionHandle === 'case-strap-bundles')
@@ -270,39 +272,42 @@ export default function Collection() {
   // Collection hero image overrides
   const HERO_OVERRIDES: Record<
     string,
-    {src: string; hideTitle?: boolean; fit?: 'cover' | 'contain' | 'auto'; position?: string; bg?: string}
+    {src: string; hideTitle?: boolean; fit?: 'cover' | 'contain' | 'auto' | 'full-width'; position?: string; bg?: string}
   > = {
     'new-in': {
       src: '/assets/heros/new-in-hero-2.webp',
       hideTitle: true,
-      fit: 'auto',
-      position: 'object-[center_15%]',
+      fit: 'full-width',
     },
     new: {
       src: '/assets/heros/new-in-hero-2.webp',
       hideTitle: true,
-      fit: 'auto',
-      position: 'object-[center_15%]',
+      fit: 'full-width',
     },
     sunglasses: {
       src: '/assets/heros/sunglasses-hero-3.webp',
       hideTitle: true,
-      fit: 'cover',
+      fit: 'full-width',
+    },
+    phone: {
+      src: '/assets/heros/phone-accessories-hero-3.webp',
+      hideTitle: true,
+      fit: 'full-width',
     },
     'phone-cases': {
       src: '/assets/heros/phone-accessories-hero-3.webp',
       hideTitle: true,
-      fit: 'cover',
+      fit: 'full-width',
     },
     'phone-straps': {
       src: '/assets/heros/phone-accessories-hero-3.webp',
       hideTitle: true,
-      fit: 'cover',
+      fit: 'full-width',
     },
     'case-strap-bundles': {
       src: '/assets/heros/phone-accessories-hero-3.webp',
       hideTitle: true,
-      fit: 'cover',
+      fit: 'full-width',
     },
   };
 
@@ -310,6 +315,9 @@ export default function Collection() {
   const COLLECTION_SUBTITLES: Record<string, {subtitle: string; description?: string}> = {
     'new-in': {
       subtitle: 'The latest additions to our curated selection.',
+    },
+    phone: {
+      subtitle: 'Designed to be carried beautifully.',
     },
     'phone-cases': {
       subtitle: 'Designed to be carried beautifully.',
@@ -389,6 +397,8 @@ export default function Collection() {
           className={`relative w-full overflow-hidden ${
             override?.fit === 'cover'
               ? 'bg-[#F0EAE6]'
+              : override?.fit === 'full-width'
+              ? 'bg-[#F5F0EB]'
               : 'bg-[#0f0d0a]'
           }`}
           style={{opacity: heroOpacity}}
@@ -399,7 +409,9 @@ export default function Collection() {
                 src={heroImage}
                 alt={collection.title}
                 className={
-                  override?.fit === 'cover'
+                  override?.fit === 'full-width'
+                    ? 'w-full h-auto object-contain mx-auto block'
+                    : override?.fit === 'cover'
                     ? `w-full h-auto max-h-[75vh] object-contain ${override.position || 'object-center'} mx-auto block`
                     : override?.fit === 'auto'
                     ? `w-full h-auto max-h-[85vh] object-contain ${override.position || 'object-center'} mx-auto block`
