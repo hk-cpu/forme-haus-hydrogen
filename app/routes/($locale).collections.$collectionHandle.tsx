@@ -272,42 +272,49 @@ export default function Collection() {
   // Collection hero image overrides
   const HERO_OVERRIDES: Record<
     string,
-    {src: string; hideTitle?: boolean; fit?: 'cover' | 'contain' | 'auto' | 'full-width'; position?: string; bg?: string}
+    {src: string; hideTitle?: boolean; fit?: 'cover' | 'contain' | 'auto' | 'full-width'; position?: string; bgClass?: string}
   > = {
     'new-in': {
       src: '/assets/heros/new-in-hero-2.webp',
       hideTitle: true,
       fit: 'full-width',
+      bgClass: 'bg-gradient-to-r from-[#C4A882] via-[#D4B896] via-[50%] via-[#B8C9D4] via-[85%] to-[#E8EDF0]',
     },
     new: {
       src: '/assets/heros/new-in-hero-2.webp',
       hideTitle: true,
       fit: 'full-width',
+      bgClass: 'bg-gradient-to-r from-[#C4A882] via-[#D4B896] via-[50%] via-[#B8C9D4] via-[85%] to-[#E8EDF0]',
     },
     sunglasses: {
       src: '/assets/heros/sunglasses-hero-3.webp',
       hideTitle: true,
       fit: 'full-width',
+      bgClass: 'bg-[#D4B896]',
     },
     phone: {
       src: '/assets/heros/phone-accessories-hero-3.webp',
       hideTitle: true,
       fit: 'full-width',
+      bgClass: 'bg-[#E8DED4]',
     },
     'phone-cases': {
       src: '/assets/heros/phone-accessories-hero-3.webp',
       hideTitle: true,
       fit: 'full-width',
+      bgClass: 'bg-[#E8DED4]',
     },
     'phone-straps': {
       src: '/assets/heros/phone-accessories-hero-3.webp',
       hideTitle: true,
       fit: 'full-width',
+      bgClass: 'bg-[#E8DED4]',
     },
     'case-strap-bundles': {
       src: '/assets/heros/phone-accessories-hero-3.webp',
       hideTitle: true,
       fit: 'full-width',
+      bgClass: 'bg-[#E8DED4]',
     },
   };
 
@@ -398,7 +405,7 @@ export default function Collection() {
             override?.fit === 'cover'
               ? 'bg-[#F0EAE6]'
               : override?.fit === 'full-width'
-              ? 'bg-[#F5F0EB]'
+              ? override?.bgClass || 'bg-[#F5F0EB]'
               : 'bg-[#0f0d0a]'
           }`}
           style={{opacity: heroOpacity}}
