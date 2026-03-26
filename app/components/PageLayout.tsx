@@ -127,6 +127,22 @@ export function PageLayout({children, layout}: LayoutProps) {
                   )}
               </div>
             </main>
+            {/* Newsletter — Above Footer */}
+            <section className="relative w-full overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a1a]/80 via-[#151515]/90 to-[#121212]/95 backdrop-blur-xl" />
+              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
+              <div className="relative z-10 py-16" style={{padding: '4rem var(--page-gutter)'}}>
+                <div className="max-w-[420px] mx-auto text-center">
+                  <h4 className="font-serif text-lg text-[#F0EAE6] tracking-wider uppercase mb-2">
+                    {t('footer.newsletter', 'Join the Haus')}
+                  </h4>
+                  <p className="text-[12px] text-[#AA9B8F] mb-5 font-light">
+                    {t('footer.newsletterDesc', 'New arrivals, exclusive offers, and more.')}
+                  </p>
+                  <Newsletter />
+                </div>
+              </div>
+            </section>
             <Footer menu={footerMenu || undefined} />
           </div>
         </div>
@@ -349,19 +365,6 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
               {t('footer.terms', 'Terms & Conditions')}
             </Link>
           </nav>
-        </div>
-
-        {/* Newsletter */}
-        <div className="max-w-[1440px] mx-auto mb-12 pb-12 border-b border-[#a87441]/10">
-          <div className="max-w-[420px] mx-auto text-center">
-            <h4 className="font-serif text-lg text-[#F0EAE6] tracking-wider uppercase mb-2">
-              {t('footer.newsletter', 'Join the Haus')}
-            </h4>
-            <p className="text-[12px] text-[#AA9B8F] mb-5 font-light">
-              {t('footer.newsletterDesc', 'Be the first to know about new arrivals, exclusive edits, and stories.')}
-            </p>
-            <Newsletter />
-          </div>
         </div>
 
         {/* Social Links */}
