@@ -319,7 +319,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
           <div className="flex flex-col items-center md:items-start gap-3">
             <div className="flex items-center gap-4">
               <img
-                src="/brand/logo-icon-only.png"
+                src="/brand/logo-icon-only.webp"
                 alt="Formé Haus"
                 className="h-16 w-auto object-contain opacity-90"
               />

@@ -20,7 +20,7 @@ import {routeHeaders} from '~/data/cache';
 
 // Premium brand images for collections
 const COLLECTION_HEROS: Record<string, string> = {
-  sunglasses: '/assets/heros/sunglasses-hero-2.png',
+  sunglasses: '/assets/heros/sunglasses-hero-2.webp',
   'new-in': '/brand/new-in.webp',
   'phone-cases': '/brand/phone-accessories.webp',
   'phone-straps': '/brand/phone-accessories.webp',

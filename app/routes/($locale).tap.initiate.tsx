@@ -13,7 +13,7 @@
 import {json, redirect, type ActionFunctionArgs} from '@shopify/remix-oxygen';
 
 export async function action({request, context}: ActionFunctionArgs) {
-  const env = context.env as Record<string, string | undefined>;
+  const {env} = context;
   const formData = await request.formData();
 
   const amount = formData.get('amount') as string;
@@ -25,7 +25,7 @@ export async function action({request, context}: ActionFunctionArgs) {
   const cartId = (formData.get('cartId') as string) || '';
 
   const secretKey = env.TAP_SECRET_KEY;
-  const apiUrl = env.TAP_API_URL ?? 'https://api.tap.company/v2';
+  const apiUrl = env.TAP_API_URL || 'https://api.tap.company/v2';
 
   if (!secretKey) {
     return json(

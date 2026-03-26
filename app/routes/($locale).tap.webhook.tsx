@@ -13,7 +13,7 @@
 import {json, type ActionFunctionArgs} from '@shopify/remix-oxygen';
 
 export async function action({request, context}: ActionFunctionArgs) {
-  const env = context.env as Record<string, string | undefined>;
+  const {env} = context;
 
   try {
     const payload = (await request.json()) as {

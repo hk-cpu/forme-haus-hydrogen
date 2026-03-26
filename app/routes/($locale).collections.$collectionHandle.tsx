@@ -273,32 +273,32 @@ export default function Collection() {
     {src: string; hideTitle?: boolean; fit?: 'cover' | 'contain'; bg?: string}
   > = {
     'new-in': {
-      src: '/assets/heros/new-in-hero-2.png',
+      src: '/assets/heros/new-in-hero-2.webp',
       hideTitle: true,
       fit: 'cover',
     },
     new: {
-      src: '/assets/heros/new-in-hero-2.png',
+      src: '/assets/heros/new-in-hero-2.webp',
       hideTitle: true,
       fit: 'cover',
     },
     sunglasses: {
-      src: '/assets/heros/sunglasses-hero-3.png',
+      src: '/assets/heros/sunglasses-hero-3.webp',
       hideTitle: true,
       fit: 'cover',
     },
     'phone-cases': {
-      src: '/assets/heros/phone-accessories-hero-3.png',
+      src: '/assets/heros/phone-accessories-hero-3.webp',
       hideTitle: true,
       fit: 'cover',
     },
     'phone-straps': {
-      src: '/assets/heros/phone-accessories-hero-3.png',
+      src: '/assets/heros/phone-accessories-hero-3.webp',
       hideTitle: true,
       fit: 'cover',
     },
     'case-strap-bundles': {
-      src: '/assets/heros/phone-accessories-hero-3.png',
+      src: '/assets/heros/phone-accessories-hero-3.webp',
       hideTitle: true,
       fit: 'cover',
     },

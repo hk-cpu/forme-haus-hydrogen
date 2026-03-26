@@ -23,7 +23,7 @@ interface CategoryData {
 
 const menuCategories: Record<string, CategoryData> = {
   Sunglasses: {
-    editorial: '/assets/heros/sunglasses-hero-2.png',
+    editorial: '/assets/heros/sunglasses-hero-2.webp',
     tagline: 'LOUVE Collection',
     categories: [
       {label: 'All Sunglasses', href: '/collections/sunglasses', featured: true},
@@ -31,7 +31,7 @@ const menuCategories: Record<string, CategoryData> = {
     ],
   },
   'Phone Accessories': {
-    editorial: '/assets/heros/phone-accessories-hero-1.png',
+    editorial: '/assets/heros/phone-accessories-hero-1.webp',
     tagline: 'Protect in Style',
     categories: [
       {label: 'Phone Cases', href: '/collections/phone-cases', featured: true},
@@ -421,7 +421,7 @@ export function NavigationMenu() {
                       exit={{opacity: 0}}
                     >
                       <img
-                        src="/brand/logo-icon-only.png"
+                        src="/brand/logo-icon-only.webp"
                         alt="Formé Haus"
                         className="h-16 w-16 object-contain opacity-30 mb-6"
                       />

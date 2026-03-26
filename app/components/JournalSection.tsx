@@ -27,7 +27,7 @@ const JOURNAL_CARDS: JournalCard[] = [
     excerpt: 'Elegance is lived in the in-between moments.',
   },
   {
-    image: '/brand/journal-selection.png',
+    image: '/brand/journal-selection.webp',
     alt: 'Behind the Selection',
     url: '/journal/behind-the-selection',
     title: 'Behind the Selection',

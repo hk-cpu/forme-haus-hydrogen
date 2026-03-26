@@ -75,7 +75,7 @@ function NewsletterSection() {
           </h2>
           <div className="flex flex-col items-center gap-1 mt-4 mb-8">
             <img
-              src="/brand/logo-icon-only.png"
+              src="/brand/logo-icon-only.webp"
               alt="Formé Haus"
               className="w-16 h-16 object-contain"
             />

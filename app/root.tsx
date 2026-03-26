@@ -93,7 +93,7 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 export const links: LinksFunction = () => {
   return [
     // Preload above-fold LCP hero image
-    {rel: 'preload', href: '/brand/logo-full.png', as: 'image'},
+    {rel: 'preload', href: '/brand/logo-full.webp', as: 'image'},
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',

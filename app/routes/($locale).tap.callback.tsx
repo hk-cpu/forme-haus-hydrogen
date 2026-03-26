@@ -17,9 +17,9 @@ export async function loader({request, context}: LoaderFunctionArgs) {
   const tapId = url.searchParams.get('tap_id');
   const merchantTxId = url.searchParams.get('merchantTxId') || '';
 
-  const env = context.env as Record<string, string | undefined>;
+  const {env} = context;
   const secretKey = env.TAP_SECRET_KEY;
-  const apiUrl = env.TAP_API_URL ?? 'https://api.tap.company/v2';
+  const apiUrl = env.TAP_API_URL || 'https://api.tap.company/v2';
 
   if (!tapId) {
     return json({status: 'error' as const, message: 'No payment reference found.'});

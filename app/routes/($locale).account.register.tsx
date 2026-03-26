@@ -87,7 +87,7 @@ export default function Register() {
         {/* Logo */}
         <a href="/" className="group">
           <img
-            src="/brand/logo-icon-only.png"
+            src="/brand/logo-icon-only.webp"
             alt="Formé Haus"
             className="w-24 h-auto object-contain opacity-85 transition-opacity duration-700 group-hover:opacity-100"
             loading="eager"

@@ -58,7 +58,7 @@ const STATIC_ARTICLES: Record<
       'Proportion, fabrication, and craftsmanship are considered not only for how they appear, but for how they endure.',
       'A selection shaped by clarity and lasting intention.',
     ],
-    image: '/brand/journal-selection.png',
+    image: '/brand/journal-selection.webp',
   },
 };
 

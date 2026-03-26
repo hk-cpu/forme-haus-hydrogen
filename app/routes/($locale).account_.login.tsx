@@ -139,7 +139,7 @@ export default function Login() {
   return (
     <div
       className="relative min-h-screen w-full overflow-hidden bg-cover bg-center flex flex-col items-center justify-center text-[#2C2419]"
-      style={{backgroundImage: 'url("/brand/silk-texture.png")'}}
+      style={{backgroundImage: 'url("/brand/silk-texture.webp")'}}
     >
       {/* Dark overlay for contrast */}
       <div className="absolute inset-0 bg-black/10 backdrop-blur-[2px]"></div>
@@ -175,7 +175,7 @@ export default function Login() {
           <div className="flex flex-col items-center gap-6 mb-10">
             <Link to="/" className="group cursor-pointer">
               <img
-                src="/brand/logo-icon-only.png"
+                src="/brand/logo-icon-only.webp"
                 alt="Formé Haus"
                 className="w-20 h-20 object-contain opacity-85 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-100"
                 loading="eager"

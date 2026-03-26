@@ -63,7 +63,7 @@ export default function Hero() {
               />
 
               <img
-                src="/brand/logo-full.png"
+                src="/brand/logo-full.webp"
                 alt="FORMÉ HAUS - Where Essence Meets Elegance"
                 className="w-auto h-16 sm:h-20 md:h-24 lg:h-32 xl:h-40 object-contain relative z-10 drop-shadow-2xl"
                 loading="eager"

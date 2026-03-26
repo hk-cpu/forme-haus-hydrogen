@@ -23,7 +23,7 @@ export default function ContactPage() {
             {/* Main Image - Top Left (Large Landscape) */}
             <div className="md:col-span-3 md:row-span-2 relative group overflow-hidden rounded-xl aspect-[16/10]">
               <img 
-                src="/editorial/contact-hero-1.png" 
+                src="/editorial/contact-hero-1.webp" 
                 alt="Formé Haus Editorial" 
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
               />
@@ -33,7 +33,7 @@ export default function ContactPage() {
             {/* Tall Image - Right (Narrow Vertical) */}
             <div className="md:col-span-1 md:row-span-3 relative group overflow-hidden rounded-xl">
               <img 
-                src="/editorial/contact-hero-2.png" 
+                src="/editorial/contact-hero-2.webp" 
                 alt="Formé Haus Lifestyle" 
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
               />
@@ -43,7 +43,7 @@ export default function ContactPage() {
             {/* Bottom Left - Small Detail (Square-ish) */}
             <div className="md:col-span-1 relative group overflow-hidden rounded-xl aspect-square">
               <img 
-                src="/editorial/contact-hero-3.png" 
+                src="/editorial/contact-hero-3.webp" 
                 alt="Editorial Detail" 
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
               />
@@ -53,7 +53,7 @@ export default function ContactPage() {
             {/* Bottom Center - Lifestyle (Wide Rectangle) */}
             <div className="md:col-span-2 relative group overflow-hidden rounded-xl aspect-[16/8]">
               <img 
-                src="/editorial/contact-hero-4.png" 
+                src="/editorial/contact-hero-4.webp" 
                 alt="Luxury Lifestyle" 
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
               />

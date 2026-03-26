@@ -282,9 +282,9 @@ export default function ContactPage() {
               {/* Instagram Post Previews */}
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  {url: 'https://www.instagram.com/p/DR_9yG3DKpr/', img: '/editorial/contact-hero-1.png'},
-                  {url: 'https://www.instagram.com/p/DR_96jbjCDY/', img: '/editorial/contact-hero-2.png'},
-                  {url: 'https://www.instagram.com/p/DR_9_GYDFpD/', img: '/editorial/contact-hero-3.png'},
+                  {url: 'https://www.instagram.com/p/DR_9yG3DKpr/', img: '/editorial/contact-hero-1.webp'},
+                  {url: 'https://www.instagram.com/p/DR_96jbjCDY/', img: '/editorial/contact-hero-2.webp'},
+                  {url: 'https://www.instagram.com/p/DR_9_GYDFpD/', img: '/editorial/contact-hero-3.webp'},
                 ].map(({url, img}, i) => (
                   <a
                     key={i}
