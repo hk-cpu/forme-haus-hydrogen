@@ -364,6 +364,101 @@ button:active:not(:disabled),
   text-align: left;
 }
 
+/* RTL Layout - Position Fixes */
+[dir='rtl'] .left-0 {
+  left: auto;
+  right: 0;
+}
+
+[dir='rtl'] .right-0 {
+  right: auto;
+  left: 0;
+}
+
+[dir='rtl'] .left-6 {
+  left: auto;
+  right: 1.5rem;
+}
+
+[dir='rtl'] .right-6 {
+  right: auto;
+  left: 1.5rem;
+}
+
+/* RTL - Transform origin fixes */
+[dir='rtl'] [style*="transform-origin: left"] {
+  transform-origin: right !important;
+}
+
+[dir='rtl'] [style*="transform-origin: right"] {
+  transform-origin: left !important;
+}
+
+/* RTL - Chevron/Arrow direction */
+[dir='rtl'] .rotate-45,
+[dir='rtl'] .-rotate-45 {
+  transform: rotate(-45deg);
+}
+
+[dir='rtl'] .-rotate-90,
+[dir='rtl'] .rotate-90 {
+  transform: rotate(90deg);
+}
+
+/* RTL - Flex direction for specific components */
+[dir='rtl'] .flex-row-reverse-in-rtl {
+  flex-direction: row-reverse;
+}
+
+/* RTL - Margin/Padding logical properties enhancement */
+[dir='rtl'] .ml-auto {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+[dir='rtl'] .mr-auto {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+/* RTL - Border radius fixes for asymmetric rounded elements */
+[dir='rtl'] .rounded-l-2xl {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+[dir='rtl'] .rounded-r-2xl {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+/* RTL - Scrollbar position */
+[dir='rtl'] {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(168, 116, 65, 0.3) transparent;
+}
+
+[dir='rtl'] ::-webkit-scrollbar {
+  width: 8px;
+}
+
+[dir='rtl'] ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[dir='rtl'] ::-webkit-scrollbar-thumb {
+  background: rgba(168, 116, 65, 0.3);
+  border-radius: 4px;
+}
+
+[dir='rtl'] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 116, 65, 0.5);
+}
+
 /* NotifyForm Styles */
 .input__container {
   position: relative;

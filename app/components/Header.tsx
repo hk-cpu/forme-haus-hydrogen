@@ -176,7 +176,7 @@ export function Header({
   const lastScrollY = useRef(0);
   const ticking = useRef(false);
   const rootData = useRouteLoaderData<RootLoader>('root');
-  const {t} = useTranslation();
+  const {t, isRTL} = useTranslation();
   const location = useLocation();
 
   const isHome = location.pathname === '/' || location.pathname === '/ar';
@@ -483,7 +483,7 @@ export function Header({
             </motion.button>
 
             {/* Cart / Shopping Bag */}
-            <CartBagButton openCart={openCart} rootData={rootData} t={t} />
+            <CartBagButton openCart={openCart} rootData={rootData} />
 
             {/* Account (Desktop) */}
             <motion.div
@@ -509,10 +509,10 @@ export function Header({
 
         {/* Scroll Progress Bar — uses scaleX (GPU composited) instead of width (triggers layout) */}
         <motion.div
-          className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-[#a87441] to-[#d4af87]"
+          className={`absolute bottom-0 w-full h-[2px] bg-gradient-to-r from-[#a87441] to-[#d4af87] ${isRTL ? 'right-0' : 'left-0'}`}
           style={{
             transform: scrolled ? 'scaleX(1)' : 'scaleX(0)',
-            transformOrigin: 'left',
+            transformOrigin: isRTL ? 'right' : 'left',
             transition: 'transform 0.3s ease',
           }}
         />
@@ -591,20 +591,20 @@ function CartBagButton({
                     animate={{opacity: 1, y: 0, scale: 1}}
                     exit={{opacity: 0, y: 6, scale: 0.95}}
                     transition={{duration: 0.18}}
-                    className="absolute top-full right-0 mt-3 w-56 bg-[#1A1A1A] border border-[#a87441]/25 rounded-xl shadow-2xl shadow-black/60 p-4 text-left pointer-events-none z-[400]"
+                    className={`absolute top-full mt-3 w-56 bg-[#1A1A1A] border border-[#a87441]/25 rounded-xl shadow-2xl shadow-black/60 p-4 pointer-events-none z-[400] ${isRTL ? 'left-0' : 'right-0'}`}
                   >
                     {/* Arrow */}
-                    <div className="absolute -top-[7px] right-5 w-3 h-3 bg-[#1A1A1A] border-l border-t border-[#a87441]/25 rotate-45" />
+                    <div className={`absolute -top-[7px] w-3 h-3 bg-[#1A1A1A] border-l border-t border-[#a87441]/25 rotate-45 ${isRTL ? 'left-5' : 'right-5'}`} />
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 rounded-full bg-[#a87441]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <Icons.Bag className="w-4 h-4 text-[#a87441]/50" />
                       </div>
                       <div>
                         <p className="text-[#F0EAE6] text-[13px] font-medium leading-snug">
-                          Your bag is empty
+                          {t('cart.empty', 'Your bag is empty')}
                         </p>
                         <p className="text-[#8B8076] text-[11px] mt-0.5 leading-relaxed">
-                          You haven&apos;t added anything to your cart yet.
+                          {t('cart.emptyStats', "Looks like you haven't added anything yet, let's get you started!")}
                         </p>
                       </div>
                     </div>
