@@ -253,7 +253,7 @@ function collection({
     description: truncate(
       collection?.seo?.description ?? collection?.description ?? '',
     ),
-    titleTemplate: '%s | Collection',
+    titleTemplate: '%s | Formé Haus',
     url,
     media: {
       type: 'image',
@@ -309,8 +309,9 @@ function listCollections({
 }): SeoConfig {
   return {
     title: 'Collections',
-    titleTemplate: '%s | Formé Haus Collections',
-    description: 'Explore our curated collections of luxury womenswear.',
+    titleTemplate: '%s | Formé Haus',
+    description:
+      'Explore our curated collections of luxury phone cases, sunglasses, and accessories.',
     url,
     jsonLd: collectionsJsonLd({collections, url}),
   };
@@ -334,7 +335,7 @@ function article({
   return {
     title: article?.seo?.title ?? article?.title,
     description: truncate(article?.seo?.description ?? ''),
-    titleTemplate: '%s | Journal',
+    titleTemplate: '%s | Formé Haus',
     url,
     media: {
       type: 'image',
@@ -369,7 +370,7 @@ function blog({
   return {
     title: blog?.seo?.title,
     description: truncate(blog?.seo?.description || ''),
-    titleTemplate: '%s | Blog',
+    titleTemplate: '%s | Formé Haus',
     url,
     jsonLd: {
       '@context': 'https://schema.org',
@@ -391,7 +392,7 @@ function page({
   return {
     description: truncate(page?.seo?.description || ''),
     title: page?.seo?.title ?? page?.title,
-    titleTemplate: '%s | Page',
+    titleTemplate: '%s | Formé Haus',
     url,
     jsonLd: {
       '@context': 'https://schema.org',
@@ -411,7 +412,7 @@ function policy({
   return {
     description: truncate(policy?.body ?? ''),
     title: policy?.title,
-    titleTemplate: '%s | Policy',
+    titleTemplate: '%s | Formé Haus',
     url,
   };
 }
@@ -436,7 +437,7 @@ function policies({
     });
   return {
     title: 'Policies',
-    titleTemplate: '%s | Policies',
+    titleTemplate: '%s | Formé Haus',
     description: 'Formé Haus store policies',
     jsonLd: [
       {

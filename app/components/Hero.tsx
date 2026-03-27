@@ -17,11 +17,23 @@ export default function Hero() {
 
   // Parallax scroll effect — only active after hydration
   const {scrollY} = useScroll();
-  const logoY = useTransform(scrollY, [0, 500], [0, shouldReduceMotion ? 0 : 100]);
-  const logoOpacity = useTransform(scrollY, [0, 300], [1, shouldReduceMotion ? 1 : 0]);
+  const logoY = useTransform(
+    scrollY,
+    [0, 500],
+    [0, shouldReduceMotion ? 0 : 100],
+  );
+  const logoOpacity = useTransform(
+    scrollY,
+    [0, 300],
+    [1, shouldReduceMotion ? 1 : 0],
+  );
 
   // Magnetic effect for CTA
-  const {x: magneticX, y: magneticY, handlers: magneticHandlers} = useMagneticEffect({
+  const {
+    x: magneticX,
+    y: magneticY,
+    handlers: magneticHandlers,
+  } = useMagneticEffect({
     strength: 0.3,
     stiffness: 150,
     damping: 15,
@@ -49,10 +61,14 @@ export default function Hero() {
                 {/* Soft glow halo behind logo */}
                 <motion.div
                   className="absolute inset-0 opacity-0"
-                  animate={shouldReduceMotion ? {} : {
-                    opacity: [0, 0.25, 0],
-                    scale: [0.96, 1.04, 0.96],
-                  }}
+                  animate={
+                    shouldReduceMotion
+                      ? {}
+                      : {
+                          opacity: [0, 0.25, 0],
+                          scale: [0.96, 1.04, 0.96],
+                        }
+                  }
                   transition={{
                     duration: 7,
                     repeat: Infinity,
@@ -78,13 +94,21 @@ export default function Hero() {
                 {/* Decorative accent line */}
                 <motion.div
                   className="absolute left-[-20%] right-[-20%] top-1/2 h-px bg-gradient-to-r from-transparent via-[#a87441]/30 to-transparent hidden md:block"
-                  initial={shouldReduceMotion ? {scaleX: 1, opacity: 1} : {scaleX: 0, opacity: 0}}
+                  initial={
+                    shouldReduceMotion
+                      ? {scaleX: 1, opacity: 1}
+                      : {scaleX: 0, opacity: 0}
+                  }
                   animate={{scaleX: 1, opacity: 1}}
-                  transition={shouldReduceMotion ? {duration: 0} : {
-                    duration: 1.5,
-                    delay: 0.8,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
+                  transition={
+                    shouldReduceMotion
+                      ? {duration: 0}
+                      : {
+                          duration: 1.5,
+                          delay: 0.8,
+                          ease: [0.16, 1, 0.3, 1],
+                        }
+                  }
                 />
               </div>
             </motion.div>
@@ -105,16 +129,27 @@ export default function Hero() {
             </div>
           )}
 
-          {/* SEO H1 Tag - Visually hidden but readable by screen readers */}
-          <h1 className="sr-only">
-            {t('hero.h1', 'Designer Phone Cases & Sunglasses — Saudi Crafted')}
+          {/* H1 Value Proposition — visible to visitors */}
+          <h1 className="text-[#F0EAE6] text-sm sm:text-base md:text-lg tracking-[0.15em] uppercase font-light mb-2">
+            {t('hero.h1', 'Designer Phone Cases & Sunglasses')}
           </h1>
+
+          {/* Tagline — high contrast against dark silk background */}
+          <p className="font-serif text-base sm:text-lg md:text-xl italic text-[#D4AF87] drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)] mb-6 tracking-wide">
+            {t('hero.tagline', 'Where Essence Meets Elegance')}
+          </p>
 
           {/* CTA Button with Magnetic Effect */}
           <motion.div
-            initial={shouldReduceMotion ? {opacity: 1, y: 0} : {opacity: 0, y: 10}}
+            initial={
+              shouldReduceMotion ? {opacity: 1, y: 0} : {opacity: 0, y: 10}
+            }
             animate={{opacity: 1, y: 0}}
-            transition={shouldReduceMotion ? {duration: 0} : {delay: 1.4, duration: 0.8, ease: [0.16, 1, 0.3, 1]}}
+            transition={
+              shouldReduceMotion
+                ? {duration: 0}
+                : {delay: 1.4, duration: 0.8, ease: [0.16, 1, 0.3, 1]}
+            }
           >
             <motion.div
               {...magneticHandlers}
@@ -155,7 +190,6 @@ export default function Hero() {
           </motion.div>
         </div>
       </div>
-
     </section>
   );
 }
