@@ -105,10 +105,15 @@ export default function Hero() {
             </div>
           )}
 
-          {/* SEO H1 Tag - Visually hidden but readable by screen readers */}
-          <h1 className="sr-only">
-            {t('hero.h1', 'Designer Phone Cases & Sunglasses — Saudi Crafted')}
+          {/* H1 Value Proposition — visible to visitors */}
+          <h1 className="text-[#F0EAE6] text-sm sm:text-base md:text-lg tracking-[0.15em] uppercase font-light mb-2">
+            {t('hero.h1', 'Designer Phone Cases & Sunglasses')}
           </h1>
+
+          {/* Tagline — high contrast against dark silk background */}
+          <p className="font-serif text-base sm:text-lg md:text-xl italic text-[#D4AF87] drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)] mb-6 tracking-wide">
+            {t('hero.tagline', 'Where Essence Meets Elegance')}
+          </p>
 
           {/* CTA Button with Magnetic Effect */}
           <motion.div

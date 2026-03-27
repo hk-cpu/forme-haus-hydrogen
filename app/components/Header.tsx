@@ -233,6 +233,16 @@ export function Header({
     },
     {
       id: '5',
+      title: t('nav.journal', 'Journal'),
+      to: '/journal',
+    },
+    {
+      id: '6',
+      title: t('nav.ourStory', 'Our Story'),
+      to: '/pages/about',
+    },
+    {
+      id: '7',
       title: t('nav.contact', 'Contact Us'),
       to: '/contact',
     },

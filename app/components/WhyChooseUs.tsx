@@ -153,7 +153,7 @@ export function WhyChooseUs() {
               className="text-center group"
             >
               {/* Icon */}
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#a87441]/10 text-[#a87441] mb-3 group-hover:bg-[#a87441] group-hover:text-white transition-all duration-300">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#a87441]/20 text-[#a87441] border border-[#a87441]/15 mb-3 group-hover:bg-[#a87441] group-hover:text-white group-hover:border-[#a87441] transition-all duration-300 shadow-sm">
                 {item.icon}
               </div>
 
