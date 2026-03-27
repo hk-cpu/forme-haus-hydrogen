@@ -39,11 +39,11 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-[#F9F5F0]">
       {/* Hero Section — Full-width brand image with overlay */}
-      <div className="relative h-[50vh] md:h-[60vh] overflow-hidden">
+      <div className="relative h-[40vh] md:h-[50vh] overflow-hidden bg-[#E8E4E0]">
         <motion.img
           src="/brand/edit-modern-essentials.webp"
           alt="Formé Haus — Where Essence Meets Elegance"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
           initial={{scale: 1.08}}
           animate={{scale: 1}}
           transition={{duration: 1.4, ease: [0.16, 1, 0.3, 1]}}
@@ -138,18 +138,17 @@ export default function AboutPage() {
           </FadeInSection>
         </div>
 
-        {/* Mid-page brand image */}
+        {/* Editorial divider */}
         <FadeInSection className="my-16 md:my-20">
-          <div className="relative aspect-[16/9] md:aspect-[2/1] overflow-hidden rounded-sm">
-            <img
-              src="/brand/edit-carry.webp"
-              alt="Formé Haus curated collection"
-              className="w-full h-full object-cover"
-              loading="lazy"
-              decoding="async"
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
-            <div className="absolute inset-0 bg-[#121212]/10" />
+          <div className="text-center py-10 md:py-14 border-y border-[#a87441]/15">
+            <span className="text-[10px] uppercase tracking-[0.4em] text-[#a87441] block mb-4">
+              Curated with intention
+            </span>
+            <p className="font-serif text-2xl md:text-3xl text-[#4A3C31] italic leading-relaxed max-w-lg mx-auto">
+              Where every detail is considered
+              <br />
+              and nothing is left to chance.
+            </p>
           </div>
         </FadeInSection>
 

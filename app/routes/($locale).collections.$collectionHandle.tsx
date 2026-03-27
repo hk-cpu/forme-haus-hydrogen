@@ -433,16 +433,16 @@ export default function Collection() {
                 alt={collection.title}
                 className={
                   override?.fit === 'full-width'
-                    ? 'w-full h-auto object-contain mx-auto block'
+                    ? 'w-full h-auto max-h-[50vh] md:max-h-[60vh] object-contain mx-auto block'
                     : override?.fit === 'cover'
-                    ? `w-full h-auto max-h-[75vh] object-contain ${
+                    ? `w-full h-auto max-h-[50vh] md:max-h-[60vh] object-contain ${
                         override.position || 'object-center'
                       } mx-auto block`
                     : override?.fit === 'auto'
-                    ? `w-full h-auto max-h-[85vh] object-contain ${
+                    ? `w-full h-auto max-h-[60vh] md:max-h-[70vh] object-contain ${
                         override.position || 'object-center'
                       } mx-auto block`
-                    : 'w-full h-auto max-h-[75vh] object-contain mx-auto block'
+                    : 'w-full h-auto max-h-[50vh] md:max-h-[60vh] object-contain mx-auto block'
                 }
                 loading="eager"
                 fetchPriority="high"

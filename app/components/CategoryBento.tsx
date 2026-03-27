@@ -113,7 +113,7 @@ function CategoryCard({
                 }
           }
         >
-          {/* Full-bleed background image - zoomed 20% to hide watermark */}
+          {/* Full-bleed background image */}
           {!imageError ? (
             <img
               src={category.image}
@@ -124,7 +124,7 @@ function CategoryCard({
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               style={{
                 opacity: mounted && !imageLoaded ? 0 : 1,
-                transform: isHovered ? 'scale(1.25)' : 'scale(1.20)',
+                transform: isHovered ? 'scale(1.05)' : 'scale(1)',
                 transformOrigin:
                   category.titleKey === 'category.phoneAccessories'
                     ? 'center 40%'

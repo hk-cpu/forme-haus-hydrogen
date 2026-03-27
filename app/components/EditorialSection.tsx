@@ -83,13 +83,12 @@ function TopCard({item, index}: {item: BentoItem; index: number}) {
                 }
           }
         >
-          {/* Zoomed 20% to hide watermark with parallax zoom */}
           <motion.img
             src={item.image}
             alt={item.alt}
             className="w-full h-auto block transition-transform duration-700 ease-out"
             style={{
-              transform: isHovered ? 'scale(1.25)' : 'scale(1.20)',
+              transform: isHovered ? 'scale(1.05)' : 'scale(1)',
               transformOrigin: 'center center',
             }}
             sizes="(max-width: 768px) 100vw, 50vw"
@@ -200,7 +199,7 @@ function BottomCard({item, index}: {item: BentoItem; index: number}) {
             alt={item.alt}
             className="w-full h-full object-cover object-center transition-transform duration-700 ease-out"
             style={{
-              transform: isHovered ? 'scale(1.25)' : 'scale(1.20)',
+              transform: isHovered ? 'scale(1.05)' : 'scale(1)',
               transformOrigin: 'center center',
             }}
             sizes="(max-width: 768px) 100vw, 33vw"
