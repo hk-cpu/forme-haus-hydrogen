@@ -17,7 +17,7 @@ export default function LanguageSwitch() {
 
   function toggleLanguage() {
     if (isTransitioning) return;
-    
+
     const currentPath = location.pathname;
     const search = location.search || '';
 
@@ -33,7 +33,7 @@ export default function LanguageSwitch() {
 
     // Start transition
     setIsTransitioning(true);
-    
+
     // Add a small delay to show transition effect
     setTimeout(() => {
       if (isArabic) {
@@ -57,7 +57,7 @@ export default function LanguageSwitch() {
         // Add Arabic locale prefix
         navigate(`/ar-sa${cleanPath === '/' ? '' : cleanPath}${search}`);
       }
-      
+
       // Reset transitioning after navigation completes
       setTimeout(() => setIsTransitioning(false), 300);
     }, 150);
@@ -69,29 +69,29 @@ export default function LanguageSwitch() {
       <AnimatePresence>
         {isTransitioning && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
+            transition={{duration: 0.2}}
             className="fixed inset-0 z-[9999] bg-[#121212] flex items-center justify-center pointer-events-auto"
           >
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 1.1, opacity: 0 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              initial={{scale: 0.9, opacity: 0}}
+              animate={{scale: 1, opacity: 1}}
+              exit={{scale: 1.1, opacity: 0}}
+              transition={{duration: 0.3, ease: [0.22, 1, 0.36, 1]}}
               className="text-center"
             >
-              <img 
-                src="/brand/logo-icon-only.webp" 
+              <img
+                src="/brand/logo-icon-only.webp"
                 alt="Formé Haus"
                 className="w-16 h-16 mx-auto mb-4 opacity-80"
               />
-              <motion.div 
+              <motion.div
                 className="w-32 h-[2px] bg-gradient-to-r from-transparent via-[#a87441] to-transparent mx-auto"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 0.4, ease: 'easeInOut' }}
+                initial={{scaleX: 0}}
+                animate={{scaleX: 1}}
+                transition={{duration: 0.4, ease: 'easeInOut'}}
               />
             </motion.div>
           </motion.div>

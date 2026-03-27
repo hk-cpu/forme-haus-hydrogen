@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {motion, useReducedMotion} from 'framer-motion';
+
 import {use3DTilt} from '~/hooks/use3DTilt';
 
 interface TiltCardProps {
@@ -14,10 +15,10 @@ interface TiltCardProps {
 
 /**
  * Reusable 3D Tilt Card Component
- * 
+ *
  * Wraps children with a smooth 3D tilt effect that responds to mouse movement.
  * Automatically respects reduced motion preferences.
- * 
+ *
  * @example
  * <TiltCard className="p-6 bg-white rounded-xl" maxRotation={5}>
  *   <h3>Card Title</h3>
@@ -64,7 +65,7 @@ export function TiltCard({
       }}
     >
       {children}
-      
+
       {/* Spotlight effect */}
       {showSpotlight && !isEffectivelyDisabled && (
         <motion.div
@@ -76,7 +77,7 @@ export function TiltCard({
           }}
         />
       )}
-      
+
       {/* Hover shadow */}
       <motion.div
         className="absolute inset-0 rounded-inherit pointer-events-none"

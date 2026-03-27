@@ -1,5 +1,11 @@
 import {useRef, useEffect, useState} from 'react';
-import {motion, useInView, useSpring, useMotionValue, useReducedMotion} from 'framer-motion';
+import {
+  motion,
+  useInView,
+  useSpring,
+  useMotionValue,
+  useReducedMotion,
+} from 'framer-motion';
 
 import {useTranslation} from '~/hooks/useTranslation';
 
@@ -38,7 +44,15 @@ const STATS: Stat[] = [
 ];
 
 // Animated counter component with slot machine effect
-function CounterNumber({value, suffix, isInView}: {value: number; suffix: string; isInView: boolean}) {
+function CounterNumber({
+  value,
+  suffix,
+  isInView,
+}: {
+  value: number;
+  suffix: string;
+  isInView: boolean;
+}) {
   const motionValue = useMotionValue(0);
   const springValue = useSpring(motionValue, {
     damping: 50,
@@ -73,11 +87,11 @@ function CounterNumber({value, suffix, isInView}: {value: number; suffix: string
 // Slot machine digit effect for enhanced visual
 function SlotDigit({digit, delay}: {digit: string; delay: number}) {
   const shouldReduceMotion = useReducedMotion();
-  
+
   if (shouldReduceMotion) {
     return <span>{digit}</span>;
   }
-  
+
   return (
     <motion.span
       className="inline-block overflow-hidden"
@@ -137,15 +151,18 @@ function StatCard({
             transition={{type: 'spring', stiffness: 300}}
           >
             {/* Slot machine digits */}
-            {isInView && digits.map((digit, i) => (
-              <SlotDigit 
-                key={i} 
-                digit={digit} 
-                delay={index * 0.1 + i * 0.03} 
-              />
-            ))}
+            {isInView &&
+              digits.map((digit, i) => (
+                <SlotDigit
+                  key={i}
+                  digit={digit}
+                  delay={index * 0.1 + i * 0.03}
+                />
+              ))}
             <motion.span
-              initial={shouldReduceMotion ? {opacity: 1} : {opacity: 0, scale: 0}}
+              initial={
+                shouldReduceMotion ? {opacity: 1} : {opacity: 0, scale: 0}
+              }
               animate={isInView ? {opacity: 1, scale: 1} : {}}
               transition={{delay: index * 0.1 + 0.3, duration: 0.3}}
               className="inline-block"
@@ -159,12 +176,16 @@ function StatCard({
             className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-[2px] bg-gradient-to-r from-transparent via-[#a87441] to-transparent"
             initial={{width: 0, opacity: 0}}
             animate={isInView ? {width: 40, opacity: 1} : {}}
-            transition={{delay: index * 0.1 + 0.5, duration: 0.6, ease: [0.16, 1, 0.3, 1]}}
+            transition={{
+              delay: index * 0.1 + 0.5,
+              duration: 0.6,
+              ease: [0.16, 1, 0.3, 1],
+            }}
           />
         </div>
 
         {/* Label with stagger */}
-        <motion.p 
+        <motion.p
           className="text-[11px] md:text-xs uppercase tracking-[0.2em] text-[#8B8076] mt-4"
           initial={shouldReduceMotion ? {opacity: 1} : {opacity: 0, y: 10}}
           animate={isInView ? {opacity: 1, y: 0} : {}}
@@ -184,9 +205,13 @@ function StatCard({
             'radial-gradient(ellipse at center, rgba(168, 116, 65, 0.08) 0%, transparent 70%)',
         }}
       />
-      
+
       {/* Radial progress ring on complete */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+      >
         <motion.rect
           x="2"
           y="2"
@@ -198,7 +223,11 @@ function StatCard({
           strokeWidth="0.5"
           initial={{pathLength: 0, opacity: 0}}
           animate={isInView ? {pathLength: 1, opacity: 1} : {}}
-          transition={{duration: 1.5, delay: index * 0.1 + 0.3, ease: "easeOut"}}
+          transition={{
+            duration: 1.5,
+            delay: index * 0.1 + 0.3,
+            ease: 'easeOut',
+          }}
           style={{
             strokeDasharray: 1,
             strokeDashoffset: 0,
@@ -233,23 +262,27 @@ export function StatsSection() {
           className="text-center mb-10"
         >
           <h2 className="font-serif text-2xl md:text-3xl text-[#4A3C31] mb-2">
-            {t('stats.numbersSpeak', 'Our Numbers Speak').split('').map((char, i) => (
-              <motion.span
-                key={i}
-                className="inline-block"
-                initial={shouldReduceMotion ? {opacity: 1} : {opacity: 0, y: 20}}
-                animate={isInView ? {opacity: 1, y: 0} : {}}
-                transition={{
-                  delay: i * 0.03,
-                  duration: 0.4,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-              >
-                {char === ' ' ? '\u00A0' : char}
-              </motion.span>
-            ))}
+            {t('stats.numbersSpeak', 'Our Numbers Speak')
+              .split('')
+              .map((char, i) => (
+                <motion.span
+                  key={i}
+                  className="inline-block"
+                  initial={
+                    shouldReduceMotion ? {opacity: 1} : {opacity: 0, y: 20}
+                  }
+                  animate={isInView ? {opacity: 1, y: 0} : {}}
+                  transition={{
+                    delay: i * 0.03,
+                    duration: 0.4,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  {char === ' ' ? '\u00A0' : char}
+                </motion.span>
+              ))}
           </h2>
-          <motion.div 
+          <motion.div
             className="h-px w-16 bg-gradient-to-r from-transparent via-[#a87441] to-transparent mx-auto"
             initial={{scaleX: 0, opacity: 0}}
             animate={isInView ? {scaleX: 1, opacity: 1} : {}}
@@ -296,7 +329,11 @@ export function StatsBar() {
               className="flex items-center gap-3"
             >
               <span className="text-xl md:text-2xl font-serif text-[#a87441]">
-                <CounterNumber value={stat.value} suffix={stat.suffix} isInView={true} />
+                <CounterNumber
+                  value={stat.value}
+                  suffix={stat.suffix}
+                  isInView={true}
+                />
               </span>
               <span className="text-[10px] uppercase tracking-[0.15em] text-[#8B8076]">
                 {t(stat.translationKey, stat.label)}

@@ -80,9 +80,11 @@ function CategoryCard({
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const shouldReduceMotion = useReducedMotion();
-  
+
   // 3D tilt effect
-  const {style: tiltStyle, handlers: tiltHandlers} = use3DTilt({maxRotation: 5});
+  const {style: tiltStyle, handlers: tiltHandlers} = use3DTilt({
+    maxRotation: 5,
+  });
 
   // Prevent hydration mismatch
   useEffect(() => {
@@ -101,11 +103,15 @@ function CategoryCard({
         {/* 3D Tilt Container */}
         <motion.div
           className="w-full h-full"
-          style={shouldReduceMotion ? {} : {
-            ...tiltStyle,
-            rotateX: isHovered ? tiltStyle.rotateX : 0,
-            rotateY: isHovered ? tiltStyle.rotateY : 0,
-          }}
+          style={
+            shouldReduceMotion
+              ? {}
+              : {
+                  ...tiltStyle,
+                  rotateX: isHovered ? tiltStyle.rotateX : 0,
+                  rotateY: isHovered ? tiltStyle.rotateY : 0,
+                }
+          }
         >
           {/* Full-bleed background image - zoomed 20% to hide watermark */}
           {!imageError ? (
@@ -119,7 +125,10 @@ function CategoryCard({
               style={{
                 opacity: mounted && !imageLoaded ? 0 : 1,
                 transform: isHovered ? 'scale(1.25)' : 'scale(1.20)',
-                transformOrigin: category.titleKey === 'category.phoneAccessories' ? 'center 40%' : 'center center',
+                transformOrigin:
+                  category.titleKey === 'category.phoneAccessories'
+                    ? 'center 40%'
+                    : 'center center',
               }}
               loading={index === 0 ? 'eager' : 'lazy'}
               onLoad={() => setImageLoaded(true)}
@@ -155,7 +164,8 @@ function CategoryCard({
             <motion.div
               className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none hidden md:block"
               style={{
-                background: 'radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(168,116,65,0.1) 0%, transparent 50%)',
+                background:
+                  'radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(168,116,65,0.1) 0%, transparent 50%)',
               }}
             />
           )}
@@ -201,7 +211,9 @@ function CategoryCard({
                 className="text-white"
               >
                 <path
-                  d={isRTL ? 'M19 12H5M12 19l-7-7 7-7' : 'M5 12h14M12 5l7 7-7 7'}
+                  d={
+                    isRTL ? 'M19 12H5M12 19l-7-7 7-7' : 'M5 12h14M12 5l7 7-7 7'
+                  }
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
@@ -230,7 +242,10 @@ export default function CategoryBento() {
   const {isRTL, t} = useTranslation();
 
   return (
-    <section aria-label="Categories" className="pb-6 md:pb-8 border-b border-[#8B8076]/10">
+    <section
+      aria-label="Categories"
+      className="pb-6 md:pb-8 border-b border-[#8B8076]/10"
+    >
       <div
         className="max-w-[var(--container-max)] mx-auto"
         style={{padding: '0 var(--page-gutter)'}}

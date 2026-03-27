@@ -179,17 +179,23 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
 
           {/* 3. Color */}
           {productColor ? (
-            <p className="text-[13px] text-[#8B8076] h-[19px] line-clamp-1">{productColor}</p>
+            <p className="text-[13px] text-[#8B8076] h-[19px] line-clamp-1">
+              {productColor}
+            </p>
           ) : (
             <div className="h-[19px]" />
           )}
 
           {/* 4. Price Row */}
           <div className="flex items-baseline gap-2 pt-1 border-t border-[#4A3C31]/5 mt-2">
-            {product.priceRange?.minVariantPrice && parseFloat(product.priceRange.minVariantPrice.amount) > 0 ? (
+            {product.priceRange?.minVariantPrice &&
+            parseFloat(product.priceRange.minVariantPrice.amount) > 0 ? (
               <>
                 <p className="text-[14px] font-medium text-[#4A3C31] flex items-baseline">
-                  <Money data={product.priceRange.minVariantPrice as any} withoutTrailingZeros />
+                  <Money
+                    data={product.priceRange.minVariantPrice as any}
+                    withoutTrailingZeros
+                  />
                 </p>
                 {product.availableForSale !== false && (
                   <span className="text-[11px] text-[#8B8076] font-normal tracking-wide ml-1">
@@ -198,7 +204,10 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
                 )}
                 {hasDiscount && (
                   <p className="text-[12px] text-[#8B8076] line-through ml-auto">
-                    <Money data={product.compareAtPriceRange!.minVariantPrice} withoutTrailingZeros />
+                    <Money
+                      data={product.compareAtPriceRange!.minVariantPrice}
+                      withoutTrailingZeros
+                    />
                   </p>
                 )}
               </>

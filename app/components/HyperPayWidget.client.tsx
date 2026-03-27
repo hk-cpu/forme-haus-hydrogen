@@ -57,7 +57,10 @@ export default function HyperPayWidget({
       script.src = scriptSrc;
       script.async = true;
       script.onload = () => setLoaded(true);
-      script.onerror = () => setError('Failed to load payment widget. Please refresh and try again.');
+      script.onerror = () =>
+        setError(
+          'Failed to load payment widget. Please refresh and try again.',
+        );
       document.head.appendChild(script);
     } else {
       setLoaded(true);
@@ -85,7 +88,9 @@ export default function HyperPayWidget({
         className="paymentWidgets"
         data-brands={brands}
         // Absolute URL required by HyperPay
-        action={`${typeof window !== 'undefined' ? window.location.origin : ''}${callbackPath}`}
+        action={`${
+          typeof window !== 'undefined' ? window.location.origin : ''
+        }${callbackPath}`}
       />
 
       {!loaded && (

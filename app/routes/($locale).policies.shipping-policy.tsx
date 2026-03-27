@@ -1,4 +1,5 @@
 import {type MetaFunction} from '@shopify/remix-oxygen';
+
 import {routeHeaders} from '~/data/cache';
 import {useTranslation} from '~/hooks/useTranslation';
 
@@ -33,7 +34,8 @@ export default function ShippingPolicyPage() {
             dir="rtl"
           >
             <p>
-              يتم تجهيز الطلبات خلال <strong>1–3 أيام عمل</strong> بعد تأكيد الطلب.
+              يتم تجهيز الطلبات خلال <strong>1–3 أيام عمل</strong> بعد تأكيد
+              الطلب.
             </p>
 
             <h3>مدة التوصيل التقديرية</h3>
@@ -59,7 +61,8 @@ export default function ShippingPolicyPage() {
           /* English */
           <div className="prose max-w-prose mx-auto prose-headings:text-[#4A3C31] prose-headings:font-serif prose-p:text-[#4A3C31]/80 prose-li:text-[#4A3C31]/80 font-light leading-relaxed">
             <p>
-              Orders are processed within <strong>1–3 business days</strong> after confirmation.
+              Orders are processed within <strong>1–3 business days</strong>{' '}
+              after confirmation.
             </p>
 
             <h3>Estimated Delivery Times</h3>
@@ -73,12 +76,13 @@ export default function ShippingPolicyPage() {
             </ul>
 
             <p>
-              Shipping fees are calculated at checkout based on the delivery location.
+              Shipping fees are calculated at checkout based on the delivery
+              location.
             </p>
 
             <p>
-              For orders shipped outside Saudi Arabia, any applicable customs duties
-              or import taxes are the responsibility of the customer.
+              For orders shipped outside Saudi Arabia, any applicable customs
+              duties or import taxes are the responsibility of the customer.
             </p>
           </div>
         )}

@@ -30,7 +30,8 @@ export async function action({request, context}: ActionFunctionArgs) {
       status: payload.status,
       amount: payload.amount,
       currency: payload.currency,
-      merchantTxId: payload.metadata?.merchantTxId || payload.reference?.transaction,
+      merchantTxId:
+        payload.metadata?.merchantTxId || payload.reference?.transaction,
     });
 
     const status = payload.status?.toUpperCase();

@@ -125,10 +125,14 @@ export function FooterAccordion() {
           FORME HAUS
         </h3>
         <p className="text-[12px] leading-relaxed text-[#AA9B8F] font-light">
-          FORME HAUS Collection is an Australian Tech Accessory brand owned, run and led by women. We create purposeful pieces for our everyday wardrobe — phone cases, phone straps, key chains, suction plates and screen protectors, helping you to always stay connected.
+          FORME HAUS Collection is an Australian Tech Accessory brand owned, run
+          and led by women. We create purposeful pieces for our everyday
+          wardrobe — phone cases, phone straps, key chains, suction plates and
+          screen protectors, helping you to always stay connected.
         </p>
         <p className="text-[11px] text-[#8B8076] mt-3">
-          48 hour dispatch · International shipping · Free shipping on domestic orders over $70
+          48 hour dispatch · International shipping · Free shipping on domestic
+          orders over $70
         </p>
       </div>
 

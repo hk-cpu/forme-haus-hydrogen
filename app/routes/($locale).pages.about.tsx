@@ -1,6 +1,7 @@
 import {type MetaFunction} from '@shopify/remix-oxygen';
 import {motion, useInView} from 'framer-motion';
 import {useRef} from 'react';
+
 import {routeHeaders} from '~/data/cache';
 
 export const headers = routeHeaders;
@@ -108,7 +109,7 @@ export default function AboutPage() {
               We curate international designers whose work embodies integrity,
               craftsmanship, and lasting design. Each piece is selected for its
               presence, for the way it moves, feels, and integrates seamlessly
-              into a woman's everyday expression.
+              into a woman&apos;s everyday expression.
             </p>
           </FadeInSection>
 
@@ -167,9 +168,7 @@ export default function AboutPage() {
 
         <div className="space-y-8 text-[15px] md:text-base text-[#4A3C31]/80 leading-[1.85] font-light">
           <FadeInSection>
-            <p>
-              We believe elegance is a presence, not a performance.
-            </p>
+            <p>We believe elegance is a presence, not a performance.</p>
           </FadeInSection>
 
           <FadeInSection>
@@ -182,7 +181,8 @@ export default function AboutPage() {
           <FadeInSection>
             <p>
               The pieces we are drawn to feel instinctive rather than imposed,
-              effortless, composed, and aligned with a woman's natural rhythm.
+              effortless, composed, and aligned with a woman&apos;s natural
+              rhythm.
             </p>
           </FadeInSection>
 

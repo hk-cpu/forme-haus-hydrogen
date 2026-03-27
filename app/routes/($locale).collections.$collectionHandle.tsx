@@ -124,16 +124,22 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
 
       const casesProducts = casesResult?.collection?.products?.nodes || [];
       const strapsProducts = strapsResult?.collection?.products?.nodes || [];
-      
+
       // Combine and deduplicate products
       const combinedProducts = [...casesProducts, ...strapsProducts];
       const uniqueProducts = combinedProducts.filter(
-        (product, index, self) => index === self.findIndex((p) => p.id === product.id)
+        (product, index, self) =>
+          index === self.findIndex((p) => p.id === product.id),
       );
 
       fallbackProducts = {
         nodes: uniqueProducts,
-        pageInfo: {hasPreviousPage: false, hasNextPage: false, startCursor: null, endCursor: null},
+        pageInfo: {
+          hasPreviousPage: false,
+          hasNextPage: false,
+          startCursor: null,
+          endCursor: null,
+        },
       };
     } else {
       // Fallback: query all products directly for other synthetic handles
@@ -159,8 +165,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
       if (collectionHandle === 'phone') title = 'Phone Accessories';
       if (collectionHandle === 'phone-cases') title = 'Phone Accessories';
       if (collectionHandle === 'phone-straps') title = 'Phone Straps';
-      if (collectionHandle === 'case-strap-bundles')
-        title = 'Bundles';
+      if (collectionHandle === 'case-strap-bundles') title = 'Bundles';
 
       // Create a synthetic collection object
       collection = {
@@ -254,8 +259,7 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 };
 
 export default function Collection() {
-  const {collection, appliedFilters} =
-    useLoaderData<typeof loader>();
+  const {collection, appliedFilters} = useLoaderData<typeof loader>();
   const {t} = useTranslation();
 
   const heroRef = useRef<HTMLDivElement>(null);
@@ -272,19 +276,27 @@ export default function Collection() {
   // Collection hero image overrides
   const HERO_OVERRIDES: Record<
     string,
-    {src: string; hideTitle?: boolean; fit?: 'cover' | 'contain' | 'auto' | 'full-width'; position?: string; bgClass?: string}
+    {
+      src: string;
+      hideTitle?: boolean;
+      fit?: 'cover' | 'contain' | 'auto' | 'full-width';
+      position?: string;
+      bgClass?: string;
+    }
   > = {
     'new-in': {
       src: '/assets/heros/new-in-hero-2.webp',
       hideTitle: true,
       fit: 'full-width',
-      bgClass: 'bg-gradient-to-r from-[#C4A882] via-[#D4B896] via-[50%] via-[#B8C9D4] via-[85%] to-[#E8EDF0]',
+      bgClass:
+        'bg-gradient-to-r from-[#C4A882] via-[#D4B896] via-[50%] via-[#B8C9D4] via-[85%] to-[#E8EDF0]',
     },
     new: {
       src: '/assets/heros/new-in-hero-2.webp',
       hideTitle: true,
       fit: 'full-width',
-      bgClass: 'bg-gradient-to-r from-[#C4A882] via-[#D4B896] via-[50%] via-[#B8C9D4] via-[85%] to-[#E8EDF0]',
+      bgClass:
+        'bg-gradient-to-r from-[#C4A882] via-[#D4B896] via-[50%] via-[#B8C9D4] via-[85%] to-[#E8EDF0]',
     },
     sunglasses: {
       src: '/assets/heros/sunglasses-hero-3.webp',
@@ -319,7 +331,10 @@ export default function Collection() {
   };
 
   // Collection subtitle overrides — curated copy per landing page
-  const COLLECTION_SUBTITLES: Record<string, {subtitle: string; description?: string}> = {
+  const COLLECTION_SUBTITLES: Record<
+    string,
+    {subtitle: string; description?: string}
+  > = {
     'new-in': {
       subtitle: 'The latest additions to our curated selection.',
     },
@@ -339,7 +354,8 @@ export default function Collection() {
       subtitle: 'For light-filled days and elevated escapes.',
     },
     'modern-essentials': {
-      subtitle: 'Foundations shaped by intention and refined for everyday presence.',
+      subtitle:
+        'Foundations shaped by intention and refined for everyday presence.',
       description: 'Foundations of a refined wardrobe.',
     },
     'sun-ready': {
@@ -419,9 +435,13 @@ export default function Collection() {
                   override?.fit === 'full-width'
                     ? 'w-full h-auto object-contain mx-auto block'
                     : override?.fit === 'cover'
-                    ? `w-full h-auto max-h-[75vh] object-contain ${override.position || 'object-center'} mx-auto block`
+                    ? `w-full h-auto max-h-[75vh] object-contain ${
+                        override.position || 'object-center'
+                      } mx-auto block`
                     : override?.fit === 'auto'
-                    ? `w-full h-auto max-h-[85vh] object-contain ${override.position || 'object-center'} mx-auto block`
+                    ? `w-full h-auto max-h-[85vh] object-contain ${
+                        override.position || 'object-center'
+                      } mx-auto block`
                     : 'w-full h-auto max-h-[75vh] object-contain mx-auto block'
                 }
                 loading="eager"
@@ -652,9 +672,9 @@ export default function Collection() {
 
       <FilterPanel
         filters={collection.products.filters as any}
-        // Ideally we would get total count from collection.products.pageInfo or similar, 
+        // Ideally we would get total count from collection.products.pageInfo or similar,
         // but passing nodes length for now to show something.
-        totalProducts={collection.products.nodes.length} 
+        totalProducts={collection.products.nodes.length}
       />
     </div>
   );

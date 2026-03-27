@@ -131,7 +131,7 @@ export function SearchOverlay() {
       if (!container) return;
 
       const focusableElements = container.querySelectorAll<HTMLElement>(
-        'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
+        'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])',
       );
       const firstElement = focusableElements[0];
       const lastElement = focusableElements[focusableElements.length - 1];
@@ -208,7 +208,11 @@ export function SearchOverlay() {
             transition={{duration: 0.35, ease: [0.25, 0.1, 0.25, 1]}}
           >
             {/* Search Header Bar — h-20 matches pre-scroll header height */}
-            <div ref={searchContainerRef} role="search" className="bg-[#121212]/[0.98] backdrop-blur-2xl border-b border-[#a87441]/15">
+            <div
+              ref={searchContainerRef}
+              role="search"
+              className="bg-[#121212]/[0.98] backdrop-blur-2xl border-b border-[#a87441]/15"
+            >
               <div className="container mx-auto px-6 lg:px-16">
                 <div className="flex items-center gap-4 h-20">
                   <span className="text-[#AA9B8F] flex-shrink-0">

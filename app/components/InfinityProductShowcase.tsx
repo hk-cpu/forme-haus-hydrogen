@@ -255,7 +255,7 @@ export function InfinityProductShowcase({
         {/* Scrolling Track */}
         <div
           ref={scrollRef}
-          role="region"
+          role="listbox"
           aria-label="Product carousel"
           tabIndex={0}
           className="flex overflow-x-auto scrollbar-hide cursor-grab active:cursor-grabbing py-4"

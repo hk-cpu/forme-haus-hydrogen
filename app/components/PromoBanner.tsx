@@ -24,7 +24,12 @@ export function PromoBanner() {
 
   // Auto-rotate messages (disabled when reduced motion)
   useEffect(() => {
-    if (shouldReduceMotion || state.promoBannerPaused || !state.promoBannerVisible) return;
+    if (
+      shouldReduceMotion ||
+      state.promoBannerPaused ||
+      !state.promoBannerVisible
+    )
+      return;
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % promoMessages.length);
@@ -64,10 +69,16 @@ export function PromoBanner() {
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
-            initial={shouldReduceMotion ? {opacity: 1, y: 0} : {opacity: 0, y: 8}}
+            initial={
+              shouldReduceMotion ? {opacity: 1, y: 0} : {opacity: 0, y: 8}
+            }
             animate={{opacity: 1, y: 0}}
             exit={shouldReduceMotion ? {opacity: 1, y: 0} : {opacity: 0, y: -8}}
-            transition={shouldReduceMotion ? {duration: 0} : {duration: 0.35, ease: [0.4, 0, 0.2, 1]}}
+            transition={
+              shouldReduceMotion
+                ? {duration: 0}
+                : {duration: 0.35, ease: [0.4, 0, 0.2, 1]}
+            }
           >
             <Link to={currentMessage.href} className="promo-link">
               {currentMessage.text}

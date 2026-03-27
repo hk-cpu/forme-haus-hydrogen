@@ -30,13 +30,13 @@ import {useEffect, useState, useCallback, lazy, Suspense} from 'react';
 import {PageLayout} from '~/components/PageLayout';
 import {GenericError} from '~/components/GenericError';
 import {NotFound} from '~/components/NotFound';
-const SmoothScroll = lazy(() => import('~/components/SmoothScroll'));
 import {seoPayload} from '~/lib/seo.server';
 import styles from '~/styles/app.css?url';
 import futuristicStyles from '~/styles/futuristic-polish.css?url';
 import {UIProvider} from '~/context/UIContext';
 
 import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
+const SmoothScroll = lazy(() => import('~/components/SmoothScroll'));
 // Brand favicon served from /public/favicon.png
 const favicon = '/favicon.png';
 
@@ -259,7 +259,9 @@ function Layout({children}: {children?: React.ReactNode}) {
         )}
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
-        <Suspense fallback={null}><SmoothScroll /></Suspense>
+        <Suspense fallback={null}>
+          <SmoothScroll />
+        </Suspense>
       </body>
     </html>
   );
