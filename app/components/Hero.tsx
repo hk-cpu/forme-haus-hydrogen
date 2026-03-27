@@ -17,11 +17,23 @@ export default function Hero() {
 
   // Parallax scroll effect — only active after hydration
   const {scrollY} = useScroll();
-  const logoY = useTransform(scrollY, [0, 500], [0, shouldReduceMotion ? 0 : 100]);
-  const logoOpacity = useTransform(scrollY, [0, 300], [1, shouldReduceMotion ? 1 : 0]);
+  const logoY = useTransform(
+    scrollY,
+    [0, 500],
+    [0, shouldReduceMotion ? 0 : 100],
+  );
+  const logoOpacity = useTransform(
+    scrollY,
+    [0, 300],
+    [1, shouldReduceMotion ? 1 : 0],
+  );
 
   // Magnetic effect for CTA
-  const {x: magneticX, y: magneticY, handlers: magneticHandlers} = useMagneticEffect({
+  const {
+    x: magneticX,
+    y: magneticY,
+    handlers: magneticHandlers,
+  } = useMagneticEffect({
     strength: 0.3,
     stiffness: 150,
     damping: 15,
@@ -49,10 +61,14 @@ export default function Hero() {
                 {/* Soft glow halo behind logo */}
                 <motion.div
                   className="absolute inset-0 opacity-0"
-                  animate={shouldReduceMotion ? {} : {
-                    opacity: [0, 0.25, 0],
-                    scale: [0.96, 1.04, 0.96],
-                  }}
+                  animate={
+                    shouldReduceMotion
+                      ? {}
+                      : {
+                          opacity: [0, 0.25, 0],
+                          scale: [0.96, 1.04, 0.96],
+                        }
+                  }
                   transition={{
                     duration: 7,
                     repeat: Infinity,
@@ -78,13 +94,21 @@ export default function Hero() {
                 {/* Decorative accent line */}
                 <motion.div
                   className="absolute left-[-20%] right-[-20%] top-1/2 h-px bg-gradient-to-r from-transparent via-[#a87441]/30 to-transparent hidden md:block"
-                  initial={shouldReduceMotion ? {scaleX: 1, opacity: 1} : {scaleX: 0, opacity: 0}}
+                  initial={
+                    shouldReduceMotion
+                      ? {scaleX: 1, opacity: 1}
+                      : {scaleX: 0, opacity: 0}
+                  }
                   animate={{scaleX: 1, opacity: 1}}
-                  transition={shouldReduceMotion ? {duration: 0} : {
-                    duration: 1.5,
-                    delay: 0.8,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
+                  transition={
+                    shouldReduceMotion
+                      ? {duration: 0}
+                      : {
+                          duration: 1.5,
+                          delay: 0.8,
+                          ease: [0.16, 1, 0.3, 1],
+                        }
+                  }
                 />
               </div>
             </motion.div>
@@ -117,9 +141,15 @@ export default function Hero() {
 
           {/* CTA Button with Magnetic Effect */}
           <motion.div
-            initial={shouldReduceMotion ? {opacity: 1, y: 0} : {opacity: 0, y: 10}}
+            initial={
+              shouldReduceMotion ? {opacity: 1, y: 0} : {opacity: 0, y: 10}
+            }
             animate={{opacity: 1, y: 0}}
-            transition={shouldReduceMotion ? {duration: 0} : {delay: 1.4, duration: 0.8, ease: [0.16, 1, 0.3, 1]}}
+            transition={
+              shouldReduceMotion
+                ? {duration: 0}
+                : {delay: 1.4, duration: 0.8, ease: [0.16, 1, 0.3, 1]}
+            }
           >
             <motion.div
               {...magneticHandlers}
@@ -160,7 +190,6 @@ export default function Hero() {
           </motion.div>
         </div>
       </div>
-
     </section>
   );
 }

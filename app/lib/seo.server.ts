@@ -310,7 +310,8 @@ function listCollections({
   return {
     title: 'Collections',
     titleTemplate: '%s | Formé Haus',
-    description: 'Explore our curated collections of luxury phone cases, sunglasses, and accessories.',
+    description:
+      'Explore our curated collections of luxury phone cases, sunglasses, and accessories.',
     url,
     jsonLd: collectionsJsonLd({collections, url}),
   };

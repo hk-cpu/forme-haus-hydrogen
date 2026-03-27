@@ -23,7 +23,8 @@ const BRAND_PROMISES = [
     ),
     title: 'Curated Selection',
     titleKey: 'whyUs.curatedTitle',
-    description: 'International designers chosen for refinement and lasting design.',
+    description:
+      'International designers chosen for refinement and lasting design.',
     descKey: 'whyUs.curatedDesc',
   },
   {
@@ -48,7 +49,8 @@ const BRAND_PROMISES = [
     ),
     title: 'Limited Collections',
     titleKey: 'whyUs.limitedTitle',
-    description: 'Thoughtfully edited releases in carefully selected quantities.',
+    description:
+      'Thoughtfully edited releases in carefully selected quantities.',
     descKey: 'whyUs.limitedDesc',
   },
   {
@@ -105,7 +107,8 @@ const BRAND_PROMISES = [
     ),
     title: 'Elevated Experience',
     titleKey: 'whyUs.elevatedTitle',
-    description: 'A refined journey from discovery to delivery. Free shipping across Saudi Arabia — GCC coming soon.',
+    description:
+      'A refined journey from discovery to delivery. Free shipping across Saudi Arabia — GCC coming soon.',
     descKey: 'whyUs.elevatedDesc',
   },
 ];

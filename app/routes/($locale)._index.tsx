@@ -1,6 +1,7 @@
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {defer} from '@remix-run/server-runtime';
 import {getSeoMeta, CacheLong} from '@shopify/hydrogen';
+
 import Hero from '~/components/Hero';
 import CategoryBento from '~/components/CategoryBento';
 import EditorialSection from '~/components/EditorialSection';

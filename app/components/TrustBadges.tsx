@@ -193,7 +193,7 @@ export function TrustBadges({
         className={`flex items-center gap-3 ${className}`}
         dir={isRTL ? 'rtl' : 'ltr'}
         variants={containerVariants}
-        initial={shouldReduceMotion ? "visible" : "hidden"}
+        initial={shouldReduceMotion ? 'visible' : 'hidden'}
         whileInView="visible"
         viewport={{once: true}}
       >
@@ -205,9 +205,7 @@ export function TrustBadges({
             title={t('trust.maroofVerified', 'Maroof Verified Store')}
           >
             {/* Shimmer effect */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"
-            />
+            <motion.div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
             <svg viewBox="0 0 20 20" className="w-4 h-4">
               <path
                 d="M10 2l6 3v6c0 4-3 6-6 7-3-1-6-3-6-7V5l6-3z"
@@ -250,7 +248,7 @@ export function TrustBadges({
         className={`flex items-center gap-4 ${className}`}
         dir={isRTL ? 'rtl' : 'ltr'}
         variants={containerVariants}
-        initial={shouldReduceMotion ? "visible" : "hidden"}
+        initial={shouldReduceMotion ? 'visible' : 'hidden'}
         whileInView="visible"
         viewport={{once: true}}
       >
@@ -313,7 +311,7 @@ export function TrustBadges({
       <motion.div
         className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"
         variants={containerVariants}
-        initial={shouldReduceMotion ? "visible" : "hidden"}
+        initial={shouldReduceMotion ? 'visible' : 'hidden'}
         animate="visible"
       >
         {showMaroof && (
@@ -384,7 +382,10 @@ export function TrustBadges({
         transition={{delay: 0.5, duration: 0.4}}
       >
         <p className="text-[10px] text-[#736659] text-center">
-          {t('trust.paymentMethods', 'Secure payments via Tap: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tabby, Tamara')}
+          {t(
+            'trust.paymentMethods',
+            'Secure payments via Tap: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tabby, Tamara',
+          )}
         </p>
       </motion.div>
     </motion.div>
