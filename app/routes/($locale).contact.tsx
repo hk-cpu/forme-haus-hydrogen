@@ -5,8 +5,8 @@ import {
   json,
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
-  type MetaArgs,
 } from '@shopify/remix-oxygen';
+import {type MetaArgs} from '@shopify/remix-oxygen';
 import {getSeoMeta} from '@shopify/hydrogen';
 
 export async function loader({context}: LoaderFunctionArgs) {
@@ -283,7 +283,9 @@ export default function ContactPage() {
         <div className="space-y-6">
           {/* Email Card */}
           <div className="bg-white p-8 rounded-2xl border border-[#8B8076]/10">
-            <h3 className="font-serif text-xl text-[#4A3C31] mb-4">Email Us</h3>
+            <h3 className="font-serif text-xl text-[#4A3C31] mb-4">
+              Email Us
+            </h3>
             <p className="text-[13px] text-[#8B8076] mb-4">
               We&apos;ll get back to you as soon as possible.
             </p>
@@ -297,7 +299,9 @@ export default function ContactPage() {
 
           {/* WhatsApp Card */}
           <div className="bg-white p-8 rounded-2xl border border-[#8B8076]/10">
-            <h3 className="font-serif text-xl text-[#4A3C31] mb-4">WhatsApp</h3>
+            <h3 className="font-serif text-xl text-[#4A3C31] mb-4">
+              WhatsApp
+            </h3>
             <p className="text-[13px] text-[#8B8076] mb-4">
               Message us directly for quick support.
             </p>
