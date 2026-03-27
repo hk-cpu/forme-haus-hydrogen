@@ -30,21 +30,22 @@ export const loader = async ({
 
   const rawArticles = blog?.articles ? flattenConnection(blog.articles) : [];
 
-  const articles = (rawArticles as ArticleFragment[]).map(
-    (article) => {
-      const {publishedAt} = article;
-      return {
-        ...article,
-        publishedAt: new Intl.DateTimeFormat(`${language}-${country}`, {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        }).format(new Date(publishedAt)),
-      };
-    },
-  );
+  const articles = (rawArticles as ArticleFragment[]).map((article) => {
+    const {publishedAt} = article;
+    return {
+      ...article,
+      publishedAt: new Intl.DateTimeFormat(`${language}-${country}`, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }).format(new Date(publishedAt)),
+    };
+  });
 
-  const seo = seoPayload.blog({blog: blog || {title: 'Journal'}, url: request.url});
+  const seo = seoPayload.blog({
+    blog: blog || {title: 'Journal'},
+    url: request.url,
+  });
 
   return json({articles, seo});
 };

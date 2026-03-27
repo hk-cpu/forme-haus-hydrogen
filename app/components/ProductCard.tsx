@@ -410,11 +410,15 @@ export function ProductCard({
         {/* Image Container with 3D Tilt */}
         <motion.div
           className="relative aspect-square overflow-hidden rounded-xl bg-gradient-to-br from-[#F9F9F9] to-[#F0EAE6] mb-4 shadow-sm border border-[#EAE4DC] group-hover:shadow-xl transition-shadow duration-700"
-          style={shouldReduceMotion ? undefined : {
-            rotateX: isHovered ? rotateX : 0,
-            rotateY: isHovered ? rotateY : 0,
-            transformPerspective: 1000,
-          }}
+          style={
+            shouldReduceMotion
+              ? undefined
+              : {
+                  rotateX: isHovered ? rotateX : 0,
+                  rotateY: isHovered ? rotateY : 0,
+                  transformPerspective: 1000,
+                }
+          }
         >
           {/* Premium Shimmer Effect */}
           <AnimatePresence>
@@ -659,10 +663,14 @@ export function ProductCard({
 
           {/* 4. Price */}
           <div className="flex items-baseline gap-2 pt-0.5 mt-2 border-t border-[#a87441]/10">
-            {product.priceRange?.minVariantPrice && parseFloat(product.priceRange.minVariantPrice.amount) > 0 ? (
+            {product.priceRange?.minVariantPrice &&
+            parseFloat(product.priceRange.minVariantPrice.amount) > 0 ? (
               <>
                 <p className="text-[#F0EAE6] text-sm font-medium transition-all duration-300 group-hover:text-[#a87441] flex items-baseline mt-1">
-                  <Money data={product.priceRange.minVariantPrice as any} withoutTrailingZeros />
+                  <Money
+                    data={product.priceRange.minVariantPrice as any}
+                    withoutTrailingZeros
+                  />
                 </p>
                 {product.availableForSale !== false && (
                   <span className="text-xs text-[#8B8076] font-normal tracking-wide mt-1">
@@ -671,12 +679,17 @@ export function ProductCard({
                 )}
                 {hasDiscount && (
                   <p className="text-[#8B8076] text-xs line-through mt-1 ml-auto">
-                    <Money data={product.compareAtPriceRange!.minVariantPrice} withoutTrailingZeros />
+                    <Money
+                      data={product.compareAtPriceRange!.minVariantPrice}
+                      withoutTrailingZeros
+                    />
                   </p>
                 )}
               </>
             ) : (
-              <p className="text-[13px] text-[#8B8076] italic mt-1">Price TBA</p>
+              <p className="text-[13px] text-[#8B8076] italic mt-1">
+                Price TBA
+              </p>
             )}
           </div>
         </div>

@@ -1,4 +1,5 @@
 import {type MetaFunction} from '@shopify/remix-oxygen';
+
 import {routeHeaders} from '~/data/cache';
 import {useTranslation} from '~/hooks/useTranslation';
 
@@ -28,13 +29,21 @@ export default function PrivacyPolicyPage() {
 
         {isArabic ? (
           /* Arabic */
-          <div className="prose max-w-prose mx-auto prose-headings:text-[#4A3C31] prose-headings:font-serif prose-p:text-[#4A3C31]/80 prose-li:text-[#4A3C31]/80 font-light leading-relaxed" dir="rtl">
+          <div
+            className="prose max-w-prose mx-auto prose-headings:text-[#4A3C31] prose-headings:font-serif prose-p:text-[#4A3C31]/80 prose-li:text-[#4A3C31]/80 font-light leading-relaxed"
+            dir="rtl"
+          >
             <p>
-              تحترم فورمي هاوس خصوصيتكم وتلتزم بحماية بياناتكم الشخصية وفقًا للأنظمة المعمول بها في المملكة العربية السعودية، بما في ذلك نظام حماية البيانات الشخصية.
+              تحترم فورمي هاوس خصوصيتكم وتلتزم بحماية بياناتكم الشخصية وفقًا
+              للأنظمة المعمول بها في المملكة العربية السعودية، بما في ذلك نظام
+              حماية البيانات الشخصية.
             </p>
 
             <h3>البيانات التي نقوم بجمعها</h3>
-            <p>قد نقوم بجمع البيانات التالية عند استخدام الموقع أو إجراء عملية شراء:</p>
+            <p>
+              قد نقوم بجمع البيانات التالية عند استخدام الموقع أو إجراء عملية
+              شراء:
+            </p>
             <ul>
               <li>الاسم الكامل</li>
               <li>البريد الإلكتروني ورقم الهاتف</li>
@@ -53,15 +62,21 @@ export default function PrivacyPolicyPage() {
               <li>إرسال تحديثات الطلب والإشعارات المهمة</li>
               <li>تحسين الموقع والخدمات</li>
             </ul>
-            <p>لن يتم استخدام البيانات لغير هذه الأغراض إلا إذا تطلب النظام ذلك.</p>
+            <p>
+              لن يتم استخدام البيانات لغير هذه الأغراض إلا إذا تطلب النظام ذلك.
+            </p>
 
             <h3>حماية البيانات</h3>
             <p>
-              تطبق فورمي هاوس إجراءات فنية وتنظيمية مناسبة لحماية البيانات الشخصية. يتم معالجة بيانات الدفع عبر مزودي خدمات دفع معتمدين ولا يتم تخزينها على خوادمنا.
+              تطبق فورمي هاوس إجراءات فنية وتنظيمية مناسبة لحماية البيانات
+              الشخصية. يتم معالجة بيانات الدفع عبر مزودي خدمات دفع معتمدين ولا
+              يتم تخزينها على خوادمنا.
             </p>
 
             <h3>مشاركة البيانات</h3>
-            <p>قد تتم مشاركة البيانات مع جهات موثوقة لأغراض تشغيلية فقط، مثل:</p>
+            <p>
+              قد تتم مشاركة البيانات مع جهات موثوقة لأغراض تشغيلية فقط، مثل:
+            </p>
             <ul>
               <li>مزودي خدمات الدفع</li>
               <li>شركات الشحن والخدمات اللوجستية</li>
@@ -82,17 +97,26 @@ export default function PrivacyPolicyPage() {
             </ul>
 
             <h3>تحديثات السياسة</h3>
-            <p>قد يتم تحديث هذه السياسة عند الحاجة، وسيتم نشر أي تعديل على هذه الصفحة.</p>
+            <p>
+              قد يتم تحديث هذه السياسة عند الحاجة، وسيتم نشر أي تعديل على هذه
+              الصفحة.
+            </p>
           </div>
         ) : (
           /* English */
           <div className="prose max-w-prose mx-auto prose-headings:text-[#4A3C31] prose-headings:font-serif prose-p:text-[#4A3C31]/80 prose-li:text-[#4A3C31]/80 font-light leading-relaxed">
             <p>
-              Formé Haus respects your privacy and is committed to protecting your personal data in accordance with the laws of the Kingdom of Saudi Arabia, including the Saudi Personal Data Protection Law (PDPL).
+              Formé Haus respects your privacy and is committed to protecting
+              your personal data in accordance with the laws of the Kingdom of
+              Saudi Arabia, including the Saudi Personal Data Protection Law
+              (PDPL).
             </p>
 
             <h3>Information We Collect</h3>
-            <p>We may collect the following information when you visit our website or place an order:</p>
+            <p>
+              We may collect the following information when you visit our
+              website or place an order:
+            </p>
             <ul>
               <li>Full name</li>
               <li>Email address and phone number</li>
@@ -111,21 +135,33 @@ export default function PrivacyPolicyPage() {
               <li>Send order updates and service notifications</li>
               <li>Improve our website and services</li>
             </ul>
-            <p>We do not use your personal data for purposes other than those stated, unless required or permitted by law.</p>
+            <p>
+              We do not use your personal data for purposes other than those
+              stated, unless required or permitted by law.
+            </p>
 
             <h3>Data Protection</h3>
             <p>
-              We apply appropriate technical and organizational measures to protect your personal data. Payment information is processed securely through authorized third-party providers and is not stored on our servers.
+              We apply appropriate technical and organizational measures to
+              protect your personal data. Payment information is processed
+              securely through authorized third-party providers and is not
+              stored on our servers.
             </p>
 
             <h3>Sharing of Information</h3>
-            <p>Your information may be shared only with trusted service providers for operational purposes, including:</p>
+            <p>
+              Your information may be shared only with trusted service providers
+              for operational purposes, including:
+            </p>
             <ul>
               <li>Payment processors</li>
               <li>Shipping and logistics partners</li>
               <li>IT service providers</li>
             </ul>
-            <p>All third parties are required to maintain confidentiality and data security.</p>
+            <p>
+              All third parties are required to maintain confidentiality and
+              data security.
+            </p>
 
             <h3>Your Rights</h3>
             <p>In accordance with applicable laws, you have the right to:</p>
@@ -140,7 +176,10 @@ export default function PrivacyPolicyPage() {
             </ul>
 
             <h3>Policy Updates</h3>
-            <p>Formé Haus may update this Privacy Policy when necessary. Any changes will be published on this page.</p>
+            <p>
+              Formé Haus may update this Privacy Policy when necessary. Any
+              changes will be published on this page.
+            </p>
           </div>
         )}
       </div>

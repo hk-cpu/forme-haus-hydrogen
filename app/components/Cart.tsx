@@ -2,7 +2,8 @@ import clsx from 'clsx';
 import {useRef, useState} from 'react';
 import useScroll from 'react-use/esm/useScroll';
 import {motion, AnimatePresence} from 'framer-motion';
-import {useFetcher} from '@remix-run/react';
+import {useFetcher, useRouteLoaderData} from '@remix-run/react';
+// eslint-disable-next-line import/order
 import {
   flattenConnection,
   CartForm,
@@ -21,7 +22,6 @@ import type {
   CartLine,
   CartLineUpdateInput,
 } from '@shopify/hydrogen/storefront-api-types';
-import {useRouteLoaderData} from '@remix-run/react';
 
 import {Button} from '~/components/Button';
 import {Text, Heading} from '~/components/Text';
@@ -446,7 +446,9 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
 
   const subtotal = cart.cost?.subtotalAmount?.amount ?? '0';
   const currency = cart.cost?.subtotalAmount?.currencyCode ?? 'SAR';
-  const merchantTxId = `FH-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+  const merchantTxId = `FH-${Date.now()}-${Math.random()
+    .toString(36)
+    .slice(2, 7)}`;
 
   function initiatePayment() {
     fetcher.submit(
@@ -536,7 +538,9 @@ function CartCheckoutActions({
       {/* Divider */}
       <div className="flex items-center gap-3">
         <div className="flex-1 h-px bg-[#8B8076]/15" />
-        <span className="text-[10px] text-[#8B8076] uppercase tracking-wider">or pay directly</span>
+        <span className="text-[10px] text-[#8B8076] uppercase tracking-wider">
+          or pay directly
+        </span>
         <div className="flex-1 h-px bg-[#8B8076]/15" />
       </div>
 
@@ -642,26 +646,48 @@ function GCCPaymentBadges() {
     <div className="flex items-center justify-center gap-2 flex-wrap py-1">
       {/* mada */}
       <div className="px-2 py-1 bg-[#1A1A1A] rounded border border-[#8B8076]/10 flex items-center">
-        <span className="text-[9px] font-bold text-[#1B5E20] tracking-wide">mada</span>
+        <span className="text-[9px] font-bold text-[#1B5E20] tracking-wide">
+          mada
+        </span>
       </div>
       {/* STC Pay */}
       <div className="px-2 py-1 bg-[#1A1A1A] rounded border border-[#8B8076]/10 flex items-center">
-        <span className="text-[9px] font-bold text-purple-400 tracking-wide">STC Pay</span>
+        <span className="text-[9px] font-bold text-purple-400 tracking-wide">
+          STC Pay
+        </span>
       </div>
       {/* Apple Pay */}
       <div className="px-2 py-1 bg-[#1A1A1A] rounded border border-[#8B8076]/10 flex items-center">
-        <svg className="w-7 h-3.5" viewBox="0 0 80 34" fill="white" aria-label="Apple Pay">
-          <path d="M15.1 6.5c-.8.9-2 1.6-3.2 1.5-.2-1.2.5-2.5 1.2-3.3C13.9 3.7 15.2 3 16.3 3c.1 1.3-.4 2.6-1.2 3.5zm1.2 1.8c-1.8-.1-3.3 1-4.1 1s-2.1-1-3.6-.9c-1.8 0-3.5 1-4.4 2.6-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.4 2.6 1.4-.1 1.9-.9 3.5-.9 1.6 0 2.1.9 3.5.9 1.4-.1 2.3-1.3 3.2-2.6.9-1.3 1.3-2.6 1.3-2.7-.1 0-2.4-.9-2.5-3.7 0-2.3 1.9-3.4 2-3.5-.1-1.3-2.1-2.5-3.6-2.6z"/>
-          <text x="28" y="22" fontSize="14" fontWeight="600" fill="white" fontFamily="-apple-system, sans-serif">Pay</text>
+        <svg
+          className="w-7 h-3.5"
+          viewBox="0 0 80 34"
+          fill="white"
+          aria-label="Apple Pay"
+        >
+          <path d="M15.1 6.5c-.8.9-2 1.6-3.2 1.5-.2-1.2.5-2.5 1.2-3.3C13.9 3.7 15.2 3 16.3 3c.1 1.3-.4 2.6-1.2 3.5zm1.2 1.8c-1.8-.1-3.3 1-4.1 1s-2.1-1-3.6-.9c-1.8 0-3.5 1-4.4 2.6-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.4 2.6 1.4-.1 1.9-.9 3.5-.9 1.6 0 2.1.9 3.5.9 1.4-.1 2.3-1.3 3.2-2.6.9-1.3 1.3-2.6 1.3-2.7-.1 0-2.4-.9-2.5-3.7 0-2.3 1.9-3.4 2-3.5-.1-1.3-2.1-2.5-3.6-2.6z" />
+          <text
+            x="28"
+            y="22"
+            fontSize="14"
+            fontWeight="600"
+            fill="white"
+            fontFamily="-apple-system, sans-serif"
+          >
+            Pay
+          </text>
         </svg>
       </div>
       {/* Tabby */}
       <div className="px-2 py-1 bg-[#1A1A1A] rounded border border-[#8B8076]/10 flex items-center">
-        <span className="text-[9px] font-bold text-[#3BB273] tracking-wide">tabby</span>
+        <span className="text-[9px] font-bold text-[#3BB273] tracking-wide">
+          tabby
+        </span>
       </div>
       {/* Tamara */}
       <div className="px-2 py-1 bg-[#1A1A1A] rounded border border-[#8B8076]/10 flex items-center">
-        <span className="text-[9px] font-bold text-[#F6A623] tracking-wide">tamara</span>
+        <span className="text-[9px] font-bold text-[#F6A623] tracking-wide">
+          tamara
+        </span>
       </div>
     </div>
   );

@@ -98,9 +98,9 @@ export function FeaturedProducts({
   return (
     <>
       <motion.div
-        initial={shouldReduceMotion ? "visible" : "hidden"}
+        initial={shouldReduceMotion ? 'visible' : 'hidden'}
         whileInView="visible"
-        viewport={{once: true, margin: "-50px"}}
+        viewport={{once: true, margin: '-50px'}}
         variants={headerVariants}
       >
         <Heading format size="copy" className="t-4">
@@ -116,19 +116,19 @@ export function FeaturedProducts({
           ))}
         </Heading>
       </motion.div>
-      
+
       <motion.div
         className={clsx([
           `grid grid-cols-2 gap-x-6 gap-y-8`,
           layout === 'page' ? 'md:grid-cols-4 sm:grid-col-4' : '',
         ])}
         variants={containerVariants}
-        initial={shouldReduceMotion ? "visible" : "hidden"}
+        initial={shouldReduceMotion ? 'visible' : 'hidden'}
         whileInView="visible"
-        viewport={{once: true, margin: "-50px"}}
+        viewport={{once: true, margin: '-50px'}}
       >
-        <FeatureProductsContent 
-          count={count} 
+        <FeatureProductsContent
+          count={count}
           products={data?.products}
           shouldReduceMotion={shouldReduceMotion}
         />
@@ -155,8 +155,8 @@ function FeatureProductsContent({
     return (
       <>
         {[...new Array(count)].map((_, i) => (
-          <motion.div 
-            key={`${id + i}`} 
+          <motion.div
+            key={`${id + i}`}
             className="grid gap-2"
             variants={shouldReduceMotion ? undefined : itemVariants}
           >
@@ -192,7 +192,9 @@ function FeatureProductsContent({
  */
 function EnhancedSkeleton({className}: {className?: string}) {
   return (
-    <div className={`relative overflow-hidden rounded-xl bg-[#1A1A1A] ${className}`}>
+    <div
+      className={`relative overflow-hidden rounded-xl bg-[#1A1A1A] ${className}`}
+    >
       <div className="absolute inset-0 luxury-skeleton" />
       <motion.div
         className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"

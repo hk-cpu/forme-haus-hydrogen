@@ -98,7 +98,15 @@ function ModelImage({image, index}: {image: ProductImage; index: number}) {
       {/* Model container - 4:5 aspect ratio with contain fit */}
       <div
         className="relative w-full aspect-[4/5] md:aspect-[3/4] rounded-xl overflow-hidden bg-[#F9F7F4] shadow-sm cursor-zoom-in"
+        role="button"
+        tabIndex={0}
         onClick={() => setIsZoomed(!isZoomed)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setIsZoomed(!isZoomed);
+          }
+        }}
       >
         {/* Loading skeleton */}
         <AnimatePresence>

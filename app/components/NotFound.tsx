@@ -1,4 +1,5 @@
 import {Form} from '@remix-run/react';
+
 import {Button} from './Button';
 import {FeaturedProducts} from './FeaturedProducts';
 import {PageHeader, Text} from './Text';
@@ -52,7 +53,11 @@ export function NotFound({type = 'page'}: {type?: string}) {
           </p>
 
           {/* Search Bar */}
-          <Form method="get" action="/search" className="relative max-w-md mx-auto mb-8">
+          <Form
+            method="get"
+            action="/search"
+            className="relative max-w-md mx-auto mb-8"
+          >
             <Input
               name="q"
               placeholder="Search our store..."

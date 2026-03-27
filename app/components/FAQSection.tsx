@@ -176,9 +176,9 @@ export function FAQSection() {
             </h2>
             <p className="text-sm text-[#8B8076] mb-6 leading-relaxed">
               {t(
-                    'faq.subtitle',
-                    'Here are answers to our most common questions. If you need further help, feel free to reach out.',
-                  )}
+                'faq.subtitle',
+                'Here are answers to our most common questions. If you need further help, feel free to reach out.',
+              )}
             </p>
 
             {/* Contact CTA */}
@@ -190,9 +190,7 @@ export function FAQSection() {
                 to="/contact"
                 className="inline-flex items-center gap-2 text-sm text-[#a87441] hover:text-[#8B5E3C] transition-colors group"
               >
-                <span>
-                  {t('faq.contactUs', 'Contact Us')}
-                </span>
+                <span>{t('faq.contactUs', 'Contact Us')}</span>
                 <motion.svg
                   width="16"
                   height="16"
@@ -236,9 +234,7 @@ export function FAQSection() {
                 to="/contact"
                 className="inline-flex items-center gap-2 text-sm text-[#a87441] hover:text-[#8B5E3C] transition-colors"
               >
-                <span>
-                  {t('faq.contactUs', 'Contact Us')}
-                </span>
+                <span>{t('faq.contactUs', 'Contact Us')}</span>
                 <svg
                   width="16"
                   height="16"

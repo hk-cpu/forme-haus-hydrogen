@@ -1,6 +1,7 @@
 import {useState, useRef, useEffect} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 import {Link, useFetcher} from '@remix-run/react';
+
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
 import {usePrefixPathWithLocale} from '~/lib/utils';
@@ -179,7 +180,7 @@ export function AccountOverlay() {
       if (!overlay) return;
 
       const focusableElements = overlay.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
       );
       const firstElement = focusableElements[0];
       const lastElement = focusableElements[focusableElements.length - 1];

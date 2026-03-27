@@ -101,8 +101,8 @@ export default function Search() {
             type="search"
             variant="search"
           />
-          <button 
-            className="absolute right-0 py-2 px-4 bg-[#a87441] text-white text-[11px] uppercase tracking-[0.2em] rounded hover:bg-[#8B5E3C] transition-colors" 
+          <button
+            className="absolute right-0 py-2 px-4 bg-[#a87441] text-white text-[11px] uppercase tracking-[0.2em] rounded hover:bg-[#8B5E3C] transition-colors"
             type="submit"
           >
             Go
@@ -111,7 +111,8 @@ export default function Search() {
       </PageHeader>
       {searchTerm && (
         <p className="text-sm text-[#8B8076] mt-4 px-6 md:px-12 lg:px-16 max-w-7xl mx-auto">
-          {products?.nodes?.length || 0} {t('search.resultsFor', 'results for')} "{searchTerm}"
+          {products?.nodes?.length || 0} {t('search.resultsFor', 'results for')}{' '}
+          &quot;{searchTerm}&quot;
         </p>
       )}
       {!searchTerm || noResults ? (

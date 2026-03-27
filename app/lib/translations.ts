@@ -82,7 +82,7 @@ export const translations = {
     'footer.privacy': 'Privacy Policy',
     'footer.terms': 'Terms & Conditions',
     'footer.paymentMethods': 'Secure Payment Methods',
-    'footer.newsletter': "Join the Haus",
+    'footer.newsletter': 'Join the Haus',
     'footer.newsletterDesc': 'New arrivals, exclusive offers, and more.',
     'footer.emailPlaceholder': 'Enter your email',
     'footer.submitting': 'Sending...',
@@ -598,8 +598,7 @@ export const translations = {
     'whyUs.limitedTitle': 'مجموعات محدودة',
     'whyUs.limitedDesc': 'إصدارات مختارة بعناية بكميات محدودة.',
     'whyUs.globalTitle': 'مصممون عالميون',
-    'whyUs.globalDesc':
-      'مزيج منسّق من العلامات الناشئة والراسخة حول العالم.',
+    'whyUs.globalDesc': 'مزيج منسّق من العلامات الناشئة والراسخة حول العالم.',
     'whyUs.elevatedTitle': 'تجربة راقية',
     'whyUs.elevatedDesc':
       'رحلة راقية من الاكتشاف إلى التوصيل. شحن مجاني في السعودية — دول الخليج قريباً.',
@@ -649,8 +648,7 @@ export const translations = {
     'language.arabic': 'عربي',
 
     // WhatsApp
-    'whatsapp.defaultMessage':
-      'مرحباً، أريد الاستفسار عن منتج في Formé Haus',
+    'whatsapp.defaultMessage': 'مرحباً، أريد الاستفسار عن منتج في Formé Haus',
 
     // Mobile Bottom Nav
     'nav.saved': 'المفضلة',

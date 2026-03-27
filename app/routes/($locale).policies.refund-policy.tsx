@@ -1,4 +1,5 @@
 import {type MetaFunction} from '@shopify/remix-oxygen';
+
 import {routeHeaders} from '~/data/cache';
 import {useTranslation} from '~/hooks/useTranslation';
 
@@ -43,17 +44,24 @@ export default function RefundPolicyPage() {
 
             <h3>يشترط لقبول الطلب</h3>
             <ul>
-              <li>أن يكون المنتج <strong>غير مستخدم وفي حالته الأصلية</strong></li>
               <li>
-                إرجاعه مع <strong>جميع التغليفات والبطاقات والمرفقات الأصلية</strong>
+                أن يكون المنتج <strong>غير مستخدم وفي حالته الأصلية</strong>
               </li>
-              <li>تقديم <strong>إثبات الشراء</strong></li>
+              <li>
+                إرجاعه مع{' '}
+                <strong>جميع التغليفات والبطاقات والمرفقات الأصلية</strong>
+              </li>
+              <li>
+                تقديم <strong>إثبات الشراء</strong>
+              </li>
             </ul>
 
             <h3>المنتجات غير القابلة للاسترجاع</h3>
             <p>
               لأسباب تتعلق بالنظافة وسلامة المنتج، لا يمكن استرجاع{' '}
-              <strong>النظارات الشمسية أو أغطية الجوال أو الأشرطة أو الإكسسوارات</strong>{' '}
+              <strong>
+                النظارات الشمسية أو أغطية الجوال أو الأشرطة أو الإكسسوارات
+              </strong>{' '}
               بعد فتحها أو استخدامها.
             </p>
 
@@ -67,12 +75,16 @@ export default function RefundPolicyPage() {
             <h3>الشحن والاسترداد</h3>
             <ul>
               <li>
-                رسوم الشحن الأصلية <strong>غير قابلة للاسترداد</strong> في حال تغيير الرأي
+                رسوم الشحن الأصلية <strong>غير قابلة للاسترداد</strong> في حال
+                تغيير الرأي
               </li>
-              <li>تخضع المنتجات المرتجعة <strong>للفحص عند الاستلام</strong></li>
+              <li>
+                تخضع المنتجات المرتجعة <strong>للفحص عند الاستلام</strong>
+              </li>
               <li>
                 يتم رد المبلغ إلى{' '}
-                <strong>وسيلة الدفع الأصلية خلال 14 يومًا</strong> بعد فحص المنتج
+                <strong>وسيلة الدفع الأصلية خلال 14 يومًا</strong> بعد فحص
+                المنتج
               </li>
             </ul>
 
@@ -118,9 +130,7 @@ export default function RefundPolicyPage() {
             <p>
               For hygiene and product integrity reasons, returns are not
               accepted for{' '}
-              <strong>
-                sunglasses, phone cases, straps, or accessories
-              </strong>{' '}
+              <strong>sunglasses, phone cases, straps, or accessories</strong>{' '}
               once opened or used.
             </p>
 
@@ -143,10 +153,8 @@ export default function RefundPolicyPage() {
               </li>
               <li>
                 Approved refunds are issued to the{' '}
-                <strong>
-                  original payment method within 14 days
-                </strong>{' '}
-                after inspection
+                <strong>original payment method within 14 days</strong> after
+                inspection
               </li>
             </ul>
 

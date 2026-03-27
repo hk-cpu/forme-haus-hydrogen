@@ -197,15 +197,12 @@ export function ProductGallery({
     if (intervalRef.current) clearInterval(intervalRef.current);
     if (!isAutoPlayingRef.current || isHoveredRef.current) return;
 
-    intervalRef.current = setInterval(
-      () => {
-        if (!isAutoPlayingRef.current || isHoveredRef.current) {
-          return;
-        }
-        setActiveIndex((prev) => (prev + 1) % total);
-      },
-      4000,
-    );
+    intervalRef.current = setInterval(() => {
+      if (!isAutoPlayingRef.current || isHoveredRef.current) {
+        return;
+      }
+      setActiveIndex((prev) => (prev + 1) % total);
+    }, 4000);
   }, [total]);
 
   useEffect(() => {
@@ -414,8 +411,16 @@ export function ProductGallery({
           <div
             ref={containerRef}
             className="relative aspect-square md:aspect-[4/5] flex items-center justify-center cursor-grab active:cursor-grabbing"
+            role="button"
+            tabIndex={0}
             onMouseMove={handleMouseMove}
             onClick={() => isZoomed && setIsZoomed(false)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                if (isZoomed) setIsZoomed(false);
+              }
+            }}
           >
             {images.map((image, index) => {
               const style = getCardStyle(index);
