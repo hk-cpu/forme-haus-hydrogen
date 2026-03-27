@@ -145,10 +145,10 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
                     e.preventDefault();
                     setCurrentImage(idx);
                   }}
-                  className={`h-1 rounded-full transition-all ${
+                  className={`h-1.5 rounded-full transition-all ${
                     idx === currentImage
-                      ? 'bg-[#a87441] w-4'
-                      : 'bg-[#4A3C31]/30 w-1'
+                      ? 'bg-[#a87441] w-5'
+                      : 'bg-[#4A3C31]/30 w-1.5'
                   }`}
                 />
               ))}

@@ -116,7 +116,7 @@ export function SearchOverlay() {
   // Focus input on open
   useEffect(() => {
     if (state.isSearchOpen) {
-      setTimeout(() => inputRef.current?.focus(), 150);
+      setTimeout(() => inputRef.current?.focus(), 50);
     }
   }, [state.isSearchOpen]);
 
@@ -250,7 +250,7 @@ export function SearchOverlay() {
             </div>
 
             {/* Results Dropdown */}
-            <div className="bg-[#151515]/[0.98] backdrop-blur-2xl max-h-[65vh] overflow-y-auto">
+            <div className="bg-[#151515]/[0.98] backdrop-blur-2xl max-h-[50vh] md:max-h-[65vh] overflow-y-auto">
               <div className="container mx-auto px-6 lg:px-16 py-5">
                 {/* Search Results */}
                 {hasResults ? (

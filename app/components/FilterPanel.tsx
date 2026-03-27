@@ -355,7 +355,7 @@ export function FilterPanel({
                             <button
                               key={option.id}
                               onClick={() => toggleFilter(inputString)}
-                              className={`relative w-10 h-10 rounded-full border-2 transition-all ${
+                              className={`relative w-11 h-11 rounded-full border-2 transition-all ${
                                 isSelected
                                   ? 'border-[#a87441] scale-110'
                                   : 'border-transparent hover:scale-105'
@@ -382,7 +382,7 @@ export function FilterPanel({
                           return (
                             <label
                               key={option.id}
-                              className="flex items-center justify-between py-2 cursor-pointer group"
+                              className="flex items-center justify-between py-2 min-h-[44px] cursor-pointer group"
                             >
                               <span className="flex items-center gap-3">
                                 <span

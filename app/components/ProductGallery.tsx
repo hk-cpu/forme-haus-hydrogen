@@ -563,7 +563,7 @@ export function ProductGallery({
             {/* Autoplay Toggle */}
             <motion.button
               onClick={toggleAutoPlay}
-              className={`w-10 h-10 rounded-full backdrop-blur-md flex items-center justify-center shadow-lg border transition-colors ${
+              className={`w-11 h-11 rounded-full backdrop-blur-md flex items-center justify-center shadow-lg border transition-colors ${
                 isAutoPlaying
                   ? 'bg-[#a87441] text-white border-[#a87441]'
                   : 'bg-white/90 text-[#2a2118] border-white/20 hover:bg-white'
@@ -598,7 +598,7 @@ export function ProductGallery({
             {/* Fullscreen Toggle */}
             <motion.button
               onClick={() => setIsFullscreen(true)}
-              className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-[#2a2118] shadow-lg border border-white/20 hover:bg-white transition-colors"
+              className="w-11 h-11 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-[#2a2118] shadow-lg border border-white/20 hover:bg-white transition-colors"
               whileHover={{scale: 1.05}}
               whileTap={{scale: 0.95}}
               aria-label="View fullscreen"

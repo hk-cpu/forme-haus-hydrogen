@@ -11,7 +11,7 @@ export function Modal({
   return (
     <div
       className="relative z-50"
-      aria-labelledby="modal-title"
+      aria-label="Dialog"
       role="dialog"
       aria-modal="true"
       id="modal-bg"
@@ -29,7 +29,7 @@ export function Modal({
             onKeyDown={(e) => {
               e.stopPropagation();
             }}
-            tabIndex={-1}
+            tabIndex={0}
           >
             <div className="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
               <Link

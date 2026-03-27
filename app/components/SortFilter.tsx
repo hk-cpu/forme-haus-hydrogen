@@ -50,7 +50,7 @@ export function SortFilter({
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={
-            'relative flex items-center justify-center w-8 h-8 focus:ring-primary/5'
+            'relative flex items-center justify-center w-10 h-10 min-h-[44px] focus:ring-primary/5'
           }
         >
           <IconFilters />
@@ -356,7 +356,7 @@ export default function SortMenu() {
           <Menu.Item key={item.label}>
             {() => (
               <Link
-                className={`block text-xs uppercase tracking-widest pb-3 px-3 hover:text-[#C4A484] transition-colors ${
+                className={`block text-xs uppercase tracking-widest py-3 px-4 hover:text-[#C4A484] transition-colors ${
                   activeItem?.key === item.key
                     ? 'text-[#C4A484]'
                     : 'text-[#F0EAE6]/70'

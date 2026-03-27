@@ -279,7 +279,7 @@ export function Header({
         initial={{y: -100, opacity: 0}}
         animate={{y: isVisible ? 0 : -100, opacity: isVisible ? 1 : 0}}
         transition={{duration: 0.5, ease: [0.16, 1, 0.3, 1]}}
-        className={`fixed z-50 flex justify-center left-0 right-0 group w-full top-0 ${getHeaderBackgroundClass()}`}
+        className={`fixed z-50 flex justify-center left-0 right-0 group w-full top-0 transition-colors duration-300 ${getHeaderBackgroundClass()}`}
         style={{
           WebkitBackdropFilter: scrolled
             ? 'blur(40px) saturate(1.2)'

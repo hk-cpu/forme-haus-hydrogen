@@ -64,17 +64,25 @@ export default function Journals() {
   return (
     <div className="pt-24 min-h-screen container mx-auto px-6 md:px-12">
       <PageHeader heading={BLOG_HANDLE} className="mb-16 text-center" />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-20">
-        {articles.map((article, i) => (
-          <ArticleCard
-            blogHandle={BLOG_HANDLE.toLowerCase()}
-            article={article}
-            key={article.id}
-            loading={getImageLoadingPriority(i, 2)}
-            isFeatured={i === 0}
-          />
-        ))}
-      </div>
+      {!articles || articles.length === 0 ? (
+        <div className="flex items-center justify-center py-20">
+          <p className="font-serif text-[#8B8076] text-lg tracking-wide">
+            No articles yet. Check back soon.
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-20">
+          {articles.map((article, i) => (
+            <ArticleCard
+              blogHandle={BLOG_HANDLE.toLowerCase()}
+              article={article}
+              key={article.id}
+              loading={getImageLoadingPriority(i, 2)}
+              isFeatured={i === 0}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

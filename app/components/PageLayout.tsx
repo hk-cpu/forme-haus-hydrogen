@@ -509,7 +509,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
         <div className="max-w-[1440px] mx-auto text-center text-[11px] font-sans tracking-[0.08em] text-[#8B8076]">
           <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-2 sm:gap-4 lg:gap-6">
             <span className="font-medium text-[#F0EAE6]/80">
-              &copy; Formé Haus FH Establishment
+              &copy; {new Date().getFullYear()} Formé Haus FH Establishment
             </span>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
             <span>

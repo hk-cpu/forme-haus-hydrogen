@@ -167,7 +167,7 @@ export default function Login() {
 
       <div className="relative z-10 w-full max-w-[480px] mx-auto px-6 py-12">
         {/* Unified White Container */}
-        <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-white/50 p-8 md:p-12 overflow-hidden relative">
+        <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-white/50 p-6 md:p-8 lg:p-12 overflow-hidden relative">
           {/* Subtle top glare */}
           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white to-transparent opacity-80"></div>
 
@@ -233,7 +233,7 @@ export default function Login() {
                   placeholder=" "
                   required
                   autoComplete="email"
-                  className="peer w-full bg-[#fcfbf9] border border-[#E5DFD9] pt-6 pb-2 px-4 text-[#2C2419] focus:outline-none focus:border-[#a87441] focus:bg-white focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[14px] font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
+                  className="peer w-full bg-[#fcfbf9] border border-[#E5DFD9] pt-6 pb-2 px-4 text-[#2C2419] focus:outline-none focus:border-[#a87441] focus:bg-white focus:ring-1 focus:ring-[#a87441]/30 focus-visible:ring-1 focus-visible:ring-[#a87441]/50 transition-all duration-300 text-[14px] font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
                 />
                 <label
                   htmlFor="email"
@@ -254,7 +254,7 @@ export default function Login() {
                   autoComplete={
                     isRegistering ? 'new-password' : 'current-password'
                   }
-                  className="peer w-full bg-[#fcfbf9] border border-[#E5DFD9] pt-6 pb-2 px-4 text-[#2C2419] focus:outline-none focus:border-[#a87441] focus:bg-white focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[14px] font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
+                  className="peer w-full bg-[#fcfbf9] border border-[#E5DFD9] pt-6 pb-2 px-4 text-[#2C2419] focus:outline-none focus:border-[#a87441] focus:bg-white focus:ring-1 focus:ring-[#a87441]/30 focus-visible:ring-1 focus-visible:ring-[#a87441]/50 transition-all duration-300 text-[14px] font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
                 />
                 <label
                   htmlFor="password"
