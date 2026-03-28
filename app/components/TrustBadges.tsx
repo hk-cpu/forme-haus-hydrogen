@@ -229,10 +229,10 @@ export function TrustBadges({
           <motion.div
             variants={itemVariants}
             whileHover={shouldReduceMotion ? {} : {scale: 1.05}}
-            className="flex items-center gap-1 text-[#8B8076]"
+            className="flex items-center gap-1 text-[#6B6058]"
           >
             <SecurePaymentIcon className="h-3.5 w-3.5" />
-            <span className="text-[9px] uppercase tracking-wider">
+            <span className="text-[10px] uppercase tracking-wider">
               {t('trust.securePayment', 'Secure')}
             </span>
           </motion.div>

@@ -103,7 +103,7 @@ export default function JournalSection() {
           </h2>
           <Link
             to="/journal"
-            className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076] hover:text-[#4A3C31] transition-colors duration-300 py-2 inline-flex items-center min-h-[44px]"
+            className="text-[10px] uppercase tracking-[0.2em] text-[#6B6058] hover:text-[#4A3C31] transition-colors duration-300 py-2 inline-flex items-center min-h-[44px]"
           >
             Read the Journal
           </Link>

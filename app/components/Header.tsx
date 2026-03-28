@@ -433,7 +433,7 @@ export function Header({
               aria-label={t('nav.menu', 'Menu')}
             >
               <Icons.Menu />
-              <span className="mt-1 text-[9px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300">
+              <span className="mt-1 text-[10px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300">
                 {t('nav.menu', 'Menu')}
               </span>
             </motion.button>
@@ -491,7 +491,7 @@ export function Header({
               title={t('nav.search', 'Search')}
             >
               <Icons.Search />
-              <span className="mt-1 text-[9px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
+              <span className="mt-1 text-[10px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
                 {t('nav.search', 'Search')}
               </span>
               <span className="absolute inset-0 bg-[#a87441]/0 hover:bg-[#a87441]/10 rounded-full transition-colors duration-300 -z-10" />
@@ -518,7 +518,7 @@ export function Header({
                 title={t('nav.account', 'Account')}
               >
                 <Icons.User />
-                <span className="mt-1 text-[9px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
+                <span className="mt-1 text-[10px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
                   {t('nav.account', 'Account')}
                 </span>
                 <span className="absolute inset-0 bg-[#a87441]/0 hover:bg-[#a87441]/10 rounded-full transition-colors duration-300 -z-10" />
@@ -584,7 +584,7 @@ function CartBagButton({
           aria-label={t('nav.cart', 'Bag')}
         >
           <Icons.Bag />
-          <span className="mt-1 text-[9px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
+          <span className="mt-1 text-[10px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
             {t('nav.cart', 'Bag')}
           </span>
         </motion.button>
@@ -603,7 +603,7 @@ function CartBagButton({
               title={t('nav.cart', 'Bag')}
             >
               <Icons.Bag />
-              <span className="mt-1 text-[9px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
+              <span className="mt-1 text-[10px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
                 {t('nav.cart', 'Bag')}
               </span>
 
@@ -633,7 +633,7 @@ function CartBagButton({
                         <p className="text-[#F0EAE6] text-[13px] font-medium leading-snug">
                           {t('cart.empty', 'Your bag is empty')}
                         </p>
-                        <p className="text-[#8B8076] text-[11px] mt-0.5 leading-relaxed">
+                        <p className="text-[#6B6058] text-[11px] mt-0.5 leading-relaxed">
                           {t(
                             'cart.emptyStats',
                             "Looks like you haven't added anything yet, let's get you started!",
@@ -651,7 +651,7 @@ function CartBagButton({
                   initial={{scale: 0}}
                   animate={{scale: 1}}
                   exit={{scale: 0}}
-                  className="absolute -top-0.5 right-0 lg:right-2 text-[9px] bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-white rounded-full w-4 h-4 flex items-center justify-center font-medium shadow-lg"
+                  className="absolute -top-0.5 right-0 lg:right-2 text-[10px] bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-white rounded-full w-4 h-4 flex items-center justify-center font-medium shadow-lg"
                 >
                   {cart.totalQuantity > 9 ? '9+' : cart.totalQuantity}
                 </motion.span>

@@ -186,7 +186,7 @@ function StatCard({
 
         {/* Label with stagger */}
         <motion.p
-          className="text-[11px] md:text-xs uppercase tracking-[0.2em] text-[#8B8076] mt-4"
+          className="text-[11px] md:text-xs uppercase tracking-[0.2em] text-[#6B6058] mt-4"
           initial={shouldReduceMotion ? {opacity: 1} : {opacity: 0, y: 10}}
           animate={isInView ? {opacity: 1, y: 0} : {}}
           transition={{delay: index * 0.1 + 0.6, duration: 0.4}}
@@ -335,7 +335,7 @@ export function StatsBar() {
                   isInView={true}
                 />
               </span>
-              <span className="text-[10px] uppercase tracking-[0.15em] text-[#8B8076]">
+              <span className="text-[10px] uppercase tracking-[0.15em] text-[#6B6058]">
                 {t(stat.translationKey, stat.label)}
               </span>
             </motion.div>

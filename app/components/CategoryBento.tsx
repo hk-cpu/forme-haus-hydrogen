@@ -129,6 +129,7 @@ function CategoryCard({
                   category.titleKey === 'category.phoneAccessories'
                     ? 'center 40%'
                     : 'center center',
+                willChange: 'transform',
               }}
               loading={index === 0 ? 'eager' : 'lazy'}
               onLoad={() => setImageLoaded(true)}

@@ -118,7 +118,7 @@ export default function LanguageSwitch() {
           className={`relative text-[11px] uppercase tracking-[0.15em] transition-all duration-500 ${
             !isArabic
               ? 'text-[#a87441] font-medium'
-              : 'text-[#F0EAE6]/50 font-light group-hover:text-[#F0EAE6]/80'
+              : 'text-[#F0EAE6]/70 font-light group-hover:text-[#F0EAE6]/80'
           }`}
         >
           EN
@@ -132,7 +132,7 @@ export default function LanguageSwitch() {
           className={`relative text-[12px] transition-all duration-500 ${
             isArabic
               ? 'text-[#a87441] font-medium'
-              : 'text-[#F0EAE6]/50 font-light group-hover:text-[#F0EAE6]/80'
+              : 'text-[#F0EAE6]/70 font-light group-hover:text-[#F0EAE6]/80'
           }`}
           style={{fontFamily: '"IBM Plex Sans Arabic", sans-serif'}}
         >

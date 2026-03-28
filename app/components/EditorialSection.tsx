@@ -90,7 +90,10 @@ function TopCard({item, index}: {item: BentoItem; index: number}) {
             style={{
               transform: isHovered ? 'scale(1.05)' : 'scale(1)',
               transformOrigin: 'center center',
+              willChange: 'transform',
             }}
+            width="800"
+            height="1000"
             sizes="(max-width: 768px) 100vw, 50vw"
             loading={index < 2 ? 'eager' : 'lazy'}
             decoding="async"
@@ -201,7 +204,10 @@ function BottomCard({item, index}: {item: BentoItem; index: number}) {
             style={{
               transform: isHovered ? 'scale(1.05)' : 'scale(1)',
               transformOrigin: 'center center',
+              willChange: 'transform',
             }}
+            width="800"
+            height="1000"
             sizes="(max-width: 768px) 100vw, 33vw"
             loading="lazy"
             decoding="async"
