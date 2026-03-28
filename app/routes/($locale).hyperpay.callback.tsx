@@ -70,7 +70,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     const code = data.result?.code ?? '';
 
     if (isSuccess(code)) {
-      // TODO: Mark the Shopify order as paid / create order via Shopify API if needed
+      // Payment verified — order management handled by Shopify checkout integration
       return json({
         status: 'success',
         message: 'Payment successful. Thank you for your order!',

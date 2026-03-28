@@ -155,11 +155,11 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
             </div>
           )}
 
-          {/* Coming Soon Badge */}
+          {/* Sold Out Badge */}
           {!product.availableForSale && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-sm">
               <span className="px-4 py-2 bg-white/90 text-[#4A3C31] text-xs uppercase tracking-wider rounded-full">
-                Coming Soon
+                Sold Out
               </span>
             </div>
           )}

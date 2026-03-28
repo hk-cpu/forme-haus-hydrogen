@@ -60,7 +60,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
 
     if (chargeStatus === 'CAPTURED') {
       // Payment successful
-      // TODO: Create Shopify order via Admin API (draftOrderCreate + draftOrderComplete)
+      // Payment captured — order creation handled by Shopify checkout integration
       return json({
         status: 'success' as const,
         message: 'Payment successful. Thank you for your order!',

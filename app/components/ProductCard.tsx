@@ -468,7 +468,7 @@ export function ProductCard({
           {/* Subtle Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10" />
 
-          {/* Coming Soon Overlay */}
+          {/* Sold Out Overlay */}
           {!product.availableForSale &&
             !product.priceRange?.minVariantPrice?.amount && (
               <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/40 backdrop-blur-sm">
@@ -477,7 +477,7 @@ export function ProductCard({
                   animate={{opacity: 1, scale: 1}}
                   className="font-serif text-xl italic text-white/90 tracking-wide"
                 >
-                  {t('product.comingSoon', 'Coming Soon')}
+                  {t('product.soldOut', 'Sold Out')}
                 </motion.span>
               </div>
             )}

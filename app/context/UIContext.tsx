@@ -428,11 +428,11 @@ export const menuData = {
 // ============================================================================
 
 export const promoMessages = [
-  {text: 'Complimentary Global Shipping over 300 SAR', href: '/shipping'},
-  {text: 'Discover the New Spring Collection', href: '/collections/new-in'},
+  {text: 'Free Shipping on Orders over 299 SAR', href: '/collections'},
+  {text: 'Discover the New Collection', href: '/collections/new-in'},
   {
-    text: 'Exclusive Online Pieces Now Available',
-    href: '/collections/online-exclusive',
+    text: 'Explore Our Curated Selection',
+    href: '/collections',
   },
-  {text: 'Book a Private Styling Appointment', href: '/appointments'},
+  {text: 'Phone Cases, Sunglasses & Accessories', href: '/collections'},
 ];

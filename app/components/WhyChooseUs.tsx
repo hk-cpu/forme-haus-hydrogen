@@ -108,7 +108,7 @@ const BRAND_PROMISES = [
     title: 'Elevated Experience',
     titleKey: 'whyUs.elevatedTitle',
     description:
-      'A refined journey from discovery to delivery. Free shipping across Saudi Arabia — GCC coming soon.',
+      'A refined journey from discovery to delivery. Free shipping across Saudi Arabia.',
     descKey: 'whyUs.elevatedDesc',
   },
 ];

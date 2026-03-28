@@ -47,8 +47,8 @@ export const translations = {
     'home.curatedForYou': 'Where Elegance Begins',
     'home.journal': 'Journal',
     'home.editorial.label': 'Editorial',
-    'home.newsletter.title': 'Launching soon',
-    'home.newsletter.subtitle': 'Join the list for exclusive updates',
+    'home.newsletter.title': 'Stay Connected',
+    'home.newsletter.subtitle': 'Join for exclusive updates and new arrivals',
     'home.shopCollection': 'Shop Collection',
 
     // Top Bar
@@ -278,7 +278,7 @@ export const translations = {
       'A curated mix of emerging and established brands worldwide.',
     'whyUs.elevatedTitle': 'Elevated Experience',
     'whyUs.elevatedDesc':
-      'An elevated journey from discovery to delivery. Free shipping in KSA — GCC coming soon.',
+      'An elevated journey from discovery to delivery. Free shipping across Saudi Arabia.',
 
     // Account
     'account.overview': 'Overview',
@@ -372,8 +372,8 @@ export const translations = {
     'home.curatedForYou': 'حيث تبدأ الأناقة',
     'home.journal': 'المجلة',
     'home.editorial.label': 'Editorial',
-    'home.newsletter.title': 'قريباً',
-    'home.newsletter.subtitle': 'سجّل لتصلك آخر التحديثات الحصرية',
+    'home.newsletter.title': 'ابقَ على تواصل',
+    'home.newsletter.subtitle': 'انضم لتصلك آخر التحديثات والوصولات الجديدة',
     'home.shopCollection': 'تسوّق المجموعة',
 
     // Top Bar
@@ -601,7 +601,7 @@ export const translations = {
     'whyUs.globalDesc': 'مزيج منسّق من العلامات الناشئة والراسخة حول العالم.',
     'whyUs.elevatedTitle': 'تجربة راقية',
     'whyUs.elevatedDesc':
-      'رحلة راقية من الاكتشاف إلى التوصيل. شحن مجاني في السعودية — دول الخليج قريباً.',
+      'رحلة راقية من الاكتشاف إلى التوصيل. شحن مجاني في جميع أنحاء السعودية.',
 
     // Account
     'account.overview': 'نظرة عامة',
