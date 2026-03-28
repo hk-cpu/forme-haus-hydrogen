@@ -22,6 +22,8 @@ export const translations = {
     'nav.contact': 'Contact Us',
     'nav.phoneCases': 'Phone Cases',
     'nav.sunglasses': 'Sunglasses',
+    'nav.ourStory': 'Our Story',
+    'nav.menu': 'Menu',
     'nav.search': 'Search',
     'nav.account': 'Account',
     'nav.cart': 'Bag',
@@ -336,17 +338,19 @@ export const translations = {
     // Navigation
     'nav.shop': 'تسوّق',
     'nav.collections': 'المجموعات',
-    'nav.newIn': 'جديدنا',
+    'nav.newIn': 'وصل حديثاً',
     'nav.designers': 'المصمّمون',
     'nav.clothing': 'ملابس',
     'nav.shoes': 'أحذية',
     'nav.home': 'الرئيسية',
     'nav.sale': 'تخفيضات',
     'nav.journal': 'المجلة',
-    'nav.about': 'من نحن',
+    'nav.about': 'قصتنا',
     'nav.contact': 'تواصل معنا',
     'nav.phoneCases': 'كفرات الجوال',
     'nav.sunglasses': 'نظارات شمسية',
+    'nav.ourStory': 'قصتنا',
+    'nav.menu': 'القائمة',
     'nav.search': 'بحث',
     'nav.account': 'حسابي',
     'nav.cart': 'الحقيبة',
@@ -358,7 +362,7 @@ export const translations = {
     'header.menu': 'القائمة',
 
     // Hero
-    'hero.cta': 'استكشف المجموعة',
+    'hero.cta': 'استكشفي المجموعة',
     'hero.scroll': 'مرّر',
 
     // Status Banner
@@ -422,7 +426,7 @@ export const translations = {
     'notify.success': 'شكراً! سنُعلمك عند التوفر.',
 
     // Product
-    'product.addToCart': 'أضف إلى الحقيبة',
+    'product.addToCart': 'أضيفي إلى الحقيبة',
     'product.soldOut': 'نفدت الكمية',
     'product.sale': 'تخفيض',
     'product.new': 'جديد',
@@ -440,7 +444,7 @@ export const translations = {
     'cart.title': 'حقيبتك',
     'cart.empty': 'حقيبتك فارغة',
     'cart.emptyStats': 'يبدو أنك لم تُضف شيئاً بعد. اكتشف مجموعتنا!',
-    'cart.continueShopping': 'متابعة التسوق',
+    'cart.continueShopping': 'تابعي التسوق',
     'cart.checkout': 'إتمام الشراء',
     'cart.subtotal': 'المجموع الفرعي',
     'cart.saudiAddr':
@@ -452,7 +456,7 @@ export const translations = {
     'cart.refundsNote': '(استرجاع خلال 7 أيام).',
     'cart.discount': 'كود الخصم',
     'cart.applyDiscount': 'تطبيق الخصم',
-    'cart.shopBestSellers': 'تسوّق الأكثر مبيعاً',
+    'cart.shopBestSellers': 'تسوّقي الأكثر مبيعاً',
     'cart.vatIncluded': '(شامل ضريبة القيمة المضافة)',
 
     // Search
@@ -460,7 +464,7 @@ export const translations = {
     'search.noResults': 'لا توجد نتائج',
 
     // Product Card
-    'product.addToWishlist': 'أضف للمفضلة',
+    'product.addToWishlist': 'أضيفي للمفضلة',
     'product.removeFromWishlist': 'إزالة من المفضلة',
     'product.viewDetails': 'عرض التفاصيل',
     'product.comingSoon': 'قريباً',
