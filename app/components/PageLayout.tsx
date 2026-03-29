@@ -381,6 +381,10 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
                 src="/brand/logo-icon-only.webp"
                 alt="Formé Haus"
                 className="h-16 w-auto object-contain opacity-90"
+                width={64}
+                height={64}
+                loading="lazy"
+                decoding="async"
               />
               <div className="flex flex-col">
                 <h3 className="font-serif text-xl text-[#F0EAE6] leading-tight">

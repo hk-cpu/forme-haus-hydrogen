@@ -11,9 +11,12 @@ interface BentoItem {
   url: string;
   title: string;
   subtitle?: string;
+  width: number;
+  height: number;
 }
 
 // 4 images — two-column editorial layout mapped to brand shots
+// Actual file dimensions: modern-essentials 933x1280, carry 1024x1024, sun-ready 1024x1024, new-arrivals 800x1072
 const BENTO_ITEMS: BentoItem[] = [
   {
     image: '/brand/edit-modern-essentials.webp',
@@ -21,6 +24,8 @@ const BENTO_ITEMS: BentoItem[] = [
     url: '/collections/sunglasses',
     title: 'Modern Essentials',
     subtitle: 'Timeless pieces for everyday elegance',
+    width: 933,
+    height: 1280,
   },
   {
     image: '/brand/edit-carry.webp',
@@ -28,6 +33,8 @@ const BENTO_ITEMS: BentoItem[] = [
     url: '/collections/phone-cases',
     title: 'Carry It Your Way',
     subtitle: 'Hands-free style',
+    width: 1024,
+    height: 1024,
   },
   {
     image: '/brand/edit-sun-ready.webp',
@@ -35,6 +42,8 @@ const BENTO_ITEMS: BentoItem[] = [
     url: '/collections/sunglasses',
     title: 'Sun Ready',
     subtitle: 'For golden hours',
+    width: 1024,
+    height: 1024,
   },
   {
     image: '/brand/edit-new-arrivals.webp',
@@ -42,6 +51,8 @@ const BENTO_ITEMS: BentoItem[] = [
     url: '/collections/new-in',
     title: 'New Arrivals',
     subtitle: 'Latest from the Haus',
+    width: 800,
+    height: 1072,
   },
 ];
 
@@ -92,8 +103,8 @@ function TopCard({item, index}: {item: BentoItem; index: number}) {
               transformOrigin: 'center center',
               willChange: 'transform',
             }}
-            width="800"
-            height="1000"
+            width={item.width}
+            height={item.height}
             sizes="(max-width: 768px) 100vw, 50vw"
             loading={index < 2 ? 'eager' : 'lazy'}
             decoding="async"
@@ -206,8 +217,8 @@ function BottomCard({item, index}: {item: BentoItem; index: number}) {
               transformOrigin: 'center center',
               willChange: 'transform',
             }}
-            width="800"
-            height="1000"
+            width={item.width}
+            height={item.height}
             sizes="(max-width: 768px) 100vw, 33vw"
             loading="lazy"
             decoding="async"

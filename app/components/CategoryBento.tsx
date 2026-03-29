@@ -12,6 +12,8 @@ interface Category {
   blurImage: string;
   url: string;
   isActive: boolean;
+  width: number;
+  height: number;
 }
 
 const CATEGORIES: Category[] = [
@@ -22,6 +24,8 @@ const CATEGORIES: Category[] = [
     blurImage: '/brand/new-in-blur.webp',
     url: '/collections/new-in',
     isActive: true,
+    width: 800,
+    height: 1450,
   },
   {
     id: 2,
@@ -30,6 +34,8 @@ const CATEGORIES: Category[] = [
     blurImage: '/brand/phone-accessories-blur.webp',
     url: '/collections/phone-cases',
     isActive: true,
+    width: 800,
+    height: 1193,
   },
   {
     id: 3,
@@ -38,6 +44,8 @@ const CATEGORIES: Category[] = [
     blurImage: '/brand/sunglasses-blur.webp',
     url: '/collections/sunglasses',
     isActive: true,
+    width: 800,
+    height: 1450,
   },
 ];
 
@@ -119,8 +127,8 @@ function CategoryCard({
               src={category.image}
               alt={t(category.titleKey)}
               className="absolute inset-0 w-full h-full object-cover transition-all duration-700"
-              width="800"
-              height="1000"
+              width={category.width}
+              height={category.height}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               style={{
                 opacity: mounted && !imageLoaded ? 0 : 1,

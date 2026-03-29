@@ -458,6 +458,7 @@ export function Header({
                   alt="FORMÉ HAUS"
                   className="transition-all duration-500 object-contain h-8 w-8 md:h-10 md:w-10 opacity-90 group-hover/logo:opacity-100"
                   fetchPriority="high"
+                  loading="eager"
                   width={40}
                   height={40}
                   decoding="sync"
