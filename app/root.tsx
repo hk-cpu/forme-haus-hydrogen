@@ -92,8 +92,8 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
  */
 export const links: LinksFunction = () => {
   return [
-    // Preload above-fold LCP hero image
-    {rel: 'preload', href: '/brand/logo-full.webp', as: 'image'},
+    // Preload above-fold LCP hero image for faster discovery
+    {rel: 'preload', href: '/brand/logo-full.webp', as: 'image', type: 'image/webp'},
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
@@ -210,7 +210,17 @@ function Layout({children}: {children?: React.ReactNode}) {
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
         <HreflangLinks />
         <link rel="stylesheet" href={styles}></link>
-        <link rel="stylesheet" href={futuristicStyles}></link>
+        {/* Non-critical CSS loaded async to avoid render-blocking */}
+        <link
+          rel="preload"
+          href={futuristicStyles}
+          as="style"
+          // @ts-ignore — onLoad triggers stylesheet swap after load
+          onLoad="this.onload=null;this.rel='stylesheet'"
+        />
+        <noscript>
+          <link rel="stylesheet" href={futuristicStyles} />
+        </noscript>
         {/* Deferred Google Fonts — loaded async to avoid render-blocking */}
         <link
           rel="preload"

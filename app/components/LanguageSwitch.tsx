@@ -113,12 +113,12 @@ export default function LanguageSwitch() {
           }}
         />
 
-        {/* EN label */}
+        {/* EN label — min 4.5:1 contrast ratio against dark header bg */}
         <span
           className={`relative text-[11px] uppercase tracking-[0.15em] transition-all duration-500 ${
             !isArabic
               ? 'text-[#a87441] font-medium'
-              : 'text-[#F0EAE6]/70 font-light group-hover:text-[#F0EAE6]/80'
+              : 'text-[#F0EAE6] font-light group-hover:text-white'
           }`}
         >
           EN
@@ -127,12 +127,12 @@ export default function LanguageSwitch() {
         {/* Divider line */}
         <span className="relative w-px h-3.5 bg-[#a87441]/40" />
 
-        {/* AR label */}
+        {/* AR label — min 4.5:1 contrast ratio against dark header bg */}
         <span
           className={`relative text-[12px] transition-all duration-500 ${
             isArabic
               ? 'text-[#a87441] font-medium'
-              : 'text-[#F0EAE6]/70 font-light group-hover:text-[#F0EAE6]/80'
+              : 'text-[#F0EAE6] font-light group-hover:text-white'
           }`}
           style={{fontFamily: '"IBM Plex Sans Arabic", sans-serif'}}
         >

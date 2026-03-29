@@ -75,8 +75,9 @@ export default function Hero() {
                   className="w-auto h-24 sm:h-32 md:h-40 lg:h-48 xl:h-56 object-contain relative z-10 drop-shadow-2xl"
                   loading="eager"
                   fetchPriority="high"
-                  width="640"
-                  height="332"
+                  decoding="sync"
+                  width={640}
+                  height={332}
                 />
 
                 {/* Decorative accent line */}
@@ -110,8 +111,9 @@ export default function Hero() {
                   className="w-auto h-24 sm:h-32 md:h-40 lg:h-48 xl:h-56 object-contain relative z-10 drop-shadow-2xl"
                   loading="eager"
                   fetchPriority="high"
-                  width="640"
-                  height="332"
+                  decoding="sync"
+                  width={640}
+                  height={332}
                 />
               </div>
             </div>
