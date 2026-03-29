@@ -417,13 +417,7 @@ export default function Collection() {
         /* Image hero for all other collections */
         <motion.div
           ref={heroRef}
-          className={`relative w-full overflow-hidden ${
-            override?.fit === 'cover'
-              ? 'bg-[#F0EAE6]'
-              : override?.fit === 'full-width'
-              ? override?.bgClass || 'bg-[#F5F0EB]'
-              : 'bg-[#0f0d0a]'
-          }`}
+          className="relative w-full overflow-hidden bg-[#F9F5F0]"
           style={{opacity: heroOpacity}}
         >
           {heroImage ? (
@@ -431,19 +425,7 @@ export default function Collection() {
               <motion.img
                 src={heroImage}
                 alt={collection.title}
-                className={
-                  override?.fit === 'full-width'
-                    ? 'w-full h-auto max-h-[50vh] md:max-h-[60vh] object-contain mx-auto block'
-                    : override?.fit === 'cover'
-                    ? `w-full h-auto max-h-[50vh] md:max-h-[60vh] object-contain ${
-                        override.position || 'object-center'
-                      } mx-auto block`
-                    : override?.fit === 'auto'
-                    ? `w-full h-auto max-h-[60vh] md:max-h-[70vh] object-contain ${
-                        override.position || 'object-center'
-                      } mx-auto block`
-                    : 'w-full h-auto max-h-[50vh] md:max-h-[60vh] object-contain mx-auto block'
-                }
+                className="w-full h-[38vh] md:h-[45vh] lg:h-[50vh] object-cover object-center block"
                 loading="eager"
                 fetchPriority="high"
                 style={{y: heroY}}
@@ -451,6 +433,10 @@ export default function Collection() {
                 animate={{scale: 1}}
                 transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}
               />
+              {/* Left edge fade */}
+              <div className="absolute inset-y-0 left-0 w-24 md:w-40 bg-gradient-to-r from-[#F9F5F0]/80 to-transparent pointer-events-none" />
+              {/* Right edge fade */}
+              <div className="absolute inset-y-0 right-0 w-24 md:w-40 bg-gradient-to-l from-[#F9F5F0]/80 to-transparent pointer-events-none" />
               {!hideTitle && (
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0f0d0a]/70 via-transparent to-transparent" />
               )}
