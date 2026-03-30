@@ -9,8 +9,10 @@ interface BentoItem {
   image: string;
   alt: string;
   url: string;
-  title: string;
-  subtitle?: string;
+  titleKey: any;
+  subtitleKey?: any;
+  defaultTitle: string;
+  defaultSubtitle?: string;
   width: number;
   height: number;
 }
@@ -22,8 +24,10 @@ const BENTO_ITEMS: BentoItem[] = [
     image: '/brand/edit-modern-essentials.webp',
     alt: 'Modern Essentials — woman in pinstripe blazer',
     url: '/collections/sunglasses',
-    title: 'Modern Essentials',
-    subtitle: 'Timeless pieces for everyday elegance',
+    titleKey: 'editorial.modernEssentials.title',
+    subtitleKey: 'editorial.modernEssentials.subtitle',
+    defaultTitle: 'Modern Essentials',
+    defaultSubtitle: 'Timeless pieces for everyday elegance',
     width: 933,
     height: 1280,
   },
@@ -31,8 +35,10 @@ const BENTO_ITEMS: BentoItem[] = [
     image: '/brand/edit-carry.webp',
     alt: 'Carry It Your Way — crossbody phone strap',
     url: '/collections/phone-cases',
-    title: 'Carry It Your Way',
-    subtitle: 'Hands-free style',
+    titleKey: 'editorial.carry.title',
+    subtitleKey: 'editorial.carry.subtitle',
+    defaultTitle: 'Carry It Your Way',
+    defaultSubtitle: 'Hands-free style',
     width: 1024,
     height: 1024,
   },
@@ -40,8 +46,10 @@ const BENTO_ITEMS: BentoItem[] = [
     image: '/brand/edit-sun-ready.webp',
     alt: 'Sun Ready — draped fabric detail',
     url: '/collections/sunglasses',
-    title: 'Sun Ready',
-    subtitle: 'For golden hours',
+    titleKey: 'editorial.sun.title',
+    subtitleKey: 'editorial.sun.subtitle',
+    defaultTitle: 'Sun Ready',
+    defaultSubtitle: 'For golden hours',
     width: 1024,
     height: 1024,
   },
@@ -49,8 +57,10 @@ const BENTO_ITEMS: BentoItem[] = [
     image: '/brand/edit-new-arrivals.webp',
     alt: 'New Arrivals — poolside luxury',
     url: '/collections/new-in',
-    title: 'New Arrivals',
-    subtitle: 'Latest from the Haus',
+    titleKey: 'editorial.new.title',
+    subtitleKey: 'editorial.new.subtitle',
+    defaultTitle: 'New Arrivals',
+    defaultSubtitle: 'Latest from the Haus',
     width: 800,
     height: 1072,
   },
@@ -59,7 +69,7 @@ const BENTO_ITEMS: BentoItem[] = [
 /**
  * TopCard — renders at natural image height with 3D tilt and parallax
  */
-function TopCard({item, index}: {item: BentoItem; index: number}) {
+function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
   const [isHovered, setIsHovered] = useState(false);
   const shouldReduceMotion = useReducedMotion();
   const {style: tiltStyle, handlers: tiltHandlers} = use3DTilt({
@@ -132,16 +142,16 @@ function TopCard({item, index}: {item: BentoItem; index: number}) {
               animate={{y: isHovered ? 0 : 4}}
               transition={{duration: 0.3, delay: 0.05}}
             >
-              {item.title}
+              {t(item.titleKey, item.defaultTitle)}
             </motion.h3>
-            {item.subtitle && (
+            {item.subtitleKey && (
               <motion.p
                 className="text-xs text-white/70 tracking-wide mt-1"
                 initial={false}
                 animate={{y: isHovered ? 0 : 4, opacity: isHovered ? 1 : 0.7}}
                 transition={{duration: 0.3, delay: 0.1}}
               >
-                {item.subtitle}
+                {t(item.subtitleKey, item.defaultSubtitle!)}
               </motion.p>
             )}
             <motion.div
@@ -176,7 +186,7 @@ function TopCard({item, index}: {item: BentoItem; index: number}) {
 /**
  * BottomCard — fills remaining column space with 3D effects
  */
-function BottomCard({item, index}: {item: BentoItem; index: number}) {
+function BottomCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
   const [isHovered, setIsHovered] = useState(false);
   const shouldReduceMotion = useReducedMotion();
   const {style: tiltStyle, handlers: tiltHandlers} = use3DTilt({
@@ -245,16 +255,16 @@ function BottomCard({item, index}: {item: BentoItem; index: number}) {
               animate={{y: isHovered ? 0 : 4}}
               transition={{duration: 0.3, delay: 0.05}}
             >
-              {item.title}
+              {t(item.titleKey, item.defaultTitle)}
             </motion.h3>
-            {item.subtitle && (
+            {item.subtitleKey && (
               <motion.p
                 className="text-xs text-white/70 tracking-wide mt-1"
                 initial={false}
                 animate={{y: isHovered ? 0 : 4, opacity: isHovered ? 1 : 0.7}}
                 transition={{duration: 0.3, delay: 0.1}}
               >
-                {item.subtitle}
+                {t(item.subtitleKey, item.defaultSubtitle!)}
               </motion.p>
             )}
             <motion.div
@@ -287,7 +297,7 @@ function BottomCard({item, index}: {item: BentoItem; index: number}) {
 }
 
 export default function EditorialSection() {
-  const {isRTL} = useTranslation();
+  const {t, isRTL} = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = useReducedMotion();
 
@@ -320,30 +330,41 @@ export default function EditorialSection() {
           className="flex justify-between items-end mb-6"
         >
           <h2 className="font-serif text-2xl md:text-3xl italic text-[#4A3C31]">
-            {'The Edit'.split('').map((char, i) => (
+            {isRTL ? (
               <motion.span
-                key={i}
                 initial={{opacity: 0, y: 20}}
                 whileInView={{opacity: 1, y: 0}}
                 viewport={{once: true}}
-                transition={{
-                  duration: 0.5,
-                  delay: i * 0.03,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
+                transition={{duration: 0.5, ease: [0.16, 1, 0.3, 1]}}
               >
-                {char === ' ' ? '\u00A0' : char}
+                {t('home.editorial', 'The Edit')}
               </motion.span>
-            ))}
+            ) : (
+              t('home.editorial', 'The Edit').split('').map((char, i) => (
+                <motion.span
+                  key={i}
+                  initial={{opacity: 0, y: 20}}
+                  whileInView={{opacity: 1, y: 0}}
+                  viewport={{once: true}}
+                  transition={{
+                    duration: 0.5,
+                    delay: i * 0.03,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  {char === ' ' ? '\u00A0' : char}
+                </motion.span>
+              ))
+            )}
           </h2>
         </motion.div>
 
         {/* Mobile: single column stack */}
         <div className="flex flex-col gap-3 md:hidden">
-          <TopCard item={BENTO_ITEMS[0]} index={0} />
-          <TopCard item={BENTO_ITEMS[1]} index={1} />
-          <TopCard item={BENTO_ITEMS[2]} index={2} />
-          <TopCard item={BENTO_ITEMS[3]} index={3} />
+          <TopCard item={BENTO_ITEMS[0]} index={0} t={t} />
+          <TopCard item={BENTO_ITEMS[1]} index={1} t={t} />
+          <TopCard item={BENTO_ITEMS[2]} index={2} t={t} />
+          <TopCard item={BENTO_ITEMS[3]} index={3} t={t} />
         </div>
 
         {/*
@@ -356,8 +377,8 @@ export default function EditorialSection() {
             className="flex-1 min-w-0 flex flex-col gap-3"
             style={shouldReduceMotion ? {} : {y: leftColY}}
           >
-            <TopCard item={BENTO_ITEMS[0]} index={0} />
-            <BottomCard item={BENTO_ITEMS[2]} index={2} />
+            <TopCard item={BENTO_ITEMS[0]} index={0} t={t} />
+            <BottomCard item={BENTO_ITEMS[2]} index={2} t={t} />
           </motion.div>
 
           {/* Right column with parallax */}
@@ -365,8 +386,8 @@ export default function EditorialSection() {
             className="flex-1 min-w-0 flex flex-col gap-3"
             style={shouldReduceMotion ? {} : {y: rightColY}}
           >
-            <TopCard item={BENTO_ITEMS[1]} index={1} />
-            <BottomCard item={BENTO_ITEMS[3]} index={3} />
+            <TopCard item={BENTO_ITEMS[1]} index={1} t={t} />
+            <BottomCard item={BENTO_ITEMS[3]} index={3} t={t} />
           </motion.div>
         </div>
       </div>

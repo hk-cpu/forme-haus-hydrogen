@@ -189,8 +189,10 @@ export function Header({
         backdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
       }}
     >
-      <div className="relative z-50 mx-auto flex w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-10">
-        <nav className="hidden items-center gap-4 md:flex lg:gap-8">
+      <div className="relative z-50 mx-auto flex w-full max-w-[1440px] items-center px-4 sm:px-6 lg:px-10">
+        {/* Left Side: Navigation & Mobile Menu */}
+        <div className="flex flex-1 items-center justify-start">
+          <nav className="hidden items-center gap-4 md:flex lg:gap-8">
           {items.map((item: any) => {
             const to =
               item.title === 'CATALOG' || item.title === 'Catalog'
@@ -236,9 +238,11 @@ export function Header({
             </span>
           </button>
           <LanguageSwitch />
+          </div>
         </div>
 
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        {/* Center: Logo */}
+        <div className="flex shrink-0 items-center justify-center pointer-events-auto">
           <Link to="/" className="block">
             <img
               src="/brand/logo-icon-only-opt.webp"
@@ -253,7 +257,8 @@ export function Header({
           </Link>
         </div>
 
-        <div className="flex items-center gap-3 md:gap-4">
+        {/* Right Side: Account, Cart, Search, Language */}
+        <div className="flex flex-1 items-center justify-end gap-3 md:gap-4">
           <div className="mr-1 hidden md:flex">
             <LanguageSwitch />
           </div>

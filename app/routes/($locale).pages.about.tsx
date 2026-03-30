@@ -3,6 +3,7 @@ import {motion, useInView} from 'framer-motion';
 import {useRef} from 'react';
 
 import {routeHeaders} from '~/data/cache';
+import {useTranslation} from '~/hooks/useTranslation';
 
 export const headers = routeHeaders;
 
@@ -36,8 +37,10 @@ function FadeInSection({
 }
 
 export default function AboutPage() {
+  const {isRTL} = useTranslation();
+
   return (
-    <div className="min-h-screen bg-[#F9F5F0]">
+    <div className="min-h-screen bg-[#F9F5F0]" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Hero Section — Text-only with elegant spacing */}
       <div className="pt-20 md:pt-28 pb-12 md:pb-16 bg-[#F9F5F0]">
         <div className="max-w-[860px] mx-auto px-6 md:px-12 text-center">
@@ -47,7 +50,7 @@ export default function AboutPage() {
             animate={{opacity: 1, y: 0}}
             transition={{delay: 0.2, duration: 0.6}}
           >
-            Est. Riyadh
+            {isRTL ? 'تأسست في الرياض' : 'Est. Riyadh'}
           </motion.span>
           <motion.h1
             className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#4A3C31] tracking-wider"
@@ -55,7 +58,7 @@ export default function AboutPage() {
             animate={{opacity: 1, y: 0}}
             transition={{delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1]}}
           >
-            Our Story
+            {isRTL ? 'قصتنا' : 'Our Story'}
           </motion.h1>
           <motion.div
             className="mx-auto mt-6 h-px w-16 bg-gradient-to-r from-transparent via-[#a87441] to-transparent"
@@ -70,56 +73,68 @@ export default function AboutPage() {
       <div className="max-w-[860px] mx-auto px-6 md:px-12 pb-16 md:pb-24">
         {/* Opening */}
         <FadeInSection>
-          <p className="font-serif text-xl md:text-2xl text-[#4A3C31] leading-relaxed text-left mb-4">
-            Formé Haus began in Riyadh with a desire to offer a more considered
-            approach to modern luxury, where selection is intentional, and
-            elegance is enduring.
+          <p className="font-serif text-xl md:text-2xl text-[#4A3C31] leading-relaxed mb-4">
+            {isRTL ? (
+              'انطلقت Formé Haus في الرياض من رغبة في تقديم منظور أكثر وعياً للرفاهية العصرية — حيث يكون الاختيار مقصوداً، وتكون الأناقة تعبيراً هادئاً لا يزول.'
+            ) : (
+              'Formé Haus began in Riyadh with a desire to offer a more considered approach to modern luxury, where selection is intentional, and elegance is enduring.'
+            )}
           </p>
         </FadeInSection>
 
         <FadeInSection delay={0.1}>
-          <div className="mt-8 mb-14 h-px w-20 bg-gradient-to-r from-[#a87441]/40 to-transparent" />
+          <div className={`mt-8 mb-14 h-px w-20 bg-gradient-to-r ${isRTL ? 'from-transparent to-[#a87441]/40' : 'from-[#a87441]/40 to-transparent'}`} />
         </FadeInSection>
 
         {/* Body */}
         <div className="space-y-8 text-[15px] md:text-base text-[#4A3C31]/80 leading-[1.85] font-light">
           <FadeInSection>
             <p>
-              Founded as a proudly woman-led business, Formé Haus reflects a
-              distinctly feminine perspective shaped by intuition, refinement,
-              and authenticity.
+              {isRTL
+                ? 'تأسست Formé Haus كمنصة تقودها امرأة بفخر، حاملةً رؤية أنثوية مميزة تتشكل من الحدس، والرقي، والأصالة.'
+                : 'Founded as a proudly woman-led business, Formé Haus reflects a distinctly feminine perspective shaped by intuition, refinement, and authenticity.'}
             </p>
           </FadeInSection>
 
           <FadeInSection>
             <p>
-              We curate international designers whose work embodies integrity,
-              craftsmanship, and lasting design. Each piece is selected for its
-              presence, for the way it moves, feels, and integrates seamlessly
-              into a woman&apos;s everyday expression.
+              {isRTL
+                ? 'ننسّق ونختار مصممين عالميين تجسد أعمالهم النزاهة، والحرفية، والتصميم الذي يدوم. تُنتقى كل قطعة لما تحمله من حضور — لطريقة حركتها، وملمسها، وكيف تصبح امتداداً طبيعياً لتعبير المرأة اليومي.'
+                : 'We curate international designers whose work embodies integrity, craftsmanship, and lasting design. Each piece is selected for its presence, for the way it moves, feels, and integrates seamlessly into a woman\'s everyday expression.'}
             </p>
           </FadeInSection>
 
           <FadeInSection>
             <p>
-              Our edits are released in limited quantities, preserving
-              distinction and balance. We are drawn to balanced silhouettes,
-              tactile textures, and craftsmanship defined by quiet confidence.
+              {isRTL
+                ? 'تُقدَّم اختياراتنا ضمن إصدارات محدودة، حفاظاً على التفرّد والتوازن. وننجذب إلى توازن الخطوط، وغنى الملامس، وحرفية تعبّر عن ثقة هادئة لا تحتاج إلى لفت الانتباه.'
+                : 'Our edits are released in limited quantities, preserving distinction and balance. We are drawn to balanced silhouettes, tactile textures, and craftsmanship defined by quiet confidence.'}
             </p>
           </FadeInSection>
 
           <FadeInSection>
             <p>
-              At its core, Formé Haus is guided by the belief that true elegance
-              is revealed through thoughtful selection and in choosing only what
-              endures.
+              {isRTL
+                ? 'في جوهرها، تستند Formé Haus إلى رؤية ترى أن الأناقة الحقيقية تنكشف من خلال الاختيار الواعي، ومن خلال انتقاء ما يدوم فقط.'
+                : 'At its core, Formé Haus is guided by the belief that true elegance is revealed through thoughtful selection and in choosing only what endures.'}
             </p>
           </FadeInSection>
 
           <FadeInSection>
             <p className="font-serif text-lg md:text-xl text-[#4A3C31] italic py-4">
-              Formé Haus is more than an online destination. It is a curated
-              perspective — where essence meets elegance.
+              {isRTL ? (
+                <>
+                  Formé Haus ليست مجرد وجهة رقمية.
+                  <br />
+                  إنها رؤية منسّقة — حيث يلتقي الجوهر بالأناقة.
+                </>
+              ) : (
+                <>
+                  Formé Haus is more than an online destination.
+                  <br />
+                  It is a curated perspective — where essence meets elegance.
+                </>
+              )}
             </p>
           </FadeInSection>
         </div>
@@ -128,10 +143,12 @@ export default function AboutPage() {
         <FadeInSection className="my-16 md:my-20">
           <div className="py-10 md:py-14 border-y border-[#a87441]/15">
             <span className="text-[10px] uppercase tracking-[0.4em] text-[#a87441] block mb-4">
-              Curated with intention
+              {isRTL ? 'مختارات بعناية' : 'Curated with intention'}
             </span>
             <p className="font-serif text-2xl md:text-3xl text-[#4A3C31] italic leading-relaxed max-w-lg">
-              Where every detail is considered and nothing is left to chance.
+              {isRTL
+                ? 'حيث يُراعى كل تفصيل ولا يُترك شيء للصدفة.'
+                : 'Where every detail is considered and nothing is left to chance.'}
             </p>
           </div>
         </FadeInSection>
@@ -143,35 +160,53 @@ export default function AboutPage() {
               Formé Haus
             </span>
             <h2 className="font-serif text-3xl md:text-4xl text-[#4A3C31] tracking-wider">
-              Our Philosophy
+              {isRTL ? 'فلسفتنا' : 'Our Philosophy'}
             </h2>
-            <div className="mt-5 h-px w-16 bg-gradient-to-r from-[#a87441]/40 to-transparent" />
+            <div className={`mt-5 h-px w-16 bg-gradient-to-r ${isRTL ? 'from-transparent to-[#a87441]/40' : 'from-[#a87441]/40 to-transparent'}`} />
           </div>
         </FadeInSection>
 
         <div className="space-y-8 text-[15px] md:text-base text-[#4A3C31]/80 leading-[1.85] font-light">
           <FadeInSection>
-            <p>We believe elegance is a presence, not a performance.</p>
-          </FadeInSection>
-
-          <FadeInSection>
             <p>
-              It reveals itself in quiet confidence, in measured movement, in
-              the assurance of knowing who you are.
+              {isRTL
+                ? 'الأناقة، في رؤيتنا، ليست استعراضاً… بل حضور يُحَسّ ولا يُعلن.'
+                : 'We believe elegance is a presence, not a performance.'}
             </p>
           </FadeInSection>
 
           <FadeInSection>
             <p>
-              The pieces we are drawn to feel instinctive rather than imposed,
-              effortless, composed, and aligned with a woman&apos;s natural
-              rhythm.
+              {isRTL
+                ? 'تتجلّى في ثقة هادئة، في حركة محسوبة، وفي يقين داخلي لا يحتاج إلى إثبات.'
+                : 'It reveals itself in quiet confidence, in measured movement, in the assurance of knowing who you are.'}
+            </p>
+          </FadeInSection>
+
+          <FadeInSection>
+            <p>
+              {isRTL
+                ? 'ننجذب إلى قطع تبدو وكأنها وُجدت لتكون — تنتمي بطبيعتها، منسابة، متزنة، ومنسجمة مع إيقاع المرأة وطبيعتها.'
+                : 'The pieces we are drawn to feel instinctive rather than imposed, effortless, composed, and aligned with a woman\'s natural rhythm.'}
             </p>
           </FadeInSection>
 
           <FadeInSection>
             <p className="font-serif text-lg md:text-xl text-[#4A3C31] pt-4">
-              Luxury, to us, is thoughtful. Personal. Enduring.
+              {isRTL ? (
+                <>
+                  أما الرفاهية، فليست في الكثرة، بل في الاختيار.<br />
+                  واعية.<br />
+                  شخصية.<br />
+                  وتدوم.
+                </>
+              ) : (
+                <>
+                  Luxury, to us, is thoughtful.<br />
+                  Personal.<br />
+                  Enduring.
+                </>
+              )}
             </p>
           </FadeInSection>
         </div>

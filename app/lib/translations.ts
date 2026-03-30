@@ -203,6 +203,16 @@ export const translations = {
     'menu.everydayElegance': 'Everyday Elegance',
     'menu.cta.shopTheEdit': 'Shop The Edit',
 
+    // Editorial Section
+    'editorial.modernEssentials.title': 'Modern Essentials',
+    'editorial.modernEssentials.subtitle': 'Timeless pieces for everyday elegance',
+    'editorial.carry.title': 'Carry It Your Way',
+    'editorial.carry.subtitle': 'Hands-free style',
+    'editorial.sun.title': 'Sun Ready',
+    'editorial.sun.subtitle': 'For golden hours',
+    'editorial.new.title': 'New Arrivals',
+    'editorial.new.subtitle': 'Latest from the Haus',
+
     // Collections
     'menu.capsule': 'Capsule Collection',
     'menu.seasonal': 'Seasonal Collection',
@@ -528,6 +538,16 @@ export const translations = {
     'menu.taupeEdit': 'مختارات البيج',
     'menu.everydayElegance': 'أناقة يومية',
     'menu.cta.shopTheEdit': 'تسوّق المختارات',
+
+    // Editorial Section
+    'editorial.modernEssentials.title': 'أساسيات عصرية',
+    'editorial.modernEssentials.subtitle': 'قطع خالدة لأناقة يومية',
+    'editorial.carry.title': 'تألقي بأسلوبك',
+    'editorial.carry.subtitle': 'أناقة عملية ومريحة',
+    'editorial.sun.title': 'جاهزة للشمس',
+    'editorial.sun.subtitle': 'للساعات الذهبية',
+    'editorial.new.title': 'وصل حديثاً',
+    'editorial.new.subtitle': 'أحدث إضافة لمجموعتنا',
 
     // Collections
     'menu.capsule': 'مجموعة كبسولة',
