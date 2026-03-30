@@ -1,5 +1,4 @@
 import {forwardRef, useState} from 'react';
-import {motion} from 'framer-motion';
 import {Link} from '@remix-run/react';
 import clsx from 'clsx';
 
@@ -7,13 +6,7 @@ import {missingClass} from '~/lib/utils';
 
 // Loading spinner component
 const LoadingSpinner = () => (
-  <motion.svg
-    animate={{rotate: 360}}
-    transition={{duration: 1, repeat: Infinity, ease: 'linear'}}
-    className="w-4 h-4 mr-2"
-    viewBox="0 0 24 24"
-    fill="none"
-  >
+  <svg className="mr-2 h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
     <circle
       cx="12"
       cy="12"
@@ -33,7 +26,7 @@ const LoadingSpinner = () => (
         repeatCount="indefinite"
       />
     </circle>
-  </motion.svg>
+  </svg>
 );
 
 export const Button = forwardRef(
@@ -74,9 +67,6 @@ export const Button = forwardRef(
       const id = Date.now();
 
       setRipples((prev) => [...prev, {x, y, id}]);
-      setTimeout(() => {
-        setRipples((prev) => prev.filter((ripple) => ripple.id !== id));
-      }, 800);
 
       props.onClick?.(e);
     };
@@ -131,18 +121,19 @@ export const Button = forwardRef(
       >
         {/* Ripple effects */}
         {ripples.map((ripple) => (
-          <motion.span
+          <span
             key={ripple.id}
-            initial={{scale: 0, opacity: 0.5}}
-            animate={{scale: 4, opacity: 0}}
-            transition={{duration: 0.6}}
             className="absolute rounded-full bg-white/30 pointer-events-none"
             style={{
               left: ripple.x - 10,
               top: ripple.y - 10,
               width: 20,
               height: 20,
+              animation: 'button-ripple 600ms ease-out forwards',
             }}
+            onAnimationEnd={() =>
+              setRipples((prev) => prev.filter((item) => item.id !== ripple.id))
+            }
           />
         ))}
 

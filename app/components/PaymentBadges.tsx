@@ -3,8 +3,6 @@
  * Clean horizontal single-line layout: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tamara, Tabby
  */
 
-import {motion} from 'framer-motion';
-
 function MadaIcon() {
   return (
     <svg viewBox="0 0 60 20" className="h-5 w-auto" aria-label="Mada">
@@ -158,11 +156,10 @@ export function PaymentLinkButton({
   onClick?: () => void;
 }) {
   return (
-    <motion.button
-      whileHover={{scale: 1.02}}
-      whileTap={{scale: 0.98}}
+    <button
       onClick={onClick}
       className="w-full py-3 px-4 bg-[#1B5E20] hover:bg-[#2E7D32] text-white rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-colors"
+      type="button"
     >
       <svg
         width="18"
@@ -177,7 +174,7 @@ export function PaymentLinkButton({
       </svg>
       Pay {amount} {currency} via Payment Link
       <span className="text-[10px] opacity-70">(Trial)</span>
-    </motion.button>
+    </button>
   );
 }
 

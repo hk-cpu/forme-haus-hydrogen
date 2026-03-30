@@ -1,5 +1,5 @@
 ﻿import {Await, useRouteLoaderData, useLocation} from '@remix-run/react';
-import {Suspense, useEffect, useMemo, useCallback, useState, lazy} from 'react';
+import {Suspense, useEffect, useState, lazy} from 'react';
 import {CartForm} from '@shopify/hydrogen';
 
 import {type LayoutQuery} from 'storefrontapi.generated';
@@ -11,8 +11,6 @@ import {type EnhancedMenu, useIsHomePath} from '~/lib/utils';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
 import type {RootLoader} from '~/root';
 import {Header as FormeHeader} from '~/components/Header';
-import Silk from '~/components/Silk';
-import Atmosphere from '~/components/Atmosphere';
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
 import {Newsletter} from '~/components/Newsletter';
@@ -61,21 +59,42 @@ export function PageLayout({children, layout}: LayoutProps) {
   const isHome = useIsHomePath();
   const {t, isRTL} = useTranslation();
   const [isDesktop, setIsDesktop] = useState(false);
+  const [shouldRenderMobileNav, setShouldRenderMobileNav] = useState(false);
 
-  // Check for desktop breakpoint (md: 768px)
+  // Track viewport so desktop avoids mobile-only chunks.
   useEffect(() => {
-    const checkDesktop = () => {
-      setIsDesktop(window.innerWidth >= 768);
-    };
-    checkDesktop();
-    window.addEventListener('resize', checkDesktop);
-    return () => window.removeEventListener('resize', checkDesktop);
-  }, []);
+    let idleId: number | null = null;
 
-  // Filter logic for Silk background - pages where Silk should be hidden
-  const shouldShowSilk = useMemo(() => {
-    return !location.pathname.includes('/collections/sunglasses');
-  }, [location.pathname]);
+    const updateViewportState = () => {
+      const desktop = window.innerWidth >= 768;
+      setIsDesktop(desktop);
+      setShouldRenderMobileNav(false);
+
+      if (desktop) return;
+
+      if (typeof requestIdleCallback !== 'undefined') {
+        idleId = requestIdleCallback(() => setShouldRenderMobileNav(true), {
+          timeout: 1500,
+        });
+      } else {
+        idleId = window.setTimeout(() => setShouldRenderMobileNav(true), 400);
+      }
+    };
+
+    updateViewportState();
+    window.addEventListener('resize', updateViewportState);
+
+    return () => {
+      window.removeEventListener('resize', updateViewportState);
+      if (idleId !== null) {
+        if (typeof cancelIdleCallback !== 'undefined') {
+          cancelIdleCallback(idleId);
+        } else {
+          clearTimeout(idleId);
+        }
+      }
+    };
+  }, []);
 
   // Check if we're on a collection page to adjust padding
   const isCollectionPage = location.pathname.includes('/collections/');
@@ -85,19 +104,10 @@ export function PageLayout({children, layout}: LayoutProps) {
   return (
     <>
       <div className="flex flex-col min-h-screen relative">
-        {/* Background Layer (Z-0) - Filtered by page */}
+        {/* Background Layer (Z-0) */}
         <div className="fixed inset-0 pointer-events-none z-0">
-          {isDesktop && shouldShowSilk && (
-            <div
-              className="absolute inset-0"
-              style={{transition: 'opacity 0.8s ease'}}
-            >
-              <Silk color="#AD9686" speed={isHome ? 5 : 3} />
-            </div>
-          )}
-          {isDesktop && shouldShowSilk && (
-            <Atmosphere count={60} color="#AD9686" size={0.008} opacity={0.2} />
-          )}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,116,65,0.16),transparent_34%),linear-gradient(180deg,#181513_0%,#121212_60%,#0f0f0f_100%)]" />
+          <div className="absolute inset-x-0 top-0 h-[28rem] bg-[radial-gradient(circle_at_center,rgba(240,234,230,0.05),transparent_70%)]" />
         </div>
 
         <div className="">
@@ -196,10 +206,12 @@ export function PageLayout({children, layout}: LayoutProps) {
           </a>
         )}
 
-        {/* Mobile bottom navigation — critical for GCC/Saudi mobile-first market */}
-        <Suspense fallback={null}>
-          <MobileBottomNav />
-        </Suspense>
+        {/* Mobile bottom navigation — load only on small screens after idle */}
+        {shouldRenderMobileNav ? (
+          <Suspense fallback={null}>
+            <MobileBottomNav />
+          </Suspense>
+        ) : null}
       </div>
     </>
   );
@@ -236,12 +248,26 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
 
   return (
     <>
-      <Suspense fallback={null}>
-        <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
-        <NavigationMenu />
-        <SearchOverlay />
-        <AccountOverlay />
-      </Suspense>
+      {isCartOpen ? (
+        <Suspense fallback={null}>
+          <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
+        </Suspense>
+      ) : null}
+      {state.isMenuOpen ? (
+        <Suspense fallback={null}>
+          <NavigationMenu />
+        </Suspense>
+      ) : null}
+      {state.isSearchOpen ? (
+        <Suspense fallback={null}>
+          <SearchOverlay />
+        </Suspense>
+      ) : null}
+      {state.isLoginOpen ? (
+        <Suspense fallback={null}>
+          <AccountOverlay />
+        </Suspense>
+      ) : null}
       <FormeHeader
         title={title}
         menu={menu}
@@ -378,11 +404,11 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
           <div className="flex flex-col items-center md:items-start gap-3">
             <div className="flex items-center gap-4">
               <img
-                src="/brand/logo-icon-only.webp"
+                src="/brand/logo-icon-only-opt.webp"
                 alt="Formé Haus"
                 className="h-16 w-auto object-contain opacity-90"
-                width={64}
-                height={64}
+                width={128}
+                height={127}
                 loading="lazy"
                 decoding="async"
               />

@@ -25,7 +25,7 @@ import {
   type SeoConfig,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
-import {useEffect, useState, useCallback, lazy, Suspense} from 'react';
+import {useEffect, useState, lazy, Suspense} from 'react';
 
 import {PageLayout} from '~/components/PageLayout';
 import {GenericError} from '~/components/GenericError';
@@ -96,19 +96,14 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 export const links: LinksFunction = () => {
   return [
     // Preload LCP hero logo — type hint lets browser skip content-sniffing
-    {rel: 'preload', href: '/brand/logo-full.webp', as: 'image', type: 'image/webp'},
+    {rel: 'preload', href: '/brand/logo-full-opt.webp', as: 'image', type: 'image/webp'},
     // Preload first category card image — eagerly loaded, visible just below hero
-    {rel: 'preload', href: '/brand/new-in.webp', as: 'image', type: 'image/webp'},
+    {rel: 'preload', href: '/brand/new-in-opt.webp', as: 'image', type: 'image/webp'},
     // Preconnect — establishes early TCP+TLS for critical origins
     {rel: 'preconnect', href: 'https://cdn.shopify.com'},
-    {rel: 'preconnect', href: 'https://fonts.googleapis.com'},
-    {rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' as const},
     // dns-prefetch — fallback for browsers that skip preconnect; zero cost, saves 20–200ms on slow networks
     {rel: 'dns-prefetch', href: 'https://cdn.shopify.com'},
-    {rel: 'dns-prefetch', href: 'https://fonts.googleapis.com'},
-    {rel: 'dns-prefetch', href: 'https://fonts.gstatic.com'},
     {rel: 'icon', type: 'image/png', href: favicon},
-    // Google Fonts deferred to Layout <head> to avoid render-blocking
   ];
 };
 
@@ -220,22 +215,6 @@ function Layout({children}: {children?: React.ReactNode}) {
           <link rel="stylesheet" href={futuristicStyles} />
         </noscript>
         {/* Deferred Google Fonts — loaded async to avoid render-blocking */}
-        <link
-          rel="preload"
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@300;400;600&display=swap"
-          as="style"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@300;400;600&display=swap"
-          media="print"
-        />
-        <script
-          nonce={nonce}
-          dangerouslySetInnerHTML={{
-            __html: `document.querySelectorAll('link[media="print"]').forEach(function(l){l.onload=function(){l.media='all'}})`,
-          }}
-        />
         <style
           dangerouslySetInnerHTML={{
             __html: `
@@ -267,12 +246,49 @@ function Layout({children}: {children?: React.ReactNode}) {
         )}
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
-        <Suspense fallback={null}>
-          <SmoothScroll />
-        </Suspense>
+        <DesktopSmoothScroll />
       </body>
     </html>
   );
+}
+
+function DesktopSmoothScroll() {
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    let idleId: number | null = null;
+    const desktop = window.matchMedia('(min-width: 768px)').matches;
+    const finePointer = window.matchMedia('(pointer: fine)').matches;
+    const reducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches;
+
+    if (!desktop || !finePointer || reducedMotion) {
+      return;
+    }
+
+    if (typeof requestIdleCallback !== 'undefined') {
+      idleId = requestIdleCallback(() => setEnabled(true), {timeout: 2000});
+    } else {
+      idleId = window.setTimeout(() => setEnabled(true), 600);
+    }
+
+    return () => {
+      if (idleId !== null) {
+        if (typeof cancelIdleCallback !== 'undefined') {
+          cancelIdleCallback(idleId);
+        } else {
+          clearTimeout(idleId);
+        }
+      }
+    };
+  }, []);
+
+  return enabled ? (
+    <Suspense fallback={null}>
+      <SmoothScroll />
+    </Suspense>
+  ) : null;
 }
 
 export default function App() {

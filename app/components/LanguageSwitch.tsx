@@ -1,6 +1,4 @@
 import {useNavigate, useLocation, useRouteLoaderData} from '@remix-run/react';
-import {motion, AnimatePresence} from 'framer-motion';
-import {useState} from 'react';
 
 import type {RootLoader} from '~/root';
 import {DEFAULT_LOCALE, buildLocalePath} from '~/lib/utils';
@@ -10,109 +8,41 @@ export default function LanguageSwitch() {
   const locale = rootData?.selectedLocale ?? DEFAULT_LOCALE;
   const navigate = useNavigate();
   const location = useLocation();
-  const [isTransitioning, setIsTransitioning] = useState(false);
-
-  // Check if current language is Arabic
   const isArabic = locale.language === 'AR';
 
   function toggleLanguage() {
-    if (isTransitioning) return;
-
     const currentPath = location.pathname;
     const search = location.search || '';
+    const nextPath = isArabic
+      ? buildLocalePath(currentPath)
+      : buildLocalePath(currentPath, '/ar-sa');
 
-    // Start transition
-    setIsTransitioning(true);
-
-    // Add a small delay to show transition effect
-    setTimeout(() => {
-      const nextPath = isArabic
-        ? buildLocalePath(currentPath)
-        : buildLocalePath(currentPath, '/ar-sa');
-
-      navigate(`${nextPath}${search}`);
-
-      // Reset transitioning after navigation completes
-      setTimeout(() => setIsTransitioning(false), 300);
-    }, 150);
+    navigate(`${nextPath}${search}`);
   }
 
   return (
-    <>
-      {/* Language Transition Overlay */}
-      <AnimatePresence>
-        {isTransitioning && (
-          <motion.div
-            initial={{opacity: 0}}
-            animate={{opacity: 1}}
-            exit={{opacity: 0}}
-            transition={{duration: 0.2}}
-            className="fixed inset-0 z-[9999] bg-[#121212] flex items-center justify-center pointer-events-auto"
-          >
-            <motion.div
-              initial={{scale: 0.9, opacity: 0}}
-              animate={{scale: 1, opacity: 1}}
-              exit={{scale: 1.1, opacity: 0}}
-              transition={{duration: 0.3, ease: [0.22, 1, 0.36, 1]}}
-              className="text-center"
-            >
-              <img
-                src="/brand/logo-icon-only.webp"
-                alt="Formé Haus"
-                className="w-16 h-16 mx-auto mb-4 opacity-80"
-              />
-              <motion.div
-                className="w-32 h-[2px] bg-gradient-to-r from-transparent via-[#a87441] to-transparent mx-auto"
-                initial={{scaleX: 0}}
-                animate={{scaleX: 1}}
-                transition={{duration: 0.4, ease: 'easeInOut'}}
-              />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <button
-        onClick={toggleLanguage}
-        disabled={isTransitioning}
-        className="relative flex items-center gap-2.5 px-4 py-2 rounded-full border border-[#a87441]/30 hover:border-[#a87441]/70 bg-[#a87441]/5 hover:bg-[#a87441]/15 transition-all duration-500 group overflow-hidden cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-        aria-label={isArabic ? 'Switch to English' : 'التبديل إلى العربية'}
+    <button
+      onClick={toggleLanguage}
+      className="relative flex items-center gap-2.5 rounded-full border border-[#a87441]/30 bg-[#a87441]/5 px-4 py-2 transition-all duration-300 hover:border-[#a87441]/70 hover:bg-[#a87441]/15"
+      aria-label={isArabic ? 'Switch to English' : 'التبديل إلى العربية'}
+      type="button"
+    >
+      <span
+        className={`text-[11px] uppercase tracking-[0.15em] ${
+          !isArabic ? 'font-medium text-[#a87441]' : 'font-light text-[#F0EAE6]'
+        }`}
       >
-        {/* Subtle background glow on hover */}
-        <motion.div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          style={{
-            background:
-              'radial-gradient(ellipse at center, rgba(168, 116, 65, 0.12) 0%, transparent 70%)',
-          }}
-        />
-
-        {/* EN label — min 4.5:1 contrast ratio against dark header bg */}
-        <span
-          className={`relative text-[11px] uppercase tracking-[0.15em] transition-all duration-500 ${
-            !isArabic
-              ? 'text-[#a87441] font-medium'
-              : 'text-[#F0EAE6] font-light group-hover:text-white'
-          }`}
-        >
-          EN
-        </span>
-
-        {/* Divider line */}
-        <span className="relative w-px h-3.5 bg-[#a87441]/40" />
-
-        {/* AR label — min 4.5:1 contrast ratio against dark header bg */}
-        <span
-          className={`relative text-[12px] transition-all duration-500 ${
-            isArabic
-              ? 'text-[#a87441] font-medium'
-              : 'text-[#F0EAE6] font-light group-hover:text-white'
-          }`}
-          style={{fontFamily: '"IBM Plex Sans Arabic", sans-serif'}}
-        >
-          عربي
-        </span>
-      </button>
-    </>
+        EN
+      </span>
+      <span className="h-3.5 w-px bg-[#a87441]/40" />
+      <span
+        className={`text-[12px] ${
+          isArabic ? 'font-medium text-[#a87441]' : 'font-light text-[#F0EAE6]'
+        }`}
+        style={{fontFamily: '"Noto Sans Arabic", "Segoe UI", sans-serif'}}
+      >
+        عربي
+      </span>
+    </button>
   );
 }

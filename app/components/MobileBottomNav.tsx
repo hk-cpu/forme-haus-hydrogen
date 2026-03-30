@@ -1,6 +1,5 @@
 import {Await, useRouteLoaderData, useLocation} from '@remix-run/react';
 import {Suspense} from 'react';
-import {motion, AnimatePresence} from 'framer-motion';
 
 import {Link} from '~/components/Link';
 import {useUI} from '~/context/UIContext';
@@ -29,12 +28,9 @@ export function MobileBottomNav() {
   if (hideOnPaths.some((p) => location.pathname.startsWith(p))) return null;
 
   return (
-    <motion.nav
+    <nav
       aria-label={t('a11y.mainNavigation', 'Main navigation')}
-      className="fixed bottom-0 inset-x-0 z-[350] md:hidden"
-      initial={{y: 80, opacity: 0}}
-      animate={{y: 0, opacity: 1}}
-      transition={{delay: 0.6, duration: 0.5, ease: [0.16, 1, 0.3, 1]}}
+      className="mobile-bottom-nav-enter fixed bottom-0 inset-x-0 z-[350] md:hidden"
     >
       {/* Frosted glass bar */}
       <div className="bg-[#F9F5F0]/90 backdrop-blur-xl border-t border-[#8B8076]/10 shadow-[0_-8px_32px_rgba(74,60,49,0.08)]">
@@ -95,17 +91,9 @@ export function MobileBottomNav() {
                 <Await resolve={rootData?.cart}>
                   {(cart: any) =>
                     cart?.totalQuantity ? (
-                      <AnimatePresence>
-                        <motion.span
-                          key="cart-badge"
-                          initial={{scale: 0}}
-                          animate={{scale: 1}}
-                          exit={{scale: 0}}
-                          className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-gradient-to-br from-[#a87441] to-[#8B5E3C] text-white text-[10px] font-medium flex items-center justify-center shadow"
-                        >
-                          {cart.totalQuantity > 9 ? '9+' : cart.totalQuantity}
-                        </motion.span>
-                      </AnimatePresence>
+                      <span className="cart-badge-enter absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-gradient-to-br from-[#a87441] to-[#8B5E3C] text-[10px] font-medium text-white shadow">
+                        {cart.totalQuantity > 9 ? '9+' : cart.totalQuantity}
+                      </span>
                     ) : null
                   }
                 </Await>
@@ -117,7 +105,7 @@ export function MobileBottomNav() {
           </button>
         </div>
       </div>
-    </motion.nav>
+    </nav>
   );
 }
 

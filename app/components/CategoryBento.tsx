@@ -1,17 +1,11 @@
-import {useState, useEffect} from 'react';
-import {motion, useReducedMotion} from 'framer-motion';
-
 import {Link} from '~/components/Link';
 import {useTranslation} from '~/hooks/useTranslation';
-import {use3DTilt} from '~/hooks/use3DTilt';
 
 interface Category {
   id: number;
   titleKey: string;
   image: string;
-  blurImage: string;
   url: string;
-  isActive: boolean;
   width: number;
   height: number;
 }
@@ -20,232 +14,28 @@ const CATEGORIES: Category[] = [
   {
     id: 1,
     titleKey: 'category.newInHaus',
-    image: '/brand/new-in.webp',
-    blurImage: '/brand/new-in-blur.webp',
+    image: '/brand/new-in-opt.webp',
     url: '/collections/new-in',
-    isActive: true,
-    width: 800,
-    height: 1450,
+    width: 640,
+    height: 1160,
   },
   {
     id: 2,
     titleKey: 'category.phoneAccessories',
-    image: '/brand/phone-accessories.webp',
-    blurImage: '/brand/phone-accessories-blur.webp',
+    image: '/brand/phone-accessories-opt.webp',
     url: '/collections/phone-cases',
-    isActive: true,
-    width: 800,
-    height: 1193,
+    width: 640,
+    height: 954,
   },
   {
     id: 3,
     titleKey: 'nav.sunglasses',
-    image: '/brand/sunglasses.webp',
-    blurImage: '/brand/sunglasses-blur.webp',
+    image: '/brand/sunglasses-opt.webp',
     url: '/collections/sunglasses',
-    isActive: true,
-    width: 800,
-    height: 1450,
+    width: 640,
+    height: 1160,
   },
 ];
-
-const containerVariants = {
-  hidden: {opacity: 0},
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: {opacity: 0, y: 40},
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.7,
-      ease: [0.16, 1, 0.3, 1] as const,
-    },
-  },
-};
-
-function CategoryCard({
-  category,
-  isRTL,
-  index,
-  t,
-}: {
-  category: Category;
-  isRTL: boolean;
-  index: number;
-  t: (key: string, fallback?: string) => string;
-}) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
-  const shouldReduceMotion = useReducedMotion();
-
-  // 3D tilt effect
-  const {style: tiltStyle, handlers: tiltHandlers} = use3DTilt({
-    maxRotation: 5,
-  });
-
-  // Prevent hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  return (
-    <motion.div
-      variants={itemVariants}
-      className="relative group aspect-[3/4] md:aspect-[4/5] overflow-hidden rounded-2xl bg-[#2a2118]"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      {...(shouldReduceMotion ? {} : tiltHandlers)}
-    >
-      <Link to={category.url} className="block w-full h-full">
-        {/* 3D Tilt Container */}
-        <motion.div
-          className="w-full h-full"
-          style={
-            shouldReduceMotion
-              ? {}
-              : {
-                  ...tiltStyle,
-                  rotateX: isHovered ? tiltStyle.rotateX : 0,
-                  rotateY: isHovered ? tiltStyle.rotateY : 0,
-                }
-          }
-        >
-          {/* Full-bleed background image */}
-          {!imageError ? (
-            <img
-              src={category.image}
-              alt={t(category.titleKey)}
-              className="absolute inset-0 w-full h-full object-cover transition-all duration-700"
-              width={category.width}
-              height={category.height}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              style={{
-                opacity: mounted && !imageLoaded ? 0 : 1,
-                transform: isHovered ? 'scale(1.05)' : 'scale(1)',
-                transformOrigin:
-                  category.titleKey === 'category.phoneAccessories'
-                    ? 'center 40%'
-                    : 'center center',
-                willChange: 'transform',
-              }}
-              loading={index === 0 ? 'eager' : 'lazy'}
-              onLoad={() => setImageLoaded(true)}
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-[#E8E4E0]">
-              <span className="text-[#4A3C31] text-xs uppercase tracking-wider">
-                {t(category.titleKey)}
-              </span>
-            </div>
-          )}
-
-          {/* Loading skeleton - only after mount */}
-          {mounted && !imageLoaded && !imageError && (
-            <div className="absolute inset-0 bg-gradient-to-br from-[#1A1A1A] to-[#2a2a2a]" />
-          )}
-
-          {/* Elegant gradient overlay - darker at bottom for text */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
-
-          {/* Subtle vignette */}
-          <div
-            className="absolute inset-0 pointer-events-none opacity-30"
-            style={{
-              background:
-                'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.4) 100%)',
-            }}
-          />
-
-          {/* Cursor-following spotlight effect (desktop only) */}
-          {!shouldReduceMotion && (
-            <motion.div
-              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none hidden md:block"
-              style={{
-                background:
-                  'radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(168,116,65,0.1) 0%, transparent 50%)',
-              }}
-            />
-          )}
-
-          {/* Content - positioned at bottom left - Always visible on mobile */}
-          <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 z-10 pointer-events-none">
-            <motion.div
-              className="transform transition-transform duration-300"
-              initial={false}
-              animate={{y: isHovered ? -4 : 0}}
-            >
-              <h3 className="text-xl md:text-2xl font-serif text-white mb-2 tracking-wide">
-                {t(category.titleKey)}
-              </h3>
-              {/* Line indicator - Always visible on mobile, hover-only on desktop */}
-              <motion.div
-                className="h-[1px] bg-[#D4AF87] origin-left md:w-6 w-12"
-                initial={false}
-                animate={{width: isHovered ? 48 : 24}}
-                transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
-              />
-            </motion.div>
-          </div>
-
-          {/* Hover Arrow - centered - Always visible on touch */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-            <motion.div
-              className="w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/40 flex items-center justify-center backdrop-blur-md bg-black/20 md:opacity-0 md:group-hover:opacity-100 opacity-100 transition-opacity duration-300"
-              initial={false}
-              animate={{
-                scale: isHovered ? 1 : 0.8,
-                x: isHovered ? (isRTL ? -4 : 4) : 0,
-              }}
-              transition={{duration: 0.3, ease: [0.16, 1, 0.3, 1]}}
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                className="text-white"
-              >
-                <path
-                  d={
-                    isRTL ? 'M19 12H5M12 19l-7-7 7-7' : 'M5 12h14M12 5l7 7-7 7'
-                  }
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </motion.div>
-          </div>
-
-          {/* Enhanced shadow on hover */}
-          <motion.div
-            className="absolute inset-0 pointer-events-none rounded-2xl"
-            initial={false}
-            animate={{
-              boxShadow: isHovered
-                ? '0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(168,116,65,0.1)'
-                : '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-            }}
-            transition={{duration: 0.4}}
-          />
-        </motion.div>
-      </Link>
-    </motion.div>
-  );
-}
 
 export default function CategoryBento() {
   const {isRTL, t} = useTranslation();
@@ -253,56 +43,86 @@ export default function CategoryBento() {
   return (
     <section
       aria-label="Categories"
-      className="pb-6 md:pb-8 border-b border-[#8B8076]/10"
+      className="border-b border-[#8B8076]/10 pb-6 md:pb-8"
     >
       <div
-        className="max-w-[var(--container-max)] mx-auto"
+        className="mx-auto max-w-[var(--container-max)]"
         style={{padding: '0 var(--page-gutter)'}}
       >
-        {/* Section Header */}
-        <motion.div
-          initial={{opacity: 0, y: 16}}
-          whileInView={{opacity: 1, y: 0}}
-          viewport={{once: true}}
-          transition={{duration: 0.5, ease: [0.25, 0.1, 0.25, 1]}}
-          className="mb-4 md:mb-5"
-        >
-          <h2 className="font-serif text-2xl md:text-3xl text-[#4A3C31] mb-2">
+        <div className="mb-4 md:mb-5">
+          <h2 className="mb-2 font-serif text-2xl text-[#4A3C31] md:text-3xl">
             {t('home.shopByCategory')}
           </h2>
           <div className="h-px w-16 bg-gradient-to-r from-[#a87441] to-transparent" />
-        </motion.div>
+        </div>
 
-        {/* Bento Grid - equal gaps all sides */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{once: true, margin: '-100px'}}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5"
-        >
-          {CATEGORIES.map((category, i) => (
-            <CategoryCard
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
+          {CATEGORIES.map((category, index) => (
+            <Link
               key={category.id}
-              category={category}
-              isRTL={isRTL}
-              index={i}
-              t={t}
-            />
-          ))}
-        </motion.div>
+              to={category.url}
+              className="group relative block aspect-[3/4] overflow-hidden rounded-2xl bg-[#2a2118]"
+            >
+              <img
+                src={category.image}
+                alt={t(category.titleKey)}
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                width={category.width}
+                height={category.height}
+                sizes="(max-width: 768px) 100vw, 33vw"
+                loading={index === 0 ? 'eager' : 'lazy'}
+                fetchPriority={index === 0 ? 'high' : 'auto'}
+                decoding="async"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div
+                className="absolute inset-0 opacity-30"
+                style={{
+                  background:
+                    'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.4) 100%)',
+                }}
+              />
 
-        {/* View All Link */}
-        <motion.div
-          initial={{opacity: 0}}
-          whileInView={{opacity: 1}}
-          viewport={{once: true}}
-          transition={{delay: 0.4}}
-          className="mt-8 md:mt-10 text-center"
-        >
+              <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 md:p-8">
+                <h3 className="mb-2 font-serif text-xl tracking-wide text-white md:text-2xl">
+                  {t(category.titleKey)}
+                </h3>
+                <div
+                  className={`h-[1px] bg-[#D4AF87] transition-all duration-300 ${
+                    isRTL
+                      ? 'origin-right group-hover:w-12 w-6'
+                      : 'origin-left group-hover:w-12 w-6'
+                  }`}
+                />
+              </div>
+
+              <div className="absolute left-1/2 top-1/2 z-20 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-black/20 backdrop-blur-md md:h-14 md:w-14">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  className="text-white transition-transform duration-300 group-hover:translate-x-1 rtl:group-hover:-translate-x-1"
+                >
+                  <path
+                    d={
+                      isRTL ? 'M19 12H5M12 19l-7-7 7-7' : 'M5 12h14M12 5l7 7-7 7'
+                    }
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <div className="mt-8 text-center md:mt-10">
           <Link
             to="/collections"
-            className="inline-flex items-center gap-3 px-7 py-3.5 min-h-[48px] border border-[#a87441]/25 text-[#a87441] hover:bg-[#a87441] hover:text-white transition-all duration-500 rounded-full text-[11px] uppercase tracking-[0.2em] group touch-target"
+            className="inline-flex min-h-[48px] items-center gap-3 rounded-full border border-[#a87441]/25 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#a87441] transition-all duration-300 hover:bg-[#a87441] hover:text-white"
           >
             <span>{t('general.viewAll')}</span>
             <svg
@@ -312,18 +132,18 @@ export default function CategoryBento() {
               fill="none"
               stroke="currentColor"
               strokeWidth="1.5"
-              className={`transform transition-transform duration-300 ${
-                isRTL
-                  ? 'group-hover:-translate-x-1'
-                  : 'group-hover:translate-x-1'
+              className={`transition-transform duration-300 ${
+                isRTL ? 'hover:-translate-x-1' : 'hover:translate-x-1'
               }`}
             >
               <path
                 d={isRTL ? 'M19 12H5M12 19l-7-7 7-7' : 'M5 12h14M12 5l7 7-7 7'}
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

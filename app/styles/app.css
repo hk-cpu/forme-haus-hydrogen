@@ -88,7 +88,8 @@
   --color-cream: var(--cream);
   --color-silk: var(--silk);
 
-  --font-serif: 'Cormorant Garamond', 'Georgia', serif;
+  --font-serif: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua',
+    'Hoefler Text', Georgia, serif;
 
   /* Formé Haus Brand Colors */
   --color-brand: var(--bronze);
@@ -114,13 +115,11 @@
   --color-accent-foreground: var(--bronze-dark);
 
   /* Fonts - Luxury Typography */
-  --font-sans: 'DM Sans', 'Inter', 'Helvetica Neue', Helvetica, Arial,
-    sans-serif;
-  --font-serif: 'Cormorant Garamond', 'Didot', 'Didot LT STD', 'Hoefler Text',
-    'Bodoni MT', Georgia, serif;
+  --font-sans: 'Aptos', 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-serif: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua',
+    'Hoefler Text', Georgia, serif;
   --font-heading: var(--font-serif);
-  --font-arabic: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', 'Cairo', 'Segoe UI',
-    sans-serif;
+  --font-arabic: 'Noto Sans Arabic', 'Tahoma', 'Segoe UI', sans-serif;
 
   /* Font Weights */
   --font-weight-light: 300;
@@ -1278,4 +1277,50 @@ h6 {
 .section-deferred {
   content-visibility: auto;
   contain-intrinsic-size: 0 400px;
+}
+
+@keyframes button-ripple {
+  from {
+    opacity: 0.5;
+    transform: scale(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(4);
+  }
+}
+
+@keyframes mobileBottomNavIn {
+  from {
+    opacity: 0;
+    transform: translateY(80px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cartBadgeIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.mobile-bottom-nav-enter {
+  animation: mobileBottomNavIn 500ms cubic-bezier(0.16, 1, 0.3, 1) 600ms both;
+}
+
+.cart-badge-enter {
+  animation: cartBadgeIn 180ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-bottom-nav-enter,
+  .cart-badge-enter {
+    animation: none;
+  }
 }

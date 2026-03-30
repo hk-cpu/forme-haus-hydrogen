@@ -1,15 +1,25 @@
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {defer} from '@remix-run/server-runtime';
 import {getSeoMeta, CacheLong} from '@shopify/hydrogen';
+import {lazy, Suspense} from 'react';
 
 import Hero from '~/components/Hero';
-import CategoryBento from '~/components/CategoryBento';
-import EditorialSection from '~/components/EditorialSection';
-import JournalSection from '~/components/JournalSection';
-import {WhyChooseUs} from '~/components/WhyChooseUs';
-import {TrustBadges} from '~/components/TrustBadges';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
+
+const CategoryBento = lazy(() => import('~/components/CategoryBento'));
+const EditorialSection = lazy(() => import('~/components/EditorialSection'));
+const JournalSection = lazy(() => import('~/components/JournalSection'));
+const WhyChooseUs = lazy(() =>
+  import('~/components/WhyChooseUs').then((module) => ({
+    default: module.WhyChooseUs,
+  })),
+);
+const TrustBadges = lazy(() =>
+  import('~/components/TrustBadges').then((module) => ({
+    default: module.TrustBadges,
+  })),
+);
 
 export const headers = routeHeaders;
 
@@ -56,37 +66,49 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 export default function Homepage() {
   return (
     <div className="min-h-screen bg-transparent text-[#F0EAE6]">
-      {/* 1. Hero */}
       <Hero />
 
-      {/* Light "Glowing" Theme Content Sheet */}
-      <div className="relative z-20 bg-[#F9F5F0]/85 backdrop-blur-md text-[#4A3C31] rounded-t-[2rem] shadow-[0_-10px_40px_-10px_rgba(255,255,255,0.15)] mt-[-5vh]">
-        {/* 2. Category Slider */}
+      <div className="relative z-20 mt-[-5vh] rounded-t-[2rem] bg-[#F9F5F0]/85 text-[#4A3C31] shadow-[0_-10px_40px_-10px_rgba(255,255,255,0.15)] backdrop-blur-md">
         <div className="pt-14 md:pt-16">
-          <CategoryBento />
+          <Suspense fallback={<SectionFallback className="min-h-[520px]" />}>
+            <CategoryBento />
+          </Suspense>
         </div>
 
-        {/* 3. The Edit (Editorial Section) */}
         <div className="py-8 md:py-12">
-          <EditorialSection />
+          <Suspense fallback={<SectionFallback className="min-h-[640px]" />}>
+            <EditorialSection />
+          </Suspense>
         </div>
 
-        {/* 4. The Journal — below fold: render-skip until near viewport */}
-        <div className="py-8 md:py-12 section-deferred">
-          <JournalSection />
+        <div className="section-deferred py-8 md:py-12">
+          <Suspense fallback={<SectionFallback className="min-h-[420px]" />}>
+            <JournalSection />
+          </Suspense>
         </div>
 
-        {/* 5. Why Choose Us — below fold */}
         <div className="section-deferred">
-          <WhyChooseUs />
+          <Suspense fallback={<SectionFallback className="min-h-[420px]" />}>
+            <WhyChooseUs />
+          </Suspense>
         </div>
 
-        {/* 5b. Trust Badges — Maroof, Muwathooq, Secure Payment */}
-        <div className="py-6 px-6 md:px-8 max-w-[900px] mx-auto section-deferred">
-          <TrustBadges variant="full" />
+        <div className="section-deferred mx-auto max-w-[900px] px-6 py-6 md:px-8">
+          <Suspense fallback={<SectionFallback className="min-h-[160px]" />}>
+            <TrustBadges variant="full" />
+          </Suspense>
         </div>
       </div>
     </div>
+  );
+}
+
+function SectionFallback({className}: {className: string}) {
+  return (
+    <div
+      aria-hidden="true"
+      className={`w-full rounded-[1.5rem] bg-[linear-gradient(135deg,rgba(168,116,65,0.08),rgba(255,255,255,0.22))] ${className}`}
+    />
   );
 }
 
