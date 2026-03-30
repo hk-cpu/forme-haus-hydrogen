@@ -156,7 +156,7 @@ async function loadCriticalData({request, context}: LoaderFunctionArgs) {
       shop: {
         name: 'Formé Haus',
         description: 'Luxury Fashion',
-        primaryDomain: {url: 'https://forme-haus.com'},
+        primaryDomain: {url: 'https://formehaus.me'},
         brand: {logo: {image: {url: '/logo.png'}}},
         id: `gid://shopify/Shop/${env.SHOP_ID || '1'}`,
       },
