@@ -34,10 +34,9 @@ export default async function handleRequest(
     connectSrc: [
       "'self'",
       'https://monorail-edge.shopifysvc.com',
-      'https://f0c5au-jn.myshopify.com',
+      `https://${context.env.PUBLIC_STORE_DOMAIN}`,
       'https://shop.app',
       'https://cdn.shopify.com',
-      'https://mock.shop',
     ],
     fontSrc: ["'self'", 'https://fonts.gstatic.com'],
   });
