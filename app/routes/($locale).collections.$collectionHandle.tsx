@@ -416,14 +416,17 @@ export default function Collection() {
         <motion.div
           ref={heroRef}
           className="relative w-full overflow-hidden bg-[#F9F5F0]"
-          style={{opacity: heroOpacity}}
+          style={{
+            opacity: heroOpacity,
+            paddingTop: 'var(--navbar-height)',
+          }}
         >
           {heroImage ? (
             <>
               <motion.img
                 src={heroImage}
                 alt={collection.title}
-                className="w-full h-[28vh] sm:h-[32vh] md:h-[36vh] lg:h-[40vh] object-cover object-center block"
+                className="w-full h-auto block"
                 loading="eager"
                 fetchPriority="high"
                 style={{y: heroY}}
