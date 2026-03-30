@@ -197,15 +197,12 @@ export function ProductGallery({
     if (intervalRef.current) clearInterval(intervalRef.current);
     if (!isAutoPlayingRef.current || isHoveredRef.current) return;
 
-    intervalRef.current = setInterval(
-      () => {
-        if (!isAutoPlayingRef.current || isHoveredRef.current) {
-          return;
-        }
-        setActiveIndex((prev) => (prev + 1) % total);
-      },
-      4000,
-    );
+    intervalRef.current = setInterval(() => {
+      if (!isAutoPlayingRef.current || isHoveredRef.current) {
+        return;
+      }
+      setActiveIndex((prev) => (prev + 1) % total);
+    }, 4000);
   }, [total]);
 
   useEffect(() => {
@@ -414,8 +411,16 @@ export function ProductGallery({
           <div
             ref={containerRef}
             className="relative aspect-square md:aspect-[4/5] flex items-center justify-center cursor-grab active:cursor-grabbing"
+            role="button"
+            tabIndex={0}
             onMouseMove={handleMouseMove}
             onClick={() => isZoomed && setIsZoomed(false)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                if (isZoomed) setIsZoomed(false);
+              }
+            }}
           >
             {images.map((image, index) => {
               const style = getCardStyle(index);
@@ -558,7 +563,7 @@ export function ProductGallery({
             {/* Autoplay Toggle */}
             <motion.button
               onClick={toggleAutoPlay}
-              className={`w-10 h-10 rounded-full backdrop-blur-md flex items-center justify-center shadow-lg border transition-colors ${
+              className={`w-11 h-11 rounded-full backdrop-blur-md flex items-center justify-center shadow-lg border transition-colors ${
                 isAutoPlaying
                   ? 'bg-[#a87441] text-white border-[#a87441]'
                   : 'bg-white/90 text-[#2a2118] border-white/20 hover:bg-white'
@@ -593,7 +598,7 @@ export function ProductGallery({
             {/* Fullscreen Toggle */}
             <motion.button
               onClick={() => setIsFullscreen(true)}
-              className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-[#2a2118] shadow-lg border border-white/20 hover:bg-white transition-colors"
+              className="w-11 h-11 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-[#2a2118] shadow-lg border border-white/20 hover:bg-white transition-colors"
               whileHover={{scale: 1.05}}
               whileTap={{scale: 0.95}}
               aria-label="View fullscreen"

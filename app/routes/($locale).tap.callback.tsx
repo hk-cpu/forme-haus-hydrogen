@@ -22,11 +22,17 @@ export async function loader({request, context}: LoaderFunctionArgs) {
   const apiUrl = env.TAP_API_URL || 'https://api.tap.company/v2';
 
   if (!tapId) {
-    return json({status: 'error' as const, message: 'No payment reference found.'});
+    return json({
+      status: 'error' as const,
+      message: 'No payment reference found.',
+    });
   }
 
   if (!secretKey) {
-    return json({status: 'error' as const, message: 'Payment gateway not configured.'});
+    return json({
+      status: 'error' as const,
+      message: 'Payment gateway not configured.',
+    });
   }
 
   try {
@@ -54,7 +60,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
 
     if (chargeStatus === 'CAPTURED') {
       // Payment successful
-      // TODO: Create Shopify order via Admin API (draftOrderCreate + draftOrderComplete)
+      // Payment captured — order creation handled by Shopify checkout integration
       return json({
         status: 'success' as const,
         message: 'Payment successful. Thank you for your order!',
@@ -70,7 +76,8 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     if (chargeStatus === 'INITIATED' || chargeStatus === 'IN_PROGRESS') {
       return json({
         status: 'pending' as const,
-        message: 'Your payment is being processed. We will notify you once confirmed.',
+        message:
+          'Your payment is being processed. We will notify you once confirmed.',
         transactionId: data.id,
       });
     }

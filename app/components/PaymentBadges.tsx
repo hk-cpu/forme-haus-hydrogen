@@ -188,7 +188,7 @@ export function TrustPaymentSection() {
   return (
     <div className="space-y-3">
       <PaymentBadges />
-      <p className="text-[10px] text-[#8B8076] text-center">
+      <p className="text-[10px] text-[#6B6058] text-center">
         All transactions are secured with 256-bit SSL encryption
       </p>
     </div>

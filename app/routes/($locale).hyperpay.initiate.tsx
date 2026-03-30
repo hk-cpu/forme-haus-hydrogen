@@ -18,7 +18,10 @@
 import {json, type ActionFunctionArgs} from '@shopify/remix-oxygen';
 
 // ─── HyperPay brand → entity ID mapping ──────────────────────────────────────
-function getEntityId(brand: string, env: Record<string, string | undefined>): string {
+function getEntityId(
+  brand: string,
+  env: Record<string, string | undefined>,
+): string {
   switch (brand.toUpperCase()) {
     case 'MADA':
       return env.HYPERPAY_ENTITY_ID_MADA ?? '';
@@ -40,8 +43,10 @@ export async function action({request, context}: ActionFunctionArgs) {
   const currency = (formData.get('currency') as string) || 'SAR';
   const brand = (formData.get('brand') as string) || 'CARD';
   const merchantTxId = formData.get('merchantTxId') as string;
-  const shopperEmail = (formData.get('shopperEmail') as string | null) || undefined;
-  const shopperName = (formData.get('shopperName') as string | null) || undefined;
+  const shopperEmail =
+    (formData.get('shopperEmail') as string | null) || undefined;
+  const shopperName =
+    (formData.get('shopperName') as string | null) || undefined;
 
   // Validate required config
   const accessToken = env.HYPERPAY_ACCESS_TOKEN;
@@ -83,13 +88,19 @@ export async function action({request, context}: ActionFunctionArgs) {
       body: params.toString(),
     });
 
-    const data = (await response.json()) as {id?: string; result?: {code: string; description: string}};
+    const data = (await response.json()) as {
+      id?: string;
+      result?: {code: string; description: string};
+    };
 
     // HyperPay success codes start with "000.200"
     if (!data.id || !data.result?.code?.startsWith('000.200')) {
       console.error('HyperPay initiate error:', data);
       return json(
-        {error: data.result?.description || 'Failed to create payment session.'},
+        {
+          error:
+            data.result?.description || 'Failed to create payment session.',
+        },
         {status: 400},
       );
     }

@@ -193,7 +193,7 @@ export function TrustBadges({
         className={`flex items-center gap-3 ${className}`}
         dir={isRTL ? 'rtl' : 'ltr'}
         variants={containerVariants}
-        initial={shouldReduceMotion ? "visible" : "hidden"}
+        initial={shouldReduceMotion ? 'visible' : 'hidden'}
         whileInView="visible"
         viewport={{once: true}}
       >
@@ -205,9 +205,7 @@ export function TrustBadges({
             title={t('trust.maroofVerified', 'Maroof Verified Store')}
           >
             {/* Shimmer effect */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"
-            />
+            <motion.div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
             <svg viewBox="0 0 20 20" className="w-4 h-4">
               <path
                 d="M10 2l6 3v6c0 4-3 6-6 7-3-1-6-3-6-7V5l6-3z"
@@ -231,10 +229,10 @@ export function TrustBadges({
           <motion.div
             variants={itemVariants}
             whileHover={shouldReduceMotion ? {} : {scale: 1.05}}
-            className="flex items-center gap-1 text-[#8B8076]"
+            className="flex items-center gap-1 text-[#6B6058]"
           >
             <SecurePaymentIcon className="h-3.5 w-3.5" />
-            <span className="text-[9px] uppercase tracking-wider">
+            <span className="text-[10px] uppercase tracking-wider">
               {t('trust.securePayment', 'Secure')}
             </span>
           </motion.div>
@@ -250,7 +248,7 @@ export function TrustBadges({
         className={`flex items-center gap-4 ${className}`}
         dir={isRTL ? 'rtl' : 'ltr'}
         variants={containerVariants}
-        initial={shouldReduceMotion ? "visible" : "hidden"}
+        initial={shouldReduceMotion ? 'visible' : 'hidden'}
         whileInView="visible"
         viewport={{once: true}}
       >
@@ -293,34 +291,27 @@ export function TrustBadges({
       initial={shouldReduceMotion ? {opacity: 1} : {opacity: 0, y: 10}}
       animate={{opacity: 1, y: 0}}
       transition={{duration: 0.5, ease: [0.25, 0.1, 0.25, 1]}}
-      className={`bg-[#F9F5F0] rounded-xl p-4 border border-[#8B8076]/10 ${className}`}
+      className={`rounded-xl p-5 md:p-6 border border-[#8B8076]/15 bg-gradient-to-b from-white to-[#F9F5F0] shadow-sm ${className}`}
       dir={isRTL ? 'rtl' : 'ltr'}
     >
-      {/* Header with icon animation */}
-      <motion.div 
-        className="flex items-center gap-2 mb-3"
+      {/* Header */}
+      <motion.div
+        className="flex items-center justify-center gap-2 mb-5"
         initial={shouldReduceMotion ? {} : {x: -10, opacity: 0}}
         animate={{x: 0, opacity: 1}}
         transition={{delay: 0.2, duration: 0.4}}
       >
-        <motion.div
-          animate={shouldReduceMotion ? {} : {
-            scale: [1, 1.1, 1],
-          }}
-          transition={{duration: 2, repeat: Infinity, repeatDelay: 3}}
-        >
-          <SecurePaymentIcon className="h-4 w-4 text-[#a87441]" />
-        </motion.div>
+        <SecurePaymentIcon className="h-4 w-4 text-[#a87441]" />
         <span className="text-xs font-medium text-[#4A3C31] uppercase tracking-wider">
           {t('trust.shopWithConfidence', 'Shop with Confidence')}
         </span>
       </motion.div>
 
-      {/* Badges Grid with stagger */}
-      <motion.div 
-        className="flex flex-wrap items-center gap-4"
+      {/* Badges Grid — icon-forward layout */}
+      <motion.div
+        className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"
         variants={containerVariants}
-        initial={shouldReduceMotion ? "visible" : "hidden"}
+        initial={shouldReduceMotion ? 'visible' : 'hidden'}
         animate="visible"
       >
         {showMaroof && (
@@ -330,22 +321,12 @@ export function TrustBadges({
             target="_blank"
             rel="noopener noreferrer"
             whileHover={shouldReduceMotion ? {} : {scale: 1.02, y: -2}}
-            className="relative flex items-center gap-2 px-3 py-2 bg-white rounded-lg shadow-sm border border-[#8B8076]/10 overflow-hidden group"
+            className="relative flex flex-col items-center gap-2 px-3 py-3 bg-white rounded-xl shadow-sm border border-[#8B8076]/10 overflow-hidden group text-center"
           >
-            {/* Shimmer effect */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"
-            />
-            <MaroofIcon className="h-7" />
-            {/* Trust pulse */}
-            <motion.div
-              className="absolute -top-1 -right-1 w-2 h-2 bg-[#1B5E20] rounded-full"
-              animate={shouldReduceMotion ? {} : {
-                scale: [1, 1.5, 1],
-                opacity: [1, 0.5, 1],
-              }}
-              transition={{duration: 2, repeat: Infinity}}
-            />
+            <MaroofIcon className="h-8" />
+            <span className="text-[10px] font-medium text-[#4A3C31] leading-tight">
+              {t('trust.maroofVerified', 'Maroof Verified')}
+            </span>
           </motion.a>
         )}
 
@@ -353,48 +334,58 @@ export function TrustBadges({
           <motion.div
             variants={itemVariants}
             whileHover={shouldReduceMotion ? {} : {scale: 1.02, y: -2}}
-            className="relative flex items-center gap-2 px-3 py-2 bg-white rounded-lg shadow-sm border border-[#8B8076]/10 overflow-hidden group"
+            className="relative flex flex-col items-center gap-2 px-3 py-3 bg-white rounded-xl shadow-sm border border-[#8B8076]/10 overflow-hidden group text-center"
           >
-            {/* Shimmer effect */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"
-            />
-            <MuwathooqIcon className="h-7" />
+            <MuwathooqIcon className="h-8" />
+            <span className="text-[10px] font-medium text-[#4A3C31] leading-tight">
+              {t('trust.muwathooqTrusted', 'Consumer Trusted')}
+            </span>
+          </motion.div>
+        )}
+
+        {showSecurePayment && (
+          <motion.div
+            variants={itemVariants}
+            whileHover={shouldReduceMotion ? {} : {scale: 1.02, y: -2}}
+            className="relative flex flex-col items-center gap-2 px-3 py-3 bg-white rounded-xl shadow-sm border border-[#8B8076]/10 overflow-hidden group text-center"
+          >
+            <div className="w-10 h-10 rounded-full bg-[#a87441]/15 flex items-center justify-center">
+              <SecurePaymentIcon className="h-5 w-5 text-[#a87441]" />
+            </div>
+            <span className="text-[10px] font-medium text-[#4A3C31] leading-tight">
+              {t('trust.securePayment', 'Secure Payment')}
+            </span>
           </motion.div>
         )}
 
         {showTrialOrder && (
-          <motion.div 
+          <motion.div
             variants={itemVariants}
-            className="flex items-center gap-2 text-[#4A3C31]"
+            whileHover={shouldReduceMotion ? {} : {scale: 1.02, y: -2}}
+            className="relative flex flex-col items-center gap-2 px-3 py-3 bg-white rounded-xl shadow-sm border border-[#8B8076]/10 overflow-hidden group text-center"
           >
-            <motion.div 
-              className="w-8 h-8 rounded-full bg-[#a87441]/10 flex items-center justify-center"
-              whileHover={shouldReduceMotion ? {} : {rotate: 10}}
-            >
-              <TrialOrderIcon className="h-4 w-4 text-[#a87441]" />
-            </motion.div>
-            <div className="text-[10px] leading-tight">
-              <p className="font-medium">
-                {t('trust.trialReady', 'Trial Ready')}
-              </p>
-              <p className="text-[#736659]">
-                {t('trust.fastDelivery', 'Fast Delivery')}
-              </p>
+            <div className="w-10 h-10 rounded-full bg-[#a87441]/15 flex items-center justify-center">
+              <TrialOrderIcon className="h-5 w-5 text-[#a87441]" />
             </div>
+            <span className="text-[10px] font-medium text-[#4A3C31] leading-tight">
+              {t('trust.fastDelivery', 'Fast Delivery')}
+            </span>
           </motion.div>
         )}
       </motion.div>
 
-      {/* Payment Links with fade in */}
-      <motion.div 
-        className="mt-3 pt-3 border-t border-[#8B8076]/10"
+      {/* Payment methods */}
+      <motion.div
+        className="mt-4 pt-3 border-t border-[#8B8076]/10"
         initial={shouldReduceMotion ? {} : {opacity: 0}}
         animate={{opacity: 1}}
         transition={{delay: 0.5, duration: 0.4}}
       >
         <p className="text-[10px] text-[#736659] text-center">
-          {t('trust.paymentMethods', 'Secure payments via Tap: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tabby, Tamara')}
+          {t(
+            'trust.paymentMethods',
+            'Secure payments via Tap: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tabby, Tamara',
+          )}
         </p>
       </motion.div>
     </motion.div>

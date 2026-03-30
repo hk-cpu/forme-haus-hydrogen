@@ -77,7 +77,9 @@ export async function action({request, context}: ActionFunctionArgs) {
       url: `${origin}/tap/webhook`, // Server-to-server notification
     },
     redirect: {
-      url: `${origin}/tap/callback?merchantTxId=${encodeURIComponent(merchantTxId || '')}`,
+      url: `${origin}/tap/callback?merchantTxId=${encodeURIComponent(
+        merchantTxId || '',
+      )}`,
     },
   };
 
@@ -102,17 +104,17 @@ export async function action({request, context}: ActionFunctionArgs) {
     if (data.errors?.length) {
       console.error('Tap Payments initiate error:', data.errors);
       return json(
-        {error: data.errors[0]?.description || 'Failed to create payment session.'},
+        {
+          error:
+            data.errors[0]?.description || 'Failed to create payment session.',
+        },
         {status: 400},
       );
     }
 
     if (!data.transaction?.url) {
       console.error('Tap Payments: no redirect URL returned', data);
-      return json(
-        {error: 'Failed to create payment session.'},
-        {status: 400},
-      );
+      return json({error: 'Failed to create payment session.'}, {status: 400});
     }
 
     return json({

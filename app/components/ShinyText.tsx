@@ -40,7 +40,7 @@ export function ShinyText({
   const lastTimeRef = useRef<number | null>(null);
   const directionRef = useRef(direction === 'left' ? 1 : -1);
   const shouldReduceMotion = useReducedMotion();
-  
+
   // Use ref to track enabled state for RAF optimization
   const isEnabledRef = useRef(!disabled && !isPaused && !shouldReduceMotion);
   isEnabledRef.current = !disabled && !isPaused && !shouldReduceMotion;

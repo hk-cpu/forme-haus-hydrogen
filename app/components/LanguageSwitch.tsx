@@ -43,29 +43,29 @@ export default function LanguageSwitch() {
       <AnimatePresence>
         {isTransitioning && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
+            transition={{duration: 0.2}}
             className="fixed inset-0 z-[9999] bg-[#121212] flex items-center justify-center pointer-events-auto"
           >
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 1.1, opacity: 0 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              initial={{scale: 0.9, opacity: 0}}
+              animate={{scale: 1, opacity: 1}}
+              exit={{scale: 1.1, opacity: 0}}
+              transition={{duration: 0.3, ease: [0.22, 1, 0.36, 1]}}
               className="text-center"
             >
-              <img 
-                src="/brand/logo-icon-only.webp" 
+              <img
+                src="/brand/logo-icon-only.webp"
                 alt="Formé Haus"
                 className="w-16 h-16 mx-auto mb-4 opacity-80"
               />
-              <motion.div 
+              <motion.div
                 className="w-32 h-[2px] bg-gradient-to-r from-transparent via-[#a87441] to-transparent mx-auto"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 0.4, ease: 'easeInOut' }}
+                initial={{scaleX: 0}}
+                animate={{scaleX: 1}}
+                transition={{duration: 0.4, ease: 'easeInOut'}}
               />
             </motion.div>
           </motion.div>
@@ -87,12 +87,12 @@ export default function LanguageSwitch() {
           }}
         />
 
-        {/* EN label */}
+        {/* EN label — min 4.5:1 contrast ratio against dark header bg */}
         <span
           className={`relative text-[11px] uppercase tracking-[0.15em] transition-all duration-500 ${
             !isArabic
               ? 'text-[#a87441] font-medium'
-              : 'text-[#F0EAE6]/50 font-light group-hover:text-[#F0EAE6]/80'
+              : 'text-[#F0EAE6] font-light group-hover:text-white'
           }`}
         >
           EN
@@ -101,12 +101,12 @@ export default function LanguageSwitch() {
         {/* Divider line */}
         <span className="relative w-px h-3.5 bg-[#a87441]/40" />
 
-        {/* AR label */}
+        {/* AR label — min 4.5:1 contrast ratio against dark header bg */}
         <span
           className={`relative text-[12px] transition-all duration-500 ${
             isArabic
               ? 'text-[#a87441] font-medium'
-              : 'text-[#F0EAE6]/50 font-light group-hover:text-[#F0EAE6]/80'
+              : 'text-[#F0EAE6] font-light group-hover:text-white'
           }`}
           style={{fontFamily: '"IBM Plex Sans Arabic", sans-serif'}}
         >

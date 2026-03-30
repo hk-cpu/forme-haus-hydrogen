@@ -131,7 +131,11 @@ export default function AccountDetailsEdit() {
       </Text>
       <Form method="post">
         {actionData?.formError && (
-          <div role="alert" aria-live="assertive" className="flex items-center justify-center mb-6 bg-red-100 rounded">
+          <div
+            role="alert"
+            aria-live="assertive"
+            className="flex items-center justify-center mb-6 bg-red-100 rounded"
+          >
             <p className="m-4 text-sm text-red-900">{actionData.formError}</p>
           </div>
         )}

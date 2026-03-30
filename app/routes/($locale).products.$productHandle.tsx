@@ -475,134 +475,142 @@ export function ProductForm({
   return (
     <div className="grid gap-10">
       <div className="grid gap-4">
-        {productOptions.filter((o) => o.name !== 'Title').map((option, optionIndex) => (
-          <div
-            key={option.name}
-            className="product-options flex flex-col flex-wrap mb-4 gap-y-2 last:mb-0"
-          >
-            <Heading
-              as="legend"
-              size="lead"
-              className="min-w-[4rem] text-[#5C5046] text-xs uppercase tracking-[0.15em] mb-3 font-medium"
+        {productOptions
+          .filter((o) => o.name !== 'Title')
+          .map((option, optionIndex) => (
+            <div
+              key={option.name}
+              className="product-options flex flex-col flex-wrap mb-4 gap-y-2 last:mb-0"
             >
-              {option.name}
-            </Heading>
-            <div className="flex flex-wrap items-baseline gap-3">
-              {option.optionValues.length > 7 ? (
-                <div className="relative w-full">
-                  <Listbox>
-                    {({open}) => (
-                      <>
-                        <Listbox.Button
-                          ref={closeRef}
-                          className={clsx(
-                            'flex items-center justify-between w-full py-3 px-4 border border-[#8B8076]/30 text-[#5C5046] bg-transparent hover:border-[#8B8076] transition-colors',
-                            open ? 'rounded-t-sm border-b-0' : 'rounded-sm',
-                          )}
-                        >
-                          <span>
-                            {
-                              selectedVariant?.selectedOptions[optionIndex]
-                                .value
-                            }
-                          </span>
-                          <IconCaret
-                            direction={open ? 'up' : 'down'}
-                            className="text-[#5C5046]"
-                          />
-                        </Listbox.Button>
-                        <Listbox.Options
-                          className={clsx(
-                            'border-[#8B8076]/20 bg-[#F9F5F0] text-[#5C5046] absolute bottom-12 z-30 grid h-48 w-full overflow-y-scroll rounded-sm border px-2 py-2 transition-[max-height] duration-150 sm:bottom-auto shadow-xl',
-                            open ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0',
-                          )}
-                        >
-                          {option.optionValues
-                            .filter((value) => value.available)
-                            .map(
-                              ({
-                                isDifferentProduct,
-                                name,
-                                variantUriQuery,
-                                handle,
-                                selected,
-                              }) => (
-                                <Listbox.Option
-                                  key={`option-${option.name}-${name}`}
-                                  value={name}
-                                >
-                                  <Link
-                                    {...(!isDifferentProduct
-                                      ? {rel: 'nofollow'}
-                                      : {})}
-                                    to={`/products/${handle}?${variantUriQuery}`}
-                                    preventScrollReset
-                                    className={clsx(
-                                      'text-[#5C5046] w-full p-2 transition rounded-sm flex justify-start items-center text-left cursor-pointer hover:bg-[#8B8076]/10',
-                                      selected && 'bg-[#8B8076]/10 font-medium',
-                                    )}
-                                    onClick={() => {
-                                      if (!closeRef?.current) return;
-                                      closeRef.current.click();
-                                    }}
-                                  >
-                                    {name}
-                                    {selected && (
-                                      <span className="ml-2">
-                                        <IconCheck />
-                                      </span>
-                                    )}
-                                  </Link>
-                                </Listbox.Option>
-                              ),
-                            )}
-                        </Listbox.Options>
-                      </>
-                    )}
-                  </Listbox>
-                </div>
-              ) : (
-                option.optionValues.map(
-                  ({
-                    isDifferentProduct,
-                    name,
-                    variantUriQuery,
-                    handle,
-                    selected,
-                    available,
-                    swatch,
-                  }) => (
-                    <div key={option.name + name} className="relative">
-                      {!available ? null : (
-                        <Link
-                          {...(!isDifferentProduct ? {rel: 'nofollow'} : {})}
-                          to={`/products/${handle}?${variantUriQuery}`}
-                          preventScrollReset
-                          prefetch="intent"
-                          replace
-                          className="block relative z-10"
-                        >
-                          <motion.div
-                            whileHover={{scale: 1.05}}
-                            whileTap={{scale: 0.95}}
+              <Heading
+                as="legend"
+                size="lead"
+                className="min-w-[4rem] text-[#5C5046] text-xs uppercase tracking-[0.15em] mb-3 font-medium"
+              >
+                {option.name}
+              </Heading>
+              <div className="flex flex-wrap items-baseline gap-3">
+                {option.optionValues.length > 7 ? (
+                  <div className="relative w-full">
+                    <Listbox>
+                      {({open}) => (
+                        <>
+                          <Listbox.Button
+                            ref={closeRef}
                             className={clsx(
-                              'leading-none py-3 px-5 border cursor-pointer transition-all duration-300 text-sm tracking-widest uppercase rounded-none min-w-[3rem] text-center font-light',
-                              selected
-                                ? 'border-[#2a2118] text-[#F9F6F3] bg-[#2a2118]'
-                                : 'border-[#8B8076]/30 text-[#8B8076] hover:border-[#2a2118] hover:text-[#2a2118]',
+                              'flex items-center justify-between w-full py-3 px-4 border border-[#8B8076]/30 text-[#5C5046] bg-transparent hover:border-[#8B8076] transition-colors',
+                              open ? 'rounded-t-sm border-b-0' : 'rounded-sm',
                             )}
                           >
-                            <ProductOptionSwatch swatch={swatch} name={name} />
-                          </motion.div>
-                        </Link>
+                            <span>
+                              {
+                                selectedVariant?.selectedOptions[optionIndex]
+                                  .value
+                              }
+                            </span>
+                            <IconCaret
+                              direction={open ? 'up' : 'down'}
+                              className="text-[#5C5046]"
+                            />
+                          </Listbox.Button>
+                          <Listbox.Options
+                            className={clsx(
+                              'border-[#8B8076]/20 bg-[#F9F5F0] text-[#5C5046] absolute bottom-12 z-30 grid h-48 w-full overflow-y-scroll rounded-sm border px-2 py-2 transition-[max-height] duration-150 sm:bottom-auto shadow-xl',
+                              open
+                                ? 'max-h-48 opacity-100'
+                                : 'max-h-0 opacity-0',
+                            )}
+                          >
+                            {option.optionValues
+                              .filter((value) => value.available)
+                              .map(
+                                ({
+                                  isDifferentProduct,
+                                  name,
+                                  variantUriQuery,
+                                  handle,
+                                  selected,
+                                }) => (
+                                  <Listbox.Option
+                                    key={`option-${option.name}-${name}`}
+                                    value={name}
+                                  >
+                                    <Link
+                                      {...(!isDifferentProduct
+                                        ? {rel: 'nofollow'}
+                                        : {})}
+                                      to={`/products/${handle}?${variantUriQuery}`}
+                                      preventScrollReset
+                                      className={clsx(
+                                        'text-[#5C5046] w-full p-2 transition rounded-sm flex justify-start items-center text-left cursor-pointer hover:bg-[#8B8076]/10',
+                                        selected &&
+                                          'bg-[#8B8076]/10 font-medium',
+                                      )}
+                                      onClick={() => {
+                                        if (!closeRef?.current) return;
+                                        closeRef.current.click();
+                                      }}
+                                    >
+                                      {name}
+                                      {selected && (
+                                        <span className="ml-2">
+                                          <IconCheck />
+                                        </span>
+                                      )}
+                                    </Link>
+                                  </Listbox.Option>
+                                ),
+                              )}
+                          </Listbox.Options>
+                        </>
                       )}
-                    </div>
-                  ),
-                )
-              )}
+                    </Listbox>
+                  </div>
+                ) : (
+                  option.optionValues.map(
+                    ({
+                      isDifferentProduct,
+                      name,
+                      variantUriQuery,
+                      handle,
+                      selected,
+                      available,
+                      swatch,
+                    }) => (
+                      <div key={option.name + name} className="relative">
+                        {!available ? null : (
+                          <Link
+                            {...(!isDifferentProduct ? {rel: 'nofollow'} : {})}
+                            to={`/products/${handle}?${variantUriQuery}`}
+                            preventScrollReset
+                            prefetch="intent"
+                            replace
+                            className="block relative z-10"
+                          >
+                            <motion.div
+                              whileHover={{scale: 1.05}}
+                              whileTap={{scale: 0.95}}
+                              className={clsx(
+                                'leading-none py-3 px-5 border cursor-pointer transition-all duration-300 text-sm tracking-widest uppercase rounded-none min-w-[3rem] text-center font-light',
+                                selected
+                                  ? 'border-[#2a2118] text-[#F9F6F3] bg-[#2a2118]'
+                                  : 'border-[#8B8076]/30 text-[#8B8076] hover:border-[#2a2118] hover:text-[#2a2118]',
+                              )}
+                            >
+                              <ProductOptionSwatch
+                                swatch={swatch}
+                                name={name}
+                              />
+                            </motion.div>
+                          </Link>
+                        )}
+                      </div>
+                    ),
+                  )
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
         {selectedVariant && (
           <div className="grid items-stretch gap-4 pt-4">
             {isOutOfStock ? (

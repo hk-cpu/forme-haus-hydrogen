@@ -97,7 +97,7 @@ export function CategoryHeader({
               <Link
                 key={cat.id}
                 to={cat.href}
-                className={`relative px-4 py-2 text-[11px] uppercase tracking-[0.15em] whitespace-nowrap transition-colors duration-300 rounded-full ${
+                className={`relative px-4 py-3 text-[11px] uppercase tracking-[0.15em] whitespace-nowrap transition-colors duration-300 rounded-full ${
                   isActive
                     ? 'text-[#4A3C31] font-medium'
                     : 'text-[#8B7355] hover:text-[#4A3C31]'
@@ -129,7 +129,7 @@ export function CategoryHeader({
           )}
           <button
             onClick={toggleFilter}
-            className="flex items-center gap-2 px-3.5 py-2 text-[11px] uppercase tracking-[0.12em] text-[#4A3C31] hover:text-[#a87441] border border-[#4A3C31]/12 hover:border-[#a87441]/30 rounded-full transition-all duration-300"
+            className="flex items-center gap-2 px-4 py-3 min-h-[44px] text-[11px] uppercase tracking-[0.12em] text-[#4A3C31] hover:text-[#a87441] border border-[#4A3C31]/12 hover:border-[#a87441]/30 rounded-full transition-all duration-300"
           >
             <svg
               width="14"

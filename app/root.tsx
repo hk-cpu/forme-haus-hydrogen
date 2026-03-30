@@ -30,13 +30,13 @@ import {useEffect, useState, useCallback, lazy, Suspense} from 'react';
 import {PageLayout} from '~/components/PageLayout';
 import {GenericError} from '~/components/GenericError';
 import {NotFound} from '~/components/NotFound';
-const SmoothScroll = lazy(() => import('~/components/SmoothScroll'));
 import {seoPayload} from '~/lib/seo.server';
 import styles from '~/styles/app.css?url';
 import futuristicStyles from '~/styles/futuristic-polish.css?url';
 import {UIProvider} from '~/context/UIContext';
 
 import {DEFAULT_LOCALE, getPathLocalePrefix, parseMenu, stripLocalePathPrefix} from './lib/utils';
+const SmoothScroll = lazy(() => import('~/components/SmoothScroll'));
 // Brand favicon served from /public/favicon.png
 const favicon = '/favicon.png';
 
@@ -208,7 +208,17 @@ function Layout({children}: {children?: React.ReactNode}) {
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
         <HreflangLinks />
         <link rel="stylesheet" href={styles}></link>
-        <link rel="stylesheet" href={futuristicStyles}></link>
+        {/* Non-critical CSS loaded async to avoid render-blocking */}
+        <link
+          rel="preload"
+          href={futuristicStyles}
+          as="style"
+          // @ts-ignore — onLoad triggers stylesheet swap after load
+          onLoad="this.onload=null;this.rel='stylesheet'"
+        />
+        <noscript>
+          <link rel="stylesheet" href={futuristicStyles} />
+        </noscript>
         {/* Deferred Google Fonts — loaded async to avoid render-blocking */}
         <link
           rel="preload"
@@ -257,7 +267,9 @@ function Layout({children}: {children?: React.ReactNode}) {
         )}
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
-        <Suspense fallback={null}><SmoothScroll /></Suspense>
+        <Suspense fallback={null}>
+          <SmoothScroll />
+        </Suspense>
       </body>
     </html>
   );

@@ -36,8 +36,7 @@ function initAdjust() {
       disableAutoTracking: true,
     });
 
-    // Log initialization for debugging
-    console.log('[Adjust] SDK initialized');
+    // SDK initialized
   };
   document.head.appendChild(script);
 }
@@ -57,7 +56,6 @@ function trackAdjustEvent(eventToken, params = {}) {
   });
 
   window.Adjust.trackEvent(event);
-  console.log('[Adjust] Event tracked:', eventToken, params);
 }
 
 // Shopify Event Handlers
@@ -169,5 +167,4 @@ analytics.subscribe('custom_event', (event) => {
 // Initialize on page load
 initAdjust();
 
-// Log pixel registration
-console.log('[Formé Haus Web Pixel] Adjust tracking initialized');
+// Pixel registered

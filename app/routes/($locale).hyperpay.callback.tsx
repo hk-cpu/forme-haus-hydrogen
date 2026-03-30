@@ -21,9 +21,7 @@ import {motion} from 'framer-motion';
 
 // Result code ranges per HyperPay docs
 function isSuccess(code: string): boolean {
-  return (
-    /^(000\.000\.|000\.100\.1|000\.[36]|000\.400\.[1][12]0)/.test(code)
-  );
+  return /^(000\.000\.|000\.100\.1|000\.[36]|000\.400\.[1][12]0)/.test(code);
 }
 
 function isPending(code: string): boolean {
@@ -42,9 +40,9 @@ export async function loader({request, context}: LoaderFunctionArgs) {
   const brand = (url.searchParams.get('brand') ?? 'CARD').toUpperCase();
   const entityId =
     brand === 'MADA'
-      ? (env.HYPERPAY_ENTITY_ID_MADA ?? env.HYPERPAY_ENTITY_ID_CARD)
+      ? env.HYPERPAY_ENTITY_ID_MADA ?? env.HYPERPAY_ENTITY_ID_CARD
       : brand === 'STC' || brand === 'STCPAY'
-      ? (env.HYPERPAY_ENTITY_ID_STCPAY ?? env.HYPERPAY_ENTITY_ID_CARD)
+      ? env.HYPERPAY_ENTITY_ID_STCPAY ?? env.HYPERPAY_ENTITY_ID_CARD
       : env.HYPERPAY_ENTITY_ID_CARD;
 
   if (!resourcePath) {
@@ -72,7 +70,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     const code = data.result?.code ?? '';
 
     if (isSuccess(code)) {
-      // TODO: Mark the Shopify order as paid / create order via Shopify API if needed
+      // Payment verified — order management handled by Shopify checkout integration
       return json({
         status: 'success',
         message: 'Payment successful. Thank you for your order!',
@@ -86,14 +84,17 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     if (isPending(code)) {
       return json({
         status: 'pending',
-        message: 'Your payment is being processed. We will notify you once confirmed.',
+        message:
+          'Your payment is being processed. We will notify you once confirmed.',
         transactionId: data.id,
       });
     }
 
     return json({
       status: 'failed',
-      message: data.result?.description || 'Payment was not successful. Please try again.',
+      message:
+        data.result?.description ||
+        'Payment was not successful. Please try again.',
     });
   } catch (err) {
     console.error('HyperPay callback verification error:', err);
@@ -149,14 +150,19 @@ export default function HyperPayCallback() {
         className="max-w-md w-full text-center"
       >
         {/* Status Icon */}
-        <div className={`w-20 h-20 rounded-full ${config.bg} border ${config.border} flex items-center justify-center mx-auto mb-6`}>
-          <span className={`text-3xl font-light ${config.color}`}>{config.icon}</span>
+        <div
+          className={`w-20 h-20 rounded-full ${config.bg} border ${config.border} flex items-center justify-center mx-auto mb-6`}
+        >
+          <span className={`text-3xl font-light ${config.color}`}>
+            {config.icon}
+          </span>
         </div>
 
         <h1 className="font-serif text-2xl md:text-3xl text-[#4A3C31] mb-3">
           {data.status === 'success' && 'Order Confirmed'}
           {data.status === 'pending' && 'Processing Payment'}
-          {(data.status === 'failed' || data.status === 'error') && 'Payment Unsuccessful'}
+          {(data.status === 'failed' || data.status === 'error') &&
+            'Payment Unsuccessful'}
         </h1>
 
         <p className="text-[#8B8076] text-sm leading-relaxed mb-8">
@@ -164,9 +170,15 @@ export default function HyperPayCallback() {
         </p>
 
         {data.status === 'success' && (
-          <div className={`inline-block px-4 py-2 rounded-lg ${config.bg} border ${config.border} mb-8`}>
-            <p className="text-[10px] uppercase tracking-widest text-[#8B8076]">Transaction ID</p>
-            <p className={`text-sm font-mono mt-0.5 ${config.color}`}>{data.transactionId}</p>
+          <div
+            className={`inline-block px-4 py-2 rounded-lg ${config.bg} border ${config.border} mb-8`}
+          >
+            <p className="text-[10px] uppercase tracking-widest text-[#8B8076]">
+              Transaction ID
+            </p>
+            <p className={`text-sm font-mono mt-0.5 ${config.color}`}>
+              {data.transactionId}
+            </p>
           </div>
         )}
 

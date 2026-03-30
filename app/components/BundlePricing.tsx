@@ -232,11 +232,15 @@ export function BundlePricing({
             >
               <p className="text-xs text-center text-green-700">
                 {(() => {
-                  const tier = DEFAULT_TIERS.find((tier) => tier.id === selectedId);
+                  const tier = DEFAULT_TIERS.find(
+                    (tier) => tier.id === selectedId,
+                  );
                   const savings = tier?.comparePrice
                     ? parseInt(tier.comparePrice) - parseInt(tier.price)
                     : 0;
-                  return `${t('bundle.savingAmount', 'Saving')} ${savings} ${isRTL ? 'ريال' : 'SAR'}`;
+                  return `${t('bundle.savingAmount', 'Saving')} ${savings} ${
+                    isRTL ? 'ريال' : 'SAR'
+                  }`;
                 })()}
               </p>
             </motion.div>

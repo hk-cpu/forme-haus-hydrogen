@@ -449,10 +449,7 @@ const menuData = {
   'phone-accessories': {
     image:
       'https://images.unsplash.com/photo-1603313011101-320f26a4f6f6?w=800&q=80',
-    items: [
-      'Phone Cases',
-      'Phone Straps',
-    ],
+    items: ['Phone Cases', 'Phone Straps'],
   },
 };
 
@@ -551,44 +548,47 @@ function NavigationMenu() {
                   </motion.div>
                 )}
 
-                {state.menuLevel === 1 && currentCategory === 'Phone Accessories' && (
-                  <motion.div
-                    key="level2"
-                    className="menu-level"
-                    variants={contentVariants}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                    transition={{duration: 0.3}}
-                  >
-                    <div className="menu-hero">
-                      <img
-                        src={menuData['phone-accessories'].image}
-                        alt="Phone Accessories"
-                      />
-                    </div>
-                    <ul className="menu-list">
-                      {menuData['phone-accessories'].items.map((item, index) => (
-                        <motion.li
-                          key={item}
-                          initial={{opacity: 0, x: -20}}
-                          animate={{opacity: 1, x: 0}}
-                          transition={{delay: index * 0.04}}
-                        >
-                          <Link
-                            to={`/collections/${item
-                              .toLowerCase()
-                              .replace(/\s/g, '-')}`}
-                            className="menu-item"
-                            onClick={() => dispatch({type: 'CLOSE_MENU'})}
-                          >
-                            <span>{item}</span>
-                          </Link>
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </motion.div>
-                )}
+                {state.menuLevel === 1 &&
+                  currentCategory === 'Phone Accessories' && (
+                    <motion.div
+                      key="level2"
+                      className="menu-level"
+                      variants={contentVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      transition={{duration: 0.3}}
+                    >
+                      <div className="menu-hero">
+                        <img
+                          src={menuData['phone-accessories'].image}
+                          alt="Phone Accessories"
+                        />
+                      </div>
+                      <ul className="menu-list">
+                        {menuData['phone-accessories'].items.map(
+                          (item, index) => (
+                            <motion.li
+                              key={item}
+                              initial={{opacity: 0, x: -20}}
+                              animate={{opacity: 1, x: 0}}
+                              transition={{delay: index * 0.04}}
+                            >
+                              <Link
+                                to={`/collections/${item
+                                  .toLowerCase()
+                                  .replace(/\s/g, '-')}`}
+                                className="menu-item"
+                                onClick={() => dispatch({type: 'CLOSE_MENU'})}
+                              >
+                                <span>{item}</span>
+                              </Link>
+                            </motion.li>
+                          ),
+                        )}
+                      </ul>
+                    </motion.div>
+                  )}
               </AnimatePresence>
             </div>
 

@@ -1,4 +1,5 @@
 import {type MetaFunction} from '@shopify/remix-oxygen';
+
 import {routeHeaders} from '~/data/cache';
 import {useTranslation} from '~/hooks/useTranslation';
 
@@ -39,8 +40,8 @@ export default function TermsOfServicePage() {
 
             <h3>استخدام الموقع</h3>
             <p>
-              يجب استخدام الموقع لأغراض مشروعة فقط وبما لا يؤثر على تشغيل
-              الموقع أو ينتهك حقوق الآخرين.
+              يجب استخدام الموقع لأغراض مشروعة فقط وبما لا يؤثر على تشغيل الموقع
+              أو ينتهك حقوق الآخرين.
             </p>
 
             <h3>معلومات المنتجات</h3>
@@ -61,10 +62,10 @@ export default function TermsOfServicePage() {
 
             <h3>الملكية الفكرية</h3>
             <p>
-              جميع المحتويات المعروضة على هذا الموقع، بما في ذلك النصوص
-              والصور والشعارات والتصاميم، هي ملك لـ{' '}
-              <strong>Formé Haus</strong> أو للجهات المالكة لها، ولا يجوز
-              نسخها أو إعادة إنتاجها أو استخدامها دون إذن خطي مسبق.
+              جميع المحتويات المعروضة على هذا الموقع، بما في ذلك النصوص والصور
+              والشعارات والتصاميم، هي ملك لـ <strong>Formé Haus</strong> أو
+              للجهات المالكة لها، ولا يجوز نسخها أو إعادة إنتاجها أو استخدامها
+              دون إذن خطي مسبق.
             </p>
 
             <h3>تحديد المسؤولية</h3>
@@ -96,10 +97,10 @@ export default function TermsOfServicePage() {
 
             <h3>Product Information</h3>
             <p>
-              We strive to ensure that product descriptions, images, and
-              pricing are accurate. However, minor variations may occur. Formé
-              Haus reserves the right to correct errors or update product
-              information without prior notice.
+              We strive to ensure that product descriptions, images, and pricing
+              are accurate. However, minor variations may occur. Formé Haus
+              reserves the right to correct errors or update product information
+              without prior notice.
             </p>
 
             <h3>Orders</h3>

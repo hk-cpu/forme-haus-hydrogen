@@ -23,7 +23,8 @@ const BRAND_PROMISES = [
     ),
     title: 'Curated Selection',
     titleKey: 'whyUs.curatedTitle',
-    description: 'International designers chosen for refinement and lasting design.',
+    description:
+      'International designers chosen for refinement and lasting design.',
     descKey: 'whyUs.curatedDesc',
   },
   {
@@ -48,7 +49,8 @@ const BRAND_PROMISES = [
     ),
     title: 'Limited Collections',
     titleKey: 'whyUs.limitedTitle',
-    description: 'Thoughtfully edited releases in carefully selected quantities.',
+    description:
+      'Thoughtfully edited releases in carefully selected quantities.',
     descKey: 'whyUs.limitedDesc',
   },
   {
@@ -105,7 +107,8 @@ const BRAND_PROMISES = [
     ),
     title: 'Elevated Experience',
     titleKey: 'whyUs.elevatedTitle',
-    description: 'A refined journey from discovery to delivery. Free shipping across Saudi Arabia — GCC coming soon.',
+    description:
+      'A refined journey from discovery to delivery. Free shipping across Saudi Arabia.',
     descKey: 'whyUs.elevatedDesc',
   },
 ];
@@ -153,7 +156,7 @@ export function WhyChooseUs() {
               className="text-center group"
             >
               {/* Icon */}
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#a87441]/10 text-[#a87441] mb-3 group-hover:bg-[#a87441] group-hover:text-white transition-all duration-300">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#a87441]/20 text-[#a87441] border border-[#a87441]/15 mb-3 group-hover:bg-[#a87441] group-hover:text-white group-hover:border-[#a87441] transition-all duration-300 shadow-sm">
                 {item.icon}
               </div>
 

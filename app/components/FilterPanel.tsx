@@ -1,7 +1,10 @@
 import {useState, useCallback} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 import {useNavigate, useLocation, useSearchParams} from '@remix-run/react';
-import type {Filter, ProductFilter} from '@shopify/hydrogen/storefront-api-types';
+import type {
+  Filter,
+  ProductFilter,
+} from '@shopify/hydrogen/storefront-api-types';
 
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
@@ -118,12 +121,12 @@ export function FilterPanel({
 
   // Initialize expanded sections with the IDs of all filters so they're open by default
   const [expandedSections, setExpandedSections] = useState<string[]>(
-    filters.map((f) => f.id)
+    filters.map((f) => f.id),
   );
 
   // Maintain local state of selected filter JSON string inputs
   const [selectedInputs, setSelectedInputs] = useState<Set<string>>(new Set());
-  
+
   // Initialize price range state if a price filter exists
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 50000]);
 
@@ -180,7 +183,10 @@ export function FilterPanel({
 
     // Add price if modified
     if (priceRange[0] > 0 || priceRange[1] < 50000) {
-      newParams.set(`${FILTER_URL_PREFIX}price`, JSON.stringify({min: priceRange[0], max: priceRange[1]}));
+      newParams.set(
+        `${FILTER_URL_PREFIX}price`,
+        JSON.stringify({min: priceRange[0], max: priceRange[1]}),
+      );
     }
 
     // Reset pagination
@@ -268,7 +274,8 @@ export function FilterPanel({
             <div className="flex-1 overflow-y-auto px-6 py-4 space-y-2">
               {filters.map((filter) => {
                 const isColorFilter =
-                  filter.label.toLowerCase() === 'color' || filter.label.toLowerCase() === 'colour';
+                  filter.label.toLowerCase() === 'color' ||
+                  filter.label.toLowerCase() === 'colour';
 
                 return (
                   <FilterSection
@@ -287,16 +294,14 @@ export function FilterPanel({
                             {formatPrice(priceRange[1])}
                           </span>
                         </div>
-      
+
                         {/* Price Slider */}
                         <div className="relative h-2 bg-[#2A2A2A] rounded-full">
                           <div
                             className="absolute h-full bg-[#a87441] rounded-full"
                             style={{
                               left: `${(priceRange[0] / 50000) * 100}%`,
-                              right: `${
-                                100 - (priceRange[1] / 50000) * 100
-                              }%`,
+                              right: `${100 - (priceRange[1] / 50000) * 100}%`,
                             }}
                           />
                           <input
@@ -342,13 +347,15 @@ export function FilterPanel({
                         {filter.values.map((option) => {
                           const inputString = option.input as string;
                           const isSelected = selectedInputs.has(inputString);
-                          const colorHex = COLOR_HEX_MAP[option.label.toLowerCase()] || '#1A1A1A';
+                          const colorHex =
+                            COLOR_HEX_MAP[option.label.toLowerCase()] ||
+                            '#1A1A1A';
 
                           return (
                             <button
                               key={option.id}
                               onClick={() => toggleFilter(inputString)}
-                              className={`relative w-10 h-10 rounded-full border-2 transition-all ${
+                              className={`relative w-11 h-11 rounded-full border-2 transition-all ${
                                 isSelected
                                   ? 'border-[#a87441] scale-110'
                                   : 'border-transparent hover:scale-105'
@@ -375,7 +382,7 @@ export function FilterPanel({
                           return (
                             <label
                               key={option.id}
-                              className="flex items-center justify-between py-2 cursor-pointer group"
+                              className="flex items-center justify-between py-2 min-h-[44px] cursor-pointer group"
                             >
                               <span className="flex items-center gap-3">
                                 <span

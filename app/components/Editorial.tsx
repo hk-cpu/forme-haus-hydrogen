@@ -7,7 +7,9 @@ export function Editorial() {
     <section className="py-16 px-4 md:px-8 max-w-7xl mx-auto">
       <div className="mb-8">
         <h2 className="text-2xl font-medium tracking-wide">The Edit</h2>
-        <span className="text-sm text-[#8B8076] tracking-wider uppercase">Editorial</span>
+        <span className="text-sm text-[#8B8076] tracking-wider uppercase">
+          Editorial
+        </span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 md:grid-rows-2 gap-4 h-auto md:h-[750px]">
@@ -23,8 +25,12 @@ export function Editorial() {
             loading="eager"
           />
           <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
-            <h3 className="text-white text-lg font-medium mb-1">Modern Essentials</h3>
-            <p className="text-white/80 text-sm">Timeless pieces for everyday elegance</p>
+            <h3 className="text-white text-lg font-medium mb-1">
+              Modern Essentials
+            </h3>
+            <p className="text-white/80 text-sm">
+              Timeless pieces for everyday elegance
+            </p>
           </div>
         </Link>
 
@@ -57,7 +63,9 @@ export function Editorial() {
             loading="lazy"
           />
           <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
-            <h3 className="text-white text-base font-medium">Carry It Your Way</h3>
+            <h3 className="text-white text-base font-medium">
+              Carry It Your Way
+            </h3>
           </div>
         </Link>
 
@@ -73,7 +81,9 @@ export function Editorial() {
             loading="lazy"
           />
           <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
-            <h3 className="text-white text-base font-medium mb-1">New Arrivals</h3>
+            <h3 className="text-white text-base font-medium mb-1">
+              New Arrivals
+            </h3>
             <p className="text-white/80 text-sm">Latest from the Haus</p>
           </div>
         </Link>

@@ -233,6 +233,16 @@ export function Header({
     },
     {
       id: '5',
+      title: t('nav.journal', 'Journal'),
+      to: '/journal',
+    },
+    {
+      id: '6',
+      title: t('nav.ourStory', 'Our Story'),
+      to: '/pages/about',
+    },
+    {
+      id: '7',
       title: t('nav.contact', 'Contact Us'),
       to: '/contact',
     },
@@ -269,7 +279,7 @@ export function Header({
         initial={{y: -100, opacity: 0}}
         animate={{y: isVisible ? 0 : -100, opacity: isVisible ? 1 : 0}}
         transition={{duration: 0.5, ease: [0.16, 1, 0.3, 1]}}
-        className={`fixed z-50 flex justify-center left-0 right-0 group w-full top-0 ${getHeaderBackgroundClass()}`}
+        className={`fixed z-50 flex justify-center left-0 right-0 group w-full top-0 transition-colors duration-300 ${getHeaderBackgroundClass()}`}
         style={{
           WebkitBackdropFilter: scrolled
             ? 'blur(40px) saturate(1.2)'
@@ -318,14 +328,19 @@ export function Header({
                         : 'text-[#F0EAE6]/80 hover:text-[#a87441]'
                     }`
                   }
-                  aria-expanded={item?.items?.length > 0 ? activeDropdown === item.id : undefined}
+                  aria-expanded={
+                    item?.items?.length > 0
+                      ? activeDropdown === item.id
+                      : undefined
+                  }
                 >
                   {({isActive}) => (
                     <>
                       <span className="relative z-10">
                         {item.title === 'CATALOG' || item.title === 'Catalog'
                           ? 'COLLECTIONS'
-                          : item.title === 'ABOUT US' || item.title === 'About Us'
+                          : item.title === 'ABOUT US' ||
+                            item.title === 'About Us'
                           ? 'OUR STORY'
                           : item.title}
                       </span>
@@ -418,7 +433,7 @@ export function Header({
               aria-label={t('nav.menu', 'Menu')}
             >
               <Icons.Menu />
-              <span className="mt-1 text-[9px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300">
+              <span className="mt-1 text-[10px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300">
                 {t('nav.menu', 'Menu')}
               </span>
             </motion.button>
@@ -443,6 +458,7 @@ export function Header({
                   alt="FORMÉ HAUS"
                   className="transition-all duration-500 object-contain h-8 w-8 md:h-10 md:w-10 opacity-90 group-hover/logo:opacity-100"
                   fetchPriority="high"
+                  loading="eager"
                   width={40}
                   height={40}
                   decoding="sync"
@@ -476,14 +492,19 @@ export function Header({
               title={t('nav.search', 'Search')}
             >
               <Icons.Search />
-              <span className="mt-1 text-[9px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
+              <span className="mt-1 text-[10px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
                 {t('nav.search', 'Search')}
               </span>
               <span className="absolute inset-0 bg-[#a87441]/0 hover:bg-[#a87441]/10 rounded-full transition-colors duration-300 -z-10" />
             </motion.button>
 
             {/* Cart / Shopping Bag */}
-            <CartBagButton openCart={openCart} rootData={rootData} t={t} isRTL={isRTL} />
+            <CartBagButton
+              openCart={openCart}
+              rootData={rootData}
+              t={t}
+              isRTL={isRTL}
+            />
 
             {/* Account (Desktop) */}
             <motion.div
@@ -498,7 +519,7 @@ export function Header({
                 title={t('nav.account', 'Account')}
               >
                 <Icons.User />
-                <span className="mt-1 text-[9px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
+                <span className="mt-1 text-[10px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
                   {t('nav.account', 'Account')}
                 </span>
                 <span className="absolute inset-0 bg-[#a87441]/0 hover:bg-[#a87441]/10 rounded-full transition-colors duration-300 -z-10" />
@@ -509,7 +530,9 @@ export function Header({
 
         {/* Scroll Progress Bar — uses scaleX (GPU composited) instead of width (triggers layout) */}
         <motion.div
-          className={`absolute bottom-0 w-full h-[2px] bg-gradient-to-r from-[#a87441] to-[#d4af87] ${isRTL ? 'right-0' : 'left-0'}`}
+          className={`absolute bottom-0 w-full h-[2px] bg-gradient-to-r from-[#a87441] to-[#d4af87] ${
+            isRTL ? 'right-0' : 'left-0'
+          }`}
           style={{
             transform: scrolled ? 'scaleX(1)' : 'scaleX(0)',
             transformOrigin: isRTL ? 'right' : 'left',
@@ -562,7 +585,7 @@ function CartBagButton({
           aria-label={t('nav.cart', 'Bag')}
         >
           <Icons.Bag />
-          <span className="mt-1 text-[9px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
+          <span className="mt-1 text-[10px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
             {t('nav.cart', 'Bag')}
           </span>
         </motion.button>
@@ -581,7 +604,7 @@ function CartBagButton({
               title={t('nav.cart', 'Bag')}
             >
               <Icons.Bag />
-              <span className="mt-1 text-[9px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
+              <span className="mt-1 text-[10px] uppercase tracking-wider text-[#F0EAE6]/60 group-hover:text-[#a87441] transition-colors duration-300 hidden lg:block">
                 {t('nav.cart', 'Bag')}
               </span>
 
@@ -593,10 +616,16 @@ function CartBagButton({
                     animate={{opacity: 1, y: 0, scale: 1}}
                     exit={{opacity: 0, y: 6, scale: 0.95}}
                     transition={{duration: 0.18}}
-                    className={`absolute top-full mt-3 w-56 bg-[#1A1A1A] border border-[#a87441]/25 rounded-xl shadow-2xl shadow-black/60 p-4 pointer-events-none z-[400] ${isRTL ? 'left-0' : 'right-0'}`}
+                    className={`absolute top-full mt-3 w-56 bg-[#1A1A1A] border border-[#a87441]/25 rounded-xl shadow-2xl shadow-black/60 p-4 pointer-events-none z-[400] ${
+                      isRTL ? 'left-0' : 'right-0'
+                    }`}
                   >
                     {/* Arrow */}
-                    <div className={`absolute -top-[7px] w-3 h-3 bg-[#1A1A1A] border-l border-t border-[#a87441]/25 rotate-45 ${isRTL ? 'left-5' : 'right-5'}`} />
+                    <div
+                      className={`absolute -top-[7px] w-3 h-3 bg-[#1A1A1A] border-l border-t border-[#a87441]/25 rotate-45 ${
+                        isRTL ? 'left-5' : 'right-5'
+                      }`}
+                    />
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 rounded-full bg-[#a87441]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <Icons.Bag className="w-4 h-4 text-[#a87441]/50" />
@@ -605,8 +634,11 @@ function CartBagButton({
                         <p className="text-[#F0EAE6] text-[13px] font-medium leading-snug">
                           {t('cart.empty', 'Your bag is empty')}
                         </p>
-                        <p className="text-[#8B8076] text-[11px] mt-0.5 leading-relaxed">
-                          {t('cart.emptyStats', "Looks like you haven't added anything yet, let's get you started!")}
+                        <p className="text-[#6B6058] text-[11px] mt-0.5 leading-relaxed">
+                          {t(
+                            'cart.emptyStats',
+                            "Looks like you haven't added anything yet, let's get you started!",
+                          )}
                         </p>
                       </div>
                     </div>
@@ -620,7 +652,7 @@ function CartBagButton({
                   initial={{scale: 0}}
                   animate={{scale: 1}}
                   exit={{scale: 0}}
-                  className="absolute -top-0.5 right-0 lg:right-2 text-[9px] bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-white rounded-full w-4 h-4 flex items-center justify-center font-medium shadow-lg"
+                  className="absolute -top-0.5 right-0 lg:right-2 text-[10px] bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-white rounded-full w-4 h-4 flex items-center justify-center font-medium shadow-lg"
                 >
                   {cart.totalQuantity > 9 ? '9+' : cart.totalQuantity}
                 </motion.span>

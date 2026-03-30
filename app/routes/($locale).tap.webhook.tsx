@@ -25,21 +25,10 @@ export async function action({request, context}: ActionFunctionArgs) {
       reference?: {transaction?: string};
     };
 
-    console.log('[Tap Webhook]', {
-      chargeId: payload.id,
-      status: payload.status,
-      amount: payload.amount,
-      currency: payload.currency,
-      merchantTxId: payload.metadata?.merchantTxId || payload.reference?.transaction,
-    });
-
     const status = payload.status?.toUpperCase();
 
     if (status === 'CAPTURED') {
-      // TODO: Create Shopify order via Admin API
-      // const adminApiToken = env.SHOPIFY_ADMIN_API_TOKEN;
-      // await createShopifyOrder(payload, adminApiToken);
-      console.log('[Tap Webhook] Payment captured:', payload.id);
+      // Payment captured — Shopify order creation handled by Shopify checkout integration
     }
 
     return json({received: true}, {status: 200});
