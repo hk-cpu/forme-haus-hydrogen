@@ -1,7 +1,7 @@
-import {Link} from '@remix-run/react';
 import {motion, useReducedMotion, useScroll, useTransform} from 'framer-motion';
 import {useRef, useState} from 'react';
 
+import {Link} from '~/components/Link';
 import {useTranslation} from '~/hooks/useTranslation';
 import {use3DTilt} from '~/hooks/use3DTilt';
 
@@ -88,7 +88,10 @@ function TopCard({item, index}: {item: BentoItem; index: number}) {
             }}
             sizes="(max-width: 768px) 100vw, 50vw"
             loading={index < 2 ? 'eager' : 'lazy'}
+            fetchPriority={index === 0 ? 'high' : 'auto'}
             decoding="async"
+            width="800"
+            height="1000"
           />
 
           {/* Hover gradient - enhanced */}
@@ -188,6 +191,8 @@ function BottomCard({item, index}: {item: BentoItem; index: number}) {
             sizes="(max-width: 768px) 100vw, 33vw"
             loading="lazy"
             decoding="async"
+            width="800"
+            height="1000"
           />
 
           {/* Hover gradient */}

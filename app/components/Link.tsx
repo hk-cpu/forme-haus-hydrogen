@@ -7,6 +7,7 @@ import {
 } from '@remix-run/react';
 
 import type {RootLoader} from '~/root';
+import {buildLocalePath, getPathLocalePrefix, isExternalUrl} from '~/lib/utils';
 
 type LinkProps = Omit<RemixLinkProps, 'className'> & {
   className?: RemixNavLinkProps['className'] | RemixLinkProps['className'];
@@ -35,8 +36,14 @@ export function Link(props: LinkProps) {
   let toWithLocale = to;
 
   if (typeof toWithLocale === 'string' && selectedLocale?.pathPrefix) {
-    if (!toWithLocale.toLowerCase().startsWith(selectedLocale.pathPrefix)) {
-      toWithLocale = `${selectedLocale.pathPrefix}${to}`;
+    const shouldPrefix =
+      toWithLocale.startsWith('/') &&
+      !toWithLocale.startsWith('//') &&
+      !isExternalUrl(toWithLocale) &&
+      !getPathLocalePrefix(toWithLocale);
+
+    if (shouldPrefix) {
+      toWithLocale = buildLocalePath(toWithLocale, selectedLocale.pathPrefix);
     }
   }
 

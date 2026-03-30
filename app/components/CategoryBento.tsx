@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
-import {Link} from '@remix-run/react';
 import {motion, useReducedMotion} from 'framer-motion';
 
+import {Link} from '~/components/Link';
 import {useTranslation} from '~/hooks/useTranslation';
 import {use3DTilt} from '~/hooks/use3DTilt';
 

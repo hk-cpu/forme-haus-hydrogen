@@ -153,18 +153,18 @@ export default function Homepage() {
           <EditorialSection />
         </div>
 
-        {/* 4. The Journal */}
-        <div className="py-8 md:py-12">
+        {/* 4. The Journal — below fold: render-skip until near viewport */}
+        <div className="py-8 md:py-12 section-deferred">
           <JournalSection />
         </div>
 
-        {/* 5. Why Choose Us */}
-        <div>
+        {/* 5. Why Choose Us — below fold */}
+        <div className="section-deferred">
           <WhyChooseUs />
         </div>
 
         {/* 5b. Trust Badges — Maroof, Muwathooq, Secure Payment */}
-        <div className="py-6 px-6 md:px-8 max-w-[900px] mx-auto">
+        <div className="py-6 px-6 md:px-8 max-w-[900px] mx-auto section-deferred">
           <TrustBadges variant="full" />
         </div>
 

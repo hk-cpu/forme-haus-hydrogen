@@ -3,7 +3,7 @@ import {motion, AnimatePresence} from 'framer-motion';
 import {useState} from 'react';
 
 import type {RootLoader} from '~/root';
-import {DEFAULT_LOCALE} from '~/lib/utils';
+import {DEFAULT_LOCALE, buildLocalePath} from '~/lib/utils';
 
 export default function LanguageSwitch() {
   const rootData = useRouteLoaderData<RootLoader>('root');
@@ -17,47 +17,21 @@ export default function LanguageSwitch() {
 
   function toggleLanguage() {
     if (isTransitioning) return;
-    
+
     const currentPath = location.pathname;
     const search = location.search || '';
 
-    // Supported locale prefixes
-    const localePrefixes = [
-      '/ar-sa',
-      '/en-sa',
-      '/en-us',
-      '/en-ad',
-      '/en-at',
-      '/en-au',
-    ];
-
     // Start transition
     setIsTransitioning(true);
-    
+
     // Add a small delay to show transition effect
     setTimeout(() => {
-      if (isArabic) {
-        // Switch from Arabic to English (default)
-        // Remove any locale prefix
-        let newPath = currentPath;
-        for (const prefix of localePrefixes) {
-          newPath = newPath.replace(new RegExp(`^${prefix}`), '');
-        }
-        // Ensure we have at least a root path
-        newPath = newPath || '/';
-        navigate(`${newPath}${search}`);
-      } else {
-        // Switch to Arabic
-        // First remove any existing English locale prefix
-        let cleanPath = currentPath;
-        for (const prefix of localePrefixes) {
-          cleanPath = cleanPath.replace(new RegExp(`^${prefix}`), '');
-        }
-        cleanPath = cleanPath || '/';
-        // Add Arabic locale prefix
-        navigate(`/ar-sa${cleanPath === '/' ? '' : cleanPath}${search}`);
-      }
-      
+      const nextPath = isArabic
+        ? buildLocalePath(currentPath)
+        : buildLocalePath(currentPath, '/ar-sa');
+
+      navigate(`${nextPath}${search}`);
+
       // Reset transitioning after navigation completes
       setTimeout(() => setIsTransitioning(false), 300);
     }, 150);

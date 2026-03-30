@@ -204,8 +204,8 @@ body {
 
 html {
   overflow-x: hidden;
-  /* Ensure smooth scrolling on all devices */
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth intentionally omitted — Lenis handles smooth scrolling.
+     Setting both causes double-interpolation (browser + Lenis), producing stuttery output. */
 }
 
 /* ── Text Selection ── */
@@ -272,15 +272,10 @@ p {
 }
 
 /* ── Image Fade-in on Load ── */
-img[loading='lazy'] {
-  opacity: 0;
-  transition: opacity 0.6s var(--ease-luxe);
-}
-
-img[loading='lazy'].loaded,
-img[loading='lazy']:not([data-loading]) {
-  opacity: 1;
-}
+/* Images use React onLoad handlers + Framer Motion for fade-in where needed.
+   A global CSS opacity:0 override is not used here because no component sets
+   the matching [data-loading] attribute, which would cause all lazy images to
+   start invisible with no recovery path. */
 
 /* ── Skeleton Shimmer (luxury slow) ── */
 @keyframes luxury-shimmer {
@@ -693,9 +688,8 @@ footer a,
     0 0 40px rgba(168, 116, 65, 0.1);
 }
 
-/* Smooth scrolling for the entire page */
+/* scroll-padding-top offsets anchor jumps so content isn't hidden by the fixed navbar */
 html {
-  scroll-behavior: smooth;
   scroll-padding-top: var(--navbar-height);
 }
 
@@ -1264,4 +1258,24 @@ h6 {
     opacity: 1;
     transform: none;
   }
+}
+
+/* ============================================================================
+   RENDER SKIPPING — Below-fold performance
+   ============================================================================
+   content-visibility: auto tells the browser to skip style/layout/paint for
+   off-screen sections until they're near the viewport. This can cut initial
+   render time significantly on content-heavy pages.
+
+   contain-intrinsic-size provides a size estimate so the browser can still
+   calculate the scrollbar position without rendering the section. Set to a
+   value close to the actual rendered height to minimize layout shifts.
+
+   Usage: add class="section-deferred" to any section clearly below the fold.
+   Do NOT apply to sections with position: sticky, position: fixed, or
+   elements that rely on being measured before scroll.
+   ============================================================================ */
+.section-deferred {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 400px;
 }

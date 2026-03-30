@@ -1,6 +1,6 @@
-import {Link} from '@remix-run/react';
 import {motion} from 'framer-motion';
 
+import {Link} from '~/components/Link';
 import {useTranslation} from '~/hooks/useTranslation';
 
 interface JournalCard {

@@ -36,7 +36,7 @@ import styles from '~/styles/app.css?url';
 import futuristicStyles from '~/styles/futuristic-polish.css?url';
 import {UIProvider} from '~/context/UIContext';
 
-import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
+import {DEFAULT_LOCALE, getPathLocalePrefix, parseMenu, stripLocalePathPrefix} from './lib/utils';
 // Brand favicon served from /public/favicon.png
 const favicon = '/favicon.png';
 
@@ -45,8 +45,7 @@ export type RootLoader = typeof loader;
 /** Emits hreflang alternate links for English (default) and Arabic */
 function HreflangLinks() {
   const {pathname} = useLocation();
-  // Strip any existing locale prefix to get the base path
-  const basePath = pathname.replace(/^\/(ar-sa|en-sa)\b/i, '') || '/';
+  const basePath = stripLocalePathPrefix(pathname);
   const origin = 'https://formehaus.me';
 
   return (
@@ -78,6 +77,10 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
     return true;
   }
 
+  if (getPathLocalePrefix(currentUrl.pathname) !== getPathLocalePrefix(nextUrl.pathname)) {
+    return true;
+  }
+
   return false;
 };
 
@@ -92,24 +95,19 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
  */
 export const links: LinksFunction = () => {
   return [
-    // Preload above-fold LCP hero image
-    {rel: 'preload', href: '/brand/logo-full.webp', as: 'image'},
-    {
-      rel: 'preconnect',
-      href: 'https://cdn.shopify.com',
-    },
-    // Removed preconnect to shop.app — unused, wasted connection
+    // Preload LCP hero logo — type hint lets browser skip content-sniffing
+    {rel: 'preload', href: '/brand/logo-full.webp', as: 'image', type: 'image/webp'},
+    // Preload first category card image — eagerly loaded, visible just below hero
+    {rel: 'preload', href: '/brand/new-in.webp', as: 'image', type: 'image/webp'},
+    // Preconnect — establishes early TCP+TLS for critical origins
+    {rel: 'preconnect', href: 'https://cdn.shopify.com'},
+    {rel: 'preconnect', href: 'https://fonts.googleapis.com'},
+    {rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' as const},
+    // dns-prefetch — fallback for browsers that skip preconnect; zero cost, saves 20–200ms on slow networks
+    {rel: 'dns-prefetch', href: 'https://cdn.shopify.com'},
+    {rel: 'dns-prefetch', href: 'https://fonts.googleapis.com'},
+    {rel: 'dns-prefetch', href: 'https://fonts.gstatic.com'},
     {rel: 'icon', type: 'image/png', href: favicon},
-    // Google Fonts — preconnect + stylesheet (moved out of CSS @import to avoid render-blocking waterfall)
-    {
-      rel: 'preconnect',
-      href: 'https://fonts.googleapis.com',
-    },
-    {
-      rel: 'preconnect',
-      href: 'https://fonts.gstatic.com',
-      crossOrigin: 'anonymous' as const,
-    },
     // Google Fonts deferred to Layout <head> to avoid render-blocking
   ];
 };

@@ -52,6 +52,8 @@ export default defineConfig(({isSsrBuild}) => ({
               if (id.includes('three/')) return 'three';
               // Isolate react-three into its own chunk
               if (id.includes('@react-three')) return 'react-three';
+              // Isolate lenis smooth-scroll — only loaded after hydration via SmoothScroll
+              if (id.includes('lenis')) return 'lenis';
             },
           },
         },

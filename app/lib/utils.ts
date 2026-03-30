@@ -14,6 +14,8 @@ import {countries} from '~/data/countries';
 import type {I18nLocale} from './type';
 // import {twMerge} from 'tailwind-merge';
 
+const LOCALE_PATH_PATTERN = /^\/[a-z]{2}-[a-z]{2}(?=\/|$)/i;
+
 export function cn(...inputs: ClassValue[]) {
   return clsx(inputs);
 }
@@ -267,10 +269,28 @@ export const DEFAULT_LOCALE: I18nLocale = Object.freeze({
   pathPrefix: '',
 });
 
+export function getPathLocalePrefix(pathname: string) {
+  return pathname.match(LOCALE_PATH_PATTERN)?.[0].toLowerCase() ?? '';
+}
+
+export function stripLocalePathPrefix(pathname: string) {
+  const strippedPath = pathname.replace(LOCALE_PATH_PATTERN, '');
+  return strippedPath || '/';
+}
+
+export function buildLocalePath(pathname: string, pathPrefix?: string) {
+  const normalizedPath = stripLocalePathPrefix(pathname);
+  if (!pathPrefix) return normalizedPath;
+  return `${pathPrefix}${normalizedPath === '/' ? '' : normalizedPath}`;
+}
+
+export function isExternalUrl(url: string) {
+  return /^(?:[a-z][a-z\d+\-.]*:|\/\/)/i.test(url);
+}
+
 export function getLocaleFromRequest(request: Request): I18nLocale {
   const url = new URL(request.url);
-  const firstPathPart =
-    '/' + url.pathname.substring(1).split('/')[0].toLowerCase();
+  const firstPathPart = getPathLocalePrefix(url.pathname);
 
   return countries[firstPathPart]
     ? {
@@ -287,17 +307,15 @@ export function usePrefixPathWithLocale(path: string) {
   const rootData = useRouteLoaderData<RootLoader>('root');
   const selectedLocale = rootData?.selectedLocale ?? DEFAULT_LOCALE;
 
-  return `${selectedLocale.pathPrefix}${
-    path.startsWith('/') ? path : '/' + path
-  }`;
+  return buildLocalePath(
+    path.startsWith('/') ? path : `/${path}`,
+    selectedLocale.pathPrefix,
+  );
 }
 
 export function useIsHomePath() {
   const {pathname} = useLocation();
-  const rootData = useRouteLoaderData<RootLoader>('root');
-  const selectedLocale = rootData?.selectedLocale ?? DEFAULT_LOCALE;
-  const strippedPathname = pathname.replace(selectedLocale.pathPrefix, '');
-  return strippedPathname === '/';
+  return stripLocalePathPrefix(pathname) === '/';
 }
 
 export function parseAsCurrency(value: number, locale: I18nLocale) {
