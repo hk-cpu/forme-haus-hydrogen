@@ -110,7 +110,10 @@ export function PageLayout({children, layout}: LayoutProps) {
         <div className="fixed inset-0 pointer-events-none z-0">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,116,65,0.16),transparent_34%),linear-gradient(180deg,#181513_0%,#121212_60%,#0f0f0f_100%)]" />
           {isDesktop && (
-            <div className="absolute inset-0" style={{transition: 'opacity 0.8s ease'}}>
+            <div
+              className="absolute inset-0"
+              style={{transition: 'opacity 0.8s ease'}}
+            >
               <Silk color="#AD9686" speed={isHome ? 5 : 3} />
             </div>
           )}
