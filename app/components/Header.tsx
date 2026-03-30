@@ -9,6 +9,7 @@ import {
 
 import type {RootLoader} from '~/root';
 import type {EnhancedMenu} from '~/lib/utils';
+import {stripLocalePathPrefix} from '~/lib/utils';
 import {useTranslation} from '~/hooks/useTranslation';
 
 import LanguageSwitch from './LanguageSwitch';
@@ -157,16 +158,56 @@ export function Header({
   ];
 
   const baseItems = menu?.items?.length ? menu.items : defaultLinks;
-  const hasContact = baseItems.some(
-    (item: any) =>
-      item.to === '/contact' ||
-      item.url?.endsWith('/contact') ||
-      item.title?.toLowerCase().includes('contact'),
-  );
+  const normalizeMenuPath = (value?: string) => {
+    if (!value) return '';
+    try {
+      const pathname = value.startsWith('http')
+        ? new URL(value).pathname
+        : value;
+      return stripLocalePathPrefix(pathname).replace(/\/$/, '') || '/';
+    } catch {
+      return stripLocalePathPrefix(value).replace(/\/$/, '') || '/';
+    }
+  };
+
+  const mapMenuItem = (item: any) => {
+    const normalizedTo = normalizeMenuPath(item.to);
+
+    if (
+      item.title === 'CATALOG' ||
+      item.title === 'Catalog' ||
+      normalizedTo === '/collections/all'
+    ) {
+      return {
+        ...item,
+        to: '/collections',
+        title: t('nav.collections', 'Collections'),
+      };
+    }
+
+    if (
+      item.title === 'ABOUT US' ||
+      item.title === 'About Us' ||
+      normalizedTo === '/pages/about'
+    ) {
+      return {...item, to: '/pages/about', title: t('nav.ourStory', 'Our Story')};
+    }
+
+    if (normalizedTo === '/contact') {
+      return {...item, to: '/contact', title: t('nav.contact', 'Contact Us')};
+    }
+
+    return {...item, to: item.to ?? item.url};
+  };
+
+  const hasContact = baseItems.some((item: any) => {
+    const normalizedTo = normalizeMenuPath(item.to ?? item.url);
+    return normalizedTo === '/contact' || item.title?.toLowerCase().includes('contact');
+  });
   const items = hasContact
-    ? baseItems
+    ? baseItems.map(mapMenuItem)
     : [
-        ...baseItems,
+        ...baseItems.map(mapMenuItem),
         {id: 'contact', title: t('nav.contact', 'Contact Us'), to: '/contact'},
       ];
 
@@ -194,23 +235,10 @@ export function Header({
         <div className="flex flex-1 items-center justify-start">
           <nav className="hidden items-center gap-4 md:flex lg:gap-8">
           {items.map((item: any) => {
-            const to =
-              item.title === 'CATALOG' || item.title === 'Catalog'
-                ? '/collections'
-                : item.title === 'ABOUT US' || item.title === 'About Us'
-                ? '/pages/about'
-                : item.to;
-            const label =
-              item.title === 'CATALOG' || item.title === 'Catalog'
-                ? 'COLLECTIONS'
-                : item.title === 'ABOUT US' || item.title === 'About Us'
-                ? 'OUR STORY'
-                : item.title;
-
             return (
               <NavLink
                 key={item.id}
-                to={to}
+                to={item.to}
                 className={({isActive}) =>
                   `relative py-2 text-[10px] font-light uppercase tracking-[0.25em] transition-colors duration-200 lg:text-[11px] ${
                     isActive
@@ -219,7 +247,7 @@ export function Header({
                   }`
                 }
               >
-                {label}
+                {item.title}
               </NavLink>
             );
           })}
