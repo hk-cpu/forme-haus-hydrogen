@@ -35,7 +35,12 @@ import styles from '~/styles/app.css?url';
 import futuristicStyles from '~/styles/futuristic-polish.css?url';
 import {UIProvider} from '~/context/UIContext';
 
-import {DEFAULT_LOCALE, getPathLocalePrefix, parseMenu, stripLocalePathPrefix} from './lib/utils';
+import {
+  DEFAULT_LOCALE,
+  getPathLocalePrefix,
+  parseMenu,
+  stripLocalePathPrefix,
+} from './lib/utils';
 const SmoothScroll = lazy(() => import('~/components/SmoothScroll'));
 // Brand favicon served from /public/favicon.png
 const favicon = '/favicon.png';
@@ -77,7 +82,10 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
     return true;
   }
 
-  if (getPathLocalePrefix(currentUrl.pathname) !== getPathLocalePrefix(nextUrl.pathname)) {
+  if (
+    getPathLocalePrefix(currentUrl.pathname) !==
+    getPathLocalePrefix(nextUrl.pathname)
+  ) {
     return true;
   }
 
@@ -96,9 +104,19 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 export const links: LinksFunction = () => {
   return [
     // Preload LCP hero logo — type hint lets browser skip content-sniffing
-    {rel: 'preload', href: '/brand/logo-full-opt.webp', as: 'image', type: 'image/webp'},
+    {
+      rel: 'preload',
+      href: '/brand/logo-full-opt.webp',
+      as: 'image',
+      type: 'image/webp',
+    },
     // Preload first category card image — eagerly loaded, visible just below hero
-    {rel: 'preload', href: '/brand/new-in-opt.webp', as: 'image', type: 'image/webp'},
+    {
+      rel: 'preload',
+      href: '/brand/new-in-opt.webp',
+      as: 'image',
+      type: 'image/webp',
+    },
     // Preconnect — establishes early TCP+TLS for critical origins
     {rel: 'preconnect', href: 'https://cdn.shopify.com'},
     // dns-prefetch — fallback for browsers that skip preconnect; zero cost, saves 20–200ms on slow networks

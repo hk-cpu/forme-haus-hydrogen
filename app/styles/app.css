@@ -115,7 +115,8 @@
   --color-accent-foreground: var(--bronze-dark);
 
   /* Fonts - Luxury Typography */
-  --font-sans: 'Aptos', 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-sans: 'Aptos', 'Segoe UI', 'Helvetica Neue', Helvetica, Arial,
+    sans-serif;
   --font-serif: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua',
     'Hoefler Text', Georgia, serif;
   --font-heading: var(--font-serif);
@@ -380,11 +381,11 @@ button:active:not(:disabled),
 }
 
 /* RTL - Transform origin fixes */
-[dir='rtl'] [style*="transform-origin: left"] {
+[dir='rtl'] [style*='transform-origin: left'] {
   transform-origin: right !important;
 }
 
-[dir='rtl'] [style*="transform-origin: right"] {
+[dir='rtl'] [style*='transform-origin: right'] {
   transform-origin: left !important;
 }
 
@@ -947,7 +948,7 @@ h6 {
     padding-left: max(var(--page-gutter), env(safe-area-inset-left));
     padding-right: max(var(--page-gutter), env(safe-area-inset-right));
   }
-  
+
   .safe-area-bottom {
     padding-bottom: max(1rem, env(safe-area-inset-bottom));
   }
@@ -964,12 +965,12 @@ h6 {
     --foreground: #ffffff;
     --background: #000000;
   }
-  
+
   /* Ensure sufficient contrast */
   .text-\[\#8B8076\] {
     color: #a89b8f !important;
   }
-  
+
   .border-\[\#a87441\]\/20,
   .border-\[\#a87441\]\/10 {
     border-color: rgba(168, 116, 65, 0.5) !important;
@@ -984,11 +985,11 @@ h6 {
   .motion-safe\:transform {
     transform: none !important;
   }
-  
+
   .motion-safe\:transition {
     transition: none !important;
   }
-  
+
   .motion-safe\:animate {
     animation: none !important;
   }
@@ -1131,12 +1132,24 @@ h6 {
    STAGGER ANIMATION DELAYS
    ============================================================================ */
 
-.stagger-1 { animation-delay: 0.08s; }
-.stagger-2 { animation-delay: 0.16s; }
-.stagger-3 { animation-delay: 0.24s; }
-.stagger-4 { animation-delay: 0.32s; }
-.stagger-5 { animation-delay: 0.40s; }
-.stagger-6 { animation-delay: 0.48s; }
+.stagger-1 {
+  animation-delay: 0.08s;
+}
+.stagger-2 {
+  animation-delay: 0.16s;
+}
+.stagger-3 {
+  animation-delay: 0.24s;
+}
+.stagger-4 {
+  animation-delay: 0.32s;
+}
+.stagger-5 {
+  animation-delay: 0.4s;
+}
+.stagger-6 {
+  animation-delay: 0.48s;
+}
 
 /* ============================================================================
    GRADIENT TEXT UTILITIES
@@ -1204,8 +1217,12 @@ h6 {
 }
 
 @keyframes pageFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* ── WhatsApp FAB ─────────────────────────────────────────────────────
@@ -1216,8 +1233,14 @@ h6 {
 }
 
 @keyframes whatsappPopIn {
-  from { transform: scale(0); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* ── Menu Stagger ─────────────────────────────────────────────────────
@@ -1231,22 +1254,34 @@ h6 {
   animation-delay: calc(var(--stagger-index, 0) * 0.1s);
 }
 
-[dir="rtl"] .menu-stagger-item {
+[dir='rtl'] .menu-stagger-item {
   transform: translateX(20px);
 }
 
 @keyframes menuItemIn {
-  from { opacity: 0; transform: translateX(-20px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-[dir="rtl"] .menu-stagger-item {
+[dir='rtl'] .menu-stagger-item {
   animation-name: menuItemInRTL;
 }
 
 @keyframes menuItemInRTL {
-  from { opacity: 0; transform: translateX(20px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

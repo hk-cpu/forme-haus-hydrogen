@@ -15,28 +15,84 @@ import LanguageSwitch from './LanguageSwitch';
 
 const Icons = {
   Menu: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg
+      className={className}
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
       <line x1="3" y1="6" x2="21" y2="6" strokeLinecap="round" />
       <line x1="3" y1="12" x2="21" y2="12" strokeLinecap="round" />
       <line x1="3" y1="18" x2="21" y2="18" strokeLinecap="round" />
     </svg>
   ),
   Search: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <circle cx="11" cy="11" r="8" strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      className={className}
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <circle
+        cx="11"
+        cy="11"
+        r="8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
       <path d="m21 21-4.35-4.35" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   ),
   Bag: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M6 6h12l1 15H5L6 6z" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M9 6V5a3 3 0 0 1 6 0v1" strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      className={className}
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <path
+        d="M6 6h12l1 15H5L6 6z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9 6V5a3 3 0 0 1 6 0v1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   User: ({className = ''}: {className?: string}) => (
-    <svg className={className} width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="12" cy="7" r="4" strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      className={className}
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <path
+        d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle
+        cx="12"
+        cy="7"
+        r="4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
 };
@@ -84,8 +140,16 @@ export function Header({
 
   const defaultLinks = [
     {id: '1', title: t('nav.newIn', 'New to Haus'), to: '/collections/new-in'},
-    {id: '2', title: t('nav.phoneCases', 'Phone Cases'), to: '/collections/phone-cases'},
-    {id: '3', title: t('nav.sunglasses', 'Sunglasses'), to: '/collections/sunglasses'},
+    {
+      id: '2',
+      title: t('nav.phoneCases', 'Phone Cases'),
+      to: '/collections/phone-cases',
+    },
+    {
+      id: '3',
+      title: t('nav.sunglasses', 'Sunglasses'),
+      to: '/collections/sunglasses',
+    },
     {id: '4', title: t('nav.collections', 'Collections'), to: '/collections'},
     {id: '5', title: t('nav.journal', 'Journal'), to: '/journal'},
     {id: '6', title: t('nav.ourStory', 'Our Story'), to: '/pages/about'},
@@ -101,7 +165,10 @@ export function Header({
   );
   const items = hasContact
     ? baseItems
-    : [...baseItems, {id: 'contact', title: t('nav.contact', 'Contact Us'), to: '/contact'}];
+    : [
+        ...baseItems,
+        {id: 'contact', title: t('nav.contact', 'Contact Us'), to: '/contact'},
+      ];
 
   const headerClass = !scrolled
     ? 'bg-[#121212]/[0.85] py-4'
@@ -116,7 +183,9 @@ export function Header({
         isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
       }`}
       style={{
-        WebkitBackdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
+        WebkitBackdropFilter: scrolled
+          ? 'blur(40px) saturate(1.2)'
+          : 'blur(20px)',
         backdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
       }}
     >
@@ -142,7 +211,9 @@ export function Header({
                 to={to}
                 className={({isActive}) =>
                   `relative py-2 text-[10px] font-light uppercase tracking-[0.25em] transition-colors duration-200 lg:text-[11px] ${
-                    isActive ? 'text-[#a87441]' : 'text-[#F0EAE6]/80 hover:text-[#a87441]'
+                    isActive
+                      ? 'text-[#a87441]'
+                      : 'text-[#F0EAE6]/80 hover:text-[#a87441]'
                   }`
                 }
               >
@@ -191,7 +262,12 @@ export function Header({
             <Icons.Search />
           </IconButton>
 
-          <CartBagButton openCart={openCart} rootData={rootData} t={t} isRTL={isRTL} />
+          <CartBagButton
+            openCart={openCart}
+            rootData={rootData}
+            t={t}
+            isRTL={isRTL}
+          />
 
           <div className="hidden md:block">
             <Link
@@ -270,7 +346,13 @@ function CartBagButton({
   }
 
   return (
-    <Suspense fallback={<IconButton onClick={openCart} label={t('nav.cart', 'Bag')}><Icons.Bag /></IconButton>}>
+    <Suspense
+      fallback={
+        <IconButton onClick={openCart} label={t('nav.cart', 'Bag')}>
+          <Icons.Bag />
+        </IconButton>
+      }
+    >
       <Await resolve={rootData?.cart}>
         {(cart: any) => {
           const isEmpty = !cart?.totalQuantity;

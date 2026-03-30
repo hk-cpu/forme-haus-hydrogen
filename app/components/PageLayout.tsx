@@ -11,6 +11,8 @@ import {type EnhancedMenu, useIsHomePath} from '~/lib/utils';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
 import type {RootLoader} from '~/root';
 import {Header as FormeHeader} from '~/components/Header';
+import Silk from '~/components/Silk';
+import Atmosphere from '~/components/Atmosphere';
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
 import {Newsletter} from '~/components/Newsletter';
@@ -104,10 +106,20 @@ export function PageLayout({children, layout}: LayoutProps) {
   return (
     <>
       <div className="flex flex-col min-h-screen relative">
-        {/* Background Layer (Z-0) */}
+        {/* Background Layer (Z-0) — Silk on desktop, CSS fallback on mobile */}
         <div className="fixed inset-0 pointer-events-none z-0">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,116,65,0.16),transparent_34%),linear-gradient(180deg,#181513_0%,#121212_60%,#0f0f0f_100%)]" />
-          <div className="absolute inset-x-0 top-0 h-[28rem] bg-[radial-gradient(circle_at_center,rgba(240,234,230,0.05),transparent_70%)]" />
+          {isDesktop && (
+            <div
+              className="absolute inset-0"
+              style={{transition: 'opacity 0.8s ease'}}
+            >
+              <Silk color="#AD9686" speed={isHome ? 5 : 3} />
+            </div>
+          )}
+          {isDesktop && (
+            <Atmosphere count={60} color="#AD9686" size={0.008} opacity={0.2} />
+          )}
         </div>
 
         <div className="">

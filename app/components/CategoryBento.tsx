@@ -108,7 +108,9 @@ export default function CategoryBento() {
                 >
                   <path
                     d={
-                      isRTL ? 'M19 12H5M12 19l-7-7 7-7' : 'M5 12h14M12 5l7 7-7 7'
+                      isRTL
+                        ? 'M19 12H5M12 19l-7-7 7-7'
+                        : 'M5 12h14M12 5l7 7-7 7'
                     }
                     strokeLinecap="round"
                     strokeLinejoin="round"
