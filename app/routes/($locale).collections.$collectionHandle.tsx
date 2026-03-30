@@ -285,45 +285,43 @@ export default function Collection() {
     }
   > = {
     'new-in': {
-      src: '/assets/heros/new-in-hero-2.webp',
+      src: '/assets/heros/new-in-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
-      bgClass:
-        'bg-gradient-to-r from-[#C4A882] via-[#D4B896] via-[50%] via-[#B8C9D4] via-[85%] to-[#E8EDF0]',
+      bgClass: 'bg-[#C4A882]',
     },
     new: {
-      src: '/assets/heros/new-in-hero-2.webp',
+      src: '/assets/heros/new-in-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
-      bgClass:
-        'bg-gradient-to-r from-[#C4A882] via-[#D4B896] via-[50%] via-[#B8C9D4] via-[85%] to-[#E8EDF0]',
+      bgClass: 'bg-[#C4A882]',
     },
     sunglasses: {
-      src: '/assets/heros/sunglasses-hero-3.webp',
+      src: '/assets/heros/sunglasses-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
       bgClass: 'bg-[#D4B896]',
     },
     phone: {
-      src: '/assets/heros/phone-accessories-hero-3.webp',
+      src: '/assets/heros/phone-accessories-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
       bgClass: 'bg-[#E8DED4]',
     },
     'phone-cases': {
-      src: '/assets/heros/phone-accessories-hero-3.webp',
+      src: '/assets/heros/phone-accessories-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
       bgClass: 'bg-[#E8DED4]',
     },
     'phone-straps': {
-      src: '/assets/heros/phone-accessories-hero-3.webp',
+      src: '/assets/heros/phone-accessories-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
       bgClass: 'bg-[#E8DED4]',
     },
     'case-strap-bundles': {
-      src: '/assets/heros/phone-accessories-hero-3.webp',
+      src: '/assets/heros/phone-accessories-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
       bgClass: 'bg-[#E8DED4]',
@@ -425,7 +423,7 @@ export default function Collection() {
               <motion.img
                 src={heroImage}
                 alt={collection.title}
-                className="w-full h-auto block"
+                className="w-full h-[28vh] sm:h-[32vh] md:h-[36vh] lg:h-[40vh] object-cover object-center block"
                 loading="eager"
                 fetchPriority="high"
                 style={{y: heroY}}
@@ -434,9 +432,9 @@ export default function Collection() {
                 transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}
               />
               {/* Left edge fade */}
-              <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-[#F9F5F0]/60 to-transparent pointer-events-none" />
+              <div className="absolute inset-y-0 left-0 w-16 md:w-28 bg-gradient-to-r from-[#F9F5F0]/50 to-transparent pointer-events-none" />
               {/* Right edge fade */}
-              <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-[#F9F5F0]/60 to-transparent pointer-events-none" />
+              <div className="absolute inset-y-0 right-0 w-16 md:w-28 bg-gradient-to-l from-[#F9F5F0]/50 to-transparent pointer-events-none" />
               {!hideTitle && (
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0f0d0a]/70 via-transparent to-transparent" />
               )}
