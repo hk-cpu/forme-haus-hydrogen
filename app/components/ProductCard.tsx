@@ -265,6 +265,9 @@ export function ProductCard({
   const isWishlisted = isInWishlist(product.id);
   const isNew = product.tags?.includes('new') || false;
   const isSale = product.tags?.includes('sale') || false;
+  const hasPrice =
+    parseFloat(product.priceRange?.minVariantPrice?.amount || '0') > 0;
+  const isAvailable = product.availableForSale !== false;
 
   // Extract iPhone models from tags (e.g., "iphone-17-pro", "iphone-17-pro-max")
   const iPhoneModels =
@@ -469,8 +472,7 @@ export function ProductCard({
           <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10" />
 
           {/* Sold Out Overlay */}
-          {!product.availableForSale &&
-            !product.priceRange?.minVariantPrice?.amount && (
+          {!isAvailable && (
               <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/40 backdrop-blur-sm">
                 <motion.span
                   initial={{opacity: 0, scale: 0.9}}
@@ -585,7 +587,7 @@ export function ProductCard({
 
           {/* Quick Add Button */}
           <AnimatePresence>
-            {quickAdd && product.availableForSale !== false && (
+            {quickAdd && isAvailable && hasPrice && (
               <motion.button
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20}}
@@ -663,8 +665,7 @@ export function ProductCard({
 
           {/* 4. Price */}
           <div className="flex items-baseline gap-2 pt-0.5 mt-2 border-t border-[#a87441]/10">
-            {product.priceRange?.minVariantPrice &&
-            parseFloat(product.priceRange.minVariantPrice.amount) > 0 ? (
+            {hasPrice ? (
               <>
                 <p className="text-[#F0EAE6] text-sm font-medium transition-all duration-300 group-hover:text-[#a87441] flex items-baseline mt-1">
                   <Money
@@ -672,7 +673,7 @@ export function ProductCard({
                     withoutTrailingZeros
                   />
                 </p>
-                {product.availableForSale !== false && (
+                {isAvailable && (
                   <span className="text-xs text-[#8B8076] font-normal tracking-wide mt-1">
                     SAR (VAT included)
                   </span>

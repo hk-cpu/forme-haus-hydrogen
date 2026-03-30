@@ -44,6 +44,9 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
   const [isHovered, setIsHovered] = useState(false);
   const images = product.images?.nodes || [];
   const hasMultipleImages = images.length > 1;
+  const hasPrice =
+    parseFloat(product.priceRange?.minVariantPrice?.amount || '0') > 0;
+  const isAvailable = product.availableForSale !== false;
 
   const slideshowRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -156,7 +159,7 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
           )}
 
           {/* Sold Out Badge */}
-          {!product.availableForSale && (
+          {!isAvailable && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-sm">
               <span className="px-4 py-2 bg-white/90 text-[#4A3C31] text-xs uppercase tracking-wider rounded-full">
                 Sold Out
@@ -188,8 +191,7 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
 
           {/* 4. Price Row */}
           <div className="flex items-baseline gap-2 pt-1 border-t border-[#4A3C31]/5 mt-2">
-            {product.priceRange?.minVariantPrice &&
-            parseFloat(product.priceRange.minVariantPrice.amount) > 0 ? (
+            {hasPrice ? (
               <>
                 <p className="text-[14px] font-medium text-[#4A3C31] flex items-baseline">
                   <Money
@@ -197,7 +199,7 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
                     withoutTrailingZeros
                   />
                 </p>
-                {product.availableForSale !== false && (
+                {isAvailable && (
                   <span className="text-[11px] text-[#8B8076] font-normal tracking-wide ml-1">
                     SAR (VAT included)
                   </span>

@@ -238,12 +238,17 @@ export default function Product() {
           .replace(/-/g, ' ')
           .replace(/\b\w/g, (l: string) => l.toUpperCase());
       }) || [];
+  const isBundleEligible = iPhoneModels.length > 0;
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
     product.selectedOrFirstAvailableVariant,
     variants,
   );
+  const hasValidPrice =
+    parseFloat(selectedVariant?.price?.amount || '0') > 0;
+  const isPurchasable =
+    Boolean(selectedVariant?.availableForSale) && hasValidPrice;
 
   // Sets the search param to the selected variant without navigation
   // only when no search params are set in the url
@@ -353,9 +358,11 @@ export default function Product() {
               />
 
               {/* Bundle Pricing Section */}
-              <div className="mt-6">
-                <BundlePricing variant="cards" />
-              </div>
+              {isBundleEligible ? (
+                <div className="mt-6">
+                  <BundlePricing variant="cards" />
+                </div>
+              ) : null}
 
               {/* Trust Badges Section */}
               <div className="mt-6">
@@ -465,7 +472,9 @@ export function ProductForm({
 
   const {t} = useTranslation();
 
-  const isOutOfStock = !selectedVariant?.availableForSale;
+  const hasValidPrice =
+    parseFloat(selectedVariant?.price?.amount || '0') > 0;
+  const isOutOfStock = !selectedVariant?.availableForSale || !hasValidPrice;
 
   const isOnSale =
     selectedVariant?.price?.amount &&
@@ -615,7 +624,11 @@ export function ProductForm({
           <div className="grid items-stretch gap-4 pt-4">
             {isOutOfStock ? (
               <Button variant="secondary" disabled>
-                <Text>{t('product.soldOut')}</Text>
+                <Text>
+                  {hasValidPrice
+                    ? t('product.soldOut')
+                    : t('product.unavailable', 'Unavailable')}
+                </Text>
               </Button>
             ) : (
               <motion.div whileTap={{scale: 0.98}}>
