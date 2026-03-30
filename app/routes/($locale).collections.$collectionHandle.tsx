@@ -425,7 +425,7 @@ export default function Collection() {
               <motion.img
                 src={heroImage}
                 alt={collection.title}
-                className="w-full h-[38vh] md:h-[45vh] lg:h-[50vh] object-cover object-center block"
+                className="w-full h-auto block"
                 loading="eager"
                 fetchPriority="high"
                 style={{y: heroY}}
@@ -434,9 +434,9 @@ export default function Collection() {
                 transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}
               />
               {/* Left edge fade */}
-              <div className="absolute inset-y-0 left-0 w-24 md:w-40 bg-gradient-to-r from-[#F9F5F0]/80 to-transparent pointer-events-none" />
+              <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-[#F9F5F0]/60 to-transparent pointer-events-none" />
               {/* Right edge fade */}
-              <div className="absolute inset-y-0 right-0 w-24 md:w-40 bg-gradient-to-l from-[#F9F5F0]/80 to-transparent pointer-events-none" />
+              <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-[#F9F5F0]/60 to-transparent pointer-events-none" />
               {!hideTitle && (
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0f0d0a]/70 via-transparent to-transparent" />
               )}
