@@ -20,6 +20,10 @@ import {routeHeaders} from '~/data/cache';
 
 // Premium brand images for collections
 const COLLECTION_HEROS: Record<string, string> = {
+  home: '/brand/home-collection.webp',
+  homepage: '/brand/home-collection.webp',
+  'home-page': '/brand/home-collection.webp',
+  frontpage: '/brand/home-collection.webp',
   sunglasses: '/assets/heros/sunglasses-hero-2.webp',
   'new-in': '/brand/new-in.webp',
   'phone-cases': '/brand/phone-accessories.webp',
@@ -171,7 +175,11 @@ function CollectionCard({
     return null;
   }
 
-  const imgSrc = COLLECTION_HEROS[collection.handle] || collection.image?.url;
+  const isHomeCollection = /home\s?page/i.test(collection.title);
+  const imgSrc =
+    COLLECTION_HEROS[collection.handle] ||
+    (isHomeCollection ? '/brand/home-collection.webp' : null) ||
+    collection.image?.url;
 
   return (
     <Link

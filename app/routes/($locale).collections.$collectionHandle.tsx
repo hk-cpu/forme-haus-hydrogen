@@ -302,6 +302,12 @@ export default function Collection() {
       fit: 'full-width',
       bgClass: 'bg-[#D4B896]',
     },
+    sale: {
+      src: '/assets/heros/sale-hero-banner.webp',
+      hideTitle: true,
+      fit: 'full-width',
+      bgClass: 'bg-[#E7D6C3]',
+    },
     phone: {
       src: '/assets/heros/phone-accessories-hero-banner.webp',
       hideTitle: true,
