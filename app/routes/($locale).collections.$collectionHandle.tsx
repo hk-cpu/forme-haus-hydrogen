@@ -288,18 +288,21 @@ export default function Collection() {
       src: '/assets/heros/new-in-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
+      position: 'center 75%',
       bgClass: 'bg-[#C4A882]',
     },
     new: {
       src: '/assets/heros/new-in-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
+      position: 'center 75%',
       bgClass: 'bg-[#C4A882]',
     },
     sunglasses: {
       src: '/assets/heros/sunglasses-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
+      position: 'center 20%',
       bgClass: 'bg-[#D4B896]',
     },
     sale: {
@@ -312,24 +315,28 @@ export default function Collection() {
       src: '/assets/heros/phone-accessories-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
+      position: 'center 40%',
       bgClass: 'bg-[#E8DED4]',
     },
     'phone-cases': {
       src: '/assets/heros/phone-accessories-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
+      position: 'center 40%',
       bgClass: 'bg-[#E8DED4]',
     },
     'phone-straps': {
       src: '/assets/heros/phone-accessories-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
+      position: 'center 40%',
       bgClass: 'bg-[#E8DED4]',
     },
     'case-strap-bundles': {
       src: '/assets/heros/phone-accessories-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
+      position: 'center 40%',
       bgClass: 'bg-[#E8DED4]',
     },
   };
@@ -381,6 +388,7 @@ export default function Collection() {
   const override = HERO_OVERRIDES[collection.handle];
   const heroImage = override?.src || collection.image?.url;
   const hideTitle = override?.hideTitle;
+  const heroPosition = override?.position || 'center center';
   const isTextOnlyHero = TEXT_ONLY_HERO_COLLECTIONS.has(collection.handle);
 
   return (
@@ -432,10 +440,10 @@ export default function Collection() {
               <motion.img
                 src={heroImage}
                 alt={collection.title}
-                className="block h-[26vh] min-h-[220px] w-full object-cover sm:h-[32vh] md:h-[38vh] lg:h-[44vh]"
+                className="block h-[30vh] min-h-[240px] w-full object-cover sm:h-[36vh] md:h-[42vh] lg:h-[48vh]"
                 loading="eager"
                 fetchPriority="high"
-                style={{y: heroY}}
+                style={{y: heroY, objectPosition: heroPosition}}
                 initial={{scale: 1.03}}
                 animate={{scale: 1}}
                 transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}
@@ -449,7 +457,7 @@ export default function Collection() {
               )}
             </>
           ) : (
-            <div className="w-full h-[38vh] bg-gradient-to-br from-[#2a2118] via-[#1a1510] to-[#0f0d0a]" />
+            <div className="w-full h-[42vh] bg-gradient-to-br from-[#2a2118] via-[#1a1510] to-[#0f0d0a]" />
           )}
           {/* Title overlay */}
           {!hideTitle && (
