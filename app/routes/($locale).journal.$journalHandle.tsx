@@ -166,40 +166,41 @@ export default function Article() {
   if (!staticArticle) return null;
 
   return (
-    <div className="min-h-screen bg-[#F9F5F0]">
-      <div className="max-w-3xl mx-auto px-6 py-16 md:py-24">
+    <div className="relative min-h-screen bg-[#F9F5F0] overflow-hidden">
+      {/* Magazine Background Image */}
+      {staticArticle.image && (
+        <motion.div 
+          className="fixed inset-0 z-0 pointer-events-none"
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          transition={{duration: 1.5, ease: 'easeOut'}}
+        >
+          <img
+            src={staticArticle.image}
+            alt=""
+            className="w-full h-full object-cover object-center opacity-25 mix-blend-multiply"
+          />
+          {/* Gradient overlay to ensure text readability toward the bottom */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#F9F5F0]/30 via-[#F9F5F0]/70 to-[#F9F5F0]" />
+        </motion.div>
+      )}
+
+      <div className="relative z-10 max-w-3xl mx-auto px-6 py-24 md:py-32">
         {/* Header */}
         <motion.header
-          className="text-center mb-12 md:mb-16"
+          className="text-center mb-16 md:mb-24"
           initial={{opacity: 0, y: 20}}
           animate={{opacity: 1, y: 0}}
           transition={{duration: 0.8, ease: [0.22, 1, 0.36, 1]}}
         >
-          <span className="text-[10px] uppercase tracking-[0.3em] text-[#a87441] block mb-4">
+          <span className="text-[10px] uppercase tracking-[0.3em] text-[#a87441] block mb-4 font-semibold">
             Journal
           </span>
-          <h1 className="font-serif text-3xl md:text-5xl italic text-[#4A3C31] mb-4">
+          <h1 className="font-serif text-4xl md:text-6xl italic text-[#4A3C31] mb-6 drop-shadow-sm">
             {staticArticle.title}
           </h1>
-          <div className="h-px w-16 bg-gradient-to-r from-transparent via-[#a87441] to-transparent mx-auto mt-6" />
+          <div className="h-px w-24 bg-gradient-to-r from-transparent via-[#a87441]/60 to-transparent mx-auto mt-8" />
         </motion.header>
-
-        {/* Hero image */}
-        {staticArticle.image && (
-          <motion.div
-            className="mb-12 md:mb-16 overflow-hidden rounded-xl"
-            initial={{opacity: 0, y: 16}}
-            animate={{opacity: 1, y: 0}}
-            transition={{duration: 0.8, delay: 0.15}}
-          >
-            <img
-              src={staticArticle.image}
-              alt={staticArticle.title}
-              className="w-full max-h-[40vh] object-cover object-center"
-              loading="eager"
-            />
-          </motion.div>
-        )}
 
         {/* Body content */}
         <motion.article

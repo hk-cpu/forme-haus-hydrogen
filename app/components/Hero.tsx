@@ -1,5 +1,5 @@
-import {Link} from '~/components/Link';
 import {useTranslation} from '~/hooks/useTranslation';
+import {motion} from 'framer-motion';
 
 export default function Hero() {
   const {t} = useTranslation();
@@ -20,7 +20,7 @@ export default function Hero() {
                 'radial-gradient(ellipse at center, rgba(168,116,65,0.28) 0%, transparent 68%)',
             }}
           />
-          <img
+          <motion.img
             src="/brand/logo-full-opt.webp"
             alt="Forme Haus - Where Essence Meets Elegance"
             className="relative z-10 h-24 w-auto object-contain drop-shadow-2xl sm:h-32 md:h-40 lg:h-48 xl:h-56"
@@ -29,8 +29,15 @@ export default function Hero() {
             decoding="sync"
             width={480}
             height={250}
+            animate={{
+              y: [-8, 8, -8]
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
           />
-          <div className="absolute left-[-20%] right-[-20%] top-1/2 hidden h-px bg-gradient-to-r from-transparent via-[#a87441]/30 to-transparent md:block" />
         </div>
 
         <h1 className="sr-only">
@@ -41,8 +48,10 @@ export default function Hero() {
         </h1>
 
         <div className="mt-8">
-          <Link
-            to="/collections/new-in"
+          <button
+            onClick={() => {
+              document.getElementById('explore-collections')?.scrollIntoView({ behavior: 'smooth' });
+            }}
             className="group inline-flex min-h-[48px] items-center justify-center gap-3 rounded-sm border border-[#a87441]/40 px-8 py-4 text-[10px] font-light uppercase tracking-[0.3em] text-[#F0EAE6]/90 transition-colors duration-300 hover:border-[#a87441] hover:bg-[#a87441]/10 hover:text-[#a87441] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]"
           >
             <span>{t('hero.cta', 'Explore Collection')}</span>
@@ -61,7 +70,7 @@ export default function Hero() {
                 strokeLinejoin="round"
               />
             </svg>
-          </Link>
+          </button>
         </div>
       </div>
     </section>
