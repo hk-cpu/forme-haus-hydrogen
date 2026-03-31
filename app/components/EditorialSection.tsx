@@ -109,7 +109,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
             alt={item.alt}
             className="w-full h-auto block transition-transform duration-700 ease-out"
             style={{
-              transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+              transform: isHovered ? 'scale(1.0)' : 'scale(0.92)',
               transformOrigin: 'center center',
               willChange: 'transform',
             }}
@@ -226,7 +226,7 @@ function BottomCard({item, index, t}: {item: BentoItem; index: number; t: any}) 
             alt={item.alt}
             className="w-full h-full object-cover object-center transition-transform duration-700 ease-out"
             style={{
-              transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+              transform: isHovered ? 'scale(1.0)' : 'scale(0.92)',
               transformOrigin: 'center center',
               willChange: 'transform',
             }}
