@@ -233,14 +233,18 @@ export function Header({
       <div className="relative z-50 mx-auto flex w-full max-w-[1440px] items-center px-4 sm:px-6 lg:px-10">
         {/* Left Side: Navigation & Mobile Menu */}
         <div className="flex flex-1 items-center justify-start">
-          <nav className="hidden items-center gap-4 md:flex lg:gap-8">
+          <nav className={`hidden items-center md:flex ${isRTL ? 'gap-3 lg:gap-5' : 'gap-4 lg:gap-8'}`}>
           {items.map((item: any) => {
             return (
               <NavLink
                 key={item.id}
                 to={item.to}
                 className={({isActive}) =>
-                  `relative py-2 text-[10px] font-light uppercase tracking-[0.25em] transition-colors duration-200 lg:text-[11px] ${
+                  `relative py-2 uppercase transition-colors duration-200 whitespace-nowrap ${
+                    isRTL
+                      ? 'text-[12px] font-light tracking-normal'
+                      : 'text-[10px] font-light tracking-[0.25em] lg:text-[11px]'
+                  } ${
                     isActive
                       ? 'text-[#a87441]'
                       : 'text-[#F0EAE6]/80 hover:text-[#a87441]'
@@ -287,7 +291,7 @@ export function Header({
 
         {/* Right Side: Account, Cart, Search, Language */}
         <div className="flex flex-1 items-center justify-end gap-3 md:gap-4">
-          <div className="mr-1 hidden md:flex">
+          <div className="hidden md:flex me-1">
             <LanguageSwitch />
           </div>
 

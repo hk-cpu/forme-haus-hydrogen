@@ -121,6 +121,7 @@
     'Hoefler Text', Georgia, serif;
   --font-heading: var(--font-serif);
   --font-arabic: 'Noto Sans Arabic', 'Tahoma', 'Segoe UI', sans-serif;
+  --font-arabic-serif: 'Amiri', 'Noto Serif Arabic', Georgia, serif;
 
   /* Font Weights */
   --font-weight-light: 300;
@@ -340,15 +341,16 @@ button:active:not(:disabled),
 [dir='rtl'] h5,
 [dir='rtl'] h6,
 [dir='rtl'] .font-serif {
-  font-family: var(--font-arabic);
+  font-family: var(--font-arabic-serif);
   letter-spacing: 0;
+  font-style: normal;
 }
 
-/* RTL Layout Adjustments */
+/* RTL Layout Adjustments — zero out all tracking for Arabic */
 [dir='rtl'] .tracking-widest,
 [dir='rtl'] .tracking-wide,
-[dir='rtl'] [class*='tracking-['] {
-  letter-spacing: 0.05em;
+[dir='rtl'] [class*='tracking-'] {
+  letter-spacing: 0 !important;
 }
 
 [dir='rtl'] .text-left {

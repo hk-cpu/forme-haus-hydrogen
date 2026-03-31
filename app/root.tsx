@@ -232,7 +232,26 @@ function Layout({children}: {children?: React.ReactNode}) {
         <noscript>
           <link rel="stylesheet" href={futuristicStyles} />
         </noscript>
-        {/* Deferred Google Fonts — loaded async to avoid render-blocking */}
+        {/* Arabic fonts — Amiri (serif, luxury editorial) + Noto Sans Arabic (nav/body) */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin=""
+        />
+        <link
+          rel="preload"
+          as="style"
+          href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Sans+Arabic:wght@300;400;500&display=swap"
+          // @ts-ignore
+          onLoad="this.onload=null;this.rel='stylesheet'"
+        />
+        <noscript>
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Sans+Arabic:wght@300;400;500&display=swap"
+          />
+        </noscript>
         <style
           dangerouslySetInnerHTML={{
             __html: `
