@@ -123,7 +123,7 @@ export default function CategoryBento() {
 
         <div className="mt-8 text-center md:mt-10">
           <Link
-            to="/collections"
+            to="/products"
             className="inline-flex min-h-[48px] items-center gap-3 rounded-full border border-[#a87441]/25 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#a87441] transition-all duration-300 hover:bg-[#a87441] hover:text-white"
           >
             <span>{t('general.viewAll')}</span>
