@@ -131,8 +131,13 @@ export default function Login() {
   const [isRegistering, setIsRegistering] = useState(false);
 
   useEffect(() => {
-    if (data?.formId === 'register' && data?.error) {
-      setIsRegistering(true);
+    if (data?.formId === 'register') {
+      if (data?.error) {
+        setIsRegistering(true);
+      } else if (data?.success) {
+        // Automatically slide to Sign In upon successful registration
+        setIsRegistering(false);
+      }
     }
   }, [data]);
 
@@ -166,46 +171,70 @@ export default function Login() {
       </Suspense>
 
       <div className="relative z-10 w-full max-w-[480px] mx-auto px-6 py-12">
-        {/* Unified White Container */}
-        <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-white/50 p-6 md:p-8 lg:p-12 overflow-hidden relative">
-          {/* Subtle top glare */}
-          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white to-transparent opacity-80"></div>
+          {/* Unified White Container */}
+          <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-white/50 p-6 md:p-8 lg:p-12 overflow-hidden relative">
+            {/* Subtle top glare */}
+            <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white to-transparent opacity-80"></div>
 
-          {/* Logo & Header */}
-          <div className="flex flex-col items-center gap-6 mb-10">
-            <Link to="/" className="group cursor-pointer">
-              <img
-                src="/brand/logo-icon-only.webp"
-                alt="Formé Haus"
-                className="w-20 h-20 object-contain opacity-85 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-100"
-                loading="eager"
-                fetchPriority="high"
-                decoding="sync"
-                width={40}
-                height={40}
-              />
-            </Link>
+            {/* Logo & Header */}
+            <div className="flex flex-col items-center gap-6 mb-8">
+              <Link to="/" className="group cursor-pointer">
+                <img
+                  src="/brand/logo-icon-only.webp"
+                  alt="Formé Haus"
+                  className="w-20 h-20 object-contain opacity-85 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-100"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="sync"
+                  width={40}
+                  height={40}
+                />
+              </Link>
 
-            <div className="text-center space-y-2">
-              <h1
-                className="font-serif text-3xl md:text-4xl text-[#2C2419]"
-                style={{letterSpacing: '0.02em'}}
-              >
-                {isRegistering ? 'Join Formé Haus' : 'Welcome Back'}
-              </h1>
-              <p className="text-[11px] tracking-[0.25em] font-sans text-[#8B8076] uppercase">
-                {isRegistering ? 'Begin Your Journey' : 'Continue Your Journey'}
-              </p>
+              <div className="text-center space-y-2">
+                <h1
+                  className="font-serif text-3xl md:text-4xl text-[#2C2419]"
+                  style={{letterSpacing: '0.02em'}}
+                >
+                  {isRegistering ? 'Join Formé Haus' : 'Welcome Back'}
+                </h1>
+                <p className="text-[11px] tracking-[0.25em] font-sans text-[#8B8076] uppercase">
+                  {isRegistering ? 'Begin Your Journey' : 'Continue Your Journey'}
+                </p>
+              </div>
             </div>
-          </div>
 
-          {/* Form */}
-          <Form method="post" className="w-full space-y-6">
-            <input
-              type="hidden"
-              name="formId"
-              value={isRegistering ? 'register' : 'login'}
-            />
+            {/* Segmented Control UI */}
+            <div className="flex bg-[#fcfbf9] border border-[#E5DFD9] rounded-xl p-1 mb-8 relative">
+              <div 
+                className="absolute inset-y-1 w-[calc(50%-4px)] bg-white rounded-lg shadow-sm transition-all duration-400 ease-[0.16,1,0.3,1] z-0"
+                style={{
+                  left: isRegistering ? 'calc(50% + 2px)' : '4px'
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => setIsRegistering(false)}
+                className={`flex-1 py-3.5 text-[11px] uppercase tracking-widest font-semibold z-10 transition-colors duration-300 ${!isRegistering ? 'text-[#a87441]' : 'text-[#8B8076] hover:text-[#a87441]'}`}
+              >
+                Sign In
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsRegistering(true)}
+                className={`flex-1 py-3.5 text-[11px] uppercase tracking-widest font-semibold z-10 transition-colors duration-300 ${isRegistering ? 'text-[#a87441]' : 'text-[#8B8076] hover:text-[#a87441]'}`}
+              >
+                Register
+              </button>
+            </div>
+
+            {/* Form */}
+            <Form method="post" className="w-full space-y-6">
+              <input
+                type="hidden"
+                name="formId"
+                value={isRegistering ? 'register' : 'login'}
+              />
 
             {data?.error && (
               <div
@@ -217,8 +246,8 @@ export default function Login() {
               </div>
             )}
 
-            {data?.success && isRegistering && (
-              <div className="p-3.5 text-[12px] text-[#2C2419] bg-[#a87441]/10 border border-[#a87441]/20 rounded-lg text-center tracking-wide">
+            {data?.success && !isRegistering && (
+              <div className="p-3.5 text-[12px] text-[#2C2419] bg-[#a87441]/10 border border-[#a87441]/20 rounded-lg text-center tracking-wide animate-in fade-in zoom-in duration-300">
                 {data.success}
               </div>
             )}
@@ -283,7 +312,7 @@ export default function Login() {
                 )}
               </button>
 
-              <div className="flex flex-col items-center gap-3 pt-2">
+              <div className="flex flex-col items-center gap-3 pt-4">
                 {!isRegistering && (
                   <Link
                     to="/account/recover"
@@ -292,16 +321,6 @@ export default function Login() {
                     Forgot Password?
                   </Link>
                 )}
-
-                <button
-                  type="button"
-                  onClick={() => setIsRegistering(!isRegistering)}
-                  className="text-[10px] uppercase tracking-[0.15em] text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 font-semibold"
-                >
-                  {isRegistering
-                    ? 'Already have an account? Sign In'
-                    : 'New to Formé Haus? Create Account'}
-                </button>
               </div>
             </div>
           </Form>

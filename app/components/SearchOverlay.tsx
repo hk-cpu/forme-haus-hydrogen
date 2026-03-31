@@ -4,6 +4,7 @@ import {
   Link as RemixLink,
   useFetcher,
   useRouteLoaderData,
+  useNavigate,
 } from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
 import {useDebounce} from 'react-use';
@@ -95,8 +96,7 @@ export function SearchOverlay() {
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
-  const firstFocusableRef = useRef<HTMLElement | null>(null);
-  const lastFocusableRef = useRef<HTMLElement | null>(null);
+  const navigate = useNavigate();
 
   // Get locale prefix for locale-aware API URL (e.g. '/ar')
   const rootData = useRouteLoaderData<RootLoader>('root');
@@ -190,7 +190,7 @@ export function SearchOverlay() {
         <>
           {/* Backdrop — click to dismiss */}
           <motion.div
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[299]"
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[299] cursor-pointer"
             initial={{opacity: 0}}
             animate={{opacity: 1}}
             exit={{opacity: 0}}
@@ -200,6 +200,7 @@ export function SearchOverlay() {
 
           {/* Search Panel — slides down from top */}
           <motion.div
+            ref={searchContainerRef}
             className="fixed top-0 left-0 right-0 z-[300]"
             style={{direction: isRTL ? 'rtl' : 'ltr'}}
             initial={{y: '-100%', opacity: 0}}
@@ -209,7 +210,6 @@ export function SearchOverlay() {
           >
             {/* Search Header Bar — h-20 matches pre-scroll header height */}
             <div
-              ref={searchContainerRef}
               role="search"
               className="bg-[#121212]/[0.98] backdrop-blur-2xl border-b border-[#a87441]/15"
             >
@@ -226,6 +226,17 @@ export function SearchOverlay() {
                     placeholder={searchPlaceholders[placeholderIndex]}
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && query.trim()) {
+                        e.preventDefault();
+                        navigate(
+                          `${pathPrefix}/search?q=${encodeURIComponent(
+                            query.trim(),
+                          )}`,
+                        );
+                        handleClose();
+                      }
+                    }}
                   />
                   {query && (
                     <button

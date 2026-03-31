@@ -1,4 +1,4 @@
-import {useState, useCallback} from 'react';
+import {useState, useCallback, useEffect} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 import {useNavigate, useLocation, useSearchParams} from '@remix-run/react';
 import type {
@@ -129,6 +129,47 @@ export function FilterPanel({
 
   // Initialize price range state if a price filter exists
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 50000]);
+
+  // Sync internal UI state with the active URL params when the panel opens
+  useEffect(() => {
+    if (state.isFilterOpen) {
+      const initialSet = new Set<string>();
+      filters.forEach((filter) => {
+        filter.values.forEach((option) => {
+          const inputString = option.input as string;
+          try {
+            const parsedInput = JSON.parse(inputString) as Record<string, unknown>;
+            let matches = Object.keys(parsedInput).length > 0;
+            
+            Object.entries(parsedInput).forEach(([key, value]) => {
+              if (key === 'price') return;
+              const paramVals = params.getAll(`${FILTER_URL_PREFIX}${key}`);
+              if (!paramVals.includes(JSON.stringify(value))) {
+                matches = false;
+              }
+            });
+            
+            if (matches) {
+              initialSet.add(inputString);
+            }
+          } catch (e) {
+            console.error('Failed to parse filter input during sync', e);
+          }
+        });
+      });
+      setSelectedInputs(initialSet);
+
+      const priceStr = params.get(`${FILTER_URL_PREFIX}price`);
+      if (priceStr) {
+        try {
+          const parsed = JSON.parse(priceStr) as {min?: number; max?: number};
+          setPriceRange([parsed.min || 0, parsed.max || 50000]);
+        } catch (e) {}
+      } else {
+        setPriceRange([0, 50000]);
+      }
+    }
+  }, [state.isFilterOpen, filters, params]);
 
   const toggleSection = (section: string) => {
     setExpandedSections((prev) =>
