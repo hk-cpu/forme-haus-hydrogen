@@ -119,8 +119,6 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
             loading={index < 2 ? 'eager' : 'lazy'}
             fetchPriority={index === 0 ? 'high' : 'auto'}
             decoding="async"
-            width="800"
-            height="1000"
           />
 
           {/* Hover gradient - enhanced */}
@@ -235,8 +233,6 @@ function BottomCard({item, index, t}: {item: BentoItem; index: number; t: any}) 
             sizes="(max-width: 768px) 100vw, 33vw"
             loading="lazy"
             decoding="async"
-            width="800"
-            height="1000"
           />
 
           {/* Hover gradient */}
