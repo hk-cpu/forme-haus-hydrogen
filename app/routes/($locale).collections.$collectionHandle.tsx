@@ -277,7 +277,7 @@ export default function Collection() {
   const HERO_OVERRIDES: Record<
     string,
     {
-      src: string;
+      src?: string;
       hideTitle?: boolean;
       fit?: 'cover' | 'contain' | 'auto' | 'full-width';
       position?: string;
@@ -339,6 +339,22 @@ export default function Collection() {
       position: 'center 40%',
       bgClass: 'bg-[#E8DED4]',
     },
+    'carry-it-your-way': {
+      hideTitle: true,
+      fit: 'full-width',
+    },
+    'sun-ready': {
+      hideTitle: true,
+      fit: 'full-width',
+    },
+    'new-arrivals': {
+      hideTitle: true,
+      fit: 'full-width',
+    },
+    'modern-essentials': {
+      hideTitle: true,
+      fit: 'full-width',
+    },
   };
 
   // Collection subtitle overrides — curated copy per landing page
@@ -389,6 +405,8 @@ export default function Collection() {
   const heroImage = override?.src || collection.image?.url;
   const hideTitle = override?.hideTitle;
   const heroPosition = override?.position || 'center center';
+  const heroFit = override?.fit || 'cover';
+  const isFullWidthHero = heroFit === 'full-width' && hideTitle;
   const isTextOnlyHero = TEXT_ONLY_HERO_COLLECTIONS.has(collection.handle);
 
   return (
@@ -440,18 +458,30 @@ export default function Collection() {
               <motion.img
                 src={heroImage}
                 alt={collection.title}
-                className="block h-[30vh] min-h-[240px] w-full object-cover sm:h-[36vh] md:h-[42vh] lg:h-[48vh]"
+                className={
+                  isFullWidthHero
+                    ? 'block w-full h-auto'
+                    : 'block h-[30vh] min-h-[240px] w-full object-cover sm:h-[36vh] md:h-[42vh] lg:h-[48vh]'
+                }
                 loading="eager"
                 fetchPriority="high"
-                style={{y: heroY, objectPosition: heroPosition}}
+                style={
+                  isFullWidthHero
+                    ? {y: heroY}
+                    : {y: heroY, objectPosition: heroPosition}
+                }
                 initial={{scale: 1.03}}
                 animate={{scale: 1}}
                 transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}
               />
-              {/* Left edge fade */}
-              <div className="absolute inset-y-0 left-0 w-16 md:w-28 bg-gradient-to-r from-[#F9F5F0]/50 to-transparent pointer-events-none" />
-              {/* Right edge fade */}
-              <div className="absolute inset-y-0 right-0 w-16 md:w-28 bg-gradient-to-l from-[#F9F5F0]/50 to-transparent pointer-events-none" />
+              {!isFullWidthHero && (
+                <>
+                  {/* Left edge fade */}
+                  <div className="absolute inset-y-0 left-0 w-16 md:w-28 bg-gradient-to-r from-[#F9F5F0]/50 to-transparent pointer-events-none" />
+                  {/* Right edge fade */}
+                  <div className="absolute inset-y-0 right-0 w-16 md:w-28 bg-gradient-to-l from-[#F9F5F0]/50 to-transparent pointer-events-none" />
+                </>
+              )}
               {!hideTitle && (
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0f0d0a]/70 via-transparent to-transparent" />
               )}
