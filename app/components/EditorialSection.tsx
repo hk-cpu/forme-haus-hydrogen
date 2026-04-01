@@ -23,7 +23,7 @@ const BENTO_ITEMS: BentoItem[] = [
   {
     image: '/brand/edit-modern-essentials-v2.png',
     alt: 'Modern Essentials — woman in pinstripe blazer driving a vintage car',
-    url: '/collections/sunglasses',
+    url: '/collections/modern-essentials',
     titleKey: 'editorial.modernEssentials.title',
     subtitleKey: 'editorial.modernEssentials.subtitle',
     defaultTitle: 'Modern Essentials',
@@ -34,7 +34,7 @@ const BENTO_ITEMS: BentoItem[] = [
   {
     image: '/brand/edit-carry.webp',
     alt: 'Carry It Your Way — crossbody phone strap',
-    url: '/collections/phone-cases',
+    url: '/collections/carry-it-your-way',
     titleKey: 'editorial.carry.title',
     subtitleKey: 'editorial.carry.subtitle',
     defaultTitle: 'Carry It Your Way',
@@ -45,7 +45,7 @@ const BENTO_ITEMS: BentoItem[] = [
   {
     image: '/brand/edit-sun-ready-v2.png',
     alt: 'Sun Ready — model relaxing on a sun lounger by the pool in sunglasses',
-    url: '/collections/sunglasses',
+    url: '/collections/sun-ready',
     titleKey: 'editorial.sun.title',
     subtitleKey: 'editorial.sun.subtitle',
     defaultTitle: 'Sun Ready',
@@ -56,7 +56,7 @@ const BENTO_ITEMS: BentoItem[] = [
   {
     image: '/brand/edit-new-arrivals-v2.png',
     alt: 'New Arrivals — model holding a sheer scarf with silver ring',
-    url: '/collections/new-in',
+    url: '/collections/new-arrivals',
     titleKey: 'editorial.new.title',
     subtitleKey: 'editorial.new.subtitle',
     defaultTitle: 'New Arrivals',
