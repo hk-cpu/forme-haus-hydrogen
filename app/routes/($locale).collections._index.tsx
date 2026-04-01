@@ -113,7 +113,7 @@ export default function Collections() {
     <div className="flex flex-col bg-[#F9F5F0]">
       <section className="relative w-full h-[50vh] min-h-[400px] md:h-[60vh] lg:h-[70vh]">
         <img
-          src="/brand/collections-hero.png"
+          src="/brand/collections-hero-v2.png"
           alt="Modern Essentials - Foundations shaped by intention and refined for everyday presence"
           className="h-full w-full object-cover object-center"
           loading="eager"

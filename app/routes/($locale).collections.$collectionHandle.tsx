@@ -345,22 +345,22 @@ export default function Collection() {
       bgClass: 'bg-[#E8DED4]',
     },
     'carry-it-your-way': {
-      src: '/brand/carry-hero.png',
+      src: '/brand/carry-hero-v2.png',
       hideTitle: true,
       fit: 'full-width',
     },
     'sun-ready': {
-      src: '/brand/sun-ready-hero.png',
+      src: '/brand/sun-ready-hero-v2.png',
       hideTitle: true,
       fit: 'full-width',
     },
     'new-arrivals': {
-      src: '/brand/new-arrivals-hero.png',
+      src: '/brand/new-arrivals-hero-v2.png',
       hideTitle: true,
       fit: 'full-width',
     },
     'modern-essentials': {
-      src: '/brand/collections-hero.png',
+      src: '/brand/modern-essentials-hero-v2.png',
       hideTitle: true,
       fit: 'full-width',
     },
