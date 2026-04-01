@@ -21,8 +21,8 @@ interface BentoItem {
 // Actual file dimensions: modern-essentials 933x1280, carry 1024x1024, sun-ready 1024x1024, new-arrivals 800x1072
 const BENTO_ITEMS: BentoItem[] = [
   {
-    image: '/brand/edit-modern-essentials.webp',
-    alt: 'Modern Essentials — woman in pinstripe blazer',
+    image: '/brand/edit-modern-essentials-v2.png',
+    alt: 'Modern Essentials — woman in pinstripe blazer driving a vintage car',
     url: '/collections/sunglasses',
     titleKey: 'editorial.modernEssentials.title',
     subtitleKey: 'editorial.modernEssentials.subtitle',
@@ -54,8 +54,8 @@ const BENTO_ITEMS: BentoItem[] = [
     height: 1024,
   },
   {
-    image: '/brand/edit-new-arrivals.webp',
-    alt: 'New Arrivals — poolside luxury',
+    image: '/brand/edit-new-arrivals-v2.png',
+    alt: 'New Arrivals — model holding a sheer scarf with silver ring',
     url: '/collections/new-in',
     titleKey: 'editorial.new.title',
     subtitleKey: 'editorial.new.subtitle',
