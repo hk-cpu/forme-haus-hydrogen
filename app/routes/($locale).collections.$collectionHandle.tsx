@@ -277,10 +277,10 @@ export default function Collection() {
   const THEMED_COLLECTIONS = new Set([
     'carry-it-your-way',
     'sun-ready',
-    'new-arrivals',
     'modern-essentials',
   ]);
   const isThemedCollection = THEMED_COLLECTIONS.has(collection.handle);
+  const isComingSoonCollection = collection.handle === 'new-arrivals';
 
   // Collection hero image overrides
   const HERO_OVERRIDES: Record<
@@ -639,6 +639,153 @@ export default function Collection() {
                     </motion.div>
                   </div>
                 </motion.div>
+              </motion.div>
+            ))}
+          </div>
+
+          <Analytics.CollectionView
+            data={{
+              collection: {
+                id: collection.id,
+                handle: collection.handle,
+              },
+            }}
+          />
+        </main>
+      ) : isComingSoonCollection ? (
+        /* ─── New Arrivals: Coming Soon Flyover ─── */
+        <main className="max-w-[1440px] mx-auto py-16 md:py-24" style={{padding: '4rem var(--page-gutter)'}}>
+          <div className="relative min-h-[60vh] flex flex-col items-center justify-center overflow-hidden">
+            {/* Background floating shapes */}
+            {Array.from({length: 6}).map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute rounded-full opacity-[0.04]"
+                style={{
+                  width: 80 + i * 40,
+                  height: 80 + i * 40,
+                  border: '1px solid #a87441',
+                  left: `${15 + (i % 3) * 30}%`,
+                  top: `${10 + (i % 2) * 40}%`,
+                }}
+                animate={{
+                  y: [0, -20, 0],
+                  rotate: [0, 180, 360],
+                  scale: [1, 1.1, 1],
+                }}
+                transition={{
+                  duration: 8 + i * 2,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                  delay: i * 0.5,
+                }}
+              />
+            ))}
+
+            {/* Flyover text — large animated "COMING SOON" */}
+            <motion.div
+              className="relative z-10 text-center"
+              initial={{opacity: 0}}
+              animate={{opacity: 1}}
+              transition={{duration: 1}}
+            >
+              {/* Sweeping line */}
+              <motion.div
+                className="w-24 h-px bg-gradient-to-r from-transparent via-[#a87441] to-transparent mx-auto mb-8"
+                initial={{scaleX: 0}}
+                animate={{scaleX: 1}}
+                transition={{duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1]}}
+              />
+
+              <motion.span
+                className="block text-[10px] md:text-xs uppercase tracking-[0.4em] text-[#a87441] font-light mb-6"
+                initial={{opacity: 0, y: 20}}
+                animate={{opacity: 1, y: 0}}
+                transition={{duration: 0.8, delay: 0.4}}
+              >
+                Stay Tuned
+              </motion.span>
+
+              {/* 3D perspective "COMING SOON" */}
+              <div style={{perspective: 1000}}>
+                <motion.h2
+                  className="font-serif italic text-5xl md:text-7xl lg:text-8xl text-[#4A3C31]/10 select-none"
+                  initial={{opacity: 0, rotateX: 40, y: 60}}
+                  animate={{opacity: 1, rotateX: 0, y: 0}}
+                  transition={{duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1]}}
+                  style={{transformStyle: 'preserve-3d'}}
+                >
+                  Coming Soon
+                </motion.h2>
+              </div>
+
+              <motion.p
+                className="text-sm md:text-base text-[#8B8076] font-light tracking-wide mt-6 max-w-md mx-auto leading-relaxed"
+                initial={{opacity: 0, y: 20}}
+                animate={{opacity: 1, y: 0}}
+                transition={{duration: 0.8, delay: 0.8}}
+              >
+                New pieces are being carefully curated. Check back soon to discover what&apos;s next.
+              </motion.p>
+
+              {/* Animated dots */}
+              <div className="flex items-center justify-center gap-2 mt-8">
+                {[0, 1, 2].map((i) => (
+                  <motion.div
+                    key={i}
+                    className="w-1.5 h-1.5 rounded-full bg-[#a87441]/40"
+                    animate={{
+                      scale: [1, 1.5, 1],
+                      opacity: [0.4, 1, 0.4],
+                    }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                      delay: i * 0.3,
+                      ease: 'easeInOut',
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Sweeping line bottom */}
+              <motion.div
+                className="w-24 h-px bg-gradient-to-r from-transparent via-[#a87441] to-transparent mx-auto mt-8"
+                initial={{scaleX: 0}}
+                animate={{scaleX: 1}}
+                transition={{duration: 1.2, delay: 1, ease: [0.16, 1, 0.3, 1]}}
+              />
+            </motion.div>
+
+            {/* Floating 3D product silhouettes in background */}
+            {Array.from({length: 3}).map((_, i) => (
+              <motion.div
+                key={`sil-${i}`}
+                className="absolute"
+                style={{
+                  left: `${20 + i * 25}%`,
+                  top: `${20 + (i % 2) * 35}%`,
+                  perspective: 600,
+                }}
+                animate={{
+                  y: [0, -15, 0],
+                  rotateY: [-10, 10, -10],
+                  rotateX: [5, -5, 5],
+                }}
+                transition={{
+                  duration: 6 + i,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                  delay: i * 1.5,
+                }}
+              >
+                <div
+                  className="w-16 h-20 md:w-20 md:h-24 rounded-lg bg-gradient-to-br from-[#E8E0D8]/40 to-[#DDD5CC]/20 border border-[#D4C8BC]/20 backdrop-blur-sm"
+                  style={{
+                    transform: 'rotateX(8deg) rotateY(-5deg)',
+                    boxShadow: '0 16px 32px rgba(74, 60, 49, 0.05)',
+                  }}
+                />
               </motion.div>
             ))}
           </div>
