@@ -273,12 +273,8 @@ export default function Collection() {
   // Collections that use a text-only hero (no image)
   const TEXT_ONLY_HERO_COLLECTIONS = new Set<string>([]);
 
-  // Themed collections — being restructured, show skeleton placeholder
-  const THEMED_COLLECTIONS = new Set([
-    'carry-it-your-way',
-    'sun-ready',
-    'modern-essentials',
-  ]);
+  // Themed collections — skeleton removed, showing real products
+  const THEMED_COLLECTIONS = new Set<string>([]);
   const isThemedCollection = THEMED_COLLECTIONS.has(collection.handle);
   const isComingSoonCollection = collection.handle === 'new-arrivals';
 
