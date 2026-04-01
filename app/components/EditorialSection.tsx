@@ -107,7 +107,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
           <motion.img
             src={item.image}
             alt={item.alt}
-            className="w-full h-auto block transition-transform duration-700 ease-out max-h-[280px] lg:max-h-[320px] xl:max-h-[380px] object-cover"
+            className="w-full h-auto block transition-transform duration-700 ease-out"
             style={{
               transform: isHovered ? 'scale(1.05)' : 'scale(1)',
               transformOrigin: 'center center',
@@ -222,7 +222,7 @@ function BottomCard({item, index, t}: {item: BentoItem; index: number; t: any}) 
           <motion.img
             src={item.image}
             alt={item.alt}
-            className="w-full h-full object-cover object-center transition-transform duration-700 ease-out"
+            className="w-full h-auto block object-center transition-transform duration-700 ease-out"
             style={{
               transform: isHovered ? 'scale(1.05)' : 'scale(1)',
               transformOrigin: 'center center',
