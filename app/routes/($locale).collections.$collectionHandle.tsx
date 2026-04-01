@@ -360,6 +360,7 @@ export default function Collection() {
       fit: 'full-width',
     },
     'modern-essentials': {
+      src: '/brand/collections-hero.png',
       hideTitle: true,
       fit: 'full-width',
     },
