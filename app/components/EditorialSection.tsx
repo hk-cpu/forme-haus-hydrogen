@@ -107,7 +107,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
           <motion.img
             src={item.image}
             alt={item.alt}
-            className="w-full h-auto block transition-transform duration-700 ease-out"
+            className="w-full h-auto block transition-transform duration-700 ease-out max-h-[280px] lg:max-h-[320px] xl:max-h-[380px] object-cover"
             style={{
               transform: isHovered ? 'scale(1.05)' : 'scale(1)',
               transformOrigin: 'center center',
@@ -367,7 +367,7 @@ export default function EditorialSection() {
           Desktop: flexbox two-column editorial grid with parallax
           Each column: top image at natural height + bottom image fills remaining space.
         */}
-        <div className="hidden md:flex gap-3 min-h-[500px] lg:min-h-[600px] xl:min-h-[750px]">
+        <div className="hidden md:flex gap-3 min-h-[400px] lg:min-h-[450px] xl:min-h-[550px]">
           {/* Left column with parallax */}
           <motion.div
             className="flex-1 min-w-0 flex flex-col gap-3"
