@@ -273,6 +273,15 @@ export default function Collection() {
   // Collections that use a text-only hero (no image)
   const TEXT_ONLY_HERO_COLLECTIONS = new Set<string>([]);
 
+  // Themed collections — being restructured, show skeleton placeholder
+  const THEMED_COLLECTIONS = new Set([
+    'carry-it-your-way',
+    'sun-ready',
+    'new-arrivals',
+    'modern-essentials',
+  ]);
+  const isThemedCollection = THEMED_COLLECTIONS.has(collection.handle);
+
   // Collection hero image overrides
   const HERO_OVERRIDES: Record<
     string,
@@ -522,191 +531,316 @@ export default function Collection() {
         </motion.div>
       )}
 
-      {/* ─── Category Navigation Tabs ─── (hidden on New to Haus) */}
-      {collection.handle !== 'new-in' && collection.handle !== 'new' && (
-        <CategoryHeader
-          currentCategory={collection.title}
-          productCount={collection.products.nodes.length}
-          collectionHandle={collection.handle}
-        />
-      )}
+      {isThemedCollection ? (
+        /* ─── Themed Collection: 3D Skeleton Placeholder ─── */
+        <main className="max-w-[1440px] mx-auto py-12 md:py-20" style={{padding: '3rem var(--page-gutter)'}}>
+          {/* "Coming Soon" header */}
+          <motion.div
+            className="text-center mb-12"
+            initial={{opacity: 0, y: 20}}
+            animate={{opacity: 1, y: 0}}
+            transition={{duration: 0.7, ease: [0.16, 1, 0.3, 1]}}
+          >
+            <span className="text-[10px] uppercase tracking-[0.35em] text-[#a87441] font-light">
+              Curating
+            </span>
+            <h2 className="font-serif italic text-2xl md:text-3xl text-[#4A3C31] mt-2">
+              Products coming soon
+            </h2>
+            <div className="h-px w-16 bg-gradient-to-r from-transparent via-[#a87441]/40 to-transparent mx-auto mt-4" />
+          </motion.div>
 
-      {/* ─── Breadcrumb + Sort / Applied Filters Bar ─── */}
-      <div
-        className="max-w-[1440px] mx-auto py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
-        style={{padding: '0.75rem var(--page-gutter)'}}
-      >
-        <nav
-          aria-label="Breadcrumb"
-          className="flex items-center gap-2 text-[11px] uppercase tracking-[0.15em] text-[#8B7355]"
-        >
-          <a
-            href="/"
-            className="hover:text-[#a87441] transition-colors duration-200"
-          >
-            Home
-          </a>
-          <span aria-hidden="true" className="text-[#8B7355]/40">
-            ›
-          </span>
-          <a
-            href="/collections"
-            className="hover:text-[#a87441] transition-colors duration-200"
-          >
-            Collections
-          </a>
-          <span aria-hidden="true" className="text-[#8B7355]/40">
-            ›
-          </span>
-          <span className="text-[#4A3C31] font-medium truncate max-w-[180px]">
-            {collection.title}
-          </span>
-        </nav>
-        <div className="flex items-center gap-4">
-          <SortMenu />
-          {appliedFilters.length > 0 && (
-            <div className="flex items-center gap-2">
-              {appliedFilters.map((filter, i) => (
-                <span
-                  key={i}
-                  className="text-[10px] uppercase tracking-wider px-2.5 py-1 bg-[#4A3C31]/6 text-[#4A3C31] rounded-full"
+          {/* 3D Skeleton Product Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10">
+            {Array.from({length: 8}).map((_, i) => (
+              <motion.div
+                key={i}
+                className="group"
+                initial={{opacity: 0, y: 30, rotateX: 8}}
+                animate={{opacity: 1, y: 0, rotateX: 0}}
+                transition={{
+                  duration: 0.8,
+                  delay: i * 0.08,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                style={{perspective: 800}}
+              >
+                <motion.div
+                  className="relative rounded-xl overflow-hidden"
+                  style={{transformStyle: 'preserve-3d'}}
+                  whileHover={{
+                    rotateY: 5,
+                    rotateX: -3,
+                    scale: 1.02,
+                    transition: {duration: 0.4, ease: [0.16, 1, 0.3, 1]},
+                  }}
                 >
-                  {filter.label}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* ─── Product Grid ─── */}
-      <main
-        className="max-w-[1440px] mx-auto py-10 md:py-16"
-        style={{padding: '2.5rem var(--page-gutter)'}}
-      >
-        <Pagination connection={collection.products}>
-          {({
-            nodes,
-            isLoading,
-            PreviousLink,
-            NextLink,
-            hasPreviousPage,
-            hasNextPage,
-          }) => (
-            <>
-              {/* Product Grid - Professional layout */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-x-3 gap-y-6 md:gap-x-4 md:gap-y-8 lg:gap-x-5 lg:gap-y-10">
-                {nodes.map((product: any, i: number) => (
-                  <ProductCardClean
-                    key={product.id}
-                    product={product}
-                    index={i}
-                  />
-                ))}
-              </div>
-
-              {/* Pagination Bar */}
-              {(hasPreviousPage || hasNextPage) && (
-                <nav className="flex items-center justify-center gap-6 mt-16 pt-8 border-t border-[#4A3C31]/8">
-                  {hasPreviousPage ? (
-                    <PreviousLink className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31] border border-[#4A3C31]/15 hover:border-[#a87441] hover:text-[#a87441] transition-all duration-300 rounded">
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                      >
-                        <path d="M19 12H5M12 19l-7-7 7-7" />
-                      </svg>
-                      {isLoading ? t('collection.loading') : 'Previous'}
-                    </PreviousLink>
-                  ) : (
-                    <span
-                      aria-disabled="true"
-                      role="button"
-                      className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/25 border border-[#4A3C31]/8 cursor-not-allowed rounded"
+                  {/* Product image skeleton */}
+                  <div className="aspect-[3/4] bg-gradient-to-br from-[#EDE8E3] via-[#E8E0D8] to-[#DDD5CC] relative overflow-hidden rounded-xl">
+                    {/* Shimmer sweep */}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12"
+                      animate={{x: ['-100%', '200%']}}
+                      transition={{
+                        duration: 2.5,
+                        repeat: Infinity,
+                        repeatDelay: 1.5,
+                        delay: i * 0.2,
+                        ease: 'easeInOut',
+                      }}
+                    />
+                    {/* Floating 3D product silhouette */}
+                    <motion.div
+                      className="absolute inset-0 flex items-center justify-center"
+                      animate={{
+                        y: [0, -8, 0],
+                        rotateY: [0, 10, 0],
+                      }}
+                      transition={{
+                        duration: 4,
+                        repeat: Infinity,
+                        delay: i * 0.3,
+                        ease: 'easeInOut',
+                      }}
+                      style={{transformStyle: 'preserve-3d', perspective: 600}}
                     >
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                      >
-                        <path d="M19 12H5M12 19l-7-7 7-7" />
-                      </svg>
-                      Previous
-                    </span>
-                  )}
+                      <div className="w-20 h-24 md:w-24 md:h-28 rounded-lg bg-gradient-to-br from-[#D4C8BC]/60 to-[#C4B8AC]/40 backdrop-blur-sm border border-white/20 shadow-lg"
+                        style={{
+                          transform: 'rotateX(5deg) rotateY(-5deg)',
+                          boxShadow: '0 20px 40px rgba(74, 60, 49, 0.08), 0 8px 16px rgba(168, 116, 65, 0.04)',
+                        }}
+                      />
+                    </motion.div>
+                    {/* Corner accent */}
+                    <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-[#a87441]/10" />
+                  </div>
 
-                  {hasNextPage ? (
-                    <NextLink className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31] border border-[#4A3C31]/15 hover:border-[#a87441] hover:text-[#a87441] transition-all duration-300 rounded">
-                      {isLoading ? t('collection.loading') : 'Next'}
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                      >
-                        <path d="M5 12h14M12 5l7 7-7 7" />
-                      </svg>
-                    </NextLink>
-                  ) : (
-                    <span
-                      aria-disabled="true"
-                      role="button"
-                      className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/25 border border-[#4A3C31]/8 cursor-not-allowed rounded"
+                  {/* Text skeleton */}
+                  <div className="mt-3 space-y-2">
+                    <motion.div
+                      className="h-3 rounded-full bg-[#E8E0D8] overflow-hidden"
+                      style={{width: `${60 + (i % 3) * 15}%`}}
                     >
-                      Next
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                      >
-                        <path d="M5 12h14M12 5l7 7-7 7" />
-                      </svg>
-                    </span>
-                  )}
-                </nav>
-              )}
-            </>
-          )}
-        </Pagination>
-
-        {/* Empty state */}
-        {collection.products.nodes.length === 0 && (
-          <div className="text-center py-32">
-            <div className="w-px h-12 bg-gradient-to-b from-transparent via-[#a87441]/30 to-transparent mx-auto mb-6" />
-            <p className="font-serif text-xl text-[#4A3C31]/35 italic">
-              {t('collection.noProducts')}
-            </p>
+                      <motion.div
+                        className="h-full w-full bg-gradient-to-r from-transparent via-white/40 to-transparent"
+                        animate={{x: ['-100%', '200%']}}
+                        transition={{duration: 2, repeat: Infinity, repeatDelay: 2, delay: i * 0.15}}
+                      />
+                    </motion.div>
+                    <motion.div
+                      className="h-2.5 rounded-full bg-[#EDE8E3] overflow-hidden"
+                      style={{width: `${35 + (i % 4) * 10}%`}}
+                    >
+                      <motion.div
+                        className="h-full w-full bg-gradient-to-r from-transparent via-white/40 to-transparent"
+                        animate={{x: ['-100%', '200%']}}
+                        transition={{duration: 2, repeat: Infinity, repeatDelay: 2, delay: i * 0.15 + 0.1}}
+                      />
+                    </motion.div>
+                  </div>
+                </motion.div>
+              </motion.div>
+            ))}
           </div>
-        )}
 
-        <Analytics.CollectionView
-          data={{
-            collection: {
-              id: collection.id,
-              handle: collection.handle,
-            },
-          }}
-        />
-      </main>
+          <Analytics.CollectionView
+            data={{
+              collection: {
+                id: collection.id,
+                handle: collection.handle,
+              },
+            }}
+          />
+        </main>
+      ) : (
+        <>
+          {/* ─── Category Navigation Tabs ─── (hidden on New to Haus) */}
+          {collection.handle !== 'new-in' && collection.handle !== 'new' && (
+            <CategoryHeader
+              currentCategory={collection.title}
+              productCount={collection.products.nodes.length}
+              collectionHandle={collection.handle}
+            />
+          )}
 
-      <FilterPanel
-        filters={collection.products.filters as any}
-        // Ideally we would get total count from collection.products.pageInfo or similar,
-        // but passing nodes length for now to show something.
-        totalProducts={collection.products.nodes.length}
-      />
+          {/* ─── Breadcrumb + Sort / Applied Filters Bar ─── */}
+          <div
+            className="max-w-[1440px] mx-auto py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
+            style={{padding: '0.75rem var(--page-gutter)'}}
+          >
+            <nav
+              aria-label="Breadcrumb"
+              className="flex items-center gap-2 text-[11px] uppercase tracking-[0.15em] text-[#8B7355]"
+            >
+              <a
+                href="/"
+                className="hover:text-[#a87441] transition-colors duration-200"
+              >
+                Home
+              </a>
+              <span aria-hidden="true" className="text-[#8B7355]/40">
+                ›
+              </span>
+              <a
+                href="/collections"
+                className="hover:text-[#a87441] transition-colors duration-200"
+              >
+                Collections
+              </a>
+              <span aria-hidden="true" className="text-[#8B7355]/40">
+                ›
+              </span>
+              <span className="text-[#4A3C31] font-medium truncate max-w-[180px]">
+                {collection.title}
+              </span>
+            </nav>
+            <div className="flex items-center gap-4">
+              <SortMenu />
+              {appliedFilters.length > 0 && (
+                <div className="flex items-center gap-2">
+                  {appliedFilters.map((filter, i) => (
+                    <span
+                      key={i}
+                      className="text-[10px] uppercase tracking-wider px-2.5 py-1 bg-[#4A3C31]/6 text-[#4A3C31] rounded-full"
+                    >
+                      {filter.label}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* ─── Product Grid ─── */}
+          <main
+            className="max-w-[1440px] mx-auto py-10 md:py-16"
+            style={{padding: '2.5rem var(--page-gutter)'}}
+          >
+            <Pagination connection={collection.products}>
+              {({
+                nodes,
+                isLoading,
+                PreviousLink,
+                NextLink,
+                hasPreviousPage,
+                hasNextPage,
+              }) => (
+                <>
+                  {/* Product Grid - Professional layout */}
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-x-3 gap-y-6 md:gap-x-4 md:gap-y-8 lg:gap-x-5 lg:gap-y-10">
+                    {nodes.map((product: any, i: number) => (
+                      <ProductCardClean
+                        key={product.id}
+                        product={product}
+                        index={i}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Pagination Bar */}
+                  {(hasPreviousPage || hasNextPage) && (
+                    <nav className="flex items-center justify-center gap-6 mt-16 pt-8 border-t border-[#4A3C31]/8">
+                      {hasPreviousPage ? (
+                        <PreviousLink className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31] border border-[#4A3C31]/15 hover:border-[#a87441] hover:text-[#a87441] transition-all duration-300 rounded">
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          >
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                          </svg>
+                          {isLoading ? t('collection.loading') : 'Previous'}
+                        </PreviousLink>
+                      ) : (
+                        <span
+                          aria-disabled="true"
+                          role="button"
+                          className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/25 border border-[#4A3C31]/8 cursor-not-allowed rounded"
+                        >
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          >
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                          </svg>
+                          Previous
+                        </span>
+                      )}
+
+                      {hasNextPage ? (
+                        <NextLink className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31] border border-[#4A3C31]/15 hover:border-[#a87441] hover:text-[#a87441] transition-all duration-300 rounded">
+                          {isLoading ? t('collection.loading') : 'Next'}
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          >
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                          </svg>
+                        </NextLink>
+                      ) : (
+                        <span
+                          aria-disabled="true"
+                          role="button"
+                          className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/25 border border-[#4A3C31]/8 cursor-not-allowed rounded"
+                        >
+                          Next
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          >
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                          </svg>
+                        </span>
+                      )}
+                    </nav>
+                  )}
+                </>
+              )}
+            </Pagination>
+
+            {/* Empty state */}
+            {collection.products.nodes.length === 0 && (
+              <div className="text-center py-32">
+                <div className="w-px h-12 bg-gradient-to-b from-transparent via-[#a87441]/30 to-transparent mx-auto mb-6" />
+                <p className="font-serif text-xl text-[#4A3C31]/35 italic">
+                  {t('collection.noProducts')}
+                </p>
+              </div>
+            )}
+
+            <Analytics.CollectionView
+              data={{
+                collection: {
+                  id: collection.id,
+                  handle: collection.handle,
+                },
+              }}
+            />
+          </main>
+
+          <FilterPanel
+            filters={collection.products.filters as any}
+            // Ideally we would get total count from collection.products.pageInfo or similar,
+            // but passing nodes length for now to show something.
+            totalProducts={collection.products.nodes.length}
+          />
+        </>
+      )}
     </div>
   );
 }
