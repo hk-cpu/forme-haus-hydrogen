@@ -43,8 +43,8 @@ const BENTO_ITEMS: BentoItem[] = [
     height: 1024,
   },
   {
-    image: '/brand/edit-sun-ready.webp',
-    alt: 'Sun Ready — draped fabric detail',
+    image: '/brand/edit-sun-ready-v2.png',
+    alt: 'Sun Ready — model relaxing on a sun lounger by the pool in sunglasses',
     url: '/collections/sunglasses',
     titleKey: 'editorial.sun.title',
     subtitleKey: 'editorial.sun.subtitle',
