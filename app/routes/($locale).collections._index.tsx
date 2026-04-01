@@ -110,7 +110,17 @@ export default function Collections() {
   const {collections} = useLoaderData<typeof loader>();
 
   return (
-    <div className="min-h-screen bg-[#F9F5F0] py-16">
+    <div className="flex flex-col bg-[#F9F5F0]">
+      <section className="relative w-full h-[50vh] min-h-[400px] md:h-[60vh] lg:h-[70vh]">
+        <img
+          src="/brand/collections-hero.png"
+          alt="Modern Essentials - Foundations shaped by intention and refined for everyday presence"
+          className="h-full w-full object-cover object-center"
+          loading="eager"
+        />
+      </section>
+
+      <div className="min-h-screen py-16">
       <div className="mx-auto max-w-[1440px] px-[var(--page-gutter)]">
         <div className="mb-12 text-center">
           <span className="block text-[10px] uppercase tracking-[0.35em] text-[#a87441] mb-4">
@@ -155,6 +165,7 @@ export default function Collections() {
           )}
         </Pagination>
       </div>
+    </div>
     </div>
   );
 }

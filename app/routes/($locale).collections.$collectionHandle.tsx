@@ -345,14 +345,17 @@ export default function Collection() {
       bgClass: 'bg-[#E8DED4]',
     },
     'carry-it-your-way': {
+      src: '/brand/carry-hero.png',
       hideTitle: true,
       fit: 'full-width',
     },
     'sun-ready': {
+      src: '/brand/sun-ready-hero.png',
       hideTitle: true,
       fit: 'full-width',
     },
     'new-arrivals': {
+      src: '/brand/new-arrivals-hero.png',
       hideTitle: true,
       fit: 'full-width',
     },
