@@ -292,6 +292,71 @@ export const translations = {
     'whyUs.elevatedDesc':
       'An elevated journey from discovery to delivery. Free shipping across Saudi Arabia.',
 
+    // Auth
+    'auth.welcomeBack': 'Welcome Back',
+    'auth.joinFormeHaus': 'Join Formé Haus',
+    'auth.beginJourney': 'Begin Your Journey',
+    'auth.continueJourney': 'Continue Your Journey',
+    'auth.signIn': 'Sign In',
+    'auth.register': 'Register',
+    'auth.emailAddress': 'Email Address',
+    'auth.password': 'Password',
+    'auth.createAccount': 'Create Account',
+    'auth.creatingAccount': 'Creating Account...',
+    'auth.alreadyHaveAccount': 'Already have an account? Sign In',
+    'auth.hidePassword': 'Hide password',
+    'auth.showPassword': 'Show password',
+    'auth.recoverAccess': 'Recover Access',
+    'auth.sendResetLink': 'Send Reset Link',
+    'auth.sending': 'Sending...',
+    'auth.backToSignIn': '← Back to Sign In',
+    'auth.accountCreated': 'Account Created',
+    'auth.checkEmailVerify': 'Please check your email to verify your account, then sign in.',
+    'auth.newPassword': 'New Password',
+    'auth.chooseMemorable': 'Choose something memorable',
+    'auth.updatePassword': 'Update Password',
+    'auth.updating': 'Updating...',
+    'auth.forgotPassword': 'Forgot Password?',
+    'auth.errorBothFields': 'Please provide both email and password.',
+    'auth.errorProvideEmail': 'Please provide an email.',
+    'auth.errorMissingFields': 'Missing fields.',
+    'auth.resetSuccess': 'Password updated successfully. You may now sign in.',
+
+    // Search
+    'search.results': 'Results',
+    'search.viewAll': 'View All',
+    'search.collections': 'Collections',
+    'search.trending': 'Trending',
+    'search.tryDifferent': 'Try a different search term',
+    'search.placeholderPhoneCases': 'Phone cases...',
+    'search.placeholderSunglasses': 'Sunglasses...',
+    'search.placeholderNewArrivals': 'New arrivals...',
+    'search.trendingPhoneCases': 'Phone Cases',
+    'search.trendingSunglasses': 'Sunglasses',
+    'search.trendingPhoneStraps': 'Phone Straps',
+    'search.trendingNewArrivals': 'New Arrivals',
+    'search.trendingBundles': 'Bundles',
+
+    // Category Header
+    'categoryHeader.shopAll': 'Shop All',
+    'categoryHeader.phoneCases': 'Phone Cases',
+    'categoryHeader.phoneStraps': 'Phone Straps',
+    'categoryHeader.bundles': 'Bundles',
+    'categoryHeader.sunglasses': 'Sunglasses',
+    'categoryHeader.sale': 'Sale',
+    'categoryHeader.allPhoneAccessories': 'All Phone Accessories',
+    'categoryHeader.cases': 'Cases',
+    'categoryHeader.straps': 'Straps',
+
+    // Breadcrumbs
+    'breadcrumb.home': 'Home',
+    'breadcrumb.shop': 'Shop',
+    'breadcrumb.collections': 'Collections',
+
+    // Testimonials
+    'testimonials.title': 'What Our Clients Say',
+    'testimonials.subtitle': 'Words from those who have experienced the Haus.',
+
     // Account
     'account.overview': 'Overview',
     'account.orders': 'Orders',
@@ -316,6 +381,55 @@ export const translations = {
     'account.noAddresses': 'No addresses saved yet',
     'account.contactUs': 'Contact Us',
     'account.returns': 'Returns',
+
+    // Filters
+    'filter.filters': 'Filters',
+    'filter.title': 'Filters',
+    'filter.active': 'active',
+    'filter.clear': 'Clear All',
+    'filter.showProducts': 'Show products',
+
+    // Contact
+    'contact.title': 'Connect With Us',
+    'contact.subtitle': 'Our dedicated team is here to assist with styling advice, order inquiries, or any questions you may have about our curated collections.',
+    'contact.sendMessage': 'Send a Message',
+    'contact.yourName': 'Your Name',
+    'contact.emailAddress': 'Email Address',
+    'contact.subject': 'Subject',
+    'contact.yourMessage': 'Your Message',
+    'contact.messageSent': 'Message Sent!',
+    'contact.thankYou': "Thank you for reaching out. We'll respond within 24 hours.",
+    'contact.sending': 'Sending...',
+    'contact.sendMessageButton': 'Send Message',
+    'contact.emailUs': 'Email Us',
+    'contact.emailReply': "We'll get back to you as soon as possible.",
+    'contact.sendEmail': 'Send email',
+    'contact.whatsapp': 'WhatsApp',
+    'contact.whatsappDesc': 'Message us directly for quick support.',
+    'contact.chatOnWhatsApp': 'Chat on WhatsApp',
+    'contact.storeHours': 'Store Hours',
+    'contact.sunThu': 'Sun - Thu',
+    'contact.friSat': 'Fri - Sat',
+    'contact.newWays': 'New Ways to Connect',
+    'contact.newWaysDesc': "We're expanding how we connect with you to offer a more seamless and personalized experience.",
+    'contact.liveChat': 'Live Chat',
+    'contact.orderUpdates': 'Order Updates',
+    'contact.errorAllFields': 'Please fill in all fields.',
+    'contact.errorSend': 'Unable to send message. Please try again.',
+
+    // Common
+    'common.search': 'Search',
+    'common.clear': 'Clear',
+    'common.cancel': 'Cancel',
+
+    // Product Notify
+    'product.unavailable': 'Unavailable',
+    'product.notifyMe': 'Notify Me When Available',
+    'product.notifyEmail': 'Enter your email',
+    'product.notifySuccess': "Thank you! We'll notify you when this item is back in stock.",
+
+    // Footer extra
+    'footer.poweredByTap': 'Powered by Tap Payments · 256-bit SSL Encrypted',
 
     // Products Index
     'products.completeCollection': 'The Complete Collection',
@@ -421,14 +535,63 @@ export const translations = {
     'footer.privacy': 'سياسة الخصوصية',
     'footer.terms': 'الشروط والأحكام',
     'footer.paymentMethods': 'طرق الدفع الآمنة',
-    'footer.newsletter': 'انضم إلى عالم Haus',
+    'footer.newsletter': 'انضمي إلى نادينا',
     'footer.newsletterDesc': 'وصل حديثاً، عروض حصرية، والمزيد.',
     'footer.emailPlaceholder': 'البريد الإلكتروني',
     'footer.submitting': 'جارٍ الإرسال...',
-    'footer.subscribe': 'اشتراك',
+    'footer.subscribe': 'سجّلي الآن',
     'footer.shipping': 'سياسة الشحن والتوصيل',
     'footer.returns': 'سياسة الاسترجاع والاستبدال',
     'footer.registered': 'مسجّل في المملكة العربية السعودية',
+
+    // Filters
+    'filter.filters': 'تصفية',
+    'filter.title': 'فلترة',
+    'filter.active': 'مفعل',
+    'filter.clear': 'مسح الكل',
+    'filter.showProducts': 'عرض المنتجات',
+
+    // Contact
+    'contact.title': 'تواصل معنا',
+    'contact.subtitle': 'فريقنا المخصص هنا لمساعدتك في النصائح الأنيقة، استفسارات الطلبات، أو أي أسئلة حول مجموعاتنا المنسّقة.',
+    'contact.sendMessage': 'أرسلي رسالتك',
+    'contact.yourName': 'الاسم',
+    'contact.emailAddress': 'البريد الإلكتروني',
+    'contact.subject': 'الموضوع',
+    'contact.yourMessage': 'رسالتك',
+    'contact.messageSent': 'تم إرسال الرسالة!',
+    'contact.thankYou': 'شكراً للتواصل معنا. سنجيب خلال 24 ساعة.',
+    'contact.sending': 'جارٍ الإرسال...',
+    'contact.sendMessageButton': 'أرسلي رسالتك',
+    'contact.emailUs': 'راسلينا',
+    'contact.emailReply': 'سنرد عليك في أقرب وقت ممكن.',
+    'contact.sendEmail': 'إرسال بريد',
+    'contact.whatsapp': 'واتساب',
+    'contact.whatsappDesc': 'تواصلي معنا مباشرة للحصول على دعم سريع.',
+    'contact.chatOnWhatsApp': 'تواصلي عبر واتساب',
+    'contact.storeHours': 'ساعات العمل',
+    'contact.sunThu': 'الأحد - الخميس',
+    'contact.friSat': 'الجمعة - السبت',
+    'contact.newWays': 'طرق جديدة للتواصل',
+    'contact.newWaysDesc': 'نوسّع طرق تواصلنا معك لتقديم تجربة أكثر سلاسة وشخصية.',
+    'contact.liveChat': 'دردشة مباشرة',
+    'contact.orderUpdates': 'تحديثات الطلبات',
+    'contact.errorAllFields': 'يرجى ملء جميع الحقول.',
+    'contact.errorSend': 'تعذر إرسال الرسالة. يرجى المحاولة مرة أخرى.',
+
+    // Common
+    'common.search': 'بحث',
+    'common.clear': 'مسح',
+    'common.cancel': 'إلغاء',
+
+    // Product Notify
+    'product.unavailable': 'غير متوفر',
+    'product.notifyMe': 'أعلمني عند التوفر',
+    'product.notifyEmail': 'البريد الإلكتروني',
+    'product.notifySuccess': 'شكراً! سنُعلمك عند عودة المنتج للمخزون.',
+
+    // Footer extra
+    'footer.poweredByTap': 'مدعوم من تاب باي · تشفير ٢٥٦-بت SSL',
 
     // Newsletter / Notify
     'notify.email': 'البريد الإلكتروني',
@@ -570,7 +733,7 @@ export const translations = {
     'checkout.checkout': 'إتمام الطلب',
 
     // Category Bento
-    'category.newInHaus': 'جديد في Haus',
+    'category.newInHaus': 'وصول جديد',
     'category.phoneAccessories': 'إكسسوارات الجوال',
     'home.shopByCategory': 'تسوّق حسب الفئة',
 
@@ -607,6 +770,7 @@ export const translations = {
     'trust.maroof': 'معروف',
     'trust.trusted': 'موثوق',
     'trust.maroofVerified': 'متجر معتمد من معروف',
+    'trust.muwathooqTrusted': 'موثوقة من العملاء',
     'trust.securePayment': 'دفع آمن',
     'trust.shopWithConfidence': 'تسوّق بثقة',
     'trust.trialReady': 'جاهز للتجربة',
@@ -626,6 +790,71 @@ export const translations = {
     'whyUs.elevatedTitle': 'تجربة راقية',
     'whyUs.elevatedDesc':
       'رحلة راقية من الاكتشاف إلى التوصيل. شحن مجاني في جميع أنحاء السعودية.',
+
+    // Auth
+    'auth.welcomeBack': 'أهلاً بك',
+    'auth.joinFormeHaus': 'انضمي إلى Formé Haus',
+    'auth.beginJourney': 'ابدئي رحلتك',
+    'auth.continueJourney': 'استمري في رحلتك',
+    'auth.signIn': 'تسجيل الدخول',
+    'auth.register': 'إنشاء حساب',
+    'auth.emailAddress': 'البريد الإلكتروني',
+    'auth.password': 'كلمة المرور',
+    'auth.createAccount': 'إنشاء حساب',
+    'auth.creatingAccount': 'جارٍ إنشاء الحساب...',
+    'auth.alreadyHaveAccount': 'لديك حساب؟ سجّلي دخول',
+    'auth.hidePassword': 'إخفاء كلمة المرور',
+    'auth.showPassword': 'إظهار كلمة المرور',
+    'auth.recoverAccess': 'استعادة الدخول',
+    'auth.sendResetLink': 'إرسال رابط الاستعادة',
+    'auth.sending': 'جارٍ الإرسال...',
+    'auth.backToSignIn': '← العودة لتسجيل الدخول',
+    'auth.accountCreated': 'تم إنشاء الحساب',
+    'auth.checkEmailVerify': 'يرجى مراجعة بريدك الإلكتروني للتحقق من حسابك، ثم سجّلي دخول.',
+    'auth.newPassword': 'كلمة المرور الجديدة',
+    'auth.chooseMemorable': 'اختي كلمة يسهل تذكرها',
+    'auth.updatePassword': 'تحديث كلمة المرور',
+    'auth.updating': 'جارٍ التحديث...',
+    'auth.forgotPassword': 'نسيت كلمة المرور؟',
+    'auth.errorBothFields': 'يرجى إدخال البريد الإلكتروني وكلمة المرور.',
+    'auth.errorProvideEmail': 'يرجى إدخال البريد الإلكتروني.',
+    'auth.errorMissingFields': 'بيانات ناقصة.',
+    'auth.resetSuccess': 'تم تحديث كلمة المرور. يمكنك الآن تسجيل الدخول.',
+
+    // Search
+    'search.results': 'النتائج',
+    'search.viewAll': 'عرض الكل',
+    'search.collections': 'المجموعات',
+    'search.trending': 'الأكثر بحثاً',
+    'search.tryDifferent': 'جربي كلمة بحث مختلفة',
+    'search.placeholderPhoneCases': 'كفرات الجوال...',
+    'search.placeholderSunglasses': 'نظارات شمسية...',
+    'search.placeholderNewArrivals': 'وصول جديد...',
+    'search.trendingPhoneCases': 'كفرات الجوال',
+    'search.trendingSunglasses': 'نظارات شمسية',
+    'search.trendingPhoneStraps': 'أحزمة الجوال',
+    'search.trendingNewArrivals': 'وصول جديد',
+    'search.trendingBundles': 'الباقات',
+
+    // Category Header
+    'categoryHeader.shopAll': 'جميع المنتجات',
+    'categoryHeader.phoneCases': 'كفرات الجوال',
+    'categoryHeader.phoneStraps': 'أحزمة الجوال',
+    'categoryHeader.bundles': 'الباقات',
+    'categoryHeader.sunglasses': 'نظارات شمسية',
+    'categoryHeader.sale': 'تخفيضات',
+    'categoryHeader.allPhoneAccessories': 'جميع إكسسوارات الجوال',
+    'categoryHeader.cases': 'كفرات',
+    'categoryHeader.straps': 'أحزمة',
+
+    // Breadcrumbs
+    'breadcrumb.home': 'الرئيسية',
+    'breadcrumb.shop': 'تسوّق',
+    'breadcrumb.collections': 'المجموعات',
+
+    // Testimonials
+    'testimonials.title': 'ما يقوله عملاؤنا',
+    'testimonials.subtitle': 'كلمات من عاشقات التفاصيل الراقية.',
 
     // Account
     'account.overview': 'نظرة عامة',

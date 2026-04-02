@@ -174,7 +174,7 @@ export function PageLayout({children, layout}: LayoutProps) {
                 className="relative z-10 py-16"
                 style={{padding: '4rem var(--page-gutter)'}}
               >
-                <div className="max-w-[420px] mx-auto text-center">
+                <div className="max-w-[520px] mx-auto text-center">
                   <h4 className="font-serif text-lg text-[#F0EAE6] tracking-wider uppercase mb-2">
                     {t('footer.newsletter', 'Join the Haus')}
                   </h4>
@@ -535,12 +535,12 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
 
         {/* Payment Methods */}
         <div className="max-w-[1440px] mx-auto mt-8 mb-4 text-center">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-[#AA9B8F]/60 mb-3">
+          <p className="text-xs uppercase tracking-[0.2em] text-[#AA9B8F]/60 mb-3">
             {t('footer.securePayments', 'Secure Payment Methods')}
           </p>
           <PaymentBadges />
-          <p className="text-[10px] text-[#8B8076]/50 mt-2">
-            Powered by Tap Payments · 256-bit SSL Encrypted
+          <p className="text-xs text-[#8B8076]/50 mt-2">
+            {t('footer.poweredByTap', 'Powered by Tap Payments · 256-bit SSL Encrypted')}
           </p>
         </div>
 
@@ -555,12 +555,12 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
             </span>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
             <span>
-              CR No:{' '}
+              {t('footer.crNo', 'CR No.')}:{' '}
               <span className="font-mono text-[#F0EAE6]">7051891369</span>
             </span>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
             <span>
-              VAT No:{' '}
+              {t('footer.vatNo', 'VAT No.')}:{' '}
               <span className="font-mono text-[#F0EAE6]">314271812300003</span>
             </span>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />

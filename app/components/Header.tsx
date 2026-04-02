@@ -151,7 +151,7 @@ export function Header({
       title: t('nav.sunglasses', 'Sunglasses'),
       to: '/collections/sunglasses',
     },
-    {id: '4', title: t('nav.collections', 'Collections'), to: '/collections'},
+    {id: '4', title: t('nav.collections', 'Collections'), to: '/#editorial'},
     {id: '5', title: t('nav.journal', 'Journal'), to: '/journal'},
     {id: '6', title: t('nav.ourStory', 'Our Story'), to: '/pages/about'},
     {id: '7', title: t('nav.contact', 'Contact Us'), to: '/contact'},
@@ -176,11 +176,12 @@ export function Header({
     if (
       item.title === 'CATALOG' ||
       item.title === 'Catalog' ||
-      normalizedTo === '/collections/all'
+      normalizedTo === '/collections/all' ||
+      normalizedTo === '/collections'
     ) {
       return {
         ...item,
-        to: '/collections',
+        to: '/#editorial',
         title: t('nav.collections', 'Collections'),
       };
     }
@@ -240,7 +241,7 @@ export function Header({
                 key={item.id}
                 to={item.to}
                 className={({isActive}) =>
-                  `relative py-2 text-[10px] font-light uppercase tracking-[0.25em] transition-colors duration-200 lg:text-[11px] ${
+                  `relative py-2 text-xs font-light uppercase tracking-[0.25em] transition-colors duration-200 lg:text-[11px] ${
                     isActive
                       ? 'text-[#a87441]'
                       : 'text-[#F0EAE6]/80 hover:text-[#a87441]'
@@ -261,7 +262,7 @@ export function Header({
             type="button"
           >
             <Icons.Menu />
-            <span className="mt-1 text-[10px] uppercase tracking-wider text-[#F0EAE6]/60">
+            <span className="mt-1 text-xs uppercase tracking-wider text-[#F0EAE6]/60">
               {t('nav.menu', 'Menu')}
             </span>
           </button>
@@ -310,7 +311,7 @@ export function Header({
               title={t('nav.account', 'Account')}
             >
               <Icons.User />
-              <span className="mt-1 hidden text-[10px] uppercase tracking-wider text-[#F0EAE6]/60 lg:block">
+              <span className="mt-1 hidden text-xs uppercase tracking-wider text-[#F0EAE6]/60 lg:block">
                 {t('nav.account', 'Account')}
               </span>
             </Link>
@@ -345,7 +346,7 @@ function IconButton({
       type="button"
     >
       {children}
-      <span className="mt-1 hidden text-[10px] uppercase tracking-wider text-[#F0EAE6]/60 lg:block">
+      <span className="mt-1 hidden text-xs uppercase tracking-wider text-[#F0EAE6]/60 lg:block">
         {label}
       </span>
     </button>
@@ -398,12 +399,12 @@ function CartBagButton({
               type="button"
             >
               <Icons.Bag />
-              <span className="mt-1 hidden text-[10px] uppercase tracking-wider text-[#F0EAE6]/60 lg:block">
+              <span className="mt-1 hidden text-xs uppercase tracking-wider text-[#F0EAE6]/60 lg:block">
                 {t('nav.cart', 'Bag')}
               </span>
 
               {cart?.totalQuantity ? (
-                <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-[10px] font-medium text-white shadow-lg lg:right-2">
+                <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-xs font-medium text-white shadow-lg lg:right-2">
                   {cart.totalQuantity > 9 ? '9+' : cart.totalQuantity}
                 </span>
               ) : null}

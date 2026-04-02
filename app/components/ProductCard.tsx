@@ -270,6 +270,11 @@ export function ProductCard({
     parseFloat(product.priceRange?.minVariantPrice?.amount || '0') > 0;
   const isAvailable = product.availableForSale !== false;
 
+  // Hide products without a valid price (Price TBA)
+  if (!hasPrice) {
+    return null;
+  }
+
   // Extract iPhone models from tags (e.g., "iphone-17-pro", "iphone-17-pro-max")
   const iPhoneModels =
     product.tags
@@ -461,7 +466,7 @@ export function ProductCard({
                 />
               ) : (
                 <div className="w-full h-full bg-[#EDE8E3] flex items-center justify-center">
-                  <span className="text-[#AA9B8F]/40 text-[10px] font-light tracking-[0.2em] uppercase">
+                  <span className="text-[#AA9B8F]/40 text-xs font-light tracking-[0.2em] uppercase">
                     {product.title}
                   </span>
                 </div>
@@ -492,7 +497,7 @@ export function ProductCard({
                 initial={{opacity: 0, x: -20, scale: 0.8}}
                 animate={{opacity: 1, x: 0, scale: 1}}
                 exit={{opacity: 0, x: -20}}
-                className="absolute top-3 left-3 px-3 py-1.5 bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-white text-[10px] uppercase tracking-widest rounded-full flex items-center gap-1.5 shadow-lg z-20"
+                className="absolute top-3 left-3 px-3 py-1.5 bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-white text-xs uppercase tracking-widest rounded-full flex items-center gap-1.5 shadow-lg z-20"
               >
                 <Icons.Sparkles />
                 {t('product.new', 'New')}

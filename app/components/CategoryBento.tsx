@@ -64,7 +64,7 @@ export default function CategoryBento() {
       className="border-b border-[#8B8076]/10 pb-6 md:pb-8"
     >
       <div
-        className="mx-auto max-w-[var(--container-max)]"
+        className="mx-auto max-w-[var(--container-max)] lg:max-w-5xl xl:max-w-6xl"
         style={{padding: '0 var(--page-gutter)'}}
       >
         {/* Section header */}

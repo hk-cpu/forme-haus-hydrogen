@@ -12,33 +12,33 @@ import {useTranslation} from '~/hooks/useTranslation';
 const PHONE_HANDLES = ['phone-cases', 'phone-straps', 'case-strap-bundles'];
 
 const TOP_LEVEL_CATEGORIES = [
-  {id: 'shop-all', label: 'Shop All', href: '/collections'},
-  {id: 'phone-cases', label: 'Phone Cases', href: '/collections/phone-cases'},
+  {id: 'shop-all', labelKey: 'categoryHeader.shopAll', href: '/collections'},
+  {id: 'phone-cases', labelKey: 'categoryHeader.phoneCases', href: '/collections/phone-cases'},
   {
     id: 'phone-straps',
-    label: 'Phone Straps',
+    labelKey: 'categoryHeader.phoneStraps',
     href: '/collections/phone-straps',
   },
   {
     id: 'bundles',
-    label: 'Bundles',
+    labelKey: 'categoryHeader.bundles',
     href: '/collections/case-strap-bundles',
   },
-  {id: 'sunglasses', label: 'Sunglasses', href: '/collections/sunglasses'},
-  {id: 'sale', label: 'Sale', href: '/collections/sale'},
+  {id: 'sunglasses', labelKey: 'categoryHeader.sunglasses', href: '/collections/sunglasses'},
+  {id: 'sale', labelKey: 'categoryHeader.sale', href: '/collections/sale'},
 ];
 
 const PHONE_SUBCATEGORIES = [
   {
     id: 'all-phone',
-    label: 'All Phone Accessories',
+    labelKey: 'categoryHeader.allPhoneAccessories',
     href: '/collections/phone-cases',
   },
-  {id: 'phone-cases', label: 'Cases', href: '/collections/phone-cases'},
-  {id: 'phone-straps', label: 'Straps', href: '/collections/phone-straps'},
+  {id: 'phone-cases', labelKey: 'categoryHeader.cases', href: '/collections/phone-cases'},
+  {id: 'phone-straps', labelKey: 'categoryHeader.straps', href: '/collections/phone-straps'},
   {
     id: 'bundles',
-    label: 'Bundles',
+    labelKey: 'categoryHeader.bundles',
     href: '/collections/case-strap-bundles',
   },
 ];
@@ -103,7 +103,7 @@ export function CategoryHeader({
                     : 'text-[#8B7355] hover:text-[#4A3C31]'
                 }`}
               >
-                {cat.label}
+                {t(cat.labelKey)}
                 {/* Animated underline pill */}
                 {isActive && (
                   <motion.span
@@ -143,7 +143,7 @@ export function CategoryHeader({
               <line x1="6" y1="12" x2="18" y2="12" />
               <line x1="8" y1="18" x2="16" y2="18" />
             </svg>
-            {t('filter.filters')}
+            {t('filter.filters', 'Filters')}
             {activeFiltersCount && activeFiltersCount > 0 && (
               <span className="ml-1 w-5 h-5 flex items-center justify-center bg-[#a87441] text-white text-[10px] rounded-full">
                 {activeFiltersCount}

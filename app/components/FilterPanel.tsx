@@ -464,7 +464,7 @@ export function FilterPanel({
                 onClick={handleApplyFilters}
                 className="w-full bg-[#a87441] hover:bg-[#8B5E3C] text-white font-medium py-4 rounded-lg transition-colors flex items-center justify-center gap-2"
               >
-                {t('filter.showProducts', `Show ${totalProducts} products`)}
+                {t('filter.showProducts', 'Show products').replace('{count}', String(totalProducts))}
               </button>
               <button
                 onClick={handleClose}

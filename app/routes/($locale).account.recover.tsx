@@ -1,5 +1,6 @@
 import {type MetaArgs, type ActionFunctionArgs} from '@shopify/remix-oxygen';
 import {Form, useActionData, useNavigation, Link} from '@remix-run/react';
+import {useTranslation} from '~/hooks/useTranslation';
 
 export const meta = () => {
   return [{title: 'Recover Password — Formé Haus'}];
@@ -29,9 +30,10 @@ export default function Recover() {
   const actionData = useActionData<typeof action>() as any;
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
+  const {t, isRTL} = useTranslation();
 
   return (
-    <div className="relative min-h-screen w-full bg-[#F9F5F0] flex flex-col items-center justify-center text-[#2C2419]">
+    <div className="relative min-h-screen w-full bg-[#F9F5F0] flex flex-col items-center justify-center text-[#2C2419]" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="relative z-10 flex flex-col items-center gap-8 w-full max-w-[420px] mx-auto px-6 py-16">
         {/* Logo */}
         <a href="/" className="group">
@@ -52,7 +54,7 @@ export default function Recover() {
             className="font-serif text-3xl md:text-4xl text-[#2C2419]"
             style={{letterSpacing: '0.02em'}}
           >
-            Recover Access
+            {t('auth.recoverAccess')}
           </h1>
           <p className="text-[11px] tracking-[0.25em] font-sans text-[#8B8076] uppercase">
             We&rsquo;ll send you a reset link
@@ -86,9 +88,9 @@ export default function Recover() {
               <div>
                 <label
                   htmlFor="email-address"
-                  className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium"
+                  className="block text-xs uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium"
                 >
-                  Email Address
+                  {t('auth.emailAddress')}
                 </label>
                 <input
                   id="email-address"
@@ -97,7 +99,7 @@ export default function Recover() {
                   autoComplete="email"
                   required
                   placeholder="you@example.com"
-                  className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 px-4 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[13px] tracking-wide rounded-lg"
+                  className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 px-4 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-sm tracking-wide rounded-lg"
                 />
               </div>
 
@@ -105,15 +107,15 @@ export default function Recover() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-4 bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] transition-all duration-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium flex items-center justify-center gap-2"
+                  className="w-full py-4 bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.2em] text-xs transition-all duration-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      Sending...
+                      {t('auth.sending')}
                     </>
                   ) : (
-                    'Send Reset Link'
+                    t('auth.sendResetLink')
                   )}
                 </button>
               </div>
@@ -123,9 +125,9 @@ export default function Recover() {
           <div className="flex items-center justify-center pt-2">
             <Link
               to="/account/login"
-              className="text-[10px] uppercase tracking-[0.15em] text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 font-semibold"
+              className="text-xs uppercase tracking-[0.15em] text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 font-semibold"
             >
-              ← Back to Sign In
+              {t('auth.backToSignIn')}
             </Link>
           </div>
         </Form>

@@ -1,6 +1,7 @@
 import {type MetaArgs, type ActionFunctionArgs} from '@shopify/remix-oxygen';
 import {Form, useActionData, useNavigation, Link} from '@remix-run/react';
 import {useState} from 'react';
+import {useTranslation} from '~/hooks/useTranslation';
 
 export const meta = () => {
   return [{title: 'Create Account — Formé Haus'}];
@@ -80,9 +81,10 @@ export default function Register() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
   const [showPassword, setShowPassword] = useState(false);
+  const {t, isRTL} = useTranslation();
 
   return (
-    <div className="relative min-h-screen w-full bg-[#F9F5F0] flex flex-col items-center justify-center text-[#2C2419]">
+    <div className="relative min-h-screen w-full bg-[#F9F5F0] flex flex-col items-center justify-center text-[#2C2419]" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="relative z-10 flex flex-col items-center gap-8 w-full max-w-[420px] mx-auto px-6 py-16">
         {/* Logo */}
         <a href="/" className="group">
@@ -103,10 +105,10 @@ export default function Register() {
             className="font-serif text-3xl md:text-4xl text-[#2C2419]"
             style={{letterSpacing: '0.02em'}}
           >
-            Join Formé Haus
+            {t('auth.joinFormeHaus')}
           </h1>
           <p className="text-[11px] tracking-[0.25em] font-sans text-[#8B8076] uppercase">
-            Begin Your Journey
+            {t('auth.beginJourney')}
           </p>
         </div>
 
@@ -129,17 +131,17 @@ export default function Register() {
             </div>
             <div className="space-y-2">
               <h2 className="font-serif text-2xl text-[#2C2419]">
-                Account Created
+                {t('auth.accountCreated')}
               </h2>
               <p className="text-[13px] text-[#8B8076] leading-relaxed">
-                Please check your email to verify your account, then sign in.
+                {t('auth.checkEmailVerify')}
               </p>
             </div>
             <Link
               to="/account/login"
               className="inline-block w-full py-4 bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] transition-all duration-300 rounded-lg font-medium"
             >
-              Sign In
+              {t('auth.signIn')}
             </Link>
           </div>
         ) : (
@@ -162,9 +164,9 @@ export default function Register() {
               <div>
                 <label
                   htmlFor="email-address"
-                  className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium"
+                  className="block text-xs uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium"
                 >
-                  Email Address
+                  {t('auth.emailAddress')}
                 </label>
                 <input
                   id="email-address"
@@ -173,7 +175,7 @@ export default function Register() {
                   autoComplete="email"
                   required
                   placeholder="you@example.com"
-                  className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 px-4 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[13px] tracking-wide rounded-lg"
+                  className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 px-4 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-sm tracking-wide rounded-lg"
                 />
               </div>
 
@@ -181,9 +183,9 @@ export default function Register() {
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium"
+                  className="block text-xs uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium"
                 >
-                  Password
+                  {t('auth.password')}
                 </label>
                 <div className="relative">
                   <input
@@ -193,14 +195,14 @@ export default function Register() {
                     autoComplete="new-password"
                     required
                     placeholder="Create a strong password"
-                    className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 pl-4 pr-12 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[13px] tracking-wide rounded-lg"
+                    className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 pl-4 pr-12 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-sm tracking-wide rounded-lg"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#8B8076] hover:text-[#a87441] transition-colors duration-200"
                     aria-label={
-                      showPassword ? 'Hide password' : 'Show password'
+                      showPassword ? t('auth.hidePassword') : t('auth.showPassword')
                     }
                   >
                     {showPassword ? <EyeClosed /> : <EyeOpen />}
@@ -213,17 +215,17 @@ export default function Register() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] transition-all duration-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                className="w-full py-4 bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.2em] text-xs transition-all duration-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
               >
-                {isSubmitting ? 'Creating Account...' : 'Create Account'}
+                {isSubmitting ? t('auth.creatingAccount') : t('auth.createAccount')}
               </button>
 
               <div className="flex flex-col items-center gap-3 pt-2">
                 <Link
                   to="/account/login"
-                  className="text-[10px] uppercase tracking-[0.15em] text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 font-semibold"
+                  className="text-xs uppercase tracking-[0.15em] text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 font-semibold"
                 >
-                  Already have an account? Sign In
+                  {t('auth.alreadyHaveAccount')}
                 </Link>
               </div>
             </div>

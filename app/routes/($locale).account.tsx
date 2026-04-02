@@ -28,8 +28,10 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   const {session, storefront} = context;
   const customerAccessToken = await session.get('customerAccessToken');
 
+  const localePrefix = params.locale ? `/${params.locale}` : '';
+
   if (!customerAccessToken) {
-    return redirect('/account/login');
+    return redirect(`${localePrefix}/account/login`);
   }
 
   const {customer} = await storefront.query(CUSTOMER_QUERY, {
@@ -42,7 +44,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   });
 
   if (!customer) {
-    throw redirect('/account/login');
+    throw redirect(`${localePrefix}/account/login`);
   }
 
   return defer({customer}, {headers: {'Cache-Control': CACHE_NONE}});

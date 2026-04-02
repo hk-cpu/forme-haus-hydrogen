@@ -53,16 +53,16 @@ export function MobileBottomNav() {
             aria-label={t('nav.search', 'Search')}
           >
             <SearchIcon />
-            <span className="text-[10px] uppercase tracking-wider font-medium">
+            <span className="text-xs uppercase tracking-wider font-medium">
               {t('nav.search', 'Search')}
             </span>
           </button>
 
           {/* Collections — center focal tab */}
           <NavTab
-            to="/collections"
+            to="/#editorial"
             label={t('nav.shopLabel', 'Shop')}
-            isActive={isActive('/collections')}
+            isActive={location.hash === '#editorial'}
             isFocal
           >
             <ShopIcon />
@@ -91,7 +91,7 @@ export function MobileBottomNav() {
                 <Await resolve={rootData?.cart}>
                   {(cart: any) =>
                     cart?.totalQuantity ? (
-                      <span className="cart-badge-enter absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-gradient-to-br from-[#a87441] to-[#8B5E3C] text-[10px] font-medium text-white shadow">
+                      <span className="cart-badge-enter absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-gradient-to-br from-[#a87441] to-[#8B5E3C] text-xs font-medium text-white shadow">
                         {cart.totalQuantity > 9 ? '9+' : cart.totalQuantity}
                       </span>
                     ) : null
@@ -99,7 +99,7 @@ export function MobileBottomNav() {
                 </Await>
               </Suspense>
             </span>
-            <span className="text-[10px] uppercase tracking-wider font-medium">
+            <span className="text-xs uppercase tracking-wider font-medium">
               {t('nav.cart', 'Bag')}
             </span>
           </button>
@@ -135,7 +135,7 @@ function NavTab({
           {children}
         </Link>
         <span
-          className={`text-[10px] uppercase tracking-wider font-medium mt-1 ${
+          className={`text-xs uppercase tracking-wider font-medium mt-1 ${
             isActive ? 'text-[#a87441]' : 'text-[#6B6058]'
           }`}
         >
@@ -153,7 +153,7 @@ function NavTab({
       }`}
     >
       {children}
-      <span className="text-[10px] uppercase tracking-wider font-medium">
+      <span className="text-xs uppercase tracking-wider font-medium">
         {label}
       </span>
     </Link>
@@ -233,7 +233,7 @@ function WishlistIcon({count}: {count: number}) {
         <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
       </svg>
       {count > 0 && (
-        <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-gradient-to-br from-[#a87441] to-[#8B5E3C] text-white text-[10px] font-medium flex items-center justify-center shadow">
+        <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-gradient-to-br from-[#a87441] to-[#8B5E3C] text-white text-xs font-medium flex items-center justify-center shadow">
           {count > 9 ? '9+' : count}
         </span>
       )}

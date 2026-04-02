@@ -12,6 +12,18 @@ export default function Hero() {
       aria-label="Hero"
       className="relative flex min-h-[300px] max-h-[560px] h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[65vh] items-center justify-center overflow-hidden bg-transparent px-6 pt-4 md:pt-6"
     >
+      {/* Hero lifestyle background image */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/brand/collections-hero-v2.png"
+          alt=""
+          className="w-full h-full object-cover object-center opacity-90"
+          loading="eager"
+          fetchPriority="high"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40" />
+      </div>
+
       <div className="relative z-10 text-center">
         {/* Logo with entrance fade + float */}
         <div className="relative inline-block">
@@ -36,7 +48,7 @@ export default function Hero() {
             <motion.img
               src="/brand/logo-full-opt.webp"
               alt="Forme Haus - Where Essence Meets Elegance"
-              className="h-24 w-auto object-contain drop-shadow-2xl sm:h-32 md:h-40 lg:h-48 xl:h-56"
+              className="h-24 w-auto object-contain drop-shadow-2xl sm:h-28 md:h-32 lg:h-36 xl:h-40"
               loading="eager"
               fetchPriority="high"
               decoding="sync"

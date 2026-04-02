@@ -8,8 +8,8 @@ import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
 
 const CategoryBento = lazy(() => import('~/components/CategoryBento'));
-const EditorialSection = lazy(() => import('~/components/EditorialSection'));
 const JournalSection = lazy(() => import('~/components/JournalSection'));
+const TestimonialsSection = lazy(() => import('~/components/TestimonialsSection'));
 const WhyChooseUs = lazy(() =>
   import('~/components/WhyChooseUs').then((module) => ({
     default: module.WhyChooseUs,
@@ -69,7 +69,14 @@ export default function Homepage() {
       <Hero />
 
       <div id="explore-collections" className="relative z-20 mt-[-5vh] rounded-t-[2rem] bg-[#F9F5F0]/85 text-[#4A3C31] shadow-[0_-10px_40px_-10px_rgba(255,255,255,0.15)] backdrop-blur-md">
-        <div className="pt-14 md:pt-16">
+        {/* Trust signals moved above the fold (position 3) */}
+        <div className="mx-auto max-w-[900px] px-6 pt-14 md:pt-16 md:px-8">
+          <Suspense fallback={<SectionFallback className="min-h-[160px]" />}>
+            <TrustBadges variant="full" />
+          </Suspense>
+        </div>
+
+        <div className="pt-10 md:pt-12">
           <Suspense fallback={<SectionFallback className="min-h-[520px]" />}>
             <CategoryBento />
           </Suspense>
@@ -87,15 +94,9 @@ export default function Homepage() {
           </Suspense>
         </div>
 
-        <div className="section-deferred">
+        <div className="section-deferred pb-6 md:pb-8">
           <Suspense fallback={<SectionFallback className="min-h-[420px]" />}>
             <WhyChooseUs />
-          </Suspense>
-        </div>
-
-        <div className="section-deferred mx-auto max-w-[900px] px-6 py-6 md:px-8">
-          <Suspense fallback={<SectionFallback className="min-h-[160px]" />}>
-            <TrustBadges variant="full" />
           </Suspense>
         </div>
       </div>
