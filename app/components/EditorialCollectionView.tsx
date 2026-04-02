@@ -1,9 +1,11 @@
-import {useState} from 'react';
-import {motion, AnimatePresence} from 'framer-motion';
-import {Money} from '@shopify/hydrogen';
+import {useEffect, useState} from 'react';
+import {motion, AnimatePresence, useReducedMotion} from 'framer-motion';
+import {CartForm, Money} from '@shopify/hydrogen';
+import type {FetcherWithComponents} from '@remix-run/react';
 
 import {Link} from '~/components/Link';
 import {useTranslation} from '~/hooks/useTranslation';
+import {useUI} from '~/context/UIContext';
 
 // ─── Types ───────────────────────────────────────────────────
 
@@ -49,7 +51,7 @@ interface EditorialSectionConfig {
   content?: {quote: string; author: string};
 }
 
-interface EditorialLayoutConfig {
+export interface EditorialLayoutConfig {
   sections: EditorialSectionConfig[];
 }
 
@@ -106,14 +108,45 @@ const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {
   },
 };
 
+/**
+ * Resolve the editorial layout config for a collection.
+ * Priority: metafield JSON > hardcoded defaults > null (not editorial)
+ */
 export function getEditorialLayoutConfig(
   handle: string,
+  metafieldValue?: string | null,
 ): EditorialLayoutConfig | null {
+  // 1. Try metafield-driven config from Shopify admin
+  if (metafieldValue) {
+    try {
+      const parsed = JSON.parse(metafieldValue);
+      if (parsed?.sections && Array.isArray(parsed.sections)) {
+        return parsed as EditorialLayoutConfig;
+      }
+    } catch {
+      // Invalid JSON — fall through to defaults
+    }
+  }
+
+  // 2. Fall back to hardcoded defaults
   return EDITORIAL_CONFIGS[handle] || null;
 }
 
 /** Handles that should render the editorial layout */
 export const EDITORIAL_HANDLES = new Set(Object.keys(EDITORIAL_CONFIGS));
+
+// ─── Shared animation config ─────────────────────────────────
+
+const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+const fadeUp = {
+  hidden: {opacity: 0, y: 30},
+  visible: (delay: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: {duration: 0.7, delay, ease: EASE_OUT_EXPO},
+  }),
+};
 
 // ─── Main Component ──────────────────────────────────────────
 
@@ -126,33 +159,27 @@ export function EditorialCollectionView({
     handle: string;
     title: string;
     description?: string | null;
-  };
-  layoutConfig: EditorialLayoutConfig;
-  products: ProductNode[];
-}) {
-  // We accept products separately so the parent can pass the nodes array
-  // but we also read it from the collection prop for convenience
-  return <EditorialContent collection={collection} layoutConfig={layoutConfig} />;
-}
-
-function EditorialContent({
-  collection,
-  layoutConfig,
-}: {
-  collection: {
-    id: string;
-    handle: string;
-    title: string;
-    description?: string | null;
     products?: {nodes: ProductNode[]};
   };
   layoutConfig: EditorialLayoutConfig;
+  products: ProductNode[];
 }) {
   const products = collection.products?.nodes || [];
   const [quickViewProduct, setQuickViewProduct] = useState<ProductNode | null>(
     null,
   );
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
+  const shouldReduceMotion = useReducedMotion();
+
+  // Close quick view on Escape
+  useEffect(() => {
+    if (!quickViewProduct) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setQuickViewProduct(null);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [quickViewProduct]);
 
   return (
     <>
@@ -166,7 +193,10 @@ function EditorialContent({
       />
 
       {/* Dynamic Content Sections */}
-      <div className="max-w-[1440px] mx-auto" style={{padding: '0 var(--page-gutter)'}}>
+      <div
+        className="max-w-[1440px] mx-auto pb-10 md:pb-16"
+        style={{padding: '0 var(--page-gutter) 2.5rem'}}
+      >
         {layoutConfig.sections.map((section, sectionIndex) => (
           <ContentSection
             key={sectionIndex}
@@ -176,6 +206,7 @@ function EditorialContent({
             onQuickView={setQuickViewProduct}
             hoveredProduct={hoveredProduct}
             onHover={setHoveredProduct}
+            reduceMotion={!!shouldReduceMotion}
           />
         ))}
       </div>
@@ -207,13 +238,13 @@ function EditorialNav({currentHandle}: {currentHandle: string}) {
     <motion.nav
       initial={{y: -20, opacity: 0}}
       animate={{y: 0, opacity: 1}}
-      transition={{duration: 0.6, ease: [0.16, 1, 0.3, 1]}}
-      className="sticky top-0 z-40 bg-[#F9F5F0]/95 backdrop-blur-lg border-b border-[#E8E0D8]"
+      transition={{duration: 0.6, ease: EASE_OUT_EXPO}}
+      className="sticky z-40 bg-[#F9F5F0]/95 backdrop-blur-lg border-b border-[#E8E0D8]"
       style={{top: 'var(--navbar-height, 0px)'}}
     >
       <div
-        className="max-w-[1440px] mx-auto flex items-center gap-8 py-4 overflow-x-auto"
-        style={{padding: '1rem var(--page-gutter)'}}
+        className="max-w-[1440px] mx-auto flex items-center gap-6 md:gap-8 overflow-x-auto scrollbar-hide"
+        style={{padding: '0.875rem var(--page-gutter)'}}
       >
         {NAV_ITEMS.map((item) => {
           const isActive = currentHandle === item.handle;
@@ -259,7 +290,7 @@ function CollectionHero({
     <motion.div
       initial={{opacity: 0, y: 40}}
       animate={{opacity: 1, y: 0}}
-      transition={{duration: 0.8, ease: [0.16, 1, 0.3, 1]}}
+      transition={{duration: 0.8, ease: EASE_OUT_EXPO}}
       className="max-w-[1440px] mx-auto pt-10 pb-6 md:pt-14 md:pb-8"
       style={{padding: '2.5rem var(--page-gutter) 1.5rem'}}
     >
@@ -285,6 +316,13 @@ function CollectionHero({
           {description}
         </p>
       )}
+      {/* Decorative divider */}
+      <motion.div
+        className="mt-6 h-px w-16 bg-gradient-to-r from-[#a87441] to-transparent"
+        initial={{scaleX: 0, originX: 0}}
+        animate={{scaleX: 1}}
+        transition={{duration: 1, delay: 0.4, ease: EASE_OUT_EXPO}}
+      />
     </motion.div>
   );
 }
@@ -298,6 +336,7 @@ function ContentSection({
   onQuickView,
   hoveredProduct,
   onHover,
+  reduceMotion,
 }: {
   section: EditorialSectionConfig;
   products: ProductNode[];
@@ -305,6 +344,7 @@ function ContentSection({
   onQuickView: (product: ProductNode) => void;
   hoveredProduct: string | null;
   onHover: (id: string | null) => void;
+  reduceMotion: boolean;
 }) {
   if (section.type === 'quote' && section.content) {
     return <EditorialQuote {...section.content} />;
@@ -320,13 +360,13 @@ function ContentSection({
 
   return (
     <motion.div
-      initial={{opacity: 0, y: 50}}
+      initial={reduceMotion ? false : {opacity: 0, y: 50}}
       whileInView={{opacity: 1, y: 0}}
       viewport={{once: true, margin: '-80px'}}
       transition={{
         duration: 0.8,
         delay: 0.1,
-        ease: [0.16, 1, 0.3, 1],
+        ease: EASE_OUT_EXPO,
       }}
       className={gridClass}
     >
@@ -339,6 +379,7 @@ function ContentSection({
           onQuickView={onQuickView}
           isHovered={hoveredProduct === product.id}
           onHover={onHover}
+          reduceMotion={reduceMotion}
         />
       ))}
     </motion.div>
@@ -373,6 +414,7 @@ function EditorialProductCard({
   onQuickView,
   isHovered,
   onHover,
+  reduceMotion,
 }: {
   product: ProductNode;
   index: number;
@@ -380,23 +422,30 @@ function EditorialProductCard({
   onQuickView: (product: ProductNode) => void;
   isHovered: boolean;
   onHover: (id: string | null) => void;
+  reduceMotion: boolean;
 }) {
   const config = getDisplayConfig(sectionType, index);
   const image = product.images.nodes[0];
+  const secondImage = product.images.nodes[1];
   const price = product.priceRange.minVariantPrice;
+  const comparePrice = product.compareAtPriceRange?.minVariantPrice;
+  const isOnSale =
+    comparePrice && parseFloat(comparePrice.amount) > parseFloat(price.amount);
 
   return (
     <motion.article
-      initial={{opacity: 0, y: 30}}
+      initial={reduceMotion ? false : {opacity: 0, y: 30}}
       whileInView={{opacity: 1, y: 0}}
       viewport={{once: true}}
       transition={{
         duration: 0.6,
         delay: index * 0.1,
-        ease: [0.16, 1, 0.3, 1],
+        ease: EASE_OUT_EXPO,
       }}
       className={[
-        'group relative rounded-lg overflow-hidden cursor-pointer transition-shadow duration-500',
+        'group relative rounded-lg overflow-hidden cursor-pointer',
+        'transition-all duration-500',
+        'hover:shadow-lg hover:shadow-[#4A3C31]/8',
         getSizeClass(config.size),
         getStyleClass(config.style),
       ]
@@ -416,6 +465,11 @@ function EditorialProductCard({
           {String(config.numberBadge).padStart(2, '0')}
         </span>
       )}
+      {isOnSale && !config.badge && (
+        <span className="absolute top-3 left-3 z-10 px-2.5 py-1 bg-[#a87441] text-white text-[9px] tracking-[0.1em] uppercase rounded">
+          Sale
+        </span>
+      )}
 
       {/* Clickable wrapper — links to product page */}
       <Link
@@ -424,18 +478,32 @@ function EditorialProductCard({
         className="block w-full h-full"
       >
         {/* Image */}
-        <div className="relative w-full h-full overflow-hidden">
+        <div className="relative w-full h-full overflow-hidden bg-[#F0EAE6]">
           {image ? (
-            <motion.img
-              src={image.url}
-              alt={image.altText || product.title}
-              width={image.width || undefined}
-              height={image.height || undefined}
-              className="w-full h-full object-cover"
-              loading="lazy"
-              animate={{scale: isHovered ? 1.05 : 1}}
-              transition={{duration: 0.6, ease: [0.16, 1, 0.3, 1]}}
-            />
+            <>
+              <motion.img
+                src={image.url}
+                alt={image.altText || product.title}
+                width={image.width || undefined}
+                height={image.height || undefined}
+                className="w-full h-full object-cover"
+                loading="lazy"
+                animate={reduceMotion ? {} : {scale: isHovered ? 1.05 : 1}}
+                transition={{duration: 0.6, ease: EASE_OUT_EXPO}}
+              />
+              {/* Second image on hover (if available) */}
+              {secondImage && (
+                <motion.img
+                  src={secondImage.url}
+                  alt={secondImage.altText || `${product.title} alternate`}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="lazy"
+                  initial={false}
+                  animate={{opacity: isHovered ? 1 : 0}}
+                  transition={{duration: 0.4}}
+                />
+              )}
+            </>
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-[#EDE8E3] to-[#DDD5CC]" />
           )}
@@ -451,9 +519,9 @@ function EditorialProductCard({
               <motion.h3
                 initial={false}
                 animate={
-                  isHovered ? {opacity: 1, y: 0} : {opacity: 0, y: 10}
+                  isHovered ? {opacity: 1, y: 0} : {opacity: 0, y: 8}
                 }
-                transition={{duration: 0.3, delay: 0.1}}
+                transition={{duration: 0.3, delay: 0.05}}
                 className="text-white text-base md:text-lg font-medium"
               >
                 {product.title}
@@ -461,12 +529,19 @@ function EditorialProductCard({
               <motion.div
                 initial={false}
                 animate={
-                  isHovered ? {opacity: 1, y: 0} : {opacity: 0, y: 10}
+                  isHovered ? {opacity: 1, y: 0} : {opacity: 0, y: 8}
                 }
-                transition={{duration: 0.3, delay: 0.15}}
-                className="text-white/80 text-sm mt-1"
+                transition={{duration: 0.3, delay: 0.1}}
+                className="flex items-center gap-2 mt-1"
               >
-                <Money data={price} />
+                <span className="text-white/90 text-sm">
+                  <Money data={price} />
+                </span>
+                {isOnSale && comparePrice && (
+                  <span className="text-white/50 text-xs line-through">
+                    <Money data={comparePrice} />
+                  </span>
+                )}
               </motion.div>
             </div>
           </motion.div>
@@ -481,7 +556,7 @@ function EditorialProductCard({
             ? {opacity: 1, y: 0}
             : {opacity: 0, y: 8, pointerEvents: 'none' as const}
         }
-        transition={{duration: 0.3, delay: 0.2}}
+        transition={{duration: 0.3, delay: 0.15}}
         className="absolute bottom-4 right-4 md:bottom-6 md:right-6 z-10 px-4 py-2.5 bg-[#a87441] text-white text-[10px] tracking-[0.05em] uppercase rounded hover:bg-[#8B5E34] transition-colors"
         onClick={(e) => {
           e.preventDefault();
@@ -503,20 +578,27 @@ function EditorialQuote({quote, author}: {quote: string; author: string}) {
       initial={{opacity: 0, y: 30}}
       whileInView={{opacity: 1, y: 0}}
       viewport={{once: true}}
-      transition={{duration: 0.8, delay: 0.2}}
-      className="my-8 md:my-12 p-6 md:p-10 bg-[#F0EAE6] rounded-lg"
+      transition={{duration: 0.8, delay: 0.2, ease: EASE_OUT_EXPO}}
+      className="my-8 md:my-12 p-6 md:p-10 bg-[#F0EAE6] rounded-lg relative overflow-hidden"
     >
-      <p className="font-serif text-xl md:text-2xl italic leading-relaxed text-[#4A3C31]">
+      {/* Decorative quote mark */}
+      <span
+        className="absolute top-3 left-4 md:top-4 md:left-6 font-serif text-6xl md:text-8xl text-[#a87441]/10 leading-none select-none"
+        aria-hidden="true"
+      >
+        &ldquo;
+      </span>
+      <p className="relative font-serif text-xl md:text-2xl italic leading-relaxed text-[#4A3C31]">
         &ldquo;{quote}&rdquo;
       </p>
-      <cite className="block mt-3 not-italic text-[10px] tracking-[0.15em] uppercase text-[#8B8076]">
+      <cite className="relative block mt-4 not-italic text-[10px] tracking-[0.15em] uppercase text-[#8B8076]">
         &mdash; {author}
       </cite>
     </motion.blockquote>
   );
 }
 
-// ─── Quick View Modal ────────────────────────────────────────
+// ─── Quick View Modal with Cart Integration ──────────────────
 
 function QuickViewModal({
   product,
@@ -526,10 +608,18 @@ function QuickViewModal({
   onClose: () => void;
 }) {
   const image = product.images.nodes[0];
+  const secondImage = product.images.nodes[1];
+  const [displayImage, setDisplayImage] = useState(0);
   const price = product.priceRange.minVariantPrice;
   const comparePrice = product.compareAtPriceRange?.minVariantPrice;
   const isOnSale =
     comparePrice && parseFloat(comparePrice.amount) > parseFloat(price.amount);
+  const variant = product.variants.nodes[0];
+  const isAvailable = variant?.availableForSale && product.availableForSale !== false;
+  const {toggleCart} = useUI();
+  const [addedToCart, setAddedToCart] = useState(false);
+
+  const images = product.images.nodes;
 
   return (
     <motion.div
@@ -575,18 +665,35 @@ function QuickViewModal({
         </button>
 
         {/* Image Side */}
-        <div className="w-full md:w-1/2 aspect-[3/4] md:aspect-auto bg-[#F0EAE6] flex-shrink-0">
+        <div className="w-full md:w-1/2 aspect-[3/4] md:aspect-auto bg-[#F0EAE6] flex-shrink-0 relative overflow-hidden">
           {image && (
             <img
-              src={image.url}
-              alt={image.altText || product.title}
+              src={images[displayImage]?.url || image.url}
+              alt={images[displayImage]?.altText || product.title}
               className="w-full h-full object-cover"
             />
+          )}
+          {/* Image thumbnails */}
+          {images.length > 1 && (
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+              {images.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setDisplayImage(i)}
+                  className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                    i === displayImage
+                      ? 'bg-[#4A3C31] scale-110'
+                      : 'bg-[#4A3C31]/30 hover:bg-[#4A3C31]/50'
+                  }`}
+                  aria-label={`View image ${i + 1}`}
+                />
+              ))}
+            </div>
           )}
         </div>
 
         {/* Details Side */}
-        <div className="w-full md:w-1/2 p-6 md:p-8 flex flex-col">
+        <div className="w-full md:w-1/2 p-6 md:p-8 flex flex-col overflow-y-auto">
           {product.vendor && (
             <span className="text-[10px] tracking-[0.15em] uppercase text-[#8B8076]">
               {product.vendor}
@@ -606,23 +713,77 @@ function QuickViewModal({
             )}
           </div>
 
-          <div className="flex-1" />
+          {/* Availability */}
+          {isAvailable ? (
+            <p className="mt-3 text-xs text-emerald-700 flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              In Stock
+            </p>
+          ) : (
+            <p className="mt-3 text-xs text-[#8B8076] italic">
+              Currently unavailable
+            </p>
+          )}
 
-          {/* View Full Details */}
+          <div className="flex-1 min-h-[2rem]" />
+
+          {/* Add to Cart (using CartForm) */}
+          {isAvailable && variant && (
+            <CartForm
+              route="/cart"
+              inputs={{
+                lines: [{merchandiseId: variant.id, quantity: 1}],
+              }}
+              action={CartForm.ACTIONS.LinesAdd}
+            >
+              {(fetcher: FetcherWithComponents<any>) => {
+                const isAdding = fetcher.state !== 'idle';
+                const justAdded =
+                  fetcher.state === 'idle' && fetcher.data && !fetcher.data.errors?.length;
+
+                // Open cart drawer after successful add
+                useEffect(() => {
+                  if (justAdded && !addedToCart) {
+                    setAddedToCart(true);
+                    // Small delay so user sees the success state
+                    const timer = setTimeout(() => {
+                      onClose();
+                      toggleCart();
+                    }, 600);
+                    return () => clearTimeout(timer);
+                  }
+                }, [justAdded]);
+
+                return (
+                  <button
+                    type="submit"
+                    disabled={isAdding}
+                    className={`mt-4 w-full py-3.5 text-[11px] uppercase tracking-[0.15em] rounded transition-all duration-300 ${
+                      addedToCart
+                        ? 'bg-emerald-600 text-white'
+                        : 'bg-[#a87441] text-white hover:bg-[#8B5E34]'
+                    } disabled:opacity-60`}
+                  >
+                    {addedToCart
+                      ? 'Added!'
+                      : isAdding
+                        ? 'Adding...'
+                        : 'Add to Cart'}
+                  </button>
+                );
+              }}
+            </CartForm>
+          )}
+
+          {/* View Full Details link */}
           <Link
             to={`/products/${product.handle}`}
             prefetch="intent"
-            className="mt-6 w-full inline-flex items-center justify-center py-3.5 bg-[#a87441] text-white text-[11px] uppercase tracking-[0.15em] rounded hover:bg-[#8B5E34] transition-colors"
+            className="mt-3 w-full inline-flex items-center justify-center py-3 text-[11px] uppercase tracking-[0.15em] text-[#4A3C31] border border-[#E8E0D8] rounded hover:border-[#a87441] hover:text-[#a87441] transition-colors"
             onClick={onClose}
           >
             View Full Details
           </Link>
-
-          {!product.availableForSale && (
-            <p className="mt-3 text-center text-xs text-[#8B8076] italic">
-              Currently unavailable
-            </p>
-          )}
         </div>
       </motion.div>
     </motion.div>
@@ -665,9 +826,7 @@ function getDisplayConfig(
     wide: [{size: 'wide', style: 'elevated'}],
   };
 
-  return (
-    configs[sectionType]?.[index] || {size: 'medium', style: 'framed'}
-  );
+  return configs[sectionType]?.[index] || {size: 'medium', style: 'framed'};
 }
 
 function getSizeClass(size: string): string {

@@ -248,8 +248,13 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     })
     .filter((filter): filter is NonNullable<typeof filter> => filter !== null);
 
-  // Check if this collection should use the editorial layout
-  const editorialLayoutConfig = getEditorialLayoutConfig(collection.handle);
+  // Check if this collection should use the editorial layout.
+  // Metafield (namespace: editorial, key: layout_config) takes priority over defaults.
+  const editorialMetafield = collection.metafield?.value ?? null;
+  const editorialLayoutConfig = getEditorialLayoutConfig(
+    collection.handle,
+    editorialMetafield,
+  );
 
   return json({
     collection,
@@ -1037,6 +1042,9 @@ const COLLECTION_QUERY = `#graphql
       handle
       title
       description
+      metafield(namespace: "editorial", key: "layout_config") {
+        value
+      }
       seo {
         description
         title
