@@ -25,6 +25,11 @@ import invariant from 'tiny-invariant';
 import {ProductCardClean} from '~/components/ProductCardClean';
 import {CategoryHeader} from '~/components/CategoryHeader';
 import {FilterPanel} from '~/components/FilterPanel';
+import {
+  EditorialCollectionView,
+  EDITORIAL_HANDLES,
+  getEditorialLayoutConfig,
+} from '~/components/EditorialCollectionView';
 import SortMenu, {
   type SortParam,
   FILTER_URL_PREFIX,
@@ -243,10 +248,14 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     })
     .filter((filter): filter is NonNullable<typeof filter> => filter !== null);
 
+  // Check if this collection should use the editorial layout
+  const editorialLayoutConfig = getEditorialLayoutConfig(collection.handle);
+
   return json({
     collection,
     appliedFilters,
     seo,
+    editorialLayoutConfig,
   });
 }
 
@@ -259,7 +268,8 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 };
 
 export default function Collection() {
-  const {collection, appliedFilters} = useLoaderData<typeof loader>();
+  const {collection, appliedFilters, editorialLayoutConfig} =
+    useLoaderData<typeof loader>();
   const {t} = useTranslation();
 
   const heroRef = useRef<HTMLDivElement>(null);
@@ -531,7 +541,24 @@ export default function Collection() {
         </motion.div>
       )}
 
-      {isThemedCollection ? (
+      {editorialLayoutConfig ? (
+        /* ─── Editorial Collection Layout ─── */
+        <>
+          <EditorialCollectionView
+            collection={collection}
+            layoutConfig={editorialLayoutConfig}
+            products={collection.products.nodes}
+          />
+          <Analytics.CollectionView
+            data={{
+              collection: {
+                id: collection.id,
+                handle: collection.handle,
+              },
+            }}
+          />
+        </>
+      ) : isThemedCollection ? (
         /* ─── Themed Collection: 3D Skeleton Placeholder ─── */
         <main className="max-w-[1440px] mx-auto py-12 md:py-20" style={{padding: '3rem var(--page-gutter)'}}>
           {/* "Coming Soon" header */}
