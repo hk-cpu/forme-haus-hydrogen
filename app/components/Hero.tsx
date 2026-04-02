@@ -1,8 +1,11 @@
 import {useTranslation} from '~/hooks/useTranslation';
-import {motion} from 'framer-motion';
+import {motion, useReducedMotion} from 'framer-motion';
+
+const EASE = [0.25, 0.1, 0.25, 1] as const;
 
 export default function Hero() {
   const {t} = useTranslation();
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <section
@@ -10,6 +13,7 @@ export default function Hero() {
       className="relative flex min-h-[300px] max-h-[560px] h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[65vh] items-center justify-center overflow-hidden bg-transparent px-6 pt-4 md:pt-6"
     >
       <div className="relative z-10 text-center">
+        {/* Logo with entrance fade + float */}
         <div className="relative inline-block">
           <div
             aria-hidden="true"
@@ -20,24 +24,32 @@ export default function Hero() {
                 'radial-gradient(ellipse at center, rgba(168,116,65,0.28) 0%, transparent 68%)',
             }}
           />
-          <motion.img
-            src="/brand/logo-full-opt.webp"
-            alt="Forme Haus - Where Essence Meets Elegance"
-            className="relative z-10 h-24 w-auto object-contain drop-shadow-2xl sm:h-32 md:h-40 lg:h-48 xl:h-56"
-            loading="eager"
-            fetchPriority="high"
-            decoding="sync"
-            width={480}
-            height={250}
-            animate={{
-              y: [-8, 8, -8]
-            }}
-            transition={{
-              duration: 6,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          />
+
+          {/* Entrance wrapper — fades in from below */}
+          <motion.div
+            initial={prefersReducedMotion ? false : {opacity: 0, y: 20, scale: 0.96}}
+            animate={{opacity: 1, y: 0, scale: 1}}
+            transition={{duration: 0.8, ease: EASE}}
+            className="relative z-10"
+          >
+            {/* Inner motion.img handles the continuous float independently */}
+            <motion.img
+              src="/brand/logo-full-opt.webp"
+              alt="Forme Haus - Where Essence Meets Elegance"
+              className="h-24 w-auto object-contain drop-shadow-2xl sm:h-32 md:h-40 lg:h-48 xl:h-56"
+              loading="eager"
+              fetchPriority="high"
+              decoding="sync"
+              width={480}
+              height={250}
+              animate={prefersReducedMotion ? {} : {y: [-8, 8, -8]}}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            />
+          </motion.div>
         </div>
 
         <h1 className="sr-only">
@@ -47,10 +59,18 @@ export default function Hero() {
           )}
         </h1>
 
-        <div className="mt-8">
+        {/* CTA button — delayed entrance */}
+        <motion.div
+          className="mt-8"
+          initial={prefersReducedMotion ? false : {opacity: 0, y: 16}}
+          animate={{opacity: 1, y: 0}}
+          transition={{duration: 0.6, delay: 0.35, ease: EASE}}
+        >
           <button
             onClick={() => {
-              document.getElementById('explore-collections')?.scrollIntoView({ behavior: 'smooth' });
+              document
+                .getElementById('explore-collections')
+                ?.scrollIntoView({behavior: 'smooth'});
             }}
             className="group inline-flex min-h-[48px] items-center justify-center gap-3 rounded-sm border border-[#a87441]/40 px-8 py-4 text-[10px] font-light uppercase tracking-[0.3em] text-[#F0EAE6]/90 transition-colors duration-300 hover:border-[#a87441] hover:bg-[#a87441]/10 hover:text-[#a87441] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]"
           >
@@ -71,7 +91,7 @@ export default function Hero() {
               />
             </svg>
           </button>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

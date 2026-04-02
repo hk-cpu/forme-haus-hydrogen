@@ -121,6 +121,14 @@ export const links: LinksFunction = () => {
     {rel: 'preconnect', href: 'https://cdn.shopify.com'},
     // dns-prefetch — fallback for browsers that skip preconnect; zero cost, saves 20–200ms on slow networks
     {rel: 'dns-prefetch', href: 'https://cdn.shopify.com'},
+    // Google Fonts preconnect
+    {rel: 'preconnect', href: 'https://fonts.googleapis.com'},
+    {rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous'},
+    // Cormorant Garamond (editorial serif) + Inter (UI sans)
+    {
+      rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap',
+    },
     {rel: 'icon', type: 'image/png', href: favicon},
   ];
 };
