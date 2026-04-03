@@ -12,25 +12,23 @@ import {
   useSearchParams,
 } from '@remix-run/react';
 import {useState, useEffect, Suspense, lazy} from 'react';
-import {useTranslation} from '~/hooks/useTranslation';
 
 // Lazy load GhostCursorEnhanced to prevent SSR issues with three.js
 const GhostCursorEnhanced = lazy(
   () => import('~/components/GhostCursorEnhanced.client'),
 );
 
-export async function loader({context, request, params}: LoaderFunctionArgs) {
+export async function loader({context, request}: LoaderFunctionArgs) {
   const {session} = context;
-  const localePrefix = params.locale ? `/${params.locale}` : '';
 
   if (await session.get('customerAccessToken')) {
-    return redirect(`${localePrefix}/account`);
+    return redirect('/account');
   }
 
   return json({});
 }
 
-export async function action({context, request, params}: ActionFunctionArgs) {
+export async function action({context, request}: ActionFunctionArgs) {
   const {storefront, session} = context;
   const formData = await request.formData();
   const formId = String(formData.get('formId'));
@@ -109,8 +107,7 @@ export async function action({context, request, params}: ActionFunctionArgs) {
 
       session.set('customerAccessToken', customerAccessToken);
 
-      const localePrefix = params.locale ? `/${params.locale}` : '';
-      return redirect(`${localePrefix}/account`, {
+      return redirect('/account', {
         headers: {
           'Set-Cookie': await session.commit(),
         },
@@ -129,7 +126,6 @@ export default function Login() {
   const navigation = useNavigation();
   const [params] = useSearchParams();
   const isSubmitting = navigation.state === 'submitting';
-  const {t, isRTL} = useTranslation();
 
   // Default to registering if register params exists or if previous action was register
   const [isRegistering, setIsRegistering] = useState(false);
@@ -149,7 +145,6 @@ export default function Login() {
     <div
       className="relative min-h-screen w-full overflow-hidden bg-cover bg-center flex flex-col items-center justify-center text-[#2C2419]"
       style={{backgroundImage: 'url("/brand/silk-texture.webp")'}}
-      dir={isRTL ? 'rtl' : 'ltr'}
     >
       {/* Dark overlay for contrast */}
       <div className="absolute inset-0 bg-black/10 backdrop-blur-[2px]"></div>
@@ -201,10 +196,10 @@ export default function Login() {
                   className="font-serif text-3xl md:text-4xl text-[#2C2419]"
                   style={{letterSpacing: '0.02em'}}
                 >
-                  {isRegistering ? t('auth.joinFormeHaus') : t('auth.welcomeBack')}
+                  {isRegistering ? 'Join Formé Haus' : 'Welcome Back'}
                 </h1>
                 <p className="text-[11px] tracking-[0.25em] font-sans text-[#8B8076] uppercase">
-                  {isRegistering ? t('auth.beginJourney') : t('auth.continueJourney')}
+                  {isRegistering ? 'Begin Your Journey' : 'Continue Your Journey'}
                 </p>
               </div>
             </div>
@@ -222,14 +217,14 @@ export default function Login() {
                 onClick={() => setIsRegistering(false)}
                 className={`flex-1 py-3.5 text-[11px] uppercase tracking-widest font-semibold z-10 transition-colors duration-300 ${!isRegistering ? 'text-[#a87441]' : 'text-[#8B8076] hover:text-[#a87441]'}`}
               >
-                {t('auth.signIn')}
+                Sign In
               </button>
               <button
                 type="button"
                 onClick={() => setIsRegistering(true)}
                 className={`flex-1 py-3.5 text-[11px] uppercase tracking-widest font-semibold z-10 transition-colors duration-300 ${isRegistering ? 'text-[#a87441]' : 'text-[#8B8076] hover:text-[#a87441]'}`}
               >
-                {t('auth.register')}
+                Register
               </button>
             </div>
 
@@ -267,13 +262,13 @@ export default function Login() {
                   placeholder=" "
                   required
                   autoComplete="email"
-                  className="peer w-full bg-[#fcfbf9] border border-[#E5DFD9] pt-6 pb-2 px-4 text-[#2C2419] focus:outline-none focus:border-[#a87441] focus:bg-white focus:ring-1 focus:ring-[#a87441]/30 focus-visible:ring-1 focus-visible:ring-[#a87441]/50 transition-all duration-300 text-sm font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
+                  className="peer w-full bg-[#fcfbf9] border border-[#E5DFD9] pt-6 pb-2 px-4 text-[#2C2419] focus:outline-none focus:border-[#a87441] focus:bg-white focus:ring-1 focus:ring-[#a87441]/30 focus-visible:ring-1 focus-visible:ring-[#a87441]/50 transition-all duration-300 text-[14px] font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
                 />
                 <label
                   htmlFor="email"
                   className="absolute text-[11px] uppercase tracking-[0.2em] text-[#AA9B8F] top-4 left-4 transition-all duration-300 transform -translate-y-2.5 scale-[0.85] origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-[0.85] peer-focus:-translate-y-2.5 peer-focus:text-[#a87441] pointer-events-none"
                 >
-                  {t('auth.emailAddress')}
+                  Email Address
                 </label>
               </div>
 
@@ -288,13 +283,13 @@ export default function Login() {
                   autoComplete={
                     isRegistering ? 'new-password' : 'current-password'
                   }
-                  className="peer w-full bg-[#fcfbf9] border border-[#E5DFD9] pt-6 pb-2 px-4 text-[#2C2419] focus:outline-none focus:border-[#a87441] focus:bg-white focus:ring-1 focus:ring-[#a87441]/30 focus-visible:ring-1 focus-visible:ring-[#a87441]/50 transition-all duration-300 text-sm font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
+                  className="peer w-full bg-[#fcfbf9] border border-[#E5DFD9] pt-6 pb-2 px-4 text-[#2C2419] focus:outline-none focus:border-[#a87441] focus:bg-white focus:ring-1 focus:ring-[#a87441]/30 focus-visible:ring-1 focus-visible:ring-[#a87441]/50 transition-all duration-300 text-[14px] font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
                 />
                 <label
                   htmlFor="password"
                   className="absolute text-[11px] uppercase tracking-[0.2em] text-[#AA9B8F] top-4 left-4 transition-all duration-300 transform -translate-y-2.5 scale-[0.85] origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-[0.85] peer-focus:-translate-y-2.5 peer-focus:text-[#a87441] pointer-events-none"
                 >
-                  {t('auth.password')}
+                  Password
                 </label>
               </div>
             </div>
@@ -308,12 +303,12 @@ export default function Login() {
                 {isSubmitting ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    {isRegistering ? t('auth.creatingAccount') : t('auth.sending')}
+                    Processing...
                   </>
                 ) : isRegistering ? (
-                  t('auth.createAccount')
+                  'Create Account'
                 ) : (
-                  t('auth.signIn')
+                  'Sign In'
                 )}
               </button>
 
@@ -323,7 +318,7 @@ export default function Login() {
                     to="/account/recover"
                     className="text-[10px] uppercase tracking-[0.15em] text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-300"
                   >
-                    {t('auth.forgotPassword')}
+                    Forgot Password?
                   </Link>
                 )}
               </div>

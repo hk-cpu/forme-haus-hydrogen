@@ -42,12 +42,7 @@ const JOURNAL_CARDS: JournalCard[] = [
 ];
 
 export default function JournalSection() {
-  const {isRTL, lang} = useTranslation();
-
-  // Hide Journal section in Arabic mode until content is fully translated
-  if (lang === 'AR') {
-    return null;
-  }
+  const {isRTL} = useTranslation();
 
   return (
     <section

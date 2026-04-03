@@ -1,5 +1,4 @@
 import {useTranslation} from '~/hooks/useTranslation';
-import PaymentBadges from '~/components/PaymentBadges';
 
 interface TrustBadgesProps {
   variant?: 'compact' | 'full' | 'footer';
@@ -163,7 +162,7 @@ export function TrustBadges({
                 strokeLinecap="round"
               />
             </svg>
-            <span className="text-xs font-medium text-[#1B5E20]">
+            <span className="text-[10px] font-medium text-[#1B5E20]">
               {t('trust.maroof', 'Maroof')}
             </span>
           </div>
@@ -172,7 +171,7 @@ export function TrustBadges({
         {showSecurePayment ? (
           <div className="flex items-center gap-1 text-[#6B6058]">
             <SecurePaymentIcon className="h-3.5 w-3.5" />
-            <span className="text-xs uppercase tracking-wider">
+            <span className="text-[10px] uppercase tracking-wider">
               {t('trust.securePayment', 'Secure')}
             </span>
           </div>
@@ -227,7 +226,7 @@ export function TrustBadges({
             className="flex flex-col items-center gap-2 rounded-xl border border-[#8B8076]/10 bg-white px-3 py-3 text-center shadow-sm"
           >
             <MaroofIcon className="h-8" />
-            <span className="text-xs font-medium leading-tight text-[#4A3C31]">
+            <span className="text-[10px] font-medium leading-tight text-[#4A3C31]">
               {t('trust.maroofVerified', 'Maroof Verified')}
             </span>
           </a>
@@ -236,7 +235,7 @@ export function TrustBadges({
         {showMuwathooq ? (
           <div className="flex flex-col items-center gap-2 rounded-xl border border-[#8B8076]/10 bg-white px-3 py-3 text-center shadow-sm">
             <MuwathooqIcon className="h-8" />
-            <span className="text-xs font-medium leading-tight text-[#4A3C31]">
+            <span className="text-[10px] font-medium leading-tight text-[#4A3C31]">
               {t('trust.muwathooqTrusted', 'Consumer Trusted')}
             </span>
           </div>
@@ -247,7 +246,7 @@ export function TrustBadges({
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#a87441]/15">
               <SecurePaymentIcon className="h-5 w-5 text-[#a87441]" />
             </div>
-            <span className="text-xs font-medium leading-tight text-[#4A3C31]">
+            <span className="text-[10px] font-medium leading-tight text-[#4A3C31]">
               {t('trust.securePayment', 'Secure Payment')}
             </span>
           </div>
@@ -258,7 +257,7 @@ export function TrustBadges({
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#a87441]/15">
               <TrialOrderIcon className="h-5 w-5 text-[#a87441]" />
             </div>
-            <span className="text-xs font-medium leading-tight text-[#4A3C31]">
+            <span className="text-[10px] font-medium leading-tight text-[#4A3C31]">
               {t('trust.fastDelivery', 'Fast Delivery')}
             </span>
           </div>
@@ -266,15 +265,12 @@ export function TrustBadges({
       </div>
 
       <div className="mt-4 border-t border-[#8B8076]/10 pt-3">
-        <p className="text-center text-xs text-[#736659] mb-2">
+        <p className="text-center text-[10px] text-[#736659]">
           {t(
             'trust.paymentMethods',
             'Secure payments via Tap: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tabby, Tamara',
           )}
         </p>
-        <div className="flex justify-center">
-          <PaymentBadges />
-        </div>
       </div>
     </div>
   );

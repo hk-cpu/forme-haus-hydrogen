@@ -48,11 +48,6 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
     parseFloat(product.priceRange?.minVariantPrice?.amount || '0') > 0;
   const isAvailable = product.availableForSale !== false;
 
-  // Hide products without a valid price (Price TBA)
-  if (!hasPrice) {
-    return null;
-  }
-
   const slideshowRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Parse title for color

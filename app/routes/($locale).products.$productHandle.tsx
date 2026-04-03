@@ -289,11 +289,11 @@ export default function Product() {
           <Breadcrumb variant="light">
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink to="/">{t('breadcrumb.home')}</BreadcrumbLink>
+                <BreadcrumbLink to="/">Home</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink to="/collections/all">{t('breadcrumb.shop')}</BreadcrumbLink>
+                <BreadcrumbLink to="/collections/all">Shop</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
@@ -623,13 +623,13 @@ export function ProductForm({
         {selectedVariant && (
           <div className="grid items-stretch gap-4 pt-4">
             {isOutOfStock ? (
-              hasValidPrice ? (
-                <NotifyMeForm />
-              ) : (
-                <Button variant="secondary" disabled>
-                  <Text>{t('product.unavailable', 'Unavailable')}</Text>
-                </Button>
-              )
+              <Button variant="secondary" disabled>
+                <Text>
+                  {hasValidPrice
+                    ? t('product.soldOut')
+                    : t('product.unavailable', 'Unavailable')}
+                </Text>
+              </Button>
             ) : (
               <motion.div whileTap={{scale: 0.98}}>
                 <AddToCartButton
@@ -680,52 +680,6 @@ export function ProductForm({
         )}
       </div>
     </div>
-  );
-}
-
-function NotifyMeForm() {
-  const {t} = useTranslation();
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) return;
-    // In a real implementation, this would POST to a back-in-stock API.
-    // For now, we capture intent and show a success message.
-    setSubmitted(true);
-  };
-
-  if (submitted) {
-    return (
-      <div className="bg-[#a87441]/10 border border-[#a87441]/20 rounded-lg p-4 text-center">
-        <p className="text-sm text-[#4A3C31] font-medium">
-          {t('product.notifySuccess')}
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="grid gap-3">
-      <p className="text-sm text-[#8B8076]">{t('product.soldOut')}</p>
-      <div className="flex gap-2">
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder={t('product.notifyEmail', 'Enter your email')}
-          required
-          className="flex-1 bg-white border border-[#8B8076]/30 px-4 py-3 text-sm text-[#4A3C31] outline-none focus:border-[#a87441] rounded-sm"
-        />
-        <button
-          type="submit"
-          className="bg-[#2a2118] hover:bg-[#4A3C31] text-[#F0EAE6] px-5 py-3 text-xs uppercase tracking-widest rounded-sm transition-colors"
-        >
-          {t('product.notifyMe', 'Notify Me')}
-        </button>
-      </div>
-    </form>
   );
 }
 

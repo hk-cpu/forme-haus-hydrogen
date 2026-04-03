@@ -27,7 +27,7 @@ export function StatusBanner() {
           ? {duration: 0}
           : {duration: 0.8, ease: [0.32, 0.72, 0, 1], delay: 0.2}
       }
-      className="w-full bg-[#121212] text-[#E0D8D0] text-xs uppercase tracking-[0.25em] py-3 text-center border-b border-[#a87441]/20 relative z-[60]"
+      className="w-full bg-[#121212] text-[#E0D8D0] text-[10px] uppercase tracking-[0.25em] py-3 text-center border-b border-[#a87441]/20 relative z-[60]"
     >
       <ShinyText
         text={t('banner.shipping')}

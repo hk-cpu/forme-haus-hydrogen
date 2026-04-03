@@ -315,13 +315,12 @@ export default function EditorialSection() {
   return (
     <section
       ref={sectionRef}
-      id="editorial"
       aria-label="Editorial"
       className="py-6 md:py-8"
       dir={isRTL ? 'rtl' : 'ltr'}
     >
       <div
-        className="max-w-[var(--container-max)] lg:max-w-4xl xl:max-w-5xl mx-auto"
+        className="max-w-[var(--container-max)] mx-auto"
         style={{padding: '0 var(--page-gutter)'}}
       >
         {/* Section Header with SplitText effect */}

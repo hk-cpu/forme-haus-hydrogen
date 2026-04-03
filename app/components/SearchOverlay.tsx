@@ -54,24 +54,20 @@ const Icons = {
   ),
 };
 
-function useSearchPlaceholders(t: (key: string) => string) {
-  return [
-    t('search.placeholder'),
-    t('search.placeholderPhoneCases'),
-    t('search.placeholderSunglasses'),
-    t('search.placeholderNewArrivals'),
-  ];
-}
+const searchPlaceholders = [
+  'Search products...',
+  'Phone cases...',
+  'Sunglasses...',
+  'New arrivals...',
+];
 
-function useTrendingSearches(t: (key: string) => string) {
-  return [
-    t('search.trendingPhoneCases'),
-    t('search.trendingSunglasses'),
-    t('search.trendingPhoneStraps'),
-    t('search.trendingNewArrivals'),
-    t('search.trendingBundles'),
-  ];
-}
+const trendingSearches = [
+  'Phone Cases',
+  'Sunglasses',
+  'Phone Straps',
+  'New Arrivals',
+  'Bundles',
+];
 
 export const NO_PREDICTIVE_SEARCH_RESULTS = {
   results: null,
@@ -95,7 +91,7 @@ export const NO_PREDICTIVE_SEARCH_RESULTS = {
  */
 export function SearchOverlay() {
   const {state, dispatch} = useUI();
-  const {isRTL, t, lang} = useTranslation();
+  const {isRTL, t} = useTranslation();
   const [query, setQuery] = useState('');
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -109,9 +105,6 @@ export function SearchOverlay() {
   const fetcher = useFetcher<{
     searchResults: {results: any; totalResults: number};
   }>({key: 'search-overlay'});
-
-  const searchPlaceholders = useSearchPlaceholders(t);
-  const trendingSearches = useTrendingSearches(t);
 
   // Reset query when overlay closes (handles Escape via UIContext too)
   useEffect(() => {
@@ -163,7 +156,7 @@ export function SearchOverlay() {
       setPlaceholderIndex((prev) => (prev + 1) % searchPlaceholders.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, [query, searchPlaceholders.length]);
+  }, [query]);
 
   // Predictive search — locale-aware URL
   const search = () => {
@@ -278,14 +271,14 @@ export function SearchOverlay() {
                     transition={{delay: 0.05}}
                   >
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-xs uppercase tracking-[0.2em] text-[#AA9B8F]">
+                      <span className="text-[10px] uppercase tracking-[0.2em] text-[#AA9B8F]">
                         {t('search.results', 'Results')} ({totalResults})
                       </span>
                       <RemixLink
                         to={`${pathPrefix}/search?q=${encodeURIComponent(
                           query,
                         )}`}
-                        className="text-[#a87441] text-xs uppercase tracking-[0.15em] hover:text-[#D4AF87] transition-colors flex items-center gap-1"
+                        className="text-[#a87441] text-[11px] uppercase tracking-[0.15em] hover:text-[#D4AF87] transition-colors flex items-center gap-1"
                         onClick={handleClose}
                       >
                         {t('search.viewAll', 'View All')}
@@ -338,7 +331,7 @@ export function SearchOverlay() {
                     {/* Collections chips */}
                     {results?.collections?.length > 0 && (
                       <div className="mt-5 pt-4 border-t border-white/5">
-                        <span className="text-xs uppercase tracking-[0.2em] text-[#AA9B8F] mb-3 block">
+                        <span className="text-[10px] uppercase tracking-[0.2em] text-[#AA9B8F] mb-3 block">
                           {t('search.collections', 'Collections')}
                         </span>
                         <div className="flex flex-wrap gap-2">
@@ -395,7 +388,7 @@ export function SearchOverlay() {
                     animate={{opacity: 1, y: 0}}
                     transition={{delay: 0.1}}
                   >
-                    <span className="text-xs uppercase tracking-[0.2em] text-[#AA9B8F] mb-3 block">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-[#AA9B8F] mb-3 block">
                       {t('search.trending', 'Trending')}
                     </span>
                     <div className="flex flex-wrap gap-2">

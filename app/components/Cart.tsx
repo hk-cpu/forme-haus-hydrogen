@@ -331,7 +331,7 @@ function CartDiscounts({
               <Icons.Tag className="text-[#a87441]" />
             </div>
             <div>
-              <span className="text-xs uppercase tracking-wider text-[#8B8076] block">
+              <span className="text-[10px] uppercase tracking-wider text-[#8B8076] block">
                 {t('cart.discount')}
               </span>
               <span className="text-sm font-medium text-[#F0EAE6]">
@@ -538,7 +538,7 @@ function CartCheckoutActions({
       {/* Divider */}
       <div className="flex items-center gap-3">
         <div className="flex-1 h-px bg-[#8B8076]/15" />
-        <span className="text-xs text-[#8B8076] uppercase tracking-wider">
+        <span className="text-[10px] text-[#8B8076] uppercase tracking-wider">
           or pay directly
         </span>
         <div className="flex-1 h-px bg-[#8B8076]/15" />
@@ -565,19 +565,19 @@ function CartCheckoutActions({
 
       {/* Trust Badges */}
       <div className="flex items-center justify-center gap-4 py-2">
-        <div className="flex items-center gap-1.5 text-[#8B8076] text-xs">
+        <div className="flex items-center gap-1.5 text-[#8B8076] text-[10px]">
           <Icons.Lock className="w-3 h-3" />
           <span>{t('cart.secureCheckout', 'Secure Checkout')}</span>
         </div>
         <div className="w-px h-3 bg-[#8B8076]/30" />
-        <div className="flex items-center gap-1.5 text-[#8B8076] text-xs">
+        <div className="flex items-center gap-1.5 text-[#8B8076] text-[10px]">
           <Icons.Truck className="w-3 h-3" />
           <span>{t('cart.freeShipping', 'Free Shipping')}</span>
         </div>
       </div>
 
       {/* Terms */}
-      <p className="text-xs text-center text-[#8B8076]/60">
+      <p className="text-[10px] text-center text-[#8B8076]/60">
         {t('cart.terms', 'By proceeding, you agree to our')}{' '}
         <Link
           to="/policies/terms-of-service"
@@ -625,7 +625,7 @@ function FreeShippingBar({subtotal}: {subtotal: string | undefined}) {
             </span>
           )}
         </div>
-        <span className="text-xs text-[#8B8076]">
+        <span className="text-[10px] text-[#8B8076]">
           {FREE_SHIPPING_THRESHOLD} SAR
         </span>
       </div>
