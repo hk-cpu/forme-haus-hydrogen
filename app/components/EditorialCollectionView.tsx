@@ -356,6 +356,50 @@ function ContentSection({
 
   if (sectionProducts.length === 0) return null;
 
+  if (section.type === 'hero-side') {
+    const [leadProduct, ...supportProducts] = sectionProducts;
+
+    return (
+      <motion.div
+        initial={reduceMotion ? false : {opacity: 0, y: 50}}
+        whileInView={{opacity: 1, y: 0}}
+        viewport={{once: true, margin: '-80px'}}
+        transition={{
+          duration: 0.8,
+          delay: 0.1,
+          ease: EASE_OUT_EXPO,
+        }}
+        className="mb-6 grid grid-cols-1 gap-4 md:mb-8 md:grid-cols-[minmax(0,1.16fr)_minmax(0,0.84fr)] md:gap-6"
+      >
+        <EditorialProductCard
+          key={leadProduct.id}
+          product={leadProduct}
+          index={0}
+          sectionType={section.type}
+          onQuickView={onQuickView}
+          isHovered={hoveredProduct === leadProduct.id}
+          onHover={onHover}
+          reduceMotion={reduceMotion}
+        />
+
+        <div className="grid gap-4 md:gap-6">
+          {supportProducts.map((product, index) => (
+            <EditorialProductCard
+              key={product.id}
+              product={product}
+              index={index + 1}
+              sectionType={section.type}
+              onQuickView={onQuickView}
+              isHovered={hoveredProduct === product.id}
+              onHover={onHover}
+              reduceMotion={reduceMotion}
+            />
+          ))}
+        </div>
+      </motion.div>
+    );
+  }
+
   const gridClass = getGridClass(section.type);
 
   return (
@@ -431,6 +475,13 @@ function EditorialProductCard({
   const comparePrice = product.compareAtPriceRange?.minVariantPrice;
   const isOnSale =
     comparePrice && parseFloat(comparePrice.amount) > parseFloat(price.amount);
+  const shouldContainImage = sectionType === 'hero-side';
+  const imageFrameClass = shouldContainImage
+    ? 'bg-[#EDE5DB] p-4 md:p-5'
+    : 'bg-[#F0EAE6]';
+  const imageClass = shouldContainImage
+    ? 'w-full h-full object-contain'
+    : 'w-full h-full object-cover';
 
   return (
     <motion.article
@@ -478,7 +529,9 @@ function EditorialProductCard({
         className="block w-full h-full"
       >
         {/* Image */}
-        <div className="relative w-full h-full overflow-hidden bg-[#F0EAE6]">
+        <div
+          className={`relative flex h-full w-full items-center justify-center overflow-hidden ${imageFrameClass}`}
+        >
           {image ? (
             <>
               <motion.img
@@ -486,7 +539,7 @@ function EditorialProductCard({
                 alt={image.altText || product.title}
                 width={image.width || undefined}
                 height={image.height || undefined}
-                className="w-full h-full object-cover"
+                className={imageClass}
                 loading="lazy"
                 animate={reduceMotion ? {} : {scale: isHovered ? 1.05 : 1}}
                 transition={{duration: 0.6, ease: EASE_OUT_EXPO}}
@@ -496,7 +549,7 @@ function EditorialProductCard({
                 <motion.img
                   src={secondImage.url}
                   alt={secondImage.altText || `${product.title} alternate`}
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className={`absolute inset-0 ${imageClass} ${shouldContainImage ? 'p-4 md:p-5' : ''}`}
                   loading="lazy"
                   initial={false}
                   animate={{opacity: isHovered ? 1 : 0}}
@@ -820,8 +873,8 @@ function getDisplayConfig(
     ],
     'hero-side': [
       {size: 'hero', style: 'elevated', badge: 'New'},
-      {size: 'medium', style: 'framed'},
-      {size: 'medium', style: 'framed'},
+      {size: 'small', style: 'framed'},
+      {size: 'small', style: 'framed'},
     ],
     wide: [{size: 'wide', style: 'elevated'}],
   };
@@ -831,8 +884,8 @@ function getDisplayConfig(
 
 function getSizeClass(size: string): string {
   const sizes: Record<string, string> = {
-    hero: 'aspect-[3/4]',
-    large: 'aspect-[4/5]',
+    hero: 'aspect-[4/5]',
+    large: 'aspect-[5/6]',
     medium: 'aspect-square',
     small: 'aspect-[3/4]',
     wide: 'aspect-[16/9]',
