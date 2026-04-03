@@ -12,7 +12,6 @@ import {Money} from '@shopify/hydrogen';
 
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
-import {ease} from '~/lib/animations';
 
 import {BundlePricing} from './BundlePricing';
 
@@ -407,7 +406,7 @@ export function ProductCard({
       transition={{
         duration: 0.6,
         delay: index * 0.1,
-        ease: ease.luxe,
+        ease: [0.25, 0.1, 0.25, 1],
       }}
     >
       <Link to={`/products/${product.handle}`} className="block">
