@@ -86,7 +86,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
         delay: index * 0.1,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="group relative shrink-0 overflow-hidden rounded-[14px] bg-[#E8E4E0]"
+      className="group relative flex-1 overflow-hidden rounded-[14px] bg-[#E8E4E0]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
@@ -94,9 +94,9 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
       }}
       onMouseMove={shouldReduceMotion ? undefined : tiltHandlers.onMouseMove}
     >
-      <Link to={item.url} className="block">
+      <Link to={item.url} className="block h-full">
         <motion.div
-          className="relative overflow-hidden"
+          className="relative overflow-hidden h-full"
           style={
             shouldReduceMotion
               ? {}
@@ -110,7 +110,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
           <motion.img
             src={item.image}
             alt={item.alt}
-            className="w-full h-auto block transition-transform duration-700 ease-out"
+            className="w-full h-full object-cover block transition-transform duration-700 ease-out"
             style={{
               transform: isHovered ? 'scale(1.05)' : 'scale(1)',
               transformOrigin: 'center center',
@@ -204,7 +204,7 @@ function BottomCard({item, index, t}: {item: BentoItem; index: number; t: any}) 
         delay: index * 0.1,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="group relative overflow-hidden rounded-[14px] bg-[#E8E4E0]"
+      className="group relative flex-1 overflow-hidden rounded-[14px] bg-[#E8E4E0]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
@@ -228,7 +228,7 @@ function BottomCard({item, index, t}: {item: BentoItem; index: number; t: any}) 
           <motion.img
             src={item.image}
             alt={item.alt}
-            className="w-full h-auto block transition-transform duration-700 ease-out"
+            className="w-full h-full object-cover block transition-transform duration-700 ease-out"
             style={{
               transform: isHovered ? 'scale(1.05)' : 'scale(1)',
               transformOrigin: 'center center',
@@ -373,10 +373,10 @@ export default function EditorialSection() {
           Desktop: flexbox two-column editorial grid with parallax
           Each column: top image at natural height + bottom image fills remaining space.
         */}
-        <div className="hidden md:flex gap-3 h-auto">
+        <div className="hidden md:flex gap-3 h-[460px] lg:h-[520px]">
           {/* Left column with parallax */}
           <motion.div
-            className="flex-1 min-w-0 flex flex-col gap-3"
+            className="flex-1 min-w-0 flex flex-col gap-3 h-full"
             style={shouldReduceMotion ? {} : {y: leftColY}}
           >
             <TopCard item={BENTO_ITEMS[0]} index={0} t={t} />
@@ -385,7 +385,7 @@ export default function EditorialSection() {
 
           {/* Right column with parallax and offset for editorial misalignment */}
           <motion.div
-            className="flex-1 min-w-0 flex flex-col gap-3 pt-12"
+            className="flex-1 min-w-0 flex flex-col gap-3 pt-8 h-full"
             style={shouldReduceMotion ? {} : {y: rightColY}}
           >
             <TopCard item={BENTO_ITEMS[1]} index={1} t={t} />
