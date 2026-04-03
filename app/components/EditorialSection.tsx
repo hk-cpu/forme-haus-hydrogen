@@ -86,14 +86,17 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
         delay: index * 0.1,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="group relative shrink-0 overflow-hidden rounded-[14px] bg-[#E8E4E0]"
+      className="group relative flex-1 overflow-hidden rounded-[14px] bg-[#E8E4E0]"
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      {...(shouldReduceMotion ? {} : tiltHandlers)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        if (!shouldReduceMotion) tiltHandlers.onMouseLeave();
+      }}
+      onMouseMove={shouldReduceMotion ? undefined : tiltHandlers.onMouseMove}
     >
-      <Link to={item.url} className="block">
+      <Link to={item.url} className="block h-full">
         <motion.div
-          className="relative overflow-hidden"
+          className="relative overflow-hidden h-full"
           style={
             shouldReduceMotion
               ? {}
@@ -107,7 +110,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
           <motion.img
             src={item.image}
             alt={item.alt}
-            className="w-full h-auto block transition-transform duration-700 ease-out"
+            className="w-full h-full object-cover block transition-transform duration-700 ease-out"
             style={{
               transform: isHovered ? 'scale(1.05)' : 'scale(1)',
               transformOrigin: 'center center',
@@ -201,10 +204,13 @@ function BottomCard({item, index, t}: {item: BentoItem; index: number; t: any}) 
         delay: index * 0.1,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="group relative flex-1 overflow-hidden rounded-[14px] bg-[#E8E4E0] min-h-0"
+      className="group relative flex-1 overflow-hidden rounded-[14px] bg-[#E8E4E0]"
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      {...(shouldReduceMotion ? {} : tiltHandlers)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        if (!shouldReduceMotion) tiltHandlers.onMouseLeave();
+      }}
+      onMouseMove={shouldReduceMotion ? undefined : tiltHandlers.onMouseMove}
     >
       <Link to={item.url} className="block w-full h-full">
         <motion.div
@@ -370,16 +376,16 @@ export default function EditorialSection() {
         <div className="hidden md:flex gap-3 min-h-[520px] lg:min-h-[600px] xl:min-h-[700px]">
           {/* Left column with parallax */}
           <motion.div
-            className="flex-1 min-w-0 flex flex-col gap-3"
+            className="flex-1 min-w-0 flex flex-col gap-3 h-full"
             style={shouldReduceMotion ? {} : {y: leftColY}}
           >
             <TopCard item={BENTO_ITEMS[0]} index={0} t={t} />
             <BottomCard item={BENTO_ITEMS[2]} index={2} t={t} />
           </motion.div>
 
-          {/* Right column with parallax */}
+          {/* Right column with parallax and offset for editorial misalignment */}
           <motion.div
-            className="flex-1 min-w-0 flex flex-col gap-3"
+            className="flex-1 min-w-0 flex flex-col gap-3 pt-8 h-full"
             style={shouldReduceMotion ? {} : {y: rightColY}}
           >
             <TopCard item={BENTO_ITEMS[1]} index={1} t={t} />
