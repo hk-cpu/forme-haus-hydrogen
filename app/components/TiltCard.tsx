@@ -45,8 +45,11 @@ export function TiltCard({
     <motion.div
       className={`relative ${className}`}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       {...(isEffectivelyDisabled ? {} : tiltHandlers)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        if (!isEffectivelyDisabled) tiltHandlers.onMouseLeave();
+      }}
       animate={{
         scale: isHovered ? scale : 1,
       }}
@@ -109,8 +112,11 @@ export function TiltCardSimple({
     <motion.div
       className={className}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       {...(shouldReduceMotion ? {} : tiltHandlers)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        if (!shouldReduceMotion) tiltHandlers.onMouseLeave();
+      }}
       style={{
         ...(!shouldReduceMotion && {
           rotateX: isHovered ? tiltStyle.rotateX : 0,

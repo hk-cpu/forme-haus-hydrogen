@@ -386,7 +386,7 @@ export function ProductCard({
   useEffect(() => {
     if (fetcher.state === 'idle' && isAdding) {
       setIsAdding(false);
-      if (!fetcher.data?.error) {
+      if (!(fetcher.data as any)?.error) {
         setShowAdded(true);
         const t = setTimeout(() => setShowAdded(false), 2000);
         return () => clearTimeout(t);

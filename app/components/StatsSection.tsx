@@ -309,7 +309,7 @@ export function StatsSection() {
 
 // Alternative minimal version for compact spaces
 export function StatsBar() {
-  const {isRTL} = useTranslation();
+  const {isRTL, t} = useTranslation();
   const shouldReduceMotion = useReducedMotion();
 
   return (
