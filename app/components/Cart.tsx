@@ -28,7 +28,7 @@ import {Text, Heading} from '~/components/Text';
 import {Link} from '~/components/Link';
 import {IconRemove} from '~/components/Icon';
 import {FeaturedProducts} from '~/components/FeaturedProducts';
-import {getInputStyleClasses} from '~/lib/utils';
+import {buildLocalePath, getInputStyleClasses} from '~/lib/utils';
 import {useTranslation} from '~/hooks/useTranslation';
 import type {RootLoader} from '~/root';
 
@@ -443,17 +443,22 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
     redirectUrl?: string;
     error?: string;
   }>();
+  const rootData = useRouteLoaderData<RootLoader>('root');
 
-  const subtotal = cart.cost?.subtotalAmount?.amount ?? '0';
-  const currency = cart.cost?.subtotalAmount?.currencyCode ?? 'SAR';
+  const total = cart.cost?.totalAmount?.amount ?? '0';
+  const currency = cart.cost?.totalAmount?.currencyCode ?? 'SAR';
   const merchantTxId = `FH-${Date.now()}-${Math.random()
     .toString(36)
     .slice(2, 7)}`;
+  const tapInitiatePath = buildLocalePath(
+    '/tap/initiate',
+    rootData?.selectedLocale?.pathPrefix,
+  );
 
   function initiatePayment() {
     fetcher.submit(
-      {amount: subtotal, currency, merchantTxId, cartId: cart.id || ''},
-      {method: 'post', action: '/tap/initiate'},
+      {amount: total, currency, merchantTxId, cartId: cart.id || ''},
+      {method: 'post', action: tapInitiatePath},
     );
   }
 

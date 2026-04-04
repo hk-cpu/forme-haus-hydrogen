@@ -11,11 +11,13 @@ import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {json} from '@remix-run/server-runtime';
 import {useLoaderData, Link} from '@remix-run/react';
 import {motion} from 'framer-motion';
+import {buildLocalePath, getPathLocalePrefix} from '~/lib/utils';
 
 export async function loader({request, context}: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const tapId = url.searchParams.get('tap_id');
   const merchantTxId = url.searchParams.get('merchantTxId') || '';
+  const localePrefix = getPathLocalePrefix(url.pathname);
 
   const {env} = context;
   const secretKey = env.TAP_SECRET_KEY;
@@ -70,6 +72,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
         currency: data.currency,
         paymentMethod: data.source?.payment_method,
         merchantTxId: data.reference?.transaction || merchantTxId,
+        nextPath: buildLocalePath('/account', localePrefix),
       });
     }
 
@@ -79,6 +82,8 @@ export async function loader({request, context}: LoaderFunctionArgs) {
         message:
           'Your payment is being processed. We will notify you once confirmed.',
         transactionId: data.id,
+        nextPath: buildLocalePath('/collections/all', localePrefix),
+        retryPath: buildLocalePath('/cart', localePrefix),
       });
     }
 
@@ -89,12 +94,16 @@ export async function loader({request, context}: LoaderFunctionArgs) {
         data.response?.message ||
         'Payment was not successful. Please try again.',
       transactionId: data.id,
+      nextPath: buildLocalePath('/collections/all', localePrefix),
+      retryPath: buildLocalePath('/cart', localePrefix),
     });
   } catch (err) {
     console.error('Tap callback verification error:', err);
     return json({
       status: 'error' as const,
       message: 'Could not verify payment. Please contact support.',
+      nextPath: buildLocalePath('/collections/all', localePrefix),
+      retryPath: buildLocalePath('/cart', localePrefix),
     });
   }
 }
@@ -184,14 +193,14 @@ export default function TapPaymentCallback() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           {(data.status === 'failed' || data.status === 'error') && (
             <Link
-              to="/cart"
+              to={'retryPath' in data && data.retryPath ? data.retryPath : '/cart'}
               className="px-6 py-3 bg-[#a87441] text-white text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-[#8B5E3C] transition-colors"
             >
               Try Again
             </Link>
           )}
           <Link
-            to={data.status === 'success' ? '/account' : '/collections/all'}
+            to={'nextPath' in data && data.nextPath ? data.nextPath : data.status === 'success' ? '/account' : '/collections/all'}
             className="px-6 py-3 bg-[#4A3C31]/10 text-[#4A3C31] text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-[#4A3C31]/20 transition-colors"
           >
             {data.status === 'success' ? 'View Orders' : 'Continue Shopping'}

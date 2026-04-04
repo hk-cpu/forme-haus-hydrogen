@@ -10,7 +10,8 @@
  * Tap handles Mada, Visa, MC, AMEX, Apple Pay, STC Pay through one integration.
  */
 
-import {json, redirect, type ActionFunctionArgs} from '@shopify/remix-oxygen';
+import {json, type ActionFunctionArgs} from '@shopify/remix-oxygen';
+import {buildLocalePath, getPathLocalePrefix} from '~/lib/utils';
 
 export async function action({request, context}: ActionFunctionArgs) {
   const {env} = context;
@@ -39,7 +40,11 @@ export async function action({request, context}: ActionFunctionArgs) {
   }
 
   // Determine origin for redirect URLs
-  const origin = new URL(request.url).origin;
+  const requestUrl = new URL(request.url);
+  const origin = requestUrl.origin;
+  const localePrefix = getPathLocalePrefix(requestUrl.pathname);
+  const tapWebhookPath = buildLocalePath('/tap/webhook', localePrefix);
+  const tapCallbackPath = buildLocalePath('/tap/callback', localePrefix);
 
   // Build the Tap Payments charge request
   const chargePayload = {
@@ -74,10 +79,10 @@ export async function action({request, context}: ActionFunctionArgs) {
     },
     source: {id: 'src_all'}, // Accept all payment methods (Mada, Visa, MC, AMEX, Apple Pay, STC Pay)
     post: {
-      url: `${origin}/tap/webhook`, // Server-to-server notification
+      url: `${origin}${tapWebhookPath}`, // Server-to-server notification
     },
     redirect: {
-      url: `${origin}/tap/callback?merchantTxId=${encodeURIComponent(
+      url: `${origin}${tapCallbackPath}?merchantTxId=${encodeURIComponent(
         merchantTxId || '',
       )}`,
     },
