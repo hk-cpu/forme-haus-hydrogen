@@ -223,7 +223,7 @@ export default function Product() {
 
   // Extract iPhone models from tags (e.g., "iphone-17-pro", "iphone-17-pro-max")
   const iPhoneModels: string[] =
-    product.tags
+    (product as any).tags
       ?.filter((tag: string) => tag.toLowerCase().startsWith('iphone-'))
       ?.map((tag: string) => {
         const match = tag.match(/iphone-?(\d+)-?(pro-?max|pro|max|plus|mini)/i);
@@ -407,7 +407,7 @@ export default function Product() {
           resolve={recommended}
         >
           {(products) => (
-            <ProductSwimlane title="Related Products" products={products} />
+            <ProductSwimlane title="Related Products" products={products as any} />
           )}
         </Await>
       </Suspense>
@@ -936,12 +936,12 @@ async function getRecommendedProducts(
   const mergedProducts = (products.recommended ?? [])
     .concat(products.additional.nodes)
     .filter(
-      (value, index, array) =>
-        array.findIndex((value2) => value2.id === value.id) === index,
+      (value: any, index: number, array: any[]) =>
+        array.findIndex((value2: any) => value2.id === value.id) === index,
     );
 
   const originalProduct = mergedProducts.findIndex(
-    (item) => item.id === productId,
+    (item: any) => item.id === productId,
   );
 
   mergedProducts.splice(originalProduct, 1);

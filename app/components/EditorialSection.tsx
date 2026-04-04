@@ -1,5 +1,5 @@
-import {AnimatePresence, motion, useReducedMotion, useScroll, useTransform} from 'framer-motion';
-import {useCallback, useEffect, useRef, useState} from 'react';
+import {motion, useReducedMotion, useScroll, useTransform} from 'framer-motion';
+import {useRef, useState} from 'react';
 
 import {Link} from '~/components/Link';
 import {useTranslation} from '~/hooks/useTranslation';
@@ -17,13 +17,10 @@ interface BentoItem {
   height: number;
 }
 
-const SMALL_TILE = 220; // px — width & height of each stacked small tile
-const SECTION_HEIGHT = 3 * SMALL_TILE + 2 * 12; // 684px (3 tiles + 2 gaps)
-
-// 4 images — two-column editorial grid, all square (1:1) to prevent cropping
+// 4 editorial images — WebP optimised versions
 const BENTO_ITEMS: BentoItem[] = [
   {
-    image: '/brand/edit-modern-essentials-v2.png',
+    image: '/brand/edit-modern-essentials-opt.webp',
     alt: 'Modern Essentials — woman in pinstripe blazer driving a vintage car',
     url: '/collections/modern-essentials',
     titleKey: 'editorial.modernEssentials.title',
@@ -45,7 +42,7 @@ const BENTO_ITEMS: BentoItem[] = [
     height: 1024,
   },
   {
-    image: '/brand/edit-sun-ready-v2.png',
+    image: '/brand/edit-sun-ready-opt.webp',
     alt: 'Sun Ready — model relaxing poolside in sunglasses',
     url: '/collections/sun-ready',
     titleKey: 'editorial.sun.title',
@@ -56,7 +53,7 @@ const BENTO_ITEMS: BentoItem[] = [
     height: 1024,
   },
   {
-    image: '/brand/edit-new-arrivals-v2.png',
+    image: '/brand/edit-new-arrivals-opt.webp',
     alt: 'New Arrivals — model with sheer scarf and silver ring',
     url: '/collections/new-arrivals',
     titleKey: 'editorial.new.title',
@@ -69,9 +66,19 @@ const BENTO_ITEMS: BentoItem[] = [
 ];
 
 /**
- * TopCard — renders at natural image height with 3D tilt and parallax
+ * TopCard — editorial tile with 3D tilt, card-level hover scale, and content reveal
  */
-function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
+function TopCard({
+  item,
+  index,
+  t,
+  noAspect,
+}: {
+  item: BentoItem;
+  index: number;
+  t: any;
+  noAspect?: boolean;
+}) {
   const [isHovered, setIsHovered] = useState(false);
   const shouldReduceMotion = useReducedMotion();
   const {style: tiltStyle, handlers: tiltHandlers} = use3DTilt({
@@ -88,7 +95,11 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
         delay: index * 0.1,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="group relative overflow-hidden rounded-[14px] bg-[#E8E4E0] aspect-square"
+      whileHover={shouldReduceMotion ? {} : {scale: 1.04}}
+      className={`group relative overflow-hidden rounded-[14px] bg-[#E8E4E0] ${
+        noAspect ? 'h-full' : 'aspect-square'
+      }`}
+      style={{zIndex: isHovered ? 10 : 1, position: 'relative'}}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
@@ -114,7 +125,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
             alt={item.alt}
             className="w-full h-full object-cover block transition-transform duration-700 ease-out"
             style={{
-              transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+              transform: isHovered ? 'scale(1.02)' : 'scale(1)',
               transformOrigin: 'center center',
               willChange: 'transform',
             }}
@@ -126,7 +137,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
             decoding="async"
           />
 
-          {/* Hover gradient - enhanced */}
+          {/* Hover gradient */}
           <motion.div
             className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none"
             initial={{opacity: 0}}
@@ -165,7 +176,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
             />
           </motion.div>
 
-          {/* Hover border with glow */}
+          {/* Hover border glow */}
           <motion.div
             className="absolute inset-0 rounded-[14px] border border-white/0 pointer-events-none"
             animate={{
@@ -191,34 +202,6 @@ export default function EditorialSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = useReducedMotion();
 
-  // Featured tile — auto-cycles every 5s, hover resets timer
-  const [activeIndex, setActiveIndex] = useState(0);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  const startTimer = useCallback(() => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => {
-      setActiveIndex(i => (i + 1) % BENTO_ITEMS.length);
-    }, 5000);
-  }, []);
-
-  useEffect(() => {
-    startTimer();
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [startTimer]);
-
-  const handleSmallTileHover = (index: number) => {
-    setActiveIndex(index);
-    startTimer();
-  };
-
-  const activeItem = BENTO_ITEMS[activeIndex];
-  const smallItems = BENTO_ITEMS.map((item, i) => ({item, i})).filter(
-    ({i}) => i !== activeIndex,
-  );
-
   // Parallax for columns
   const {scrollYProgress} = useScroll({
     target: sectionRef,
@@ -239,7 +222,7 @@ export default function EditorialSection() {
         className="max-w-[var(--container-max)] mx-auto"
         style={{padding: '0 var(--page-gutter)'}}
       >
-        {/* Section Header with SplitText effect */}
+        {/* Section Header */}
         <motion.div
           initial={{opacity: 0, y: 16}}
           whileInView={{opacity: 1, y: 0}}
@@ -285,84 +268,51 @@ export default function EditorialSection() {
           <TopCard item={BENTO_ITEMS[3]} index={3} t={t} />
         </div>
 
-        {/* Desktop: featured large tile (left) + 3 stacked square tiles (right) */}
+        {/*
+          Desktop: editorial grid
+          ┌────────────────┬────────────────┐  Row 1 (360px)
+          │                │  Carry It      │
+          │    Modern      │  Your Way      │
+          │   Essentials   │    (SQ1)       │
+          │    (TALL)      ├────────────────┤  Row 2 (360px)
+          │                │   Sun Ready    │
+          │                │    (SQ2)       │
+          └────────────────┴────────────────┘
+          ┌────────────────────────────────┐  Row 3 (160px)
+          │   New Arrivals  (SMALL strip)  │
+          └────────────────────────────────┘
+        */}
         <div
-          className="hidden md:flex gap-3"
-          style={{height: `${SECTION_HEIGHT}px`}}
+          className="hidden md:grid grid-cols-2 gap-3"
+          style={{
+            gridTemplateRows: '360px 360px 160px',
+            isolation: 'isolate',
+          }}
         >
-          {/* Big featured tile — crossfades on activeIndex change */}
+          {/* TALL — Modern Essentials: col 1, rows 1-2 */}
           <motion.div
-            className="flex-1 relative overflow-hidden rounded-[14px] bg-[#E8E4E0]"
+            className="row-span-2"
             style={shouldReduceMotion ? {} : {y: leftColY}}
           >
-            <Link to={activeItem.url} className="block h-full">
-              <AnimatePresence mode="sync">
-                <motion.img
-                  key={activeIndex}
-                  src={activeItem.image}
-                  alt={activeItem.alt}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  initial={{opacity: 0}}
-                  animate={{opacity: 1}}
-                  exit={{opacity: 0}}
-                  transition={{duration: 0.7, ease: 'easeInOut'}}
-                  loading="eager"
-                  fetchPriority="high"
-                  decoding="async"
-                  width={activeItem.width}
-                  height={activeItem.height}
-                />
-              </AnimatePresence>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
-              <div className="absolute inset-x-0 bottom-0 p-6">
-                <h3 className="font-serif text-2xl text-white italic tracking-wide">
-                  {t(activeItem.titleKey, activeItem.defaultTitle)}
-                </h3>
-                {activeItem.subtitleKey && (
-                  <p className="text-sm text-white/70 tracking-wide mt-1">
-                    {t(activeItem.subtitleKey, activeItem.defaultSubtitle!)}
-                  </p>
-                )}
-                <div className="mt-3 h-[1px] w-10 bg-[#D4AF87]" />
-              </div>
-            </Link>
+            <TopCard item={BENTO_ITEMS[0]} index={0} t={t} noAspect />
           </motion.div>
 
-          {/* 3 small square tiles — SMALL_TILE×SMALL_TILE px each */}
+          {/* SQ1 — Carry It Your Way: col 2, row 1 */}
+          <motion.div style={shouldReduceMotion ? {} : {y: rightColY}}>
+            <TopCard item={BENTO_ITEMS[1]} index={1} t={t} noAspect />
+          </motion.div>
+
+          {/* SQ2 — Sun Ready: col 2, row 2 */}
+          <motion.div style={shouldReduceMotion ? {} : {y: rightColY}}>
+            <TopCard item={BENTO_ITEMS[2]} index={2} t={t} noAspect />
+          </motion.div>
+
+          {/* SMALL — New Arrivals: cols 1-2, row 3 (full-width strip) */}
           <motion.div
-            className="flex flex-col gap-3"
-            style={
-              shouldReduceMotion
-                ? {width: `${SMALL_TILE}px`}
-                : {width: `${SMALL_TILE}px`, y: rightColY}
-            }
+            className="col-span-2"
+            style={shouldReduceMotion ? {} : {y: leftColY}}
           >
-            {smallItems.map(({item, i: origIndex}) => (
-              <motion.div
-                key={item.url}
-                className="flex-1 relative overflow-hidden rounded-[14px] bg-[#E8E4E0] cursor-pointer group"
-                style={{position: 'relative'}}
-                whileHover={shouldReduceMotion ? {} : {scale: 1.04, zIndex: 10}}
-                transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
-                onMouseEnter={() => handleSmallTileHover(origIndex)}
-              >
-                <Link to={item.url} className="block h-full">
-                  <img
-                    src={item.image}
-                    alt={item.alt}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-300 pointer-events-none" />
-                  <div className="absolute inset-x-0 bottom-0 p-2 translate-y-1 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                    <p className="text-[9px] text-white uppercase tracking-[0.2em] font-sans truncate leading-tight">
-                      {t(item.titleKey, item.defaultTitle)}
-                    </p>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
+            <TopCard item={BENTO_ITEMS[3]} index={3} t={t} noAspect />
           </motion.div>
         </div>
       </div>

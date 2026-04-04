@@ -119,7 +119,7 @@ export function getEditorialLayoutConfig(
   // 1. Try metafield-driven config from Shopify admin
   if (metafieldValue) {
     try {
-      const parsed = JSON.parse(metafieldValue);
+      const parsed: any = JSON.parse(metafieldValue);
       if (parsed?.sections && Array.isArray(parsed.sections)) {
         return parsed as EditorialLayoutConfig;
       }
@@ -588,11 +588,11 @@ function EditorialProductCard({
                 className="flex items-center gap-2 mt-1"
               >
                 <span className="text-white/90 text-sm">
-                  <Money data={price} />
+                  <Money data={price as any} />
                 </span>
                 {isOnSale && comparePrice && (
                   <span className="text-white/50 text-xs line-through">
-                    <Money data={comparePrice} />
+                    <Money data={comparePrice as any} />
                   </span>
                 )}
               </motion.div>
@@ -757,11 +757,11 @@ function QuickViewModal({
           </h2>
           <div className="mt-2 flex items-center gap-3">
             <span className="text-xl text-[#a87441]">
-              <Money data={price} />
+              <Money data={price as any} />
             </span>
             {isOnSale && comparePrice && (
               <span className="text-sm text-[#8B8076] line-through">
-                <Money data={comparePrice} />
+                <Money data={comparePrice as any} />
               </span>
             )}
           </div>

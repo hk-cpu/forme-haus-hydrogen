@@ -32,7 +32,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const resourcePath = url.searchParams.get('resourcePath');
 
-  const env = context.env as Record<string, string | undefined>;
+  const env = (context.env as unknown) as Record<string, string | undefined>;
   const accessToken = env.HYPERPAY_ACCESS_TOKEN;
   const baseUrl = env.HYPERPAY_BASE_URL ?? 'https://eu-test.oppwa.com';
 
@@ -177,7 +177,7 @@ export default function HyperPayCallback() {
               Transaction ID
             </p>
             <p className={`text-sm font-mono mt-0.5 ${config.color}`}>
-              {data.transactionId}
+              {(data as any).transactionId}
             </p>
           </div>
         )}
