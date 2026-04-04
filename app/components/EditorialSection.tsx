@@ -1,5 +1,5 @@
-import {motion, useReducedMotion, useScroll, useTransform} from 'framer-motion';
-import {useRef, useState} from 'react';
+import {AnimatePresence, motion, useReducedMotion, useScroll, useTransform} from 'framer-motion';
+import {useCallback, useEffect, useRef, useState} from 'react';
 
 import {Link} from '~/components/Link';
 import {useTranslation} from '~/hooks/useTranslation';
@@ -16,6 +16,9 @@ interface BentoItem {
   width: number;
   height: number;
 }
+
+const SMALL_TILE = 220; // px — width & height of each stacked small tile
+const SECTION_HEIGHT = 3 * SMALL_TILE + 2 * 12; // 684px (3 tiles + 2 gaps)
 
 // 4 images — two-column editorial grid, all square (1:1) to prevent cropping
 const BENTO_ITEMS: BentoItem[] = [
@@ -188,6 +191,34 @@ export default function EditorialSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = useReducedMotion();
 
+  // Featured tile — auto-cycles every 5s, hover resets timer
+  const [activeIndex, setActiveIndex] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setActiveIndex(i => (i + 1) % BENTO_ITEMS.length);
+    }, 5000);
+  }, []);
+
+  useEffect(() => {
+    startTimer();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [startTimer]);
+
+  const handleSmallTileHover = (index: number) => {
+    setActiveIndex(index);
+    startTimer();
+  };
+
+  const activeItem = BENTO_ITEMS[activeIndex];
+  const smallItems = BENTO_ITEMS.map((item, i) => ({item, i})).filter(
+    ({i}) => i !== activeIndex,
+  );
+
   // Parallax for columns
   const {scrollYProgress} = useScroll({
     target: sectionRef,
@@ -254,16 +285,85 @@ export default function EditorialSection() {
           <TopCard item={BENTO_ITEMS[3]} index={3} t={t} />
         </div>
 
-        {/* Desktop: 2x2 grid — square cards, no cropping */}
-        <div className="hidden md:grid md:grid-cols-2 gap-3">
-          {BENTO_ITEMS.map((item, i) => (
-            <motion.div
-              key={item.url}
-              style={shouldReduceMotion ? {} : {y: i % 2 === 0 ? leftColY : rightColY}}
-            >
-              <TopCard item={item} index={i} t={t} />
-            </motion.div>
-          ))}
+        {/* Desktop: featured large tile (left) + 3 stacked square tiles (right) */}
+        <div
+          className="hidden md:flex gap-3"
+          style={{height: `${SECTION_HEIGHT}px`}}
+        >
+          {/* Big featured tile — crossfades on activeIndex change */}
+          <motion.div
+            className="flex-1 relative overflow-hidden rounded-[14px] bg-[#E8E4E0]"
+            style={shouldReduceMotion ? {} : {y: leftColY}}
+          >
+            <Link to={activeItem.url} className="block h-full">
+              <AnimatePresence mode="sync">
+                <motion.img
+                  key={activeIndex}
+                  src={activeItem.image}
+                  alt={activeItem.alt}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  initial={{opacity: 0}}
+                  animate={{opacity: 1}}
+                  exit={{opacity: 0}}
+                  transition={{duration: 0.7, ease: 'easeInOut'}}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  width={activeItem.width}
+                  height={activeItem.height}
+                />
+              </AnimatePresence>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 p-6">
+                <h3 className="font-serif text-2xl text-white italic tracking-wide">
+                  {t(activeItem.titleKey, activeItem.defaultTitle)}
+                </h3>
+                {activeItem.subtitleKey && (
+                  <p className="text-sm text-white/70 tracking-wide mt-1">
+                    {t(activeItem.subtitleKey, activeItem.defaultSubtitle!)}
+                  </p>
+                )}
+                <div className="mt-3 h-[1px] w-10 bg-[#D4AF87]" />
+              </div>
+            </Link>
+          </motion.div>
+
+          {/* 3 small square tiles — SMALL_TILE×SMALL_TILE px each */}
+          <motion.div
+            className="flex flex-col gap-3"
+            style={
+              shouldReduceMotion
+                ? {width: `${SMALL_TILE}px`}
+                : {width: `${SMALL_TILE}px`, y: rightColY}
+            }
+          >
+            {smallItems.map(({item, i: origIndex}) => (
+              <motion.div
+                key={item.url}
+                className="flex-1 relative overflow-hidden rounded-[14px] bg-[#E8E4E0] cursor-pointer group"
+                style={{position: 'relative'}}
+                whileHover={shouldReduceMotion ? {} : {scale: 1.04, zIndex: 10}}
+                transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
+                onMouseEnter={() => handleSmallTileHover(origIndex)}
+              >
+                <Link to={item.url} className="block h-full">
+                  <img
+                    src={item.image}
+                    alt={item.alt}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-300 pointer-events-none" />
+                  <div className="absolute inset-x-0 bottom-0 p-2 translate-y-1 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                    <p className="text-[9px] text-white uppercase tracking-[0.2em] font-sans truncate leading-tight">
+                      {t(item.titleKey, item.defaultTitle)}
+                    </p>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </div>
     </section>
