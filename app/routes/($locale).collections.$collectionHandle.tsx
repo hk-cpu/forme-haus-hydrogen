@@ -360,22 +360,22 @@ export default function Collection() {
       bgClass: 'bg-[#E8DED4]',
     },
     'carry-it-your-way': {
-      src: '/brand/hero-4.webp',
+      src: '/brand/edit-carry-opt.webp',
       hideTitle: true,
       fit: 'full-width',
     },
     'sun-ready': {
-      src: '/brand/hero-2.webp',
+      src: '/brand/edit-sun-ready-opt.webp',
       hideTitle: true,
       fit: 'full-width',
     },
     'new-arrivals': {
-      src: '/brand/hero-3.webp',
+      src: '/brand/edit-new-arrivals-opt.webp',
       hideTitle: true,
       fit: 'full-width',
     },
     'modern-essentials': {
-      src: '/brand/hero-1.webp',
+      src: '/brand/edit-modern-essentials-opt.webp',
       hideTitle: true,
       fit: 'full-width',
     },

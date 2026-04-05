@@ -26,7 +26,7 @@ export default function Hero() {
             className="relative z-10 h-24 w-auto object-contain drop-shadow-2xl sm:h-32 md:h-40 lg:h-48 xl:h-56"
             loading="eager"
             fetchPriority="high"
-            decoding="sync"
+            decoding="async"
             width={480}
             height={250}
             animate={{
