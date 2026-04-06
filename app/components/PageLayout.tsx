@@ -1,4 +1,4 @@
-ï»¿import {Await, useRouteLoaderData, useLocation} from '@remix-run/react';
+import {Await, useRouteLoaderData, useLocation} from '@remix-run/react';
 import {Suspense, useEffect, useState, lazy} from 'react';
 import {CartForm} from '@shopify/hydrogen';
 
@@ -18,7 +18,7 @@ import {useTranslation} from '~/hooks/useTranslation';
 import {Newsletter} from '~/components/Newsletter';
 import PaymentBadges from '~/components/PaymentBadges';
 
-// Lazy-load overlays â€” invisible on initial render, defers their FM + component JS
+// Lazy-load overlays — invisible on initial render, defers their FM + component JS
 const NavigationMenu = lazy(() =>
   import('~/components/NavigationMenu').then((m) => ({
     default: m.NavigationMenu,
@@ -106,7 +106,7 @@ export function PageLayout({children, layout}: LayoutProps) {
   return (
     <>
       <div className="flex flex-col min-h-screen relative">
-        {/* Background Layer (Z-0) â€” Silk on desktop, CSS fallback on mobile */}
+        {/* Background Layer (Z-0) — Silk on desktop, CSS fallback on mobile */}
         <div className="fixed inset-0 pointer-events-none z-0">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,116,65,0.16),transparent_34%),linear-gradient(180deg,#181513_0%,#121212_60%,#0f0f0f_100%)]" />
           {isDesktop && (
@@ -140,7 +140,7 @@ export function PageLayout({children, layout}: LayoutProps) {
         >
           <div className="w-full max-w-[1440px] flex flex-col relative mx-auto my-0">
             <Header
-              title={layout?.shop.name || 'FormÃ© Haus'}
+              title={layout?.shop.name || 'Formé Haus'}
               menu={headerMenu || undefined}
             />
             <main
@@ -151,7 +151,7 @@ export function PageLayout({children, layout}: LayoutProps) {
                 paddingTop: isCollectionPage ? 0 : 'var(--navbar-height)',
               }}
             >
-              {/* CSS page fade-in â€” replaces AnimatePresence to eliminate FM from critical path */}
+              {/* CSS page fade-in — replaces AnimatePresence to eliminate FM from critical path */}
               <div key={location.pathname} className="page-fade-in">
                 {isHome ? (
                   children
@@ -166,7 +166,7 @@ export function PageLayout({children, layout}: LayoutProps) {
                 )}
               </div>
             </main>
-            {/* Newsletter â€” Above Footer */}
+            {/* Newsletter — Above Footer */}
             <section className="relative w-full overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a1a]/80 via-[#151515]/90 to-[#121212]/95 backdrop-blur-xl" />
               <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
@@ -191,13 +191,13 @@ export function PageLayout({children, layout}: LayoutProps) {
             <Footer menu={footerMenu || undefined} />
           </div>
         </div>
-        {/* WhatsApp Floating Button â€” set WHATSAPP_NUMBER above to enable */}
+        {/* WhatsApp Floating Button — set WHATSAPP_NUMBER above to enable */}
         {WHATSAPP_NUMBER && (
           <a
             href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
               t(
                 'whatsapp.defaultMessage',
-                'Hello, I would like to enquire about a product at FormÃ© Haus',
+                'Hello, I would like to enquire about a product at Formé Haus',
               ),
             )}`}
             target="_blank"
@@ -218,7 +218,7 @@ export function PageLayout({children, layout}: LayoutProps) {
           </a>
         )}
 
-        {/* Mobile bottom navigation â€” load only on small screens after idle */}
+        {/* Mobile bottom navigation — load only on small screens after idle */}
         {shouldRenderMobileNav ? (
           <Suspense fallback={null}>
             <MobileBottomNav />
@@ -417,7 +417,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
             <div className="flex items-center gap-4">
               <img
                 src="/brand/logo-icon-only-opt.webp"
-                alt="FormÃ© Haus"
+                alt="Formé Haus"
                 className="h-16 w-auto object-contain opacity-90"
                 width={128}
                 height={127}
@@ -426,7 +426,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
               />
               <div className="flex flex-col">
                 <h3 className="font-serif text-xl text-[#F0EAE6] leading-tight">
-                  FormÃ© Haus
+                  Formé Haus
                 </h3>
                 <p className="font-serif text-[12px] italic text-[#AA9B8F] tracking-wide mt-1 whitespace-nowrap">
                   {t('footer.description', 'Where Essence Meets Elegance')}
@@ -540,7 +540,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
           </p>
           <PaymentBadges />
           <p className="text-[10px] text-[#8B8076]/50 mt-2">
-            Powered by Tap Payments Â· 256-bit SSL Encrypted
+            {t('footer.poweredByTap', 'Powered by Tap Payments · 256-bit SSL Encrypted')}
           </p>
         </div>
 
@@ -551,16 +551,16 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
         <div className="max-w-[1440px] mx-auto text-center text-[11px] font-sans tracking-[0.08em] text-[#8B8076]">
           <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-2 sm:gap-4 lg:gap-6">
             <span className="font-medium text-[#F0EAE6]/80">
-              &copy; {new Date().getFullYear()} FormÃ© Haus FH Establishment
+              &copy; {new Date().getFullYear()} Formé Haus FH Establishment
             </span>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
             <span>
-              CR No:{' '}
+              {t('footer.crNo', 'CR No.')} 
               <span className="font-mono text-[#F0EAE6]">7051891369</span>
             </span>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
             <span>
-              VAT No:{' '}
+              {t('footer.vatNo', 'VAT No.')} 
               <span className="font-mono text-[#F0EAE6]">314271812300003</span>
             </span>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
@@ -571,3 +571,5 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
     </footer>
   );
 }
+
+

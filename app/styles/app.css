@@ -120,7 +120,7 @@
   --font-serif: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua',
     'Hoefler Text', Georgia, serif;
   --font-heading: var(--font-serif);
-  --font-arabic: 'Noto Sans Arabic', 'Tahoma', 'Segoe UI', sans-serif;
+  --font-arabic: 'Noto Naskh Arabic', 'Noto Sans Arabic', 'Tahoma', 'Segoe UI', sans-serif;
 
   /* Font Weights */
   --font-weight-light: 300;
@@ -1357,5 +1357,123 @@ h6 {
   .mobile-bottom-nav-enter,
   .cart-badge-enter {
     animation: none;
+  }
+}
+
+/* ============================================================================
+   EDITORIAL COLLECTION IMAGE ENHANCEMENTS
+   Ensures images display fully without cropping across all editorial layouts
+   ============================================================================ */
+
+/* Editorial product card image container */
+.editorial-product-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: #F5F1ED;
+  overflow: hidden;
+}
+
+/* Editorial product image - always contain, never crop */
+.editorial-product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  padding: 1rem;
+  max-width: 100%;
+  max-height: 100%;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hover effect - subtle scale */
+.editorial-product-image:hover img {
+  transform: scale(1.03);
+}
+
+/* Second image (hover state) */
+.editorial-product-image img:nth-child(2) {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.editorial-product-image:hover img:nth-child(2) {
+  opacity: 1;
+}
+
+/* Aspect ratio containers for editorial layouts */
+.editorial-aspect-hero {
+  aspect-ratio: 4 / 5;
+}
+
+.editorial-aspect-large {
+  aspect-ratio: 5 / 6;
+}
+
+.editorial-aspect-square {
+  aspect-ratio: 1 / 1;
+}
+
+.editorial-aspect-portrait {
+  aspect-ratio: 3 / 4;
+}
+
+.editorial-aspect-wide {
+  aspect-ratio: 16 / 9;
+}
+
+/* Quick view modal image - contain not crop */
+.quick-view-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F5F1ED;
+}
+
+.quick-view-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 1.5rem;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Responsive adjustments for editorial images */
+@media (max-width: 768px) {
+  .editorial-product-image img {
+    padding: 0.75rem;
+  }
+  
+  .quick-view-image img {
+    padding: 1rem;
+  }
+}
+
+/* Ensure smooth image loading */
+.editorial-product-image img {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* High-resolution screen optimization */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .editorial-product-image img {
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .editorial-product-image img {
+    transition: none;
+  }
+  
+  .editorial-product-image:hover img {
+    transform: none;
   }
 }

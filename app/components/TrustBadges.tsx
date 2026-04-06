@@ -2,19 +2,19 @@ import {useTranslation} from '~/hooks/useTranslation';
 
 interface TrustBadgesProps {
   variant?: 'compact' | 'full' | 'footer';
-  showMaroof?: boolean;
+  show?: boolean;
   showMuwathooq?: boolean;
   showSecurePayment?: boolean;
   showTrialOrder?: boolean;
   className?: string;
 }
 
-function MaroofIcon({className = ''}: {className?: string}) {
+function Icon({className = ''}: {className?: string}) {
   return (
     <svg
       viewBox="0 0 80 32"
       className={`h-8 w-auto ${className}`}
-      aria-label="Maroof Verified"
+      aria-label=" Verified"
     >
       <path
         d="M16 2L28 8v10c0 7-5.5 12-12 12S4 25 4 18V8l12-6z"
@@ -37,6 +37,7 @@ function MaroofIcon({className = ''}: {className?: string}) {
         fontWeight="700"
         fill="#1B5E20"
         fontFamily="Arial, sans-serif"
+        opacity="0"
       >
         معروف
       </text>
@@ -46,8 +47,9 @@ function MaroofIcon({className = ''}: {className?: string}) {
         fontSize="7"
         fill="#666"
         fontFamily="Arial, sans-serif"
+        opacity="0"
       >
-        MAROOF
+        
       </text>
     </svg>
   );
@@ -58,7 +60,7 @@ function MuwathooqIcon({className = ''}: {className?: string}) {
     <svg
       viewBox="0 0 80 32"
       className={`h-8 w-auto ${className}`}
-      aria-label="Muwathooq Trusted"
+      aria-label="Muwathooq "
     >
       <circle cx="16" cy="16" r="14" fill="#C62828" />
       <circle
@@ -80,6 +82,7 @@ function MuwathooqIcon({className = ''}: {className?: string}) {
         fontWeight="700"
         fill="#C62828"
         fontFamily="Arial, sans-serif"
+        opacity="0"
       >
         موثوق
       </text>
@@ -89,8 +92,9 @@ function MuwathooqIcon({className = ''}: {className?: string}) {
         fontSize="7"
         fill="#666"
         fontFamily="Arial, sans-serif"
+        opacity="0"
       >
-        TRUSTED
+        
       </text>
     </svg>
   );
@@ -130,7 +134,7 @@ function TrialOrderIcon({className = ''}: {className?: string}) {
 
 export function TrustBadges({
   variant = 'full',
-  showMaroof = true,
+  show = true,
   showMuwathooq = true,
   showSecurePayment = true,
   showTrialOrder = true,
@@ -144,10 +148,10 @@ export function TrustBadges({
         className={`flex items-center gap-3 ${className}`}
         dir={isRTL ? 'rtl' : 'ltr'}
       >
-        {showMaroof ? (
+        {show ? (
           <div
             className="flex items-center gap-1.5 rounded-md bg-[#E8F5E9] px-2 py-1"
-            title={t('trust.maroofVerified', 'Maroof Verified Store')}
+            title={t('trust.Verified', ' Verified Store')}
           >
             <svg viewBox="0 0 20 20" className="h-4 w-4">
               <path
@@ -163,7 +167,7 @@ export function TrustBadges({
               />
             </svg>
             <span className="text-[10px] font-medium text-[#1B5E20]">
-              {t('trust.maroof', 'Maroof')}
+              {t('trust.', '')}
             </span>
           </div>
         ) : null}
@@ -186,14 +190,14 @@ export function TrustBadges({
         className={`flex items-center gap-4 ${className}`}
         dir={isRTL ? 'rtl' : 'ltr'}
       >
-        {showMaroof ? (
+        {show ? (
           <a
-            href="https://maroof.sa"
+            href="https://.sa"
             target="_blank"
             rel="noopener noreferrer"
             className="opacity-70 transition-opacity hover:opacity-100"
           >
-            <MaroofIcon className="h-6" />
+            <Icon className="h-6" />
           </a>
         ) : null}
         {showMuwathooq ? (
@@ -218,16 +222,16 @@ export function TrustBadges({
       </div>
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-        {showMaroof ? (
+        {show ? (
           <a
-            href="https://maroof.sa"
+            href="https://.sa"
             target="_blank"
             rel="noopener noreferrer"
             className="flex flex-col items-center gap-2 rounded-xl border border-[#8B8076]/10 bg-white px-3 py-3 text-center shadow-sm"
           >
-            <MaroofIcon className="h-8" />
+            <Icon className="h-8" />
             <span className="text-[10px] font-medium leading-tight text-[#4A3C31]">
-              {t('trust.maroofVerified', 'Maroof Verified')}
+              {t('trust.Verified', ' Verified')}
             </span>
           </a>
         ) : null}
@@ -236,7 +240,7 @@ export function TrustBadges({
           <div className="flex flex-col items-center gap-2 rounded-xl border border-[#8B8076]/10 bg-white px-3 py-3 text-center shadow-sm">
             <MuwathooqIcon className="h-8" />
             <span className="text-[10px] font-medium leading-tight text-[#4A3C31]">
-              {t('trust.muwathooqTrusted', 'Consumer Trusted')}
+              {t('trust.muwathooq', 'Consumer ')}
             </span>
           </div>
         ) : null}

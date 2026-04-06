@@ -42,11 +42,11 @@ const JOURNAL_CARDS: JournalCard[] = [
 ];
 
 export default function JournalSection() {
-  const {isRTL} = useTranslation();
+  const {isRTL, t} = useTranslation();
 
   return (
     <section
-      aria-label="The Journal"
+      aria-label={t('home.journal', 'The Journal')}
       className="py-6 md:py-8"
       dir={isRTL ? 'rtl' : 'ltr'}
     >
@@ -56,13 +56,15 @@ export default function JournalSection() {
       >
         <div className="mb-6 flex items-end justify-between">
           <h2 className="font-serif text-2xl italic text-[#4A3C31] md:text-3xl">
-            The Journal
+            {t('home.journal', 'The Journal')}
           </h2>
           <Link
             to="/journal"
-            className="inline-flex min-h-[44px] items-center py-2 text-[10px] uppercase tracking-[0.2em] text-[#6B6058] transition-colors duration-300 hover:text-[#4A3C31]"
+            className={`inline-flex min-h-[44px] items-center py-2 text-[10px] ${
+              isRTL ? '' : 'uppercase tracking-[0.2em]'
+            } text-[#6B6058] transition-colors duration-300 hover:text-[#4A3C31]`}
           >
-            Read the Journal
+            {t('journal.read', 'Read the Journal')}
           </Link>
         </div>
 
@@ -72,7 +74,14 @@ export default function JournalSection() {
               <div className="relative aspect-[4/5] overflow-hidden rounded-[14px] bg-[#E8E4E0]">
                 <img
                   src={card.image}
-                  alt={card.alt}
+                  alt={t(
+                    card.title === 'The Modern Wardrobe Edit'
+                      ? 'journal.modernWardrobe'
+                      : card.title === 'Everyday Elegance'
+                      ? 'journal.everydayElegance'
+                      : 'journal.behindCraft',
+                    card.alt,
+                  )}
                   className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
                   width={card.width}
                   height={card.height}
@@ -85,10 +94,24 @@ export default function JournalSection() {
 
               <div className="mt-3 px-1">
                 <h3 className="font-serif text-base italic text-[#4A3C31] transition-colors duration-300 group-hover:text-[#a87441] md:text-lg">
-                  {card.title}
+                  {t(
+                    card.title === 'The Modern Wardrobe Edit'
+                      ? 'journal.modernWardrobe'
+                      : card.title === 'Everyday Elegance'
+                      ? 'journal.everydayElegance'
+                      : 'journal.behindCraft',
+                    card.title,
+                  )}
                 </h3>
                 <p className="mt-1 text-xs leading-relaxed text-[#736659]">
-                  {card.excerpt}
+                  {t(
+                    card.title === 'The Modern Wardrobe Edit'
+                      ? 'journal.modernWardrobe.subtitle'
+                      : card.title === 'Everyday Elegance'
+                      ? 'journal.everydayElegance.subtitle'
+                      : 'journal.behindCraft.subtitle',
+                    card.excerpt,
+                  )}
                 </p>
               </div>
             </Link>

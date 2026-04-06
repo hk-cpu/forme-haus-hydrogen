@@ -3,6 +3,7 @@ import {useRouteLoaderData} from '@remix-run/react';
 import type {RootLoader} from '~/root';
 import {DEFAULT_LOCALE} from '~/lib/utils';
 import {translations, type TranslationKey} from '~/lib/translations';
+import {translationOverrides} from '~/lib/translationOverrides';
 
 /**
  * Returns the current language code based on the selected locale.
@@ -23,6 +24,8 @@ export function useTranslation() {
   const isRTL = lang === 'AR';
 
   function t(key: TranslationKey | string, defaultText?: string): string {
+    const override = (translationOverrides as any)[lang]?.[key as string];
+    if (override) return override;
     return (
       translations[lang][key as TranslationKey] ??
       translations.EN[key as TranslationKey] ??

@@ -433,8 +433,8 @@ export function NavigationMenu() {
                         alt="Formé Haus"
                         className="h-16 w-16 object-contain opacity-30 mb-6"
                       />
-                      <p className="font-serif text-xl text-[#F0EAE6]/20 italic">
-                        Where Essence Meets Elegance
+                      <p className={`font-serif text-xl text-[#F0EAE6]/20 ${isRTL ? '' : 'italic'}`}>
+                        {t('brand.tagline', 'Where Essence Meets Elegance')}
                       </p>
                     </motion.div>
                   )}

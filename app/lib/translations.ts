@@ -35,6 +35,8 @@ export const translations = {
     'header.menu': 'Menu',
 
     // Hero
+    'hero.h1':
+      'Forme Haus - Designer Phone Cases and Sunglasses in Saudi Arabia',
     'hero.cta': 'Explore the Collection',
     'hero.scroll': 'Scroll',
 
@@ -68,8 +70,14 @@ export const translations = {
 
     // Journal
     'journal.modernWardrobe': 'The Modern Wardrobe Edit',
+    'journal.modernWardrobe.subtitle':
+      'A wardrobe shaped by clarity and refined instinct.',
     'journal.everydayElegance': 'Everyday Elegance',
+    'journal.everydayElegance.subtitle':
+      'Elegance is lived in the in-between moments.',
     'journal.behindCraft': 'Behind the Selection',
+    'journal.behindCraft.subtitle': 'Every piece begins with careful consideration.',
+    'journal.read': 'Read the Journal',
 
     // Footer
     'footer.followUs': 'Follow Us',
@@ -79,6 +87,7 @@ export const translations = {
     'footer.vatNo': 'VAT No.',
     'footer.vatCertificate': 'VAT Certificate',
     'footer.crCertificate': 'CR Certificate',
+    'footer.poweredByTap': 'Powered by Tap Payments · 256-bit SSL Encrypted',
     'footer.description': 'Where Essence Meets Elegance',
     'footer.contact': 'Contact us',
     'footer.privacy': 'Privacy Policy',
@@ -343,6 +352,7 @@ export const translations = {
     // Mobile Bottom Nav
     'nav.saved': 'Saved',
     'nav.shopLabel': 'Shop',
+    'brand.tagline': 'Where Essence Meets Elegance',
   },
   AR: {
     // Navigation

@@ -240,7 +240,11 @@ export function Header({
                 key={item.id}
                 to={item.to}
                 className={({isActive}) =>
-                  `relative py-2 text-[10px] font-light uppercase tracking-[0.25em] transition-colors duration-200 lg:text-[11px] ${
+                  `relative py-2 transition-colors duration-200 ${
+                    isRTL
+                      ? 'text-[12px] font-normal'
+                      : 'text-[10px] font-light uppercase tracking-[0.25em] lg:text-[11px]'
+                  } ${
                     isActive
                       ? 'text-[#a87441]'
                       : 'text-[#F0EAE6]/80 hover:text-[#a87441]'

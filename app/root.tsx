@@ -226,12 +226,22 @@ function Layout({children}: {children?: React.ReactNode}) {
           rel="preload"
           href={futuristicStyles}
           as="style"
-          // @ts-ignore — onLoad triggers stylesheet swap after load
+          // @ts-ignore – onLoad triggers stylesheet swap after load
           onLoad="this.onload=null;this.rel='stylesheet'"
         />
         <noscript>
           <link rel="stylesheet" href={futuristicStyles} />
         </noscript>
+        {isRTL ? (
+          <>
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+            <link
+              href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600&family=Noto+Sans+Arabic:wght@300;400;500&display=swap"
+              rel="stylesheet"
+            />
+          </>
+        ) : null}
         {/* Deferred Google Fonts — loaded async to avoid render-blocking */}
         <style
           dangerouslySetInnerHTML={{
