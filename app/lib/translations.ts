@@ -414,9 +414,13 @@ export const translations = {
     'faq.contactUs': 'تواصل معنا',
 
     // Journal
+    'journal.read': 'قراءة المجلة',
     'journal.modernWardrobe': 'مختارات الخزانة العصرية',
-    'journal.everydayElegance': 'أناقة يومية',
-    'journal.behindCraft': 'قصة الاختيار',
+    'journal.modernWardrobe.subtitle': 'خزانة تصنعها وضوح الرؤية والذوق المصفّى.',
+    'journal.everydayElegance': 'أناقة كل يوم',
+    'journal.everydayElegance.subtitle': 'الأناقة تُعاش في التفاصيل وبين اللحظات.',
+    'journal.behindCraft': 'خلف الاختيار',
+    'journal.behindCraft.subtitle': 'كل قطعة تبدأ بعناية وتأمل.',
 
     // Footer
     'footer.followUs': 'تابعونا',
