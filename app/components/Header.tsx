@@ -171,12 +171,21 @@ export function Header({
   };
 
   const mapMenuItem = (item: any) => {
-    const normalizedTo = normalizeMenuPath(item.to);
+    const normalizedTo = normalizeMenuPath(item.to ?? item.url);
+    const titleLower = (item.title || '').toLowerCase();
 
     if (
-      item.title === 'CATALOG' ||
-      item.title === 'Catalog' ||
-      normalizedTo === '/collections/all'
+      titleLower === 'home' ||
+      titleLower === 'الرئيسية' ||
+      normalizedTo === '/'
+    ) {
+      return {...item, to: '/', title: t('nav.home', 'Home')};
+    }
+
+    if (
+      titleLower === 'catalog' ||
+      normalizedTo === '/collections/all' ||
+      normalizedTo === '/collections'
     ) {
       return {
         ...item,
@@ -186,14 +195,18 @@ export function Header({
     }
 
     if (
-      item.title === 'ABOUT US' ||
-      item.title === 'About Us' ||
+      titleLower === 'about us' ||
+      titleLower === 'our story' ||
       normalizedTo === '/pages/about'
     ) {
       return {...item, to: '/pages/about', title: t('nav.ourStory', 'Our Story')};
     }
 
-    if (normalizedTo === '/contact') {
+    if (titleLower === 'journal' || normalizedTo === '/journal') {
+      return {...item, to: '/journal', title: t('nav.journal', 'Journal')};
+    }
+
+    if (normalizedTo === '/contact' || titleLower.includes('contact')) {
       return {...item, to: '/contact', title: t('nav.contact', 'Contact Us')};
     }
 
@@ -233,14 +246,14 @@ export function Header({
       <div className="relative z-50 mx-auto flex w-full max-w-[1440px] items-center px-4 sm:px-6 lg:px-10">
         {/* Left Side: Navigation & Mobile Menu */}
         <div className="flex flex-1 items-center justify-start">
-          <nav className="hidden items-center gap-4 md:flex lg:gap-8">
+          <nav className="hidden items-center gap-4 md:flex lg:gap-6">
           {items.map((item: any) => {
             return (
               <NavLink
                 key={item.id}
                 to={item.to}
                 className={({isActive}) =>
-                  `relative py-2 transition-colors duration-200 ${
+                  `relative whitespace-nowrap py-2 transition-colors duration-200 ${
                     isRTL
                       ? 'text-[12px] font-normal'
                       : 'text-[10px] font-light uppercase tracking-[0.25em] lg:text-[11px]'
@@ -291,7 +304,7 @@ export function Header({
 
         {/* Right Side: Account, Cart, Search, Language */}
         <div className="flex flex-1 items-center justify-end gap-3 md:gap-4">
-          <div className="mr-1 hidden md:flex">
+          <div className="me-1 hidden md:flex">
             <LanguageSwitch />
           </div>
 
@@ -407,7 +420,7 @@ function CartBagButton({
               </span>
 
               {cart?.totalQuantity ? (
-                <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-[10px] font-medium text-white shadow-lg lg:right-2">
+                <span className="absolute end-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-[10px] font-medium text-white shadow-lg lg:end-2">
                   {cart.totalQuantity > 9 ? '9+' : cart.totalQuantity}
                 </span>
               ) : null}
