@@ -199,7 +199,7 @@ export function PageLayout({children, layout}: LayoutProps) {
             href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
               t(
                 'whatsapp.defaultMessage',
-                'Hello, I would like to enquire about a product at Form� Haus',
+                'Hello, I would like to enquire about a product at Formé Haus',
               ),
             )}`}
             target="_blank"
@@ -419,7 +419,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
             <div className="flex items-center gap-4">
               <img
                 src="/brand/logo-icon-only-opt.webp"
-                alt="Form� Haus"
+                alt="Formé Haus"
                 className="h-16 w-auto object-contain opacity-90"
                 width={128}
                 height={127}
@@ -428,7 +428,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
               />
               <div className="flex flex-col">
                 <h3 className="font-serif text-xl text-[#F0EAE6] leading-tight">
-                  Form� Haus
+                  Formé Haus
                 </h3>
                 <p className="font-serif text-[12px] italic text-[#AA9B8F] tracking-wide mt-1 whitespace-nowrap">
                   {t('footer.description', 'Where Essence Meets Elegance')}
@@ -553,7 +553,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
         <div className="max-w-[1440px] mx-auto text-center text-[11px] font-sans tracking-[0.08em] text-[#8B8076]">
           <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-2 sm:gap-4 lg:gap-6">
             <span className="font-medium text-[#F0EAE6]/80">
-              &copy; {new Date().getFullYear()} Form� Haus FH Establishment
+              &copy; {new Date().getFullYear()} Formé Haus FH Establishment
             </span>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
             <span>
