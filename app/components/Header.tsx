@@ -230,7 +230,7 @@ export function Header({
         backdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
       }}
     >
-      <div className="relative z-50 mx-auto flex w-full max-w-[1440px] items-center px-4 sm:px-6 lg:px-10">
+      <div className="relative z-50 flex w-full items-center" style={{padding: '0 var(--page-gutter)'}}>
         {/* Left Side: Navigation & Mobile Menu */}
         <div className="flex flex-1 items-center justify-start">
           <nav className="hidden items-center gap-4 md:flex lg:gap-8">
