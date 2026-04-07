@@ -359,13 +359,15 @@ button:active:not(:disabled),
   text-align: left;
 }
 
-/* RTL Layout - Position Fixes */
-[dir='rtl'] .left-0 {
+/* RTL Layout - Position Fixes
+   Only swap when an element uses ONE side — :not() prevents breaking
+   elements that use both left-0 AND right-0 to span full width. */
+[dir='rtl'] .left-0:not(.right-0):not(.inset-x-0) {
   left: auto;
   right: 0;
 }
 
-[dir='rtl'] .right-0 {
+[dir='rtl'] .right-0:not(.left-0):not(.inset-x-0) {
   right: auto;
   left: 0;
 }
