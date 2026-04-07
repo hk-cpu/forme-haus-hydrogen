@@ -11,6 +11,7 @@ import invariant from 'tiny-invariant';
 
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
+import {useTranslation} from '~/hooks/useTranslation';
 
 import styles from '../styles/custom-font.css?url';
 
@@ -25,40 +26,77 @@ export const links: LinksFunction = () => {
 // Static journal articles — rendered when Shopify blog entries don't exist
 const STATIC_ARTICLES: Record<
   string,
-  {
-    title: string;
-    body: string[];
-    image?: string;
-    extraImages?: string[];
-  }
+  Record<
+    string,
+    {
+      title: string;
+      body: string[];
+      image?: string;
+      extraImages?: string[];
+    }
+  >
 > = {
   'the-modern-wardrobe-edit': {
-    title: 'The Modern Wardrobe Edit',
-    body: [
-      'A wardrobe shaped by clarity and refined instinct.',
-      'Sculpted silhouettes, balanced structure, and textures chosen for how they move as much as how they appear. Pieces selected for presence without excess, composed, assured, and enduring.',
-      'A way of dressing that speaks quietly, yet with certainty.',
-    ],
-    image: '/brand/journal-wardrobe.webp',
+    EN: {
+      title: 'The Modern Wardrobe Edit',
+      body: [
+        'A wardrobe shaped by clarity and refined instinct.',
+        'Sculpted silhouettes, balanced structure, and textures chosen for how they move as much as how they appear. Pieces selected for presence without excess, composed, assured, and enduring.',
+        'A way of dressing that speaks quietly, yet with certainty.',
+      ],
+      image: '/brand/journal-wardrobe.webp',
+    },
+    AR: {
+      title: 'مختارات الخزانة العصرية',
+      body: [
+        'خزانة تصنعها وضوح الرؤية والذوق المصفّى.',
+        'قصّات منحوتة، بنية متوازنة، وأقمشة اختيرت لحركتها بقدر ما اختيرت لمظهرها. قطع انتقيت لحضورها من دون إفراط، رصينة، واثقة، وخالدة.',
+        'أسلوب في اللباس يتحدث بهدوء، لكن بيقين.',
+      ],
+      image: '/brand/journal-wardrobe.webp',
+    },
   },
   'everyday-elegance': {
-    title: 'Everyday Elegance',
-    body: [
-      'Elegance is lived in the in-between moments.',
-      'It reveals itself in soft movement, measured gestures, and the calm confidence carried through the day.',
-      'A way of dressing that mirrors inner balance.',
-      'Effortless. Grounded. Graceful.',
-    ],
-    image: '/brand/journal-elegance.webp',
+    EN: {
+      title: 'Everyday Elegance',
+      body: [
+        'Elegance is lived in the in-between moments.',
+        'It reveals itself in soft movement, measured gestures, and the calm confidence carried through the day.',
+        'A way of dressing that mirrors inner balance.',
+        'Effortless. Grounded. Graceful.',
+      ],
+      image: '/brand/journal-elegance.webp',
+    },
+    AR: {
+      title: 'أناقة كل يوم',
+      body: [
+        'الأناقة تُعاش في التفاصيل وبين اللحظات.',
+        'تتجلّى في حركة ناعمة، وإيماءات متّزنة، وثقة هادئة ترافقك طوال اليوم.',
+        'أسلوب في اللباس يعكس توازنًا داخليًا.',
+        'بلا تكلّف. بثبات. بأناقة.',
+      ],
+      image: '/brand/journal-elegance.webp',
+    },
   },
   'behind-the-selection': {
-    title: 'Behind the Selection',
-    body: [
-      'Every piece begins with careful consideration.',
-      'Proportion, fabrication, and craftsmanship are considered not only for how they appear, but for how they endure.',
-      'A selection shaped by clarity and lasting intention.',
-    ],
-    image: '/brand/journal-selection.webp',
+    EN: {
+      title: 'Behind the Selection',
+      body: [
+        'Every piece begins with careful consideration.',
+        'Proportion, fabrication, and craftsmanship are considered not only for how they appear, but for how they endure.',
+        'A selection shaped by clarity and lasting intention.',
+      ],
+      image: '/brand/journal-selection.webp',
+    },
+    AR: {
+      title: 'خلف الاختيار',
+      body: [
+        'كل قطعة تبدأ بعناية وتأمل.',
+        'التناسب والصنعة والحِرفيّة لا تُقيَّم بمظهرها فحسب، بل بمدى صمودها عبر الزمن.',
+        'اختيار صاغه وضوح الرؤية والنيّة الدائمة.',
+      ],
+      image: '/brand/journal-selection.webp',
+    },
   },
 };
 
@@ -67,8 +105,11 @@ export async function loader({request, params, context}: LoaderFunctionArgs) {
 
   invariant(params.journalHandle, 'Missing journal handle');
 
-  // Check if this is a static article first
-  const staticArticle = STATIC_ARTICLES[params.journalHandle];
+  // Check if this is a static article first (pick language, fallback to EN)
+  const staticVersions = STATIC_ARTICLES[params.journalHandle];
+  const staticArticle = staticVersions
+    ? staticVersions[language] || staticVersions.EN
+    : undefined;
 
   // Try Shopify blog query
   let article: any = null;
@@ -103,7 +144,7 @@ export async function loader({request, params, context}: LoaderFunctionArgs) {
   const seo = article
     ? seoPayload.article({article, url: request.url})
     : {
-        title: `${staticArticle!.title} | Formé Haus Journal`,
+        title: `${staticArticle!.title} | ${language === 'AR' ? 'مجلة فورمي هاوس' : 'Formé Haus Journal'}`,
         description: staticArticle!.body[0],
       };
 
@@ -127,16 +168,17 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 export default function Article() {
   const {article, formattedDate, staticArticle} =
     useLoaderData<typeof loader>();
+  const {t, isRTL} = useTranslation();
 
   // Render Shopify article if it exists
   if (article) {
     const {title, image, contentHtml, author} = article;
     return (
-      <div className="min-h-screen bg-[#F9F5F0]">
+      <div className="min-h-screen bg-[#F9F5F0]" dir={isRTL ? 'rtl' : 'ltr'}>
         <div className="max-w-3xl mx-auto px-6 py-16 md:py-24">
           <header className="text-center mb-12">
-            <span className="text-[10px] uppercase tracking-[0.3em] text-[#a87441] block mb-4">
-              Journal
+            <span className={`text-[10px] ${isRTL ? '' : 'uppercase tracking-[0.3em]'} text-[#a87441] block mb-4`}>
+              {t('nav.journal', 'Journal')}
             </span>
             <h1 className="font-serif text-3xl md:text-5xl italic text-[#4A3C31] mb-4">
               {title}
@@ -166,10 +208,10 @@ export default function Article() {
   if (!staticArticle) return null;
 
   return (
-    <div className="relative min-h-screen bg-[#F9F5F0] overflow-hidden">
+    <div className="relative min-h-screen bg-[#F9F5F0] overflow-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Magazine Background Image */}
       {staticArticle.image && (
-        <motion.div 
+        <motion.div
           className="fixed inset-0 z-0 pointer-events-none"
           initial={{opacity: 0}}
           animate={{opacity: 1}}
@@ -193,8 +235,8 @@ export default function Article() {
           animate={{opacity: 1, y: 0}}
           transition={{duration: 0.8, ease: [0.22, 1, 0.36, 1]}}
         >
-          <span className="text-[10px] uppercase tracking-[0.3em] text-[#a87441] block mb-4 font-semibold">
-            Journal
+          <span className={`text-[10px] ${isRTL ? '' : 'uppercase tracking-[0.3em]'} text-[#a87441] block mb-4 font-semibold`}>
+            {t('nav.journal', 'Journal')}
           </span>
           <h1 className="font-serif text-4xl md:text-6xl italic text-[#4A3C31] mb-6 drop-shadow-sm">
             {staticArticle.title}
