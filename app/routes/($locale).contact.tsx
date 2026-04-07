@@ -267,27 +267,6 @@ export default function ContactPage() {
             </a>
           </div>
 
-          {/* Store Hours */}
-          <div className="bg-white p-8 rounded-2xl border border-[#8B8076]/10">
-            <h3 className="font-serif text-xl text-[#4A3C31] mb-4">
-              Store Hours
-            </h3>
-            <div className="space-y-3 text-[13px]">
-              <div className="flex justify-between">
-                <span className="text-[#8B8076]">Sun - Thu</span>
-                <span className="text-[#4A3C31] font-medium">
-                  9:00 AM - 9:00 PM
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#8B8076]">Fri - Sat</span>
-                <span className="text-[#4A3C31] font-medium">
-                  2:00 PM - 10:00 PM
-                </span>
-              </div>
-            </div>
-          </div>
-
           {/* New Ways to Connect */}
           <div className="bg-white p-8 rounded-2xl border border-[#8B8076]/10">
             <h3 className="font-serif text-xl text-[#4A3C31] mb-2">
