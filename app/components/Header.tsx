@@ -220,10 +220,13 @@ export function Header({
   return (
     <header
       role="banner"
-      className={`fixed left-0 right-0 top-0 z-50 flex justify-center transition-all duration-300 ${headerClass} ${
+      className={`fixed inset-x-0 top-0 z-50 w-full flex justify-center transition-all duration-300 ${headerClass} ${
         isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
       }`}
       style={{
+        width: '100%',
+        left: 0,
+        right: 0,
         WebkitBackdropFilter: scrolled
           ? 'blur(40px) saturate(1.2)'
           : 'blur(20px)',
