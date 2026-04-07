@@ -178,10 +178,10 @@ export default function Article() {
           <img
             src={staticArticle.image}
             alt=""
-            className="w-full h-full object-cover object-center opacity-25 mix-blend-multiply"
+            className="w-full h-full object-cover object-center opacity-40 mix-blend-multiply"
           />
           {/* Gradient overlay to ensure text readability toward the bottom */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#F9F5F0]/30 via-[#F9F5F0]/70 to-[#F9F5F0]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#F9F5F0]/10 via-[#F9F5F0]/50 to-[#F9F5F0]" />
         </motion.div>
       )}
 
