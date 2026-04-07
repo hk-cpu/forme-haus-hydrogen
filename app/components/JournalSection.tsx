@@ -71,7 +71,7 @@ export default function JournalSection() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-5">
           {JOURNAL_CARDS.map((card) => (
             <Link key={card.title} to={card.url} className="group block">
-              <div className="relative aspect-[4/5] overflow-hidden rounded-[14px] bg-[#1a1714]">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[14px] bg-[#E8E4E0]">
                 <img
                   src={card.image}
                   alt={t(
@@ -82,14 +82,14 @@ export default function JournalSection() {
                       : 'journal.behindCraft',
                     card.alt,
                   )}
-                  className="h-full w-full object-contain object-center opacity-100 transition-transform duration-500 group-hover:scale-[1.03]"
+                  className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
                   width={card.width}
                   height={card.height}
                   loading="lazy"
                   decoding="async"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </div>
 
               <div className="mt-3 px-1">
