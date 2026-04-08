@@ -481,25 +481,12 @@ export default function Collection() {
             <>
               {isFullWidthHero ? (
                 <div
-                  className={`relative w-full h-[180px] sm:h-[220px] md:h-[280px] lg:h-[340px] ${override?.bgClass || 'bg-[#E8DED4]'}`}
+                  className={`relative w-full h-[160px] sm:h-[200px] md:h-[260px] lg:h-[300px] overflow-hidden ${override?.bgClass || 'bg-[#E8DED4]'}`}
                 >
-                  {/* Brand logo watermarks for background fill */}
-                  <img
-                    src="/brand/logo-icon-only.webp"
-                    alt=""
-                    aria-hidden="true"
-                    className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 h-[60%] opacity-[0.06] object-contain pointer-events-none select-none"
-                  />
-                  <img
-                    src="/brand/logo-icon-only.webp"
-                    alt=""
-                    aria-hidden="true"
-                    className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 h-[60%] opacity-[0.06] object-contain pointer-events-none select-none"
-                  />
                   <motion.img
                     src={heroImage}
                     alt={collection.title}
-                    className="absolute inset-0 w-full h-full object-contain"
+                    className="absolute inset-0 w-full h-full object-cover object-center"
                     loading="eager"
                     fetchPriority="high"
                     style={{y: heroY}}
