@@ -308,22 +308,22 @@ export default function Collection() {
       src: '/assets/heros/new-in-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
-      position: 'center 75%',
-      bgClass: 'bg-[#C4A882]',
+      position: 'center center',
+      bgClass: 'bg-[#B8956E]',
     },
     new: {
       src: '/assets/heros/new-in-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
-      position: 'center 75%',
-      bgClass: 'bg-[#C4A882]',
+      position: 'center center',
+      bgClass: 'bg-[#B8956E]',
     },
     sunglasses: {
       src: '/assets/heros/sunglasses-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
-      position: 'center 20%',
-      bgClass: 'bg-[#D4B896]',
+      position: 'center center',
+      bgClass: 'bg-[#C8B496]',
     },
     sale: {
       src: '/assets/heros/sale-hero-banner.webp',
@@ -335,29 +335,29 @@ export default function Collection() {
       src: '/assets/heros/phone-accessories-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
-      position: 'center 40%',
-      bgClass: 'bg-[#E8DED4]',
+      position: 'center center',
+      bgClass: 'bg-[#C8B8A0]',
     },
     'phone-cases': {
       src: '/assets/heros/phone-accessories-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
-      position: 'center 40%',
-      bgClass: 'bg-[#E8DED4]',
+      position: 'center center',
+      bgClass: 'bg-[#C8B8A0]',
     },
     'phone-straps': {
       src: '/assets/heros/phone-accessories-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
-      position: 'center 40%',
-      bgClass: 'bg-[#E8DED4]',
+      position: 'center center',
+      bgClass: 'bg-[#C8B8A0]',
     },
     'case-strap-bundles': {
       src: '/assets/heros/phone-accessories-hero-banner.webp',
       hideTitle: true,
       fit: 'full-width',
-      position: 'center 40%',
-      bgClass: 'bg-[#E8DED4]',
+      position: 'center center',
+      bgClass: 'bg-[#C8B8A0]',
     },
     'carry-it-your-way': {
       src: '/brand/carry-hero-v2.png',
@@ -479,25 +479,48 @@ export default function Collection() {
         >
           {heroImage ? (
             <>
-              <motion.img
-                src={heroImage}
-                alt={collection.title}
-                className={
-                  isFullWidthHero
-                    ? 'block w-full h-auto'
-                    : 'block h-[30vh] min-h-[240px] w-full object-cover sm:h-[36vh] md:h-[42vh] lg:h-[48vh]'
-                }
-                loading="eager"
-                fetchPriority="high"
-                style={
-                  isFullWidthHero
-                    ? {y: heroY}
-                    : {y: heroY, objectPosition: heroPosition}
-                }
-                initial={{scale: 1.03}}
-                animate={{scale: 1}}
-                transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}
-              />
+              {isFullWidthHero ? (
+                <div
+                  className={`relative w-full h-[180px] sm:h-[220px] md:h-[280px] lg:h-[340px] ${override?.bgClass || 'bg-[#E8DED4]'}`}
+                >
+                  {/* Brand logo watermarks for background fill */}
+                  <img
+                    src="/brand/logo-icon-only.webp"
+                    alt=""
+                    aria-hidden="true"
+                    className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 h-[60%] opacity-[0.06] object-contain pointer-events-none select-none"
+                  />
+                  <img
+                    src="/brand/logo-icon-only.webp"
+                    alt=""
+                    aria-hidden="true"
+                    className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 h-[60%] opacity-[0.06] object-contain pointer-events-none select-none"
+                  />
+                  <motion.img
+                    src={heroImage}
+                    alt={collection.title}
+                    className="absolute inset-0 w-full h-full object-contain"
+                    loading="eager"
+                    fetchPriority="high"
+                    style={{y: heroY}}
+                    initial={{scale: 1.03}}
+                    animate={{scale: 1}}
+                    transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}
+                  />
+                </div>
+              ) : (
+                <motion.img
+                  src={heroImage}
+                  alt={collection.title}
+                  className="block h-[30vh] min-h-[240px] w-full object-cover sm:h-[36vh] md:h-[42vh] lg:h-[48vh]"
+                  loading="eager"
+                  fetchPriority="high"
+                  style={{y: heroY, objectPosition: heroPosition}}
+                  initial={{scale: 1.03}}
+                  animate={{scale: 1}}
+                  transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}
+                />
+              )}
               {!isFullWidthHero && (
                 <>
                   {/* Left edge fade */}
