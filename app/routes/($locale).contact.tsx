@@ -236,10 +236,10 @@ export default function ContactPage() {
               We&apos;ll get back to you as soon as possible.
             </p>
             <a
-              href="mailto:info@formehaus.me"
+              href="mailto:support@formehaus.me"
               className="text-[#a87441] font-medium text-[13px]"
             >
-              Send email
+              support@formehaus.me
             </a>
           </div>
 
