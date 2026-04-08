@@ -235,12 +235,20 @@ export default function ContactPage() {
             <p className="text-[13px] text-[#8B8076] mb-4">
               We&apos;ll get back to you as soon as possible.
             </p>
-            <a
-              href="mailto:support@formehaus.me"
-              className="text-[#a87441] font-medium text-[13px]"
-            >
-              support@formehaus.me
-            </a>
+            <div className="flex flex-col gap-2">
+              <a
+                href="mailto:support@formehaus.me"
+                className="text-[#a87441] font-medium text-[13px]"
+              >
+                support@formehaus.me
+              </a>
+              <a
+                href="mailto:info@formehaus.me"
+                className="text-[#a87441] font-medium text-[13px]"
+              >
+                info@formehaus.me
+              </a>
+            </div>
           </div>
 
           {/* WhatsApp Card */}
