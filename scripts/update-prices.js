@@ -39,7 +39,9 @@ const PRICES = [
 ];
 
 const STORE_DOMAIN =
-  process.env.SHOPIFY_STORE_DOMAIN || process.env.PUBLIC_STORE_DOMAIN;
+  process.env.SHOPIFY_STORE_DOMAIN ||
+  process.env.PUBLIC_STORE_DOMAIN ||
+  'f0c5au-jn.myshopify.com';
 const ACCESS_TOKEN = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN;
 
 if (!STORE_DOMAIN || !ACCESS_TOKEN) {
