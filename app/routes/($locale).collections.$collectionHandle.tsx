@@ -485,12 +485,12 @@ export default function Collection() {
             <>
               {isFullWidthHero ? (
                 <div
-                  className={`relative w-full h-[160px] sm:h-[200px] md:h-[260px] lg:h-[300px] overflow-hidden ${override?.bgClass || 'bg-[#E8DED4]'}`}
+                  className={`relative w-full overflow-hidden ${override?.bgClass || 'bg-[#E8DED4]'}`}
                 >
                   <motion.img
                     src={heroImage}
                     alt={collection.title}
-                    className="absolute inset-0 w-full h-full object-cover object-center"
+                    className="block w-full h-auto object-cover object-center"
                     loading="eager"
                     fetchPriority="high"
                     style={{y: heroY}}
