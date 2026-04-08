@@ -240,7 +240,7 @@ export function ProductCard({
 }: ProductCardProps) {
   const {toggleWishlist, isInWishlist} = useUI();
   const {isRTL, t} = useTranslation();
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<{error?: string}>();
   const shouldReduceMotion = useReducedMotion();
 
   const [currentImage, setCurrentImage] = useState(0);

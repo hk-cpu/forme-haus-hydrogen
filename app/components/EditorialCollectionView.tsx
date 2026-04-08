@@ -475,13 +475,11 @@ function EditorialProductCard({
   const comparePrice = product.compareAtPriceRange?.minVariantPrice;
   const isOnSale =
     comparePrice && parseFloat(comparePrice.amount) > parseFloat(price.amount);
-  const shouldContainImage = sectionType === 'hero-side';
-  const imageFrameClass = shouldContainImage
-    ? 'bg-[#EDE5DB] p-4 md:p-5'
-    : 'bg-[#F0EAE6]';
-  const imageClass = shouldContainImage
-    ? 'w-full h-full object-contain'
-    : 'w-full h-full object-cover';
+  
+  // NEW: All layouts now use object-contain to prevent image cropping
+  // This ensures full product images are always visible
+  const imageFrameClass = 'bg-[#F5F1ED]';
+  const imageClass = 'w-full h-full object-contain';
 
   return (
     <motion.article
@@ -540,8 +538,13 @@ function EditorialProductCard({
                 width={image.width || undefined}
                 height={image.height || undefined}
                 className={imageClass}
+                style={{
+                  maxWidth: '100%',
+                  maxHeight: '100%',
+                  padding: '1rem',
+                }}
                 loading="lazy"
-                animate={reduceMotion ? {} : {scale: isHovered ? 1.05 : 1}}
+                animate={reduceMotion ? {} : {scale: isHovered ? 1.03 : 1}}
                 transition={{duration: 0.6, ease: EASE_OUT_EXPO}}
               />
               {/* Second image on hover (if available) */}
@@ -549,7 +552,12 @@ function EditorialProductCard({
                 <motion.img
                   src={secondImage.url}
                   alt={secondImage.altText || `${product.title} alternate`}
-                  className={`absolute inset-0 ${imageClass} ${shouldContainImage ? 'p-4 md:p-5' : ''}`}
+                  className={`absolute inset-0 ${imageClass}`}
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    padding: '1rem',
+                  }}
                   loading="lazy"
                   initial={false}
                   animate={{opacity: isHovered ? 1 : 0}}
@@ -718,12 +726,12 @@ function QuickViewModal({
         </button>
 
         {/* Image Side */}
-        <div className="w-full md:w-1/2 aspect-[3/4] md:aspect-auto bg-[#F0EAE6] flex-shrink-0 relative overflow-hidden">
+        <div className="w-full md:w-1/2 aspect-[3/4] md:aspect-auto bg-[#F5F1ED] flex-shrink-0 relative overflow-hidden flex items-center justify-center">
           {image && (
             <img
               src={images[displayImage]?.url || image.url}
               alt={images[displayImage]?.altText || product.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain p-6"
             />
           )}
           {/* Image thumbnails */}

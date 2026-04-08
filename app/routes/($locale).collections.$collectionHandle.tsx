@@ -96,6 +96,8 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     'phone-cases',
     'phone-straps',
     'case-strap-bundles',
+    'all',
+    'catalog',
   ];
   const isSyntheticHandle = SYNTHETIC_HANDLES.includes(collectionHandle);
 
@@ -171,6 +173,8 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
       if (collectionHandle === 'phone-cases') title = 'Phone Accessories';
       if (collectionHandle === 'phone-straps') title = 'Phone Straps';
       if (collectionHandle === 'case-strap-bundles') title = 'Bundles';
+      if (collectionHandle === 'all') title = 'All products';
+      if (collectionHandle === 'catalog') title = 'All products';
 
       // Create a synthetic collection object
       collection = {

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import {useEffect, useId, useMemo} from 'react';
 import {useFetcher} from '@remix-run/react';
-import {motion, useReducedMotion} from 'framer-motion';
+import {motion, useReducedMotion, type Variants} from 'framer-motion';
 import type {
   Product,
   ProductSortKeys,
@@ -23,7 +23,7 @@ interface FeaturedProductsProps {
 }
 
 // Animation variants
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: {opacity: 0},
   visible: {
     opacity: 1,
@@ -34,7 +34,7 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: {opacity: 0, y: 30},
   visible: {
     opacity: 1,
@@ -46,7 +46,7 @@ const itemVariants = {
   },
 };
 
-const headerVariants = {
+const headerVariants: Variants = {
   hidden: {opacity: 0, y: 20},
   visible: {
     opacity: 1,

@@ -1,0 +1,181 @@
+{
+  "routes": [
+    {
+      "route": "($locale)._index.tsx",
+      "status": "pass"
+    },
+    {
+      "route": "($locale).cart.tsx",
+      "status": "pass"
+    },
+    {
+      "route": "($locale).products.$productHandle.tsx",
+      "status": "pass"
+    },
+    {
+      "route": "($locale).collections.$collectionHandle.tsx",
+      "status": "pass"
+    },
+    {
+      "route": "($locale).account.tsx",
+      "status": "pass"
+    },
+    {
+      "route": "($locale).hyperpay.initiate.tsx",
+      "status": "pass"
+    },
+    {
+      "route": "($locale).hyperpay.callback.tsx",
+      "status": "pass"
+    },
+    {
+      "route": "($locale).tap.initiate.tsx",
+      "status": "pass"
+    },
+    {
+      "route": "($locale).tap.callback.tsx",
+      "status": "pass"
+    },
+    {
+      "route": "($locale).tap.webhook.tsx",
+      "status": "pass"
+    },
+    {
+      "route": "($locale).search.tsx",
+      "status": "pass"
+    }
+  ],
+  "images": [
+    {
+      "file": "public\\brand\\collections-hero-v2.png",
+      "size": "2.81MB",
+      "oversized": true
+    },
+    {
+      "file": "public\\brand\\collections-hero.png",
+      "size": "2.81MB",
+      "oversized": true
+    },
+    {
+      "file": "public\\brand\\modern-essentials-hero-v2.png",
+      "size": "2.52MB",
+      "oversized": true
+    },
+    {
+      "file": "public\\brand\\edit-new-arrivals-v2.png",
+      "size": "2.39MB",
+      "oversized": true
+    },
+    {
+      "file": "public\\brand\\sun-ready-hero-v2.png",
+      "size": "2.37MB",
+      "oversized": true
+    },
+    {
+      "file": "public\\brand\\sun-ready-hero.png",
+      "size": "2.37MB",
+      "oversized": true
+    },
+    {
+      "file": "public\\brand\\edit-modern-essentials-v2.png",
+      "size": "2.21MB",
+      "oversized": true
+    },
+    {
+      "file": "public\\brand\\edit-sun-ready-v2.png",
+      "size": "1.99MB",
+      "oversized": true
+    },
+    {
+      "file": "public\\brand\\new-arrivals-hero-v2.png",
+      "size": "1.98MB",
+      "oversized": true
+    },
+    {
+      "file": "public\\brand\\new-arrivals-hero.png",
+      "size": "1.98MB",
+      "oversized": true
+    },
+    {
+      "file": "public\\brand\\carry-hero-v2.png",
+      "size": "1.94MB",
+      "oversized": true
+    },
+    {
+      "file": "public\\brand\\carry-hero.png",
+      "size": "1.94MB",
+      "oversized": true
+    },
+    {
+      "file": "public\\assets\\heros\\new-in-hero-banner.webp",
+      "size": "1001KB",
+      "oversized": true
+    },
+    {
+      "file": "public\\assets\\heros\\sale-hero-banner.webp",
+      "size": "851KB",
+      "oversized": true
+    },
+    {
+      "file": "public\\brand\\edit-modern-essentials.webp",
+      "size": "362KB",
+      "oversized": false
+    }
+  ],
+  "payment": [
+    {
+      "test": "HyperPay Initiate Route",
+      "status": "pass"
+    },
+    {
+      "test": "HyperPay Callback Route",
+      "status": "pass"
+    },
+    {
+      "test": "Tap Initiate Route",
+      "status": "pass"
+    },
+    {
+      "test": "Tap Callback Route",
+      "status": "pass"
+    },
+    {
+      "test": "Tap Webhook Route",
+      "status": "pass"
+    },
+    {
+      "test": "Cart Payment Integration",
+      "status": "pass"
+    }
+  ],
+  "environment": [
+    {
+      "variable": "PUBLIC_STOREFRONT_API_TOKEN",
+      "status": "configured"
+    },
+    {
+      "variable": "PUBLIC_STORE_DOMAIN",
+      "status": "configured"
+    },
+    {
+      "variable": "PRIVATE_STOREFRONT_API_TOKEN",
+      "status": "configured"
+    },
+    {
+      "variable": "SESSION_SECRET",
+      "status": "configured"
+    },
+    {
+      "variable": "PUBLIC_CHECKOUT_DOMAIN",
+      "status": "configured"
+    },
+    {
+      "variable": "TAP_SECRET_KEY",
+      "status": "missing"
+    },
+    {
+      "variable": "TAP_API_URL",
+      "status": "configured"
+    }
+  ]
+}
