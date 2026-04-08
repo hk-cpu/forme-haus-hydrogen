@@ -6,7 +6,7 @@ import {useTranslation} from '~/hooks/useTranslation';
 export const headers = routeHeaders;
 
 export const meta: MetaFunction = () => {
-  return [{title: 'Terms of Service | Formé Haus'}];
+  return [{title: 'Terms & Conditions | Formé Haus'}];
 };
 
 export default function TermsOfServicePage() {
@@ -22,7 +22,7 @@ export default function TermsOfServicePage() {
             {isArabic ? 'السياسات' : 'Policies'}
           </span>
           <h1 className="font-serif text-3xl md:text-4xl text-[#4A3C31] tracking-wider">
-            {isArabic ? 'شروط الخدمة' : 'Terms of Service'}
+            {isArabic ? 'الشروط والأحكام' : 'Terms & Conditions'}
           </h1>
           <div className="mx-auto mt-6 h-px w-20 bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
         </div>

@@ -54,7 +54,8 @@ export default function ShippingPolicyPage() {
 
             <p>
               بالنسبة للطلبات التي يتم شحنها خارج المملكة العربية السعودية،
-              يتحمل العميل أي رسوم جمركية أو ضرائب استيراد إن وجدت.
+              يتحمل العميل كامل الرسوم الجمركية وأي ضرائب أو رسوم إضافية
+              متعلقة بالاستيراد.
             </p>
           </div>
         ) : (
@@ -81,8 +82,9 @@ export default function ShippingPolicyPage() {
             </p>
 
             <p>
-              For orders shipped outside Saudi Arabia, any applicable customs
-              duties or import taxes are the responsibility of the customer.
+              For orders shipped outside Saudi Arabia, all applicable customs
+              duties, import taxes, and additional charges are the
+              responsibility of the customer.
             </p>
           </div>
         )}

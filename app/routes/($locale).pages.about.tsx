@@ -77,7 +77,7 @@ export default function AboutPage() {
             {isRTL ? (
               'انطلقت Formé Haus في الرياض من رغبة في تقديم منظور أكثر وعياً للرفاهية العصرية — حيث يكون الاختيار مقصوداً، وتكون الأناقة تعبيراً هادئاً لا يزول.'
             ) : (
-              'Formé Haus began in Riyadh with a desire to offer a more considered approach to modern luxury, where selection is intentional, and elegance is enduring.'
+              'Formé Haus was founded in Riyadh with a desire to offer a more considered approach to modern luxury, where selection is intentional, and elegance is enduring.'
             )}
           </p>
         </FadeInSection>
@@ -91,8 +91,16 @@ export default function AboutPage() {
           <FadeInSection>
             <p>
               {isRTL
+                ? 'تنطلق هويتنا من إحساس سعودي أصيل، تتشكّل ملامحه من درجات لونية مستوحاة من محيطنا — ألوان دافئة، وإضاءة ناعمة، وتدرجات تحاكي الحجر والرمال والملامس الطبيعية. ليست كمرجع مباشر، بل كأساس هادئ يعكس الانتماء.'
+                : 'Rooted in a distinctly Saudi sensibility, our identity is shaped by a palette drawn from our landscape — warm neutrals, softened light, and tones that echo stone, sand, and natural textures. Not as a reference, but as a quiet foundation.'}
+            </p>
+          </FadeInSection>
+
+          <FadeInSection>
+            <p>
+              {isRTL
                 ? 'تأسست Formé Haus كمنصة تقودها امرأة بفخر، حاملةً رؤية أنثوية مميزة تتشكل من الحدس، والرقي، والأصالة.'
-                : 'Founded as a proudly woman-led business, Formé Haus reflects a distinctly feminine perspective shaped by intuition, refinement, and authenticity.'}
+                : 'As a proudly woman-led business, Formé Haus reflects a feminine perspective guided by intuition, refinement, and authenticity.'}
             </p>
           </FadeInSection>
 
@@ -108,7 +116,7 @@ export default function AboutPage() {
             <p>
               {isRTL
                 ? 'تُقدَّم اختياراتنا ضمن إصدارات محدودة، حفاظاً على التفرّد والتوازن. وننجذب إلى توازن الخطوط، وغنى الملامس، وحرفية تعبّر عن ثقة هادئة لا تحتاج إلى لفت الانتباه.'
-                : 'Our edits are released in limited quantities, preserving distinction and balance. We are drawn to balanced silhouettes, tactile textures, and craftsmanship defined by quiet confidence.'}
+                : 'Our edits are released in limited quantities, preserving distinction and balance. We are drawn to balanced silhouettes, refined textures, and craftsmanship defined by quiet confidence.'}
             </p>
           </FadeInSection>
 
@@ -186,8 +194,16 @@ export default function AboutPage() {
           <FadeInSection>
             <p>
               {isRTL
+                ? 'تنطلق رؤيتنا من إحساس بالمكان، من دفء الألوان، وهدوء التوازن، وانسجام الطبيعة، حيث تلتقي النعومة مع البناء في توازن مدروس.'
+                : 'Guided by a sense of place, our perspective is grounded in warmth, restraint, and natural harmony, where softness and structure exist in balance.'}
+            </p>
+          </FadeInSection>
+
+          <FadeInSection>
+            <p>
+              {isRTL
                 ? 'ننجذب إلى قطع تبدو وكأنها وُجدت لتكون — تنتمي بطبيعتها، منسابة، متزنة، ومنسجمة مع إيقاع المرأة وطبيعتها.'
-                : 'The pieces we are drawn to feel instinctive rather than imposed, effortless, composed, and aligned with a woman\'s natural rhythm.'}
+                : 'The pieces we are drawn to feel instinctive rather than imposed — effortless, composed, and aligned with a woman\'s natural rhythm.'}
             </p>
           </FadeInSection>
 

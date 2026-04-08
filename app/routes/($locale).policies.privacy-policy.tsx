@@ -34,150 +34,110 @@ export default function PrivacyPolicyPage() {
             dir="rtl"
           >
             <p>
-              تحترم فورمي هاوس خصوصيتكم وتلتزم بحماية بياناتكم الشخصية وفقًا
-              للأنظمة المعمول بها في المملكة العربية السعودية، بما في ذلك نظام
-              حماية البيانات الشخصية.
+              في <strong>Formé Haus</strong> نحترم خصوصيتكم ونلتزم بحماية
+              بياناتكم الشخصية وفقًا لأنظمة المملكة العربية السعودية، بما في
+              ذلك نظام حماية البيانات الشخصية.
             </p>
 
-            <h3>البيانات التي نقوم بجمعها</h3>
-            <p>
-              قد نقوم بجمع البيانات التالية عند استخدام الموقع أو إجراء عملية
-              شراء:
-            </p>
+            <h3>البيانات التي نجمعها</h3>
+            <p>عند زيارتكم للموقع أو إتمام طلب، قد نجمع:</p>
             <ul>
               <li>الاسم الكامل</li>
               <li>البريد الإلكتروني ورقم الهاتف</li>
               <li>عنوان الشحن والفوترة</li>
-              <li>بيانات الدفع (تتم معالجتها بشكل آمن)</li>
-              <li>سجل الطلبات والمعاملات</li>
-              <li>معلومات الجهاز والتصفح (مثل عنوان IP)</li>
+              <li>تفاصيل الدفع (تُعالج بشكل آمن)</li>
+              <li>سجل الطلبات</li>
+              <li>معلومات الجهاز مثل عنوان IP</li>
             </ul>
 
             <h3>كيفية استخدام البيانات</h3>
-            <p>يتم استخدام البيانات فقط من أجل:</p>
+            <p>تُستخدم بياناتكم فقط من أجل:</p>
             <ul>
-              <li>تنفيذ الطلبات وتوصيلها</li>
-              <li>إدارة عمليات الدفع</li>
+              <li>معالجة الطلبات وتوصيلها</li>
+              <li>إدارة المدفوعات</li>
               <li>تقديم خدمة العملاء</li>
-              <li>إرسال تحديثات الطلب والإشعارات المهمة</li>
+              <li>إرسال تحديثات الطلبات</li>
               <li>تحسين الموقع والخدمات</li>
             </ul>
-            <p>
-              لن يتم استخدام البيانات لغير هذه الأغراض إلا إذا تطلب النظام ذلك.
-            </p>
 
             <h3>حماية البيانات</h3>
             <p>
-              تطبق فورمي هاوس إجراءات فنية وتنظيمية مناسبة لحماية البيانات
-              الشخصية. يتم معالجة بيانات الدفع عبر مزودي خدمات دفع معتمدين ولا
-              يتم تخزينها على خوادمنا.
+              نطبق تدابير تقنية وتنظيمية مناسبة لحماية بياناتكم الشخصية من
+              الوصول غير المصرح به أو الإفصاح أو التعديل أو الإتلاف.
             </p>
-
-            <h3>مشاركة البيانات</h3>
-            <p>
-              قد تتم مشاركة البيانات مع جهات موثوقة لأغراض تشغيلية فقط، مثل:
-            </p>
-            <ul>
-              <li>مزودي خدمات الدفع</li>
-              <li>شركات الشحن والخدمات اللوجستية</li>
-              <li>مزودي خدمات تقنية المعلومات</li>
-            </ul>
-            <p>وتلتزم هذه الجهات بسرية وأمان البيانات.</p>
 
             <h3>حقوقكم</h3>
-            <p>يحق لكم وفقًا للنظام:</p>
-            <ul>
-              <li>الوصول إلى بياناتكم الشخصية</li>
-              <li>طلب تصحيح البيانات غير الدقيقة</li>
-              <li>طلب حذف البيانات وفقًا لما يسمح به النظام</li>
-            </ul>
-            <p>للتواصل معنا:</p>
-            <ul>
-              <li>البريد الإلكتروني: support@formehaus.me</li>
-            </ul>
+            <p>
+              وفقًا للأنظمة المعمول بها، يحق لكم طلب الوصول إلى بياناتكم
+              الشخصية أو تصحيحها أو حذفها في الحالات التي يسمح بها النظام.
+            </p>
+            <p>للاستفسارات المتعلقة بالخصوصية يرجى التواصل معنا:</p>
+            <p>
+              <strong>البريد الإلكتروني:</strong>{' '}
+              <a href="mailto:support@formehaus.me">support@formehaus.me</a>
+            </p>
 
             <h3>تحديثات السياسة</h3>
             <p>
-              قد يتم تحديث هذه السياسة عند الحاجة، وسيتم نشر أي تعديل على هذه
-              الصفحة.
+              قد تقوم Formé Haus بتحديث سياسة الخصوصية من وقت لآخر، وسيتم نشر
+              أي تعديل على هذه الصفحة.
             </p>
           </div>
         ) : (
           /* English */
           <div className="prose max-w-prose mx-auto prose-headings:text-[#4A3C31] prose-headings:font-serif prose-p:text-[#4A3C31]/80 prose-li:text-[#4A3C31]/80 font-light leading-relaxed">
             <p>
-              Formé Haus respects your privacy and is committed to protecting
-              your personal data in accordance with the laws of the Kingdom of
-              Saudi Arabia, including the Saudi Personal Data Protection Law
-              (PDPL).
+              At <strong>Formé Haus</strong>, we respect your privacy and are
+              committed to protecting your personal data in accordance with the
+              laws of the Kingdom of Saudi Arabia, including the Saudi Personal
+              Data Protection Law.
             </p>
 
             <h3>Information We Collect</h3>
             <p>
-              We may collect the following information when you visit our
-              website or place an order:
+              When you visit our website or place an order, we may collect:
             </p>
             <ul>
               <li>Full name</li>
               <li>Email address and phone number</li>
               <li>Shipping and billing address</li>
               <li>Payment details (processed securely)</li>
-              <li>Order and transaction history</li>
-              <li>Device and browsing information (e.g., IP address)</li>
+              <li>Order history</li>
+              <li>Device information such as IP address</li>
             </ul>
 
             <h3>How We Use Your Information</h3>
-            <p>Your data is used only to:</p>
+            <p>Your information is used only to:</p>
             <ul>
               <li>Process and deliver orders</li>
               <li>Manage payments</li>
               <li>Provide customer support</li>
-              <li>Send order updates and service notifications</li>
+              <li>Send order updates</li>
               <li>Improve our website and services</li>
             </ul>
-            <p>
-              We do not use your personal data for purposes other than those
-              stated, unless required or permitted by law.
-            </p>
 
             <h3>Data Protection</h3>
             <p>
-              We apply appropriate technical and organizational measures to
-              protect your personal data. Payment information is processed
-              securely through authorized third-party providers and is not
-              stored on our servers.
-            </p>
-
-            <h3>Sharing of Information</h3>
-            <p>
-              Your information may be shared only with trusted service providers
-              for operational purposes, including:
-            </p>
-            <ul>
-              <li>Payment processors</li>
-              <li>Shipping and logistics partners</li>
-              <li>IT service providers</li>
-            </ul>
-            <p>
-              All third parties are required to maintain confidentiality and
-              data security.
+              We implement appropriate technical and organizational measures to
+              protect your personal data against unauthorized access,
+              disclosure, alteration, or destruction.
             </p>
 
             <h3>Your Rights</h3>
-            <p>In accordance with applicable laws, you have the right to:</p>
-            <ul>
-              <li>Access your personal data</li>
-              <li>Request correction of inaccurate information</li>
-              <li>Request deletion where legally permissible</li>
-            </ul>
-            <p>To exercise your rights, contact us at:</p>
-            <ul>
-              <li>Email: support@formehaus.me</li>
-            </ul>
+            <p>
+              In accordance with applicable regulations, you have the right to
+              request access to, correction of, or deletion of your personal
+              data where permitted by law.
+            </p>
+            <p>For privacy inquiries, please contact us:</p>
+            <p>
+              <strong>Email:</strong>{' '}
+              <a href="mailto:support@formehaus.me">support@formehaus.me</a>
+            </p>
 
             <h3>Policy Updates</h3>
             <p>
-              Formé Haus may update this Privacy Policy when necessary. Any
+              Formé Haus may update this Privacy Policy from time to time. Any
               changes will be published on this page.
             </p>
           </div>
