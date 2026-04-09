@@ -209,10 +209,10 @@ export default function Article() {
 
   return (
     <div className="relative min-h-screen bg-[#F9F5F0] overflow-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
-      {/* Magazine Hero Image — visible, zoomed-out, fitted */}
+      {/* Magazine Hero Image — full-width, visible, prominent */}
       {staticArticle.image && (
         <motion.div
-          className="relative w-full max-h-[520px] overflow-hidden bg-[#EDE6DD]"
+          className="relative w-full overflow-hidden"
           initial={{opacity: 0}}
           animate={{opacity: 1}}
           transition={{duration: 1.2, ease: 'easeOut'}}
@@ -220,10 +220,10 @@ export default function Article() {
           <img
             src={staticArticle.image}
             alt={staticArticle.title}
-            className="w-full h-[50vh] max-h-[520px] object-contain object-center"
+            className="w-full h-[55vh] md:h-[65vh] max-h-[600px] object-cover object-center"
           />
           {/* Subtle bottom fade into page background */}
-          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#F9F5F0] to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#F9F5F0] to-transparent" />
         </motion.div>
       )}
 
