@@ -311,7 +311,7 @@ export default function ContactPage() {
                 className="aspect-square overflow-hidden rounded-lg"
               >
                 <img
-                  src="/brand/ig-post-2.webp"
+                  src="/brand/ig-post-2.jpg"
                   alt="Instagram post"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                 />
