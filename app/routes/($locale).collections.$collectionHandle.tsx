@@ -309,21 +309,21 @@ export default function Collection() {
     }
   > = {
     'new-in': {
-      src: '/assets/heros/new-in-hero-banner.webp',
+      src: '/brand/new-in-hero-v3.png',
       hideTitle: true,
       fit: 'full-width',
       position: 'center center',
       bgClass: 'bg-[#B8956E]',
     },
     new: {
-      src: '/assets/heros/new-in-hero-banner.webp',
+      src: '/brand/new-in-hero-v3.png',
       hideTitle: true,
       fit: 'full-width',
       position: 'center center',
       bgClass: 'bg-[#B8956E]',
     },
     sunglasses: {
-      src: '/assets/heros/sunglasses-hero-banner.webp',
+      src: '/brand/sunglasses-hero-v3.png',
       hideTitle: true,
       fit: 'full-width',
       position: 'center center',
@@ -336,28 +336,28 @@ export default function Collection() {
       bgClass: 'bg-[#E7D6C3]',
     },
     phone: {
-      src: '/assets/heros/phone-accessories-hero-banner.webp',
+      src: '/brand/phone-accessories-hero-v3.png',
       hideTitle: true,
       fit: 'full-width',
       position: 'center center',
       bgClass: 'bg-[#C8B8A0]',
     },
     'phone-cases': {
-      src: '/assets/heros/phone-accessories-hero-banner.webp',
+      src: '/brand/phone-accessories-hero-v3.png',
       hideTitle: true,
       fit: 'full-width',
       position: 'center center',
       bgClass: 'bg-[#C8B8A0]',
     },
     'phone-straps': {
-      src: '/assets/heros/phone-accessories-hero-banner.webp',
+      src: '/brand/phone-accessories-hero-v3.png',
       hideTitle: true,
       fit: 'full-width',
       position: 'center center',
       bgClass: 'bg-[#C8B8A0]',
     },
     'case-strap-bundles': {
-      src: '/assets/heros/phone-accessories-hero-banner.webp',
+      src: '/brand/phone-accessories-hero-v3.png',
       hideTitle: true,
       fit: 'full-width',
       position: 'center center',
@@ -367,6 +367,7 @@ export default function Collection() {
       src: '/brand/carry-hero-v3.png',
       hideTitle: true,
       fit: 'full-width',
+      position: 'top',
     },
     'sun-ready': {
       src: '/brand/sun-ready-hero-v3.png',
@@ -490,10 +491,13 @@ export default function Collection() {
                   <motion.img
                     src={heroImage}
                     alt={collection.title}
-                    className="block w-full h-auto object-cover object-center"
+                    className={`block w-full h-auto object-cover ${override?.position === 'top' ? 'object-top' : 'object-center'}`}
                     loading="eager"
                     fetchPriority="high"
-                    style={{y: heroY}}
+                    style={{
+                      y: heroY,
+                      transformOrigin: override?.position === 'top' ? 'top center' : 'center center'
+                    }}
                     initial={{scale: 1.03}}
                     animate={{scale: 1}}
                     transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}

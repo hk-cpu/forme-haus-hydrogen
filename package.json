@@ -25,7 +25,6 @@
     "@remix-run/node": "^2.17.4",
     "@remix-run/react": "^2.17.4",
     "@remix-run/server-runtime": "^2.17.4",
-    "@shopify/cli": "^3.90.0",
     "@shopify/hydrogen": "^2024.10.2",
     "@shopify/remix-oxygen": "^2.0.12",
     "@tailwindcss/postcss": "^4.1.18",
@@ -50,6 +49,7 @@
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
+    "@shopify/cli": "^3.90.0",
     "@playwright/test": "^1.48.2",
     "@remix-run/dev": "^2.17.4",
     "@remix-run/eslint-config": "^2.15.3",
