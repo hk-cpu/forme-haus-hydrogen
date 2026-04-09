@@ -244,8 +244,6 @@ export function Header({
           { id: 'sub-new', title: t('nav.newIn', 'New to Haus'), to: '/collections/new-in' },
           { id: 'sub-sun', title: t('nav.sunglasses', 'Sunglasses'), to: '/collections/sunglasses' },
           { id: 'sub-phone', title: t('nav.phoneCases', 'Phone Accessories'), to: '/collections/phone-cases' },
-          { id: 'sub-bundles', title: t('nav.bundles', 'Bundles'), to: '/collections/case-strap-bundles' },
-          { id: 'sub-sale', title: t('nav.sale', 'Sale'), to: '/collections/sale' },
           { id: 'sub-all', title: t('nav.viewAll', 'View All Collections'), to: '/collections' },
         ],
       };

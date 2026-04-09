@@ -287,7 +287,7 @@ export function AccountOverlay() {
                   className={`pb-4 text-sm uppercase tracking-[0.15em] transition-colors relative ${
                     activeTab === 'signin'
                       ? 'text-bronze'
-                      : 'text-[#AA9B8F] hover:text-warm'
+                      : 'text-taupe hover:text-warm'
                   }`}
                   onClick={() => setActiveTab('signin')}
                 >
@@ -336,7 +336,7 @@ export function AccountOverlay() {
                     <div>
                       <label
                         htmlFor="signin-email"
-                        className="block text-[12px] uppercase tracking-[0.1em] text-[#AA9B8F] mb-2"
+                        className="block text-[12px] uppercase tracking-[0.1em] text-taupe mb-2"
                       >
                         {t('account.email', 'Email')} *
                       </label>
@@ -359,7 +359,7 @@ export function AccountOverlay() {
                     <div>
                       <label
                         htmlFor="signin-password"
-                        className="block text-[12px] uppercase tracking-[0.1em] text-[#AA9B8F] mb-2"
+                        className="block text-[12px] uppercase tracking-[0.1em] text-taupe mb-2"
                       >
                         {t('account.password', 'Password')} *
                       </label>
@@ -393,9 +393,9 @@ export function AccountOverlay() {
 
                     {/* Forgot Password */}
                     <div className="flex justify-end">
-                      <Link
-                        to="/account/recover"
-                        className="text-sm text-[#AA9B8F] hover:text-[#a87441] transition-colors underline underline-offset-4"
+                    <Link
+                      to="/account/recover"
+                      className="text-sm text-taupe hover:text-bronze transition-colors underline underline-offset-4"
                         onClick={handleClose}
                       >
                         {t('account.forgotPassword', 'Forgot your password?')}
@@ -406,7 +406,7 @@ export function AccountOverlay() {
                     <button
                       type="submit"
                       disabled={loginFetcher.state === 'submitting'}
-                      className="w-full bg-[#a87441] hover:bg-[#8B5E3C] text-white font-medium py-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      className="w-full bg-bronze hover:bg-bronze-dark text-white font-medium py-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                       {loginFetcher.state === 'submitting' ? (
                         <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -433,7 +433,7 @@ export function AccountOverlay() {
                     {t('account.create', 'Create Account')}
                   </h3>
 
-                  <p className="text-[#AA9B8F] text-sm mb-6 leading-relaxed">
+                  <p className="text-taupe text-sm mb-6 leading-relaxed">
                     {t(
                       'account.createDescription',
                       'Create an account to enjoy exclusive benefits and a personalized shopping experience.',
@@ -445,7 +445,7 @@ export function AccountOverlay() {
                     <div>
                       <label
                         htmlFor="create-email"
-                        className="block text-[12px] uppercase tracking-[0.1em] text-[#AA9B8F] mb-2"
+                        className="block text-[12px] uppercase tracking-[0.1em] text-taupe mb-2"
                       >
                         {t('account.email', 'Email')} *
                       </label>
@@ -467,7 +467,7 @@ export function AccountOverlay() {
                     <div>
                       <label
                         htmlFor="create-password"
-                        className="block text-[12px] uppercase tracking-[0.1em] text-[#AA9B8F] mb-2"
+                        className="block text-[12px] uppercase tracking-[0.1em] text-taupe mb-2"
                       >
                         {t('account.password', 'Password')} *
                       </label>
@@ -498,7 +498,7 @@ export function AccountOverlay() {
                           {showPassword ? <Icons.EyeOff /> : <Icons.Eye />}
                         </button>
                       </div>
-                      <p className="text-[#AA9B8F]/60 text-xs mt-2">
+                      <p className="text-taupe/60 text-xs mt-2">
                         {t(
                           'account.passwordHint',
                           'Must be at least 8 characters',
@@ -524,8 +524,8 @@ export function AccountOverlay() {
                   </form>
 
                   {/* Benefits */}
-                  <div className="mt-8 pt-8 border-t border-[#a87441]/20">
-                    <h4 className="text-[11px] uppercase tracking-[0.2em] text-[#AA9B8F] mb-4">
+                  <div className="mt-8 pt-8 border-t border-bronze/20">
+                    <h4 className="text-[11px] uppercase tracking-[0.2em] text-taupe mb-4">
                       {t('account.benefits', 'Member Benefits')}
                     </h4>
                     <ul className="space-y-3">

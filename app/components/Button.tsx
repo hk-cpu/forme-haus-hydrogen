@@ -72,16 +72,16 @@ export const Button = forwardRef(
     };
 
     const baseButtonClasses =
-      'relative overflow-hidden inline-flex items-center justify-center rounded-lg font-medium text-center transition-all duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze focus-visible:ring-offset-2 focus-visible:ring-offset-background';
+      'relative overflow-hidden inline-flex items-center justify-center rounded-md font-medium text-center transition-all duration-300 ease-[var(--ease-luxe)] focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze focus-visible:ring-offset-0 disabled:opacity-50 disabled:cursor-not-allowed';
 
     const variants = {
-      primary: `${baseButtonClasses} bg-bronze text-white border border-bronze hover:bg-bronze-dark hover:border-bronze-dark uppercase tracking-[0.2em] text-[11px] py-4 px-8 shadow-[0_4px_14px_0_rgba(168,116,65,0.39)] hover:shadow-[0_6px_20px_rgba(168,116,65,0.23)] hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed`,
+      primary: `${baseButtonClasses} bg-bronze text-white border border-bronze hover:bg-bronze-dark hover:border-bronze-dark uppercase tracking-[0.2em] text-[11px] py-4 px-8 shadow-[var(--shadow-card)] hover:shadow-glow-bronze hover:-translate-y-0.5`,
 
-      secondary: `${baseButtonClasses} bg-transparent border border-warm/30 text-warm hover:bg-warm/5 hover:border-warm/50 uppercase tracking-[0.2em] text-[11px] py-4 px-8 disabled:opacity-50 hover:shadow-[0_0_15px_rgba(240,234,230,0.1)]`,
+      secondary: `${baseButtonClasses} bg-transparent border border-warm/30 text-warm hover:bg-warm/5 hover:border-warm/50 uppercase tracking-[0.2em] text-[11px] py-4 px-8`,
 
-      bronze: `${baseButtonClasses} bg-gradient-to-r from-bronze via-[#b88a5c] to-bronze-dark text-white uppercase tracking-[0.2em] text-[11px] py-4 px-8 shadow-lg hover:shadow-xl hover:brightness-110 disabled:opacity-50 bg-[length:200%_auto] hover:bg-right transition-[background-position] duration-700`,
+      bronze: `${baseButtonClasses} bg-gradient-to-r from-bronze via-bronze-light to-bronze-dark text-white uppercase tracking-[0.2em] text-[11px] py-4 px-8 shadow-[var(--shadow-card)] hover:shadow-glow-bronze hover:brightness-110 bg-[length:200%_auto] hover:bg-right transition-[background-position] duration-700`,
 
-      outline: `${baseButtonClasses} bg-transparent border-[1.5px] border-bronze text-bronze hover:bg-bronze hover:text-white uppercase tracking-[0.2em] text-[11px] py-4 px-8 disabled:opacity-50 hover:shadow-[0_0_20px_rgba(168,116,65,0.4)]`,
+      outline: `${baseButtonClasses} bg-transparent border border-bronze text-bronze hover:bg-bronze hover:text-white uppercase tracking-[0.2em] text-[11px] py-4 px-8`,
 
       inline:
         'relative inline-flex items-center text-warm/70 hover:text-bronze transition-colors duration-300 group',

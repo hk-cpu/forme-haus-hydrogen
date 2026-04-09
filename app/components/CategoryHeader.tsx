@@ -9,38 +9,11 @@ import {useTranslation} from '~/hooks/useTranslation';
  * When viewing a phone-related collection, show phone siblings.
  * Otherwise show the top-level categories.
  */
-const PHONE_HANDLES = ['phone-cases', 'phone-straps', 'case-strap-bundles'];
-
-const TOP_LEVEL_CATEGORIES = [
-  {id: 'shop-all', label: 'Shop All', href: '/collections'},
+const CATEGORIES = [
+  {id: 'shop-all', label: 'Shop All', href: '/products'},
   {id: 'phone-cases', label: 'Phone Cases', href: '/collections/phone-cases'},
-  {
-    id: 'phone-straps',
-    label: 'Phone Straps',
-    href: '/collections/phone-straps',
-  },
-  {
-    id: 'bundles',
-    label: 'Bundles',
-    href: '/collections/case-strap-bundles',
-  },
-  {id: 'sunglasses', label: 'Sunglasses', href: '/collections/sunglasses'},
-  {id: 'sale', label: 'Sale', href: '/collections/sale'},
-];
-
-const PHONE_SUBCATEGORIES = [
-  {
-    id: 'all-phone',
-    label: 'All Phone Accessories',
-    href: '/collections/phone-cases',
-  },
-  {id: 'phone-cases', label: 'Cases', href: '/collections/phone-cases'},
   {id: 'phone-straps', label: 'Straps', href: '/collections/phone-straps'},
-  {
-    id: 'bundles',
-    label: 'Bundles',
-    href: '/collections/case-strap-bundles',
-  },
+  {id: 'sunglasses', label: 'Sunglasses', href: '/collections/sunglasses'},
 ];
 
 /**
@@ -67,12 +40,7 @@ export function CategoryHeader({
   const {isRTL, t} = useTranslation();
   const location = useLocation();
 
-  // Choose context-aware category list
-  const isPhoneContext =
-    collectionHandle && PHONE_HANDLES.includes(collectionHandle);
-  const categories = isPhoneContext
-    ? PHONE_SUBCATEGORIES
-    : TOP_LEVEL_CATEGORIES;
+  const categories = CATEGORIES;
 
   return (
     <div

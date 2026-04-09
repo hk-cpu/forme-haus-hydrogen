@@ -209,25 +209,25 @@ export default function Article() {
 
   return (
     <div className="relative min-h-screen bg-[#F9F5F0] overflow-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
-      {/* Magazine Background Image */}
+      {/* Magazine Hero Image — visible, zoomed-out, fitted */}
       {staticArticle.image && (
         <motion.div
-          className="fixed inset-0 z-0 pointer-events-none"
+          className="relative w-full max-h-[520px] overflow-hidden bg-[#EDE6DD]"
           initial={{opacity: 0}}
           animate={{opacity: 1}}
-          transition={{duration: 1.5, ease: 'easeOut'}}
+          transition={{duration: 1.2, ease: 'easeOut'}}
         >
           <img
             src={staticArticle.image}
-            alt=""
-            className="w-full h-full object-cover object-center opacity-40 mix-blend-multiply"
+            alt={staticArticle.title}
+            className="w-full h-[50vh] max-h-[520px] object-contain object-center"
           />
-          {/* Gradient overlay to ensure text readability toward the bottom */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#F9F5F0]/10 via-[#F9F5F0]/50 to-[#F9F5F0]" />
+          {/* Subtle bottom fade into page background */}
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#F9F5F0] to-transparent" />
         </motion.div>
       )}
 
-      <div className="relative z-10 max-w-3xl mx-auto px-6 py-24 md:py-32">
+      <div className="relative z-10 max-w-3xl mx-auto px-6 py-12 md:py-16">
         {/* Header */}
         <motion.header
           className="text-center mb-16 md:mb-24"

@@ -44,14 +44,7 @@ export default function AboutPage() {
       {/* Hero Section — Text-only with elegant spacing */}
       <div className="pt-20 md:pt-28 pb-12 md:pb-16 bg-[#F9F5F0]">
         <div className="max-w-[860px] mx-auto px-6 md:px-12 text-center">
-          <motion.span
-            className="text-[10px] tracking-[0.4em] text-[#a87441] block mb-4"
-            initial={{opacity: 0, y: 10}}
-            animate={{opacity: 1, y: 0}}
-            transition={{delay: 0.2, duration: 0.6}}
-          >
-            {isRTL ? 'تأسست في الرياض' : 'Est. Riyadh'}
-          </motion.span>
+
           <motion.h1
             className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-text tracking-wider"
             initial={{opacity: 0, y: 20}}
@@ -164,9 +157,7 @@ export default function AboutPage() {
         {/* Philosophy */}
         <FadeInSection>
           <div className="mb-10">
-            <span className="text-[10px] uppercase tracking-[0.35em] text-[#a87441] block mb-3">
-              Formé Haus
-            </span>
+
             <h2 className="font-serif text-3xl md:text-4xl text-brand-text tracking-wider">
               {isRTL ? 'فلسفتنا' : 'Our Philosophy'}
             </h2>

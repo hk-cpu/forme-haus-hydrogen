@@ -331,7 +331,7 @@ function CartDiscounts({
               <Icons.Tag className="text-bronze" />
             </div>
             <div>
-              <span className="text-[10px] uppercase tracking-wider text-[#8B8076] block">
+              <span className="text-[10px] uppercase tracking-wider text-taupe block">
                 {t('cart.discount')}
               </span>
           <span className="text-sm font-medium text-warm">
@@ -349,7 +349,7 @@ function CartDiscounts({
             >
               <IconRemove
                 aria-hidden="true"
-                className="w-4 h-4 text-[#8B8076]"
+                className="w-4 h-4 text-taupe"
               />
             </motion.button>
           </UpdateDiscountForm>
@@ -360,9 +360,9 @@ function CartDiscounts({
       <UpdateDiscountForm discountCodes={codes}>
         <div className="flex items-center gap-2">
           <div className="flex-1 relative">
-            <Icons.Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8B8076]" />
+            <Icons.Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-taupe" />
             <input
-          className="w-full pl-10 pr-4 py-3 text-sm bg-surface border border-[#8B8076]/20 rounded-lg text-warm placeholder:text-[#8B8076]/50 focus:outline-none focus:border-bronze/50 transition-colors"
+          className="w-full pl-10 pr-4 py-3 text-sm bg-surface border border-taupe/20 rounded-lg text-warm placeholder:text-taupe/50 focus:outline-none focus:border-bronze/50 transition-colors"
               type="text"
               name="discountCode"
               placeholder={t('cart.enterDiscountCode', 'Enter discount code')}
@@ -370,7 +370,7 @@ function CartDiscounts({
           </div>
           <motion.button
             type="submit"
-          className="px-5 py-3 text-xs uppercase tracking-wider font-medium text-warm bg-surface border border-[#8B8076]/20 rounded-lg hover:bg-bronze hover:border-bronze transition-all flex items-center gap-2"
+          className="px-5 py-3 text-xs uppercase tracking-wider font-medium text-warm bg-surface border border-taupe/20 rounded-lg hover:bg-bronze hover:border-bronze transition-all flex items-center gap-2"
             whileHover={{scale: 1.02}}
             whileTap={{scale: 0.98}}
           >
@@ -472,7 +472,7 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
   return (
     <div>
       {fetcher.state !== 'idle' ? (
-        <div className="flex items-center justify-center gap-2 py-4 text-[#8B8076] text-sm">
+        <div className="flex items-center justify-center gap-2 py-4 text-taupe text-sm">
         <div className="w-4 h-4 rounded-full border-2 border-bronze/30 border-t-bronze animate-spin" />
           Preparing secure payment…
         </div>
@@ -481,7 +481,7 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
           {fetcher.data.error}
           <button
             onClick={() => initiatePayment()}
-          className="block w-full mt-2 text-[#8B8076] hover:text-warm underline"
+          className="block w-full mt-2 text-taupe hover:text-warm underline"
           >
             Try again
           </button>
@@ -542,11 +542,11 @@ function CartCheckoutActions({
 
       {/* Divider */}
       <div className="flex items-center gap-3">
-        <div className="flex-1 h-px bg-[#8B8076]/15" />
-        <span className="text-[10px] text-[#8B8076] uppercase tracking-wider">
+        <div className="flex-1 h-px bg-taupe/15" />
+        <span className="text-[10px] text-taupe uppercase tracking-wider">
           or pay directly
         </span>
-        <div className="flex-1 h-px bg-[#8B8076]/15" />
+        <div className="flex-1 h-px bg-taupe/15" />
       </div>
 
       {/* Tap Payments — mada + Visa/MC + Apple Pay + STC Pay */}
@@ -570,30 +570,30 @@ function CartCheckoutActions({
 
       {/* Trust Badges */}
       <div className="flex items-center justify-center gap-4 py-2">
-        <div className="flex items-center gap-1.5 text-[#8B8076] text-[10px]">
+        <div className="flex items-center gap-1.5 text-taupe text-[10px]">
           <Icons.Lock className="w-3 h-3" />
           <span>{t('cart.secureCheckout', 'Secure Checkout')}</span>
         </div>
-        <div className="w-px h-3 bg-[#8B8076]/30" />
-        <div className="flex items-center gap-1.5 text-[#8B8076] text-[10px]">
+        <div className="w-px h-3 bg-taupe/30" />
+        <div className="flex items-center gap-1.5 text-taupe text-[10px]">
           <Icons.Truck className="w-3 h-3" />
           <span>{t('cart.freeShipping', 'Free Shipping')}</span>
         </div>
       </div>
 
       {/* Terms */}
-      <p className="text-[10px] text-center text-[#8B8076]/60">
+      <p className="text-[10px] text-center text-taupe/60">
         {t('cart.terms', 'By proceeding, you agree to our')}{' '}
         <Link
           to="/policies/terms-of-service"
-          className="text-[#a87441] hover:underline"
+          className="text-bronze hover:underline"
         >
           {t('cart.termsLink', 'Terms')}
         </Link>{' '}
         {t('cart.and', 'and')}{' '}
         <Link
           to="/policies/refund-policy"
-          className="text-[#a87441] hover:underline"
+          className="text-bronze hover:underline"
         >
           {t('cart.refundsLink', 'Refund Policy')}
         </Link>
@@ -621,7 +621,7 @@ function FreeShippingBar({subtotal}: {subtotal: string | undefined}) {
               🎉 You&apos;ve unlocked free shipping!
             </span>
           ) : (
-            <span className="text-[11px] text-[#8B8076]">
+            <span className="text-[11px] text-taupe">
               Add{' '}
         <span className="text-warm font-semibold">
                 {remaining.toFixed(0)} SAR
@@ -630,11 +630,11 @@ function FreeShippingBar({subtotal}: {subtotal: string | undefined}) {
             </span>
           )}
         </div>
-        <span className="text-[10px] text-[#8B8076]">
+        <span className="text-[10px] text-taupe">
           {FREE_SHIPPING_THRESHOLD} SAR
         </span>
       </div>
-      <div className="h-1 bg-[#8B8076]/15 rounded-full overflow-hidden">
+      <div className="h-1 bg-taupe/15 rounded-full overflow-hidden">
         <motion.div
           className="h-full rounded-full bg-gradient-to-r from-bronze to-bronze-light"
           initial={{width: 0}}

@@ -143,7 +143,7 @@ export default function Login() {
 
   return (
     <div
-      className="relative min-h-screen w-full overflow-hidden bg-cover bg-center flex flex-col items-center justify-center text-[#2C2419]"
+      className="relative min-h-screen w-full overflow-hidden bg-cover bg-center flex flex-col items-center justify-center text-brand-text"
       style={{backgroundImage: 'url("/brand/silk-texture.webp")'}}
     >
       {/* Dark overlay for contrast */}
@@ -193,7 +193,7 @@ export default function Login() {
 
               <div className="text-center space-y-2">
                 <h1
-                  className="font-serif text-3xl md:text-4xl text-[#2C2419]"
+                  className="font-serif text-3xl md:text-4xl text-brand-text"
                   style={{letterSpacing: '0.02em'}}
                 >
                   {isRegistering ? 'Join Formé Haus' : 'Welcome Back'}

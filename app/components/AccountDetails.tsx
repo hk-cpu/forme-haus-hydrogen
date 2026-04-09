@@ -16,7 +16,7 @@ export function AccountDetails({customer}: {customer: any}) {
             </h3>
             <Link
               prefetch="intent"
-              className="text-[#C4A484] hover:text-warm text-xs uppercase tracking-widest transition-colors"
+              className="text-bronze-light hover:text-warm text-xs uppercase tracking-widest transition-colors"
               to="/account/edit"
             >
               Edit
