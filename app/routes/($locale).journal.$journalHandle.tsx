@@ -44,7 +44,7 @@ const STATIC_ARTICLES: Record<
         'Sculpted silhouettes, balanced structure, and textures chosen for how they move as much as how they appear. Pieces selected for presence without excess, composed, assured, and enduring.',
         'A way of dressing that speaks quietly, yet with certainty.',
       ],
-      image: '/brand/journal-wardrobe.webp',
+      image: '/brand/journal-wardrobe-v2.jpg',
     },
     AR: {
       title: 'مختارات الخزانة العصرية',
@@ -53,7 +53,7 @@ const STATIC_ARTICLES: Record<
         'قصّات منحوتة، بنية متوازنة، وأقمشة اختيرت لحركتها بقدر ما اختيرت لمظهرها. قطع انتقيت لحضورها من دون إفراط، رصينة، واثقة، وخالدة.',
         'أسلوب في اللباس يتحدث بهدوء، لكن بيقين.',
       ],
-      image: '/brand/journal-wardrobe.webp',
+      image: '/brand/journal-wardrobe-v2.jpg',
     },
   },
   'everyday-elegance': {
@@ -65,7 +65,7 @@ const STATIC_ARTICLES: Record<
         'A way of dressing that mirrors inner balance.',
         'Effortless. Grounded. Graceful.',
       ],
-      image: '/brand/journal-elegance.webp',
+      image: '/brand/journal-elegance-v2.jpg',
     },
     AR: {
       title: 'أناقة كل يوم',
@@ -75,7 +75,7 @@ const STATIC_ARTICLES: Record<
         'أسلوب في اللباس يعكس توازنًا داخليًا.',
         'بلا تكلّف. بثبات. بأناقة.',
       ],
-      image: '/brand/journal-elegance.webp',
+      image: '/brand/journal-elegance-v2.jpg',
     },
   },
   'behind-the-selection': {
@@ -86,7 +86,7 @@ const STATIC_ARTICLES: Record<
         'Proportion, fabrication, and craftsmanship are considered not only for how they appear, but for how they endure.',
         'A selection shaped by clarity and lasting intention.',
       ],
-      image: '/brand/journal-selection.webp',
+      image: '/brand/journal-selection-v2.jpg',
     },
     AR: {
       title: 'خلف الاختيار',
@@ -95,7 +95,7 @@ const STATIC_ARTICLES: Record<
         'التناسب والصنعة والحِرفيّة لا تُقيَّم بمظهرها فحسب، بل بمدى صمودها عبر الزمن.',
         'اختيار صاغه وضوح الرؤية والنيّة الدائمة.',
       ],
-      image: '/brand/journal-selection.webp',
+      image: '/brand/journal-selection-v2.jpg',
     },
   },
 };
@@ -209,22 +209,21 @@ export default function Article() {
 
   return (
     <div className="relative min-h-screen bg-[#F9F5F0] overflow-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
-      {/* Magazine Background Image — visible behind text */}
+      {/* Magazine Hero Image — visible, zoomed-out, fitted */}
       {staticArticle.image && (
         <motion.div
-          className="fixed inset-0 z-0 pointer-events-none"
+          className="relative w-full max-h-[520px] overflow-hidden bg-[#EDE6DD]"
           initial={{opacity: 0}}
           animate={{opacity: 1}}
-          transition={{duration: 1.5, ease: 'easeOut'}}
+          transition={{duration: 1.2, ease: 'easeOut'}}
         >
           <img
             src={staticArticle.image}
-            alt=""
-            className="w-full h-full object-cover object-center opacity-75"
-            loading="eager"
+            alt={staticArticle.title}
+            className="w-full h-[50vh] max-h-[520px] object-contain object-center"
           />
-          {/* Lighter gradient overlay for text readability — image still clearly visible */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#F9F5F0]/30 via-[#F9F5F0]/50 to-[#F9F5F0]/80" />
+          {/* Subtle bottom fade into page background */}
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#F9F5F0] to-transparent" />
         </motion.div>
       )}
 
