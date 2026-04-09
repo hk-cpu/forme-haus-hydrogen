@@ -209,10 +209,10 @@ export default function Article() {
 
   return (
     <div className="relative min-h-screen bg-[#F9F5F0] overflow-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
-      {/* Magazine Hero Image — full-width, visible, prominent */}
+      {/* Full-screen book cover hero */}
       {staticArticle.image && (
         <motion.div
-          className="relative w-full overflow-hidden"
+          className="relative w-full h-screen min-h-[600px]"
           initial={{opacity: 0}}
           animate={{opacity: 1}}
           transition={{duration: 1.2, ease: 'easeOut'}}
@@ -220,30 +220,30 @@ export default function Article() {
           <img
             src={staticArticle.image}
             alt={staticArticle.title}
-            className="w-full h-[55vh] md:h-[65vh] max-h-[600px] object-cover object-center"
+            className="absolute inset-0 w-full h-full object-cover object-center"
           />
-          {/* Subtle bottom fade into page background */}
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#F9F5F0] to-transparent" />
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/10" />
+
+          {/* Title overlaid at bottom of cover */}
+          <motion.div
+            className="absolute inset-0 z-10 flex flex-col items-center justify-end pb-16 md:pb-24 px-6"
+            initial={{opacity: 0, y: 20}}
+            animate={{opacity: 1, y: 0}}
+            transition={{delay: 0.4, duration: 0.8, ease: [0.22, 1, 0.36, 1]}}
+          >
+            <span className={`text-[10px] ${isRTL ? '' : 'uppercase tracking-[0.3em]'} text-[#D4AF87] block mb-4 font-semibold`}>
+              {t('nav.journal', 'Journal')}
+            </span>
+            <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl italic text-white mb-6 drop-shadow-lg text-center max-w-2xl">
+              {staticArticle.title}
+            </h1>
+            <div className="h-px w-24 bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+          </motion.div>
         </motion.div>
       )}
 
       <div className="relative z-10 max-w-3xl mx-auto px-6 py-12 md:py-16">
-        {/* Header */}
-        <motion.header
-          className="text-center mb-16 md:mb-24"
-          initial={{opacity: 0, y: 20}}
-          animate={{opacity: 1, y: 0}}
-          transition={{duration: 0.8, ease: [0.22, 1, 0.36, 1]}}
-        >
-          <span className={`text-[10px] ${isRTL ? '' : 'uppercase tracking-[0.3em]'} text-[#a87441] block mb-4 font-semibold`}>
-            {t('nav.journal', 'Journal')}
-          </span>
-          <h1 className="font-serif text-4xl md:text-6xl italic text-[#4A3C31] mb-6 drop-shadow-sm">
-            {staticArticle.title}
-          </h1>
-          <div className="h-px w-24 bg-gradient-to-r from-transparent via-[#a87441]/60 to-transparent mx-auto mt-8" />
-        </motion.header>
-
         {/* Body content */}
         <motion.article
           className="space-y-6 md:space-y-8"
