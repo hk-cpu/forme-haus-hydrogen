@@ -137,18 +137,18 @@ export function BundlePricing({
       >
         <motion.div
           whileHover={{scale: 1.02}}
-          className="flex items-center gap-1.5 px-2 py-1 bg-[#a87441]/10 rounded-md"
+          className="flex items-center gap-1.5 px-2 py-1 bg-bronze/10 rounded-md"
         >
           <svg
             viewBox="0 0 24 24"
-            className="w-3.5 h-3.5 text-[#a87441]"
+            className="w-3.5 h-3.5 text-bronze"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
           >
             <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
           </svg>
-          <span className="text-[10px] font-medium text-[#a87441]">
+          <span className="text-[10px] font-medium text-bronze">
             {t('bundle.savings', 'Bundle Savings')}
           </span>
         </motion.div>
@@ -163,10 +163,10 @@ export function BundlePricing({
   if (variant === 'tiers') {
     return (
       <div
-        className={`bg-[#F9F5F0] rounded-xl p-4 ${className}`}
+        className={`bg-cream rounded-xl p-4 ${className}`}
         dir={isRTL ? 'rtl' : 'ltr'}
       >
-        <p className="text-xs font-medium text-[#4A3C31] mb-3">
+        <p className="text-xs font-medium text-brand-text mb-3">
           {t('bundle.chooseQty', 'Select Quantity (Discount Available)')}
         </p>
 
@@ -179,7 +179,7 @@ export function BundlePricing({
               whileTap={{scale: 0.99}}
               className={`w-full flex items-center justify-between p-3 rounded-lg border transition-all ${
                 selectedId === tier.id
-                  ? 'border-[#a87441] bg-white shadow-sm'
+                  ? 'border-bronze bg-white shadow-sm'
                   : 'border-[#8B8076]/20 hover:border-[#8B8076]/40'
               }`}
             >
@@ -187,16 +187,16 @@ export function BundlePricing({
                 <div
                   className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                     selectedId === tier.id
-                      ? 'border-[#a87441]'
+                      ? 'border-bronze'
                       : 'border-[#8B8076]/30'
                   }`}
                 >
                   {selectedId === tier.id && (
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#a87441]" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-bronze" />
                   )}
                 </div>
                 <div className="text-left">
-                  <span className="text-sm font-medium text-[#4A3C31]">
+                  <span className="text-sm font-medium text-brand-text">
                     {t(tier.labelKey, tier.label)}
                   </span>
                   {tier.discountPercent > 0 && (
@@ -208,7 +208,7 @@ export function BundlePricing({
               </div>
 
               <div className="text-right">
-                <span className="text-sm font-semibold text-[#4A3C31]">
+                <span className="text-sm font-semibold text-brand-text">
                   {tier.price} {currencyCode}
                 </span>
                 {tier.comparePrice && (
@@ -254,7 +254,7 @@ export function BundlePricing({
   return (
     <div className={`${className}`} dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="flex items-center justify-between mb-3">
-        <p className="text-xs font-medium text-[#4A3C31]">
+        <p className="text-xs font-medium text-brand-text">
           {t('bundle.chooseBundle', 'Choose Your Bundle')}
         </p>
         <span className="text-[10px] text-[#8B8076]">
@@ -271,13 +271,13 @@ export function BundlePricing({
             whileTap={{scale: 0.99}}
             className={`w-full relative p-3 rounded-lg border transition-all text-left ${
               selectedId === bundle.id
-                ? 'border-[#a87441] bg-white shadow-md'
-                : 'border-[#8B8076]/20 hover:border-[#8B8076]/40 bg-[#F9F5F0]'
+                ? 'border-bronze bg-white shadow-md'
+                : 'border-[#8B8076]/20 hover:border-[#8B8076]/40 bg-cream'
             }`}
           >
             {/* Popular badge */}
             {bundle.popular && (
-              <span className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-[#a87441] text-white text-[9px] uppercase tracking-wider rounded-full">
+              <span className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-bronze text-white text-[9px] uppercase tracking-wider rounded-full">
                 {t(bundle.badgeKey!, bundle.badge!)}
               </span>
             )}
@@ -287,22 +287,22 @@ export function BundlePricing({
                 <div
                   className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
                     selectedId === bundle.id
-                      ? 'border-[#a87441]'
+                      ? 'border-bronze'
                       : 'border-[#8B8076]/30'
                   }`}
                 >
                   {selectedId === bundle.id && (
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#a87441]" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-bronze" />
                   )}
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-[#4A3C31]">
+                  <p className="text-sm font-medium text-brand-text">
                     {t(bundle.titleKey, bundle.title)}
                   </p>
                   {bundle.subtitle && (
                     <p
                       className={`text-[10px] ${
-                        bundle.popular ? 'text-[#a87441]' : 'text-green-600'
+                        bundle.popular ? 'text-bronze' : 'text-green-600'
                       }`}
                     >
                       {t(bundle.subtitleKey!, bundle.subtitle!)}
@@ -312,7 +312,7 @@ export function BundlePricing({
               </div>
 
               <div className="text-right">
-                <p className="text-sm font-semibold text-[#4A3C31]">
+                <p className="text-sm font-semibold text-brand-text">
                   {bundle.price} {currencyCode}
                 </p>
                 {bundle.comparePrice && (

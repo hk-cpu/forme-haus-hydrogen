@@ -52,7 +52,7 @@ export default function Hero() {
             onClick={() => {
               document.getElementById('explore-collections')?.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="group inline-flex min-h-[48px] items-center justify-center gap-3 rounded-sm border border-[#a87441]/40 px-8 py-4 text-[10px] font-light uppercase tracking-[0.3em] text-[#F0EAE6]/90 transition-colors duration-300 hover:border-[#a87441] hover:bg-[#a87441]/10 hover:text-[#a87441] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a87441] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]"
+            className="group inline-flex min-h-[48px] items-center justify-center gap-3 rounded-sm border border-bronze/40 px-8 py-4 text-[10px] font-light uppercase tracking-[0.3em] text-warm/90 transition-colors duration-300 hover:border-bronze hover:bg-bronze/10 hover:text-bronze focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <span>{t('hero.cta', 'Explore Collection')}</span>
             <svg

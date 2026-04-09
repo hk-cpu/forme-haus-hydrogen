@@ -125,18 +125,18 @@ function ArticleCard({
             isFeatured ? 'text-center max-w-2xl mx-auto' : ''
           }`}
         >
-          <span className="block text-[#F0EAE6]/60 text-xs uppercase tracking-[0.2em]">
+          <span className="block text-warm/60 text-xs uppercase tracking-[0.2em]">
             {article.publishedAt}
           </span>
           <h2
-            className={`font-serif text-[#F0EAE6] ${
+            className={`font-serif text-warm ${
               isFeatured ? 'text-4xl md:text-5xl' : 'text-2xl'
             } group-hover:text-white transition-colors`}
           >
             {article.title}
           </h2>
           <div className="pt-2">
-            <span className="text-[#F0EAE6] border-b border-[#F0EAE6]/30 pb-1 text-xs uppercase tracking-widest group-hover:border-[#F0EAE6] transition-all">
+            <span className="text-warm border-b border-warm/30 pb-1 text-xs uppercase tracking-widest group-hover:border-warm transition-all">
               Read Story
             </span>
           </div>

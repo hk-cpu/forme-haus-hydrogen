@@ -5,6 +5,10 @@ Hydrogen is Shopify’s stack for headless commerce. Hydrogen is designed to dov
 [Check out Hydrogen docs](https://shopify.dev/custom-storefronts/hydrogen)
 [Get familiar with Remix](https://remix.run/docs/en/v1)
 
+## Design System
+
+See `DESIGN.md` for Forme Haus design tokens, components, and usage guidance used across this storefront.
+
 ## What's included
 
 - Remix

@@ -253,7 +253,7 @@ export function AccountOverlay() {
       {state.isLoginOpen && (
         <motion.div
           ref={overlayRef}
-          className="fixed inset-0 bg-[#121212] z-[300] flex flex-col"
+          className="fixed inset-0 bg-background z-[300] flex flex-col"
           style={{direction: isRTL ? 'rtl' : 'ltr'}}
           role="dialog"
           aria-modal="true"
@@ -264,13 +264,13 @@ export function AccountOverlay() {
           transition={{duration: 0.3}}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-5 border-b border-[#a87441]/20">
-            <h2 className="font-serif text-2xl text-[#F0EAE6]">
+          <div className="flex items-center justify-between px-6 py-5 border-b border-bronze/20">
+            <h2 className="font-serif text-2xl text-warm">
               {t('account.title', 'My Account')}
             </h2>
             <button
               ref={closeButtonRef}
-              className="p-2 text-[#F0EAE6] hover:text-[#a87441] transition-colors"
+              className="p-2 text-warm hover:text-bronze transition-colors"
               onClick={handleClose}
               aria-label={t('common.close', 'Close')}
             >
@@ -282,19 +282,19 @@ export function AccountOverlay() {
           <div className="flex-1 overflow-y-auto">
             <div className="max-w-5xl mx-auto px-6 py-8">
               {/* Tab Navigation */}
-              <div className="flex gap-8 mb-8 border-b border-[#a87441]/20">
+              <div className="flex gap-8 mb-8 border-b border-bronze/20">
                 <button
                   className={`pb-4 text-sm uppercase tracking-[0.15em] transition-colors relative ${
                     activeTab === 'signin'
-                      ? 'text-[#a87441]'
-                      : 'text-[#AA9B8F] hover:text-[#F0EAE6]'
+                      ? 'text-bronze'
+                      : 'text-[#AA9B8F] hover:text-warm'
                   }`}
                   onClick={() => setActiveTab('signin')}
                 >
                   {t('account.signIn', 'Sign In')}
                   {activeTab === 'signin' && (
                     <motion.div
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#a87441]"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-bronze"
                       layoutId="accountTab"
                     />
                   )}
@@ -302,15 +302,15 @@ export function AccountOverlay() {
                 <button
                   className={`pb-4 text-sm uppercase tracking-[0.15em] transition-colors relative ${
                     activeTab === 'create'
-                      ? 'text-[#a87441]'
-                      : 'text-[#AA9B8F] hover:text-[#F0EAE6]'
+              ? 'text-bronze'
+                      : 'text-taupe hover:text-warm'
                   }`}
                   onClick={() => setActiveTab('create')}
                 >
                   {t('account.create', 'Create Account')}
                   {activeTab === 'create' && (
                     <motion.div
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#a87441]"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-bronze"
                       layoutId="accountTab"
                     />
                   )}
@@ -327,7 +327,7 @@ export function AccountOverlay() {
                     activeTab === 'signin' ? 'block' : 'hidden md:block'
                   }
                 >
-                  <h3 className="font-serif text-xl text-[#F0EAE6] mb-6">
+                  <h3 className="font-serif text-xl text-warm mb-6">
                     {t('account.signIn', 'Sign In')}
                   </h3>
 
@@ -351,7 +351,7 @@ export function AccountOverlay() {
                           'your@email.com',
                         )}
                         required
-                        className="w-full bg-[#1A1A1A] border border-[#a87441]/20 rounded-lg px-4 py-3.5 text-[#F0EAE6] placeholder-[#AA9B8F]/50 focus:border-[#a87441] focus:outline-none transition-colors"
+                        className="w-full bg-surface border border-bronze/20 rounded-lg px-4 py-3.5 text-warm placeholder-taupe/50 focus:border-bronze focus:outline-none transition-colors"
                       />
                     </div>
 
@@ -374,12 +374,12 @@ export function AccountOverlay() {
                             '••••••••',
                           )}
                           required
-                          className="w-full bg-[#1A1A1A] border border-[#a87441]/20 rounded-lg px-4 py-3.5 pr-12 text-[#F0EAE6] placeholder-[#AA9B8F]/50 focus:border-[#a87441] focus:outline-none transition-colors"
+                          className="w-full bg-surface border border-bronze/20 rounded-lg px-4 py-3.5 pr-12 text-warm placeholder-taupe/50 focus:border-bronze focus:outline-none transition-colors"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 text-[#AA9B8F] hover:text-[#F0EAE6] transition-colors"
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-taupe hover:text-warm transition-colors"
                           aria-label={
                             showPassword
                               ? t('account.hidePassword')
@@ -429,7 +429,7 @@ export function AccountOverlay() {
                     activeTab === 'create' ? 'block' : 'hidden md:block'
                   }
                 >
-                  <h3 className="font-serif text-xl text-[#F0EAE6] mb-6">
+                  <h3 className="font-serif text-xl text-warm mb-6">
                     {t('account.create', 'Create Account')}
                   </h3>
 
@@ -459,7 +459,7 @@ export function AccountOverlay() {
                           'your@email.com',
                         )}
                         required
-                        className="w-full bg-[#1A1A1A] border border-[#a87441]/20 rounded-lg px-4 py-3.5 text-[#F0EAE6] placeholder-[#AA9B8F]/50 focus:border-[#a87441] focus:outline-none transition-colors"
+                        className="w-full bg-surface border border-bronze/20 rounded-lg px-4 py-3.5 text-warm placeholder-taupe/50 focus:border-bronze focus:outline-none transition-colors"
                       />
                     </div>
 
@@ -483,12 +483,12 @@ export function AccountOverlay() {
                           )}
                           required
                           minLength={8}
-                          className="w-full bg-[#1A1A1A] border border-[#a87441]/20 rounded-lg px-4 py-3.5 pr-12 text-[#F0EAE6] placeholder-[#AA9B8F]/50 focus:border-[#a87441] focus:outline-none transition-colors"
+                          className="w-full bg-surface border border-bronze/20 rounded-lg px-4 py-3.5 pr-12 text-warm placeholder-taupe/50 focus:border-bronze focus:outline-none transition-colors"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 text-[#AA9B8F] hover:text-[#F0EAE6] transition-colors"
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-taupe hover:text-warm transition-colors"
                           aria-label={
                             showPassword
                               ? t('account.hidePassword')
@@ -510,10 +510,10 @@ export function AccountOverlay() {
                     <button
                       type="submit"
                       disabled={registerFetcher.state === 'submitting'}
-                      className="w-full bg-transparent border border-[#a87441] text-[#a87441] hover:bg-[#a87441] hover:text-white font-medium py-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        className="w-full bg-transparent border border-bronze text-bronze hover:bg-bronze hover:text-white font-medium py-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                       {registerFetcher.state === 'submitting' ? (
-                        <div className="w-5 h-5 border-2 border-[#a87441] border-t-transparent rounded-full animate-spin" />
+                      <div className="w-5 h-5 border-2 border-bronze border-t-transparent rounded-full animate-spin" />
                       ) : (
                         <>
                           {t('account.createButton', 'Create Account')}
@@ -535,9 +535,9 @@ export function AccountOverlay() {
                           initial={{opacity: 0, x: -10}}
                           animate={{opacity: 1, x: 0}}
                           transition={{delay: 0.3 + index * 0.1}}
-                          className="flex items-center gap-3 text-[#F0EAE6] text-sm"
+                          className="flex items-center gap-3 text-warm text-sm"
                         >
-                          <span className="text-[#a87441]">{benefit.icon}</span>
+                  <span className="text-bronze">{benefit.icon}</span>
                           <span>{benefit.text}</span>
                         </motion.li>
                       ))}

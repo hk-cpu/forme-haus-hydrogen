@@ -20,7 +20,7 @@ export function NotFound({type = 'page'}: {type?: string}) {
   return (
     <>
       {/* Breadcrumb */}
-      <div className="px-6 md:px-12 lg:px-16 py-4 bg-[#F9F5F0]">
+      <div className="px-6 md:px-12 lg:px-16 py-4 bg-cream">
         <Breadcrumb variant="light">
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -35,10 +35,10 @@ export function NotFound({type = 'page'}: {type?: string}) {
       </div>
 
       {/* 404 Content */}
-      <div className="min-h-[60vh] flex flex-col items-center justify-center px-6 md:px-12 lg:px-16 py-16 bg-[#F9F5F0]">
+      <div className="min-h-[60vh] flex flex-col items-center justify-center px-6 md:px-12 lg:px-16 py-16 bg-cream">
         <div className="max-w-2xl mx-auto text-center">
           {/* 404 Number */}
-          <div className="font-serif text-[120px] md:text-[180px] leading-none text-[#a87441]/20 mb-4 select-none">
+          <div className="font-serif text-[120px] md:text-[180px] leading-none text-bronze/20 mb-4 select-none">
             404
           </div>
 

@@ -324,17 +324,17 @@ function CartDiscounts({
         <motion.div
           initial={{opacity: 0, y: 10}}
           animate={{opacity: 1, y: 0}}
-          className="flex items-center justify-between py-3 px-4 bg-gradient-to-r from-[#a87441]/10 to-transparent rounded-lg border border-[#a87441]/20"
+          className="flex items-center justify-between py-3 px-4 bg-gradient-to-r from-bronze/10 to-transparent rounded-lg border border-bronze/20"
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-[#a87441]/20 flex items-center justify-center">
-              <Icons.Tag className="text-[#a87441]" />
+            <div className="w-8 h-8 rounded-full bg-bronze/20 flex items-center justify-center">
+              <Icons.Tag className="text-bronze" />
             </div>
             <div>
               <span className="text-[10px] uppercase tracking-wider text-[#8B8076] block">
                 {t('cart.discount')}
               </span>
-              <span className="text-sm font-medium text-[#F0EAE6]">
+          <span className="text-sm font-medium text-warm">
                 {codes.join(', ')}
               </span>
             </div>
@@ -342,7 +342,7 @@ function CartDiscounts({
           <UpdateDiscountForm>
             <motion.button
               type="submit"
-              className="p-2 hover:bg-[#F0EAE6]/10 rounded-full transition-colors"
+          className="p-2 hover:bg-warm/10 rounded-full transition-colors"
               aria-label="Remove discount"
               whileHover={{scale: 1.1}}
               whileTap={{scale: 0.95}}
@@ -362,7 +362,7 @@ function CartDiscounts({
           <div className="flex-1 relative">
             <Icons.Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8B8076]" />
             <input
-              className="w-full pl-10 pr-4 py-3 text-sm bg-[#1A1A1A] border border-[#8B8076]/20 rounded-lg text-[#F0EAE6] placeholder:text-[#8B8076]/50 focus:outline-none focus:border-[#a87441]/50 transition-colors"
+          className="w-full pl-10 pr-4 py-3 text-sm bg-surface border border-[#8B8076]/20 rounded-lg text-warm placeholder:text-[#8B8076]/50 focus:outline-none focus:border-bronze/50 transition-colors"
               type="text"
               name="discountCode"
               placeholder={t('cart.enterDiscountCode', 'Enter discount code')}
@@ -370,7 +370,7 @@ function CartDiscounts({
           </div>
           <motion.button
             type="submit"
-            className="px-5 py-3 text-xs uppercase tracking-wider font-medium text-[#F0EAE6] bg-[#1A1A1A] border border-[#8B8076]/20 rounded-lg hover:bg-[#a87441] hover:border-[#a87441] transition-all flex items-center gap-2"
+          className="px-5 py-3 text-xs uppercase tracking-wider font-medium text-warm bg-surface border border-[#8B8076]/20 rounded-lg hover:bg-bronze hover:border-bronze transition-all flex items-center gap-2"
             whileHover={{scale: 1.02}}
             whileTap={{scale: 0.98}}
           >
@@ -414,7 +414,7 @@ function CartLines({
   const {y} = useScroll(scrollRef);
 
   const className = clsx([
-    y > 0 ? 'border-t border-[#a87441]/10' : '',
+          y > 0 ? 'border-t border-bronze/10' : '',
     layout === 'page'
       ? 'flex-grow md:translate-y-4'
       : 'px-6 pb-6 pt-2 sm:pt-0 overflow-auto transition md:px-12',
@@ -473,7 +473,7 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
     <div>
       {fetcher.state !== 'idle' ? (
         <div className="flex items-center justify-center gap-2 py-4 text-[#8B8076] text-sm">
-          <div className="w-4 h-4 rounded-full border-2 border-[#a87441]/30 border-t-[#a87441] animate-spin" />
+        <div className="w-4 h-4 rounded-full border-2 border-bronze/30 border-t-bronze animate-spin" />
           Preparing secure payment…
         </div>
       ) : fetcher.data?.error ? (
@@ -481,7 +481,7 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
           {fetcher.data.error}
           <button
             onClick={() => initiatePayment()}
-            className="block w-full mt-2 text-[#8B8076] hover:text-[#F0EAE6] underline"
+          className="block w-full mt-2 text-[#8B8076] hover:text-warm underline"
           >
             Try again
           </button>
@@ -532,7 +532,7 @@ function CartCheckoutActions({
         <Button
           as="span"
           width="full"
-          className="bg-gradient-to-r from-[#a87441] to-[#8B5E3C] hover:from-[#8B5E3C] hover:to-[#a87441] text-white font-medium py-4 rounded-xl transition-all shadow-lg shadow-[#a87441]/20 flex items-center justify-center gap-2"
+          className="bg-gradient-to-r from-bronze to-bronze-dark hover:from-bronze-dark hover:to-bronze text-white font-medium py-4 rounded-xl transition-all shadow-lg shadow-bronze/20 flex items-center justify-center gap-2"
         >
           <Icons.Lock className="w-4 h-4" />
           {t('cart.checkout', 'Proceed to Checkout')}
@@ -615,15 +615,15 @@ function FreeShippingBar({subtotal}: {subtotal: string | undefined}) {
     <div className="px-1 py-3">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-1.5">
-          <Icons.Truck className="w-3.5 h-3.5 text-[#a87441]" />
+        <Icons.Truck className="w-3.5 h-3.5 text-bronze" />
           {isFree ? (
-            <span className="text-[11px] text-[#a87441] font-medium">
+        <span className="text-[11px] text-bronze font-medium">
               🎉 You&apos;ve unlocked free shipping!
             </span>
           ) : (
             <span className="text-[11px] text-[#8B8076]">
               Add{' '}
-              <span className="text-[#F0EAE6] font-semibold">
+        <span className="text-warm font-semibold">
                 {remaining.toFixed(0)} SAR
               </span>{' '}
               for free shipping
@@ -636,7 +636,7 @@ function FreeShippingBar({subtotal}: {subtotal: string | undefined}) {
       </div>
       <div className="h-1 bg-[#8B8076]/15 rounded-full overflow-hidden">
         <motion.div
-          className="h-full rounded-full bg-gradient-to-r from-[#a87441] to-[#D4AF87]"
+          className="h-full rounded-full bg-gradient-to-r from-bronze to-bronze-light"
           initial={{width: 0}}
           animate={{width: `${progress}%`}}
           transition={{duration: 0.6, ease: [0.16, 1, 0.3, 1]}}
@@ -650,19 +650,19 @@ function GCCPaymentBadges() {
   return (
     <div className="flex items-center justify-center gap-2 flex-wrap py-1">
       {/* mada */}
-      <div className="px-2 py-1 bg-[#1A1A1A] rounded border border-[#8B8076]/10 flex items-center">
+        <div className="px-2 py-1 bg-surface rounded border border-[#8B8076]/10 flex items-center">
         <span className="text-[9px] font-bold text-[#1B5E20] tracking-wide">
           mada
         </span>
       </div>
       {/* STC Pay */}
-      <div className="px-2 py-1 bg-[#1A1A1A] rounded border border-[#8B8076]/10 flex items-center">
+        <div className="px-2 py-1 bg-surface rounded border border-[#8B8076]/10 flex items-center">
         <span className="text-[9px] font-bold text-purple-400 tracking-wide">
           STC Pay
         </span>
       </div>
       {/* Apple Pay */}
-      <div className="px-2 py-1 bg-[#1A1A1A] rounded border border-[#8B8076]/10 flex items-center">
+        <div className="px-2 py-1 bg-surface rounded border border-[#8B8076]/10 flex items-center">
         <svg
           className="w-7 h-3.5"
           viewBox="0 0 80 34"
@@ -683,13 +683,13 @@ function GCCPaymentBadges() {
         </svg>
       </div>
       {/* Tabby */}
-      <div className="px-2 py-1 bg-[#1A1A1A] rounded border border-[#8B8076]/10 flex items-center">
+        <div className="px-2 py-1 bg-surface rounded border border-[#8B8076]/10 flex items-center">
         <span className="text-[9px] font-bold text-[#3BB273] tracking-wide">
           tabby
         </span>
       </div>
       {/* Tamara */}
-      <div className="px-2 py-1 bg-[#1A1A1A] rounded border border-[#8B8076]/10 flex items-center">
+        <div className="px-2 py-1 bg-surface rounded border border-[#8B8076]/10 flex items-center">
         <span className="text-[9px] font-bold text-[#F6A623] tracking-wide">
           tamara
         </span>
@@ -711,7 +711,7 @@ function CartSummary({
 
   const summary = {
     drawer:
-      'grid gap-4 p-6 border-t border-[#a87441]/20 bg-gradient-to-t from-[#0F0F0F] to-[#121212]',
+          'grid gap-4 p-6 border-t border-bronze/20 bg-gradient-to-t from-[#0F0F0F] to-background',
     page: 'sticky top-nav grid gap-6 p-4 md:px-6 md:translate-y-4 bg-primary/5 rounded-xl w-full',
   };
 
@@ -727,7 +727,7 @@ function CartSummary({
       )}
 
       {/* Subtotal */}
-      <div className="flex items-center justify-between py-4 border-b border-[#a87441]/10">
+        <div className="flex items-center justify-between py-4 border-b border-bronze/10">
         <div className="flex items-center gap-2">
           <Icons.Bag className="w-4 h-4 text-[#8B8076]" />
           <Text as="span" className="text-[#8B8076]">
@@ -736,7 +736,7 @@ function CartSummary({
         </div>
         <Text
           as="span"
-          className="text-[#F0EAE6] font-semibold text-xl"
+          className="text-warm font-semibold text-xl"
           data-test="subtotal"
         >
           {cost?.subtotalAmount?.amount ? (
@@ -798,7 +798,7 @@ function CartLineItem({line, index}: {line: CartLine; index?: number}) {
       <motion.div className="flex-shrink-0" whileHover={{scale: 1.02}}>
         {merchandise.image ? (
           <Link to={`/products/${merchandise.product.handle}`}>
-            <div className="w-24 h-24 md:w-28 md:h-28 bg-gradient-to-br from-[#1A1A1A] to-[#0F0F0F] rounded-xl overflow-hidden border border-[#8B8076]/10 hover:border-[#a87441]/30 transition-colors">
+            <div className="w-24 h-24 md:w-28 md:h-28 bg-gradient-to-br from-surface to-[#0F0F0F] rounded-xl overflow-hidden border border-[#8B8076]/10 hover:border-bronze/30 transition-colors">
               <Image
                 width={112}
                 height={112}
@@ -809,7 +809,7 @@ function CartLineItem({line, index}: {line: CartLine; index?: number}) {
             </div>
           </Link>
         ) : (
-          <div className="w-24 h-24 md:w-28 md:h-28 bg-[#1A1A1A] rounded-xl overflow-hidden flex items-center justify-center border border-[#8B8076]/10">
+          <div className="w-24 h-24 md:w-28 md:h-28 bg-surface rounded-xl overflow-hidden flex items-center justify-center border border-[#8B8076]/10">
             <Icons.Bag className="w-8 h-8 text-[#8B8076]/30" />
           </div>
         )}
@@ -822,7 +822,7 @@ function CartLineItem({line, index}: {line: CartLine; index?: number}) {
           <Heading
             as="h3"
             size="copy"
-            className="font-serif text-[#F0EAE6] text-[15px] leading-tight mb-1"
+            className="font-serif text-warm text-[15px] leading-tight mb-1"
           >
             {merchandise?.product?.handle ? (
               <Link
@@ -845,7 +845,7 @@ function CartLineItem({line, index}: {line: CartLine; index?: number}) {
                 className="text-[#8B8076] text-xs"
               >
                 {option.name}:{' '}
-                <span className="text-[#F0EAE6]">{option.value}</span>
+                <span className="text-warm">{option.value}</span>
               </Text>
             ))}
           </div>
@@ -914,14 +914,14 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
       <label htmlFor={`quantity-${lineId}`} className="sr-only">
         Quantity, {optimisticQuantity}
       </label>
-      <div className="flex items-center bg-[#1A1A1A] rounded-xl border border-[#8B8076]/20 overflow-hidden">
+      <div className="flex items-center bg-surface rounded-xl border border-[#8B8076]/20 overflow-hidden">
         <UpdateCartButton lines={[{id: lineId, quantity: prevQuantity}]}>
           {(fetcher) => (
             <motion.button
               name="decrease-quantity"
               aria-label="Decrease quantity"
               className={clsx(
-                'w-11 h-11 flex items-center justify-center text-[#8B8076] hover:text-[#F0EAE6] hover:bg-[#8B8076]/10 disabled:text-[#8B8076]/30 transition-colors',
+                'w-11 h-11 flex items-center justify-center text-[#8B8076] hover:text-warm hover:bg-[#8B8076]/10 disabled:text-[#8B8076]/30 transition-colors',
                 fetcher.state !== 'idle' && 'opacity-50 cursor-not-allowed',
               )}
               value={prevQuantity}
@@ -938,7 +938,7 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
         </UpdateCartButton>
 
         <div
-          className="w-10 text-center text-[#F0EAE6] text-sm font-semibold"
+          className="w-10 text-center text-warm text-sm font-semibold"
           data-test="item-quantity"
         >
           {optimisticQuantity}
@@ -948,7 +948,7 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
           {(fetcher) => (
             <motion.button
               className={clsx(
-                'w-11 h-11 flex items-center justify-center text-[#8B8076] hover:text-[#F0EAE6] hover:bg-[#8B8076]/10 transition-colors',
+                'w-11 h-11 flex items-center justify-center text-[#8B8076] hover:text-warm hover:bg-[#8B8076]/10 transition-colors',
                 fetcher.state !== 'idle' && 'opacity-50 cursor-not-allowed',
               )}
               name="increase-quantity"
@@ -1064,7 +1064,7 @@ function CartEmpty({
             />
           </motion.div>
 
-          <h3 className="font-serif text-2xl text-[#F0EAE6] mb-3">
+          <h3 className="font-serif text-2xl text-warm mb-3">
             {t('cart.empty', 'Your bag is empty')}
           </h3>
           <p className="text-[#8B8076] text-sm mb-8 max-w-[260px] leading-relaxed">

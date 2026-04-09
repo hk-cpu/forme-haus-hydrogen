@@ -271,8 +271,8 @@ export function NavigationMenu() {
                             <span
                               className={`block h-[1px] transition-all duration-500 ${
                                 isActive
-                                  ? 'w-12 bg-[#a87441]'
-                                  : 'w-0 bg-[#a87441] group-hover:w-8'
+                                  ? 'w-12 bg-bronze'
+                                  : 'w-0 bg-bronze group-hover:w-8'
                               }`}
                             />
                           </button>
@@ -289,7 +289,7 @@ export function NavigationMenu() {
                             <span
                               className={`font-serif tracking-tight transition-all duration-500 ${
                                 isSale
-                                  ? 'text-2xl md:text-3xl text-[#a87441] group-hover:text-[#D4AF87]'
+                                  ? 'text-2xl md:text-3xl text-bronze group-hover:text-bronze-light'
                                   : displayCategory
                                   ? 'text-3xl md:text-4xl text-[#F0EAE6]/25 group-hover:text-[#F0EAE6]/60'
                                   : 'text-3xl md:text-4xl text-[#F0EAE6]/80 group-hover:text-[#F0EAE6]'
@@ -350,7 +350,7 @@ export function NavigationMenu() {
                         <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#0a0a0a]/80 to-transparent" />
                         {/* Tagline badge */}
                         <div className="absolute bottom-6 left-6">
-                          <span className="text-[10px] uppercase tracking-[0.25em] text-[#a87441] font-light">
+                          <span className="text-[10px] uppercase tracking-[0.25em] text-bronze font-light">
                             {categoryData.tagline}
                           </span>
                         </div>
@@ -377,7 +377,7 @@ export function NavigationMenu() {
                                 to={cat.href}
                                 className={`group flex items-center gap-3 py-2.5 transition-all duration-300 ${
                                   cat.featured
-                                    ? 'text-[#a87441] hover:text-[#D4AF87]'
+                                    ? 'text-bronze hover:text-bronze-light'
                                     : 'text-[#F0EAE6]/70 hover:text-[#F0EAE6]'
                                 }`}
                                 onClick={handleClose}
@@ -386,12 +386,12 @@ export function NavigationMenu() {
                                   {cat.label}
                                 </span>
                                 {cat.featured && (
-                                  <span className="text-[9px] uppercase tracking-[0.15em] px-2 py-0.5 border border-[#a87441]/30 text-[#a87441] rounded-sm">
+                                  <span className="text-[9px] uppercase tracking-[0.15em] px-2 py-0.5 border border-bronze/30 text-bronze rounded-sm">
                                     New
                                   </span>
                                 )}
                                 {/* Hover arrow */}
-                                <span className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[#a87441]">
+                                <span className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-bronze">
                                   <ArrowIcon />
                                 </span>
                               </Link>
@@ -410,7 +410,7 @@ export function NavigationMenu() {
                             to={`/collections/${displayCategory
                               ?.toLowerCase()
                               .replace(/\s/g, '-')}`}
-                            className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#a87441] hover:text-[#D4AF87] transition-colors duration-300"
+                            className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-bronze hover:text-bronze-light transition-colors duration-300"
                             onClick={handleClose}
                           >
                             {t('menu.viewAll')} {displayCategory}
@@ -458,7 +458,7 @@ export function NavigationMenu() {
                     {/* Mobile subcategory header */}
                     <div className="flex items-center justify-between px-6 py-5 border-b border-[#F0EAE6]/5">
                       <button
-                        className="flex items-center gap-2 text-[#F0EAE6] hover:text-[#a87441] transition-colors"
+                        className="flex items-center gap-2 text-[#F0EAE6] hover:text-bronze transition-colors"
                         onClick={() => setActiveCategory(null)}
                       >
                         <svg
@@ -492,7 +492,7 @@ export function NavigationMenu() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/40 to-transparent" />
                       <div className="absolute bottom-4 left-6">
-                        <span className="text-[10px] uppercase tracking-[0.25em] text-[#a87441]">
+                        <span className="text-[10px] uppercase tracking-[0.25em] text-bronze">
                           {categoryData.tagline}
                         </span>
                         <h2 className="font-serif text-2xl text-[#F0EAE6] mt-1">
@@ -514,7 +514,7 @@ export function NavigationMenu() {
                             to={cat.href}
                             className={`flex items-center justify-between px-6 py-4 transition-colors ${
                               cat.featured
-                                ? 'text-[#a87441]'
+                                ? 'text-bronze'
                                 : 'text-[#F0EAE6]/80 hover:text-[#F0EAE6]'
                             }`}
                             onClick={handleClose}
@@ -523,7 +523,7 @@ export function NavigationMenu() {
                               {cat.label}
                             </span>
                             {cat.featured && (
-                              <span className="text-[9px] uppercase tracking-[0.15em] px-2 py-0.5 border border-[#a87441]/30 text-[#a87441] rounded-sm">
+                              <span className="text-[9px] uppercase tracking-[0.15em] px-2 py-0.5 border border-bronze/30 text-bronze rounded-sm">
                                 New
                               </span>
                             )}
@@ -537,7 +537,7 @@ export function NavigationMenu() {
                           to={`/collections/${activeCategory
                             .toLowerCase()
                             .replace(/\s/g, '-')}`}
-                          className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#a87441] hover:text-[#D4AF87] transition-colors"
+                          className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-bronze hover:text-bronze-light transition-colors"
                           onClick={handleClose}
                         >
                           {t('menu.viewAll')} {activeCategory}
@@ -560,14 +560,14 @@ export function NavigationMenu() {
               <div className="flex flex-wrap items-center gap-6 text-[11px] uppercase tracking-[0.12em]">
                 <a
                   href="tel:+966800123456"
-                  className="text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-300 flex items-center gap-2"
+                  className="text-taupe hover:text-bronze transition-colors duration-300 flex items-center gap-2"
                 >
                   <PhoneIcon />
                   800 123 456
                 </a>
                 <Link
                   to="/contact"
-                  className="text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-300 flex items-center gap-2"
+                  className="text-taupe hover:text-bronze transition-colors duration-300 flex items-center gap-2"
                   onClick={handleClose}
                 >
                   <StoreIcon />

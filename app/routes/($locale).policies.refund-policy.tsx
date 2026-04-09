@@ -21,7 +21,7 @@ export default function RefundPolicyPage() {
           <span className="block text-[10px] uppercase tracking-[0.35em] text-[#a87441] mb-4">
             {isArabic ? 'السياسات' : 'Policies'}
           </span>
-          <h1 className="font-serif text-3xl md:text-4xl text-[#4A3C31] tracking-wider">
+          <h1 className="font-serif text-3xl md:text-4xl text-brand-text tracking-wider">
             {isArabic ? 'سياسة الاسترجاع والاستبدال' : 'Returns & Exchanges'}
           </h1>
           <div className="mx-auto mt-6 h-px w-20 bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
@@ -30,7 +30,7 @@ export default function RefundPolicyPage() {
         {isArabic ? (
           /* Arabic */
           <div
-            className="prose max-w-prose mx-auto prose-headings:text-[#4A3C31] prose-headings:font-serif prose-p:text-[#4A3C31]/80 prose-li:text-[#4A3C31]/80 font-light leading-relaxed"
+            className="prose max-w-prose mx-auto prose-headings:text-brand-text prose-headings:font-serif prose-p:text-brand-text/80 prose-li:text-brand-text/80 font-light leading-relaxed"
             dir="rtl"
           >
             <p>
@@ -100,7 +100,7 @@ export default function RefundPolicyPage() {
           </div>
         ) : (
           /* English */
-          <div className="prose max-w-prose mx-auto prose-headings:text-[#4A3C31] prose-headings:font-serif prose-p:text-[#4A3C31]/80 prose-li:text-[#4A3C31]/80 font-light leading-relaxed">
+          <div className="prose max-w-prose mx-auto prose-headings:text-brand-text prose-headings:font-serif prose-p:text-brand-text/80 prose-li:text-brand-text/80 font-light leading-relaxed">
             <p>
               At <strong>Formé Haus</strong>, we strive to ensure you are
               satisfied with your purchase.

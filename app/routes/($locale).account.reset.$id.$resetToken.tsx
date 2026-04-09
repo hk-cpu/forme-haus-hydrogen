@@ -108,7 +108,7 @@ export default function Reset() {
         {/* Form Card */}
         <Form
           method="post"
-          className="w-full space-y-6 bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-xl border border-[#4A3C31]/8 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
+          className="w-full space-y-6 bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-xl border border-brand-text/8 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
         >
           {actionData?.error && (
             <div className="p-3.5 text-[12px] text-[#8B3A3A] bg-[#FDF2F2] border border-[#E8C4C4] rounded-lg text-center tracking-wide">
@@ -145,7 +145,7 @@ export default function Reset() {
                     autoComplete="new-password"
                     required
                     placeholder="Enter your new password"
-                    className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 pl-4 pr-12 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[13px] tracking-wide rounded-lg"
+                    className="w-full bg-cream border border-brand-text/12 py-3.5 pl-4 pr-12 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-bronze focus:ring-1 focus:ring-bronze/30 transition-all duration-300 text-[13px] tracking-wide rounded-lg"
                   />
                   <button
                     type="button"

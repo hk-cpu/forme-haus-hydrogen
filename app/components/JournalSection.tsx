@@ -55,14 +55,14 @@ export default function JournalSection() {
         style={{padding: '0 var(--page-gutter)'}}
       >
         <div className="mb-6 flex items-end justify-between">
-          <h2 className="font-serif text-2xl italic text-[#4A3C31] md:text-3xl">
+          <h2 className="font-serif text-2xl italic text-brand-text md:text-3xl">
             {t('home.journal', 'The Journal')}
           </h2>
           <Link
             to="/journal"
             className={`inline-flex min-h-[44px] items-center py-2 text-[10px] ${
               isRTL ? '' : 'uppercase tracking-[0.2em]'
-            } text-[#6B6058] transition-colors duration-300 hover:text-[#4A3C31]`}
+            } text-[#6B6058] transition-colors duration-300 hover:text-brand-text`}
           >
             {t('journal.read', 'Read the Journal')}
           </Link>
@@ -93,7 +93,7 @@ export default function JournalSection() {
               </div>
 
               <div className="mt-3 px-1">
-                <h3 className="font-serif text-base italic text-[#4A3C31] transition-colors duration-300 group-hover:text-[#a87441] md:text-lg">
+                <h3 className="font-serif text-base italic text-brand-text transition-colors duration-300 group-hover:text-bronze md:text-lg">
                   {t(
                     card.title === 'The Modern Wardrobe Edit'
                       ? 'journal.modernWardrobe'

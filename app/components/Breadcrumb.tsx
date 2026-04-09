@@ -31,7 +31,7 @@ const BreadcrumbList = React.forwardRef<
       ref={ref}
       className={cn(
         'flex flex-wrap items-center gap-1.5 break-words text-sm sm:gap-2.5',
-        variant === 'light' ? 'text-[#4A3C31]/60' : 'text-[#F0EAE6]/50',
+        variant === 'light' ? 'text-brand-text/60' : 'text-warm/50',
         className,
       )}
       {...props}
@@ -61,7 +61,7 @@ const BreadcrumbLink = React.forwardRef<
 >(({asChild, className, to, children, ...props}, ref) => {
   const variant = React.useContext(BreadcrumbContext);
   const hoverClass =
-    variant === 'light' ? 'hover:text-[#4A3C31]' : 'hover:text-[#F0EAE6]';
+    variant === 'light' ? 'hover:text-brand-text' : 'hover:text-warm';
 
   if (to) {
     return (
@@ -102,7 +102,7 @@ const BreadcrumbPage = React.forwardRef<
       aria-current="page"
       className={cn(
         'font-normal',
-        variant === 'light' ? 'text-[#4A3C31]' : 'text-[#F0EAE6]',
+        variant === 'light' ? 'text-brand-text' : 'text-warm',
         className,
       )}
       {...props}

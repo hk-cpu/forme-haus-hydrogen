@@ -108,7 +108,7 @@ export function PageLayout({children, layout}: LayoutProps) {
       <div className="flex flex-col min-h-screen relative">
         {/* Background Layer (Z-0) � Silk on desktop, CSS fallback on mobile */}
         <div className="fixed inset-0 pointer-events-none z-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,116,65,0.16),transparent_34%),linear-gradient(180deg,#181513_0%,#121212_60%,#0f0f0f_100%)]" />
+<div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,116,65,0.16),transparent_34%),linear-gradient(180deg,#181513_0%,var(--background)_60%,#0f0f0f_100%)]" />
           {isDesktop && (
             <div
               className="absolute inset-0"
@@ -170,7 +170,7 @@ export function PageLayout({children, layout}: LayoutProps) {
             </main>
             {/* Newsletter � Above Footer */}
             <section className="relative w-full overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a1a]/80 via-[#151515]/90 to-[#121212]/95 backdrop-blur-xl" />
+<div className="absolute inset-0 bg-gradient-to-b from-surface/80 via-[#151515]/90 to-background/95 backdrop-blur-xl" />
               <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
               <div
                 className="relative z-10 py-16"
@@ -395,7 +395,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
   const {t} = useTranslation();
 
   const linkClass =
-    'text-[12px] text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-300 inline-block py-1.5 focus:outline-none focus-visible:text-[#a87441]';
+    'text-[12px] text-taupe hover:text-bronze transition-colors duration-300 inline-block py-1.5 focus:outline-none focus-visible:text-bronze';
 
   return (
     <footer
@@ -403,7 +403,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
       className="relative w-full overflow-hidden rounded-b-[2rem]"
     >
       {/* Semi-Glass Background Layer */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a1a]/80 via-[#151515]/90 to-[#121212]/95 backdrop-blur-xl" />
+<div className="absolute inset-0 bg-gradient-to-b from-surface/80 via-[#151515]/90 to-background/95 backdrop-blur-xl" />
 
       {/* Bronze Accent Line at Top */}
       <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
@@ -413,7 +413,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
         style={{padding: '4rem var(--page-gutter)'}}
       >
         {/* Main Footer Content */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-10 w-full max-w-[1440px] mx-auto mb-12 pb-12 border-b border-[#a87441]/10">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-10 w-full max-w-[1440px] mx-auto mb-12 pb-12 border-b border-bronze/10">
           {/* Brand & Slogan */}
           <div className="flex flex-col items-center md:items-start gap-3">
             <div className="flex items-center gap-4">

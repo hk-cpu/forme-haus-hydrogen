@@ -239,7 +239,7 @@ function EditorialNav({currentHandle}: {currentHandle: string}) {
       initial={{y: -20, opacity: 0}}
       animate={{y: 0, opacity: 1}}
       transition={{duration: 0.6, ease: EASE_OUT_EXPO}}
-      className="sticky z-40 bg-[#F9F5F0]/95 backdrop-blur-lg border-b border-[#E8E0D8]"
+      className="sticky z-40 bg-cream/95 backdrop-blur-lg border-b border-[#E8E0D8]"
       style={{top: 'var(--navbar-height, 0px)'}}
     >
       <div
@@ -255,15 +255,15 @@ function EditorialNav({currentHandle}: {currentHandle: string}) {
               prefetch="intent"
               className={`relative py-2 text-[11px] tracking-[0.15em] uppercase transition-colors duration-300 whitespace-nowrap ${
                 isActive
-                  ? 'text-[#4A3C31]'
-                  : 'text-[#8B8076] hover:text-[#4A3C31]'
+                  ? 'text-brand-text'
+                  : 'text-[#8B8076] hover:text-brand-text'
               }`}
             >
               {item.label}
               {isActive && (
                 <motion.div
                   layoutId="editorialActiveNav"
-                  className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#a87441]"
+                  className="absolute bottom-0 left-0 right-0 h-[2px] bg-bronze"
                   transition={{type: 'spring', stiffness: 380, damping: 30}}
                 />
               )}
@@ -294,11 +294,11 @@ function CollectionHero({
       className="max-w-[1440px] mx-auto pt-10 pb-6 md:pt-14 md:pb-8"
       style={{padding: '2.5rem var(--page-gutter) 1.5rem'}}
     >
-      <span className="block text-[10px] uppercase tracking-[0.35em] text-[#a87441] font-light mb-4">
+      <span className="block text-[10px] uppercase tracking-[0.35em] text-bronze font-light mb-4">
         The Edit
       </span>
       <h1
-        className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#4A3C31] leading-[0.95]"
+      className="font-serif text-3xl md:text-4xl lg:text-5xl text-brand-text leading-[0.95]"
         style={{letterSpacing: '-0.01em'}}
       >
         {words.map((word, i) =>
@@ -312,13 +312,13 @@ function CollectionHero({
         )}
       </h1>
       {description && (
-        <p className="mt-4 text-[#8B8076] text-sm font-light tracking-wide leading-relaxed max-w-md">
+      <p className="mt-4 text-taupe text-sm font-light tracking-wide leading-relaxed max-w-md">
           {description}
         </p>
       )}
       {/* Decorative divider */}
       <motion.div
-        className="mt-6 h-px w-16 bg-gradient-to-r from-[#a87441] to-transparent"
+        className="mt-6 h-px w-16 bg-gradient-to-r from-bronze to-transparent"
         initial={{scaleX: 0, originX: 0}}
         animate={{scaleX: 1}}
         transition={{duration: 1, delay: 0.4, ease: EASE_OUT_EXPO}}
@@ -505,17 +505,17 @@ function EditorialProductCard({
     >
       {/* Badges */}
       {config.badge && (
-        <span className="absolute top-3 left-3 z-10 px-2.5 py-1 bg-[#4A3C31] text-[#F9F5F0] text-[9px] tracking-[0.1em] uppercase rounded">
+        <span className="absolute top-3 left-3 z-10 px-2.5 py-1 bg-brand-text text-cream text-[9px] tracking-[0.1em] uppercase rounded">
           {config.badge}
         </span>
       )}
       {config.numberBadge != null && (
-        <span className="absolute top-3 right-3 z-10 w-7 h-7 bg-[#a87441] text-white rounded-full flex items-center justify-center text-xs font-semibold">
+        <span className="absolute top-3 right-3 z-10 w-7 h-7 bg-bronze text-white rounded-full flex items-center justify-center text-xs font-semibold">
           {String(config.numberBadge).padStart(2, '0')}
         </span>
       )}
       {isOnSale && !config.badge && (
-        <span className="absolute top-3 left-3 z-10 px-2.5 py-1 bg-[#a87441] text-white text-[9px] tracking-[0.1em] uppercase rounded">
+        <span className="absolute top-3 left-3 z-10 px-2.5 py-1 bg-bronze text-white text-[9px] tracking-[0.1em] uppercase rounded">
           Sale
         </span>
       )}
@@ -618,7 +618,7 @@ function EditorialProductCard({
             : {opacity: 0, y: 8, pointerEvents: 'none' as const}
         }
         transition={{duration: 0.3, delay: 0.15}}
-        className="absolute bottom-4 right-4 md:bottom-6 md:right-6 z-10 px-4 py-2.5 bg-[#a87441] text-white text-[10px] tracking-[0.05em] uppercase rounded hover:bg-[#8B5E34] transition-colors"
+        className="absolute bottom-4 right-4 md:bottom-6 md:right-6 z-10 px-4 py-2.5 bg-bronze text-white text-[10px] tracking-[0.05em] uppercase rounded hover:bg-[#8B5E34] transition-colors"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -640,16 +640,16 @@ function EditorialQuote({quote, author}: {quote: string; author: string}) {
       whileInView={{opacity: 1, y: 0}}
       viewport={{once: true}}
       transition={{duration: 0.8, delay: 0.2, ease: EASE_OUT_EXPO}}
-      className="my-8 md:my-12 p-6 md:p-10 bg-[#F0EAE6] rounded-lg relative overflow-hidden"
+      className="my-8 md:my-12 p-6 md:p-10 bg-cream rounded-lg relative overflow-hidden"
     >
       {/* Decorative quote mark */}
       <span
-        className="absolute top-3 left-4 md:top-4 md:left-6 font-serif text-6xl md:text-8xl text-[#a87441]/10 leading-none select-none"
+        className="absolute top-3 left-4 md:top-4 md:left-6 font-serif text-6xl md:text-8xl text-bronze/10 leading-none select-none"
         aria-hidden="true"
       >
         &ldquo;
       </span>
-      <p className="relative font-serif text-xl md:text-2xl italic leading-relaxed text-[#4A3C31]">
+      <p className="relative font-serif text-xl md:text-2xl italic leading-relaxed text-brand-text">
         &ldquo;{quote}&rdquo;
       </p>
       <cite className="relative block mt-4 not-italic text-[10px] tracking-[0.15em] uppercase text-[#8B8076]">
@@ -709,7 +709,7 @@ function QuickViewModal({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 z-10 w-9 h-9 bg-[#4A3C31] text-white rounded-full flex items-center justify-center hover:bg-[#3a2c21] transition-colors"
+          className="absolute top-3 right-3 z-10 w-9 h-9 bg-brand-text text-white rounded-full flex items-center justify-center hover:bg-brand-text/90 transition-colors"
           aria-label="Close quick view"
         >
           <svg
@@ -743,8 +743,8 @@ function QuickViewModal({
                   onClick={() => setDisplayImage(i)}
                   className={`w-2 h-2 rounded-full transition-all duration-200 ${
                     i === displayImage
-                      ? 'bg-[#4A3C31] scale-110'
-                      : 'bg-[#4A3C31]/30 hover:bg-[#4A3C31]/50'
+                      ? 'bg-brand-text scale-110'
+                      : 'bg-brand-text/30 hover:bg-brand-text/50'
                   }`}
                   aria-label={`View image ${i + 1}`}
                 />
@@ -760,7 +760,7 @@ function QuickViewModal({
               {product.vendor}
             </span>
           )}
-          <h2 className="mt-2 font-serif text-xl md:text-2xl text-[#4A3C31]">
+          <h2 className="mt-2 font-serif text-xl md:text-2xl text-brand-text">
             {product.title}
           </h2>
           <div className="mt-2 flex items-center gap-3">
@@ -840,7 +840,7 @@ function QuickViewModal({
           <Link
             to={`/products/${product.handle}`}
             prefetch="intent"
-            className="mt-3 w-full inline-flex items-center justify-center py-3 text-[11px] uppercase tracking-[0.15em] text-[#4A3C31] border border-[#E8E0D8] rounded hover:border-[#a87441] hover:text-[#a87441] transition-colors"
+            className="mt-3 w-full inline-flex items-center justify-center py-3 text-[11px] uppercase tracking-[0.15em] text-brand-text border border-[#E8E0D8] rounded hover:border-bronze hover:text-bronze transition-colors"
             onClick={onClose}
           >
             View Full Details

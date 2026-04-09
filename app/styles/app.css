@@ -29,6 +29,10 @@
   --taupe-dark: #2e2c2b;
   --cream: #f9f5f0;
   --silk: #ad9686;
+  /* Extended tokens */
+  --warm: #f0eae6;
+  --surface: #1a1a1a;
+  --brand-text: #4a3c31;
 
   /* ── Luxury Spacing Scale (8px base) ── */
   --space-1: 0.5rem; /* 8px */
@@ -87,6 +91,10 @@
   --color-taupe-dark: var(--taupe-dark);
   --color-cream: var(--cream);
   --color-silk: var(--silk);
+  /* Extended color tokens */
+  --color-warm: var(--warm);
+  --color-surface: var(--surface);
+  --color-brand-text: var(--brand-text);
 
   --font-serif: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua',
     'Hoefler Text', Georgia, serif;

@@ -29,7 +29,7 @@ function DropdownNavItem({item, isRTL, t}: {item: any; isRTL: boolean; t: any}) 
           isRTL
             ? 'text-[12px] font-normal'
             : 'text-[10px] font-light uppercase tracking-[0.25em] lg:text-[11px]'
-        } text-[#F0EAE6]/80 hover:text-[#a87441]`}
+        } text-warm/80 hover:text-bronze`}
       >
         {item.title}
         <svg
@@ -39,7 +39,7 @@ function DropdownNavItem({item, isRTL, t}: {item: any; isRTL: boolean; t: any}) 
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
-          className={`transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#a87441]' : ''}`}
+          className={`transition-transform duration-300 ${isOpen ? 'rotate-180 text-bronze' : ''}`}
         >
           <path d="M6 9l6 6 6-6" />
         </svg>
@@ -52,7 +52,7 @@ function DropdownNavItem({item, isRTL, t}: {item: any; isRTL: boolean; t: any}) 
           isOpen ? 'opacity-100 translate-y-0 visible' : 'opacity-0 translate-y-2 invisible'
         }`}
       >
-        <div className="bg-[#121212]/95 backdrop-blur-xl border border-[#a87441]/20 rounded-sm py-3 w-56 shadow-[0_12px_40px_rgba(0,0,0,0.4)]">
+        <div className="bg-surface/95 backdrop-blur-xl border border-bronze/20 rounded-sm py-3 w-56 shadow-[0_12px_40px_rgba(0,0,0,0.4)]">
           {item.items.map((sub: any) => (
             <NavLink
               key={sub.id}
@@ -65,8 +65,8 @@ function DropdownNavItem({item, isRTL, t}: {item: any; isRTL: boolean; t: any}) 
                     : 'text-[10px] font-light uppercase tracking-[0.2em]'
                 } ${
                   isActive
-                    ? 'text-[#a87441] bg-[#a87441]/5'
-                    : 'text-[#F0EAE6]/80 hover:text-[#a87441] hover:bg-[#a87441]/5'
+                    ? 'text-bronze bg-bronze/5'
+                    : 'text-warm/80 hover:text-bronze hover:bg-bronze/5'
                 }`
               }
             >
@@ -316,7 +316,7 @@ export function Header({
                   } ${
                     isActive
                       ? 'text-[#a87441]'
-                      : 'text-[#F0EAE6]/80 hover:text-[#a87441]'
+                      : 'text-warm/80 hover:text-bronze'
                   }`
                 }
               >
@@ -329,12 +329,12 @@ export function Header({
         <div className="flex items-center gap-4 md:hidden">
           <button
             onClick={openMenu}
-            className="flex flex-col items-center p-2 text-[#F0EAE6]/80 transition-colors duration-200 hover:text-[#a87441]"
+            className="flex flex-col items-center p-2 text-warm/80 transition-colors duration-200 hover:text-bronze"
             aria-label={t('nav.menu', 'Menu')}
             type="button"
           >
             <Icons.Menu />
-            <span className="mt-1 text-[10px] uppercase tracking-wider text-[#F0EAE6]/60">
+            <span className="mt-1 text-[10px] uppercase tracking-wider text-warm/60">
               {t('nav.menu', 'Menu')}
             </span>
           </button>
@@ -378,12 +378,12 @@ export function Header({
           <div className="hidden md:block">
             <Link
               to="/account"
-              className="flex flex-col items-center p-2 text-[#F0EAE6]/70 transition-colors duration-200 hover:text-[#a87441]"
+              className="flex flex-col items-center p-2 text-warm/70 transition-colors duration-200 hover:text-bronze"
               aria-label={t('nav.account', 'Account')}
               title={t('nav.account', 'Account')}
             >
               <Icons.User />
-              <span className="mt-1 hidden text-[10px] uppercase tracking-wider text-[#F0EAE6]/60 lg:block">
+              <span className="mt-1 hidden text-[10px] uppercase tracking-wider text-warm/60 lg:block">
                 {t('nav.account', 'Account')}
               </span>
             </Link>
@@ -412,13 +412,13 @@ function IconButton({
   return (
     <button
       onClick={onClick}
-      className="flex flex-col items-center p-2 text-[#F0EAE6]/70 transition-colors duration-200 hover:text-[#a87441]"
+      className="flex flex-col items-center p-2 text-warm/70 transition-colors duration-200 hover:text-bronze"
       aria-label={label}
       title={label}
       type="button"
     >
       {children}
-      <span className="mt-1 hidden text-[10px] uppercase tracking-wider text-[#F0EAE6]/60 lg:block">
+      <span className="mt-1 hidden text-[10px] uppercase tracking-wider text-warm/60 lg:block">
         {label}
       </span>
     </button>
@@ -465,13 +465,13 @@ function CartBagButton({
           return (
             <button
               onClick={isEmpty ? handleEmptyClick : openCart}
-              className="relative flex flex-col items-center p-2 text-[#F0EAE6]/70 transition-colors duration-200 hover:text-[#a87441]"
+              className="relative flex flex-col items-center p-2 text-warm/70 transition-colors duration-200 hover:text-bronze"
               aria-label={t('nav.cart', 'Bag')}
               title={t('nav.cart', 'Bag')}
               type="button"
             >
               <Icons.Bag />
-              <span className="mt-1 hidden text-[10px] uppercase tracking-wider text-[#F0EAE6]/60 lg:block">
+              <span className="mt-1 hidden text-[10px] uppercase tracking-wider text-warm/60 lg:block">
                 {t('nav.cart', 'Bag')}
               </span>
 
@@ -483,11 +483,11 @@ function CartBagButton({
 
               {showEmptyHint ? (
                 <span
-                  className={`pointer-events-none absolute top-full z-[400] mt-3 w-56 rounded-xl border border-[#a87441]/25 bg-[#1A1A1A] p-4 text-left shadow-2xl shadow-black/60 ${
+                  className={`pointer-events-none absolute top-full z-[400] mt-3 w-56 rounded-xl border border-bronze/25 bg-surface p-4 text-left shadow-2xl shadow-black/60 ${
                     isRTL ? 'left-0' : 'right-0'
                   }`}
                 >
-                  <span className="block text-[13px] font-medium leading-snug text-[#F0EAE6]">
+                  <span className="block text-[13px] font-medium leading-snug text-warm">
                     {t('cart.empty', 'Your bag is empty')}
                   </span>
                   <span className="mt-1 block text-[11px] leading-relaxed text-[#6B6058]">

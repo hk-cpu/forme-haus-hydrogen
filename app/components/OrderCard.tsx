@@ -39,7 +39,7 @@ export function OrderCard({order}: {order: StorefrontOrder}) {
   const firstImage = lineItems[0]?.variant?.image;
 
   return (
-    <li className="grid text-center border border-[#F0EAE6]/10 rounded-sm bg-[#121212]/30 backdrop-blur-sm transition-all hover:bg-[#121212]/50">
+    <li className="grid text-center border border-warm/10 rounded-sm bg-background/30 backdrop-blur-sm transition-all hover:bg-background/50">
       <Link
         className="grid items-center gap-4 p-4 md:gap-6 md:p-6 md:grid-cols-2"
         to={url}
@@ -68,7 +68,7 @@ export function OrderCard({order}: {order: StorefrontOrder}) {
             as="h3"
             format
             size="copy"
-            className="font-serif text-[#F0EAE6] mb-2"
+            className="font-serif text-warm mb-2"
           >
             {lineItems.length > 1
               ? `${lineItems[0].title} +${lineItems.length - 1} more`
@@ -79,7 +79,7 @@ export function OrderCard({order}: {order: StorefrontOrder}) {
             <dd>
               <Text
                 size="fine"
-                className="text-[#F0EAE6]/60 uppercase tracking-widest text-xs"
+                className="text-warm/60 uppercase tracking-widest text-xs"
               >
                 Order No. {order.orderNumber}
               </Text>
@@ -88,7 +88,7 @@ export function OrderCard({order}: {order: StorefrontOrder}) {
             <dd>
               <Text
                 size="fine"
-                className="text-[#F0EAE6]/60 uppercase tracking-widest text-xs"
+                className="text-warm/60 uppercase tracking-widest text-xs"
               >
                 {new Date(order.processedAt).toDateString()}
               </Text>
@@ -101,7 +101,7 @@ export function OrderCard({order}: {order: StorefrontOrder}) {
                     className={`px-3 py-1 text-[10px] uppercase tracking-widest font-medium rounded-full ${
                       fulfillmentStatus === 'FULFILLED'
                         ? 'bg-[#C4A484]/20 text-[#C4A484] border border-[#C4A484]/20'
-                        : 'bg-white/5 text-[#F0EAE6]/60 border border-white/10'
+                        : 'bg-white/5 text-warm/60 border border-white/10'
                     }`}
                   >
                     <Text size="fine">
@@ -114,7 +114,7 @@ export function OrderCard({order}: {order: StorefrontOrder}) {
           </dl>
         </div>
       </Link>
-      <div className="self-end border-t border-[#F0EAE6]/10">
+      <div className="self-end border-t border-warm/10">
         <Link
           className="block w-full p-3 text-center hover:bg-white/5 transition-colors"
           to={url}

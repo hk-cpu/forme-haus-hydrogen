@@ -161,7 +161,7 @@ export default function TapPaymentCallback() {
           </span>
         </div>
 
-        <h1 className="font-serif text-2xl md:text-3xl text-[#4A3C31] mb-3">
+        <h1 className="font-serif text-2xl md:text-3xl text-brand-text mb-3">
           {data.status === 'success' && 'Order Confirmed'}
           {data.status === 'pending' && 'Processing Payment'}
           {(data.status === 'failed' || data.status === 'error') &&
@@ -201,7 +201,7 @@ export default function TapPaymentCallback() {
           )}
           <Link
             to={'nextPath' in data && data.nextPath ? data.nextPath : data.status === 'success' ? '/account' : '/collections/all'}
-            className="px-6 py-3 bg-[#4A3C31]/10 text-[#4A3C31] text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-[#4A3C31]/20 transition-colors"
+            className="px-6 py-3 bg-brand-text/10 text-brand-text text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-brand-text/20 transition-colors"
           >
             {data.status === 'success' ? 'View Orders' : 'Continue Shopping'}
           </Link>

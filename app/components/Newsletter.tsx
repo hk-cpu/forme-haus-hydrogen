@@ -30,7 +30,7 @@ export function Newsletter() {
         ref={formRef}
         className="relative"
       >
-        <div className="relative flex items-center border-b border-[#a87441]/30 hover:border-[#a87441] focus-within:border-[#a87441] focus-within:shadow-[0_2px_20px_rgba(168,116,65,0.15)] transition-all duration-500 pb-1 group">
+        <div className="relative flex items-center border-b border-bronze/30 hover:border-bronze focus-within:border-bronze focus-within:shadow-[0_2px_20px_rgba(168,116,65,0.15)] transition-all duration-500 pb-1 group">
           <input
             type="email"
             name="email"
@@ -45,7 +45,7 @@ export function Newsletter() {
           <button
             type="submit"
             disabled={fetcher.state === 'submitting'}
-            className="text-[#a87441] text-xs uppercase tracking-widest hover:text-[#F0EAE6] hover:tracking-[0.2em] transition-all duration-300 disabled:opacity-50 ml-2 focus:outline-none focus-visible:text-[#F0EAE6] min-h-[44px] min-w-[44px] flex items-center justify-center px-2"
+            className="text-bronze text-xs uppercase tracking-widest hover:text-[#F0EAE6] hover:tracking-[0.2em] transition-all duration-300 disabled:opacity-50 ml-2 focus:outline-none focus-visible:text-[#F0EAE6] min-h-[44px] min-w-[44px] flex items-center justify-center px-2"
           >
             {fetcher.state === 'submitting'
               ? t('footer.submitting', {defaultValue: 'Sending...'} as any)
@@ -56,7 +56,7 @@ export function Newsletter() {
         {message && (
           <p
             className={`absolute top-full left-0 mt-2 text-xs tracking-wider ${
-              isError ? 'text-red-400' : 'text-[#a87441]'
+              isError ? 'text-red-400' : 'text-bronze'
             }`}
           >
             {message}

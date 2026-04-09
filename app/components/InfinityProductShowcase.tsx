@@ -88,7 +88,7 @@ function ProductCard({
           {/* Price Tag - Bottom */}
           {hasPrice && (
             <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
-              <span className="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-[#4A3C31] text-xs font-medium rounded-full">
+              <span className="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-brand-text text-xs font-medium rounded-full">
                 <Money data={price as any} />
               </span>
             </div>
@@ -100,7 +100,7 @@ function ProductCard({
 
         {/* Product Info - no truncation */}
         <div className="space-y-1 text-center">
-          <h3 className="font-serif text-sm md:text-base text-[#4A3C31] group-hover:text-[#a87441] transition-colors duration-300">
+          <h3 className="font-serif text-sm md:text-base text-brand-text group-hover:text-bronze transition-colors duration-300">
             {product.title}
           </h3>
         </div>
@@ -220,7 +220,7 @@ export function InfinityProductShowcase({
           className="flex flex-col md:flex-row md:items-end md:justify-between gap-4"
         >
           <div>
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#4A3C31] mb-2">
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-brand-text mb-2">
               {t('showcase.collection', 'The Collection')}
             </h2>
             <p className="text-[#8B8076] text-sm md:text-base max-w-md">

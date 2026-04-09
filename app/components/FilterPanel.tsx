@@ -283,7 +283,7 @@ export function FilterPanel({
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-[#a87441]/20">
               <div>
-                <h2 className="font-serif text-xl text-[#F0EAE6]">
+                <h2 className="font-serif text-xl text-warm">
                   {t('filter.title', 'Filters')}
                 </h2>
                 {activeFiltersCount > 0 && (
@@ -302,7 +302,7 @@ export function FilterPanel({
                   </button>
                 )}
                 <button
-                  className="p-2 text-[#F0EAE6] hover:text-[#a87441] transition-colors"
+                  className="p-2 text-warm hover:text-bronze transition-colors"
                   onClick={handleClose}
                   aria-label={t('common.close', 'Close')}
                 >
@@ -435,7 +435,7 @@ export function FilterPanel({
                                 >
                                   {isSelected && <Icons.Check />}
                                 </span>
-                                <span className="text-[#F0EAE6] text-sm">
+                                <span className="text-warm text-sm">
                                   {option.label}
                                 </span>
                               </span>
@@ -468,7 +468,7 @@ export function FilterPanel({
               </button>
               <button
                 onClick={handleClose}
-                className="w-full bg-transparent border border-[#a87441]/30 text-[#F0EAE6] font-medium py-3 rounded-lg hover:border-[#a87441] transition-colors"
+                className="w-full bg-transparent border border-bronze/30 text-warm font-medium py-3 rounded-lg hover:border-bronze transition-colors"
               >
                 {t('common.cancel', 'Cancel')}
               </button>
@@ -498,7 +498,7 @@ function FilterSection({
         onClick={onToggle}
         className="w-full flex items-center justify-between py-4 text-left"
       >
-        <span className="text-[#F0EAE6] font-medium">{title}</span>
+        <span className="text-warm font-medium">{title}</span>
         <span
           className={`text-[#AA9B8F] transition-transform ${
             isExpanded ? 'rotate-180' : ''

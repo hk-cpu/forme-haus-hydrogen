@@ -50,7 +50,7 @@ export default function CategoryBento() {
         style={{padding: '0 var(--page-gutter)'}}
       >
         <div className="mb-4 md:mb-5">
-          <h2 className="mb-2 font-serif text-2xl text-[#4A3C31] md:text-3xl">
+          <h2 className="mb-2 font-serif text-2xl text-brand-text md:text-3xl">
             {t('home.shopByCategory')}
           </h2>
           <div className="h-px w-16 bg-gradient-to-r from-[#a87441] to-transparent" />

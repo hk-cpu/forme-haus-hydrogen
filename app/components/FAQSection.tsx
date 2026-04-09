@@ -112,7 +112,7 @@ function FAQItem({
         className="w-full flex items-center justify-between py-5 text-left group"
         aria-expanded={isOpen}
       >
-        <span className="text-sm md:text-base text-[#4A3C31] font-medium pr-4 group-hover:text-[#a87441] transition-colors duration-300">
+        <span className="text-sm md:text-base text-brand-text font-medium pr-4 group-hover:text-bronze transition-colors duration-300">
           {isRTL ? faq.questionAr : faq.question}
         </span>
         <span
@@ -171,7 +171,7 @@ export function FAQSection() {
             transition={{duration: 0.6}}
             className="lg:col-span-4"
           >
-            <h2 className="font-serif text-3xl md:text-4xl text-[#4A3C31] mb-4">
+            <h2 className="font-serif text-3xl md:text-4xl text-brand-text mb-4">
               {t('faq.title', 'FAQs')}
             </h2>
             <p className="text-sm text-[#8B8076] mb-6 leading-relaxed">

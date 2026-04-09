@@ -15,14 +15,14 @@ export function AccountAddressBook({
 }) {
   return (
     <>
-      <div className="grid w-full gap-4 p-4 py-6 md:gap-8 md:p-8 lg:p-12 border-t border-[#F0EAE6]/10">
-        <h3 className="font-serif text-[#F0EAE6] text-2xl mb-6">
+      <div className="grid w-full gap-4 p-4 py-6 md:gap-8 md:p-8 lg:p-12 border-t border-warm/10">
+        <h3 className="font-serif text-warm text-2xl mb-6">
           Address Book
         </h3>
         <div>
           {!addresses?.length && (
             <Text
-              className="mb-1 text-[#F0EAE6]/60"
+              className="mb-1 text-warm/60"
               width="narrow"
               as="p"
               size="copy"
@@ -65,7 +65,7 @@ function Address({
   defaultAddress?: boolean;
 }) {
   return (
-    <div className="lg:p-8 p-6 bg-[#121212]/30 backdrop-blur-sm border border-[#F0EAE6]/10 rounded-sm flex flex-col transition-all hover:bg-[#121212]/50">
+    <div className="lg:p-8 p-6 bg-background/30 backdrop-blur-sm border border-warm/10 rounded-sm flex flex-col transition-all hover:bg-background/50">
       {defaultAddress && (
         <div className="mb-3 flex flex-row">
           <span className="px-3 py-1 text-[10px] uppercase tracking-widest font-medium rounded-full bg-[#C4A484]/20 text-[#C4A484] border border-[#C4A484]/20">
@@ -73,9 +73,9 @@ function Address({
           </span>
         </div>
       )}
-      <ul className="flex-1 flex-row text-[#F0EAE6]/80 text-sm leading-relaxed font-sans">
+      <ul className="flex-1 flex-row text-warm/80 text-sm leading-relaxed font-sans">
         {(address.firstName || address.lastName) && (
-          <li className="font-medium text-[#F0EAE6] mb-2 uppercase tracking-wide text-xs">
+          <li className="font-medium text-warm mb-2 uppercase tracking-wide text-xs">
             {'' +
               (address.firstName && address.firstName + ' ') +
               address?.lastName}
@@ -88,7 +88,7 @@ function Address({
       <div className="flex flex-row font-medium mt-6 items-baseline gap-6">
         <Link
           to={`/account/address/${encodeURIComponent(address.id)}`}
-          className="text-left text-[#C4A484] hover:text-[#F0EAE6] text-xs uppercase tracking-widest transition-colors"
+          className="text-left text-[#C4A484] hover:text-warm text-xs uppercase tracking-widest transition-colors"
           prefetch="intent"
         >
           Edit
@@ -98,7 +98,7 @@ function Address({
           method="delete"
         >
           <input type="hidden" name="addressId" value={address.id} />
-          <button className="text-left text-[#F0EAE6]/40 hover:text-red-400 ml-6 text-xs uppercase tracking-widest transition-colors">
+          <button className="text-left text-warm/40 hover:text-red-400 ml-6 text-xs uppercase tracking-widest transition-colors">
             Remove
           </button>
         </Form>

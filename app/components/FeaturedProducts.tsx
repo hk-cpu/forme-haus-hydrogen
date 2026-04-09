@@ -193,7 +193,7 @@ function FeatureProductsContent({
 function EnhancedSkeleton({className}: {className?: string}) {
   return (
     <div
-      className={`relative overflow-hidden rounded-xl bg-[#1A1A1A] ${className}`}
+      className={`relative overflow-hidden rounded-xl bg-surface ${className}`}
     >
       <div className="absolute inset-0 luxury-skeleton" />
       <motion.div

@@ -216,7 +216,7 @@ export default function EditorialSection() {
           transition={{duration: 0.5, ease: [0.25, 0.1, 0.25, 1]}}
           className="flex justify-between items-end mb-6"
         >
-          <h2 className="font-serif text-2xl md:text-3xl italic text-[#4A3C31]">
+          <h2 className="font-serif text-2xl md:text-3xl italic text-brand-text">
             {isRTL ? (
               <motion.span
                 initial={{opacity: 0, y: 20}}

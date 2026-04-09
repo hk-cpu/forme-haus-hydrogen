@@ -81,7 +81,7 @@ export default function ContactPage() {
   const submitted = actionData?.success === true;
 
   return (
-    <div className="min-h-screen bg-[#F9F5F0]">
+    <div className="min-h-screen bg-cream">
       {/* Header Content */}
       <section className="relative py-12 px-6 md:px-12 overflow-hidden text-center">
         <div className="max-w-4xl mx-auto">
@@ -94,7 +94,7 @@ export default function ContactPage() {
             <span className="text-[11px] uppercase tracking-[0.3em] text-[#a87441] mb-4 block">
               Experience the Haus
             </span>
-            <h1 className="font-serif text-4xl md:text-6xl italic text-[#4A3C31] mb-6">
+            <h1 className="font-serif text-4xl md:text-6xl italic text-brand-text mb-6">
               Connect With Us
             </h1>
           </motion.div>
@@ -110,7 +110,7 @@ export default function ContactPage() {
       <div className="max-w-6xl mx-auto px-6 pb-24 grid grid-cols-1 lg:grid-cols-2 gap-16">
         {/* Left: Contact Form */}
         <div>
-          <h2 className="font-serif text-2xl italic text-[#4A3C31] mb-6">
+          <h2 className="font-serif text-2xl italic text-brand-text mb-6">
             Send a Message
           </h2>
 
@@ -133,7 +133,7 @@ export default function ContactPage() {
               <div className="w-16 h-16 rounded-full bg-[#a87441]/20 flex items-center justify-center mx-auto mb-4">
                 <Send className="w-6 h-6 text-[#a87441]" />
               </div>
-              <h3 className="font-serif text-xl text-[#4A3C31] mb-2">
+              <h3 className="font-serif text-xl text-brand-text mb-2">
                 Message Sent!
               </h3>
               <p className="text-[13px] text-[#8B8076]">
@@ -156,7 +156,7 @@ export default function ContactPage() {
                     name="name"
                     required
                     placeholder="Full Name"
-                    className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3 text-[#4A3C31] outline-none focus:border-[#a87441] placeholder:text-[#8B8076]/40"
+                    className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3 text-brand-text outline-none focus:border-bronze placeholder:text-[#8B8076]/40"
                   />
                 </div>
                 <div>
@@ -172,7 +172,7 @@ export default function ContactPage() {
                     name="email"
                     required
                     placeholder="name@example.com"
-                    className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3 text-[#4A3C31] outline-none focus:border-[#a87441] placeholder:text-[#8B8076]/40"
+                    className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3 text-brand-text outline-none focus:border-bronze placeholder:text-[#8B8076]/40"
                   />
                 </div>
               </div>
@@ -188,7 +188,7 @@ export default function ContactPage() {
                   type="text"
                   name="subject"
                   required
-                  className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3 text-[#4A3C31] outline-none focus:border-[#a87441]"
+                  className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3 text-brand-text outline-none focus:border-bronze"
                 />
               </div>
               <div>
@@ -203,7 +203,7 @@ export default function ContactPage() {
                   name="message"
                   required
                   rows={5}
-                  className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3 text-[#4A3C31] outline-none focus:border-[#a87441] resize-none"
+                  className="w-full bg-white border border-[#8B8076]/20 rounded-lg px-4 py-3 text-brand-text outline-none focus:border-bronze resize-none"
                 />
               </div>
               <button
@@ -231,7 +231,7 @@ export default function ContactPage() {
         <div className="space-y-6">
           {/* Email Card */}
           <div className="bg-white p-8 rounded-2xl border border-[#8B8076]/10">
-            <h3 className="font-serif text-xl text-[#4A3C31] mb-4">Email Us</h3>
+              <h3 className="font-serif text-xl text-brand-text mb-4">Email Us</h3>
             <p className="text-[13px] text-[#8B8076] mb-4">
               We&apos;ll get back to you as soon as possible.
             </p>
@@ -263,7 +263,7 @@ export default function ContactPage() {
 
           {/* WhatsApp Card */}
           <div className="bg-white p-8 rounded-2xl border border-[#8B8076]/10">
-            <h3 className="font-serif text-xl text-[#4A3C31] mb-4">WhatsApp</h3>
+            <h3 className="font-serif text-xl text-brand-text mb-4">WhatsApp</h3>
             <p className="text-[13px] text-[#8B8076] mb-4">
               Message us directly for quick support.
             </p>
@@ -287,7 +287,7 @@ export default function ContactPage() {
 
           {/* Instagram */}
           <div className="bg-white p-8 rounded-2xl border border-[#8B8076]/10">
-            <h3 className="font-serif text-xl text-[#4A3C31] mb-4">Instagram</h3>
+            <h3 className="font-serif text-xl text-brand-text mb-4">Instagram</h3>
             <p className="text-[13px] text-[#8B8076] mb-4">
               Follow us for the latest drops and styling inspiration.
             </p>

@@ -45,7 +45,7 @@ export default function AboutPage() {
       <div className="pt-20 md:pt-28 pb-12 md:pb-16 bg-[#F9F5F0]">
         <div className="max-w-[860px] mx-auto px-6 md:px-12 text-center">
           <motion.span
-            className="text-[10px] uppercase tracking-[0.4em] text-[#a87441] block mb-4"
+            className="text-[10px] tracking-[0.4em] text-[#a87441] block mb-4"
             initial={{opacity: 0, y: 10}}
             animate={{opacity: 1, y: 0}}
             transition={{delay: 0.2, duration: 0.6}}
@@ -53,7 +53,7 @@ export default function AboutPage() {
             {isRTL ? 'تأسست في الرياض' : 'Est. Riyadh'}
           </motion.span>
           <motion.h1
-            className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#4A3C31] tracking-wider"
+            className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-text tracking-wider"
             initial={{opacity: 0, y: 20}}
             animate={{opacity: 1, y: 0}}
             transition={{delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1]}}
@@ -73,7 +73,7 @@ export default function AboutPage() {
       <div className="max-w-[860px] mx-auto px-6 md:px-12 pb-16 md:pb-24">
         {/* Opening */}
         <FadeInSection>
-          <p className="font-serif text-xl md:text-2xl text-[#4A3C31] leading-relaxed mb-4">
+          <p className="font-serif text-xl md:text-2xl text-brand-text leading-relaxed mb-4">
             {isRTL ? (
               'انطلقت Formé Haus في الرياض من رغبة في تقديم منظور أكثر وعياً للرفاهية العصرية — حيث يكون الاختيار مقصوداً، وتكون الأناقة تعبيراً هادئاً لا يزول.'
             ) : (
@@ -87,7 +87,7 @@ export default function AboutPage() {
         </FadeInSection>
 
         {/* Body */}
-        <div className="space-y-8 text-[15px] md:text-base text-[#4A3C31]/80 leading-[1.85] font-light">
+        <div className="space-y-8 text-[15px] md:text-base text-brand-text/80 leading-[1.85] font-light">
           <FadeInSection>
             <p>
               {isRTL
@@ -129,7 +129,7 @@ export default function AboutPage() {
           </FadeInSection>
 
           <FadeInSection>
-            <p className="font-serif text-lg md:text-xl text-[#4A3C31] italic py-4">
+            <p className="font-serif text-lg md:text-xl text-brand-text italic py-4">
               {isRTL ? (
                 <>
                   Formé Haus ليست مجرد وجهة رقمية.
@@ -153,7 +153,7 @@ export default function AboutPage() {
             <span className="text-[10px] uppercase tracking-[0.4em] text-[#a87441] block mb-4">
               {isRTL ? 'مختارات بعناية' : 'Curated with intention'}
             </span>
-            <p className="font-serif text-2xl md:text-3xl text-[#4A3C31] italic leading-relaxed max-w-lg">
+            <p className="font-serif text-2xl md:text-3xl text-brand-text italic leading-relaxed max-w-lg">
               {isRTL
                 ? 'حيث يُراعى كل تفصيل ولا يُترك شيء للصدفة.'
                 : 'Where every detail is considered and nothing is left to chance.'}
@@ -167,14 +167,14 @@ export default function AboutPage() {
             <span className="text-[10px] uppercase tracking-[0.35em] text-[#a87441] block mb-3">
               Formé Haus
             </span>
-            <h2 className="font-serif text-3xl md:text-4xl text-[#4A3C31] tracking-wider">
+            <h2 className="font-serif text-3xl md:text-4xl text-brand-text tracking-wider">
               {isRTL ? 'فلسفتنا' : 'Our Philosophy'}
             </h2>
             <div className={`mt-5 h-px w-16 bg-gradient-to-r ${isRTL ? 'from-transparent to-[#a87441]/40' : 'from-[#a87441]/40 to-transparent'}`} />
           </div>
         </FadeInSection>
 
-        <div className="space-y-8 text-[15px] md:text-base text-[#4A3C31]/80 leading-[1.85] font-light">
+        <div className="space-y-8 text-[15px] md:text-base text-brand-text/80 leading-[1.85] font-light">
           <FadeInSection>
             <p>
               {isRTL
@@ -208,7 +208,7 @@ export default function AboutPage() {
           </FadeInSection>
 
           <FadeInSection>
-            <p className="font-serif text-lg md:text-xl text-[#4A3C31] pt-4">
+            <p className="font-serif text-lg md:text-xl text-brand-text pt-4">
               {isRTL ? (
                 <>
                   أما الرفاهية، فليست في الكثرة، بل في الاختيار.<br />

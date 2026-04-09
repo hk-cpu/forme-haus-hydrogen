@@ -146,7 +146,7 @@ export function FooterAccordion() {
               onClick={() => toggleSection(section.id)}
               className="w-full flex items-center justify-between p-5 text-left group"
             >
-              <span className="text-[11px] uppercase tracking-[0.25em] text-[#F0EAE6] font-medium">
+              <span className="text-[11px] uppercase tracking-[0.25em] text-warm font-medium">
                 {section.title}
               </span>
               <motion.span

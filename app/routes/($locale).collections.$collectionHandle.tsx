@@ -458,7 +458,7 @@ export default function Collection() {
               Collection
             </span>
             <h1
-              className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#4A3C31] mb-4"
+              className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-text mb-4"
               style={{letterSpacing: '0.01em'}}
             >
               {collection.title}
@@ -544,13 +544,13 @@ export default function Collection() {
                   Collection
                 </span>
                 <h1
-                  className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#F0EAE6] tracking-tight mb-3"
+                  className="font-serif text-3xl md:text-4xl lg:text-5xl text-warm tracking-tight mb-3"
                   style={{letterSpacing: '0.02em'}}
                 >
                   {collection.title}
                 </h1>
                 {(collectionSubtitle?.subtitle || collection.description) && (
-                  <p className="max-w-lg mx-auto text-[#F0EAE6]/55 text-sm font-light tracking-wide leading-relaxed">
+                  <p className="max-w-lg mx-auto text-warm/55 text-sm font-light tracking-wide leading-relaxed">
                     {collectionSubtitle?.subtitle || collection.description}
                   </p>
                 )}
@@ -590,7 +590,7 @@ export default function Collection() {
             <span className="text-[10px] uppercase tracking-[0.35em] text-[#a87441] font-light">
               Curating
             </span>
-            <h2 className="font-serif italic text-2xl md:text-3xl text-[#4A3C31] mt-2">
+            <h2 className="font-serif italic text-2xl md:text-3xl text-brand-text mt-2">
               Products coming soon
             </h2>
             <div className="h-px w-16 bg-gradient-to-r from-transparent via-[#a87441]/40 to-transparent mx-auto mt-4" />
@@ -755,7 +755,7 @@ export default function Collection() {
               {/* 3D perspective "COMING SOON" */}
               <div style={{perspective: 1000}}>
                 <motion.h2
-                  className="font-serif italic text-5xl md:text-7xl lg:text-8xl text-[#4A3C31]/10 select-none"
+                  className="font-serif italic text-5xl md:text-7xl lg:text-8xl text-brand-text/10 select-none"
                   initial={{opacity: 0, rotateX: 40, y: 60}}
                   animate={{opacity: 1, rotateX: 0, y: 0}}
                   transition={{duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1]}}
@@ -856,37 +856,11 @@ export default function Collection() {
             />
           )}
 
-          {/* ─── Breadcrumb + Sort / Applied Filters Bar ─── */}
+          {/* ─── Sort / Applied Filters Bar ─── */}
           <div
-            className="max-w-[1440px] mx-auto py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
+            className="max-w-[1440px] mx-auto py-3 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2"
             style={{padding: '0.75rem var(--page-gutter)'}}
           >
-            <nav
-              aria-label="Breadcrumb"
-              className="flex items-center gap-2 text-[11px] uppercase tracking-[0.15em] text-[#8B7355]"
-            >
-              <a
-                href="/"
-                className="hover:text-[#a87441] transition-colors duration-200"
-              >
-                Home
-              </a>
-              <span aria-hidden="true" className="text-[#8B7355]/40">
-                ›
-              </span>
-              <a
-                href="/collections"
-                className="hover:text-[#a87441] transition-colors duration-200"
-              >
-                Collections
-              </a>
-              <span aria-hidden="true" className="text-[#8B7355]/40">
-                ›
-              </span>
-              <span className="text-[#4A3C31] font-medium truncate max-w-[180px]">
-                {collection.title}
-              </span>
-            </nav>
             <div className="flex items-center gap-4">
               <SortMenu />
               {appliedFilters.length > 0 && (
@@ -894,7 +868,7 @@ export default function Collection() {
                   {appliedFilters.map((filter, i) => (
                     <span
                       key={i}
-                      className="text-[10px] uppercase tracking-wider px-2.5 py-1 bg-[#4A3C31]/6 text-[#4A3C31] rounded-full"
+                      className="text-[10px] uppercase tracking-wider px-2.5 py-1 bg-brand-text/6 text-brand-text rounded-full"
                     >
                       {filter.label}
                     </span>
@@ -932,9 +906,9 @@ export default function Collection() {
 
                   {/* Pagination Bar */}
                   {(hasPreviousPage || hasNextPage) && (
-                    <nav className="flex items-center justify-center gap-6 mt-16 pt-8 border-t border-[#4A3C31]/8">
+                    <nav className="flex items-center justify-center gap-6 mt-16 pt-8 border-t border-brand-text/8">
                       {hasPreviousPage ? (
-                        <PreviousLink className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31] border border-[#4A3C31]/15 hover:border-[#a87441] hover:text-[#a87441] transition-all duration-300 rounded">
+                        <PreviousLink className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-brand-text border border-brand-text/15 hover:border-bronze hover:text-bronze transition-all duration-300 rounded">
                           <svg
                             width="14"
                             height="14"
@@ -951,7 +925,7 @@ export default function Collection() {
                         <span
                           aria-disabled="true"
                           role="button"
-                          className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31]/25 border border-[#4A3C31]/8 cursor-not-allowed rounded"
+                          className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-brand-text/25 border border-brand-text/8 cursor-not-allowed rounded"
                         >
                           <svg
                             width="14"
@@ -968,7 +942,7 @@ export default function Collection() {
                       )}
 
                       {hasNextPage ? (
-                        <NextLink className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-[#4A3C31] border border-[#4A3C31]/15 hover:border-[#a87441] hover:text-[#a87441] transition-all duration-300 rounded">
+                        <NextLink className="inline-flex items-center gap-2 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] text-brand-text border border-brand-text/15 hover:border-bronze hover:text-bronze transition-all duration-300 rounded">
                           {isLoading ? t('collection.loading') : 'Next'}
                           <svg
                             width="14"
@@ -1010,7 +984,7 @@ export default function Collection() {
             {collection.products.nodes.length === 0 && (
               <div className="text-center py-32">
                 <div className="w-px h-12 bg-gradient-to-b from-transparent via-[#a87441]/30 to-transparent mx-auto mb-6" />
-                <p className="font-serif text-xl text-[#4A3C31]/35 italic">
+                <p className="font-serif text-xl text-brand-text/35 italic">
                   {t('collection.noProducts')}
                 </p>
               </div>
@@ -1194,7 +1168,7 @@ export function ErrorBoundary() {
 
   return (
     <div className="flex flex-col items-center justify-center py-20 px-6 text-center min-h-[50vh]">
-      <h1 className="font-serif text-3xl md:text-4xl text-[#4A3C31] mb-4">
+      <h1 className="font-serif text-3xl md:text-4xl text-brand-text mb-4">
         {is404 ? 'Collection Not Found' : 'Something went wrong'}
       </h1>
       <p className="text-[#8B8076] mb-8 max-w-md">

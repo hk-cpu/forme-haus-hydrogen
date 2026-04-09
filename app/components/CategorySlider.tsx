@@ -155,7 +155,7 @@ function CategoryCard({
               Explore
             </span>
             <h4
-              className={`font-serif text-xl text-[#F0EAE6] transition-all duration-300 ${
+              className={`font-serif text-xl text-warm transition-all duration-300 ${
                 isHovered ? 'translate-x-0.5' : ''
               }`}
             >
@@ -190,13 +190,13 @@ export default function CategorySlider() {
           viewport={{once: true}}
           className="text-center mb-12"
         >
-          <span className="text-[10px] uppercase tracking-[0.3em] text-[#a87441] mb-3 block">
+          <span className="text-[10px] uppercase tracking-[0.3em] text-bronze mb-3 block">
             Curated Selection
           </span>
-          <h2 className="font-serif text-3xl italic text-[#F0EAE6]">
+          <h2 className="font-serif text-3xl italic text-warm">
             The Collections
           </h2>
-          <div className="w-16 h-[1px] bg-[#a87441]/50 mx-auto mt-4" />
+          <div className="w-16 h-[1px] bg-bronze/50 mx-auto mt-4" />
         </motion.div>
 
         <div className="flex gap-6 overflow-x-auto pb-8 snap-x scrollbar-hide px-2">
