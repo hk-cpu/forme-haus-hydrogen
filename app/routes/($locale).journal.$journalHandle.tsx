@@ -209,21 +209,22 @@ export default function Article() {
 
   return (
     <div className="relative min-h-screen bg-[#F9F5F0] overflow-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
-      {/* Magazine Hero Image — visible, zoomed-out, fitted */}
+      {/* Magazine Background Image — visible behind text */}
       {staticArticle.image && (
         <motion.div
-          className="relative w-full max-h-[520px] overflow-hidden bg-[#EDE6DD]"
+          className="fixed inset-0 z-0 pointer-events-none"
           initial={{opacity: 0}}
           animate={{opacity: 1}}
-          transition={{duration: 1.2, ease: 'easeOut'}}
+          transition={{duration: 1.5, ease: 'easeOut'}}
         >
           <img
             src={staticArticle.image}
-            alt={staticArticle.title}
-            className="w-full h-[50vh] max-h-[520px] object-contain object-center"
+            alt=""
+            className="w-full h-full object-cover object-center opacity-75"
+            loading="eager"
           />
-          {/* Subtle bottom fade into page background */}
-          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#F9F5F0] to-transparent" />
+          {/* Lighter gradient overlay for text readability — image still clearly visible */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#F9F5F0]/30 via-[#F9F5F0]/50 to-[#F9F5F0]/80" />
         </motion.div>
       )}
 

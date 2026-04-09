@@ -153,7 +153,7 @@ export default function Login() {
       <Suspense fallback={null}>
         <GhostCursorEnhanced
           primaryColor="#ffffff"
-          secondaryColor="#a87441"
+          secondaryColor={getComputedStyle(document.documentElement).getPropertyValue('--bronze') || '#a87441'}
           brightness={0.8}
           edgeIntensity={0.2}
           trailLength={40}
@@ -198,14 +198,14 @@ export default function Login() {
                 >
                   {isRegistering ? 'Join Formé Haus' : 'Welcome Back'}
                 </h1>
-                <p className="text-[11px] tracking-[0.25em] font-sans text-[#8B8076] uppercase">
+                <p className="text-[11px] tracking-[0.25em] font-sans text-taupe uppercase">
                   {isRegistering ? 'Begin Your Journey' : 'Continue Your Journey'}
                 </p>
               </div>
             </div>
 
             {/* Segmented Control UI */}
-            <div className="flex bg-[#fcfbf9] border border-[#E5DFD9] rounded-xl p-1 mb-8 relative">
+            <div className="flex bg-cream border border-warm rounded-xl p-1 mb-8 relative">
               <div 
                 className="absolute inset-y-1 w-[calc(50%-4px)] bg-white rounded-lg shadow-sm transition-all duration-400 ease-[0.16,1,0.3,1] z-0"
                 style={{
@@ -215,14 +215,14 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() => setIsRegistering(false)}
-                className={`flex-1 py-3.5 text-[11px] uppercase tracking-widest font-semibold z-10 transition-colors duration-300 ${!isRegistering ? 'text-[#a87441]' : 'text-[#8B8076] hover:text-[#a87441]'}`}
+                className={`flex-1 py-3.5 text-[11px] uppercase tracking-widest font-semibold z-10 transition-colors duration-300 ${!isRegistering ? 'text-bronze' : 'text-taupe hover:text-bronze'}`}
               >
                 Sign In
               </button>
               <button
                 type="button"
                 onClick={() => setIsRegistering(true)}
-                className={`flex-1 py-3.5 text-[11px] uppercase tracking-widest font-semibold z-10 transition-colors duration-300 ${isRegistering ? 'text-[#a87441]' : 'text-[#8B8076] hover:text-[#a87441]'}`}
+                className={`flex-1 py-3.5 text-[11px] uppercase tracking-widest font-semibold z-10 transition-colors duration-300 ${isRegistering ? 'text-bronze' : 'text-taupe hover:text-bronze'}`}
               >
                 Register
               </button>
@@ -240,14 +240,14 @@ export default function Login() {
               <div
                 role="alert"
                 aria-live="assertive"
-                className="p-3.5 text-[12px] text-[#8B3A3A] bg-[#FDF2F2] border border-[#E8C4C4] rounded-lg text-center tracking-wide"
+                className="p-3.5 text-[12px] text-bronze-dark bg-bronze/10 border border-bronze/30 rounded-lg text-center tracking-wide"
               >
                 {data.error}
               </div>
             )}
 
             {data?.success && !isRegistering && (
-              <div className="p-3.5 text-[12px] text-[#2C2419] bg-[#a87441]/10 border border-[#a87441]/20 rounded-lg text-center tracking-wide animate-in fade-in zoom-in duration-300">
+              <div className="p-3.5 text-[12px] text-brand-text bg-bronze/10 border border-bronze/20 rounded-lg text-center tracking-wide animate-in fade-in zoom-in duration-300">
                 {data.success}
               </div>
             )}
@@ -262,11 +262,11 @@ export default function Login() {
                   placeholder=" "
                   required
                   autoComplete="email"
-                  className="peer w-full bg-[#fcfbf9] border border-[#E5DFD9] pt-6 pb-2 px-4 text-[#2C2419] focus:outline-none focus:border-[#a87441] focus:bg-white focus:ring-1 focus:ring-[#a87441]/30 focus-visible:ring-1 focus-visible:ring-[#a87441]/50 transition-all duration-300 text-[14px] font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
+                  className="peer w-full bg-cream border border-warm pt-6 pb-2 px-4 text-brand-text focus:outline-none focus:border-bronze focus:bg-white focus:ring-1 focus:ring-bronze/30 focus-visible:ring-1 focus-visible:ring-bronze/50 transition-all duration-300 text-[14px] font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
                 />
                 <label
                   htmlFor="email"
-                  className="absolute text-[11px] uppercase tracking-[0.2em] text-[#AA9B8F] top-4 left-4 transition-all duration-300 transform -translate-y-2.5 scale-[0.85] origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-[0.85] peer-focus:-translate-y-2.5 peer-focus:text-[#a87441] pointer-events-none"
+                  className="absolute text-[11px] uppercase tracking-[0.2em] text-taupe top-4 left-4 transition-all duration-300 transform -translate-y-2.5 scale-[0.85] origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-[0.85] peer-focus:-translate-y-2.5 peer-focus:text-bronze pointer-events-none"
                 >
                   Email Address
                 </label>
@@ -283,11 +283,11 @@ export default function Login() {
                   autoComplete={
                     isRegistering ? 'new-password' : 'current-password'
                   }
-                  className="peer w-full bg-[#fcfbf9] border border-[#E5DFD9] pt-6 pb-2 px-4 text-[#2C2419] focus:outline-none focus:border-[#a87441] focus:bg-white focus:ring-1 focus:ring-[#a87441]/30 focus-visible:ring-1 focus-visible:ring-[#a87441]/50 transition-all duration-300 text-[14px] font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
+                  className="peer w-full bg-cream border border-warm pt-6 pb-2 px-4 text-brand-text focus:outline-none focus:border-bronze focus:bg-white focus:ring-1 focus:ring-bronze/30 focus-visible:ring-1 focus-visible:ring-bronze/50 transition-all duration-300 text-[14px] font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
                 />
                 <label
                   htmlFor="password"
-                  className="absolute text-[11px] uppercase tracking-[0.2em] text-[#AA9B8F] top-4 left-4 transition-all duration-300 transform -translate-y-2.5 scale-[0.85] origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-[0.85] peer-focus:-translate-y-2.5 peer-focus:text-[#a87441] pointer-events-none"
+                  className="absolute text-[11px] uppercase tracking-[0.2em] text-taupe top-4 left-4 transition-all duration-300 transform -translate-y-2.5 scale-[0.85] origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-[0.85] peer-focus:-translate-y-2.5 peer-focus:text-bronze pointer-events-none"
                 >
                   Password
                 </label>
@@ -298,7 +298,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] transition-all duration-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium flex items-center justify-center gap-2"
+                className="w-full py-4 bg-bronze text-white hover:bg-bronze-dark uppercase tracking-[0.2em] text-[11px] transition-all duration-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <>
@@ -316,7 +316,7 @@ export default function Login() {
                 {!isRegistering && (
                   <Link
                     to="/account/recover"
-                    className="text-[10px] uppercase tracking-[0.15em] text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-300"
+                    className="text-[10px] uppercase tracking-[0.15em] text-taupe hover:text-bronze transition-colors duration-300"
                   >
                     Forgot Password?
                   </Link>
