@@ -30,7 +30,7 @@ const CATEGORIES: Category[] = [
   {
     id: 3,
     titleKey: 'nav.sunglasses',
-    image: '/brand/sunglasses-hero-v3.png',
+    image: '/brand/sunglasses-opt.webp',
     url: '/collections/sunglasses',
     width: 640,
     height: 1160,
