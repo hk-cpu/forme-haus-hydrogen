@@ -13,7 +13,7 @@ interface JournalCard {
 
 const JOURNAL_CARDS: JournalCard[] = [
   {
-    image: '/brand/journal-wardrobe-opt.webp',
+    image: '/brand/journal-wardrobe-v2.jpg',
     alt: 'The Modern Wardrobe Edit',
     url: '/journal/the-modern-wardrobe-edit',
     title: 'The Modern Wardrobe Edit',
@@ -22,7 +22,7 @@ const JOURNAL_CARDS: JournalCard[] = [
     height: 1146,
   },
   {
-    image: '/brand/journal-elegance-opt.webp',
+    image: '/brand/journal-elegance-v2.jpg',
     alt: 'Everyday Elegance',
     url: '/journal/everyday-elegance',
     title: 'Everyday Elegance',
@@ -31,7 +31,7 @@ const JOURNAL_CARDS: JournalCard[] = [
     height: 954,
   },
   {
-    image: '/brand/journal-selection-opt.webp',
+    image: '/brand/journal-selection-v2.jpg',
     alt: 'Behind the Selection',
     url: '/journal/behind-the-selection',
     title: 'Behind the Selection',
