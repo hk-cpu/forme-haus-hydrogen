@@ -8,7 +8,7 @@ import {
   useReducedMotion,
 } from 'framer-motion';
 import {Link, useFetcher} from '@remix-run/react';
-import {Money} from '@shopify/hydrogen';
+import {Money, CartForm} from '@shopify/hydrogen';
 
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
@@ -375,8 +375,10 @@ export function ProductCard({
     setIsAdding(true);
     fetcher.submit(
       {
-        cartAction: 'ADD_TO_CART',
-        lines: JSON.stringify([{merchandiseId: variant.id, quantity: 1}]),
+        cartAction: CartForm.ACTIONS.LinesAdd,
+        cartFormInput: JSON.stringify({
+          lines: [{merchandiseId: variant.id, quantity: 1}],
+        }),
       },
       {method: 'POST', action: '/cart'},
     );
