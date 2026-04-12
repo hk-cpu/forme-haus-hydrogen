@@ -92,8 +92,8 @@ export default function JournalSection() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </div>
 
-              <div className="mt-3 px-1">
-                <h3 className="font-serif text-base italic text-brand-text transition-colors duration-300 group-hover:text-bronze md:text-lg">
+              <div className="mt-3 px-1 flex items-baseline gap-1.5 flex-wrap">
+                <h3 className="font-serif text-sm md:text-base italic text-brand-text transition-colors duration-300 group-hover:text-bronze">
                   {t(
                     card.title === 'The Modern Wardrobe Edit'
                       ? 'journal.modernWardrobe'
@@ -103,8 +103,8 @@ export default function JournalSection() {
                     card.title,
                   )}
                 </h3>
-                <p className="mt-1 text-xs leading-relaxed text-[#736659]">
-                  {t(
+                <span className="font-serif text-xs italic text-[#8B7D72]">
+                  —&nbsp;{t(
                     card.title === 'The Modern Wardrobe Edit'
                       ? 'journal.modernWardrobe.subtitle'
                       : card.title === 'Everyday Elegance'
@@ -112,7 +112,7 @@ export default function JournalSection() {
                       : 'journal.behindCraft.subtitle',
                     card.excerpt,
                   )}
-                </p>
+                </span>
               </div>
             </Link>
           ))}
