@@ -449,7 +449,7 @@ const menuData = {
   'phone-accessories': {
     image:
       'https://images.unsplash.com/photo-1603313011101-320f26a4f6f6?w=800&q=80',
-    items: ['Phone Cases', 'Phone Straps'],
+    items: ['Phone Accessories', 'Phone Straps'],
   },
 };
 

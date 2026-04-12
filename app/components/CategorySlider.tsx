@@ -11,7 +11,7 @@ const CATEGORIES = [
   },
   {
     id: 2,
-    title: 'Phone Cases',
+    title: 'Phone Accessories',
     image: '/brand/phone-accessories.webp',
     url: '/collections/phone-cases',
   },

@@ -20,7 +20,7 @@ export const translations = {
     'nav.journal': 'Journal',
     'nav.about': 'Our Story',
     'nav.contact': 'Contact Us',
-    'nav.phoneCases': 'Phone Cases',
+    'nav.phoneCases': 'Phone Accessories',
     'nav.sunglasses': 'Sunglasses',
     'nav.ourStory': 'Our Story',
     'nav.menu': 'Menu',

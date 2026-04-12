@@ -38,7 +38,7 @@ const menuCategories: Record<string, CategoryData> = {
     editorial: '/assets/heros/phone-accessories-hero-1.webp',
     tagline: 'Protect in Style',
     categories: [
-      {label: 'Phone Cases', href: '/collections/phone-cases', featured: true},
+      {label: 'Phone Accessories', href: '/collections/phone-cases', featured: true},
       {label: 'Phone Straps', href: '/collections/phone-straps'},
       {label: 'Bundles', href: '/collections/case-strap-bundles'},
     ],
