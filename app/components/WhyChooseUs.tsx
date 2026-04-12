@@ -145,10 +145,10 @@ export function WhyChooseUs() {
               <div className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#a87441]/15 bg-[linear-gradient(135deg,rgba(168,116,65,0.3),rgba(212,175,135,0.15))] text-[#a87441] shadow-sm">
                 {item.icon}
               </div>
-              <h3 className="mb-1 text-sm font-medium text-[#4A3C31] md:text-base">
+              <h3 className="mb-1 font-serif italic text-sm text-[#4A3C31] md:text-base">
                 {t(item.titleKey, item.title)}
               </h3>
-              <p className="break-words text-xs leading-relaxed text-[#5C5046] md:text-sm">
+              <p className="break-words font-serif italic text-xs leading-relaxed text-[#5C5046] md:text-sm">
                 {t(item.descKey, item.description)}
               </p>
             </div>
