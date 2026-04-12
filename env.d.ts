@@ -34,6 +34,11 @@ declare global {
     // Tap Payments
     TAP_SECRET_KEY: string;
     TAP_API_URL: string;
+    // Google OAuth SSO
+    GOOGLE_CLIENT_ID: string;
+    GOOGLE_CLIENT_SECRET: string;
+    /** HMAC secret used to derive deterministic passwords for Google SSO users */
+    GOOGLE_SSO_SECRET: string;
   }
 }
 
