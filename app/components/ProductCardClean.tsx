@@ -10,6 +10,7 @@ interface ProductCardCleanProps {
     id: string;
     handle: string;
     title: string;
+    titleAr?: {value: string} | null;
     priceRange: {
       minVariantPrice: {
         amount: string;
@@ -58,11 +59,15 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
 
   const slideshowRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Parse title for color
-  const titleParts = product.title.split(' - ');
-  const productName = titleParts[0]?.trim() || product.title;
+  // Resolve display title: use Arabic metafield when in RTL/Arabic mode
+  const displayTitle =
+    (isRTL && product.titleAr?.value) ? product.titleAr.value : product.title;
+
+  // Parse title for color (color suffix is English-only; skip split in Arabic)
+  const titleParts = isRTL ? [displayTitle] : displayTitle.split(' - ');
+  const productName = titleParts[0]?.trim() || displayTitle;
   const productColor =
-    titleParts.length > 1 ? titleParts.slice(1).join(' - ').trim() : '';
+    !isRTL && titleParts.length > 1 ? titleParts.slice(1).join(' - ').trim() : '';
 
   // Calculate discount
   const hasDiscount =

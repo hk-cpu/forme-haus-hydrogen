@@ -41,6 +41,7 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
   fragment ProductCard on Product {
     id
     title
+    titleAr: metafield(namespace: "custom", key: "title_ar") { value }
     publishedAt
     handle
     vendor

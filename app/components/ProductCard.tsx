@@ -196,6 +196,7 @@ interface ProductCardProps {
     id: string;
     handle: string;
     title: string;
+    titleAr?: {value: string} | null;
     priceRange: {
       minVariantPrice: {
         amount: string;
@@ -290,11 +291,16 @@ export function ProductCard({
 
   const slideshowRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // Resolve display title: use Arabic metafield when in RTL/Arabic mode
+  const displayTitle =
+    (isRTL && product.titleAr?.value) ? product.titleAr.value : product.title;
+
   // Parse title: "The Olive - Mocha Tort" → name: "The Olive", color: "Mocha Tort"
-  const titleParts = product.title.split(' - ');
-  const productName = titleParts[0]?.trim() || product.title;
+  // In Arabic mode skip the split — the Arabic title is the full name
+  const titleParts = isRTL ? [displayTitle] : displayTitle.split(' - ');
+  const productName = titleParts[0]?.trim() || displayTitle;
   const colorFromTitle =
-    titleParts.length > 1 ? titleParts.slice(1).join(' - ').trim() : '';
+    !isRTL && titleParts.length > 1 ? titleParts.slice(1).join(' - ').trim() : '';
   const colorFromVariant = product.variants?.nodes?.[0]?.selectedOptions?.find(
     (opt) => opt.name.toLowerCase() === 'color',
   )?.value;
