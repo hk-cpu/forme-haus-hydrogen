@@ -111,7 +111,7 @@ export function CategoryHeader({
               <line x1="6" y1="12" x2="18" y2="12" />
               <line x1="8" y1="18" x2="16" y2="18" />
             </svg>
-            {t('filter.filters')}
+            {t('filter.title', 'Filters')}
             {activeFiltersCount && activeFiltersCount > 0 && (
               <span className="ml-1 w-5 h-5 flex items-center justify-center bg-[#a87441] text-white text-[10px] rounded-full">
                 {activeFiltersCount}

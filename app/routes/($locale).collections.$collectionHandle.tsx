@@ -871,22 +871,6 @@ export default function Collection() {
             style={{padding: '0.75rem var(--page-gutter)'}}
           >
             <div className="flex items-center gap-4">
-              <button
-                onClick={toggleFilter}
-                className="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-brand-text hover:text-bronze transition-colors duration-200"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <line x1="4" y1="6" x2="20" y2="6" />
-                  <line x1="6" y1="12" x2="18" y2="12" />
-                  <line x1="8" y1="18" x2="16" y2="18" />
-                </svg>
-                Filters
-                {appliedFilters.length > 0 && (
-                  <span className="ml-1 w-4 h-4 rounded-full bg-bronze text-white text-[9px] flex items-center justify-center font-medium">
-                    {appliedFilters.length}
-                  </span>
-                )}
-              </button>
               <SortMenu />
               {appliedFilters.length > 0 && (
                 <div className="flex items-center gap-2">
