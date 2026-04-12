@@ -66,7 +66,7 @@ const STATIC_ARTICLES: Record<
         'A way of dressing that mirrors inner balance.',
         'Effortless. Grounded. Graceful.',
       ],
-      image: '/brand/journal-selection-v2.jpg',
+      image: '/brand/journal-elegance-v2.jpg',
     },
     AR: {
       title: 'أناقة يومية',
@@ -76,7 +76,7 @@ const STATIC_ARTICLES: Record<
         'أسلوب يعكس توازنًا داخليًا',
         'بلا تكلّف… راسخ… وانسيابي',
       ],
-      image: '/brand/journal-selection-v2.jpg',
+      image: '/brand/journal-elegance-v2.jpg',
     },
   },
   'behind-the-selection': {
@@ -87,7 +87,7 @@ const STATIC_ARTICLES: Record<
         'Proportion, fabrication, and craftsmanship are considered not only for how they appear, but for how they endure.',
         'A selection shaped by clarity and lasting intention.',
       ],
-      image: '/brand/journal-elegance-v2.jpg',
+      image: '/brand/journal-selection-v2.jpg',
     },
     AR: {
       title: 'ما وراء الاختيار',
@@ -96,7 +96,7 @@ const STATIC_ARTICLES: Record<
         'النِّسب، والخامات، والحِرفة تُدرس ليس فقط لمظهرها… بل لما تقدّمه من استمرارية',
         'اختيارات تُشكَّل بوضوح… ونيةٍ باقية',
       ],
-      image: '/brand/journal-elegance-v2.jpg',
+      image: '/brand/journal-selection-v2.jpg',
     },
   },
 };
