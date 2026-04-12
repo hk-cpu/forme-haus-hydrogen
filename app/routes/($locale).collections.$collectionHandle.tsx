@@ -308,6 +308,7 @@ export default function Collection() {
       fit?: 'cover' | 'contain' | 'auto' | 'full-width';
       position?: string;
       bgClass?: string;
+      scale?: number;
     }
   > = {
     'new-in': {
@@ -370,6 +371,8 @@ export default function Collection() {
       hideTitle: true,
       fit: 'full-width',
       position: 'top',
+      // Slightly zoomed out to avoid cropping heads
+      scale: 0.98,
     },
     'sun-ready': {
       src: '/brand/sun-ready-hero-v3.png',
@@ -501,7 +504,7 @@ export default function Collection() {
                       transformOrigin: override?.position === 'top' ? 'top center' : 'center center'
                     }}
                     initial={{scale: 1.03}}
-                    animate={{scale: 1}}
+                    animate={{scale: override?.scale ?? 1}}
                     transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}
                   />
                 </div>
@@ -514,7 +517,7 @@ export default function Collection() {
                   fetchPriority="high"
                   style={{y: heroY, objectPosition: heroPosition}}
                   initial={{scale: 1.03}}
-                  animate={{scale: 1}}
+                  animate={{scale: override?.scale ?? 1}}
                   transition={{duration: 1.2, ease: [0.25, 0.1, 0.25, 1]}}
                 />
               )}

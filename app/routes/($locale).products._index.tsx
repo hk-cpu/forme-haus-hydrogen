@@ -1,6 +1,7 @@
 import {json} from '@remix-run/server-runtime';
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {useLoaderData} from '@remix-run/react';
+import {useEffect, useMemo, useState} from 'react';
 import {motion} from 'framer-motion';
 import invariant from 'tiny-invariant';
 import {
@@ -73,6 +74,38 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 export default function AllProducts() {
   const {products} = useLoaderData<typeof loader>();
   const {isRTL} = useTranslation();
+  const [seed, setSeed] = useState<string | null>(null);
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+    try {
+      const key = 'fh_shuffle_seed';
+      let s = sessionStorage.getItem(key);
+      if (!s) {
+        s = String(Math.floor(Math.random() * 1e9));
+        sessionStorage.setItem(key, s);
+      }
+      setSeed(s);
+    } catch {
+      // sessionStorage may be unavailable; fall back to no shuffle
+      setSeed(null);
+    }
+  }, []);
+
+  const shuffled = useMemo(() => {
+    const list = products.nodes as any[];
+    if (!hydrated || !seed) return list;
+    const h = (str: string) => {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = (hash << 5) - hash + str.charCodeAt(i);
+        hash |= 0;
+      }
+      return Math.abs(hash);
+    };
+    return [...list].sort((a, b) => (h(a.id + seed) % 1000) - (h(b.id + seed) % 1000));
+  }, [products.nodes, hydrated, seed]);
 
   return (
     <div className="min-h-screen bg-[#F9F5F0]">
@@ -92,9 +125,7 @@ export default function AllProducts() {
                 style={{padding: '0 var(--page-gutter)'}}
               >
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10">
-                  {[...nodes]
-                    .sort(() => Math.random() - 0.5)
-                    .map((product: any, i: number) => (
+                  {(hydrated ? shuffled : (nodes as any[])).map((product: any, i: number) => (
                     <ProductCardClean
                       key={product.id}
                       product={product}
