@@ -214,13 +214,13 @@ export const translations = {
 
     // Editorial Section
     'editorial.modernEssentials.title': 'Modern Essentials',
-    'editorial.modernEssentials.subtitle': 'Timeless pieces for everyday elegance',
+    'editorial.modernEssentials.subtitle': 'Foundations shaped by intention and refined for everyday presence.',
     'editorial.carry.title': 'Carry It Your Way',
-    'editorial.carry.subtitle': 'Hands-free style',
+    'editorial.carry.subtitle': 'Hands-free elegance, carried with ease.',
     'editorial.sun.title': 'Sun Ready',
-    'editorial.sun.subtitle': 'For golden hours',
+    'editorial.sun.subtitle': 'Composed in daylight. Designed for warmth and clarity.',
     'editorial.new.title': 'New Arrivals',
-    'editorial.new.subtitle': 'Latest from the Haus',
+    'editorial.new.subtitle': 'Newly introduced. Carefully considered.',
 
     // Collections
     'menu.capsule': 'Capsule Collection',
@@ -358,7 +358,7 @@ export const translations = {
     // Navigation
     'nav.shop': 'تسوّق',
     'nav.collections': 'المجموعات',
-    'nav.newIn': 'وصل حديثاً',
+    'nav.newIn': 'جديد الدار',
     'nav.designers': 'المصمّمون',
     'nav.clothing': 'ملابس',
     'nav.shoes': 'أحذية',
@@ -367,8 +367,8 @@ export const translations = {
     'nav.journal': 'المجلة',
     'nav.about': 'قصتنا',
     'nav.contact': 'تواصل معنا',
-    'nav.phoneCases': 'كفرات الجوال',
-    'nav.sunglasses': 'نظارات شمسية',
+    'nav.phoneCases': 'إكسسوارات الهاتف',
+    'nav.sunglasses': 'النظارات الشمسية',
     'nav.ourStory': 'قصتنا',
     'nav.menu': 'القائمة',
     'nav.search': 'بحث',
@@ -390,7 +390,7 @@ export const translations = {
 
     // Homepage Sections
     'home.categorySlider': 'المجموعات',
-    'home.editorial': 'المختارات',
+    'home.editorial': 'الاختيارات',
     'home.brandIntro':
       'Formé Haus وجهة منسّقة مستوحاة من الأناقة العصرية والتفاصيل الراقية والاختيار المدروس.',
     'home.curatedForYou': 'حيث تبدأ الأناقة',
@@ -415,12 +415,12 @@ export const translations = {
 
     // Journal
     'journal.read': 'قراءة المجلة',
-    'journal.modernWardrobe': 'مختارات الخزانة العصرية',
-    'journal.modernWardrobe.subtitle': 'خزانة تصنعها وضوح الرؤية والذوق المصفّى.',
-    'journal.everydayElegance': 'أناقة كل يوم',
-    'journal.everydayElegance.subtitle': 'الأناقة تُعاش في التفاصيل وبين اللحظات.',
-    'journal.behindCraft': 'خلف الاختيار',
-    'journal.behindCraft.subtitle': 'كل قطعة تبدأ بعناية وتأمل.',
+    'journal.modernWardrobe': 'تحرير الأسلوب الحديث',
+    'journal.modernWardrobe.subtitle': 'يُصاغ بوضوحٍ وغريزةٍ مصقولة',
+    'journal.everydayElegance': 'أناقة يومية',
+    'journal.everydayElegance.subtitle': 'الأناقة تُعاش في المساحات بين اللحظات',
+    'journal.behindCraft': 'ما وراء الاختيار',
+    'journal.behindCraft.subtitle': 'كل قطعة تبدأ بتأملٍ دقيق',
 
     // Footer
     'footer.followUs': 'تابعونا',
@@ -540,7 +540,7 @@ export const translations = {
     'menu.jewelry': 'مجوهرات',
     'menu.scarves': 'أوشحة',
     'menu.belts': 'أحزمة',
-    'menu.sunglasses': 'نظارات شمسية',
+    'menu.sunglasses': 'النظارات الشمسية',
     'menu.leatherGoods': 'إكسسوارات جلدية',
     'menu.hair': 'إكسسوارات شعر',
     'menu.cta.shopAccessories': 'تسوّق الإكسسوارات',
@@ -554,14 +554,14 @@ export const translations = {
     'menu.cta.shopTheEdit': 'تسوّق المختارات',
 
     // Editorial Section
-    'editorial.modernEssentials.title': 'أساسيات عصرية',
-    'editorial.modernEssentials.subtitle': 'قطع خالدة لأناقة يومية',
-    'editorial.carry.title': 'تألقي بأسلوبك',
-    'editorial.carry.subtitle': 'أناقة عملية ومريحة',
-    'editorial.sun.title': 'جاهزة للشمس',
-    'editorial.sun.subtitle': 'للساعات الذهبية',
-    'editorial.new.title': 'وصل حديثاً',
-    'editorial.new.subtitle': 'أحدث إضافة لمجموعتنا',
+    'editorial.modernEssentials.title': 'الأساسيات الحديثة',
+    'editorial.modernEssentials.subtitle': 'أسس تُشكَّل بوعي… وتُصقل لحضور يومي هادئ',
+    'editorial.carry.title': 'احمليها على طريقتك',
+    'editorial.carry.subtitle': 'أناقة بانسياب حر… تُرافقكِ بخفة',
+    'editorial.sun.title': 'مهيأة لضوء النهار',
+    'editorial.sun.subtitle': 'تتكوّن في الضوء… وتُصمَّم لدفءٍ نقي وصفاء',
+    'editorial.new.title': 'وصل حديثًا',
+    'editorial.new.subtitle': 'إضافات جديدة… منتقاة برؤية دقيقة',
 
     // Collections
     'menu.capsule': 'مجموعة كبسولة',
@@ -584,8 +584,8 @@ export const translations = {
     'checkout.checkout': 'إتمام الطلب',
 
     // Category Bento
-    'category.newInHaus': 'جديد في Haus',
-    'category.phoneAccessories': 'إكسسوارات الجوال',
+    'category.newInHaus': 'جديد الدار',
+    'category.phoneAccessories': 'إكسسوارات الهاتف',
     'home.shopByCategory': 'تسوّق حسب الفئة',
 
     // Bundle Pricing
