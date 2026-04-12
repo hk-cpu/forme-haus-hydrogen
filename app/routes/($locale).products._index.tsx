@@ -72,86 +72,11 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 
 export default function AllProducts() {
   const {products} = useLoaderData<typeof loader>();
-  const {t, isRTL} = useTranslation();
+  const {isRTL} = useTranslation();
 
   return (
     <div className="min-h-screen bg-[#F9F5F0]">
-      {/* Hero Banner with Image */}
-      <div className="relative w-full h-[35vh] md:h-[40vh] min-h-[280px] max-h-[450px] overflow-hidden">
-        {/* Background Image */}
-        <motion.div
-          className="absolute inset-0"
-          initial={{scale: 1.05}}
-          animate={{scale: 1}}
-          transition={{duration: 1.5, ease: [0.25, 0.1, 0.25, 1]}}
-        >
-          <img
-            src="/brand/edit-modern-essentials.webp"
-            alt="All Products"
-            className="w-full h-full object-cover"
-          />
-        </motion.div>
-
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1a1510]/80 via-[#1a1510]/30 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1a1510]/40 to-transparent" />
-
-        {/* Content */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-          <motion.span
-            initial={{opacity: 0, y: 10}}
-            animate={{opacity: 1, y: 0}}
-            transition={{delay: 0.2, duration: 0.6}}
-            className="text-[10px] md:text-xs uppercase tracking-[0.35em] text-[#a87441] font-light mb-3"
-          >
-            {t('products.completeCollection', 'The Complete Collection')}
-          </motion.span>
-          <motion.h1
-            initial={{opacity: 0, y: 16}}
-            animate={{opacity: 1, y: 0}}
-            transition={{delay: 0.3, duration: 0.6}}
-            className="font-serif italic font-light text-4xl md:text-5xl lg:text-6xl text-[#F0EAE6] mb-4"
-          >
-            {t('products.allProducts', 'All Products')}
-          </motion.h1>
-          <motion.div
-            initial={{scaleX: 0}}
-            animate={{scaleX: 1}}
-            transition={{delay: 0.5, duration: 0.8}}
-            className="w-20 h-px bg-[#a87441]"
-          />
-        </div>
-      </div>
-
-      {/* Product Grid Section */}
-      <Section className="py-12 md:py-16">
-        {/* Section Header */}
-        <div
-          className="max-w-[1440px] mx-auto mb-8"
-          style={{padding: '0 var(--page-gutter)'}}
-        >
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <h2 className="font-serif text-2xl md:text-3xl text-[#4A3C31]">
-                {t('products.browseAll', 'Browse All')}
-              </h2>
-              <p className="text-sm text-[#8B8076] mt-1">
-                {products.nodes.length}{' '}
-                {products.nodes.length === 1 ? 'item' : 'items'}
-              </p>
-            </div>
-
-            {/* Breadcrumb */}
-            <nav className="flex items-center gap-2 text-[11px] uppercase tracking-[0.15em] text-[#8B8076]">
-              <a href="/" className="hover:text-[#a87441] transition-colors">
-                Home
-              </a>
-              <span className="text-[#8B8076]/40">›</span>
-              <span className="text-[#4A3C31]">All Products</span>
-            </nav>
-          </div>
-        </div>
-
+      <Section className="py-8 md:py-10">
         <Pagination connection={products}>
           {({
             nodes,
@@ -162,13 +87,14 @@ export default function AllProducts() {
             hasNextPage,
           }) => (
             <>
-              {/* Product Grid */}
               <div
                 className="max-w-[1440px] mx-auto"
                 style={{padding: '0 var(--page-gutter)'}}
               >
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10">
-                  {nodes.map((product: any, i: number) => (
+                  {[...nodes]
+                    .sort(() => Math.random() - 0.5)
+                    .map((product: any, i: number) => (
                     <ProductCardClean
                       key={product.id}
                       product={product}
@@ -178,7 +104,6 @@ export default function AllProducts() {
                 </div>
               </div>
 
-              {/* Pagination Bar */}
               {(hasPreviousPage || hasNextPage) && (
                 <nav className="flex items-center justify-center gap-4 mt-16 pt-8 border-t border-[#4A3C31]/10">
                   {hasPreviousPage ? (

@@ -1,4 +1,4 @@
-import {json} from '@remix-run/server-runtime';
+import {json, redirect} from '@remix-run/server-runtime';
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {useLoaderData} from '@remix-run/react';
 import type {Collection} from '@shopify/hydrogen/storefront-api-types';
@@ -37,65 +37,11 @@ const PAGINATION_SIZE = 4;
 export const headers = routeHeaders;
 
 export const loader = async ({
-  request,
   context: {storefront},
 }: LoaderFunctionArgs) => {
-  const variables = getPaginationVariables(request, {pageBy: PAGINATION_SIZE});
-  let {collections} = await storefront.query(COLLECTIONS_QUERY, {
-    variables: {
-      ...variables,
-      country: storefront.i18n.country,
-      language: storefront.i18n.language,
-    },
-  });
-
-  // Inject synthetic collections (New In, Sale) if they don't exist natively.
-  const existingHandles = collections.nodes.map((c: any) => c.handle);
-
-  const syntheticCollections = [];
-
-  if (!existingHandles.includes('new-in')) {
-    syntheticCollections.push({
-      id: 'synthetic-new-in',
-      handle: 'new-in',
-      title: 'New to Haus',
-      description: 'The latest additions to our curated selection.',
-      image: null,
-      seo: {title: 'New to Haus', description: ''},
-    });
-  }
-
-  if (!existingHandles.includes('sale')) {
-    syntheticCollections.push({
-      id: 'synthetic-sale',
-      handle: 'sale',
-      title: 'Sale',
-      description: 'Shop reduced items.',
-      image: null,
-      seo: {title: 'Sale', description: ''},
-    });
-  }
-
-  // Filter out system collections that shouldn't be shown
-  const filteredNodes = collections.nodes.filter(
-    (c: any) =>
-      c.handle !== 'home-page' &&
-      c.handle !== 'homepage' &&
-      c.handle !== 'frontpage',
-  );
-
-  // Prepend synthetic collections to the nodes
-  collections = {
-    ...collections,
-    nodes: [...syntheticCollections, ...filteredNodes],
-  };
-
-  const seo = seoPayload.listCollections({
-    collections,
-    url: request.url,
-  });
-
-  return json({collections, seo});
+  const isArabic = storefront.i18n.language === 'AR';
+  const prefix = isArabic ? '/ar-sa' : '';
+  throw redirect(`${prefix}/collections/new-in`);
 };
 
 export const meta = ({matches}: MetaArgs<typeof loader>) => {
