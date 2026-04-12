@@ -135,10 +135,10 @@ export async function loader({request, context}: LoaderFunctionArgs) {
         const firstError = createErrors[0] as {code: string; message: string};
 
         if (firstError.code === 'TAKEN') {
-          // Email is taken but password doesn't match the derived one.
-          // The customer registered directly. Ask them to log in manually.
+          // Existing account — email is already registered with a different
+          // password (customer signed up directly). Don't create a duplicate.
           return redirect(
-            '/account/login?error=An+account+with+this+email+already+exists.+Please+sign+in+with+your+password.',
+            '/account/login?error=Existing+account+found.+Please+sign+in+with+your+email+and+password.',
           );
         }
 

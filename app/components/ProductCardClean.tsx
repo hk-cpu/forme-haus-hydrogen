@@ -1,6 +1,6 @@
 import {useState, useEffect, useRef, useCallback} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
-import {Link} from '@remix-run/react';
+import {Link, useFetcher} from '@remix-run/react';
 import {Money, CartForm} from '@shopify/hydrogen';
 
 import {useTranslation} from '~/hooks/useTranslation';
@@ -172,24 +172,10 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
 
           {/* Quick Add Button */}
           {isAvailable && hasPrice && product.variants?.nodes?.[0]?.id && (
-            <CartForm
-              route="/cart"
-              inputs={{lines: [{merchandiseId: product.variants.nodes[0].id, quantity: 1}]}}
-              action={CartForm.ACTIONS.LinesAdd}
-            >
-              {(fetcher) => (
-                <motion.button
-                  type="submit"
-                  onClick={(e) => e.stopPropagation()}
-                  disabled={fetcher.state !== 'idle'}
-                  className="absolute bottom-3 left-3 right-3 py-3 min-h-[44px] rounded-lg bg-[#4A3C31]/90 text-white text-[10px] uppercase tracking-[0.12em] flex items-center justify-center gap-1.5 backdrop-blur-sm z-10 shadow-md"
-                  animate={{y: isHovered ? 0 : 8, opacity: isHovered ? 1 : 0}}
-                  transition={{duration: 0.25, ease: [0.25, 0.1, 0.25, 1]}}
-                >
-                  {fetcher.state !== 'idle' ? 'Adding...' : 'Quick Add'}
-                </motion.button>
-              )}
-            </CartForm>
+            <QuickAddButton
+              variantId={product.variants.nodes[0].id}
+              isHovered={isHovered}
+            />
           )}
         </div>
 
@@ -245,6 +231,90 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
         </div>
       </Link>
     </motion.div>
+  );
+}
+
+/**
+ * Standalone quick-add button — extracted so hooks can track fetcher state
+ * transitions and trigger the "Added ✓" flash + auto-hide.
+ */
+function QuickAddButton({
+  variantId,
+  isHovered,
+}: {
+  variantId: string;
+  isHovered: boolean;
+}) {
+  const fetcher = useFetcher();
+  const [justAdded, setJustAdded] = useState(false);
+  const prevState = useRef<string>(fetcher.state);
+
+  // Detect submitting → idle transition to trigger the "Added" flash
+  useEffect(() => {
+    if (prevState.current === 'submitting' && fetcher.state === 'idle') {
+      setJustAdded(true);
+    }
+    prevState.current = fetcher.state;
+  }, [fetcher.state]);
+
+  // Auto-hide "Added" badge after 1.5 s
+  useEffect(() => {
+    if (!justAdded) return;
+    const t = setTimeout(() => setJustAdded(false), 1500);
+    return () => clearTimeout(t);
+  }, [justAdded]);
+
+  const isSubmitting = fetcher.state !== 'idle';
+  // Hide the button once added (until hover re-triggers naturally)
+  const visible = isHovered && !justAdded;
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    fetcher.submit(
+      {
+        cartAction: CartForm.ACTIONS.LinesAdd,
+        cartFormInput: JSON.stringify({
+          lines: [{merchandiseId: variantId, quantity: 1}],
+        }),
+      },
+      {method: 'POST', action: '/cart'},
+    );
+  };
+
+  return (
+    <>
+      {/* "Added ✓" flash — separate layer so it animates out independently */}
+      <AnimatePresence>
+        {justAdded && (
+          <motion.div
+            key="added-flash"
+            className="absolute bottom-3 left-3 right-3 py-3 min-h-[44px] rounded-lg bg-[#a87441] text-white text-[10px] uppercase tracking-[0.12em] flex items-center justify-center gap-1.5 z-10 shadow-md pointer-events-none"
+            initial={{opacity: 0, y: 4}}
+            animate={{opacity: 1, y: 0}}
+            exit={{opacity: 0, y: -4}}
+            transition={{duration: 0.2}}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            Added
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Quick Add button */}
+      <motion.button
+        type="button"
+        onClick={handleClick}
+        disabled={isSubmitting || justAdded}
+        className="absolute bottom-3 left-3 right-3 py-3 min-h-[44px] rounded-lg bg-[#4A3C31]/90 text-white text-[10px] uppercase tracking-[0.12em] flex items-center justify-center gap-1.5 backdrop-blur-sm z-10 shadow-md"
+        animate={{y: visible ? 0 : 8, opacity: visible ? 1 : 0}}
+        transition={{duration: 0.25, ease: [0.25, 0.1, 0.25, 1]}}
+      >
+        {isSubmitting ? 'Adding...' : 'Quick Add'}
+      </motion.button>
+    </>
   );
 }
 
