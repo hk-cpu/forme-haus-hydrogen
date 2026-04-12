@@ -325,7 +325,7 @@ function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
   );
 }
 
-export function MenuDrawer({
+function LegacyMenuDrawer({
   isOpen,
   onClose,
   menu,
@@ -337,13 +337,13 @@ export function MenuDrawer({
   return (
     <Drawer open={isOpen} onClose={onClose} openFrom="left" heading="Menu">
       <div className="grid">
-        <MenuMobileNav menu={menu} onClose={onClose} />
+        <LegacyMenuMobileNav menu={menu} onClose={onClose} />
       </div>
     </Drawer>
   );
 }
 
-function MenuMobileNav({
+function LegacyMenuMobileNav({
   menu,
   onClose,
 }: {
