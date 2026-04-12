@@ -128,13 +128,21 @@ export function WhyChooseUs() {
           <h2 className="mb-2 font-serif text-2xl text-[#4A3C31] md:text-3xl">
             {t('whyUs.title', 'Why Choose Us')}
           </h2>
-          <div className="mx-auto h-px w-16 bg-gradient-to-r from-transparent via-[#a87441] to-transparent" />
+          <div className="mx-auto h-px w-16 bg-gradient-to-r from-transparent via-[#a87441] to-transparent mb-5" />
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#a87441]/20 bg-[#a87441]/5 px-3 py-1 text-[11px] uppercase tracking-[0.1em] text-[#a87441]">
+              {t('whyUs.badgeShipping', 'Free Shipping Across KSA')}
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#a87441]/20 bg-[#a87441]/5 px-3 py-1 text-[11px] uppercase tracking-[0.1em] text-[#a87441]">
+              {t('whyUs.badgeReturns', '7-Day Easy Returns')}
+            </span>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
           {BRAND_PROMISES.map((item) => (
             <div key={item.id} className="text-center">
-              <div className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#a87441]/15 bg-[#a87441]/20 text-[#a87441] shadow-sm">
+              <div className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#a87441]/15 bg-[linear-gradient(135deg,rgba(168,116,65,0.3),rgba(212,175,135,0.15))] text-[#a87441] shadow-sm">
                 {item.icon}
               </div>
               <h3 className="mb-1 text-sm font-medium text-[#4A3C31] md:text-base">

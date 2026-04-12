@@ -109,9 +109,9 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
           <motion.img
             src={item.image}
             alt={item.alt}
-            className="w-full h-full object-cover block transition-transform duration-700 ease-out"
+            className={`w-full h-full object-cover block transition-transform duration-700 ease-out ${shouldReduceMotion ? '' : 'kenBurns'}`}
             style={{
-              transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+              animationPlayState: isHovered ? 'paused' : 'running',
               transformOrigin: 'center center',
               willChange: 'transform',
             }}
@@ -160,6 +160,9 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
               animate={{width: isHovered ? 40 : 24}}
               transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
             />
+            <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[10px] uppercase tracking-[0.2em] text-[#D4AF87] mt-3 inline-flex items-center gap-1">
+              Shop the Edit &rarr;
+            </span>
           </motion.div>
 
           {/* Hover border with glow */}

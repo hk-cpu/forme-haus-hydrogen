@@ -37,6 +37,9 @@ export default function SmoothScroll() {
       },
     });
 
+    // @ts-ignore
+    window.lenis = lenis;
+
     let rafId: number;
     function raf(time: number) {
       lenis.raf(time);

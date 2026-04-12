@@ -25,7 +25,7 @@ function DropdownNavItem({item, isRTL, t}: {item: any; isRTL: boolean; t: any}) 
     >
       <button
         type="button"
-        className={`relative py-2 flex items-center gap-1.5 transition-colors duration-200 ${
+        className={`nav-link relative py-2 flex items-center gap-1.5 transition-colors duration-200 ${
           isRTL
             ? 'text-[12px] font-normal'
             : 'text-[10px] font-light uppercase tracking-[0.25em] lg:text-[11px]'
@@ -307,7 +307,7 @@ export function Header({
                 key={item.id}
                 to={item.to}
                 className={({isActive}) =>
-                  `relative py-2 transition-colors duration-200 ${
+                  `nav-link relative py-2 transition-colors duration-200 ${
                     isRTL
                       ? 'text-[12px] font-normal'
                       : 'text-[10px] font-light uppercase tracking-[0.25em] lg:text-[11px]'
@@ -436,6 +436,8 @@ function CartBagButton({
 }) {
   const [showEmptyHint, setShowEmptyHint] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const prevQtyRef = useRef<number>(0);
+  const [bounce, setBounce] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -458,48 +460,94 @@ function CartBagButton({
       }
     >
       <Await resolve={rootData?.cart}>
-        {(cart: any) => {
-          const isEmpty = !cart?.totalQuantity;
-          return (
-            <button
-              onClick={isEmpty ? handleEmptyClick : openCart}
-              className="relative flex flex-col items-center p-2 text-warm/70 transition-colors duration-200 hover:text-bronze"
-              aria-label={t('nav.cart', 'Bag')}
-              title={t('nav.cart', 'Bag')}
-              type="button"
-            >
-              <Icons.Bag />
-              <span className="mt-1 hidden text-[10px] uppercase tracking-wider text-warm/60 lg:block">
-                {t('nav.cart', 'Bag')}
-              </span>
-
-              {cart?.totalQuantity ? (
-                <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-[10px] font-medium text-white shadow-lg lg:right-2">
-                  {cart.totalQuantity > 9 ? '9+' : cart.totalQuantity}
-                </span>
-              ) : null}
-
-              {showEmptyHint ? (
-                <span
-                  className={`pointer-events-none absolute top-full z-[400] mt-3 w-56 rounded-xl border border-bronze/25 bg-surface p-4 text-left shadow-2xl shadow-black/60 ${
-                    isRTL ? 'left-0' : 'right-0'
-                  }`}
-                >
-                  <span className="block text-[13px] font-medium leading-snug text-warm">
-                    {t('cart.empty', 'Your bag is empty')}
-                  </span>
-                  <span className="mt-1 block text-[11px] leading-relaxed text-[#6B6058]">
-                    {t(
-                      'cart.emptyStats',
-                      "Looks like you haven't added anything yet, let's get you started!",
-                    )}
-                  </span>
-                </span>
-              ) : null}
-            </button>
-          );
-        }}
+        {(cart: any) => (
+          <CartBagInner
+            cart={cart}
+            t={t}
+            isRTL={isRTL}
+            openCart={openCart}
+            handleEmptyClick={handleEmptyClick}
+            bounce={bounce}
+            setBounce={setBounce}
+            prevQtyRef={prevQtyRef}
+            showEmptyHint={showEmptyHint}
+          />
+        )}
       </Await>
     </Suspense>
+  );
+}
+
+function CartBagInner({
+  cart,
+  t,
+  isRTL,
+  openCart,
+  handleEmptyClick,
+  bounce,
+  setBounce,
+  prevQtyRef,
+  showEmptyHint,
+}: {
+  cart: any;
+  t: (key: string, fallback?: string) => string;
+  isRTL: boolean;
+  openCart: () => void;
+  handleEmptyClick: () => void;
+  bounce: boolean;
+  setBounce: (b: boolean) => void;
+  prevQtyRef: React.MutableRefObject<number>;
+  showEmptyHint: boolean;
+}) {
+  const isEmpty = !cart?.totalQuantity;
+  useEffect(() => {
+    const qty = cart?.totalQuantity || 0;
+    if (qty > prevQtyRef.current) {
+      setBounce(true);
+      const id = setTimeout(() => setBounce(false), 400);
+      return () => clearTimeout(id);
+    }
+    prevQtyRef.current = qty;
+  }, [cart?.totalQuantity, prevQtyRef, setBounce]);
+
+  return (
+    <button
+      onClick={isEmpty ? handleEmptyClick : openCart}
+      className="relative flex flex-col items-center p-2 text-warm/70 transition-colors duration-200 hover:text-bronze"
+      aria-label={t('nav.cart', 'Bag')}
+      title={t('nav.cart', 'Bag')}
+      type="button"
+    >
+      <span className={bounce ? 'cart-bounce' : ''}>
+        <Icons.Bag />
+      </span>
+      <span className="mt-1 hidden text-[10px] uppercase tracking-wider text-warm/60 lg:block">
+        {t('nav.cart', 'Bag')}
+      </span>
+
+      {cart?.totalQuantity ? (
+        <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-gradient-to-r from-[#a87441] to-[#8B5E3C] text-[10px] font-medium text-white shadow-lg lg:right-2">
+          {cart.totalQuantity > 9 ? '9+' : cart.totalQuantity}
+        </span>
+      ) : null}
+
+      {showEmptyHint ? (
+        <span
+          className={`pointer-events-none absolute top-full z-[400] mt-3 w-56 rounded-xl border border-bronze/25 bg-surface p-4 text-left shadow-2xl shadow-black/60 ${
+            isRTL ? 'left-0' : 'right-0'
+          }`}
+        >
+          <span className="block text-[13px] font-medium leading-snug text-warm">
+            {t('cart.empty', 'Your bag is empty')}
+          </span>
+          <span className="mt-1 block text-[11px] leading-relaxed text-[#6B6058]">
+            {t(
+              'cart.emptyStats',
+              "Looks like you haven't added anything yet, let's get you started!",
+            )}
+          </span>
+        </span>
+      ) : null}
+    </button>
   );
 }

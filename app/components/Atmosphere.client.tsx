@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unknown-property */
-import React, {useMemo, useRef} from 'react';
+import React, {useMemo, useRef, useEffect, useState} from 'react';
 import {Canvas, useFrame, useThree} from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -74,16 +74,35 @@ function Sparkles({
 }
 
 const Atmosphere: React.FC<AtmosphereProps> = (props) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        setVisible(entry.isIntersecting && entry.intersectionRatio > 0.05);
+      },
+      {threshold: [0, 0.05, 0.1]}
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-      <Canvas
-        camera={{position: [0, 0, 5], fov: 75}}
-        dpr={[1, 2]}
-        gl={{alpha: true}}
-        style={{background: 'transparent'}}
-      >
-        <Sparkles {...props} />
-      </Canvas>
+    <div ref={containerRef} className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+      {visible ? (
+        <Canvas
+          camera={{position: [0, 0, 5], fov: 75}}
+          dpr={[1, 2]}
+          gl={{alpha: true}}
+          style={{background: 'transparent'}}
+        >
+          <Sparkles {...props} />
+        </Canvas>
+      ) : null}
     </div>
   );
 };

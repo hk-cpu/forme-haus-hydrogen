@@ -42,6 +42,11 @@ const MobileBottomNav = lazy(() =>
     default: m.MobileBottomNav,
   })),
 );
+const SocialProofToast = lazy(() =>
+  import('~/components/SocialProofToast').then((m) => ({
+    default: m.default,
+  })),
+);
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -227,6 +232,10 @@ export function PageLayout({children, layout}: LayoutProps) {
           </Suspense>
         ) : null}
       </div>
+      {/* Social proof toast (lazy), positioned above mobile nav */}
+      <Suspense fallback={null}>
+        <SocialProofToast />
+      </Suspense>
     </>
   );
 }

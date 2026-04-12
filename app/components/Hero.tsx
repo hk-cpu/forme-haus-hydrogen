@@ -50,7 +50,13 @@ export default function Hero() {
         <div className="mt-8">
           <button
             onClick={() => {
-              document.getElementById('explore-collections')?.scrollIntoView({ behavior: 'smooth' });
+              // @ts-ignore
+              if (typeof window !== "undefined" && window.lenis) {
+                // @ts-ignore
+                window.lenis.scrollTo('#explore-collections', { offset: -70 });
+              } else {
+                document.getElementById('explore-collections')?.scrollIntoView({ behavior: 'smooth' });
+              }
             }}
             className="group inline-flex min-h-[48px] items-center justify-center gap-3 rounded-sm border border-bronze/40 px-8 py-4 text-[10px] font-light uppercase tracking-[0.3em] text-warm/90 transition-colors duration-300 hover:border-bronze hover:bg-bronze/10 hover:text-bronze focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >

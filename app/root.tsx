@@ -42,6 +42,7 @@ import {
   stripLocalePathPrefix,
 } from './lib/utils';
 const SmoothScroll = lazy(() => import('~/components/SmoothScroll'));
+const LoadingScreen = lazy(() => import('~/components/LoadingScreen'));
 // Brand favicon served from /public/favicon.png
 const favicon = '/favicon.png';
 
@@ -209,6 +210,12 @@ function Layout({children}: {children?: React.ReactNode}) {
   const data = useRouteLoaderData<typeof loader>('root');
   const locale = data?.selectedLocale ?? DEFAULT_LOCALE;
   const isRTL = locale.language === 'AR';
+  const [showLoader, setShowLoader] = useState(true);
+
+  useEffect(() => {
+    const id = window.setTimeout(() => setShowLoader(false), 1500);
+    return () => clearTimeout(id);
+  }, []);
 
   return (
     <html
@@ -254,6 +261,9 @@ function Layout({children}: {children?: React.ReactNode}) {
         <Links />
       </head>
       <body>
+        <Suspense fallback={null}>
+          <LoadingScreen show={showLoader} />
+        </Suspense>
         {data ? (
           <UIProvider>
             <Analytics.Provider

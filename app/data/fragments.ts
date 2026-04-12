@@ -70,6 +70,7 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
       nodes {
         id
         availableForSale
+        quantityAvailable
         image {
           url
           altText

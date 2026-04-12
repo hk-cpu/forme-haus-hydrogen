@@ -132,7 +132,12 @@ function NavTab({
           aria-label={label}
           className="relative -mt-5 w-12 h-12 rounded-full bg-gradient-to-br from-[#a87441] to-[#8B5E3C] flex items-center justify-center shadow-lg shadow-[#a87441]/30 text-white active:scale-95 transition-transform"
         >
-          {children}
+          <span className="relative">
+            {children}
+            {isActive && (
+              <span className="absolute -top-2 left-1/2 -translate-x-1/2 block h-1.5 w-1.5 rounded-full bg-bronze-light shadow-[0_0_0_2px_rgba(249,245,240,0.8)]" />
+            )}
+          </span>
         </Link>
         <span
           className={`text-[10px] uppercase tracking-wider font-medium mt-1 ${
@@ -152,7 +157,12 @@ function NavTab({
         isActive ? 'text-[#a87441]' : 'text-[#6B6058]'
       }`}
     >
-      {children}
+      <span className="relative">
+        {children}
+        {isActive && (
+          <span className="absolute -top-2 left-1/2 -translate-x-1/2 block h-1.5 w-1.5 rounded-full bg-bronze-light" />
+        )}
+      </span>
       <span className="text-[10px] uppercase tracking-wider font-medium">
         {label}
       </span>

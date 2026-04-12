@@ -1,5 +1,6 @@
 import {Link} from '~/components/Link';
 import {useTranslation} from '~/hooks/useTranslation';
+import {motion} from 'framer-motion';
 
 interface Category {
   id: number;
@@ -8,6 +9,7 @@ interface Category {
   url: string;
   width: number;
   height: number;
+  count: string;
 }
 
 const CATEGORIES: Category[] = [
@@ -18,6 +20,7 @@ const CATEGORIES: Category[] = [
     url: '/collections/new-in',
     width: 640,
     height: 1160,
+    count: '24 Pieces',
   },
   {
     id: 2,
@@ -26,6 +29,7 @@ const CATEGORIES: Category[] = [
     url: '/collections/phone-cases',
     width: 640,
     height: 954,
+    count: '48 Pieces',
   },
   {
     id: 3,
@@ -34,6 +38,7 @@ const CATEGORIES: Category[] = [
     url: '/collections/sunglasses',
     width: 640,
     height: 1160,
+    count: '16 Pieces',
   },
 ];
 
@@ -58,11 +63,20 @@ export default function CategoryBento() {
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
           {CATEGORIES.map((category, index) => (
-            <Link
+            <motion.div
               key={category.id}
-              to={category.url}
-              className="group relative block aspect-[3/4] overflow-hidden rounded-2xl bg-[#2a2118]"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
+              <Link
+                to={category.url}
+                className="group relative block aspect-[3/4] overflow-hidden rounded-2xl bg-[#2a2118] shadow-[0_4px_20px_rgba(168,116,65,0.15),0_1px_3px_rgba(0,0,0,0.08)] transition-shadow duration-400 border border-transparent group-hover:border-[#D4AF87]/40"
+              >
+                <span className="absolute top-4 right-4 z-20 rounded-full bg-black/60 px-2.5 py-1 text-[11px] tracking-[0.05em] text-[#D4AF87] backdrop-blur-sm rtl:left-4 rtl:right-auto">
+                  {category.count}
+                </span>
               <img
                 src={category.image}
                 alt={t(category.titleKey)}
@@ -96,7 +110,7 @@ export default function CategoryBento() {
                 />
               </div>
 
-              <div className="absolute left-1/2 top-1/2 z-20 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-black/20 backdrop-blur-md md:h-14 md:w-14">
+              <div className="absolute left-1/2 top-1/2 z-20 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-black/20 backdrop-blur-md transition-colors duration-300 group-hover:border-[#D4AF87] group-hover:bg-[#D4AF87] md:h-14 md:w-14">
                 <svg
                   width="20"
                   height="20"
@@ -118,6 +132,7 @@ export default function CategoryBento() {
                 </svg>
               </div>
             </Link>
+            </motion.div>
           ))}
         </div>
 

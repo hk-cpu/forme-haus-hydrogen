@@ -45,11 +45,16 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
 
   const [currentImage, setCurrentImage] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isWishlisted, setIsWishlisted] = useState(false);
   const images = product.images?.nodes || [];
   const hasMultipleImages = images.length > 1;
   const hasPrice =
     parseFloat(product.priceRange?.minVariantPrice?.amount || '0') > 0;
   const isAvailable = product.availableForSale !== false;
+  const lowStock = (() => {
+    const qty: number | undefined = (product as any)?.variants?.nodes?.[0]?.quantityAvailable;
+    return typeof qty === 'number' && qty >= 1 && qty <= 5 ? qty : null;
+  })();
 
   const slideshowRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -84,6 +89,29 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
 
   useEffect(() => () => stopSlideshow(), [stopSlideshow]);
 
+  // Wishlist: localStorage bucket fh_wishlist
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('fh_wishlist');
+      if (!raw) return;
+      const ids: string[] = JSON.parse(raw);
+      setIsWishlisted(ids.includes(product.id));
+    } catch {}
+  }, [product.id]);
+
+  const toggleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    try {
+      const raw = localStorage.getItem('fh_wishlist');
+      const ids: string[] = raw ? JSON.parse(raw) : [];
+      const next = ids.includes(product.id)
+        ? ids.filter((id) => id !== product.id)
+        : [...ids, product.id];
+      localStorage.setItem('fh_wishlist', JSON.stringify(next));
+      setIsWishlisted(next.includes(product.id));
+    } catch {}
+  };
+
   return (
     <motion.div
       className="group relative"
@@ -108,6 +136,24 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
       <Link to={`/products/${product.handle}`} className="block">
         {/* Image Container - Clean white background */}
         <div className="relative aspect-square overflow-hidden rounded-xl bg-[#F8F6F3] mb-3">
+          {/* Wishlist Heart */}
+          <button
+            aria-pressed={isWishlisted}
+            aria-label={isWishlisted ? 'Remove from saved' : 'Save product'}
+            onClick={toggleWishlist}
+            className="absolute top-2 right-2 z-10 h-8 w-8 rounded-full bg-white/80 text-[#4A3C31] hover:bg-white shadow flex items-center justify-center transition-colors"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill={isWishlisted ? 'currentColor' : 'none'}
+              stroke="currentColor"
+              strokeWidth="1.5"
+            >
+              <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+            </svg>
+          </button>
           {/* Product Image */}
           <AnimatePresence mode="wait">
             <motion.div
@@ -161,6 +207,12 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
             </div>
           )}
 
+          {/* Stock Badges */}
+          {lowStock && isAvailable && (
+            <span className="absolute top-2 left-2 inline-flex items-center rounded-full bg-bronze/10 text-bronze-dark border border-bronze/20 px-3 py-1 text-[11px] font-medium shadow-sm">
+              Only {lowStock} left
+            </span>
+          )}
           {/* Sold Out Badge */}
           {!isAvailable && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-sm">
