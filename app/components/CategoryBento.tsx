@@ -74,9 +74,7 @@ export default function CategoryBento() {
                 to={category.url}
                 className="group relative block aspect-[3/4] overflow-hidden rounded-2xl bg-[#2a2118] shadow-[0_4px_20px_rgba(168,116,65,0.15),0_1px_3px_rgba(0,0,0,0.08)] transition-shadow duration-400 border border-transparent group-hover:border-[#D4AF87]/40"
               >
-                <span className="absolute top-4 right-4 z-20 rounded-full bg-black/60 px-2.5 py-1 text-[11px] tracking-[0.05em] text-[#D4AF87] backdrop-blur-sm rtl:left-4 rtl:right-auto">
-                  {category.count}
-                </span>
+
               <img
                 src={category.image}
                 alt={t(category.titleKey)}
