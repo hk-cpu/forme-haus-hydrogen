@@ -308,6 +308,7 @@ export default function Collection() {
       fit?: 'cover' | 'contain' | 'auto' | 'full-width';
       position?: string;
       bgClass?: string;
+      heightClass?: string;
     }
   > = {
     'new-in': {
@@ -370,6 +371,8 @@ export default function Collection() {
       hideTitle: true,
       fit: 'full-width',
       position: 'top',
+      // Increase hero height to reveal more of the subject without side whitespace
+      heightClass: 'h-[56vh] sm:h-[60vh] md:h-[66vh] lg:h-[72vh]'
     },
     'sun-ready': {
       src: '/brand/sun-ready-hero-v3.png',
@@ -488,12 +491,12 @@ export default function Collection() {
             <>
               {isFullWidthHero ? (
                 <div
-                  className={`relative w-full overflow-hidden ${override?.bgClass || 'bg-[#E8DED4]'}`}
+                  className={`relative w-full overflow-hidden ${override?.bgClass || 'bg-[#E8DED4]'} ${override?.heightClass || ''}`}
                 >
                   <motion.img
                     src={heroImage}
                     alt={collection.title}
-                    className={`block w-full h-auto object-cover ${override?.position === 'top' ? 'object-top' : 'object-center'}`}
+                    className={`block w-full h-full object-cover ${override?.position === 'top' ? 'object-top' : 'object-center'}`}
                     loading="eager"
                     fetchPriority="high"
                     style={{
