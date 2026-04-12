@@ -20,7 +20,9 @@ export const translations = {
     'nav.journal': 'Journal',
     'nav.about': 'Our Story',
     'nav.contact': 'Contact Us',
-    'nav.phoneCases': 'Phone Cases',
+    'nav.shopAll': 'Shop All',
+    'nav.phoneCases': 'Phone Accessories',
+    'nav.phoneStraps': 'Phone Straps',
     'nav.sunglasses': 'Sunglasses',
     'nav.ourStory': 'Our Story',
     'nav.menu': 'Menu',
@@ -112,6 +114,9 @@ export const translations = {
     'product.soldOut': 'Sold Out',
     'product.sale': 'Sale',
     'product.new': 'New',
+
+    // Filter
+    'filter.title': 'Filters',
 
     // Collection
     'collection.loading': 'Loading...',
@@ -367,8 +372,10 @@ export const translations = {
     'nav.journal': 'المجلة',
     'nav.about': 'قصتنا',
     'nav.contact': 'تواصل معنا',
-    'nav.phoneCases': 'كفرات الجوال',
-    'nav.sunglasses': 'نظارات شمسية',
+    'nav.shopAll': 'تسوّق الكل',
+    'nav.phoneCases': 'إكسسوارات الهاتف',
+    'nav.phoneStraps': 'أحزمة الهاتف',
+    'nav.sunglasses': 'النظارات الشمسية',
     'nav.ourStory': 'قصتنا',
     'nav.menu': 'القائمة',
     'nav.search': 'بحث',
@@ -454,6 +461,9 @@ export const translations = {
     'product.soldOut': 'نفدت الكمية',
     'product.sale': 'تخفيض',
     'product.new': 'جديد',
+
+    // Filter
+    'filter.title': 'الفلاتر',
 
     // Collection
     'collection.loading': 'جارٍ التحميل...',

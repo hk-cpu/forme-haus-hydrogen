@@ -5,24 +5,50 @@ import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
 
 /**
- * Category groups — context-aware sibling navigation.
- * When viewing a phone-related collection, show phone siblings.
- * Otherwise show the top-level categories.
+ * Top-level category tabs — every collection page shows the same five tabs
+ * so users can freely move between sections without getting lost.
+ *
+ * Active-state detection handles handle aliases (new/new-in, phone/phone-cases)
+ * and locale-prefixed URLs (/ar/collections/...).
  */
 const CATEGORIES = [
-  {id: 'shop-all', label: 'Shop All', href: '/products'},
-  {id: 'phone-cases', label: 'Phone Cases', href: '/collections/phone-cases'},
-  {id: 'phone-straps', label: 'Straps', href: '/collections/phone-straps'},
-  {id: 'sunglasses', label: 'Sunglasses', href: '/collections/sunglasses'},
+  {
+    id: 'shop-all',
+    labelKey: 'nav.shopAll',
+    label: 'Shop All',
+    href: '/products',
+    aliases: [] as string[],
+  },
+  {
+    id: 'new-in',
+    labelKey: 'nav.newIn',
+    label: 'New to Haus',
+    href: '/collections/new-in',
+    aliases: ['/collections/new'],
+  },
+  {
+    id: 'phone-cases',
+    labelKey: 'nav.phoneCases',
+    label: 'Phone Accessories',
+    href: '/collections/phone-cases',
+    aliases: ['/collections/phone'],
+  },
+  {
+    id: 'phone-straps',
+    labelKey: 'nav.phoneStraps',
+    label: 'Phone Straps',
+    href: '/collections/phone-straps',
+    aliases: [],
+  },
+  {
+    id: 'sunglasses',
+    labelKey: 'nav.sunglasses',
+    label: 'Sunglasses',
+    href: '/collections/sunglasses',
+    aliases: [],
+  },
 ];
 
-/**
- * CategoryHeader — Sticky horizontal tab bar for collection navigation
- *
- * Replaces the old dropdown with a clean scrollable tab bar.
- * Context-aware: shows relevant siblings based on current collection.
- * Animated underline follows the active tab via framer-motion layoutId.
- */
 interface CategoryHeaderProps {
   currentCategory: string;
   productCount?: number;
@@ -31,16 +57,12 @@ interface CategoryHeaderProps {
 }
 
 export function CategoryHeader({
-  currentCategory,
   productCount,
-  collectionHandle,
   activeFiltersCount,
 }: CategoryHeaderProps) {
   const {toggleFilter} = useUI();
   const {isRTL, t} = useTranslation();
   const location = useLocation();
-
-  const categories = CATEGORIES;
 
   return (
     <div
@@ -56,10 +78,12 @@ export function CategoryHeader({
           className="flex items-center gap-1 overflow-x-auto scrollbar-hide py-3 -mx-1"
           aria-label="Category navigation"
         >
-          {categories.map((cat) => {
-            const isActive =
-              location.pathname === cat.href ||
-              location.pathname.endsWith(cat.href);
+          {CATEGORIES.map((cat) => {
+            const p = location.pathname;
+            const hrefs = [cat.href, ...cat.aliases];
+            const isActive = hrefs.some(
+              (href) => p === href || p.endsWith(href),
+            );
 
             return (
               <Link
@@ -71,8 +95,7 @@ export function CategoryHeader({
                     : 'text-[#8B7355] hover:text-brand-text'
                 }`}
               >
-                {cat.label}
-                {/* Animated underline pill */}
+                {t(cat.labelKey as any, cat.label)}
                 {isActive && (
                   <motion.span
                     layoutId="category-tab-underline"
@@ -85,7 +108,7 @@ export function CategoryHeader({
           })}
         </nav>
 
-        {/* Right: Filter + Count */}
+        {/* Right: Filter button + item count */}
         <div className="flex items-center gap-4 shrink-0 pl-4">
           {productCount !== undefined && (
             <span className="text-[11px] uppercase tracking-[0.15em] text-[#8B7355] hidden sm:block">
@@ -111,12 +134,12 @@ export function CategoryHeader({
               <line x1="6" y1="12" x2="18" y2="12" />
               <line x1="8" y1="18" x2="16" y2="18" />
             </svg>
-            {t('filter.filters')}
-            {activeFiltersCount && activeFiltersCount > 0 && (
+            {t('filter.title', 'Filters')}
+            {activeFiltersCount && activeFiltersCount > 0 ? (
               <span className="ml-1 w-5 h-5 flex items-center justify-center bg-[#a87441] text-white text-[10px] rounded-full">
                 {activeFiltersCount}
               </span>
-            )}
+            ) : null}
           </button>
         </div>
       </div>

@@ -41,7 +41,6 @@ import {getImageLoadingPriority} from '~/lib/const';
 import {parseAsCurrency} from '~/lib/utils';
 import {useTranslation} from '~/hooks/useTranslation';
 import {translations} from '~/lib/translations';
-import {useUI} from '~/context/UIContext';
 
 export const headers = routeHeaders;
 
@@ -281,7 +280,6 @@ export default function Collection() {
   const {collection, appliedFilters, editorialLayoutConfig} =
     useLoaderData<typeof loader>();
   const {t} = useTranslation();
-  const {toggleFilter} = useUI();
 
   const heroRef = useRef<HTMLDivElement>(null);
   const {scrollYProgress} = useScroll({
@@ -853,51 +851,32 @@ export default function Collection() {
         </main>
       ) : (
         <>
-          {/* ─── Category Navigation Tabs ─── (hidden on New to Haus) */}
-          {collection.handle !== 'new-in' && collection.handle !== 'new' && (
-            <CategoryHeader
-              currentCategory={collection.title}
-              productCount={collection.products.nodes.length}
-              collectionHandle={collection.handle}
-            />
-          )}
+          {/* ─── Category Navigation Tabs ─── */}
+          <CategoryHeader
+            currentCategory={collection.title}
+            productCount={collection.products.nodes.length}
+            collectionHandle={collection.handle}
+            activeFiltersCount={appliedFilters.length}
+          />
 
           {/* ─── Sort / Applied Filters Bar ─── */}
           <div
-            className="max-w-[1440px] mx-auto py-3 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2"
+            className="max-w-[1440px] mx-auto py-3 flex items-center justify-end gap-4"
             style={{padding: '0.75rem var(--page-gutter)'}}
           >
-            <div className="flex items-center gap-4">
-              <button
-                onClick={toggleFilter}
-                className="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-brand-text hover:text-bronze transition-colors duration-200"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <line x1="4" y1="6" x2="20" y2="6" />
-                  <line x1="6" y1="12" x2="18" y2="12" />
-                  <line x1="8" y1="18" x2="16" y2="18" />
-                </svg>
-                Filters
-                {appliedFilters.length > 0 && (
-                  <span className="ml-1 w-4 h-4 rounded-full bg-bronze text-white text-[9px] flex items-center justify-center font-medium">
-                    {appliedFilters.length}
+            <SortMenu />
+            {appliedFilters.length > 0 && (
+              <div className="flex items-center gap-2">
+                {appliedFilters.map((filter, i) => (
+                  <span
+                    key={i}
+                    className="text-[10px] uppercase tracking-wider px-2.5 py-1 bg-brand-text/6 text-brand-text rounded-full"
+                  >
+                    {filter.label}
                   </span>
-                )}
-              </button>
-              <SortMenu />
-              {appliedFilters.length > 0 && (
-                <div className="flex items-center gap-2">
-                  {appliedFilters.map((filter, i) => (
-                    <span
-                      key={i}
-                      className="text-[10px] uppercase tracking-wider px-2.5 py-1 bg-brand-text/6 text-brand-text rounded-full"
-                    >
-                      {filter.label}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* ─── Product Grid ─── */}
