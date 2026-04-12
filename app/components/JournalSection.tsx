@@ -22,7 +22,7 @@ const JOURNAL_CARDS: JournalCard[] = [
     height: 1146,
   },
   {
-    image: '/brand/journal-elegance-opt.webp',
+    image: '/brand/journal-selection-opt.webp',
     alt: 'Everyday Elegance',
     url: '/journal/everyday-elegance',
     title: 'Everyday Elegance',
@@ -31,7 +31,7 @@ const JOURNAL_CARDS: JournalCard[] = [
     height: 954,
   },
   {
-    image: '/brand/journal-selection-opt.webp',
+    image: '/brand/journal-elegance-opt.webp',
     alt: 'Behind the Selection',
     url: '/journal/behind-the-selection',
     title: 'Behind the Selection',
