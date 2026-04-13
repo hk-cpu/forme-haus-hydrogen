@@ -479,7 +479,7 @@ export function ProductForm({
     <div className="grid gap-10">
       <div className="grid gap-4">
         {productOptions
-          .filter((o) => o.name !== 'Title')
+          .filter((o) => o.name !== 'Title' && o.name !== 'Color')
           .map((option, optionIndex) => (
             <div
               key={option.name}
