@@ -18,10 +18,43 @@ const GhostCursorEnhanced = lazy(
   () => import('~/components/GhostCursorEnhanced.client'),
 );
 
+// Eye icon SVGs
+const EyeOpen = () => (
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+const EyeOff = () => (
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+    <line x1="1" y1="1" x2="23" y2="23" />
+  </svg>
+);
+
 export async function loader({context, request}: LoaderFunctionArgs) {
   const {session} = context;
 
-  if (await session.get('customerAccessToken')) {
+  if (session.get('customerAccessToken')) {
     return redirect('/account');
   }
 
@@ -126,6 +159,7 @@ export default function Login() {
   const navigation = useNavigation();
   const [params] = useSearchParams();
   const isSubmitting = navigation.state === 'submitting';
+  const [showPassword, setShowPassword] = useState(false);
 
   // Default to registering if register params exists or if previous action was register
   const [isRegistering, setIsRegistering] = useState(false);
@@ -153,7 +187,7 @@ export default function Login() {
       <Suspense fallback={null}>
         <GhostCursorEnhanced
           primaryColor="#ffffff"
-          secondaryColor={getComputedStyle(document.documentElement).getPropertyValue('--bronze') || '#a87441'}
+          secondaryColor="#a87441"
           brightness={0.8}
           edgeIntensity={0.2}
           trailLength={40}
@@ -206,7 +240,7 @@ export default function Login() {
 
             {/* Segmented Control UI */}
             <div className="flex bg-cream border border-warm rounded-xl p-1 mb-8 relative">
-              <div 
+              <div
                 className="absolute inset-y-1 w-[calc(50%-4px)] bg-white rounded-lg shadow-sm transition-all duration-400 ease-[0.16,1,0.3,1] z-0"
                 style={{
                   left: isRegistering ? 'calc(50% + 2px)' : '4px'
@@ -275,7 +309,7 @@ export default function Login() {
               {/* Floating Label Input: Password */}
               <div className="relative group">
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   name="password"
                   id="password"
                   placeholder=" "
@@ -283,7 +317,7 @@ export default function Login() {
                   autoComplete={
                     isRegistering ? 'new-password' : 'current-password'
                   }
-                  className="peer w-full bg-cream border border-warm pt-6 pb-2 px-4 text-brand-text focus:outline-none focus:border-bronze focus:bg-white focus:ring-1 focus:ring-bronze/30 focus-visible:ring-1 focus-visible:ring-bronze/50 transition-all duration-300 text-[14px] font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
+                  className="peer w-full bg-cream border border-warm pt-6 pb-2 px-4 pr-12 text-brand-text focus:outline-none focus:border-bronze focus:bg-white focus:ring-1 focus:ring-bronze/30 focus-visible:ring-1 focus-visible:ring-bronze/50 transition-all duration-300 text-[14px] font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
                 />
                 <label
                   htmlFor="password"
@@ -291,7 +325,21 @@ export default function Login() {
                 >
                   Password
                 </label>
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-taupe hover:text-bronze transition-colors duration-300"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff /> : <EyeOpen />}
+                </button>
               </div>
+
+              {isRegistering && (
+                <p className="text-[11px] text-taupe tracking-wide -mt-2">
+                  Must be at least 8 characters
+                </p>
+              )}
             </div>
 
             <div className="flex flex-col gap-4 pt-2">

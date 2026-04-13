@@ -134,17 +134,21 @@ const Icons = {
  *
  * Features:
  * - Two sections: "Sign In" and "Create Account"
- * - Password visibility toggle
- * - One-time login link option
+ * - Password visibility toggle (independent per form)
+ * - Inline error and success feedback via useFetcher
  * - Benefits list with icons
- * - Connects to Shopify Customer Account API
+ * - Connects to Shopify Storefront API (customerAccessToken approach)
  * - Dark luxury theme
  */
 export function AccountOverlay() {
   const {state, dispatch} = useUI();
   const {isRTL, t} = useTranslation();
-  const prefixPath = usePrefixPathWithLocale;
-  const [showPassword, setShowPassword] = useState(false);
+  const loginActionPath = usePrefixPathWithLocale('/account/login');
+  const registerActionPath = usePrefixPathWithLocale('/account/register');
+  const recoverPath = usePrefixPathWithLocale('/account/recover');
+
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showRegisterPassword, setShowRegisterPassword] = useState(false);
   const [activeTab, setActiveTab] = useState<'signin' | 'create'>('signin');
   const [email, setEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -162,7 +166,19 @@ export function AccountOverlay() {
     setEmail('');
     setLoginPassword('');
     setRegisterPassword('');
+    setShowLoginPassword(false);
+    setShowRegisterPassword(false);
   };
+
+  // On successful registration: switch to sign-in tab and clear register fields
+  useEffect(() => {
+    const data = registerFetcher.data as any;
+    if (data?.success) {
+      setActiveTab('signin');
+      setEmail('');
+      setRegisterPassword('');
+    }
+  }, [registerFetcher.data]);
 
   // Focus trap implementation
   useEffect(() => {
@@ -211,7 +227,7 @@ export function AccountOverlay() {
     e.preventDefault();
     loginFetcher.submit(
       {email, password: loginPassword},
-      {method: 'post', action: prefixPath('/account/login')},
+      {method: 'post', action: loginActionPath},
     );
   };
 
@@ -219,9 +235,13 @@ export function AccountOverlay() {
     e.preventDefault();
     registerFetcher.submit(
       {email, password: registerPassword},
-      {method: 'post', action: prefixPath('/account/register')},
+      {method: 'post', action: registerActionPath},
     );
   };
+
+  const loginError = (loginFetcher.data as any)?.error;
+  const registerError = (registerFetcher.data as any)?.error;
+  const registerSuccess = (registerFetcher.data as any)?.success;
 
   const benefits = [
     {
@@ -302,7 +322,7 @@ export function AccountOverlay() {
                 <button
                   className={`pb-4 text-sm uppercase tracking-[0.15em] transition-colors relative ${
                     activeTab === 'create'
-              ? 'text-bronze'
+                      ? 'text-bronze'
                       : 'text-taupe hover:text-warm'
                   }`}
                   onClick={() => setActiveTab('create')}
@@ -330,6 +350,16 @@ export function AccountOverlay() {
                   <h3 className="font-serif text-xl text-warm mb-6">
                     {t('account.signIn', 'Sign In')}
                   </h3>
+
+                  {/* Registration success banner */}
+                  {registerSuccess && (
+                    <div className="p-3.5 text-[12px] text-warm bg-bronze/10 border border-bronze/20 rounded-lg text-center tracking-wide leading-relaxed mb-6">
+                      {t(
+                        'account.registerSuccess',
+                        'Account created. Please check your email then sign in.',
+                      )}
+                    </div>
+                  )}
 
                   <form onSubmit={handleSignIn} className="space-y-5">
                     {/* Email */}
@@ -365,7 +395,7 @@ export function AccountOverlay() {
                       </label>
                       <div className="relative">
                         <input
-                          type={showPassword ? 'text' : 'password'}
+                          type={showLoginPassword ? 'text' : 'password'}
                           id="signin-password"
                           value={loginPassword}
                           onChange={(e) => setLoginPassword(e.target.value)}
@@ -378,29 +408,40 @@ export function AccountOverlay() {
                         />
                         <button
                           type="button"
-                          onClick={() => setShowPassword(!showPassword)}
+                          onClick={() => setShowLoginPassword(!showLoginPassword)}
                           className="absolute right-4 top-1/2 -translate-y-1/2 text-taupe hover:text-warm transition-colors"
                           aria-label={
-                            showPassword
-                              ? t('account.hidePassword')
-                              : t('account.showPassword')
+                            showLoginPassword
+                              ? t('account.hidePassword', 'Hide password')
+                              : t('account.showPassword', 'Show password')
                           }
                         >
-                          {showPassword ? <Icons.EyeOff /> : <Icons.Eye />}
+                          {showLoginPassword ? <Icons.EyeOff /> : <Icons.Eye />}
                         </button>
                       </div>
                     </div>
 
                     {/* Forgot Password */}
                     <div className="flex justify-end">
-                    <Link
-                      to="/account/recover"
-                      className="text-sm text-taupe hover:text-bronze transition-colors underline underline-offset-4"
+                      <Link
+                        to={recoverPath}
+                        className="text-sm text-taupe hover:text-bronze transition-colors underline underline-offset-4"
                         onClick={handleClose}
                       >
                         {t('account.forgotPassword', 'Forgot your password?')}
                       </Link>
                     </div>
+
+                    {/* Login error */}
+                    {loginFetcher.state === 'idle' && loginError && (
+                      <div
+                        role="alert"
+                        aria-live="assertive"
+                        className="p-3.5 text-[12px] text-bronze-dark bg-bronze/10 border border-bronze/30 rounded-lg text-center tracking-wide"
+                      >
+                        {loginError}
+                      </div>
+                    )}
 
                     {/* Submit */}
                     <button
@@ -473,7 +514,7 @@ export function AccountOverlay() {
                       </label>
                       <div className="relative">
                         <input
-                          type={showPassword ? 'text' : 'password'}
+                          type={showRegisterPassword ? 'text' : 'password'}
                           id="create-password"
                           value={registerPassword}
                           onChange={(e) => setRegisterPassword(e.target.value)}
@@ -487,15 +528,15 @@ export function AccountOverlay() {
                         />
                         <button
                           type="button"
-                          onClick={() => setShowPassword(!showPassword)}
+                          onClick={() => setShowRegisterPassword(!showRegisterPassword)}
                           className="absolute right-4 top-1/2 -translate-y-1/2 text-taupe hover:text-warm transition-colors"
                           aria-label={
-                            showPassword
-                              ? t('account.hidePassword')
-                              : t('account.showPassword')
+                            showRegisterPassword
+                              ? t('account.hidePassword', 'Hide password')
+                              : t('account.showPassword', 'Show password')
                           }
                         >
-                          {showPassword ? <Icons.EyeOff /> : <Icons.Eye />}
+                          {showRegisterPassword ? <Icons.EyeOff /> : <Icons.Eye />}
                         </button>
                       </div>
                       <p className="text-taupe/60 text-xs mt-2">
@@ -506,14 +547,25 @@ export function AccountOverlay() {
                       </p>
                     </div>
 
+                    {/* Register error */}
+                    {registerFetcher.state === 'idle' && registerError && (
+                      <div
+                        role="alert"
+                        aria-live="assertive"
+                        className="p-3.5 text-[12px] text-bronze-dark bg-bronze/10 border border-bronze/30 rounded-lg text-center tracking-wide"
+                      >
+                        {registerError}
+                      </div>
+                    )}
+
                     {/* Submit */}
                     <button
                       type="submit"
                       disabled={registerFetcher.state === 'submitting'}
-                        className="w-full bg-transparent border border-bronze text-bronze hover:bg-bronze hover:text-white font-medium py-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      className="w-full bg-transparent border border-bronze text-bronze hover:bg-bronze hover:text-white font-medium py-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                       {registerFetcher.state === 'submitting' ? (
-                      <div className="w-5 h-5 border-2 border-bronze border-t-transparent rounded-full animate-spin" />
+                        <div className="w-5 h-5 border-2 border-bronze border-t-transparent rounded-full animate-spin" />
                       ) : (
                         <>
                           {t('account.createButton', 'Create Account')}
@@ -537,7 +589,7 @@ export function AccountOverlay() {
                           transition={{delay: 0.3 + index * 0.1}}
                           className="flex items-center gap-3 text-warm text-sm"
                         >
-                  <span className="text-bronze">{benefit.icon}</span>
+                          <span className="text-bronze">{benefit.icon}</span>
                           <span>{benefit.text}</span>
                         </motion.li>
                       ))}

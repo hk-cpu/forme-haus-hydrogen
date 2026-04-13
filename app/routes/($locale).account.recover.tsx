@@ -15,9 +15,17 @@ export async function action({context, request}: ActionFunctionArgs) {
   }
 
   try {
-    await storefront.mutate(CUSTOMER_RECOVER_MUTATION, {
+    const {data, errors} = await storefront.mutate(CUSTOMER_RECOVER_MUTATION, {
       variables: {email},
     });
+
+    if (errors?.length) {
+      return {error: errors[0].message};
+    }
+
+    if (data?.customerRecover?.customerUserErrors?.length) {
+      return {error: data.customerRecover.customerUserErrors[0].message};
+    }
 
     return {success: true};
   } catch (error: any) {

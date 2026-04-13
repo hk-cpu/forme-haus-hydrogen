@@ -1,4 +1,4 @@
-import {type MetaArgs, type ActionFunctionArgs} from '@shopify/remix-oxygen';
+import {json, type ActionFunctionArgs, type MetaArgs} from '@shopify/remix-oxygen';
 import {Form, useActionData, useNavigation, Link} from '@remix-run/react';
 import {useState} from 'react';
 
@@ -13,32 +13,39 @@ export async function action({context, request}: ActionFunctionArgs) {
   const password = String(formData.get('password'));
 
   if (!email || !password) {
-    return {
-      error: 'Please provide both email and password.',
-      success: undefined,
-    };
+    return json(
+      {error: 'Please provide both email and password.', success: false},
+      {status: 400},
+    );
   }
 
   try {
-    const data = await storefront.mutate(CUSTOMER_CREATE_MUTATION, {
+    const {data, errors} = await storefront.mutate(CUSTOMER_CREATE_MUTATION, {
       variables: {
         input: {email, password},
       },
     });
 
-    if (data.customerCreate?.customerUserErrors?.length) {
-      return {
-        error: data.customerCreate.customerUserErrors[0].message,
-        success: undefined,
-      };
+    if (errors?.length) {
+      return json(
+        {error: errors[0].message, success: false},
+        {status: 400},
+      );
     }
 
-    return {error: undefined, success: true};
+    if (data?.customerCreate?.customerUserErrors?.length) {
+      return json(
+        {error: data.customerCreate.customerUserErrors[0].message, success: false},
+        {status: 400},
+      );
+    }
+
+    return json({error: null, success: true});
   } catch (error: any) {
-    return {
-      error: error.message || 'Something went wrong. Please try again.',
-      success: undefined,
-    };
+    return json(
+      {error: error.message || 'Something went wrong. Please try again.', success: false},
+      {status: 500},
+    );
   }
 }
 
@@ -192,6 +199,7 @@ export default function Register() {
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="new-password"
                     required
+                    minLength={8}
                     placeholder="Create a strong password"
                     className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 pl-4 pr-12 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[13px] tracking-wide rounded-lg"
                   />
@@ -206,6 +214,9 @@ export default function Register() {
                     {showPassword ? <EyeClosed /> : <EyeOpen />}
                   </button>
                 </div>
+                <p className="text-[11px] text-[#8B8076] mt-1.5 tracking-wide">
+                  Must be at least 8 characters
+                </p>
               </div>
             </div>
 
