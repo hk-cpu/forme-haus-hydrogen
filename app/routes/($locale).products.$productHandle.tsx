@@ -308,31 +308,25 @@ export default function Product() {
           <div className="sticky md:top-24 md:h-[calc(100vh-6rem)] hiddenScroll md:overflow-y-auto">
             <section className="flex flex-col w-full max-w-xl gap-10 p-6 md:pl-10 lg:pl-16 md:mx-auto md:max-w-none">
               <div className="grid gap-3">
-                {/* Brand Badge - LOUVE Collection */}
-                <div className="flex items-center gap-3 flex-wrap">
-                  <span className="text-[11px] uppercase tracking-[0.2em] text-[#a87441] font-semibold">
-                    LOUVE Collection
-                  </span>
-                  {iPhoneModels.length > 0 && (
-                    <div className="flex gap-1.5">
-                      {iPhoneModels
-                        .slice(0, 2)
-                        .map((model: string, idx: number) => (
-                          <span
-                            key={idx}
-                            className="text-[10px] px-2.5 py-1 bg-[#a87441]/10 text-[#a87441] rounded-full font-medium"
-                          >
-                            {model}
-                          </span>
-                        ))}
-                      {iPhoneModels.length > 2 && (
-                        <span className="text-[10px] px-2 py-1 text-[#8B8076]">
-                          +{iPhoneModels.length - 2} more
+                {iPhoneModels.length > 0 && (
+                  <div className="flex gap-1.5">
+                    {iPhoneModels
+                      .slice(0, 2)
+                      .map((model: string, idx: number) => (
+                        <span
+                          key={idx}
+                          className="text-[10px] px-2.5 py-1 bg-[#a87441]/10 text-[#a87441] rounded-full font-medium"
+                        >
+                          {model}
                         </span>
-                      )}
-                    </div>
-                  )}
-                </div>
+                      ))}
+                    {iPhoneModels.length > 2 && (
+                      <span className="text-[10px] px-2 py-1 text-[#8B8076]">
+                        +{iPhoneModels.length - 2} more
+                      </span>
+                    )}
+                  </div>
+                )}
 
                 <Heading
                   as="h1"
@@ -341,7 +335,7 @@ export default function Product() {
                   {title}
                 </Heading>
 
-                {vendor && vendor !== 'LOUVE Collection' && (
+                {vendor && (
                   <Text
                     className={
                       'opacity-60 font-sans tracking-[0.2em] uppercase text-xs text-[#8B8076]'
