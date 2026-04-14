@@ -5,6 +5,11 @@ import {Link} from '~/components/Link';
 import {useTranslation} from '~/hooks/useTranslation';
 import {use3DTilt} from '~/hooks/use3DTilt';
 
+interface BundlePiece {
+  label: string;
+  image: string;
+}
+
 interface BentoItem {
   image: string;
   alt: string;
@@ -13,60 +18,79 @@ interface BentoItem {
   subtitleKey?: any;
   defaultTitle: string;
   defaultSubtitle?: string;
+  pieces: BundlePiece[];
   width: number;
   height: number;
 }
 
-// 4 images — two-column editorial grid, all square (1:1) to prevent cropping
+// 4 themed bundle cards — each represents a curated product combination
 const BENTO_ITEMS: BentoItem[] = [
   {
     image: '/brand/edit-modern-essentials-v2.png',
-    alt: 'Modern Essentials — woman in pinstripe blazer driving a vintage car',
+    alt: 'The Essential Edit — case, strap and sunglasses curated together',
     url: '/collections/modern-essentials',
     titleKey: 'editorial.modernEssentials.title',
     subtitleKey: 'editorial.modernEssentials.subtitle',
-    defaultTitle: 'Modern Essentials',
-    defaultSubtitle: 'Timeless pieces for everyday elegance',
+    defaultTitle: 'The Essential Edit',
+    defaultSubtitle: '3 piece set',
+    pieces: [
+      {label: 'Phone Case', image: '/brand/phone-accessories-opt.webp'},
+      {label: 'Phone Strap', image: '/brand/carry-hero-v2.webp'},
+      {label: 'Sunglasses', image: '/brand/sunglasses-opt.webp'},
+    ],
     width: 1024,
     height: 1024,
   },
   {
     image: '/brand/edit-carry.webp',
-    alt: 'Carry It Your Way — crossbody phone strap',
+    alt: 'The Phone Kit — phone case paired with a matching strap',
     url: '/collections/carry-it-your-way',
     titleKey: 'editorial.carry.title',
     subtitleKey: 'editorial.carry.subtitle',
-    defaultTitle: 'Carry It Your Way',
-    defaultSubtitle: 'Hands-free style',
+    defaultTitle: 'The Phone Kit',
+    defaultSubtitle: '2 piece set',
+    pieces: [
+      {label: 'Phone Case', image: '/brand/phone-accessories-opt.webp'},
+      {label: 'Phone Strap', image: '/brand/carry-hero-v2.webp'},
+    ],
     width: 1024,
     height: 1024,
   },
   {
     image: '/brand/edit-sun-ready-v2.png',
-    alt: 'Sun Ready — model relaxing poolside in sunglasses',
+    alt: 'The Sun Set — sunglasses paired with a coordinating phone case',
     url: '/collections/sun-ready',
     titleKey: 'editorial.sun.title',
     subtitleKey: 'editorial.sun.subtitle',
-    defaultTitle: 'Sun Ready',
-    defaultSubtitle: 'For golden hours',
+    defaultTitle: 'The Sun Set',
+    defaultSubtitle: '2 piece set',
+    pieces: [
+      {label: 'Sunglasses', image: '/brand/sunglasses-opt.webp'},
+      {label: 'Phone Case', image: '/brand/phone-accessories-opt.webp'},
+    ],
     width: 1024,
     height: 1024,
   },
   {
     image: '/brand/edit-new-arrivals-v2.png',
-    alt: 'New Arrivals — model with sheer scarf and silver ring',
+    alt: 'The New Season — latest curated bundle from the Haus',
     url: '/collections/new-arrivals',
     titleKey: 'editorial.new.title',
     subtitleKey: 'editorial.new.subtitle',
-    defaultTitle: 'New Arrivals',
-    defaultSubtitle: 'Latest from the Haus',
+    defaultTitle: 'The New Season',
+    defaultSubtitle: 'Curated set',
+    pieces: [
+      {label: 'Phone Case', image: '/brand/new-in-opt.webp'},
+      {label: 'Sunglasses', image: '/brand/sunglasses-opt.webp'},
+      {label: 'Phone Strap', image: '/brand/carry-hero-v2.webp'},
+    ],
     width: 1024,
     height: 1024,
   },
 ];
 
 /**
- * TopCard — renders at natural image height with 3D tilt and parallax
+ * TopCard — bundle/set editorial card with 3D tilt and parallax
  */
 function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
   const [isHovered, setIsHovered] = useState(false);
@@ -123,19 +147,56 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
             decoding="async"
           />
 
-          {/* Hover gradient - enhanced */}
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none"
-            initial={{opacity: 0}}
-            animate={{opacity: isHovered ? 1 : 0}}
-            transition={{duration: 0.3}}
-          />
+          {/* Persistent dark gradient so text is always legible */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
 
-          {/* Content — always visible on mobile, hover reveal on desktop */}
-          <motion.div
-            className="absolute inset-x-0 bottom-0 p-4 md:p-5 md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 translate-y-0 opacity-100 transition-all duration-300"
-            initial={false}
-          >
+          {/* Bundle badge — top-left */}
+          <div className="absolute top-3.5 left-3.5 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-sm border border-white/10">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF87]" />
+            <span className="text-[9px] uppercase tracking-[0.18em] text-white/80 font-medium">
+              {item.pieces.length} piece set
+            </span>
+          </div>
+
+          {/* Bottom content */}
+          <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
+
+            {/* Product thumbnails — what's inside this bundle */}
+            <motion.div
+              className="flex items-center gap-2 mb-3"
+              initial={false}
+              animate={{opacity: isHovered ? 1 : 0.75, y: isHovered ? 0 : 3}}
+              transition={{duration: 0.3}}
+            >
+              {item.pieces.map((piece, pi) => (
+                <motion.div
+                  key={piece.label}
+                  className="relative"
+                  initial={false}
+                  animate={{x: isHovered ? 0 : -pi * 6}}
+                  transition={{duration: 0.3, delay: pi * 0.04}}
+                >
+                  <div className="w-10 h-10 rounded-full border-2 border-white/25 overflow-hidden bg-[#E8E4E0] shadow-md">
+                    <img
+                      src={piece.image}
+                      alt={piece.label}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                </motion.div>
+              ))}
+              <motion.span
+                className="text-[9px] uppercase tracking-[0.12em] text-white/60 ml-1"
+                initial={false}
+                animate={{opacity: isHovered ? 1 : 0}}
+                transition={{duration: 0.2, delay: 0.1}}
+              >
+                {item.defaultSubtitle}
+              </motion.span>
+            </motion.div>
+
             <motion.h3
               className="font-serif text-lg md:text-xl text-white italic tracking-wide"
               initial={false}
@@ -144,25 +205,26 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
             >
               {t(item.titleKey, item.defaultTitle)}
             </motion.h3>
-            {item.subtitleKey && (
-              <motion.p
-                className="text-xs text-white/70 tracking-wide mt-1"
-                initial={false}
-                animate={{y: isHovered ? 0 : 4, opacity: isHovered ? 1 : 0.7}}
-                transition={{duration: 0.3, delay: 0.1}}
-              >
-                {t(item.subtitleKey, item.defaultSubtitle!)}
-              </motion.p>
-            )}
-            <motion.div
-              className="mt-2 h-[1px] bg-[#D4AF87]"
-              initial={{width: 24}}
-              animate={{width: isHovered ? 40 : 24}}
-              transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
-            />
-          </motion.div>
 
-          {/* Hover border with glow */}
+            <div className="flex items-center justify-between mt-2">
+              <motion.div
+                className="h-[1px] bg-[#D4AF87]"
+                initial={{width: 24}}
+                animate={{width: isHovered ? 40 : 24}}
+                transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
+              />
+              <motion.p
+                className="text-[10px] uppercase tracking-[0.18em] text-[#D4AF87]"
+                initial={false}
+                animate={{opacity: isHovered ? 1 : 0, x: isHovered ? 0 : 6}}
+                transition={{duration: 0.25, delay: 0.1}}
+              >
+                Shop the set →
+              </motion.p>
+            </div>
+          </div>
+
+          {/* Hover border glow */}
           <motion.div
             className="absolute inset-0 rounded-[14px] border border-white/0 pointer-events-none"
             animate={{
