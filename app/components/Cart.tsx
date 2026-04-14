@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import {useRef, useState} from 'react';
+import {useRef, useState, useEffect} from 'react';
 import useScroll from 'react-use/esm/useScroll';
 import {motion, AnimatePresence} from 'framer-motion';
 import {useFetcher, useRouteLoaderData} from '@remix-run/react';
@@ -28,6 +28,7 @@ import {Text, Heading} from '~/components/Text';
 import {Link} from '~/components/Link';
 import {IconRemove} from '~/components/Icon';
 import {FeaturedProducts} from '~/components/FeaturedProducts';
+import {ProductCardClean} from '~/components/ProductCardClean';
 import {buildLocalePath, getInputStyleClasses} from '~/lib/utils';
 import {useTranslation} from '~/hooks/useTranslation';
 import type {RootLoader} from '~/root';
@@ -433,6 +434,20 @@ function CartLines({
           ))}
         </AnimatePresence>
       </ul>
+
+      {/* You May Also Like — drawer only */}
+      {layout === 'drawer' && (
+        <div className="mt-8 pt-6 border-t border-bronze/10">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-taupe/60 mb-4">
+            You May Also Like
+          </p>
+          <div className="overflow-x-auto scrollbar-hide -mx-0">
+            <div className="flex gap-3 w-max pb-2">
+              <CartSuggestedProducts />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
@@ -1083,6 +1098,18 @@ function CartEmpty({
             <Icons.Bag className="w-5 h-5" />
             {t('cart.continueShopping', 'Continue Shopping')}
           </motion.button>
+
+          {/* You May Also Like — empty drawer */}
+          <div className="w-full mt-8 text-left">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-taupe/60 text-center mb-4">
+              {t('cart.youMayAlsoLike', 'You May Also Like')}
+            </p>
+            <div className="overflow-x-auto scrollbar-hide">
+              <div className="flex gap-3 w-max pb-2 mx-auto">
+                <CartSuggestedProducts />
+              </div>
+            </div>
+          </div>
         </motion.div>
       ) : (
         <>
@@ -1104,6 +1131,40 @@ function CartEmpty({
         </>
       )}
     </div>
+  );
+}
+
+function CartSuggestedProducts() {
+  const fetcher = useFetcher<{products: any[]}>();
+
+  useEffect(() => {
+    fetcher.load('/api/products?sortKey=BEST_SELLING&count=6');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const products: any[] = fetcher.data?.products ?? [];
+
+  if (!products.length) {
+    return (
+      <>
+        {[1, 2, 3, 4].map((i) => (
+          <div
+            key={i}
+            className="w-36 h-52 flex-shrink-0 bg-surface rounded-xl animate-pulse"
+          />
+        ))}
+      </>
+    );
+  }
+
+  return (
+    <>
+      {products.map((product: any, i: number) => (
+        <div key={product.id} className="w-36 flex-shrink-0">
+          <ProductCardClean product={product} index={i} />
+        </div>
+      ))}
+    </>
   );
 }
 

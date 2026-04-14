@@ -9,8 +9,9 @@ import {
   isRouteErrorResponse,
   Link as RemixLink,
   useLocation,
+  useFetcher,
 } from '@remix-run/react';
-import {Suspense, useState} from 'react';
+import {Suspense, useState, useEffect} from 'react';
 import {defer, redirect} from '@remix-run/server-runtime';
 import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {flattenConnection, Image, Money} from '@shopify/hydrogen';
@@ -21,6 +22,10 @@ import {Link} from '~/components/Link';
 import {usePrefixPathWithLocale} from '~/lib/utils';
 import {CACHE_NONE, routeHeaders} from '~/data/cache';
 import {useTranslation} from '~/hooks/useTranslation';
+import {useUI} from '~/context/UIContext';
+import {ProductCardClean} from '~/components/ProductCardClean';
+import {ProductSwimlane} from '~/components/ProductSwimlane';
+import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
 
 export const headers = routeHeaders;
 
@@ -45,7 +50,19 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     throw redirect('/account/login');
   }
 
-  return defer({customer}, {headers: {'Cache-Control': CACHE_NONE}});
+  const bestSellersPromise = storefront.query(BEST_SELLERS_QUERY, {
+    variables: {
+      count: 8,
+      country: storefront.i18n.country,
+      language: storefront.i18n.language,
+    },
+    cache: storefront.CacheLong(),
+  });
+
+  return defer(
+    {customer, bestSellers: bestSellersPromise},
+    {headers: {'Cache-Control': CACHE_NONE}},
+  );
 }
 
 // ─── GraphQL ──────────────────────────────────────────────────────────────────
@@ -144,23 +161,25 @@ export default function Authenticated() {
           <Modal cancelLink="/account">
             <Outlet context={{customer: data.customer}} />
           </Modal>
-          <Dashboard customer={data.customer} />
+          <Dashboard customer={data.customer} bestSellers={data.bestSellers} />
         </>
       );
     }
     return <Outlet context={{customer: data.customer}} />;
   }
 
-  return <Dashboard customer={data.customer} />;
+  return <Dashboard customer={data.customer} bestSellers={data.bestSellers} />;
 }
 
 // ─── Tab types ────────────────────────────────────────────────────────────────
-type Tab = 'overview' | 'orders' | 'profile' | 'addresses';
+type Tab = 'overview' | 'orders' | 'profile' | 'addresses' | 'wishlist';
 
 // ─── Dashboard ────────────────────────────────────────────────────────────────
-function Dashboard({customer}: {customer: any}) {
+function Dashboard({customer, bestSellers}: {customer: any; bestSellers: Promise<any>}) {
   const [activeTab, setActiveTab] = useState<Tab>('overview');
   const {isRTL, t} = useTranslation();
+  const {state: uiState} = useUI();
+  const wishlistCount = uiState.wishlist.length;
   const orders = flattenConnection(customer.orders);
   const addresses = flattenConnection(customer.addresses);
   const displayName = customer.firstName
@@ -283,6 +302,26 @@ function Dashboard({customer}: {customer: any}) {
         </svg>
       ),
     },
+    {
+      id: 'wishlist' as Tab,
+      label: 'Saved',
+      labelKey: 'account.saved',
+      icon: (
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          className="w-4 h-4"
+        >
+          <path
+            d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      ),
+    },
   ];
 
   return (
@@ -365,6 +404,11 @@ function Dashboard({customer}: {customer: any}) {
                     {orders.length}
                   </span>
                 )}
+                {tab.id === 'wishlist' && wishlistCount > 0 && (
+                  <span className="ml-1 px-1.5 py-0.5 rounded-full bg-[#a87441]/20 text-[#a87441] text-[9px]">
+                    {wishlistCount}
+                  </span>
+                )}
               </button>
             ))}
           </nav>
@@ -387,12 +431,16 @@ function Dashboard({customer}: {customer: any}) {
                 orders={orders}
                 totalSpent={totalSpent}
                 onNavigate={setActiveTab}
+                bestSellers={bestSellers}
               />
             )}
             {activeTab === 'orders' && <OrdersTab orders={orders} />}
             {activeTab === 'profile' && <ProfileTab customer={customer} />}
             {activeTab === 'addresses' && (
               <AddressesTab addresses={addresses} customer={customer} />
+            )}
+            {activeTab === 'wishlist' && (
+              <WishlistTab bestSellers={bestSellers} />
             )}
           </motion.div>
         </AnimatePresence>
@@ -407,11 +455,13 @@ function OverviewTab({
   orders,
   totalSpent,
   onNavigate,
+  bestSellers,
 }: {
   customer: any;
   orders: any[];
   totalSpent: number;
   onNavigate: (tab: Tab) => void;
+  bestSellers: Promise<any>;
 }) {
   const {isRTL, t} = useTranslation();
   const recentOrders = orders.slice(0, 3);
@@ -570,6 +620,166 @@ function OverviewTab({
             </span>
           </Link>
         ))}
+      </div>
+
+      {/* Recommended For You */}
+      <div className="border-t border-warm/5 pt-8 -mx-6 px-6">
+        <Suspense
+          fallback={
+            <div className="space-y-4">
+              <div className="h-6 w-56 bg-surface rounded animate-pulse mx-auto" />
+              <div className="flex gap-4 overflow-hidden">
+                {[1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className="w-56 aspect-square flex-shrink-0 bg-surface rounded-xl animate-pulse"
+                  />
+                ))}
+              </div>
+            </div>
+          }
+        >
+          <Await resolve={bestSellers}>
+            {(resolved: any) => {
+              const nodes = resolved?.products?.nodes ?? [];
+              if (!nodes.length) return null;
+              return (
+                <ProductSwimlane
+                  title={t('account.recommendedForYou', 'Recommended For You')}
+                  products={{nodes}}
+                  count={8}
+                />
+              );
+            }}
+          </Await>
+        </Suspense>
+      </div>
+    </div>
+  );
+}
+
+// ─── Wishlist Tab ─────────────────────────────────────────────────────────────
+function WishlistTab({bestSellers}: {bestSellers: Promise<any>}) {
+  const {t} = useTranslation();
+  const {state: uiState, toggleWishlist} = useUI();
+  const fetcher = useFetcher<{products: any[]}>();
+  const wishlistApiPath = usePrefixPathWithLocale('/api/wishlist-products');
+  const wishlistIds = uiState.wishlist;
+  const idString = wishlistIds.join(',');
+
+  useEffect(() => {
+    if (wishlistIds.length === 0) return;
+    fetcher.load(`${wishlistApiPath}?ids=${idString}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idString]);
+
+  const products: any[] = fetcher.data?.products ?? [];
+  const isLoading = fetcher.state === 'loading' && wishlistIds.length > 0;
+
+  return (
+    <div className="grid gap-10">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h2 className="font-serif text-xl text-warm">
+          {t('account.saved', 'Saved Items')}
+          {products.length > 0 && (
+            <span className="text-sm font-sans font-normal text-[#8B8076] ml-3">
+              ({products.length})
+            </span>
+          )}
+        </h2>
+        <Link
+          to="/collections/all"
+          className="text-[#a87441] text-xs uppercase tracking-wider hover:text-[#D4AF87] transition-colors"
+        >
+          {t('account.browseAll', 'Browse All')}
+        </Link>
+      </div>
+
+      {/* Loading skeleton */}
+      {isLoading && (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {Array.from({length: Math.min(wishlistIds.length, 4)}).map((_, i) => (
+            <div
+              key={i}
+              className="aspect-square rounded-xl bg-surface animate-pulse"
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Empty state */}
+      {!isLoading && wishlistIds.length === 0 && (
+        <EmptyState
+          icon="bag"
+          message={t('account.noSavedItems', 'No saved items yet')}
+          action={
+            <Link
+              to="/collections/all"
+              className="inline-block mt-4 px-6 py-2.5 bg-[#a87441] text-white text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-[#8B5E3C] transition-colors"
+            >
+              {t('account.startBrowsing', 'Start Browsing')}
+            </Link>
+          }
+        />
+      )}
+
+      {/* Product grid */}
+      {!isLoading && products.length > 0 && (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {products.map((product: any, i: number) => (
+            <div key={product.id} className="relative">
+              <ProductCardClean product={product} index={i} />
+              <button
+                onClick={() => toggleWishlist(product.id)}
+                className="absolute top-3 right-3 z-20 w-7 h-7 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-sm text-[#a87441] hover:bg-white transition-all shadow-sm"
+                aria-label={t('product.removeFromWishlist', 'Remove from saved')}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-3.5 h-3.5"
+                >
+                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                </svg>
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* You May Also Like */}
+      <div className="border-t border-warm/5 pt-8 -mx-6 px-6">
+        <Suspense
+          fallback={
+            <div className="flex gap-4 overflow-hidden">
+              {[1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="w-56 aspect-square flex-shrink-0 bg-surface rounded-xl animate-pulse"
+                />
+              ))}
+            </div>
+          }
+        >
+          <Await resolve={bestSellers}>
+            {(resolved: any) => {
+              const nodes = resolved?.products?.nodes ?? [];
+              if (!nodes.length) return null;
+              return (
+                <ProductSwimlane
+                  title={
+                    wishlistIds.length === 0
+                      ? t('account.featuredProducts', 'Featured Products')
+                      : t('account.youMayAlsoLike', 'You May Also Like')
+                  }
+                  products={{nodes}}
+                  count={8}
+                />
+              );
+            }}
+          </Await>
+        </Suspense>
       </div>
     </div>
   );
@@ -963,6 +1173,22 @@ function EmptyState({
     </div>
   );
 }
+
+// ─── GraphQL: Best Sellers ────────────────────────────────────────────────────
+const BEST_SELLERS_QUERY = `#graphql
+  query AccountBestSellers(
+    $count: Int
+    $country: CountryCode
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
+    products(first: $count, sortKey: BEST_SELLING) {
+      nodes {
+        ...ProductCard
+      }
+    }
+  }
+  ${PRODUCT_CARD_FRAGMENT}
+` as const;
 
 // ─── Error Boundary ───────────────────────────────────────────────────────────
 export function ErrorBoundary() {

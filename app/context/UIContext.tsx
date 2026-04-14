@@ -231,16 +231,31 @@ export function UIProvider({children}: {children: ReactNode}) {
   // Load wishlist from localStorage on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      let parsed: string[] = [];
       const saved = localStorage.getItem('formehaus_wishlist');
       if (saved) {
         try {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed)) {
-            dispatch({type: 'SET_WISHLIST', productIds: parsed as string[]});
-          }
+          const result = JSON.parse(saved);
+          if (Array.isArray(result)) parsed = result;
         } catch (e) {
           console.error('Failed to parse wishlist from localStorage');
         }
+      }
+
+      // Migrate legacy fh_wishlist key (ProductCardClean used a separate key)
+      const legacy = localStorage.getItem('fh_wishlist');
+      if (legacy) {
+        try {
+          const legacyIds: string[] = JSON.parse(legacy);
+          if (legacyIds.length > 0) {
+            parsed = Array.from(new Set([...parsed, ...legacyIds]));
+          }
+          localStorage.removeItem('fh_wishlist');
+        } catch {}
+      }
+
+      if (parsed.length > 0) {
+        dispatch({type: 'SET_WISHLIST', productIds: parsed});
       }
 
       // Check for reduced motion preference

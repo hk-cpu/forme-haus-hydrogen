@@ -4,6 +4,7 @@ import {Link} from '@remix-run/react';
 import {Money, CartForm} from '@shopify/hydrogen';
 
 import {useTranslation} from '~/hooks/useTranslation';
+import {useUI} from '~/context/UIContext';
 
 interface ProductCardCleanProps {
   product: {
@@ -43,10 +44,11 @@ interface ProductCardCleanProps {
  */
 export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
   const {isRTL} = useTranslation();
+  const {toggleWishlist: toggleWishlistCtx, isInWishlist} = useUI();
 
   const [currentImage, setCurrentImage] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const isWishlisted = isInWishlist(product.id);
   const images = product.images?.nodes || [];
   const hasMultipleImages = images.length > 1;
   const hasPrice =
@@ -94,27 +96,9 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
 
   useEffect(() => () => stopSlideshow(), [stopSlideshow]);
 
-  // Wishlist: localStorage bucket fh_wishlist
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem('fh_wishlist');
-      if (!raw) return;
-      const ids: string[] = JSON.parse(raw);
-      setIsWishlisted(ids.includes(product.id));
-    } catch {}
-  }, [product.id]);
-
   const toggleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
-    try {
-      const raw = localStorage.getItem('fh_wishlist');
-      const ids: string[] = raw ? JSON.parse(raw) : [];
-      const next = ids.includes(product.id)
-        ? ids.filter((id) => id !== product.id)
-        : [...ids, product.id];
-      localStorage.setItem('fh_wishlist', JSON.stringify(next));
-      setIsWishlisted(next.includes(product.id));
-    } catch {}
+    toggleWishlistCtx(product.id);
   };
 
   return (
