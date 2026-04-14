@@ -26,6 +26,7 @@ export async function action({request, context}: ActionFunctionArgs) {
   const cartId = (formData.get('cartId') as string) || '';
 
   const secretKey = env.TAP_SECRET_KEY;
+  const merchantId = (env as any).TAP_MERCHANT_ID as string | undefined;
   const apiUrl = env.TAP_API_URL || 'https://api.tap.company/v2';
 
   if (!secretKey) {
@@ -57,6 +58,7 @@ export async function action({request, context}: ActionFunctionArgs) {
     metadata: {
       merchantTxId,
       cartId,
+      ...(merchantId ? {merchant_id: merchantId} : {}),
     },
     reference: {
       transaction: merchantTxId || `FH-${Date.now()}`,

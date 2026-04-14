@@ -33,6 +33,8 @@ declare global {
     API_ACCESS_TOKEN: string;
     // Tap Payments
     TAP_SECRET_KEY: string;
+    TAP_PUBLIC_KEY: string;
+    TAP_MERCHANT_ID: string;
     TAP_API_URL: string;
     // Google OAuth SSO
     GOOGLE_CLIENT_ID: string;
