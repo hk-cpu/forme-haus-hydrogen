@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import {useRef, useState} from 'react';
+import {useRef, useState, useEffect} from 'react';
 import useScroll from 'react-use/esm/useScroll';
 import {motion, AnimatePresence} from 'framer-motion';
 import {useFetcher, useRouteLoaderData} from '@remix-run/react';
@@ -455,19 +455,31 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
     rootData?.selectedLocale?.pathPrefix,
   );
 
+  // Pull shopper contact from cart buyerIdentity if available
+  const buyerIdentity = (cart as any).buyerIdentity;
+  const shopperEmail = buyerIdentity?.email || '';
+  const shopperPhone = buyerIdentity?.phone || '';
+
   function initiatePayment() {
     fetcher.submit(
-      {amount: total, currency, merchantTxId, cartId: cart.id || ''},
+      {
+        amount: total,
+        currency,
+        merchantTxId,
+        cartId: cart.id || '',
+        shopperEmail,
+        shopperPhone,
+      },
       {method: 'post', action: tapInitiatePath},
     );
   }
 
-  // Redirect to Tap's hosted payment page when we get the URL
-  if (fetcher.state === 'idle' && fetcher.data?.redirectUrl) {
-    if (typeof window !== 'undefined') {
+  // Redirect to Tap's hosted payment page once we receive the URL
+  useEffect(() => {
+    if (fetcher.state === 'idle' && fetcher.data?.redirectUrl) {
       window.location.href = fetcher.data.redirectUrl;
     }
-  }
+  }, [fetcher.state, fetcher.data?.redirectUrl]);
 
   return (
     <div>

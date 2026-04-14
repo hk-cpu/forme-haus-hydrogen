@@ -61,19 +61,35 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     const chargeStatus = data.status?.toUpperCase();
 
     if (chargeStatus === 'CAPTURED') {
-      // Payment successful
-      // Payment captured — order creation handled by Shopify checkout integration
-      return json({
-        status: 'success' as const,
-        message: 'Payment successful. Thank you for your order!',
-        transactionId: data.id,
-        receiptId: data.receipt?.id,
-        amount: data.amount ? String(data.amount) : undefined,
-        currency: data.currency,
-        paymentMethod: data.source?.payment_method,
-        merchantTxId: data.reference?.transaction || merchantTxId,
-        nextPath: buildLocalePath('/account', localePrefix),
-      });
+      // Clear the cart so it's empty after successful payment
+      const responseHeaders = new Headers();
+      try {
+        const currentCart = await context.cart.get();
+        const lineIds: string[] =
+          (currentCart as any)?.lines?.nodes?.map((l: any) => l.id) ?? [];
+        if (lineIds.length > 0) {
+          const clearResult = await context.cart.removeLines(lineIds);
+          const cartHeaders = context.cart.setCartId(clearResult.cart.id);
+          cartHeaders.forEach((v, k) => responseHeaders.append(k, v));
+        }
+      } catch (e) {
+        console.error('[Tap Callback] Cart clear error:', e);
+      }
+
+      return json(
+        {
+          status: 'success' as const,
+          message: 'Payment successful. Thank you for your order!',
+          transactionId: data.id,
+          receiptId: data.receipt?.id,
+          amount: data.amount ? String(data.amount) : undefined,
+          currency: data.currency,
+          paymentMethod: data.source?.payment_method,
+          merchantTxId: data.reference?.transaction || merchantTxId,
+          nextPath: buildLocalePath('/account', localePrefix),
+        },
+        {headers: responseHeaders},
+      );
     }
 
     if (chargeStatus === 'INITIATED' || chargeStatus === 'IN_PROGRESS') {
@@ -173,20 +189,31 @@ export default function TapPaymentCallback() {
         </p>
 
         {data.status === 'success' && 'transactionId' in data && (
-          <div
-            className={`inline-block px-4 py-2 rounded-lg ${config.bg} border ${config.border} mb-8`}
-          >
-            <p className="text-[10px] uppercase tracking-widest text-[#8B8076]">
-              Transaction ID
-            </p>
-            <p className={`text-sm font-mono mt-0.5 ${config.color}`}>
-              {data.transactionId}
-            </p>
-            {'paymentMethod' in data && data.paymentMethod && (
-              <p className="text-[10px] uppercase tracking-widest text-[#8B8076] mt-2">
-                Paid via {data.paymentMethod}
+          <div className="space-y-3 mb-8">
+            {'amount' in data && data.amount && data.currency && (
+              <p className={`text-3xl font-serif ${config.color}`}>
+                {parseFloat(data.amount).toLocaleString('en-SA', {
+                  style: 'currency',
+                  currency: data.currency,
+                  minimumFractionDigits: 2,
+                })}
               </p>
             )}
+            <div
+              className={`inline-block px-4 py-2 rounded-lg ${config.bg} border ${config.border}`}
+            >
+              <p className="text-[10px] uppercase tracking-widest text-[#8B8076]">
+                Transaction ID
+              </p>
+              <p className={`text-sm font-mono mt-0.5 ${config.color}`}>
+                {data.transactionId}
+              </p>
+              {'paymentMethod' in data && data.paymentMethod && (
+                <p className="text-[10px] uppercase tracking-widest text-[#8B8076] mt-2">
+                  Paid via {data.paymentMethod}
+                </p>
+              )}
+            </div>
           </div>
         )}
 
