@@ -27,11 +27,11 @@ interface BentoItem {
 const BENTO_ITEMS: BentoItem[] = [
   {
     image: '/brand/edit-modern-essentials-v2.png',
-    alt: 'The Essential Edit — case, strap and sunglasses curated together',
+    alt: 'Modern Essentials — woman in pinstripe blazer driving a vintage car',
     url: '/collections/modern-essentials',
     titleKey: 'editorial.modernEssentials.title',
     subtitleKey: 'editorial.modernEssentials.subtitle',
-    defaultTitle: 'The Essential Edit',
+    defaultTitle: 'Modern Essentials',
     defaultSubtitle: '3 piece set',
     pieces: [
       {label: 'Phone Case', image: '/brand/phone-accessories-opt.webp'},
@@ -43,11 +43,11 @@ const BENTO_ITEMS: BentoItem[] = [
   },
   {
     image: '/brand/edit-carry.webp',
-    alt: 'The Phone Kit — phone case paired with a matching strap',
+    alt: 'Carry It Your Way — crossbody phone strap',
     url: '/collections/carry-it-your-way',
     titleKey: 'editorial.carry.title',
     subtitleKey: 'editorial.carry.subtitle',
-    defaultTitle: 'The Phone Kit',
+    defaultTitle: 'Carry It Your Way',
     defaultSubtitle: '2 piece set',
     pieces: [
       {label: 'Phone Case', image: '/brand/phone-accessories-opt.webp'},
@@ -58,11 +58,11 @@ const BENTO_ITEMS: BentoItem[] = [
   },
   {
     image: '/brand/edit-sun-ready-v2.png',
-    alt: 'The Sun Set — sunglasses paired with a coordinating phone case',
+    alt: 'Sun Ready — model relaxing poolside in sunglasses',
     url: '/collections/sun-ready',
     titleKey: 'editorial.sun.title',
     subtitleKey: 'editorial.sun.subtitle',
-    defaultTitle: 'The Sun Set',
+    defaultTitle: 'Sun Ready',
     defaultSubtitle: '2 piece set',
     pieces: [
       {label: 'Sunglasses', image: '/brand/sunglasses-opt.webp'},
@@ -73,11 +73,11 @@ const BENTO_ITEMS: BentoItem[] = [
   },
   {
     image: '/brand/edit-new-arrivals-v2.png',
-    alt: 'The New Season — latest curated bundle from the Haus',
+    alt: 'New Arrivals — model with sheer scarf and silver ring',
     url: '/collections/new-arrivals',
     titleKey: 'editorial.new.title',
     subtitleKey: 'editorial.new.subtitle',
-    defaultTitle: 'The New Season',
+    defaultTitle: 'New Arrivals',
     defaultSubtitle: 'Curated set',
     pieces: [
       {label: 'Phone Case', image: '/brand/new-in-opt.webp'},
