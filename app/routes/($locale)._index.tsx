@@ -1,11 +1,12 @@
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {defer} from '@remix-run/server-runtime';
-import {getSeoMeta, CacheLong} from '@shopify/hydrogen';
+import {getSeoMeta, CacheLong, CacheShort} from '@shopify/hydrogen';
 import {lazy, Suspense} from 'react';
 
 import Hero from '~/components/Hero';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
+import {useLoaderData} from '@remix-run/react';
 
 const CategoryBento = lazy(() => import('~/components/CategoryBento'));
 const EditorialSection = lazy(() => import('~/components/EditorialSection'));
@@ -51,8 +52,20 @@ async function loadCriticalData({context, request}: LoaderFunctionArgs) {
   };
 }
 
-function loadDeferredData(_args: LoaderFunctionArgs) {
-  return {};
+function loadDeferredData({context}: LoaderFunctionArgs) {
+  const theEditProducts = context.storefront
+    .query(THE_EDIT_QUERY, {
+      variables: {
+        handle: 'the-edit',
+        first: 4,
+        country: context.storefront.i18n.country,
+        language: context.storefront.i18n.language,
+      },
+      cache: CacheShort(),
+    })
+    .catch(() => null);
+
+  return {theEditProducts};
 }
 
 export const meta = ({matches}: MetaArgs<typeof loader>) => {
@@ -64,6 +77,8 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 };
 
 export default function Homepage() {
+  const {theEditProducts} = useLoaderData<typeof loader>();
+
   return (
   <div className="min-h-screen bg-transparent text-warm">
       <Hero />
@@ -77,7 +92,7 @@ export default function Homepage() {
 
         <div className="py-8 md:py-12">
           <Suspense fallback={<SectionFallback className="min-h-[640px]" />}>
-            <EditorialSection />
+            <EditorialSection theEditProducts={theEditProducts} />
           </Suspense>
         </div>
 
@@ -118,6 +133,39 @@ const HOMEPAGE_SEO_QUERY = `#graphql
     shop {
       name
       description
+    }
+  }
+` as const;
+
+const THE_EDIT_QUERY = `#graphql
+  query TheEditCollection(
+    $handle: String!
+    $first: Int!
+    $country: CountryCode
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
+    collection(handle: $handle) {
+      products(first: $first) {
+        nodes {
+          id
+          title
+          handle
+          images(first: 6) {
+            nodes {
+              url
+              altText
+              width
+              height
+            }
+          }
+          priceRange {
+            minVariantPrice {
+              amount
+              currencyCode
+            }
+          }
+        }
+      }
     }
   }
 ` as const;

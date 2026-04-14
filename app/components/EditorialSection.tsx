@@ -245,10 +245,62 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
   );
 }
 
-export default function EditorialSection() {
+interface ShopifyProduct {
+  id: string;
+  title: string;
+  handle: string;
+  images: {nodes: {url: string; altText: string | null; width: number; height: number}[]};
+  priceRange: {minVariantPrice: {amount: string; currencyCode: string}};
+}
+
+interface TheEditData {
+  collection?: {products: {nodes: ShopifyProduct[]}} | null;
+}
+
+function shopifyProductsToBentoItems(products: ShopifyProduct[]): BentoItem[] {
+  return products.map((product) => {
+    const images = product.images.nodes;
+    // First image = editorial/lifestyle background
+    // Remaining images = bundle component thumbnails
+    const heroImage = images[0]?.url ?? '/brand/placeholder-product.jpg';
+    const componentImages = images.slice(1);
+
+    return {
+      image: heroImage,
+      alt: images[0]?.altText ?? product.title,
+      url: `/products/${product.handle}`,
+      titleKey: product.title,
+      defaultTitle: product.title,
+      defaultSubtitle: `${componentImages.length + 1} piece set`,
+      pieces: componentImages.map((img, i) => ({
+        label: img.altText ?? `Piece ${i + 1}`,
+        image: img.url,
+      })),
+      width: images[0]?.width ?? 1024,
+      height: images[0]?.height ?? 1024,
+    };
+  });
+}
+
+export default function EditorialSection({
+  theEditProducts,
+}: {
+  theEditProducts?: Promise<TheEditData | null> | TheEditData | null;
+}) {
   const {t, isRTL} = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = useReducedMotion();
+
+  // Resolve products — handle both resolved data and null
+  const resolvedData = theEditProducts && !(theEditProducts instanceof Promise)
+    ? theEditProducts
+    : null;
+
+  const shopifyItems = resolvedData?.collection?.products?.nodes;
+  const items =
+    shopifyItems && shopifyItems.length > 0
+      ? shopifyProductsToBentoItems(shopifyItems.slice(0, 4))
+      : BENTO_ITEMS;
 
   // Parallax for columns
   const {scrollYProgress} = useScroll({
@@ -310,15 +362,14 @@ export default function EditorialSection() {
 
         {/* Mobile: single column stack */}
         <div className="flex flex-col gap-3 md:hidden">
-          <TopCard item={BENTO_ITEMS[0]} index={0} t={t} />
-          <TopCard item={BENTO_ITEMS[1]} index={1} t={t} />
-          <TopCard item={BENTO_ITEMS[2]} index={2} t={t} />
-          <TopCard item={BENTO_ITEMS[3]} index={3} t={t} />
+          {items.map((item, i) => (
+            <TopCard key={item.url} item={item} index={i} t={t} />
+          ))}
         </div>
 
         {/* Desktop: 2x2 grid — square cards, no cropping */}
         <div className="hidden md:grid md:grid-cols-2 gap-3">
-          {BENTO_ITEMS.map((item, i) => (
+          {items.map((item, i) => (
             <motion.div
               key={item.url}
               style={shouldReduceMotion ? {} : {y: i % 2 === 0 ? leftColY : rightColY}}
