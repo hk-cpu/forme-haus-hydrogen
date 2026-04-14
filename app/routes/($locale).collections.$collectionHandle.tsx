@@ -309,6 +309,7 @@ export default function Collection() {
       position?: string;
       bgClass?: string;
       heightClass?: string;
+      hideMobile?: boolean;
     }
   > = {
     'new-in': {
@@ -337,6 +338,7 @@ export default function Collection() {
       hideTitle: true,
       fit: 'full-width',
       bgClass: 'bg-[#E7D6C3]',
+      hideMobile: true,
     },
     phone: {
       src: '/brand/phone-accessories-hero-v3.png',
@@ -481,7 +483,7 @@ export default function Collection() {
         /* Image hero for all other collections */
         <motion.div
           ref={heroRef}
-          className="relative w-full overflow-hidden bg-[#F9F5F0]"
+          className={`relative w-full overflow-hidden bg-[#F9F5F0] ${override?.hideMobile ? 'hidden md:block' : ''}`}
           style={{
             opacity: heroOpacity,
             paddingTop: 'var(--navbar-height)',
