@@ -331,6 +331,9 @@ export const translations = {
     'account.noAddresses': 'No addresses saved yet',
     'account.contactUs': 'Contact Us',
     'account.returns': 'Returns',
+    'account.googleSignIn': 'Continue with Google',
+    'account.googleSignUp': 'Sign up with Google',
+    'account.orEmail': 'or',
 
     // Products Index
     'products.completeCollection': 'The Complete Collection',
@@ -677,6 +680,9 @@ export const translations = {
     'account.noAddresses': 'لم تُحفظ أي عناوين بعد',
     'account.contactUs': 'التواصل معنا',
     'account.returns': 'سياسة الإرجاع',
+    'account.googleSignIn': 'المتابعة مع Google',
+    'account.googleSignUp': 'التسجيل عبر Google',
+    'account.orEmail': 'أو',
 
     // Products Index
     'products.completeCollection': 'المجموعة الكاملة',
