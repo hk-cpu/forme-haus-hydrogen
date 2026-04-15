@@ -371,7 +371,6 @@ export default function Collection() {
       hideTitle: true,
       fit: 'full-width',
       position: 'top',
-      heightClass: 'h-[22vh] sm:h-[26vh] md:h-[30vh] lg:h-[34vh]'
     },
     'sun-ready': {
       src: '/brand/sun-ready-hero-v3.png',
