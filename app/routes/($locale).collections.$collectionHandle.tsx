@@ -371,8 +371,7 @@ export default function Collection() {
       hideTitle: true,
       fit: 'full-width',
       position: 'top',
-      // Increase hero height to reveal more of the subject without side whitespace
-      heightClass: 'h-[56vh] sm:h-[60vh] md:h-[66vh] lg:h-[72vh]'
+      heightClass: 'h-[30vh] sm:h-[34vh] md:h-[38vh] lg:h-[42vh]'
     },
     'sun-ready': {
       src: '/brand/sun-ready-hero-v3.png',
