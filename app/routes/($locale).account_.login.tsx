@@ -153,7 +153,7 @@ export default function Login() {
       <Suspense fallback={null}>
         <GhostCursorEnhanced
           primaryColor="#ffffff"
-          secondaryColor={getComputedStyle(document.documentElement).getPropertyValue('--bronze') || '#a87441'}
+          secondaryColor={'#a87441'}
           brightness={0.8}
           edgeIntensity={0.2}
           trailLength={40}

@@ -593,20 +593,22 @@ className="absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 md:w-9 md:h-9 rou
             </div>
           )}
 
-          {/* Quick Add Button */}
+          {/* Quick Add Button — always visible on mobile, hover-reveal on desktop */}
           <AnimatePresence>
             {quickAdd && isAvailable && hasPrice && (
               <motion.button
-                initial={{opacity: 0, y: 20}}
-                animate={{opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20}}
-                exit={{opacity: 0, y: 20}}
+                initial={{opacity: 1, y: 0}}
+                animate={{
+                  opacity: isHovered ? 1 : undefined,
+                  y: isHovered ? 0 : undefined,
+                }}
                 transition={{duration: 0.3, ease: [0.25, 0.1, 0.25, 1]}}
                 onClick={handleQuickAdd}
                 disabled={isAdding}
-                className={`absolute bottom-3 left-3 right-3 py-3.5 md:py-3 min-h-[48px] rounded-lg font-medium text-xs md:text-[11px] uppercase tracking-[0.12em] flex items-center justify-center gap-2 transition-all duration-300 backdrop-blur-md z-20 shadow-lg touch-target ${
+                className={`absolute bottom-3 left-3 right-3 py-3.5 md:py-3 min-h-[48px] rounded-lg font-medium text-xs md:text-[11px] uppercase tracking-[0.12em] flex items-center justify-center gap-2 transition-all duration-300 backdrop-blur-md z-20 shadow-lg touch-target md:opacity-0 md:group-hover:opacity-100 ${
                   showAdded
                     ? 'bg-green-600 text-white'
-: 'bg-bronze/95 hover:bg-bronze-dark text-white'
+                    : 'bg-bronze/95 hover:bg-bronze-dark text-white'
                 }`}
               >
                 <AnimatePresence mode="wait">

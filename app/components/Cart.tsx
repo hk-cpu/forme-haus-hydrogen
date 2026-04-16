@@ -513,9 +513,7 @@ function CartCheckoutActions({
   const rootData = useRouteLoaderData<RootLoader>('root');
 
   if (!checkoutUrl) return null;
-  const storeDomain =
-    (rootData?.layout as any)?.shop?.primaryDomain?.url ??
-    'https://formehaus.me';
+  const storeDomain = 'https://formehaus.me';
 
   const variantIds =
     cart.lines?.edges?.map((edge) => edge.node.merchandise.id) || [];

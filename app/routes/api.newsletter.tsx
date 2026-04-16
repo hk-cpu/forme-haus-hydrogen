@@ -16,6 +16,7 @@ export async function action({request, context}: ActionFunctionArgs) {
         variables: {
           input: {
             email,
+            password: crypto.randomUUID(),
             acceptsMarketing: true,
           } as any,
         },
@@ -27,10 +28,10 @@ export async function action({request, context}: ActionFunctionArgs) {
       return json({error: errors[0].message}, {status: 400});
     }
 
-    if (data?.customerCreate?.userErrors?.length) {
-      // Check if error is "Email has already been taken" - if so, treat as success (already subscribed)
-      const userErrors = data.customerCreate.userErrors;
+    if (data?.customerCreate?.customerUserErrors?.length) {
+      const userErrors = data.customerCreate.customerUserErrors;
 
+      // "Email has already been taken" → treat as success (already subscribed)
       const emailTaken = userErrors.some((e: any) =>
         e.message?.toLowerCase().includes('taken'),
       );
@@ -60,7 +61,7 @@ const CUSTOMER_CREATE_MUTATION = `#graphql
         id
         email
       }
-      userErrors {
+      customerUserErrors {
         field
         message
       }

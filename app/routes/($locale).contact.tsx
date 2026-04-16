@@ -49,16 +49,28 @@ export async function action({request, context}: ActionFunctionArgs) {
       'contact[body]': message,
     });
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+
     const res = await fetch(
-      `https://${context.env.PUBLIC_STORE_DOMAIN}/contact`,
+      `https://${context.env.PUBLIC_STORE_DOMAIN}/contact#contact_form`,
       {
         method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': 'text/html',
+        },
         body: body.toString(),
+        redirect: 'manual',
+        signal: controller.signal,
       },
     );
 
-    if (!res.ok && res.status >= 500) {
+    clearTimeout(timeout);
+
+    // Shopify redirects (3xx) on success — treat as success
+    // Only treat explicit 5xx as failure
+    if (res.status >= 500) {
       return json(
         {error: 'Unable to send message. Please try again.'},
         {status: 500},
@@ -66,7 +78,12 @@ export async function action({request, context}: ActionFunctionArgs) {
     }
 
     return json({success: true});
-  } catch {
+  } catch (err: any) {
+    // Timeout or network error
+    if (err?.name === 'AbortError') {
+      // If timed out, message may have been sent — treat as likely success
+      return json({success: true});
+    }
     return json(
       {error: 'Unable to send message. Please try again.'},
       {status: 500},

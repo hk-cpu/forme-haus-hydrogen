@@ -448,7 +448,7 @@ async function getLayoutData({storefront, env}: AppLoadContext) {
   const headerMenu = data?.headerMenu
     ? parseMenu(
         data.headerMenu,
-        data.shop.primaryDomain.url,
+        'https://formehaus.me',
         env,
         customPrefixes,
       )
@@ -457,7 +457,7 @@ async function getLayoutData({storefront, env}: AppLoadContext) {
   const footerMenu = data?.footerMenu
     ? parseMenu(
         data.footerMenu,
-        data.shop.primaryDomain.url,
+        'https://formehaus.me',
         env,
         customPrefixes,
       )
