@@ -432,6 +432,11 @@ export default function Collection() {
   };
 
   const collectionSubtitle = COLLECTION_SUBTITLES[collection.handle];
+  const COLLECTION_TITLE_OVERRIDES: Record<string, string> = {
+    'carry-it-your-way': 'Carry It Your Way',
+  };
+  const collectionTitle =
+    COLLECTION_TITLE_OVERRIDES[collection.handle] || collection.title;
 
   const override = HERO_OVERRIDES[collection.handle];
   const heroImage = override?.src || collection.image?.url;
@@ -465,7 +470,7 @@ export default function Collection() {
               className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-text mb-4"
               style={{letterSpacing: '0.01em'}}
             >
-              {collection.title}
+              {collectionTitle}
             </h1>
             <div className="h-px w-16 bg-gradient-to-r from-transparent via-[#a87441] to-transparent mx-auto mb-4" />
             {(collectionSubtitle?.subtitle || collection.description) && (
@@ -493,7 +498,7 @@ export default function Collection() {
                 >
                   <motion.img
                     src={heroImage}
-                    alt={collection.title}
+                    alt={collectionTitle}
                     className={`block w-full h-full object-cover ${override?.position === 'top' ? 'object-top' : 'object-center'}`}
                     loading="eager"
                     fetchPriority="high"
@@ -509,7 +514,7 @@ export default function Collection() {
               ) : (
                 <motion.img
                   src={heroImage}
-                  alt={collection.title}
+                  alt={collectionTitle}
                   className="block h-[30vh] min-h-[240px] w-full object-cover sm:h-[36vh] md:h-[42vh] lg:h-[48vh]"
                   loading="eager"
                   fetchPriority="high"
@@ -554,7 +559,7 @@ export default function Collection() {
                   className="font-serif text-3xl md:text-4xl lg:text-5xl text-warm tracking-tight mb-3"
                   style={{letterSpacing: '0.02em'}}
                 >
-                  {collection.title}
+                  {collectionTitle}
                 </h1>
                 {(collectionSubtitle?.subtitle || collection.description) && (
                   <p className="max-w-lg mx-auto text-warm/55 text-sm font-light tracking-wide leading-relaxed">
@@ -857,7 +862,7 @@ export default function Collection() {
           {/* ─── Category Navigation Tabs ─── (hidden on New to Haus) */}
           {collection.handle !== 'new-in' && collection.handle !== 'new' && (
             <CategoryHeader
-              currentCategory={collection.title}
+              currentCategory={collectionTitle}
               productCount={collection.products.nodes.length}
               collectionHandle={collection.handle}
             />
