@@ -193,14 +193,22 @@ export default function TapPaymentCallback() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           {(data.status === 'failed' || data.status === 'error') && (
             <Link
-              to={'retryPath' in data && data.retryPath ? data.retryPath : '/cart'}
+              to={
+                'retryPath' in data && data.retryPath ? data.retryPath : '/cart'
+              }
               className="px-6 py-3 bg-[#a87441] text-white text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-[#8B5E3C] transition-colors"
             >
               Try Again
             </Link>
           )}
           <Link
-            to={'nextPath' in data && data.nextPath ? data.nextPath : data.status === 'success' ? '/account' : '/collections/all'}
+            to={
+              'nextPath' in data && data.nextPath
+                ? data.nextPath
+                : data.status === 'success'
+                ? '/account'
+                : '/collections/all'
+            }
             className="px-6 py-3 bg-brand-text/10 text-brand-text text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-brand-text/20 transition-colors"
           >
             {data.status === 'success' ? 'View Orders' : 'Continue Shopping'}

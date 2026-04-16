@@ -38,7 +38,11 @@ const menuCategories: Record<string, CategoryData> = {
     editorial: '/assets/heros/phone-accessories-hero-1.webp',
     tagline: 'Protect in Style',
     categories: [
-      {label: 'Phone Accessories', href: '/collections/phone-cases', featured: true},
+      {
+        label: 'Phone Accessories',
+        href: '/collections/phone-cases',
+        featured: true,
+      },
       {label: 'Phone Straps', href: '/collections/phone-straps'},
       {label: 'Bundles', href: '/collections/case-strap-bundles'},
     ],
@@ -433,7 +437,11 @@ export function NavigationMenu() {
                         alt="Formé Haus"
                         className="h-16 w-16 object-contain opacity-30 mb-6"
                       />
-                      <p className={`font-serif text-xl text-[#F0EAE6]/20 ${isRTL ? '' : 'italic'}`}>
+                      <p
+                        className={`font-serif text-xl text-[#F0EAE6]/20 ${
+                          isRTL ? '' : 'italic'
+                        }`}
+                      >
                         {t('brand.tagline', 'Where Essence Meets Elegance')}
                       </p>
                     </motion.div>

@@ -287,11 +287,11 @@ function Dashboard({customer}: {customer: any}) {
 
   return (
     <div
-  className="min-h-screen bg-background text-warm"
+      className="min-h-screen bg-background text-warm"
       dir={isRTL ? 'rtl' : 'ltr'}
     >
       {/* Header Banner */}
-  <div className="relative overflow-hidden bg-gradient-to-r from-surface via-[#1E1814] to-surface border-b border-bronze/10">
+      <div className="relative overflow-hidden bg-gradient-to-r from-surface via-[#1E1814] to-surface border-b border-bronze/10">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#a87441]/8 via-transparent to-transparent" />
         <div className="relative max-w-6xl mx-auto px-6 py-10 md:py-14">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -306,7 +306,7 @@ function Dashboard({customer}: {customer: any}) {
                 <p className="text-[10px] uppercase tracking-[0.25em] text-[#8B8076] mb-1">
                   {t('account.welcomeBack', 'Welcome back')}
                 </p>
-  <h1 className="font-serif text-2xl md:text-3xl text-warm">
+                <h1 className="font-serif text-2xl md:text-3xl text-warm">
                   {displayName}
                 </h1>
                 <p className="text-xs text-[#8B8076] mt-1">
@@ -322,7 +322,7 @@ function Dashboard({customer}: {customer: any}) {
             >
               <button
                 type="submit"
-  className="text-[#8B8076] hover:text-warm text-[11px] uppercase tracking-[0.2em] transition-colors flex items-center gap-2"
+                className="text-[#8B8076] hover:text-warm text-[11px] uppercase tracking-[0.2em] transition-colors flex items-center gap-2"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -345,7 +345,7 @@ function Dashboard({customer}: {customer: any}) {
       </div>
 
       {/* Tab Navigation */}
-  <div className="border-b border-warm/5 bg-[#161616] sticky top-[var(--navbar-height,64px)] z-10">
+      <div className="border-b border-warm/5 bg-[#161616] sticky top-[var(--navbar-height,64px)] z-10">
         <div className="max-w-6xl mx-auto px-6">
           <nav className="flex gap-1 overflow-x-auto scrollbar-hide">
             {tabs.map((tab) => (
@@ -355,7 +355,7 @@ function Dashboard({customer}: {customer: any}) {
                 className={`flex items-center gap-2 px-4 py-4 text-[11px] uppercase tracking-[0.2em] whitespace-nowrap border-b-2 transition-all duration-200 ${
                   activeTab === tab.id
                     ? 'border-[#a87441] text-[#a87441]'
-  : 'border-transparent text-[#8B8076] hover:text-warm'
+                    : 'border-transparent text-[#8B8076] hover:text-warm'
                 }`}
               >
                 {tab.icon}
@@ -497,7 +497,7 @@ function OverviewTab({
       {/* Recent Orders */}
       <div>
         <div className="flex items-center justify-between mb-5">
-  <h2 className="font-serif text-xl text-warm">
+          <h2 className="font-serif text-xl text-warm">
             {t('account.recentOrders', 'Recent Orders')}
           </h2>
           {orders.length > 3 && (
@@ -562,10 +562,10 @@ function OverviewTab({
           <Link
             key={action.to}
             to={action.to}
-  className="flex flex-col items-center gap-2 p-4 bg-surface border border-warm/5 rounded-xl hover:border-bronze/30 hover:bg-[#1E1814] transition-all text-center group"
+            className="flex flex-col items-center gap-2 p-4 bg-surface border border-warm/5 rounded-xl hover:border-bronze/30 hover:bg-[#1E1814] transition-all text-center group"
           >
             <span className="text-2xl">{action.icon}</span>
-  <span className="text-[10px] uppercase tracking-wider text-[#8B8076] group-hover:text-warm transition-colors">
+            <span className="text-[10px] uppercase tracking-wider text-[#8B8076] group-hover:text-warm transition-colors">
               {action.label}
             </span>
           </Link>
@@ -598,7 +598,7 @@ function OrdersTab({orders}: {orders: any[]}) {
 
   return (
     <div className="grid gap-3">
-  <h2 className="font-serif text-xl text-warm mb-2">
+      <h2 className="font-serif text-xl text-warm mb-2">
         {t('account.orderHistory', 'Order History')}
         <span className="text-sm font-sans font-normal text-[#8B8076] ml-3">
           ({orders.length})
@@ -619,7 +619,7 @@ function ProfileTab({customer}: {customer: any}) {
   return (
     <div className="max-w-xl">
       <div className="flex items-center justify-between mb-6">
-  <h2 className="font-serif text-xl text-warm">
+        <h2 className="font-serif text-xl text-warm">
           {t('account.profile', 'Profile')}
         </h2>
         <Link
@@ -644,7 +644,7 @@ function ProfileTab({customer}: {customer: any}) {
         </Link>
       </div>
 
-  <div className="bg-surface border border-warm/5 rounded-xl overflow-hidden">
+      <div className="bg-surface border border-warm/5 rounded-xl overflow-hidden">
         {[
           {
             label: t('account.name', 'Name'),
@@ -659,13 +659,13 @@ function ProfileTab({customer}: {customer: any}) {
           <div
             key={field.label}
             className={`flex items-start justify-between px-6 py-4 ${
-  i < 2 ? 'border-b border-warm/5' : ''
+              i < 2 ? 'border-b border-warm/5' : ''
             }`}
           >
             <span className="text-[10px] uppercase tracking-[0.2em] text-[#8B8076] pt-0.5 min-w-[80px]">
               {field.label}
             </span>
-  <span className="text-sm text-warm text-right flex-1 ml-4">
+            <span className="text-sm text-warm text-right flex-1 ml-4">
               {field.value}
             </span>
           </div>
@@ -688,7 +688,7 @@ function AddressesTab({
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-  <h2 className="font-serif text-xl text-warm">
+        <h2 className="font-serif text-xl text-warm">
           {t('account.savedAddresses', 'Saved Addresses')}
         </h2>
         <Link
@@ -747,13 +747,13 @@ function StatCard({
 }) {
   return (
     <div
-  className={`bg-surface border border-warm/5 rounded-xl p-5 ${className}`}
+      className={`bg-surface border border-warm/5 rounded-xl p-5 ${className}`}
     >
       <div className="flex items-center gap-2 text-[#8B8076] mb-3">
         {icon}
         <span className="text-[10px] uppercase tracking-[0.2em]">{label}</span>
       </div>
-  <p className="font-serif text-2xl text-warm">{value}</p>
+      <p className="font-serif text-2xl text-warm">{value}</p>
     </div>
   );
 }
@@ -775,7 +775,7 @@ function OrderRow({order, detailed = false}: {order: any; detailed?: boolean}) {
   return (
     <motion.div
       layout
-  className="flex items-center gap-4 p-4 bg-surface border border-warm/5 rounded-xl hover:border-bronze/20 transition-all group"
+      className="flex items-center gap-4 p-4 bg-surface border border-warm/5 rounded-xl hover:border-bronze/20 transition-all group"
     >
       {/* Product thumbnail */}
       <div className="w-14 h-14 md:w-16 md:h-16 rounded-lg overflow-hidden bg-[#242424] flex-shrink-0">
@@ -810,7 +810,7 @@ function OrderRow({order, detailed = false}: {order: any; detailed?: boolean}) {
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2">
           <div>
-  <p className="text-warm text-sm font-medium truncate">
+            <p className="text-warm text-sm font-medium truncate">
               {lineItems.length > 1
                 ? `${lineItems[0].title} +${lineItems.length - 1}`
                 : lineItems[0]?.title}
@@ -881,15 +881,15 @@ function AddressCard({
   isDefault?: boolean;
 }) {
   return (
-  <div className="bg-surface border border-warm/5 rounded-xl p-5 flex flex-col hover:border-bronze/20 transition-all">
+    <div className="bg-surface border border-warm/5 rounded-xl p-5 flex flex-col hover:border-bronze/20 transition-all">
       {isDefault && (
         <span className="self-start mb-3 px-2.5 py-1 text-[9px] uppercase tracking-widest font-medium rounded-full bg-[#a87441]/15 text-[#a87441] border border-[#a87441]/20">
           Default
         </span>
       )}
-  <div className="flex-1 text-sm text-warm/80 leading-relaxed space-y-0.5">
+      <div className="flex-1 text-sm text-warm/80 leading-relaxed space-y-0.5">
         {(address.firstName || address.lastName) && (
-  <p className="font-medium text-warm text-xs uppercase tracking-wide mb-2">
+          <p className="font-medium text-warm text-xs uppercase tracking-wide mb-2">
             {`${address.firstName || ''} ${address.lastName || ''}`.trim()}
           </p>
         )}
@@ -899,7 +899,7 @@ function AddressCard({
           </p>
         ))}
       </div>
-  <div className="flex items-center gap-4 mt-5 pt-4 border-t border-warm/5">
+      <div className="flex items-center gap-4 mt-5 pt-4 border-t border-warm/5">
         <Link
           to={`/account/address/${encodeURIComponent(address.id)}`}
           prefetch="intent"
@@ -932,7 +932,7 @@ function EmptyState({
 }) {
   return (
     <div className="flex flex-col items-center py-16 text-center">
-  <div className="w-16 h-16 rounded-full bg-surface border border-warm/5 flex items-center justify-center mb-4">
+      <div className="w-16 h-16 rounded-full bg-surface border border-warm/5 flex items-center justify-center mb-4">
         {icon === 'bag' ? (
           <svg
             viewBox="0 0 24 24"
@@ -971,7 +971,7 @@ export function ErrorBoundary() {
 
   return (
     <div className="flex flex-col items-center justify-center py-20 px-6 text-center min-h-[50vh] bg-[#121212]">
-  <h1 className="font-serif text-3xl md:text-4xl text-warm mb-4">
+      <h1 className="font-serif text-3xl md:text-4xl text-warm mb-4">
         {is404 ? 'Page Not Found' : 'Account Error'}
       </h1>
       <p className="text-[#8B8076] mb-8 max-w-md text-sm">

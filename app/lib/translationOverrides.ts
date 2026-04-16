@@ -8,9 +8,11 @@ export const translationOverrides = {
     'home.journal': 'المجلة',
     'journal.read': 'قراءة المجلة',
     'journal.modernWardrobe': 'مختارات الخزانة العصرية',
-    'journal.modernWardrobe.subtitle': 'خزانة تصنعها وضوح الرؤية والذوق المصفّى.',
+    'journal.modernWardrobe.subtitle':
+      'خزانة تصنعها وضوح الرؤية والذوق المصفّى.',
     'journal.everydayElegance': 'أناقة كل يوم',
-    'journal.everydayElegance.subtitle': 'الأناقة تُعاش في التفاصيل وبين اللحظات.',
+    'journal.everydayElegance.subtitle':
+      'الأناقة تُعاش في التفاصيل وبين اللحظات.',
     'journal.behindCraft': 'خلف الاختيار',
     'journal.behindCraft.subtitle': 'كل قطعة تبدأ بعناية وتأمل.',
     'footer.crNo': 'رقم السجل التجاري',

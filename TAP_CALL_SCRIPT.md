@@ -1,4 +1,5 @@
 # Tap Payments - Call Script for Tech Team
+
 **Use this during your call with Tap** | **Priority Questions First**
 
 ---
@@ -8,6 +9,7 @@
 **"Hi, I'm [Name] from Forme Haus (formehaus.me). We're launching our Shopify Hydrogen storefront tomorrow and need to verify our Tap Payments integration before going live. Can you connect me with a technical specialist?"**
 
 **Your Info:**
+
 - Business: Forme Haus
 - Website: https://formehaus.me
 - Platform: Shopify Hydrogen (headless)
@@ -19,13 +21,15 @@
 ## 🔥 TOP 10 CRITICAL QUESTIONS (Ask First!)
 
 ### 1. LIVE API KEY
-**"Is our account approved for live transactions? We need the production Secret Key (sk_live_)."**
+
+**"Is our account approved for live transactions? We need the production Secret Key (sk*live*)."**
 
 → Get the key or find out what's needed for approval
 
 ---
 
 ### 2. MADA ACTIVATION
+
 **"Is mada processing enabled? This is critical for our Saudi customers."**
 
 → Confirm mada is active
@@ -33,9 +37,11 @@
 ---
 
 ### 3. WEBHOOK EVENTS
+
 **"Which webhook events should we subscribe to for charge status updates?"**
 
 → Recommended list:
+
 - charge.captured
 - charge.failed
 - charge.cancelled
@@ -43,6 +49,7 @@
 ---
 
 ### 4. SETTLEMENT TIMELINE
+
 **"What's the settlement time? T+1, T+2, or T+7?"**
 
 → Know when you'll receive money
@@ -50,6 +57,7 @@
 ---
 
 ### 5. TRANSACTION LIMITS
+
 **"What are the min/max transaction limits? Any daily caps?"**
 
 → Min: usually 1 SAR
@@ -58,6 +66,7 @@
 ---
 
 ### 6. REDIRECT URL FORMAT
+
 **"We redirect to: `https://formehaus.me/tap/callback?tap_id={charge_id}` - is this format correct?"**
 
 → Confirm your callback URL works
@@ -65,15 +74,17 @@
 ---
 
 ### 7. FEES STRUCTURE
+
 **"What are the exact fees per payment method?"**
 
-→ mada: ___%
-→ Visa/Mastercard: ___%
+→ mada: **_%
+→ Visa/Mastercard: _**%
 → Any monthly fees?
 
 ---
 
 ### 8. 3D SECURE
+
 **"Is 3D Secure mandatory? We have threeDSecure: true in our code."**
 
 → Confirm if this should always be on
@@ -81,6 +92,7 @@
 ---
 
 ### 9. ERROR CODES
+
 **"What are the main error codes we should handle for declined payments?"**
 
 → Get list of common errors
@@ -88,6 +100,7 @@
 ---
 
 ### 10. EMERGENCY CONTACT
+
 **"Who do we contact if there's an issue during launch tomorrow?"**
 
 → Get direct phone/WhatsApp for urgent issues
@@ -100,6 +113,7 @@ Ask:
 **"What do you need to approve our account today? We launch tomorrow."**
 
 Possible requirements:
+
 - [ ] Business license upload
 - [ ] ID verification
 - [ ] Website review
@@ -118,21 +132,22 @@ Share your setup and ask for confirmation:
 **"Let me confirm our integration is correct:"**
 
 1. **"We POST to /v2/charges with:"**
+
    - amount, currency (SAR)
    - source.id: "src_all"
    - redirect.url: our callback
    - post.url: our webhook
-   
+
    **"Is this correct?"**
 
 2. **"You redirect customer to transaction.url"**
    **"Then redirect back to our callback with tap_id"**
    **"Plus webhook to our webhook URL"**
-   
+
    **"Is this flow correct?"**
 
 3. **"We verify payment status by GET /v2/charges/{id}"**
-   
+
    **"Is this the right way to confirm?"**
 
 ---
@@ -142,6 +157,7 @@ Share your setup and ask for confirmation:
 **"Can you help us verify our integration works before tomorrow?"**
 
 Ask them to:
+
 - [ ] Verify our webhook URL is reachable
 - [ ] Check our API requests format
 - [ ] Confirm callback URL format
@@ -156,7 +172,7 @@ Subject: URGENT: Pre-Launch Technical Review - Forme Haus (Launch Tomorrow)
 
 Dear Tap Support Team,
 
-We're launching our Shopify Hydrogen storefront tomorrow and need urgent 
+We're launching our Shopify Hydrogen storefront tomorrow and need urgent
 assistance with our Tap Payments integration.
 
 BUSINESS DETAILS:
@@ -212,6 +228,7 @@ Ask:
 **"Can we use test mode for launch while live approval is pending?"**
 
 Alternative:
+
 - Use Shopify Payments as primary
 - Add Tap as backup payment method
 - Switch to Tap once approved

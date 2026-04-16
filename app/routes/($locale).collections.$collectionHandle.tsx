@@ -489,17 +489,26 @@ export default function Collection() {
             <>
               {isFullWidthHero ? (
                 <div
-                  className={`relative w-full overflow-hidden ${override?.bgClass || 'bg-[#E8DED4]'} ${override?.heightClass || ''}`}
+                  className={`relative w-full overflow-hidden ${
+                    override?.bgClass || 'bg-[#E8DED4]'
+                  } ${override?.heightClass || ''}`}
                 >
                   <motion.img
                     src={heroImage}
                     alt={collection.title}
-                    className={`block w-full h-full object-cover ${override?.position === 'top' ? 'object-top' : 'object-center'}`}
+                    className={`block w-full h-full object-cover ${
+                      override?.position === 'top'
+                        ? 'object-top'
+                        : 'object-center'
+                    }`}
                     loading="eager"
                     fetchPriority="high"
                     style={{
                       y: heroY,
-                      transformOrigin: override?.position === 'top' ? 'top center' : 'center center'
+                      transformOrigin:
+                        override?.position === 'top'
+                          ? 'top center'
+                          : 'center center',
                     }}
                     initial={{scale: 1.03}}
                     animate={{scale: 1}}
@@ -586,7 +595,10 @@ export default function Collection() {
         </>
       ) : isThemedCollection ? (
         /* ─── Themed Collection: 3D Skeleton Placeholder ─── */
-        <main className="max-w-[1440px] mx-auto py-12 md:py-20" style={{padding: '3rem var(--page-gutter)'}}>
+        <main
+          className="max-w-[1440px] mx-auto py-12 md:py-20"
+          style={{padding: '3rem var(--page-gutter)'}}
+        >
           {/* "Coming Soon" header */}
           <motion.div
             className="text-center mb-12"
@@ -657,10 +669,12 @@ export default function Collection() {
                       }}
                       style={{transformStyle: 'preserve-3d', perspective: 600}}
                     >
-                      <div className="w-20 h-24 md:w-24 md:h-28 rounded-lg bg-gradient-to-br from-[#D4C8BC]/60 to-[#C4B8AC]/40 backdrop-blur-sm border border-white/20 shadow-lg"
+                      <div
+                        className="w-20 h-24 md:w-24 md:h-28 rounded-lg bg-gradient-to-br from-[#D4C8BC]/60 to-[#C4B8AC]/40 backdrop-blur-sm border border-white/20 shadow-lg"
                         style={{
                           transform: 'rotateX(5deg) rotateY(-5deg)',
-                          boxShadow: '0 20px 40px rgba(74, 60, 49, 0.08), 0 8px 16px rgba(168, 116, 65, 0.04)',
+                          boxShadow:
+                            '0 20px 40px rgba(74, 60, 49, 0.08), 0 8px 16px rgba(168, 116, 65, 0.04)',
                         }}
                       />
                     </motion.div>
@@ -677,7 +691,12 @@ export default function Collection() {
                       <motion.div
                         className="h-full w-full bg-gradient-to-r from-transparent via-white/40 to-transparent"
                         animate={{x: ['-100%', '200%']}}
-                        transition={{duration: 2, repeat: Infinity, repeatDelay: 2, delay: i * 0.15}}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          repeatDelay: 2,
+                          delay: i * 0.15,
+                        }}
                       />
                     </motion.div>
                     <motion.div
@@ -687,7 +706,12 @@ export default function Collection() {
                       <motion.div
                         className="h-full w-full bg-gradient-to-r from-transparent via-white/40 to-transparent"
                         animate={{x: ['-100%', '200%']}}
-                        transition={{duration: 2, repeat: Infinity, repeatDelay: 2, delay: i * 0.15 + 0.1}}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          repeatDelay: 2,
+                          delay: i * 0.15 + 0.1,
+                        }}
                       />
                     </motion.div>
                   </div>
@@ -707,7 +731,10 @@ export default function Collection() {
         </main>
       ) : isComingSoonCollection ? (
         /* ─── New Arrivals: Coming Soon Flyover ─── */
-        <main className="max-w-[1440px] mx-auto py-16 md:py-24" style={{padding: '4rem var(--page-gutter)'}}>
+        <main
+          className="max-w-[1440px] mx-auto py-16 md:py-24"
+          style={{padding: '4rem var(--page-gutter)'}}
+        >
           <div className="relative min-h-[60vh] flex flex-col items-center justify-center overflow-hidden">
             {/* Background floating shapes */}
             {Array.from({length: 6}).map((_, i) => (
@@ -747,7 +774,11 @@ export default function Collection() {
                 className="w-24 h-px bg-gradient-to-r from-transparent via-[#a87441] to-transparent mx-auto mb-8"
                 initial={{scaleX: 0}}
                 animate={{scaleX: 1}}
-                transition={{duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1]}}
+                transition={{
+                  duration: 1.2,
+                  delay: 0.3,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
               />
 
               <motion.span
@@ -765,7 +796,11 @@ export default function Collection() {
                   className="font-serif italic text-5xl md:text-7xl lg:text-8xl text-brand-text/10 select-none"
                   initial={{opacity: 0, rotateX: 40, y: 60}}
                   animate={{opacity: 1, rotateX: 0, y: 0}}
-                  transition={{duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1]}}
+                  transition={{
+                    duration: 1.2,
+                    delay: 0.5,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
                   style={{transformStyle: 'preserve-3d'}}
                 >
                   Coming Soon
@@ -778,7 +813,8 @@ export default function Collection() {
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.8, delay: 0.8}}
               >
-                New pieces are being carefully curated. Check back soon to discover what&apos;s next.
+                New pieces are being carefully curated. Check back soon to
+                discover what&apos;s next.
               </motion.p>
 
               {/* Animated dots */}

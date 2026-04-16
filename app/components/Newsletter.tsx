@@ -29,7 +29,12 @@ export function Newsletter() {
           <p className="font-serif italic text-[#D4AF87] flex items-center justify-center gap-2 text-lg">
             <span className="sparkle-anim text-[10px] inline-block">✨</span>
             Welcome to the Haus
-            <span className="sparkle-anim text-[10px] inline-block" style={{animationDelay: '0.5s'}}>✨</span>
+            <span
+              className="sparkle-anim text-[10px] inline-block"
+              style={{animationDelay: '0.5s'}}
+            >
+              ✨
+            </span>
           </p>
         </div>
       ) : (

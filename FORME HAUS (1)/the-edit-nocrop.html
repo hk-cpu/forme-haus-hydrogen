@@ -1,225 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Edit - No Crop Grid</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            background-color: #f5f3f0;
-            color: #1a1a1a;
-        }
+      body {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        background-color: #f5f3f0;
+        color: #1a1a1a;
+      }
 
-        /* ============================================
+      /* ============================================
            THE EDIT SECTION
            ============================================ */
-        .the-edit {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 80px 40px;
-        }
+      .the-edit {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 80px 40px;
+      }
 
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-        }
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+      }
 
-        .section-title {
-            font-size: 24px;
-            font-weight: 400;
-            font-style: italic;
-            letter-spacing: 0.5px;
-        }
+      .section-title {
+        font-size: 24px;
+        font-weight: 400;
+        font-style: italic;
+        letter-spacing: 0.5px;
+      }
 
-        .view-all {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #666;
-            text-decoration: none;
-        }
+      .view-all {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #666;
+        text-decoration: none;
+      }
 
-        /* ============================================
+      /* ============================================
            GRID LAYOUT - NO CROP VERSION
            Uses object-fit: contain + aspect-ratio
            ============================================ */
-        .edit-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            grid-auto-rows: auto;
-            gap: 16px;
-        }
+      .edit-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        grid-auto-rows: auto;
+        gap: 16px;
+      }
 
-        .edit-item {
-            position: relative;
-            background-color: #eae8e5;
-            border-radius: 4px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+      .edit-item {
+        position: relative;
+        background-color: #eae8e5;
+        border-radius: 4px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-        /* 
+      /* 
          * NO CROP: object-fit: contain ensures the ENTIRE image is visible
          * The image scales to fit within the container while keeping aspect ratio
          */
-        .edit-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;  /* ← NO CROPPING - shows full image */
-            object-position: center;
-            display: block;
-        }
+      .edit-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* ← NO CROPPING - shows full image */
+        object-position: center;
+        display: block;
+      }
 
-        /* ============================================
+      /* ============================================
            GRID POSITIONING
            ============================================ */
-        
-        /* Image 1: Woman by pool - takes left side, spans 2 rows */
-        .edit-item:nth-child(1) {
-            grid-column: 1 / 6;
-            grid-row: 1 / 3;
-            aspect-ratio: 3/4;  /* Portrait-friendly container */
-        }
 
-        /* Image 2: Woman walking - middle column, tall */
-        .edit-item:nth-child(2) {
-            grid-column: 6 / 9;
-            grid-row: 1 / 3;
-            aspect-ratio: 3/4;  /* Portrait-friendly container */
-        }
+      /* Image 1: Woman by pool - takes left side, spans 2 rows */
+      .edit-item:nth-child(1) {
+        grid-column: 1 / 6;
+        grid-row: 1 / 3;
+        aspect-ratio: 3/4; /* Portrait-friendly container */
+      }
 
-        /* Image 3: Woman in car - top right */
-        .edit-item:nth-child(3) {
-            grid-column: 9 / 13;
-            grid-row: 1 / 2;
-            aspect-ratio: 1/1;  /* Square container */
-        }
+      /* Image 2: Woman walking - middle column, tall */
+      .edit-item:nth-child(2) {
+        grid-column: 6 / 9;
+        grid-row: 1 / 3;
+        aspect-ratio: 3/4; /* Portrait-friendly container */
+      }
 
-        /* Image 4: Ring close-up - bottom right */
-        .edit-item:nth-child(4) {
-            grid-column: 9 / 13;
-            grid-row: 2 / 3;
-            aspect-ratio: 1/1;  /* Square container */
-        }
+      /* Image 3: Woman in car - top right */
+      .edit-item:nth-child(3) {
+        grid-column: 9 / 13;
+        grid-row: 1 / 2;
+        aspect-ratio: 1/1; /* Square container */
+      }
 
-        /* ============================================
+      /* Image 4: Ring close-up - bottom right */
+      .edit-item:nth-child(4) {
+        grid-column: 9 / 13;
+        grid-row: 2 / 3;
+        aspect-ratio: 1/1; /* Square container */
+      }
+
+      /* ============================================
            JOIN SECTION
            ============================================ */
-        .join-section {
-            text-align: center;
-            padding: 80px 40px;
-            border-top: 1px solid #ddd;
-            margin-top: 40px;
-        }
+      .join-section {
+        text-align: center;
+        padding: 80px 40px;
+        border-top: 1px solid #ddd;
+        margin-top: 40px;
+      }
 
-        .join-title {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 16px;
-        }
+      .join-title {
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 16px;
+      }
 
-        .join-link {
-            font-size: 12px;
-            color: #666;
-            text-decoration: none;
-            border-bottom: 1px solid #666;
-            padding-bottom: 2px;
-        }
+      .join-link {
+        font-size: 12px;
+        color: #666;
+        text-decoration: none;
+        border-bottom: 1px solid #666;
+        padding-bottom: 2px;
+      }
 
-        /* ============================================
+      /* ============================================
            RESPONSIVE
            ============================================ */
-        @media (max-width: 1024px) {
-            .edit-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .edit-item:nth-child(1) {
-                grid-column: 1 / 2;
-                grid-row: 1 / 2;
-                aspect-ratio: 1/1;
-            }
-
-            .edit-item:nth-child(2) {
-                grid-column: 2 / 3;
-                grid-row: 1 / 2;
-                aspect-ratio: 1/1;
-            }
-
-            .edit-item:nth-child(3) {
-                grid-column: 1 / 2;
-                grid-row: 2 / 3;
-                aspect-ratio: 1/1;
-            }
-
-            .edit-item:nth-child(4) {
-                grid-column: 2 / 3;
-                grid-row: 2 / 3;
-                aspect-ratio: 1/1;
-            }
+      @media (max-width: 1024px) {
+        .edit-grid {
+          grid-template-columns: repeat(2, 1fr);
         }
 
-        @media (max-width: 640px) {
-            .the-edit {
-                padding: 60px 20px;
-            }
-
-            .edit-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .edit-item:nth-child(n) {
-                grid-column: 1 / 2;
-                grid-row: auto;
-                aspect-ratio: 1/1;
-            }
+        .edit-item:nth-child(1) {
+          grid-column: 1 / 2;
+          grid-row: 1 / 2;
+          aspect-ratio: 1/1;
         }
+
+        .edit-item:nth-child(2) {
+          grid-column: 2 / 3;
+          grid-row: 1 / 2;
+          aspect-ratio: 1/1;
+        }
+
+        .edit-item:nth-child(3) {
+          grid-column: 1 / 2;
+          grid-row: 2 / 3;
+          aspect-ratio: 1/1;
+        }
+
+        .edit-item:nth-child(4) {
+          grid-column: 2 / 3;
+          grid-row: 2 / 3;
+          aspect-ratio: 1/1;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .the-edit {
+          padding: 60px 20px;
+        }
+
+        .edit-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .edit-item:nth-child(n) {
+          grid-column: 1 / 2;
+          grid-row: auto;
+          aspect-ratio: 1/1;
+        }
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <section class="the-edit">
-        <div class="section-header">
-            <h2 class="section-title">The Edit</h2>
-            <a href="#" class="view-all">View All</a>
-        </div>
+      <div class="section-header">
+        <h2 class="section-title">The Edit</h2>
+        <a href="#" class="view-all">View All</a>
+      </div>
 
-        <div class="edit-grid">
-            <div class="edit-item">
-                <!-- Pool image -->
-                <img src="https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=800&h=800&fit=crop" alt="Woman relaxing by pool">
-            </div>
-            <div class="edit-item">
-                <!-- Walking image -->
-                <img src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=800&h=800&fit=crop" alt="Woman walking">
-            </div>
-            <div class="edit-item">
-                <!-- Car image -->
-                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&h=800&fit=crop" alt="Woman in car">
-            </div>
-            <div class="edit-item">
-                <!-- Ring closeup -->
-                <img src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=800&h=800&fit=crop" alt="Close up with ring">
-            </div>
+      <div class="edit-grid">
+        <div class="edit-item">
+          <!-- Pool image -->
+          <img
+            src="https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=800&h=800&fit=crop"
+            alt="Woman relaxing by pool"
+          />
         </div>
+        <div class="edit-item">
+          <!-- Walking image -->
+          <img
+            src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=800&h=800&fit=crop"
+            alt="Woman walking"
+          />
+        </div>
+        <div class="edit-item">
+          <!-- Car image -->
+          <img
+            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&h=800&fit=crop"
+            alt="Woman in car"
+          />
+        </div>
+        <div class="edit-item">
+          <!-- Ring closeup -->
+          <img
+            src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=800&h=800&fit=crop"
+            alt="Close up with ring"
+          />
+        </div>
+      </div>
     </section>
 
     <section class="join-section">
-        <h3 class="join-title">Join the Haus</h3>
-        <a href="#" class="join-link">Learn More</a>
+      <h3 class="join-title">Join the Haus</h3>
+      <a href="#" class="join-link">Learn More</a>
     </section>
-
-</body>
+  </body>
 </html>

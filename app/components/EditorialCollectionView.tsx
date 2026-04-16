@@ -298,7 +298,7 @@ function CollectionHero({
         The Edit
       </span>
       <h1
-      className="font-serif text-3xl md:text-4xl lg:text-5xl text-brand-text leading-[0.95]"
+        className="font-serif text-3xl md:text-4xl lg:text-5xl text-brand-text leading-[0.95]"
         style={{letterSpacing: '-0.01em'}}
       >
         {words.map((word, i) =>
@@ -312,7 +312,7 @@ function CollectionHero({
         )}
       </h1>
       {description && (
-      <p className="mt-4 text-taupe text-sm font-light tracking-wide leading-relaxed max-w-md">
+        <p className="mt-4 text-taupe text-sm font-light tracking-wide leading-relaxed max-w-md">
           {description}
         </p>
       )}
@@ -475,7 +475,7 @@ function EditorialProductCard({
   const comparePrice = product.compareAtPriceRange?.minVariantPrice;
   const isOnSale =
     comparePrice && parseFloat(comparePrice.amount) > parseFloat(price.amount);
-  
+
   // NEW: All layouts now use object-contain to prevent image cropping
   // This ensures full product images are always visible
   const imageFrameClass = 'bg-[#F5F1ED]';
@@ -579,9 +579,7 @@ function EditorialProductCard({
             <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
               <motion.h3
                 initial={false}
-                animate={
-                  isHovered ? {opacity: 1, y: 0} : {opacity: 0, y: 8}
-                }
+                animate={isHovered ? {opacity: 1, y: 0} : {opacity: 0, y: 8}}
                 transition={{duration: 0.3, delay: 0.05}}
                 className="text-white text-base md:text-lg font-medium"
               >
@@ -589,9 +587,7 @@ function EditorialProductCard({
               </motion.h3>
               <motion.div
                 initial={false}
-                animate={
-                  isHovered ? {opacity: 1, y: 0} : {opacity: 0, y: 8}
-                }
+                animate={isHovered ? {opacity: 1, y: 0} : {opacity: 0, y: 8}}
                 transition={{duration: 0.3, delay: 0.1}}
                 className="flex items-center gap-2 mt-1"
               >
@@ -676,7 +672,8 @@ function QuickViewModal({
   const isOnSale =
     comparePrice && parseFloat(comparePrice.amount) > parseFloat(price.amount);
   const variant = product.variants.nodes[0];
-  const isAvailable = variant?.availableForSale && product.availableForSale !== false;
+  const isAvailable =
+    variant?.availableForSale && product.availableForSale !== false;
   const {toggleCart} = useUI();
   const [addedToCart, setAddedToCart] = useState(false);
 
@@ -800,7 +797,9 @@ function QuickViewModal({
               {(fetcher: FetcherWithComponents<any>) => {
                 const isAdding = fetcher.state !== 'idle';
                 const justAdded =
-                  fetcher.state === 'idle' && fetcher.data && !fetcher.data.errors?.length;
+                  fetcher.state === 'idle' &&
+                  fetcher.data &&
+                  !fetcher.data.errors?.length;
 
                 // Open cart drawer after successful add
                 useEffect(() => {
@@ -828,8 +827,8 @@ function QuickViewModal({
                     {addedToCart
                       ? 'Added!'
                       : isAdding
-                        ? 'Adding...'
-                        : 'Add to Cart'}
+                      ? 'Adding...'
+                      : 'Add to Cart'}
                   </button>
                 );
               }}

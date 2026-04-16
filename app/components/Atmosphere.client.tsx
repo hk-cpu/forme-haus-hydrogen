@@ -85,14 +85,17 @@ const Atmosphere: React.FC<AtmosphereProps> = (props) => {
         const entry = entries[0];
         setVisible(entry.isIntersecting && entry.intersectionRatio > 0.05);
       },
-      {threshold: [0, 0.05, 0.1]}
+      {threshold: [0, 0.05, 0.1]},
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
   return (
-    <div ref={containerRef} className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+    <div
+      ref={containerRef}
+      className="absolute inset-0 pointer-events-none z-0 overflow-hidden"
+    >
       {visible ? (
         <Canvas
           camera={{position: [0, 0, 5], fov: 75}}

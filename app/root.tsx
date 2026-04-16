@@ -242,7 +242,11 @@ function Layout({children}: {children?: React.ReactNode}) {
         {isRTL ? (
           <>
             <link rel="preconnect" href="https://fonts.googleapis.com" />
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+            <link
+              rel="preconnect"
+              href="https://fonts.gstatic.com"
+              crossOrigin="anonymous"
+            />
             <link
               href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600&family=Noto+Sans+Arabic:wght@300;400;500&display=swap"
               rel="stylesheet"
@@ -446,21 +450,11 @@ async function getLayoutData({storefront, env}: AppLoadContext) {
   const customPrefixes = {BLOG: '', CATALOG: 'products'};
 
   const headerMenu = data?.headerMenu
-    ? parseMenu(
-        data.headerMenu,
-        'https://formehaus.me',
-        env,
-        customPrefixes,
-      )
+    ? parseMenu(data.headerMenu, 'https://formehaus.me', env, customPrefixes)
     : undefined;
 
   const footerMenu = data?.footerMenu
-    ? parseMenu(
-        data.footerMenu,
-        'https://formehaus.me',
-        env,
-        customPrefixes,
-      )
+    ? parseMenu(data.footerMenu, 'https://formehaus.me', env, customPrefixes)
     : undefined;
 
   return {shop: data.shop, headerMenu, footerMenu};

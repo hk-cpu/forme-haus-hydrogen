@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
 }
@@ -29,7 +30,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             startIcon ? 'pl-10' : '',
             endIcon ? 'pr-10' : '',
             className,
-          ].join(' ').trim()}
+          ]
+            .join(' ')
+            .trim()}
           {...props}
         />
         {endIcon && (
@@ -45,4 +48,3 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 Input.displayName = 'Input';
 
 export default Input;
-

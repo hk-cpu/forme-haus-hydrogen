@@ -145,7 +145,9 @@ export async function loader({request, params, context}: LoaderFunctionArgs) {
   const seo = article
     ? seoPayload.article({article, url: request.url})
     : {
-        title: `${staticArticle!.title} | ${language === 'AR' ? 'مجلة فورمي هاوس' : 'Formé Haus Journal'}`,
+        title: `${staticArticle!.title} | ${
+          language === 'AR' ? 'مجلة فورمي هاوس' : 'Formé Haus Journal'
+        }`,
         description: staticArticle!.body[0],
       };
 
@@ -178,7 +180,11 @@ export default function Article() {
       <div className="min-h-screen bg-[#F9F5F0]" dir={isRTL ? 'rtl' : 'ltr'}>
         <div className="max-w-3xl mx-auto px-6 py-16 md:py-24">
           <header className="text-center mb-12">
-            <span className={`text-[10px] ${isRTL ? '' : 'uppercase tracking-[0.3em]'} text-[#a87441] block mb-4`}>
+            <span
+              className={`text-[10px] ${
+                isRTL ? '' : 'uppercase tracking-[0.3em]'
+              } text-[#a87441] block mb-4`}
+            >
               {t('nav.journal', 'Journal')}
             </span>
             <h1 className="font-serif text-3xl md:text-5xl italic text-[#4A3C31] mb-4">
@@ -209,7 +215,10 @@ export default function Article() {
   if (!staticArticle) return null;
 
   return (
-    <div className="relative min-h-screen overflow-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div
+      className="relative min-h-screen overflow-hidden"
+      dir={isRTL ? 'rtl' : 'ltr'}
+    >
       {/* Fixed full-page background image */}
       {staticArticle.image && (
         <div className="fixed inset-0 z-0">
@@ -232,7 +241,11 @@ export default function Article() {
           animate={{opacity: 1, y: 0}}
           transition={{delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1]}}
         >
-          <span className={`text-[10px] ${isRTL ? '' : 'uppercase tracking-[0.3em]'} text-[#D4AF87] block mb-4 font-semibold`}>
+          <span
+            className={`text-[10px] ${
+              isRTL ? '' : 'uppercase tracking-[0.3em]'
+            } text-[#D4AF87] block mb-4 font-semibold`}
+          >
             {t('nav.journal', 'Journal')}
           </span>
           <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl italic text-white mb-6 drop-shadow-lg text-center max-w-2xl">
@@ -246,8 +259,20 @@ export default function Article() {
             animate={{y: [0, 8, 0]}}
             transition={{repeat: Infinity, duration: 2, ease: 'easeInOut'}}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="opacity-60">
-              <path d="M12 5v14M5 12l7 7 7-7" strokeLinecap="round" strokeLinejoin="round" />
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="white"
+              strokeWidth="1.5"
+              className="opacity-60"
+            >
+              <path
+                d="M12 5v14M5 12l7 7 7-7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </motion.div>
         </motion.div>

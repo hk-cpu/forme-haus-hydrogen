@@ -82,21 +82,24 @@ function validateRoutes() {
 
   // Check for common issues
   log('\nRoute structure analysis:', 'yellow');
-  
+
   let issueCount = 0;
   for (const routeFile of routeFiles) {
     const content = fs.readFileSync(routeFile, 'utf-8');
     const hasLoader = content.includes('export async function loader');
     const hasAction = content.includes('export async function action');
     const hasDefaultExport = content.includes('export default function');
-    
+
     // Check for potential issues
     if (!hasLoader && !hasAction && !hasDefaultExport) {
-      log(`  ⚠ ${path.basename(routeFile)}: No loader/action/default export`, 'yellow');
+      log(
+        `  ⚠ ${path.basename(routeFile)}: No loader/action/default export`,
+        'yellow',
+      );
       issueCount++;
     }
   }
-  
+
   if (issueCount === 0) {
     log('  ✓ All routes have proper exports', 'green');
   }
@@ -124,7 +127,9 @@ function auditImages() {
       const stat = fs.statSync(fullPath);
       if (stat.isDirectory()) {
         findImages(fullPath);
-      } else if (imageExtensions.some((ext) => item.toLowerCase().endsWith(ext))) {
+      } else if (
+        imageExtensions.some((ext) => item.toLowerCase().endsWith(ext))
+      ) {
         images.push({file: fullPath, size: stat.size});
       }
     }
@@ -149,10 +154,10 @@ function auditImages() {
     const sizeMB = (img.size / (1024 * 1024)).toFixed(2);
     const sizeKB = (img.size / 1024).toFixed(0);
     const relativePath = path.relative(process.cwd(), img.file);
-    
+
     let color: keyof typeof colors = 'green';
     let icon = '✓';
-    
+
     if (img.size > MAX_CRITICAL_SIZE) {
       color = 'red';
       icon = '✗';
@@ -166,7 +171,7 @@ function auditImages() {
 
     const sizeDisplay = img.size > 1024 * 1024 ? `${sizeMB}MB` : `${sizeKB}KB`;
     log(`  ${icon} ${relativePath} (${sizeDisplay})`, color);
-    
+
     results.images.push({
       file: relativePath,
       size: sizeDisplay,
@@ -176,14 +181,27 @@ function auditImages() {
 
   log(`\nSummary:`, 'blue');
   log(`  Total images: ${images.length}`, 'reset');
-  log(`  Oversized (>500KB): ${oversizedCount}`, oversizedCount > 0 ? 'yellow' : 'green');
-  log(`  Critical (>1MB): ${criticalCount}`, criticalCount > 0 ? 'red' : 'green');
+  log(
+    `  Oversized (>500KB): ${oversizedCount}`,
+    oversizedCount > 0 ? 'yellow' : 'green',
+  );
+  log(
+    `  Critical (>1MB): ${criticalCount}`,
+    criticalCount > 0 ? 'red' : 'green',
+  );
 
   if (criticalCount > 0) {
-    log(`\n⚠️  CRITICAL: ${criticalCount} images exceed 1MB and should be optimized!`, 'red');
+    log(
+      `\n⚠️  CRITICAL: ${criticalCount} images exceed 1MB and should be optimized!`,
+      'red',
+    );
   }
 
-  return {total: images.length, oversized: oversizedCount, critical: criticalCount};
+  return {
+    total: images.length,
+    oversized: oversizedCount,
+    critical: criticalCount,
+  };
 }
 
 // ============================================
@@ -227,27 +245,34 @@ function validatePaymentWorkflow() {
   for (const check of checks) {
     const fileExists = fs.existsSync(path.join(process.cwd(), check.file));
     const status = fileExists ? 'pass' : 'fail';
-    
-    log(`  ${fileExists ? '✓' : '✗'} ${check.name}`, fileExists ? 'green' : 'red');
-    
+
+    log(
+      `  ${fileExists ? '✓' : '✗'} ${check.name}`,
+      fileExists ? 'green' : 'red',
+    );
+
     if (fileExists) {
       // Check environment variables
       const missingEnv = check.requiredEnv.filter((env) => {
         const regex = new RegExp(`^${env}=`, 'm');
         const hasValue = regex.test(envFile) && !envFile.includes(`${env}=`);
-        const isPlaceholder = envFile.includes(`${env}=REPLACE`) || 
-                              envFile.includes(`${env}=sk_test_REPLACE`) ||
-                              envFile.includes(`${env}=YOUR_`);
+        const isPlaceholder =
+          envFile.includes(`${env}=REPLACE`) ||
+          envFile.includes(`${env}=sk_test_REPLACE`) ||
+          envFile.includes(`${env}=YOUR_`);
         return !regex.test(envFile) || isPlaceholder;
       });
 
       if (missingEnv.length > 0) {
-        log(`    ⚠ Missing/placeholder env: ${missingEnv.join(', ')}`, 'yellow');
+        log(
+          `    ⚠ Missing/placeholder env: ${missingEnv.join(', ')}`,
+          'yellow',
+        );
       } else {
         log(`    ✓ Environment configured`, 'green');
       }
     }
-    
+
     results.payment.push({
       test: check.name,
       status: fileExists ? 'pass' : 'fail',
@@ -259,15 +284,24 @@ function validatePaymentWorkflow() {
   const cartFile = path.join(process.cwd(), 'app/components/Cart.tsx');
   if (fs.existsSync(cartFile)) {
     const cartContent = fs.readFileSync(cartFile, 'utf-8');
-    
+
     const hasTapButton = cartContent.includes('TapPayCheckoutButton');
     const hasShopPay = cartContent.includes('ShopPayButton');
     const hasCheckoutUrl = cartContent.includes('checkoutUrl');
-    
-    log(`    ${hasTapButton ? '✓' : '✗'} Tap Payments button`, hasTapButton ? 'green' : 'red');
-    log(`    ${hasShopPay ? '✓' : '✗'} Shop Pay button`, hasShopPay ? 'green' : 'red');
-    log(`    ${hasCheckoutUrl ? '✓' : '✗'} Shopify checkout URL`, hasCheckoutUrl ? 'green' : 'red');
-    
+
+    log(
+      `    ${hasTapButton ? '✓' : '✗'} Tap Payments button`,
+      hasTapButton ? 'green' : 'red',
+    );
+    log(
+      `    ${hasShopPay ? '✓' : '✗'} Shop Pay button`,
+      hasShopPay ? 'green' : 'red',
+    );
+    log(
+      `    ${hasCheckoutUrl ? '✓' : '✗'} Shopify checkout URL`,
+      hasCheckoutUrl ? 'green' : 'red',
+    );
+
     results.payment.push({
       test: 'Cart Payment Integration',
       status: hasTapButton && hasShopPay && hasCheckoutUrl ? 'pass' : 'fail',
@@ -302,10 +336,7 @@ function checkEnvironment() {
     'PUBLIC_CHECKOUT_DOMAIN',
   ];
 
-  const paymentVars = [
-    'TAP_SECRET_KEY',
-    'TAP_API_URL',
-  ];
+  const paymentVars = ['TAP_SECRET_KEY', 'TAP_API_URL'];
 
   const optionalVars = [
     'HYPERPAY_ACCESS_TOKEN',
@@ -321,21 +352,30 @@ function checkEnvironment() {
   log('Required Shopify Variables:', 'yellow');
   for (const v of requiredVars) {
     const exists = envFile.includes(`${v}=`) && !envFile.includes(`${v}=\n`);
-    const isPlaceholder = envFile.includes(`${v}=REPLACE`) || envFile.includes(`${v}=YOUR_`);
+    const isPlaceholder =
+      envFile.includes(`${v}=REPLACE`) || envFile.includes(`${v}=YOUR_`);
     const status = exists && !isPlaceholder ? 'configured' : 'missing';
-    
+
     results.environment.push({variable: v, status});
-    log(`  ${status === 'configured' ? '✓' : '✗'} ${v}`, status === 'configured' ? 'green' : 'red');
+    log(
+      `  ${status === 'configured' ? '✓' : '✗'} ${v}`,
+      status === 'configured' ? 'green' : 'red',
+    );
   }
 
   log('\nPayment Variables (Tap):', 'yellow');
   for (const v of paymentVars) {
     const exists = envFile.includes(`${v}=`);
-    const isPlaceholder = envFile.includes(`${v}=REPLACE`) || envFile.includes(`${v}=sk_test_REPLACE`);
+    const isPlaceholder =
+      envFile.includes(`${v}=REPLACE`) ||
+      envFile.includes(`${v}=sk_test_REPLACE`);
     const status = exists && !isPlaceholder ? 'configured' : 'missing';
-    
+
     results.environment.push({variable: v, status});
-    log(`  ${status === 'configured' ? '✓' : '✗'} ${v}`, status === 'configured' ? 'green' : 'red');
+    log(
+      `  ${status === 'configured' ? '✓' : '✗'} ${v}`,
+      status === 'configured' ? 'green' : 'red',
+    );
   }
 
   log('\nOptional HyperPay Variables:', 'yellow');
@@ -343,9 +383,12 @@ function checkEnvironment() {
     const exists = envFile.includes(`${v}=`);
     const isPlaceholder = envFile.includes(`${v}=REPLACE`);
     const status = exists && !isPlaceholder ? 'configured' : 'missing';
-    
+
     if (exists) {
-      log(`  ${status === 'configured' ? '✓' : '⚠'} ${v}`, status === 'configured' ? 'green' : 'yellow');
+      log(
+        `  ${status === 'configured' ? '✓' : '⚠'} ${v}`,
+        status === 'configured' ? 'green' : 'yellow',
+      );
     } else {
       log(`  ○ ${v} (not set)`, 'reset');
     }
@@ -362,18 +405,31 @@ function generateReport() {
 
   const routePass = results.routes.filter((r) => r.status === 'pass').length;
   const routeTotal = results.routes.length;
-  
+
   const paymentPass = results.payment.filter((p) => p.status === 'pass').length;
   const paymentTotal = results.payment.length;
-  
-  const envPass = results.environment.filter((e) => e.status === 'configured').length;
+
+  const envPass = results.environment.filter(
+    (e) => e.status === 'configured',
+  ).length;
   const envTotal = results.environment.length;
 
-  log(`Routes: ${routePass}/${routeTotal} passing`, routePass === routeTotal ? 'green' : 'yellow');
-  log(`Payment: ${paymentPass}/${paymentTotal} passing`, paymentPass === paymentTotal ? 'green' : 'yellow');
-  log(`Environment: ${envPass}/${envTotal} configured`, envPass === envTotal ? 'green' : 'yellow');
-  log(`Images: ${results.images.filter((i) => i.oversized).length} oversized`, 
-    results.images.filter((i) => i.oversized).length > 0 ? 'yellow' : 'green');
+  log(
+    `Routes: ${routePass}/${routeTotal} passing`,
+    routePass === routeTotal ? 'green' : 'yellow',
+  );
+  log(
+    `Payment: ${paymentPass}/${paymentTotal} passing`,
+    paymentPass === paymentTotal ? 'green' : 'yellow',
+  );
+  log(
+    `Environment: ${envPass}/${envTotal} configured`,
+    envPass === envTotal ? 'green' : 'yellow',
+  );
+  log(
+    `Images: ${results.images.filter((i) => i.oversized).length} oversized`,
+    results.images.filter((i) => i.oversized).length > 0 ? 'yellow' : 'green',
+  );
 
   // Save detailed report
   const reportPath = path.join(process.cwd(), 'test-report-detailed.json');
@@ -381,10 +437,11 @@ function generateReport() {
   log(`\n📄 Detailed report saved to: ${reportPath}`, 'blue');
 
   // Exit with appropriate code
-  const allPass = routePass === routeTotal && 
-                  paymentPass === paymentTotal && 
-                  results.images.filter((i) => i.oversized).length === 0;
-  
+  const allPass =
+    routePass === routeTotal &&
+    paymentPass === paymentTotal &&
+    results.images.filter((i) => i.oversized).length === 0;
+
   return allPass;
 }
 
@@ -392,7 +449,10 @@ function generateReport() {
 // MAIN EXECUTION
 // ============================================
 function main() {
-  log('\n╔════════════════════════════════════════════════════════════╗', 'cyan');
+  log(
+    '\n╔════════════════════════════════════════════════════════════╗',
+    'cyan',
+  );
   log('║     FORMEHAUS HYDROGEN - COMPREHENSIVE TEST SUITE         ║', 'cyan');
   log('╚════════════════════════════════════════════════════════════╝', 'cyan');
 

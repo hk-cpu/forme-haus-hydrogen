@@ -109,7 +109,9 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
           <motion.img
             src={item.image}
             alt={item.alt}
-            className={`w-full h-full object-cover block transition-transform duration-700 ease-out ${shouldReduceMotion ? '' : 'kenBurns'}`}
+            className={`w-full h-full object-cover block transition-transform duration-700 ease-out ${
+              shouldReduceMotion ? '' : 'kenBurns'
+            }`}
             style={{
               animationPlayState: isHovered ? 'paused' : 'running',
               transformOrigin: 'center center',
@@ -230,21 +232,23 @@ export default function EditorialSection() {
                 {t('home.editorial', 'The Edit')}
               </motion.span>
             ) : (
-              t('home.editorial', 'The Edit').split('').map((char, i) => (
-                <motion.span
-                  key={i}
-                  initial={{opacity: 0, y: 20}}
-                  whileInView={{opacity: 1, y: 0}}
-                  viewport={{once: true}}
-                  transition={{
-                    duration: 0.5,
-                    delay: i * 0.03,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                >
-                  {char === ' ' ? '\u00A0' : char}
-                </motion.span>
-              ))
+              t('home.editorial', 'The Edit')
+                .split('')
+                .map((char, i) => (
+                  <motion.span
+                    key={i}
+                    initial={{opacity: 0, y: 20}}
+                    whileInView={{opacity: 1, y: 0}}
+                    viewport={{once: true}}
+                    transition={{
+                      duration: 0.5,
+                      delay: i * 0.03,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                  >
+                    {char === ' ' ? '\u00A0' : char}
+                  </motion.span>
+                ))
             )}
           </h2>
         </motion.div>
@@ -262,7 +266,11 @@ export default function EditorialSection() {
           {BENTO_ITEMS.map((item, i) => (
             <motion.div
               key={item.url}
-              style={shouldReduceMotion ? {} : {y: i % 2 === 0 ? leftColY : rightColY}}
+              style={
+                shouldReduceMotion
+                  ? {}
+                  : {y: i % 2 === 0 ? leftColY : rightColY}
+              }
             >
               <TopCard item={item} index={i} t={t} />
             </motion.div>

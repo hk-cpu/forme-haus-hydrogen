@@ -108,7 +108,9 @@ async function updateVariantPrice(variantId, price) {
 }
 
 async function main() {
-  console.log(`Updating ${PRICES.length} variant prices on ${STORE_DOMAIN}...\n`);
+  console.log(
+    `Updating ${PRICES.length} variant prices on ${STORE_DOMAIN}...\n`,
+  );
 
   let success = 0;
   let failed = 0;

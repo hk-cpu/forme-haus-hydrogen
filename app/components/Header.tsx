@@ -14,7 +14,15 @@ import {useTranslation} from '~/hooks/useTranslation';
 
 import LanguageSwitch from './LanguageSwitch';
 
-function DropdownNavItem({item, isRTL, t}: {item: any; isRTL: boolean; t: any}) {
+function DropdownNavItem({
+  item,
+  isRTL,
+  t,
+}: {
+  item: any;
+  isRTL: boolean;
+  t: any;
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -39,7 +47,9 @@ function DropdownNavItem({item, isRTL, t}: {item: any; isRTL: boolean; t: any}) 
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
-          className={`transition-transform duration-300 ${isOpen ? 'rotate-180 text-bronze' : ''}`}
+          className={`transition-transform duration-300 ${
+            isOpen ? 'rotate-180 text-bronze' : ''
+          }`}
         >
           <path d="M6 9l6 6 6-6" />
         </svg>
@@ -49,7 +59,9 @@ function DropdownNavItem({item, isRTL, t}: {item: any; isRTL: boolean; t: any}) 
         className={`absolute top-[calc(100%-10px)] pt-[10px] ${
           isRTL ? 'right-0' : 'left-0'
         } transition-all duration-300 ${
-          isOpen ? 'opacity-100 translate-y-0 visible' : 'opacity-0 translate-y-2 invisible'
+          isOpen
+            ? 'opacity-100 translate-y-0 visible'
+            : 'opacity-0 translate-y-2 invisible'
         }`}
       >
         <div className="bg-surface/95 backdrop-blur-xl border border-bronze/20 rounded-sm py-3 w-56 shadow-[0_12px_40px_rgba(0,0,0,0.4)]">
@@ -240,12 +252,30 @@ export function Header({
         ...item,
         to: '#', // Remove individual redirect
         title: t('nav.collections', 'Collections'),
-        items: item.items?.length ? item.items : [
-          { id: 'sub-new', title: t('nav.newIn', 'New to Haus'), to: '/collections/new-in' },
-          { id: 'sub-sun', title: t('nav.sunglasses', 'Sunglasses'), to: '/collections/sunglasses' },
-          { id: 'sub-phone', title: t('nav.phoneCases', 'Phone Accessories'), to: '/collections/phone-cases' },
-          { id: 'sub-all', title: t('nav.viewAll', 'View All Collections'), to: '/collections' },
-        ],
+        items: item.items?.length
+          ? item.items
+          : [
+              {
+                id: 'sub-new',
+                title: t('nav.newIn', 'New to Haus'),
+                to: '/collections/new-in',
+              },
+              {
+                id: 'sub-sun',
+                title: t('nav.sunglasses', 'Sunglasses'),
+                to: '/collections/sunglasses',
+              },
+              {
+                id: 'sub-phone',
+                title: t('nav.phoneCases', 'Phone Accessories'),
+                to: '/collections/phone-cases',
+              },
+              {
+                id: 'sub-all',
+                title: t('nav.viewAll', 'View All Collections'),
+                to: '/collections',
+              },
+            ],
       };
     }
 
@@ -254,7 +284,11 @@ export function Header({
       item.title === 'About Us' ||
       normalizedTo === '/pages/about'
     ) {
-      return {...item, to: '/pages/about', title: t('nav.ourStory', 'Our Story')};
+      return {
+        ...item,
+        to: '/pages/about',
+        title: t('nav.ourStory', 'Our Story'),
+      };
     }
 
     if (normalizedTo === '/contact') {
@@ -266,7 +300,10 @@ export function Header({
 
   const hasContact = baseItems.some((item: any) => {
     const normalizedTo = normalizeMenuPath(item.to ?? item.url);
-    return normalizedTo === '/contact' || item.title?.toLowerCase().includes('contact');
+    return (
+      normalizedTo === '/contact' ||
+      item.title?.toLowerCase().includes('contact')
+    );
   });
   const items = hasContact
     ? baseItems.map(mapMenuItem)
@@ -294,49 +331,59 @@ export function Header({
         backdropFilter: scrolled ? 'blur(40px) saturate(1.2)' : 'blur(20px)',
       }}
     >
-      <div className="relative z-50 flex w-full items-center" style={{padding: '0 var(--page-gutter)'}}>
+      <div
+        className="relative z-50 flex w-full items-center"
+        style={{padding: '0 var(--page-gutter)'}}
+      >
         {/* Left Side: Navigation & Mobile Menu */}
         <div className="flex flex-1 items-center justify-start">
           <nav className="hidden items-center gap-4 md:flex lg:gap-8">
-          {items.map((item: any) => {
-            if (item.items?.length) {
-              return <DropdownNavItem key={item.id} item={item} isRTL={isRTL} t={t} />;
-            }
-            return (
-              <NavLink
-                key={item.id}
-                to={item.to}
-                className={({isActive}) =>
-                  `nav-link relative py-2 transition-colors duration-200 ${
-                    isRTL
-                      ? 'text-[12px] font-normal'
-                      : 'text-[10px] font-light uppercase tracking-[0.25em] lg:text-[11px]'
-                  } ${
-                    isActive
-                      ? 'text-[#a87441]'
-                      : 'text-warm/80 hover:text-bronze'
-                  }`
-                }
-              >
-                {item.title}
-              </NavLink>
-            );
-          })}
-        </nav>
+            {items.map((item: any) => {
+              if (item.items?.length) {
+                return (
+                  <DropdownNavItem
+                    key={item.id}
+                    item={item}
+                    isRTL={isRTL}
+                    t={t}
+                  />
+                );
+              }
+              return (
+                <NavLink
+                  key={item.id}
+                  to={item.to}
+                  className={({isActive}) =>
+                    `nav-link relative py-2 transition-colors duration-200 ${
+                      isRTL
+                        ? 'text-[12px] font-normal'
+                        : 'text-[10px] font-light uppercase tracking-[0.25em] lg:text-[11px]'
+                    } ${
+                      isActive
+                        ? 'text-[#a87441]'
+                        : 'text-warm/80 hover:text-bronze'
+                    }`
+                  }
+                >
+                  {item.title}
+                </NavLink>
+              );
+            })}
+          </nav>
 
-        <div className="flex items-center gap-4 md:hidden">
-          <button
-            onClick={openMenu}
-            className="flex flex-col items-center p-2 text-warm/80 transition-colors duration-200 hover:text-bronze"
-            aria-label={t('nav.menu', 'Menu')}
-            type="button"
-          >
-            <Icons.Menu />
-            <span className="mt-1 text-[10px] uppercase tracking-wider text-warm/60">
-              {t('nav.menu', 'Menu')}
-            </span>
-          </button>
-          <LanguageSwitch />
+          <div className="flex items-center gap-4 md:hidden">
+            <button
+              onClick={openMenu}
+              className="flex flex-col items-center p-2 text-warm/80 transition-colors duration-200 hover:text-bronze"
+              aria-label={t('nav.menu', 'Menu')}
+              type="button"
+            >
+              <Icons.Menu />
+              <span className="mt-1 text-[10px] uppercase tracking-wider text-warm/60">
+                {t('nav.menu', 'Menu')}
+              </span>
+            </button>
+            <LanguageSwitch />
           </div>
         </div>
 

@@ -1,4 +1,5 @@
 # 🚀 TAP PAYMENTS - LAUNCH CHECKLIST
+
 **Complete these steps NOW for tomorrow's submission**
 
 ---
@@ -6,11 +7,13 @@
 ## ⚡ STEP 1: Get API Key (10 minutes)
 
 ### Option A: You Already Have Tap Account
+
 1. Go to https://dashboard.tap.company
 2. Login → API Keys
 3. Copy: **Secret Key** (starts with `sk_test_` or `sk_live_`)
 
 ### Option B: New Account (URGENT)
+
 1. Go to https://tap.company/saudi-arabia/en/
 2. Click **Sign Up** → **Business Account**
 3. Fill:
@@ -49,6 +52,7 @@ npm run dev
 ```
 
 **Browser Test:**
+
 1. Open http://localhost:3000
 2. Click any product
 3. Click **"Add to Cart"**
@@ -70,11 +74,11 @@ npm run dev
 
 **Add these URLs:**
 
-| Field | Value |
-|-------|-------|
-| Website URL | `https://formehaus.me` |
+| Field        | Value                               |
+| ------------ | ----------------------------------- |
+| Website URL  | `https://formehaus.me`              |
 | Redirect URL | `https://formehaus.me/tap/callback` |
-| Webhook URL | `https://formehaus.me/tap/webhook` |
+| Webhook URL  | `https://formehaus.me/tap/webhook`  |
 
 **Save settings.**
 
@@ -83,11 +87,13 @@ npm run dev
 ## ⚡ STEP 5: Deploy (5 minutes)
 
 ### Method 1: Command Line
+
 ```bash
 shopify hydrogen deploy
 ```
 
 ### Method 2: Shopify Admin
+
 1. Shopify Admin → Hydrogen
 2. Click **Deploy**
 3. Environment variables auto-sync from `.env`
@@ -114,6 +120,7 @@ Copy this checklist and tick each item:
 ## 🆘 EMERGENCY CONTACTS
 
 **If stuck:**
+
 - Tap Support: support@tap.company
 - Tap WhatsApp: +966 55 123 4567
 - Docs: https://developers.tap.company
@@ -126,18 +133,19 @@ Copy this checklist and tick each item:
 
 Use these in TEST mode:
 
-| Card | Number | Result |
-|------|--------|--------|
-| Visa (Success) | 4111 1111 1111 1111 | ✅ Payment succeeds |
-| MasterCard | 5123 4500 0000 0008 | ✅ Payment succeeds |
-| mada | 4462 0300 0000 0005 | ✅ Payment succeeds |
-| Declined | 4000 0000 0000 0002 | ❌ Tests error handling |
+| Card           | Number              | Result                  |
+| -------------- | ------------------- | ----------------------- |
+| Visa (Success) | 4111 1111 1111 1111 | ✅ Payment succeeds     |
+| MasterCard     | 5123 4500 0000 0008 | ✅ Payment succeeds     |
+| mada           | 4462 0300 0000 0005 | ✅ Payment succeeds     |
+| Declined       | 4000 0000 0000 0002 | ❌ Tests error handling |
 
 ---
 
 **⏰ TIME REQUIRED: ~30 minutes total**
 
 **🎯 PRIORITY ORDER:**
+
 1. Get API key → 2. Update .env → 3. Test → 4. Deploy
 
 **Good luck with the launch! 🚀**

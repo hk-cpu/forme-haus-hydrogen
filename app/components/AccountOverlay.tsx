@@ -302,7 +302,7 @@ export function AccountOverlay() {
                 <button
                   className={`pb-4 text-sm uppercase tracking-[0.15em] transition-colors relative ${
                     activeTab === 'create'
-              ? 'text-bronze'
+                      ? 'text-bronze'
                       : 'text-taupe hover:text-warm'
                   }`}
                   onClick={() => setActiveTab('create')}
@@ -393,9 +393,9 @@ export function AccountOverlay() {
 
                     {/* Forgot Password */}
                     <div className="flex justify-end">
-                    <Link
-                      to="/account/recover"
-                      className="text-sm text-taupe hover:text-bronze transition-colors underline underline-offset-4"
+                      <Link
+                        to="/account/recover"
+                        className="text-sm text-taupe hover:text-bronze transition-colors underline underline-offset-4"
                         onClick={handleClose}
                       >
                         {t('account.forgotPassword', 'Forgot your password?')}
@@ -510,10 +510,10 @@ export function AccountOverlay() {
                     <button
                       type="submit"
                       disabled={registerFetcher.state === 'submitting'}
-                        className="w-full bg-transparent border border-bronze text-bronze hover:bg-bronze hover:text-white font-medium py-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      className="w-full bg-transparent border border-bronze text-bronze hover:bg-bronze hover:text-white font-medium py-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                       {registerFetcher.state === 'submitting' ? (
-                      <div className="w-5 h-5 border-2 border-bronze border-t-transparent rounded-full animate-spin" />
+                        <div className="w-5 h-5 border-2 border-bronze border-t-transparent rounded-full animate-spin" />
                       ) : (
                         <>
                           {t('account.createButton', 'Create Account')}
@@ -537,7 +537,7 @@ export function AccountOverlay() {
                           transition={{delay: 0.3 + index * 0.1}}
                           className="flex items-center gap-3 text-warm text-sm"
                         >
-                  <span className="text-bronze">{benefit.icon}</span>
+                          <span className="text-bronze">{benefit.icon}</span>
                           <span>{benefit.text}</span>
                         </motion.li>
                       ))}

@@ -3,25 +3,23 @@ import React from 'react';
 type Variant = 'primary' | 'secondary' | 'ghost';
 type Size = 'sm' | 'md' | 'lg';
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
   size?: Size;
   asChild?: boolean;
 }
 
-const base = (
-  'inline-flex items-center justify-center rounded-md whitespace-nowrap select-none '
-  + 'transition-all ease-[var(--ease-luxe)] duration-200 focus:outline-none '
-  + 'focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:ring-bronze disabled:opacity-50 disabled:pointer-events-none'
-);
+const base =
+  'inline-flex items-center justify-center rounded-md whitespace-nowrap select-none ' +
+  'transition-all ease-[var(--ease-luxe)] duration-200 focus:outline-none ' +
+  'focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:ring-bronze disabled:opacity-50 disabled:pointer-events-none';
 
 const variants: Record<Variant, string> = {
   primary:
     'bg-bronze text-white hover:bg-bronze-dark shadow-[var(--shadow-card)]',
-  secondary:
-    'border border-taupe text-foreground/90 hover:bg-foreground/5',
-  ghost:
-    'text-foreground/90 hover:bg-foreground/5',
+  secondary: 'border border-taupe text-foreground/90 hover:bg-foreground/5',
+  ghost: 'text-foreground/90 hover:bg-foreground/5',
 };
 
 const sizes: Record<Size, string> = {
@@ -37,7 +35,9 @@ export function Button({
   children,
   ...props
 }: ButtonProps) {
-  const cls = [base, variants[variant], sizes[size], className].join(' ').trim();
+  const cls = [base, variants[variant], sizes[size], className]
+    .join(' ')
+    .trim();
   return (
     <button className={cls} {...props}>
       {children}
@@ -46,4 +46,3 @@ export function Button({
 }
 
 export default Button;
-

@@ -75,7 +75,6 @@ export default function Policies() {
       <div className="h-px w-full bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
 
       <div className="relative z-10 mx-auto max-w-2xl px-6 py-16 md:py-24">
-
         {/* ── Back link ── */}
         <Link
           to="/policies"
@@ -83,12 +82,38 @@ export default function Policies() {
         >
           {isRTL ? (
             <>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <path
+                  d="M5 12h14M12 5l7 7-7 7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
               جميع السياسات
             </>
           ) : (
             <>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M19 12H5M12 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <path
+                  d="M19 12H5M12 19l-7-7 7-7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
               All Policies
             </>
           )}
@@ -117,7 +142,15 @@ export default function Policies() {
         {/* ── Bottom ornament ── */}
         <div className="mt-16 flex items-center gap-4">
           <div className="h-px flex-1 bg-[#a87441]/10" />
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a87441" strokeWidth="1" opacity="0.4">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#a87441"
+            strokeWidth="1"
+            opacity="0.4"
+          >
             <circle cx="12" cy="12" r="3" />
             <path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
           </svg>

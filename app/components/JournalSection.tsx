@@ -104,7 +104,8 @@ export default function JournalSection() {
                   )}
                 </h3>
                 <span className="font-serif text-xs italic text-[#8B7D72]">
-                  —&nbsp;{t(
+                  —&nbsp;
+                  {t(
                     card.title === 'The Modern Wardrobe Edit'
                       ? 'journal.modernWardrobe.subtitle'
                       : card.title === 'Everyday Elegance'

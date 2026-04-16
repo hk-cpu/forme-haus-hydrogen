@@ -104,7 +104,9 @@ export default function AllProducts() {
       }
       return Math.abs(hash);
     };
-    return [...list].sort((a, b) => (h(a.id + seed) % 1000) - (h(b.id + seed) % 1000));
+    return [...list].sort(
+      (a, b) => (h(a.id + seed) % 1000) - (h(b.id + seed) % 1000),
+    );
   }, [products.nodes, hydrated, seed]);
 
   return (
@@ -125,13 +127,15 @@ export default function AllProducts() {
                 style={{padding: '0 var(--page-gutter)'}}
               >
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10">
-                  {(hydrated ? shuffled : (nodes as any[])).map((product: any, i: number) => (
-                    <ProductCardClean
-                      key={product.id}
-                      product={product}
-                      index={i}
-                    />
-                  ))}
+                  {(hydrated ? shuffled : (nodes as any[])).map(
+                    (product: any, i: number) => (
+                      <ProductCardClean
+                        key={product.id}
+                        product={product}
+                        index={i}
+                      />
+                    ),
+                  )}
                 </div>
               </div>
 

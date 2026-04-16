@@ -29,7 +29,7 @@ export default function LanguageSwitch() {
     >
       <span
         className={`text-[11px] uppercase tracking-[0.15em] ${
-  !isArabic ? 'font-medium text-bronze' : 'font-light text-warm'
+          !isArabic ? 'font-medium text-bronze' : 'font-light text-warm'
         }`}
       >
         EN
@@ -37,7 +37,7 @@ export default function LanguageSwitch() {
       <span className="h-3.5 w-px bg-[#a87441]/40" />
       <span
         className={`text-[12px] ${
-  isArabic ? 'font-medium text-bronze' : 'font-light text-warm'
+          isArabic ? 'font-medium text-bronze' : 'font-light text-warm'
         }`}
         style={{fontFamily: '"Noto Sans Arabic", "Segoe UI", sans-serif'}}
       >

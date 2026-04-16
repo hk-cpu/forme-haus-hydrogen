@@ -35,8 +35,8 @@ export default function PrivacyPolicyPage() {
           >
             <p>
               في <strong>Formé Haus</strong> نحترم خصوصيتكم ونلتزم بحماية
-              بياناتكم الشخصية وفقًا لأنظمة المملكة العربية السعودية، بما في
-              ذلك نظام حماية البيانات الشخصية.
+              بياناتكم الشخصية وفقًا لأنظمة المملكة العربية السعودية، بما في ذلك
+              نظام حماية البيانات الشخصية.
             </p>
 
             <h3>البيانات التي نجمعها</h3>
@@ -68,8 +68,8 @@ export default function PrivacyPolicyPage() {
 
             <h3>حقوقكم</h3>
             <p>
-              وفقًا للأنظمة المعمول بها، يحق لكم طلب الوصول إلى بياناتكم
-              الشخصية أو تصحيحها أو حذفها في الحالات التي يسمح بها النظام.
+              وفقًا للأنظمة المعمول بها، يحق لكم طلب الوصول إلى بياناتكم الشخصية
+              أو تصحيحها أو حذفها في الحالات التي يسمح بها النظام.
             </p>
             <p>للاستفسارات المتعلقة بالخصوصية يرجى التواصل معنا:</p>
             <p>
@@ -79,8 +79,8 @@ export default function PrivacyPolicyPage() {
 
             <h3>تحديثات السياسة</h3>
             <p>
-              قد تقوم Formé Haus بتحديث سياسة الخصوصية من وقت لآخر، وسيتم نشر
-              أي تعديل على هذه الصفحة.
+              قد تقوم Formé Haus بتحديث سياسة الخصوصية من وقت لآخر، وسيتم نشر أي
+              تعديل على هذه الصفحة.
             </p>
           </div>
         ) : (
@@ -94,9 +94,7 @@ export default function PrivacyPolicyPage() {
             </p>
 
             <h3>Information We Collect</h3>
-            <p>
-              When you visit our website or place an order, we may collect:
-            </p>
+            <p>When you visit our website or place an order, we may collect:</p>
             <ul>
               <li>Full name</li>
               <li>Email address and phone number</li>

@@ -12,6 +12,8 @@ import {
   useSearchParams,
 } from '@remix-run/react';
 import {useState, useEffect, Suspense, lazy} from 'react';
+import {GoogleOAuthProvider, GoogleLogin} from '@react-oauth/google';
+import {useSubmit} from '@remix-run/react';
 
 // Lazy load GhostCursorEnhanced to prevent SSR issues with three.js
 const GhostCursorEnhanced = lazy(
@@ -22,10 +24,10 @@ export async function loader({context, request}: LoaderFunctionArgs) {
   const {session} = context;
 
   if (await session.get('customerAccessToken')) {
-    return redirect('/account');
+    return redirect(`${context.storefront.i18n?.pathPrefix || ''}/account`);
   }
 
-  return json({});
+  return json({googleClientId});
 }
 
 export async function action({context, request}: ActionFunctionArgs) {
@@ -34,6 +36,95 @@ export async function action({context, request}: ActionFunctionArgs) {
   const formId = String(formData.get('formId'));
   const email = String(formData.get('email'));
   const password = String(formData.get('password'));
+
+  if (formId === 'googleAuth' && !formData.get('credential')) {
+    return json({error: 'Google response empty', formId}, {status: 400});
+  }
+
+  if (formId === 'googleAuth') {
+    const credential = String(formData.get('credential'));
+    if (!credential)
+      return json({error: 'Google login failed.', formId}, {status: 400});
+    try {
+      // Decode JWT payload
+      const base64Url = credential.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map(function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+          })
+          .join(''),
+      );
+      const payload = JSON.parse(jsonPayload);
+      const email = payload.email;
+
+      if (!email)
+        return json(
+          {error: 'Could not extract email from Google identity.', formId},
+          {status: 400},
+        );
+
+      // Generate dummy password via crude hash (Must meet length and complexity for Shopify)
+      // Node crypto is safer server-side for this if available, or just a secure stable transformation.
+      // Easiest is to pseudo-hash
+      let hash = 0;
+      const secretStr = email + (context.env?.SESSION_SECRET || 'secret');
+      for (let i = 0; i < secretStr.length; i++) {
+        hash = (Math.imul(31, hash) + secretStr.charCodeAt(i)) | 0;
+      }
+      const dummyPassword =
+        Math.abs(hash).toString(16).padEnd(8, '0') + 'A1!xZ';
+
+      // Attempt login
+      const {data: loginData}: any = await storefront.mutate(LOGIN_MUTATION, {
+        variables: {input: {email, password: dummyPassword}},
+      });
+
+      let customerAccessToken =
+        loginData?.customerAccessTokenCreate?.customerAccessToken;
+
+      if (!customerAccessToken) {
+        // Create customer
+        const {data: regData, errors: regErrors}: any = await storefront.mutate(
+          CUSTOMER_CREATE_MUTATION,
+          {variables: {input: {email, password: dummyPassword}}},
+        );
+        if (
+          regErrors?.length ||
+          regData?.customerCreate?.customerUserErrors?.length
+        ) {
+          return json(
+            {error: 'Failed to create Google mapped account.', formId},
+            {status: 400},
+          );
+        }
+        const {data: retryData}: any = await storefront.mutate(LOGIN_MUTATION, {
+          variables: {input: {email, password: dummyPassword}},
+        });
+        customerAccessToken =
+          retryData?.customerAccessTokenCreate?.customerAccessToken;
+      }
+
+      if (!customerAccessToken?.accessToken) {
+        return json(
+          {error: 'Invalid mapped credentials.', formId: 'login'},
+          {status: 401},
+        );
+      }
+
+      session.set('customerAccessToken', customerAccessToken);
+      return redirect(`${storefront.i18n?.pathPrefix || ''}/account`, {
+        headers: {'Set-Cookie': await session.commit()},
+      });
+    } catch (err) {
+      return json(
+        {error: 'Failed to process Google login.', formId},
+        {status: 500},
+      );
+    }
+  }
 
   if (!email || !password) {
     return json(
@@ -107,7 +198,7 @@ export async function action({context, request}: ActionFunctionArgs) {
 
       session.set('customerAccessToken', customerAccessToken);
 
-      return redirect('/account', {
+      return redirect(`${storefront.i18n?.pathPrefix || ''}/account`, {
         headers: {
           'Set-Cookie': await session.commit(),
         },
@@ -171,70 +262,101 @@ export default function Login() {
       </Suspense>
 
       <div className="relative z-10 w-full max-w-[480px] mx-auto px-6 py-12">
-          {/* Unified White Container */}
-          <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-white/50 p-6 md:p-8 lg:p-12 overflow-hidden relative">
-            {/* Subtle top glare */}
-            <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white to-transparent opacity-80"></div>
+        {/* Unified White Container */}
+        <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-white/50 p-6 md:p-8 lg:p-12 overflow-hidden relative">
+          {/* Subtle top glare */}
+          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white to-transparent opacity-80"></div>
 
-            {/* Logo & Header */}
-            <div className="flex flex-col items-center gap-6 mb-8">
-              <Link to="/" className="group cursor-pointer">
-                <img
-                  src="/brand/logo-icon-only.webp"
-                  alt="Formé Haus"
-                  className="w-20 h-20 object-contain opacity-85 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-100"
-                  loading="eager"
-                  fetchPriority="high"
-                  decoding="sync"
-                  width={40}
-                  height={40}
-                />
-              </Link>
-
-              <div className="text-center space-y-2">
-                <h1
-                  className="font-serif text-3xl md:text-4xl text-brand-text"
-                  style={{letterSpacing: '0.02em'}}
-                >
-                  {isRegistering ? 'Join Formé Haus' : 'Welcome Back'}
-                </h1>
-                <p className="text-[11px] tracking-[0.25em] font-sans text-taupe uppercase">
-                  {isRegistering ? 'Begin Your Journey' : 'Continue Your Journey'}
-                </p>
-              </div>
-            </div>
-
-            {/* Segmented Control UI */}
-            <div className="flex bg-cream border border-warm rounded-xl p-1 mb-8 relative">
-              <div 
-                className="absolute inset-y-1 w-[calc(50%-4px)] bg-white rounded-lg shadow-sm transition-all duration-400 ease-[0.16,1,0.3,1] z-0"
-                style={{
-                  left: isRegistering ? 'calc(50% + 2px)' : '4px'
-                }}
+          {/* Logo & Header */}
+          <div className="flex flex-col items-center gap-6 mb-8">
+            <Link to="/" className="group cursor-pointer">
+              <img
+                src="/brand/logo-icon-only.webp"
+                alt="Formé Haus"
+                className="w-20 h-20 object-contain opacity-85 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-100"
+                loading="eager"
+                fetchPriority="high"
+                decoding="sync"
+                width={40}
+                height={40}
               />
-              <button
-                type="button"
-                onClick={() => setIsRegistering(false)}
-                className={`flex-1 py-3.5 text-[11px] uppercase tracking-widest font-semibold z-10 transition-colors duration-300 ${!isRegistering ? 'text-bronze' : 'text-taupe hover:text-bronze'}`}
-              >
-                Sign In
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsRegistering(true)}
-                className={`flex-1 py-3.5 text-[11px] uppercase tracking-widest font-semibold z-10 transition-colors duration-300 ${isRegistering ? 'text-bronze' : 'text-taupe hover:text-bronze'}`}
-              >
-                Register
-              </button>
-            </div>
+            </Link>
 
-            {/* Form */}
-            <Form method="post" className="w-full space-y-6">
-              <input
-                type="hidden"
-                name="formId"
-                value={isRegistering ? 'register' : 'login'}
-              />
+            <div className="text-center space-y-2">
+              <h1
+                className="font-serif text-3xl md:text-4xl text-brand-text"
+                style={{letterSpacing: '0.02em'}}
+              >
+                {isRegistering ? 'Join Formé Haus' : 'Welcome Back'}
+              </h1>
+              <p className="text-[11px] tracking-[0.25em] font-sans text-taupe uppercase">
+                {isRegistering ? 'Begin Your Journey' : 'Continue Your Journey'}
+              </p>
+            </div>
+          </div>
+
+          {/* Google SSO Button */}
+          <div className="flex justify-center mb-6">
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                const formData = new FormData();
+                formData.append('formId', 'googleAuth');
+                formData.append(
+                  'credential',
+                  credentialResponse.credential || '',
+                );
+                submit(formData, {method: 'post'});
+              }}
+              onError={() => console.log('Google Login Failed')}
+              theme="filled_black"
+              shape="pill"
+              text="continue_with"
+            />
+          </div>
+
+          <div className="flex items-center gap-3 mb-8">
+            <div className="h-px bg-warm/50 flex-1"></div>
+            <span className="text-[10px] uppercase tracking-widest text-taupe font-medium">
+              Or log in with email
+            </span>
+            <div className="h-px bg-warm/50 flex-1"></div>
+          </div>
+
+          {/* Segmented Control UI */}
+          <div className="flex bg-cream border border-warm rounded-xl p-1 mb-8 relative">
+            <div
+              className="absolute inset-y-1 w-[calc(50%-4px)] bg-white rounded-lg shadow-sm transition-all duration-400 ease-[0.16,1,0.3,1] z-0"
+              style={{
+                left: isRegistering ? 'calc(50% + 2px)' : '4px',
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => setIsRegistering(false)}
+              className={`flex-1 py-3.5 text-[11px] uppercase tracking-widest font-semibold z-10 transition-colors duration-300 ${
+                !isRegistering ? 'text-bronze' : 'text-taupe hover:text-bronze'
+              }`}
+            >
+              Sign In
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsRegistering(true)}
+              className={`flex-1 py-3.5 text-[11px] uppercase tracking-widest font-semibold z-10 transition-colors duration-300 ${
+                isRegistering ? 'text-bronze' : 'text-taupe hover:text-bronze'
+              }`}
+            >
+              Register
+            </button>
+          </div>
+
+          {/* Form */}
+          <Form method="post" className="w-full space-y-6">
+            <input
+              type="hidden"
+              name="formId"
+              value={isRegistering ? 'register' : 'login'}
+            />
 
             {data?.error && (
               <div

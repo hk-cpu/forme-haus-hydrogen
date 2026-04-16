@@ -44,7 +44,6 @@ export default function AboutPage() {
       {/* Hero Section — Text-only with elegant spacing */}
       <div className="pt-20 md:pt-28 pb-12 md:pb-16 bg-[#F9F5F0]">
         <div className="max-w-[860px] mx-auto px-6 md:px-12 text-center">
-
           <motion.h1
             className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-text tracking-wider"
             initial={{opacity: 0, y: 20}}
@@ -67,16 +66,20 @@ export default function AboutPage() {
         {/* Opening */}
         <FadeInSection>
           <p className="font-serif text-xl md:text-2xl text-brand-text leading-relaxed mb-4">
-            {isRTL ? (
-              'انطلقت Formé Haus في الرياض من رغبة في تقديم منظور أكثر وعياً للرفاهية العصرية — حيث يكون الاختيار مقصوداً، وتكون الأناقة تعبيراً هادئاً لا يزول.'
-            ) : (
-              'Formé Haus was founded in Riyadh with a desire to offer a more considered approach to modern luxury, where selection is intentional, and elegance is enduring.'
-            )}
+            {isRTL
+              ? 'انطلقت Formé Haus في الرياض من رغبة في تقديم منظور أكثر وعياً للرفاهية العصرية — حيث يكون الاختيار مقصوداً، وتكون الأناقة تعبيراً هادئاً لا يزول.'
+              : 'Formé Haus was founded in Riyadh with a desire to offer a more considered approach to modern luxury, where selection is intentional, and elegance is enduring.'}
           </p>
         </FadeInSection>
 
         <FadeInSection delay={0.1}>
-          <div className={`mt-8 mb-14 h-px w-20 bg-gradient-to-r ${isRTL ? 'from-transparent to-[#a87441]/40' : 'from-[#a87441]/40 to-transparent'}`} />
+          <div
+            className={`mt-8 mb-14 h-px w-20 bg-gradient-to-r ${
+              isRTL
+                ? 'from-transparent to-[#a87441]/40'
+                : 'from-[#a87441]/40 to-transparent'
+            }`}
+          />
         </FadeInSection>
 
         {/* Body */}
@@ -101,7 +104,7 @@ export default function AboutPage() {
             <p>
               {isRTL
                 ? 'ننسّق ونختار مصممين عالميين تجسد أعمالهم النزاهة، والحرفية، والتصميم الذي يدوم. تُنتقى كل قطعة لما تحمله من حضور — لطريقة حركتها، وملمسها، وكيف تصبح امتداداً طبيعياً لتعبير المرأة اليومي.'
-                : 'We curate international designers whose work embodies integrity, craftsmanship, and lasting design. Each piece is selected for its presence, for the way it moves, feels, and integrates seamlessly into a woman\'s everyday expression.'}
+                : "We curate international designers whose work embodies integrity, craftsmanship, and lasting design. Each piece is selected for its presence, for the way it moves, feels, and integrates seamlessly into a woman's everyday expression."}
             </p>
           </FadeInSection>
 
@@ -157,11 +160,16 @@ export default function AboutPage() {
         {/* Philosophy */}
         <FadeInSection>
           <div className="mb-10">
-
             <h2 className="font-serif text-3xl md:text-4xl text-brand-text tracking-wider">
               {isRTL ? 'فلسفتنا' : 'Our Philosophy'}
             </h2>
-            <div className={`mt-5 h-px w-16 bg-gradient-to-r ${isRTL ? 'from-transparent to-[#a87441]/40' : 'from-[#a87441]/40 to-transparent'}`} />
+            <div
+              className={`mt-5 h-px w-16 bg-gradient-to-r ${
+                isRTL
+                  ? 'from-transparent to-[#a87441]/40'
+                  : 'from-[#a87441]/40 to-transparent'
+              }`}
+            />
           </div>
         </FadeInSection>
 
@@ -194,7 +202,7 @@ export default function AboutPage() {
             <p>
               {isRTL
                 ? 'ننجذب إلى قطع تبدو وكأنها وُجدت لتكون — تنتمي بطبيعتها، منسابة، متزنة، ومنسجمة مع إيقاع المرأة وطبيعتها.'
-                : 'The pieces we are drawn to feel instinctive rather than imposed — effortless, composed, and aligned with a woman\'s natural rhythm.'}
+                : "The pieces we are drawn to feel instinctive rather than imposed — effortless, composed, and aligned with a woman's natural rhythm."}
             </p>
           </FadeInSection>
 
@@ -202,15 +210,20 @@ export default function AboutPage() {
             <p className="font-serif text-lg md:text-xl text-brand-text pt-4">
               {isRTL ? (
                 <>
-                  أما الرفاهية، فليست في الكثرة، بل في الاختيار.<br />
-                  واعية.<br />
-                  شخصية.<br />
+                  أما الرفاهية، فليست في الكثرة، بل في الاختيار.
+                  <br />
+                  واعية.
+                  <br />
+                  شخصية.
+                  <br />
                   وتدوم.
                 </>
               ) : (
                 <>
-                  Luxury, to us, is thoughtful.<br />
-                  Personal.<br />
+                  Luxury, to us, is thoughtful.
+                  <br />
+                  Personal.
+                  <br />
                   Enduring.
                 </>
               )}

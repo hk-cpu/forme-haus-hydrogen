@@ -1,186 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Edit - Final No-Crop Grid</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            background-color: #f5f3f0;
-            color: #1a1a1a;
-        }
+      body {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        background-color: #f5f3f0;
+        color: #1a1a1a;
+      }
 
-        .the-edit {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 80px 40px;
-        }
+      .the-edit {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 80px 40px;
+      }
 
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-        }
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+      }
 
-        .section-title {
-            font-size: 24px;
-            font-weight: 400;
-            font-style: italic;
-        }
+      .section-title {
+        font-size: 24px;
+        font-weight: 400;
+        font-style: italic;
+      }
 
-        .view-all {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #666;
-            text-decoration: none;
-        }
+      .view-all {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #666;
+        text-decoration: none;
+      }
 
-        /* ============================================
+      /* ============================================
            GRID LAYOUT - 4 IMAGES NO CROP
            ============================================ */
-        .edit-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr 0.8fr;
-            grid-template-rows: 1fr 1fr;
-            gap: 12px;
-            height: 700px;
-        }
+      .edit-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 0.8fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 12px;
+        height: 700px;
+      }
 
-        .edit-item {
-            background-color: #eae8e5;
-            border-radius: 4px;
-            overflow: hidden;
-            position: relative;
-        }
+      .edit-item {
+        background-color: #eae8e5;
+        border-radius: 4px;
+        overflow: hidden;
+        position: relative;
+      }
 
-        /* 
+      /* 
          * KEY: object-fit: contain shows FULL image
          * No cropping, no stretching - true form preserved
          */
-        .edit-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            object-position: center;
-            display: block;
-        }
+      .edit-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+        display: block;
+      }
 
-        /* Positioning */
-        .edit-item:nth-child(1) { /* Pool */
-            grid-column: 1 / 2;
-            grid-row: 1 / 3;
-        }
+      /* Positioning */
+      .edit-item:nth-child(1) {
+        /* Pool */
+        grid-column: 1 / 2;
+        grid-row: 1 / 3;
+      }
 
-        .edit-item:nth-child(2) { /* Walking */
-            grid-column: 2 / 3;
-            grid-row: 1 / 3;
-        }
+      .edit-item:nth-child(2) {
+        /* Walking */
+        grid-column: 2 / 3;
+        grid-row: 1 / 3;
+      }
 
-        .edit-item:nth-child(3) { /* Car */
-            grid-column: 3 / 4;
-            grid-row: 1 / 2;
-        }
+      .edit-item:nth-child(3) {
+        /* Car */
+        grid-column: 3 / 4;
+        grid-row: 1 / 2;
+      }
 
-        .edit-item:nth-child(4) { /* Ring */
-            grid-column: 3 / 4;
-            grid-row: 2 / 3;
-        }
+      .edit-item:nth-child(4) {
+        /* Ring */
+        grid-column: 3 / 4;
+        grid-row: 2 / 3;
+      }
 
-        /* ============================================
+      /* ============================================
            JOIN SECTION
            ============================================ */
-        .join-section {
-            text-align: center;
-            padding: 80px 40px;
-            border-top: 1px solid #ddd;
-            margin-top: 40px;
-        }
+      .join-section {
+        text-align: center;
+        padding: 80px 40px;
+        border-top: 1px solid #ddd;
+        margin-top: 40px;
+      }
 
-        .join-title {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 16px;
-        }
+      .join-title {
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 16px;
+      }
 
-        .join-link {
-            font-size: 12px;
-            color: #666;
-            text-decoration: none;
-            border-bottom: 1px solid #666;
-            padding-bottom: 2px;
-        }
+      .join-link {
+        font-size: 12px;
+        color: #666;
+        text-decoration: none;
+        border-bottom: 1px solid #666;
+        padding-bottom: 2px;
+      }
 
-        /* ============================================
+      /* ============================================
            RESPONSIVE
            ============================================ */
-        @media (max-width: 900px) {
-            .edit-grid {
-                grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: repeat(2, 400px);
-                height: auto;
-            }
-
-            .edit-item:nth-child(1) { grid-column: 1; grid-row: 1; }
-            .edit-item:nth-child(2) { grid-column: 2; grid-row: 1; }
-            .edit-item:nth-child(3) { grid-column: 1; grid-row: 2; }
-            .edit-item:nth-child(4) { grid-column: 2; grid-row: 2; }
+      @media (max-width: 900px) {
+        .edit-grid {
+          grid-template-columns: repeat(2, 1fr);
+          grid-template-rows: repeat(2, 400px);
+          height: auto;
         }
 
-        @media (max-width: 600px) {
-            .the-edit {
-                padding: 60px 20px;
-            }
-
-            .edit-grid {
-                grid-template-columns: 1fr;
-                grid-template-rows: repeat(4, 400px);
-            }
-
-            .edit-item:nth-child(n) {
-                grid-column: 1;
-                grid-row: auto;
-            }
+        .edit-item:nth-child(1) {
+          grid-column: 1;
+          grid-row: 1;
         }
+        .edit-item:nth-child(2) {
+          grid-column: 2;
+          grid-row: 1;
+        }
+        .edit-item:nth-child(3) {
+          grid-column: 1;
+          grid-row: 2;
+        }
+        .edit-item:nth-child(4) {
+          grid-column: 2;
+          grid-row: 2;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .the-edit {
+          padding: 60px 20px;
+        }
+
+        .edit-grid {
+          grid-template-columns: 1fr;
+          grid-template-rows: repeat(4, 400px);
+        }
+
+        .edit-item:nth-child(n) {
+          grid-column: 1;
+          grid-row: auto;
+        }
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <section class="the-edit">
-        <div class="section-header">
-            <h2 class="section-title">The Edit</h2>
-            <a href="#" class="view-all">View All</a>
-        </div>
+      <div class="section-header">
+        <h2 class="section-title">The Edit</h2>
+        <a href="#" class="view-all">View All</a>
+      </div>
 
-        <div class="edit-grid">
-            <div class="edit-item">
-                <img src="https://placehold.co/600x800/e8e4e0/666?text=Pool+Image+\n(3:4)" alt="Woman by pool">
-            </div>
-            <div class="edit-item">
-                <img src="https://placehold.co/600x800/e8e4e0/666?text=Walking+Image+\n(3:4)" alt="Woman walking">
-            </div>
-            <div class="edit-item">
-                <img src="https://placehold.co/600x800/e8e4e0/666?text=Car+Image+\n(3:4)" alt="Woman in car">
-            </div>
-            <div class="edit-item">
-                <img src="https://placehold.co/600x800/e8e4e0/666?text=Ring+Close-up+\n(3:4)" alt="Close up with ring">
-            </div>
+      <div class="edit-grid">
+        <div class="edit-item">
+          <img
+            src="https://placehold.co/600x800/e8e4e0/666?text=Pool+Image+\n(3:4)"
+            alt="Woman by pool"
+          />
         </div>
+        <div class="edit-item">
+          <img
+            src="https://placehold.co/600x800/e8e4e0/666?text=Walking+Image+\n(3:4)"
+            alt="Woman walking"
+          />
+        </div>
+        <div class="edit-item">
+          <img
+            src="https://placehold.co/600x800/e8e4e0/666?text=Car+Image+\n(3:4)"
+            alt="Woman in car"
+          />
+        </div>
+        <div class="edit-item">
+          <img
+            src="https://placehold.co/600x800/e8e4e0/666?text=Ring+Close-up+\n(3:4)"
+            alt="Close up with ring"
+          />
+        </div>
+      </div>
     </section>
 
     <section class="join-section">
-        <h3 class="join-title">Join the Haus</h3>
-        <a href="#" class="join-link">Learn More</a>
+      <h3 class="join-title">Join the Haus</h3>
+      <a href="#" class="join-link">Learn More</a>
     </section>
-
-</body>
+  </body>
 </html>

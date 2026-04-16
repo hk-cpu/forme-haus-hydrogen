@@ -334,7 +334,7 @@ function CartDiscounts({
               <span className="text-[10px] uppercase tracking-wider text-taupe block">
                 {t('cart.discount')}
               </span>
-          <span className="text-sm font-medium text-warm">
+              <span className="text-sm font-medium text-warm">
                 {codes.join(', ')}
               </span>
             </div>
@@ -342,15 +342,12 @@ function CartDiscounts({
           <UpdateDiscountForm>
             <motion.button
               type="submit"
-          className="p-2 hover:bg-warm/10 rounded-full transition-colors"
+              className="p-2 hover:bg-warm/10 rounded-full transition-colors"
               aria-label="Remove discount"
               whileHover={{scale: 1.1}}
               whileTap={{scale: 0.95}}
             >
-              <IconRemove
-                aria-hidden="true"
-                className="w-4 h-4 text-taupe"
-              />
+              <IconRemove aria-hidden="true" className="w-4 h-4 text-taupe" />
             </motion.button>
           </UpdateDiscountForm>
         </motion.div>
@@ -362,7 +359,7 @@ function CartDiscounts({
           <div className="flex-1 relative">
             <Icons.Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-taupe" />
             <input
-          className="w-full pl-10 pr-4 py-3 text-sm bg-surface border border-taupe/20 rounded-lg text-warm placeholder:text-taupe/50 focus:outline-none focus:border-bronze/50 transition-colors"
+              className="w-full pl-10 pr-4 py-3 text-sm bg-surface border border-taupe/20 rounded-lg text-warm placeholder:text-taupe/50 focus:outline-none focus:border-bronze/50 transition-colors"
               type="text"
               name="discountCode"
               placeholder={t('cart.enterDiscountCode', 'Enter discount code')}
@@ -370,7 +367,7 @@ function CartDiscounts({
           </div>
           <motion.button
             type="submit"
-          className="px-5 py-3 text-xs uppercase tracking-wider font-medium text-warm bg-surface border border-taupe/20 rounded-lg hover:bg-bronze hover:border-bronze transition-all flex items-center gap-2"
+            className="px-5 py-3 text-xs uppercase tracking-wider font-medium text-warm bg-surface border border-taupe/20 rounded-lg hover:bg-bronze hover:border-bronze transition-all flex items-center gap-2"
             whileHover={{scale: 1.02}}
             whileTap={{scale: 0.98}}
           >
@@ -414,7 +411,7 @@ function CartLines({
   const {y} = useScroll(scrollRef);
 
   const className = clsx([
-          y > 0 ? 'border-t border-bronze/10' : '',
+    y > 0 ? 'border-t border-bronze/10' : '',
     layout === 'page'
       ? 'flex-grow md:translate-y-4'
       : 'px-6 pb-6 pt-2 sm:pt-0 overflow-auto transition md:px-12',
@@ -473,7 +470,7 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
     <div>
       {fetcher.state !== 'idle' ? (
         <div className="flex items-center justify-center gap-2 py-4 text-taupe text-sm">
-        <div className="w-4 h-4 rounded-full border-2 border-bronze/30 border-t-bronze animate-spin" />
+          <div className="w-4 h-4 rounded-full border-2 border-bronze/30 border-t-bronze animate-spin" />
           Preparing secure payment…
         </div>
       ) : fetcher.data?.error ? (
@@ -481,7 +478,7 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
           {fetcher.data.error}
           <button
             onClick={() => initiatePayment()}
-          className="block w-full mt-2 text-taupe hover:text-warm underline"
+            className="block w-full mt-2 text-taupe hover:text-warm underline"
           >
             Try again
           </button>
@@ -550,21 +547,7 @@ function CartCheckoutActions({
       {/* Tap Payments — mada + Visa/MC + Apple Pay + STC Pay */}
       <TapPayCheckoutButton cart={cart} />
 
-      {/* Shop Pay */}
-      {variantIds.length > 0 && (
-        <div className="[&>div]:w-full">
-          <ShopPayButton
-            width="100%"
-            variantIdsAndQuantities={
-              cart.lines?.edges?.map((edge) => ({
-                id: edge.node.merchandise.id,
-                quantity: edge.node.quantity,
-              })) || []
-            }
-            storeDomain={storeDomain}
-          />
-        </div>
-      )}
+
 
       {/* Trust Badges */}
       <div className="flex items-center justify-center gap-4 py-2">
@@ -613,15 +596,15 @@ function FreeShippingBar({subtotal}: {subtotal: string | undefined}) {
     <div className="px-1 py-3">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-1.5">
-        <Icons.Truck className="w-3.5 h-3.5 text-bronze" />
+          <Icons.Truck className="w-3.5 h-3.5 text-bronze" />
           {isFree ? (
-        <span className="text-[11px] text-bronze font-medium">
+            <span className="text-[11px] text-bronze font-medium">
               🎉 You&apos;ve unlocked free shipping!
             </span>
           ) : (
             <span className="text-[11px] text-taupe">
               Add{' '}
-        <span className="text-warm font-semibold">
+              <span className="text-warm font-semibold">
                 {remaining.toFixed(0)} SAR
               </span>{' '}
               for free shipping
@@ -648,19 +631,19 @@ function GCCPaymentBadges() {
   return (
     <div className="flex items-center justify-center gap-2 flex-wrap py-1">
       {/* mada */}
-        <div className="px-2 py-1 bg-surface rounded border border-taupe/10 flex items-center">
+      <div className="px-2 py-1 bg-surface rounded border border-taupe/10 flex items-center">
         <span className="text-[9px] font-bold text-[#1B5E20] tracking-wide">
           mada
         </span>
       </div>
       {/* STC Pay */}
-        <div className="px-2 py-1 bg-surface rounded border border-taupe/10 flex items-center">
+      <div className="px-2 py-1 bg-surface rounded border border-taupe/10 flex items-center">
         <span className="text-[9px] font-bold text-purple-400 tracking-wide">
           STC Pay
         </span>
       </div>
       {/* Apple Pay */}
-        <div className="px-2 py-1 bg-surface rounded border border-taupe/10 flex items-center">
+      <div className="px-2 py-1 bg-surface rounded border border-taupe/10 flex items-center">
         <svg
           className="w-7 h-3.5"
           viewBox="0 0 80 34"
@@ -681,13 +664,13 @@ function GCCPaymentBadges() {
         </svg>
       </div>
       {/* Tabby */}
-        <div className="px-2 py-1 bg-surface rounded border border-taupe/10 flex items-center">
+      <div className="px-2 py-1 bg-surface rounded border border-taupe/10 flex items-center">
         <span className="text-[9px] font-bold text-[#3BB273] tracking-wide">
           tabby
         </span>
       </div>
       {/* Tamara */}
-        <div className="px-2 py-1 bg-surface rounded border border-taupe/10 flex items-center">
+      <div className="px-2 py-1 bg-surface rounded border border-taupe/10 flex items-center">
         <span className="text-[9px] font-bold text-[#F6A623] tracking-wide">
           tamara
         </span>
@@ -709,7 +692,7 @@ function CartSummary({
 
   const summary = {
     drawer:
-          'grid gap-4 p-6 border-t border-bronze/20 bg-gradient-to-t from-background to-background',
+      'grid gap-4 p-6 border-t border-bronze/20 bg-gradient-to-t from-background to-background',
     page: 'sticky top-nav grid gap-6 p-4 md:px-6 md:translate-y-4 bg-primary/5 rounded-xl w-full',
   };
 
@@ -725,7 +708,7 @@ function CartSummary({
       )}
 
       {/* Subtotal */}
-        <div className="flex items-center justify-between py-4 border-b border-bronze/10">
+      <div className="flex items-center justify-between py-4 border-b border-bronze/10">
         <div className="flex items-center gap-2">
           <Icons.Bag className="w-4 h-4 text-taupe" />
           <Text as="span" className="text-taupe">
@@ -842,8 +825,7 @@ function CartLineItem({line, index}: {line: CartLine; index?: number}) {
                 key={option.name}
                 className="text-taupe text-xs"
               >
-                {option.name}:{' '}
-                <span className="text-warm">{option.value}</span>
+                {option.name}: <span className="text-warm">{option.value}</span>
               </Text>
             ))}
           </div>

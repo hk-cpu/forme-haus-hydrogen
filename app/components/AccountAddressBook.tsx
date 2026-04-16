@@ -16,9 +16,7 @@ export function AccountAddressBook({
   return (
     <>
       <div className="grid w-full gap-4 p-4 py-6 md:gap-8 md:p-8 lg:p-12 border-t border-warm/10">
-        <h3 className="font-serif text-warm text-2xl mb-6">
-          Address Book
-        </h3>
+        <h3 className="font-serif text-warm text-2xl mb-6">Address Book</h3>
         <div>
           {!addresses?.length && (
             <Text

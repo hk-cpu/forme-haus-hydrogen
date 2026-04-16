@@ -1,10 +1,13 @@
 # The Edit - Grid Redesign Reference
 
 ## Problem with Current Layout
+
 The 4th image (close-up with ring) is being **cropped and distorted** in the current masonry-style grid. This happens when using `object-fit: cover` or fixed heights without respecting the image's natural aspect ratio.
 
 ## Solution
+
 Use **`object-fit: contain`** instead of `object-fit: cover`. This ensures:
+
 - ✅ Images maintain their **true aspect ratio**
 - ✅ Images are **never cropped** or stretched
 - ✅ Images are **centered** within their containers
@@ -15,6 +18,7 @@ Use **`object-fit: contain`** instead of `object-fit: cover`. This ensures:
 ## 3 Grid Layout Options
 
 ### Option 1: Bento Grid (RECOMMENDED)
+
 ```
 ┌──────────────────┬──────────┬──────────┐
 │                  │          │  IMG 3   │
@@ -26,6 +30,7 @@ Use **`object-fit: contain`** instead of `object-fit: cover`. This ensures:
 ```
 
 **Pros:**
+
 - Visual hierarchy with larger featured image
 - Balanced asymmetry
 - Modern, editorial feel
@@ -36,6 +41,7 @@ Use **`object-fit: contain`** instead of `object-fit: cover`. This ensures:
 ---
 
 ### Option 2: Equal 2x2 Grid
+
 ```
 ┌──────────────────┬──────────────────┐
 │     IMG 1        │     IMG 2        │
@@ -47,6 +53,7 @@ Use **`object-fit: contain`** instead of `object-fit: cover`. This ensures:
 ```
 
 **Pros:**
+
 - All images equal importance
 - Clean, symmetrical layout
 - Predictable sizing
@@ -56,6 +63,7 @@ Use **`object-fit: contain`** instead of `object-fit: cover`. This ensures:
 ---
 
 ### Option 3: Featured Left
+
 ```
 ┌──────────────────┬──────────┬──────────┐
 │                  │          │  IMG 3   │
@@ -68,6 +76,7 @@ Use **`object-fit: contain`** instead of `object-fit: cover`. This ensures:
 ```
 
 **Pros:**
+
 - Emphasizes first two images
 - Good for storytelling flow
 - Unique layout
@@ -80,23 +89,23 @@ Use **`object-fit: contain`** instead of `object-fit: cover`. This ensures:
 
 ```css
 .edit-item {
-    /* Container must have defined dimensions */
-    width: 100%;
-    height: 100%;
-    
-    /* Center the image */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  /* Container must have defined dimensions */
+  width: 100%;
+  height: 100%;
+
+  /* Center the image */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .edit-item img {
-    /* Critical: Use 'contain' not 'cover' */
-    object-fit: contain;  /* ← This preserves aspect ratio */
-    
-    /* Alternative options (DON'T USE for this requirement): */
-    /* object-fit: cover;   ← Crops image to fill */
-    /* object-fit: fill;    ← Stretches image */
+  /* Critical: Use 'contain' not 'cover' */
+  object-fit: contain; /* ← This preserves aspect ratio */
+
+  /* Alternative options (DON'T USE for this requirement): */
+  /* object-fit: cover;   ← Crops image to fill */
+  /* object-fit: fill;    ← Stretches image */
 }
 ```
 
@@ -106,12 +115,12 @@ Use **`object-fit: contain`** instead of `object-fit: cover`. This ensures:
 
 Based on the images provided:
 
-| Image | Orientation | Aspect Ratio | Best Fit |
-|-------|-------------|--------------|----------|
-| 1 - Pool | Landscape/Square | ~1:1 | Large cell |
-| 2 - Walking | Portrait | ~3:4 | Tall cell |
-| 3 - Car | Portrait | ~3:4 | Standard cell |
-| 4 - Ring | Portrait | ~3:4 | Standard cell |
+| Image       | Orientation      | Aspect Ratio | Best Fit      |
+| ----------- | ---------------- | ------------ | ------------- |
+| 1 - Pool    | Landscape/Square | ~1:1         | Large cell    |
+| 2 - Walking | Portrait         | ~3:4         | Tall cell     |
+| 3 - Car     | Portrait         | ~3:4         | Standard cell |
+| 4 - Ring    | Portrait         | ~3:4         | Standard cell |
 
 ---
 
@@ -119,27 +128,27 @@ Based on the images provided:
 
 ```html
 <section class="the-edit">
-    <div class="section-header">
-        <h2 class="section-title">The Edit</h2>
-        <a href="#" class="view-all">View All</a>
+  <div class="section-header">
+    <h2 class="section-title">The Edit</h2>
+    <a href="#" class="view-all">View All</a>
+  </div>
+
+  <!-- Choose your grid class: -->
+  <!-- .edit-grid-bento | .edit-grid-2x2 | .edit-grid-featured -->
+  <div class="edit-grid-bento">
+    <div class="edit-item">
+      <img src="image1.jpg" alt="Description" />
     </div>
-    
-    <!-- Choose your grid class: -->
-    <!-- .edit-grid-bento | .edit-grid-2x2 | .edit-grid-featured -->
-    <div class="edit-grid-bento">
-        <div class="edit-item">
-            <img src="image1.jpg" alt="Description">
-        </div>
-        <div class="edit-item">
-            <img src="image2.jpg" alt="Description">
-        </div>
-        <div class="edit-item">
-            <img src="image3.jpg" alt="Description">
-        </div>
-        <div class="edit-item">
-            <img src="image4.jpg" alt="Description">
-        </div>
+    <div class="edit-item">
+      <img src="image2.jpg" alt="Description" />
     </div>
+    <div class="edit-item">
+      <img src="image3.jpg" alt="Description" />
+    </div>
+    <div class="edit-item">
+      <img src="image4.jpg" alt="Description" />
+    </div>
+  </div>
 </section>
 ```
 

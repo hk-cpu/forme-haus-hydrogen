@@ -108,7 +108,7 @@ export function PageLayout({children, layout}: LayoutProps) {
       <div className="flex flex-col min-h-screen relative">
         {/* Background Layer (Z-0) � Silk on desktop, CSS fallback on mobile */}
         <div className="fixed inset-0 pointer-events-none z-0">
-<div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,116,65,0.16),transparent_34%),linear-gradient(180deg,#181513_0%,var(--background)_60%,#0f0f0f_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,116,65,0.16),transparent_34%),linear-gradient(180deg,#181513_0%,var(--background)_60%,#0f0f0f_100%)]" />
           {isDesktop && (
             <div
               className="absolute inset-0"
@@ -170,7 +170,7 @@ export function PageLayout({children, layout}: LayoutProps) {
             </main>
             {/* Newsletter � Above Footer */}
             <section className="relative w-full overflow-hidden">
-<div className="absolute inset-0 bg-gradient-to-b from-surface/80 via-[#151515]/90 to-background/95 backdrop-blur-xl" />
+              <div className="absolute inset-0 bg-gradient-to-b from-surface/80 via-[#151515]/90 to-background/95 backdrop-blur-xl" />
               <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
               <div
                 className="relative z-10 py-16"
@@ -404,7 +404,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
       className="relative w-full overflow-hidden rounded-b-[2rem]"
     >
       {/* Semi-Glass Background Layer */}
-<div className="absolute inset-0 bg-gradient-to-b from-surface/80 via-[#151515]/90 to-background/95 backdrop-blur-xl" />
+      <div className="absolute inset-0 bg-gradient-to-b from-surface/80 via-[#151515]/90 to-background/95 backdrop-blur-xl" />
 
       {/* Bronze Accent Line at Top */}
       <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
@@ -543,7 +543,10 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
           </p>
           <PaymentBadges />
           <p className="text-[10px] text-[#8B8076]/50 mt-2">
-            {t('footer.poweredByTap', 'Powered by Tap Payments � 256-bit SSL Encrypted')}
+            {t(
+              'footer.poweredByTap',
+              'Powered by Tap Payments � 256-bit SSL Encrypted',
+            )}
           </p>
         </div>
 
@@ -558,12 +561,12 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
             </span>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
             <span>
-              {t('footer.crNo', 'CR No.')} 
+              {t('footer.crNo', 'CR No.')}
               <span className="font-mono text-[#F0EAE6]">7051891369</span>
             </span>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
             <span>
-              {t('footer.vatNo', 'VAT No.')} 
+              {t('footer.vatNo', 'VAT No.')}
               <span className="font-mono text-[#F0EAE6]">314271812300003</span>
             </span>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
@@ -574,5 +577,3 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
     </footer>
   );
 }
-
-

@@ -11,7 +11,11 @@ import {useTranslation} from '~/hooks/useTranslation';
  */
 const CATEGORIES = [
   {id: 'shop-all', label: 'Shop All', href: '/products'},
-  {id: 'phone-cases', label: 'Phone Accessories', href: '/collections/phone-cases'},
+  {
+    id: 'phone-cases',
+    label: 'Phone Accessories',
+    href: '/collections/phone-cases',
+  },
   {id: 'phone-straps', label: 'Straps', href: '/collections/phone-straps'},
   {id: 'sunglasses', label: 'Sunglasses', href: '/collections/sunglasses'},
 ];

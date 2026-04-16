@@ -1,7 +1,13 @@
 import {useEffect} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 
-export function LoadingScreen({show, onDone}: {show: boolean; onDone?: () => void}) {
+export function LoadingScreen({
+  show,
+  onDone,
+}: {
+  show: boolean;
+  onDone?: () => void;
+}) {
   useEffect(() => {
     if (!show && onDone) onDone();
   }, [show, onDone]);
@@ -34,4 +40,3 @@ export function LoadingScreen({show, onDone}: {show: boolean; onDone?: () => voi
 }
 
 export default LoadingScreen;
-

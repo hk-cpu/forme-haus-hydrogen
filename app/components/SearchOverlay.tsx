@@ -211,7 +211,7 @@ export function SearchOverlay() {
             {/* Search Header Bar — h-20 matches pre-scroll header height */}
             <div
               role="search"
-className="bg-background/[0.98] backdrop-blur-2xl border-b border-bronze/15"
+              className="bg-background/[0.98] backdrop-blur-2xl border-b border-bronze/15"
             >
               <div className="container mx-auto px-6 lg:px-16">
                 <div className="flex items-center gap-4 h-20">
@@ -222,7 +222,7 @@ className="bg-background/[0.98] backdrop-blur-2xl border-b border-bronze/15"
                     ref={inputRef}
                     type="text"
                     aria-label={t('common.search', 'Search')}
-className="flex-1 bg-transparent border-none text-warm text-sm placeholder-taupe/60 outline-none font-sans tracking-wide"
+                    className="flex-1 bg-transparent border-none text-warm text-sm placeholder-taupe/60 outline-none font-sans tracking-wide"
                     placeholder={searchPlaceholders[placeholderIndex]}
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
@@ -240,7 +240,7 @@ className="flex-1 bg-transparent border-none text-warm text-sm placeholder-taupe
                   />
                   {query && (
                     <button
-className="text-taupe hover:text-warm transition-colors p-1 flex-shrink-0"
+                      className="text-taupe hover:text-warm transition-colors p-1 flex-shrink-0"
                       onClick={() => setQuery('')}
                       aria-label={t('common.clear', 'Clear')}
                     >
@@ -301,7 +301,7 @@ className="text-taupe hover:text-warm transition-colors p-1 flex-shrink-0"
                               className="group block"
                               onClick={handleClose}
                             >
-<div className="aspect-square overflow-hidden rounded-lg bg-surface mb-2">
+                              <div className="aspect-square overflow-hidden rounded-lg bg-surface mb-2">
                                 {product.featuredImage?.url ? (
                                   <Image
                                     data={product.featuredImage}
@@ -312,7 +312,7 @@ className="text-taupe hover:text-warm transition-colors p-1 flex-shrink-0"
                                   <div className="w-full h-full bg-[#2A2A2A]" />
                                 )}
                               </div>
-<h4 className="text-warm text-xs font-medium truncate group-hover:text-bronze transition-colors">
+                              <h4 className="text-warm text-xs font-medium truncate group-hover:text-bronze transition-colors">
                                 {product.title}
                               </h4>
                               {product.priceRange?.minVariantPrice && (
@@ -339,7 +339,7 @@ className="text-taupe hover:text-warm transition-colors p-1 flex-shrink-0"
                             <RemixLink
                               key={collection.id}
                               to={`${pathPrefix}/collections/${collection.handle}`}
-className="px-3.5 py-1.5 border border-bronze/20 rounded-full text-warm text-xs hover:bg-bronze/10 hover:border-bronze/40 transition-all duration-200"
+                              className="px-3.5 py-1.5 border border-bronze/20 rounded-full text-warm text-xs hover:bg-bronze/10 hover:border-bronze/40 transition-all duration-200"
                               onClick={handleClose}
                             >
                               {collection.title}
@@ -356,7 +356,7 @@ className="px-3.5 py-1.5 border border-bronze/20 rounded-full text-warm text-xs 
                           {results.queries.map((q: any) => (
                             <button
                               key={q.text}
-className="flex items-center gap-1.5 px-3 py-1.5 text-taupe text-xs hover:text-warm transition-colors"
+                              className="flex items-center gap-1.5 px-3 py-1.5 text-taupe text-xs hover:text-warm transition-colors"
                               onClick={() => handleTrendingClick(q.text)}
                             >
                               <Icons.Search />
@@ -395,7 +395,7 @@ className="flex items-center gap-1.5 px-3 py-1.5 text-taupe text-xs hover:text-w
                       {trendingSearches.map((term) => (
                         <button
                           key={term}
-className="px-4 py-2 border border-bronze/20 rounded-full text-warm/80 text-xs tracking-wide hover:bg-bronze/10 hover:border-bronze/40 hover:text-bronze transition-all duration-200"
+                          className="px-4 py-2 border border-bronze/20 rounded-full text-warm/80 text-xs tracking-wide hover:bg-bronze/10 hover:border-bronze/40 hover:text-bronze transition-all duration-200"
                           onClick={() => handleTrendingClick(term)}
                         >
                           {term}

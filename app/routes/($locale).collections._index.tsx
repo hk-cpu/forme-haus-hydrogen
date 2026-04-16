@@ -39,9 +39,7 @@ const PAGINATION_SIZE = 4;
 
 export const headers = routeHeaders;
 
-export const loader = async ({
-  context: {storefront},
-}: LoaderFunctionArgs) => {
+export const loader = async ({context: {storefront}}: LoaderFunctionArgs) => {
   const isArabic = storefront.i18n.language === 'AR';
   const prefix = isArabic ? '/ar-sa' : '';
   throw redirect(`${prefix}/collections/new-in`);
@@ -70,51 +68,51 @@ export default function Collections() {
       </section>
 
       <div className="min-h-screen py-16">
-      <div className="mx-auto max-w-[1440px] px-[var(--page-gutter)]">
-        <div className="mb-12 text-center">
-          <span className="block text-[10px] uppercase tracking-[0.35em] text-[#a87441] mb-4">
-            Discover
-          </span>
-          <h1 className="font-serif text-4xl md:text-5xl text-[#4A3C31]">
-            Collections
-          </h1>
-          <div className="mx-auto mt-6 h-px w-20 bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
-        </div>
+        <div className="mx-auto max-w-[1440px] px-[var(--page-gutter)]">
+          <div className="mb-12 text-center">
+            <span className="block text-[10px] uppercase tracking-[0.35em] text-[#a87441] mb-4">
+              Discover
+            </span>
+            <h1 className="font-serif text-4xl md:text-5xl text-[#4A3C31]">
+              Collections
+            </h1>
+            <div className="mx-auto mt-6 h-px w-20 bg-gradient-to-r from-transparent via-[#a87441]/50 to-transparent" />
+          </div>
 
-        <Pagination connection={collections}>
-          {({nodes, isLoading, PreviousLink, NextLink}) => (
-            <>
-              <div className="flex items-center justify-center mb-8">
-                <Button as={PreviousLink} variant="secondary">
-                  {isLoading ? 'Loading...' : '↑ Previous'}
-                </Button>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                {(nodes as Collection[]).map((collection, i) => (
-                  <motion.div
-                    key={collection.id}
-                    initial={{opacity: 0, y: 20}}
-                    whileInView={{opacity: 1, y: 0}}
-                    viewport={{once: true}}
-                    transition={{duration: 0.6, delay: i * 0.1}}
-                  >
-                    <CollectionCard
-                      collection={collection}
-                      loading={i < 2 ? 'eager' : 'lazy'}
-                    />
-                  </motion.div>
-                ))}
-              </div>
-              <div className="flex items-center justify-center mt-12">
-                <Button as={NextLink} variant="secondary">
-                  {isLoading ? 'Loading...' : 'Load More ↓'}
-                </Button>
-              </div>
-            </>
-          )}
-        </Pagination>
+          <Pagination connection={collections}>
+            {({nodes, isLoading, PreviousLink, NextLink}) => (
+              <>
+                <div className="flex items-center justify-center mb-8">
+                  <Button as={PreviousLink} variant="secondary">
+                    {isLoading ? 'Loading...' : '↑ Previous'}
+                  </Button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                  {(nodes as Collection[]).map((collection, i) => (
+                    <motion.div
+                      key={collection.id}
+                      initial={{opacity: 0, y: 20}}
+                      whileInView={{opacity: 1, y: 0}}
+                      viewport={{once: true}}
+                      transition={{duration: 0.6, delay: i * 0.1}}
+                    >
+                      <CollectionCard
+                        collection={collection}
+                        loading={i < 2 ? 'eager' : 'lazy'}
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+                <div className="flex items-center justify-center mt-12">
+                  <Button as={NextLink} variant="secondary">
+                    {isLoading ? 'Loading...' : 'Load More ↓'}
+                  </Button>
+                </div>
+              </>
+            )}
+          </Pagination>
+        </div>
       </div>
-    </div>
     </div>
   );
 }

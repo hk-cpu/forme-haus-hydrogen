@@ -76,7 +76,8 @@ export const translations = {
     'journal.everydayElegance.subtitle':
       'Elegance is lived in the in-between moments.',
     'journal.behindCraft': 'Behind the Selection',
-    'journal.behindCraft.subtitle': 'Every piece begins with careful consideration.',
+    'journal.behindCraft.subtitle':
+      'Every piece begins with careful consideration.',
     'journal.read': 'Read the Journal',
 
     // Footer
@@ -214,11 +215,13 @@ export const translations = {
 
     // Editorial Section
     'editorial.modernEssentials.title': 'Modern Essentials',
-    'editorial.modernEssentials.subtitle': 'Foundations shaped by intention and refined for everyday presence.',
+    'editorial.modernEssentials.subtitle':
+      'Foundations shaped by intention and refined for everyday presence.',
     'editorial.carry.title': 'Carry It Your Way',
     'editorial.carry.subtitle': 'Hands-free elegance, carried with ease.',
     'editorial.sun.title': 'Sun Ready',
-    'editorial.sun.subtitle': 'Composed in daylight. Designed for warmth and clarity.',
+    'editorial.sun.subtitle':
+      'Composed in daylight. Designed for warmth and clarity.',
     'editorial.new.title': 'New Arrivals',
     'editorial.new.subtitle': 'Newly introduced. Carefully considered.',
 
@@ -418,7 +421,8 @@ export const translations = {
     'journal.modernWardrobe': 'تحرير الأسلوب الحديث',
     'journal.modernWardrobe.subtitle': 'يُصاغ بوضوحٍ وغريزةٍ مصقولة',
     'journal.everydayElegance': 'أناقة يومية',
-    'journal.everydayElegance.subtitle': 'الأناقة تُعاش في المساحات بين اللحظات',
+    'journal.everydayElegance.subtitle':
+      'الأناقة تُعاش في المساحات بين اللحظات',
     'journal.behindCraft': 'ما وراء الاختيار',
     'journal.behindCraft.subtitle': 'كل قطعة تبدأ بتأملٍ دقيق',
 
@@ -555,7 +559,8 @@ export const translations = {
 
     // Editorial Section
     'editorial.modernEssentials.title': 'الأساسيات الحديثة',
-    'editorial.modernEssentials.subtitle': 'أسس تُشكَّل بوعي… وتُصقل لحضور يومي هادئ',
+    'editorial.modernEssentials.subtitle':
+      'أسس تُشكَّل بوعي… وتُصقل لحضور يومي هادئ',
     'editorial.carry.title': 'احمليها على طريقتك',
     'editorial.carry.subtitle': 'أناقة بانسياب حر… تُرافقكِ بخفة',
     'editorial.sun.title': 'مهيأة لضوء النهار',

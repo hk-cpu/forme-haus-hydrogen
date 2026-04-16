@@ -293,14 +293,16 @@ export function ProductCard({
 
   // Resolve display title: use Arabic metafield when in RTL/Arabic mode
   const displayTitle =
-    (isRTL && product.titleAr?.value) ? product.titleAr.value : product.title;
+    isRTL && product.titleAr?.value ? product.titleAr.value : product.title;
 
   // Parse title: "The Olive - Mocha Tort" → name: "The Olive", color: "Mocha Tort"
   // In Arabic mode skip the split — the Arabic title is the full name
   const titleParts = isRTL ? [displayTitle] : displayTitle.split(' - ');
   const productName = titleParts[0]?.trim() || displayTitle;
   const colorFromTitle =
-    !isRTL && titleParts.length > 1 ? titleParts.slice(1).join(' - ').trim() : '';
+    !isRTL && titleParts.length > 1
+      ? titleParts.slice(1).join(' - ').trim()
+      : '';
   const colorFromVariant = product.variants?.nodes?.[0]?.selectedOptions?.find(
     (opt) => opt.name.toLowerCase() === 'color',
   )?.value;
@@ -420,7 +422,7 @@ export function ProductCard({
       <Link to={`/products/${product.handle}`} className="block">
         {/* Image Container with 3D Tilt */}
         <motion.div
-className="relative aspect-square overflow-hidden rounded-xl bg-gradient-to-br from-[#F9F9F9] to-warm mb-4 shadow-sm border border-[#EAE4DC] group-hover:shadow-xl transition-shadow duration-700"
+          className="relative aspect-square overflow-hidden rounded-xl bg-gradient-to-br from-[#F9F9F9] to-warm mb-4 shadow-sm border border-[#EAE4DC] group-hover:shadow-xl transition-shadow duration-700"
           style={
             shouldReduceMotion
               ? undefined
@@ -481,16 +483,16 @@ className="relative aspect-square overflow-hidden rounded-xl bg-gradient-to-br f
 
           {/* Sold Out Overlay */}
           {!isAvailable && (
-              <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-                <motion.span
-                  initial={{opacity: 0, scale: 0.9}}
-                  animate={{opacity: 1, scale: 1}}
-                  className="font-serif text-xl italic text-white/90 tracking-wide"
-                >
-                  {t('product.soldOut', 'Sold Out')}
-                </motion.span>
-              </div>
-            )}
+            <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+              <motion.span
+                initial={{opacity: 0, scale: 0.9}}
+                animate={{opacity: 1, scale: 1}}
+                className="font-serif text-xl italic text-white/90 tracking-wide"
+              >
+                {t('product.soldOut', 'Sold Out')}
+              </motion.span>
+            </div>
+          )}
 
           {/* New Badge with animation */}
           <AnimatePresence>
@@ -499,7 +501,7 @@ className="relative aspect-square overflow-hidden rounded-xl bg-gradient-to-br f
                 initial={{opacity: 0, x: -20, scale: 0.8}}
                 animate={{opacity: 1, x: 0, scale: 1}}
                 exit={{opacity: 0, x: -20}}
-className="absolute top-3 left-3 px-3 py-1.5 bg-gradient-to-r from-bronze to-bronze-dark text-white text-[10px] uppercase tracking-widest rounded-full flex items-center gap-1.5 shadow-lg z-20"
+                className="absolute top-3 left-3 px-3 py-1.5 bg-gradient-to-r from-bronze to-bronze-dark text-white text-[10px] uppercase tracking-widest rounded-full flex items-center gap-1.5 shadow-lg z-20"
               >
                 <Icons.Sparkles />
                 {t('product.new', 'New')}
@@ -524,8 +526,8 @@ className="absolute top-3 left-3 px-3 py-1.5 bg-gradient-to-r from-bronze to-bro
             onClick={handleWishlist}
             className={`absolute top-3 right-3 w-12 h-12 md:w-11 md:h-11 rounded-full flex items-center justify-center transition-all duration-300 z-30 shadow-md touch-target ${
               isWishlisted
-? 'bg-bronze text-white'
-: 'bg-white/95 text-brand-text opacity-100 md:opacity-0 md:group-hover:opacity-100 hover:bg-bronze hover:text-white backdrop-blur-sm'
+                ? 'bg-bronze text-white'
+                : 'bg-white/95 text-brand-text opacity-100 md:opacity-0 md:group-hover:opacity-100 hover:bg-bronze hover:text-white backdrop-blur-sm'
             }`}
             whileHover={{scale: 1.1}}
             whileTap={{scale: 0.9}}
@@ -548,7 +550,7 @@ className="absolute top-3 left-3 px-3 py-1.5 bg-gradient-to-r from-bronze to-bro
                   exit={{opacity: 0, x: -10}}
                   transition={{duration: 0.2}}
                   onClick={prevImage}
-className="absolute left-2 top-1/2 -translate-y-1/2 w-11 h-11 md:w-9 md:h-9 rounded-full bg-white/90 text-brand-text flex items-center justify-center backdrop-blur-sm hover:bg-bronze hover:text-white transition-colors z-20 shadow-md touch-target"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-11 h-11 md:w-9 md:h-9 rounded-full bg-white/90 text-brand-text flex items-center justify-center backdrop-blur-sm hover:bg-bronze hover:text-white transition-colors z-20 shadow-md touch-target"
                   aria-label={t('product.prevImage', 'Previous image')}
                 >
                   <Icons.ChevronLeft />
@@ -559,7 +561,7 @@ className="absolute left-2 top-1/2 -translate-y-1/2 w-11 h-11 md:w-9 md:h-9 roun
                   exit={{opacity: 0, x: 10}}
                   transition={{duration: 0.2}}
                   onClick={nextImage}
-className="absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 md:w-9 md:h-9 rounded-full bg-white/90 text-brand-text flex items-center justify-center backdrop-blur-sm hover:bg-bronze hover:text-white transition-colors z-20 shadow-md touch-target"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 md:w-9 md:h-9 rounded-full bg-white/90 text-brand-text flex items-center justify-center backdrop-blur-sm hover:bg-bronze hover:text-white transition-colors z-20 shadow-md touch-target"
                   aria-label={t('product.nextImage', 'Next image')}
                 >
                   <Icons.ChevronRight />
@@ -581,7 +583,7 @@ className="absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 md:w-9 md:h-9 rou
                   }}
                   className={`h-1.5 rounded-full transition-all duration-300 ${
                     idx === currentImage
-? 'bg-bronze w-5'
+                      ? 'bg-bronze w-5'
                       : 'bg-white/70 w-1.5 hover:bg-white'
                   }`}
                   whileHover={{scale: 1.2}}
@@ -655,12 +657,12 @@ className="absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 md:w-9 md:h-9 rou
         {/* Product Info */}
         <div className="space-y-1 mt-4">
           {/* 1. Designer name */}
-<div className="text-xs uppercase tracking-[0.15em] text-bronze font-medium leading-none">
+          <div className="text-xs uppercase tracking-[0.15em] text-bronze font-medium leading-none">
             {product.vendor || 'Formé Haus'}
           </div>
 
           {/* 2. Product name */}
-<h3 className="font-serif text-warm text-sm md:text-base leading-snug group-hover:text-bronze transition-colors duration-300 line-clamp-1 tracking-wide mt-1">
+          <h3 className="font-serif text-warm text-sm md:text-base leading-snug group-hover:text-bronze transition-colors duration-300 line-clamp-1 tracking-wide mt-1">
             {productName}
           </h3>
 
@@ -674,10 +676,10 @@ className="absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 md:w-9 md:h-9 rou
           )}
 
           {/* 4. Price */}
-<div className="flex items-baseline gap-2 pt-0.5 mt-2 border-t border-bronze/10">
+          <div className="flex items-baseline gap-2 pt-0.5 mt-2 border-t border-bronze/10">
             {hasPrice ? (
               <>
-<p className="text-warm text-sm font-medium transition-all duration-300 group-hover:text-bronze flex items-baseline mt-1">
+                <p className="text-warm text-sm font-medium transition-all duration-300 group-hover:text-bronze flex items-baseline mt-1">
                   <Money
                     data={product.priceRange.minVariantPrice as any}
                     withoutTrailingZeros
@@ -708,7 +710,7 @@ className="absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 md:w-9 md:h-9 rou
 
       {/* Hover indicator line */}
       <motion.div
-className="absolute -bottom-1 left-0 h-[2px] bg-gradient-to-r from-bronze to-bronze-light rounded-full"
+        className="absolute -bottom-1 left-0 h-[2px] bg-gradient-to-r from-bronze to-bronze-light rounded-full"
         initial={{width: 0}}
         animate={{width: isHovered ? '40%' : 0}}
         transition={{duration: 0.4, ease: [0.25, 0.1, 0.25, 1]}}
@@ -727,13 +729,13 @@ export function ProductCardSkeleton({index = 0}: {index?: number}) {
       transition={{delay: index * 0.08}}
       style={{animationDelay: `${index * 80}ms`}}
     >
-<div className="relative aspect-square overflow-hidden rounded-xl bg-surface mb-4">
+      <div className="relative aspect-square overflow-hidden rounded-xl bg-surface mb-4">
         <div className="absolute inset-0 luxury-skeleton" />
       </div>
       <div className="space-y-1.5 px-1 mt-4">
-<div className="h-4 w-3/4 rounded bg-surface luxury-skeleton" />
-<div className="h-3 w-1/2 rounded bg-surface luxury-skeleton mt-1" />
-<div className="h-3.5 w-1/3 rounded bg-surface luxury-skeleton mt-1" />
+        <div className="h-4 w-3/4 rounded bg-surface luxury-skeleton" />
+        <div className="h-3 w-1/2 rounded bg-surface luxury-skeleton mt-1" />
+        <div className="h-3.5 w-1/3 rounded bg-surface luxury-skeleton mt-1" />
       </div>
     </motion.div>
   );

@@ -245,8 +245,7 @@ export default function Product() {
     product.selectedOrFirstAvailableVariant,
     variants,
   );
-  const hasValidPrice =
-    parseFloat(selectedVariant?.price?.amount || '0') > 0;
+  const hasValidPrice = parseFloat(selectedVariant?.price?.amount || '0') > 0;
   const isPurchasable =
     Boolean(selectedVariant?.availableForSale) && hasValidPrice;
 
@@ -472,8 +471,7 @@ export function ProductForm({
 
   const {t} = useTranslation();
 
-  const hasValidPrice =
-    parseFloat(selectedVariant?.price?.amount || '0') > 0;
+  const hasValidPrice = parseFloat(selectedVariant?.price?.amount || '0') > 0;
   const isOutOfStock = !selectedVariant?.availableForSale || !hasValidPrice;
 
   const isOnSale =
@@ -669,13 +667,7 @@ export function ProductForm({
                 </AddToCartButton>
               </motion.div>
             )}
-            {!isOutOfStock && (
-              <ShopPayButton
-                width="100%"
-                variantIds={[selectedVariant?.id!]}
-                storeDomain={storeDomain}
-              />
-            )}
+
           </div>
         )}
       </div>

@@ -58,7 +58,7 @@ export async function action({request, context}: ActionFunctionArgs) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept': 'text/html',
+          Accept: 'text/html',
         },
         body: body.toString(),
         redirect: 'manual',
@@ -248,7 +248,9 @@ export default function ContactPage() {
         <div className="space-y-6">
           {/* Email Card */}
           <div className="bg-white p-8 rounded-2xl border border-[#8B8076]/10">
-              <h3 className="font-serif text-xl text-brand-text mb-4">Email Us</h3>
+            <h3 className="font-serif text-xl text-brand-text mb-4">
+              Email Us
+            </h3>
             <p className="text-[13px] text-[#8B8076] mb-4">
               We&apos;ll get back to you as soon as possible.
             </p>
@@ -280,7 +282,9 @@ export default function ContactPage() {
 
           {/* WhatsApp Card */}
           <div className="bg-white p-8 rounded-2xl border border-[#8B8076]/10">
-            <h3 className="font-serif text-xl text-brand-text mb-4">WhatsApp</h3>
+            <h3 className="font-serif text-xl text-brand-text mb-4">
+              WhatsApp
+            </h3>
             <p className="text-[13px] text-[#8B8076] mb-4">
               Message us directly for quick support.
             </p>
@@ -304,7 +308,9 @@ export default function ContactPage() {
 
           {/* Instagram */}
           <div className="bg-white p-8 rounded-2xl border border-[#8B8076]/10">
-            <h3 className="font-serif text-xl text-brand-text mb-4">Instagram</h3>
+            <h3 className="font-serif text-xl text-brand-text mb-4">
+              Instagram
+            </h3>
             <p className="text-[13px] text-[#8B8076] mb-4">
               Follow us for the latest drops and styling inspiration.
             </p>

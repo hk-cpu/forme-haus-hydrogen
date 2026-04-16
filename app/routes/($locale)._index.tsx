@@ -65,10 +65,13 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 
 export default function Homepage() {
   return (
-  <div className="min-h-screen bg-transparent text-warm">
+    <div className="min-h-screen bg-transparent text-warm">
       <Hero />
 
-      <div id="explore-collections" className="relative z-20 mt-[-5vh] rounded-t-[2rem] bg-cream/85 text-brand-text shadow-[0_-10px_40px_-10px_rgba(255,255,255,0.15)] backdrop-blur-md">
+      <div
+        id="explore-collections"
+        className="relative z-20 mt-[-5vh] rounded-t-[2rem] bg-cream/85 text-brand-text shadow-[0_-10px_40px_-10px_rgba(255,255,255,0.15)] backdrop-blur-md"
+      >
         <div className="pt-14 md:pt-16">
           <Suspense fallback={<SectionFallback className="min-h-[520px]" />}>
             <CategoryBento />

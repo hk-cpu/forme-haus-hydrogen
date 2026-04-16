@@ -53,7 +53,8 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
     parseFloat(product.priceRange?.minVariantPrice?.amount || '0') > 0;
   const isAvailable = product.availableForSale !== false;
   const lowStock = (() => {
-    const qty: number | undefined = (product as any)?.variants?.nodes?.[0]?.quantityAvailable;
+    const qty: number | undefined = (product as any)?.variants?.nodes?.[0]
+      ?.quantityAvailable;
     return typeof qty === 'number' && qty >= 1 && qty <= 5 ? qty : null;
   })();
 
@@ -61,13 +62,15 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
 
   // Resolve display title: use Arabic metafield when in RTL/Arabic mode
   const displayTitle =
-    (isRTL && product.titleAr?.value) ? product.titleAr.value : product.title;
+    isRTL && product.titleAr?.value ? product.titleAr.value : product.title;
 
   // Parse title for color (color suffix is English-only; skip split in Arabic)
   const titleParts = isRTL ? [displayTitle] : displayTitle.split(' - ');
   const productName = titleParts[0]?.trim() || displayTitle;
   const productColor =
-    !isRTL && titleParts.length > 1 ? titleParts.slice(1).join(' - ').trim() : '';
+    !isRTL && titleParts.length > 1
+      ? titleParts.slice(1).join(' - ').trim()
+      : '';
 
   // Calculate discount
   const hasDiscount =
@@ -231,7 +234,11 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
           {isAvailable && hasPrice && product.variants?.nodes?.[0]?.id && (
             <CartForm
               route="/cart"
-              inputs={{lines: [{merchandiseId: product.variants.nodes[0].id, quantity: 1}]}}
+              inputs={{
+                lines: [
+                  {merchandiseId: product.variants.nodes[0].id, quantity: 1},
+                ],
+              }}
               action={CartForm.ACTIONS.LinesAdd}
             >
               {(fetcher) => (

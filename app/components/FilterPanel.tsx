@@ -138,9 +138,12 @@ export function FilterPanel({
         filter.values.forEach((option) => {
           const inputString = option.input as string;
           try {
-            const parsedInput = JSON.parse(inputString) as Record<string, unknown>;
+            const parsedInput = JSON.parse(inputString) as Record<
+              string,
+              unknown
+            >;
             let matches = Object.keys(parsedInput).length > 0;
-            
+
             Object.entries(parsedInput).forEach(([key, value]) => {
               if (key === 'price') return;
               const paramVals = params.getAll(`${FILTER_URL_PREFIX}${key}`);
@@ -148,7 +151,7 @@ export function FilterPanel({
                 matches = false;
               }
             });
-            
+
             if (matches) {
               initialSet.add(inputString);
             }

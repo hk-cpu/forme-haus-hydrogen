@@ -48,9 +48,7 @@ function Icon({className = ''}: {className?: string}) {
         fill="#666"
         fontFamily="Arial, sans-serif"
         opacity="0"
-      >
-        
-      </text>
+      ></text>
     </svg>
   );
 }
@@ -93,9 +91,7 @@ function MuwathooqIcon({className = ''}: {className?: string}) {
         fill="#666"
         fontFamily="Arial, sans-serif"
         opacity="0"
-      >
-        
-      </text>
+      ></text>
     </svg>
   );
 }

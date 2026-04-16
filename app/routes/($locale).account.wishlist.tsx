@@ -178,18 +178,13 @@ export default function WishlistPage() {
                   transition={{delay: index * 0.05, duration: 0.4}}
                   className="group relative"
                 >
-                  <Link
-                    to={`/products/${product.handle}`}
-                    className="block"
-                  >
+                  <Link to={`/products/${product.handle}`} className="block">
                     {/* Image */}
                     <div className="relative aspect-square overflow-hidden rounded-xl bg-gradient-to-br from-[#F9F9F9] to-warm mb-3 border border-[#EAE4DC] group-hover:shadow-lg transition-shadow duration-500">
                       {product.images?.nodes?.[0]?.url ? (
                         <img
                           src={product.images.nodes[0].url}
-                          alt={
-                            product.images.nodes[0].altText || product.title
-                          }
+                          alt={product.images.nodes[0].altText || product.title}
                           className="w-full h-full object-contain object-center p-3 group-hover:scale-105 transition-transform duration-700"
                           loading="lazy"
                         />
@@ -207,10 +202,7 @@ export default function WishlistPage() {
                           handleRemove(product.id);
                         }}
                         className="absolute top-3 right-3 w-10 h-10 rounded-full bg-bronze text-white flex items-center justify-center shadow-md hover:bg-bronze-dark transition-colors z-10"
-                        aria-label={t(
-                          'wishlist.remove',
-                          'Remove from saved',
-                        )}
+                        aria-label={t('wishlist.remove', 'Remove from saved')}
                       >
                         <svg
                           width="18"
