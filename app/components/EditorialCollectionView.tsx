@@ -188,6 +188,7 @@ export function EditorialCollectionView({
 
       {/* Hero Heading */}
       <CollectionHero
+        handle={collection.handle}
         title={collection.title}
         description={collection.description}
       />
@@ -228,10 +229,14 @@ export function EditorialCollectionView({
 
 const NAV_ITEMS = [
   {handle: 'modern-essentials', label: 'Modern Essentials'},
-  {handle: 'carry-it-your-way', label: 'Carry Your Own Way'},
+  {handle: 'carry-it-your-way', label: 'Carry It Your Way'},
   {handle: 'sun-ready', label: 'Sun Ready'},
   {handle: 'new-arrivals', label: 'New Arrivals'},
 ];
+
+const COLLECTION_TITLE_OVERRIDES: Record<string, string> = {
+  'carry-it-your-way': 'Carry It Your Way',
+};
 
 function EditorialNav({currentHandle}: {currentHandle: string}) {
   return (
@@ -278,13 +283,16 @@ function EditorialNav({currentHandle}: {currentHandle: string}) {
 // ─── Collection Hero ─────────────────────────────────────────
 
 function CollectionHero({
+  handle,
   title,
   description,
 }: {
+  handle: string;
   title: string;
   description?: string | null;
 }) {
-  const words = title.split(' ');
+  const resolvedTitle = COLLECTION_TITLE_OVERRIDES[handle] || title;
+  const words = resolvedTitle.split(' ');
 
   return (
     <motion.div
