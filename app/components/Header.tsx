@@ -279,6 +279,14 @@ export function Header({
       };
     }
 
+    if (item.title?.toLowerCase() === 'home') {
+      return {
+        ...item,
+        to: '/',
+        title: item.title,
+      };
+    }
+
     if (
       item.title === 'ABOUT US' ||
       item.title === 'About Us' ||

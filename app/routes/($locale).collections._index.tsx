@@ -39,10 +39,31 @@ const PAGINATION_SIZE = 4;
 
 export const headers = routeHeaders;
 
-export const loader = async ({context: {storefront}}: LoaderFunctionArgs) => {
-  const isArabic = storefront.i18n.language === 'AR';
-  const prefix = isArabic ? '/ar-sa' : '';
-  throw redirect(`${prefix}/collections/new-in`);
+export const loader = async ({
+  request,
+  context: {storefront},
+}: LoaderFunctionArgs) => {
+  const paginationVariables = getPaginationVariables(request, {
+    pageBy: PAGINATION_SIZE,
+  });
+
+  const {collections} = await storefront.query(COLLECTIONS_QUERY, {
+    variables: {
+      ...paginationVariables,
+      country: storefront.i18n.country,
+      language: storefront.i18n.language,
+    },
+  });
+
+  const seo = seoPayload.listCollections({
+    collections,
+    url: request.url,
+  });
+
+  return json({
+    collections,
+    seo,
+  });
 };
 
 export const meta = ({matches}: MetaArgs<typeof loader>) => {
