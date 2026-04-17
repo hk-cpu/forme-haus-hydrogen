@@ -206,12 +206,12 @@
 
 39. **"Do you have a status page for monitoring outages?"**
 
-    - URL: ****\_\_\_****
+    - URL: \***\*\_\_\_\*\***
 
 40. **"Who do we contact for urgent issues during launch?"**
-    - Email: ****\_\_\_****
-    - Phone: ****\_\_\_****
-    - WhatsApp: ****\_\_\_****
+    - Email: \***\*\_\_\_\*\***
+    - Phone: \***\*\_\_\_\*\***
+    - WhatsApp: \***\*\_\_\_\*\***
 
 ---
 
@@ -270,7 +270,7 @@
 
 After speaking with Tap team, document:
 
-- [ ] Production API Key received: `sk_live_`****\_\_****
+- [ ] Production API Key received: `sk_live_`\***\*\_\_\*\***
 - [ ] Webhook events confirmed
 - [ ] Settlement timeline confirmed: T+\_\_\_
 - [ ] Fees confirmed: \_\_\_%

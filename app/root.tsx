@@ -183,6 +183,7 @@ async function loadCriticalData({request, context}: LoaderFunctionArgs) {
       language: storefront.i18n.language,
     },
     selectedLocale: storefront.i18n,
+    googleClientId: env.PUBLIC_GOOGLE_CLIENT_ID || '',
   };
 }
 

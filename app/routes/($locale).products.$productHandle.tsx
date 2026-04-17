@@ -667,7 +667,6 @@ export function ProductForm({
                 </AddToCartButton>
               </motion.div>
             )}
-
           </div>
         )}
       </div>

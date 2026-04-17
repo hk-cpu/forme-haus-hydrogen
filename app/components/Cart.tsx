@@ -462,6 +462,8 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
   // Redirect to Tap's hosted payment page when we get the URL
   if (fetcher.state === 'idle' && fetcher.data?.redirectUrl) {
     if (typeof window !== 'undefined') {
+      // Clean up cart drawer scroll lock before leaving so history back works cleanly
+      document.body.style.overflow = '';
       window.location.href = fetcher.data.redirectUrl;
     }
   }
@@ -517,37 +519,8 @@ function CartCheckoutActions({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Primary Checkout via Shopify */}
-      <motion.a
-        href={checkoutUrl}
-        target="_self"
-        whileHover={{scale: 1.01}}
-        whileTap={{scale: 0.99}}
-      >
-        <Button
-          as="span"
-          width="full"
-          className="bg-gradient-to-r from-bronze to-bronze-dark hover:from-bronze-dark hover:to-bronze text-white font-medium py-4 rounded-xl transition-all shadow-lg shadow-bronze/20 flex items-center justify-center gap-2"
-        >
-          <Icons.Lock className="w-4 h-4" />
-          {t('cart.checkout', 'Proceed to Checkout')}
-          <Icons.ArrowRight className="w-4 h-4" />
-        </Button>
-      </motion.a>
-
-      {/* Divider */}
-      <div className="flex items-center gap-3">
-        <div className="flex-1 h-px bg-taupe/15" />
-        <span className="text-[10px] text-taupe uppercase tracking-wider">
-          or pay directly
-        </span>
-        <div className="flex-1 h-px bg-taupe/15" />
-      </div>
-
       {/* Tap Payments — mada + Visa/MC + Apple Pay + STC Pay */}
       <TapPayCheckoutButton cart={cart} />
-
-
 
       {/* Trust Badges */}
       <div className="flex items-center justify-center gap-4 py-2">
