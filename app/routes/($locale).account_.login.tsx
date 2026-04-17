@@ -34,7 +34,7 @@ export async function loader({context, request}: LoaderFunctionArgs) {
     return redirect(`${context.storefront.i18n?.pathPrefix || ''}/account`);
   }
 
-  return json({googleClientId});
+  return json({});
 }
 
 export async function action({context, request}: ActionFunctionArgs) {
@@ -188,6 +188,7 @@ export async function action({context, request}: ActionFunctionArgs) {
         return json(
           {
             error: data.customerAccessTokenCreate.customerUserErrors[0].message,
+            debug: data.customerAccessTokenCreate.customerUserErrors,
             formId: 'login',
           },
           {status: 400},
@@ -197,8 +198,9 @@ export async function action({context, request}: ActionFunctionArgs) {
       const {customerAccessToken} = data?.customerAccessTokenCreate || {};
 
       if (!customerAccessToken?.accessToken) {
+        const devDebug = `API rejected login. Data: ${JSON.stringify(data)}`;
         return json(
-          {error: 'Invalid credentials.', formId: 'login'},
+          {error: 'Invalid credentials. ' + devDebug, formId: 'login'},
           {status: 401},
         );
       }
@@ -224,6 +226,7 @@ export default function Login() {
   const data = useActionData<typeof action>() as any;
   const navigation = useNavigation();
   const [params] = useSearchParams();
+  const submit = useSubmit();
   const isSubmitting = navigation.state === 'submitting';
 
   // Default to registering if register params exists or if previous action was register
@@ -254,25 +257,27 @@ export default function Login() {
         <div className="absolute inset-0 bg-black/10 backdrop-blur-[2px]"></div>
 
         {/* Ghost Cursor - Client only */}
-        <Suspense fallback={null}>
-          <GhostCursorEnhanced
-            primaryColor="#ffffff"
-            secondaryColor={'#a87441'}
-            brightness={0.8}
-            edgeIntensity={0.2}
-            trailLength={40}
-            inertia={0.2}
-            grainIntensity={0.03}
-            bloomStrength={0.4}
-            bloomRadius={0.6}
-            bloomThreshold={0.02}
-            fadeDelayMs={600}
-            fadeDurationMs={1000}
-            zIndex={0}
-            mixBlendMode="overlay"
-            hoverIntensity={2.5}
-          />
-        </Suspense>
+        {isMounted && (
+          <Suspense fallback={null}>
+            <GhostCursorEnhanced
+              primaryColor="#ffffff"
+              secondaryColor={'#a87441'}
+              brightness={0.8}
+              edgeIntensity={0.2}
+              trailLength={40}
+              inertia={0.2}
+              grainIntensity={0.03}
+              bloomStrength={0.4}
+              bloomRadius={0.6}
+              bloomThreshold={0.02}
+              fadeDelayMs={600}
+              fadeDurationMs={1000}
+              zIndex={0}
+              mixBlendMode="overlay"
+              hoverIntensity={2.5}
+            />
+          </Suspense>
+        )}
 
         <div className="relative z-10 w-full max-w-[480px] mx-auto px-6 py-12">
           {/* Unified White Container */}
