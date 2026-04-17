@@ -7,9 +7,14 @@ import {
   useSubmit,
   useRouteLoaderData,
 } from '@remix-run/react';
-import {GoogleOAuthProvider, GoogleLogin} from '@react-oauth/google';
 import type {RootLoader} from '~/root';
-import {useState} from 'react';
+import {useState, useEffect, Suspense, lazy} from 'react';
+
+const GoogleSSOButton = lazy(() =>
+  import('~/components/GoogleSSO.client').then((m) => ({
+    default: m.GoogleSSOButton,
+  })),
+);
 
 export const meta = () => {
   return [{title: 'Create Account — Formé Haus'}];
@@ -91,12 +96,16 @@ export default function Register() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
   const [showPassword, setShowPassword] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   return (
-    <GoogleOAuthProvider clientId={rootData?.googleClientId || ''}>
-      <div className="relative min-h-screen w-full bg-[#F9F5F0] flex flex-col items-center justify-center text-[#2C2419]">
-        <div className="relative z-10 flex flex-col items-center gap-8 w-full max-w-[420px] mx-auto px-6 py-16">
-          {/* Logo */}
+    <div className="relative min-h-screen w-full bg-[#F9F5F0] flex flex-col items-center justify-center text-[#2C2419]">
+      <div className="relative z-10 flex flex-col items-center gap-8 w-full max-w-[420px] mx-auto px-6 py-16">
+        {/* Logo */}
           <a href="/" className="group">
             <img
               src="/brand/logo-icon-only.webp"
@@ -159,29 +168,31 @@ export default function Register() {
               method="post"
               className="w-full space-y-6 bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-xl border border-[#4A3C31]/8 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
             >
-              {/* Google SSO Button */}
-              <div className="flex justify-center mb-2">
-                <GoogleLogin
-                  onSuccess={(credentialResponse) => {
-                    const formData = new FormData();
-                    formData.append('formId', 'googleAuth');
-                    formData.append(
-                      'credential',
-                      credentialResponse.credential || '',
-                    );
-                    submit(formData, {
-                      method: 'post',
-                      action: `${
-                        rootData?.selectedLocale?.pathPrefix || ''
-                      }/account/login`,
-                    });
-                  }}
-                  onError={() => console.log('Google Sign-up Failed')}
-                  theme="filled_black"
-                  shape="pill"
-                  text="signup_with"
-                />
-              </div>
+              {/* Google SSO Button Render Client */}
+              {isMounted && rootData?.googleClientId && (
+                <div className="flex justify-center mb-2">
+                  <Suspense fallback={<div className="h-[40px] w-[200px] bg-warm/50 rounded-full animate-pulse" />}>
+                    <GoogleSSOButton
+                      clientId={rootData.googleClientId}
+                      onSuccess={(credentialResponse: any) => {
+                        const formData = new FormData();
+                        formData.append('formId', 'googleAuth');
+                        formData.append(
+                          'credential',
+                          credentialResponse.credential || '',
+                        );
+                        submit(formData, {
+                          method: 'post',
+                          action: `${
+                            rootData?.selectedLocale?.pathPrefix || ''
+                          }/account/login`,
+                        });
+                      }}
+                      onError={() => console.log('Google Sign-up Failed')}
+                    />
+                  </Suspense>
+                </div>
+              )}
 
               <div className="flex items-center gap-3">
                 <div className="h-px bg-[#4A3C31]/10 flex-1"></div>
@@ -272,9 +283,8 @@ export default function Register() {
               </div>
             </Form>
           )}
-        </div>
       </div>
-    </GoogleOAuthProvider>
+    </div>
   );
 }
 

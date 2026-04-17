@@ -14,8 +14,13 @@ import {
   useSubmit,
 } from '@remix-run/react';
 import {useState, useEffect, Suspense, lazy} from 'react';
-import {GoogleOAuthProvider, GoogleLogin} from '@react-oauth/google';
 import type {RootLoader} from '~/root';
+
+const GoogleSSOButton = lazy(() =>
+  import('~/components/GoogleSSO.client').then((m) => ({
+    default: m.GoogleSSOButton,
+  })),
+);
 
 // Lazy load GhostCursorEnhanced to prevent SSR issues with three.js
 const GhostCursorEnhanced = lazy(
@@ -223,6 +228,11 @@ export default function Login() {
 
   // Default to registering if register params exists or if previous action was register
   const [isRegistering, setIsRegistering] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     if (data?.formId === 'register') {
@@ -236,7 +246,6 @@ export default function Login() {
   }, [data]);
 
   return (
-    <GoogleOAuthProvider clientId={rootData?.googleClientId || ''}>
       <div
         className="relative min-h-screen w-full overflow-hidden bg-cover bg-center flex flex-col items-center justify-center text-brand-text"
         style={{backgroundImage: 'url("/brand/silk-texture.webp")'}}
@@ -301,24 +310,26 @@ export default function Login() {
               </div>
             </div>
 
-            {/* Google SSO Button */}
-            <div className="flex justify-center mb-6">
-              <GoogleLogin
-                onSuccess={(credentialResponse) => {
-                  const formData = new FormData();
-                  formData.append('formId', 'googleAuth');
-                  formData.append(
-                    'credential',
-                    credentialResponse.credential || '',
-                  );
-                  submit(formData, {method: 'post'});
-                }}
-                onError={() => console.log('Google Login Failed')}
-                theme="filled_black"
-                shape="pill"
-                text="continue_with"
-              />
-            </div>
+            {/* Google SSO Button - Render Client-Only via Lazy Component */}
+            {isMounted && rootData?.googleClientId && (
+              <div className="flex justify-center mb-6">
+                <Suspense fallback={<div className="h-[40px] w-[200px] bg-warm/50 rounded-full animate-pulse" />}>
+                  <GoogleSSOButton
+                    clientId={rootData.googleClientId}
+                    onSuccess={(credentialResponse: any) => {
+                      const formData = new FormData();
+                      formData.append('formId', 'googleAuth');
+                      formData.append(
+                        'credential',
+                        credentialResponse.credential || '',
+                      );
+                      submit(formData, {method: 'post'});
+                    }}
+                    onError={() => console.log('Google Login Failed')}
+                  />
+                </Suspense>
+              </div>
+            )}
 
             <div className="flex items-center gap-3 mb-8">
               <div className="h-px bg-warm/50 flex-1"></div>
@@ -457,7 +468,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-    </GoogleOAuthProvider>
   );
 }
 

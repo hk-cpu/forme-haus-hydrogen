@@ -46,7 +46,8 @@ interface EditorialSectionConfig {
     | 'row'
     | 'quote'
     | 'hero-side'
-    | 'wide';
+    | 'wide'
+    | 'bundle-builder';
   productIndices?: number[];
   content?: {quote: string; author: string};
 }
@@ -81,8 +82,7 @@ const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {
   },
   'carry-it-your-way': {
     sections: [
-      {type: 'scattered', productIndices: [0, 1, 2, 3]},
-      {type: 'row', productIndices: [4, 5, 6, 7]},
+      {type: 'bundle-builder'},
     ],
   },
   'sun-ready': {
@@ -224,6 +224,8 @@ export function EditorialCollectionView({
   );
 }
 
+import {BundleBuilderSection} from './BundleBuilderSection';
+
 // ─── Editorial Navigation ────────────────────────────────────
 
 const NAV_ITEMS = [
@@ -348,6 +350,10 @@ function ContentSection({
 }) {
   if (section.type === 'quote' && section.content) {
     return <EditorialQuote {...section.content} />;
+  }
+
+  if (section.type === 'bundle-builder') {
+    return <BundleBuilderSection reduceMotion={reduceMotion} />;
   }
 
   const sectionProducts = (section.productIndices || [])
