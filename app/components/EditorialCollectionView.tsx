@@ -46,8 +46,7 @@ interface EditorialSectionConfig {
     | 'row'
     | 'quote'
     | 'hero-side'
-    | 'wide'
-    | 'bundle-builder';
+    | 'wide';
   productIndices?: number[];
   content?: {quote: string; author: string};
 }
@@ -82,7 +81,16 @@ const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {
   },
   'carry-it-your-way': {
     sections: [
-      {type: 'bundle-builder'},
+      {type: 'hero', productIndices: [0, 1]},
+      {type: 'scattered', productIndices: [2, 3, 4, 5]},
+      {
+        type: 'quote',
+        content: {
+          quote: 'Carry it your way — every pairing, your signature.',
+          author: 'Forme Haus',
+        },
+      },
+      {type: 'row', productIndices: [6, 7, 8, 9]},
     ],
   },
   'sun-ready': {
@@ -224,8 +232,6 @@ export function EditorialCollectionView({
   );
 }
 
-import {BundleBuilderSection} from './BundleBuilderSection';
-
 // ─── Editorial Navigation ────────────────────────────────────
 
 const NAV_ITEMS = [
@@ -350,10 +356,6 @@ function ContentSection({
 }) {
   if (section.type === 'quote' && section.content) {
     return <EditorialQuote {...section.content} />;
-  }
-
-  if (section.type === 'bundle-builder') {
-    return <BundleBuilderSection reduceMotion={reduceMotion} />;
   }
 
   const sectionProducts = (section.productIndices || [])

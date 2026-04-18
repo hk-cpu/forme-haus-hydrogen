@@ -11,6 +11,7 @@
  */
 
 import {json, type ActionFunctionArgs} from '@shopify/remix-oxygen';
+
 import {buildLocalePath, getPathLocalePrefix} from '~/lib/utils';
 
 export async function action({request, context}: ActionFunctionArgs) {
@@ -61,6 +62,9 @@ export async function action({request, context}: ActionFunctionArgs) {
     reference: {
       transaction: merchantTxId || `FH-${Date.now()}`,
       order: merchantTxId || `FH-${Date.now()}`,
+      idempotent:
+        (globalThis.crypto?.randomUUID?.() as string | undefined) ||
+        `idem-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
     },
     receipt: {
       email: !!shopperEmail,

@@ -28,6 +28,7 @@ declare global {
     PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID: string;
     PUBLIC_CUSTOMER_ACCOUNT_API_URL: string;
     PUBLIC_CHECKOUT_DOMAIN: string;
+    PUBLIC_GOOGLE_CLIENT_ID: string;
     SHOP_ID: string;
     API_BASE_URL: string;
     API_ACCESS_TOKEN: string;
