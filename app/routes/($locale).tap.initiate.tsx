@@ -11,6 +11,7 @@
  */
 
 import {json, type ActionFunctionArgs} from '@shopify/remix-oxygen';
+
 import {buildLocalePath, getPathLocalePrefix} from '~/lib/utils';
 
 export async function action({request, context}: ActionFunctionArgs) {
