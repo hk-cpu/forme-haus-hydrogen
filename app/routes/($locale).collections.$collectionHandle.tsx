@@ -110,9 +110,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
       const existingIds = new Set(
         collection.products.nodes.map((p: any) => p.id),
       );
-      const extras = bundleProducts.filter(
-        (p: any) => !existingIds.has(p.id),
-      );
+      const extras = bundleProducts.filter((p: any) => !existingIds.has(p.id));
       if (extras.length) {
         collection = {
           ...collection,
