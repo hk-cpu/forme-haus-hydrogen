@@ -87,12 +87,60 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
 
   let {collection} = result;
 
-  // Force grammatical fix for this specific collection
-  if (collection && collectionHandle === 'carry-it-your-way') {
-    collection = {
-      ...collection,
-      title: 'Carry It Your Own Way',
-    };
+  // Force grammatical fix for this specific collection and enrich with bundle products
+  if (collectionHandle === 'carry-it-your-way') {
+    const {products: allProducts} = await context.storefront.query(
+      ALL_PRODUCTS_FALLBACK_QUERY,
+      {
+        variables: {
+          first: 100,
+          country: context.storefront.i18n.country,
+          language: context.storefront.i18n.language,
+        },
+      },
+    );
+
+    const bundleProducts = (allProducts?.nodes || []).filter((p: any) =>
+      p?.title?.includes('+'),
+    );
+
+    if (collection && collection.products.nodes.length > 0) {
+      const existingIds = new Set(
+        collection.products.nodes.map((p: any) => p.id),
+      );
+      const extras = bundleProducts.filter(
+        (p: any) => !existingIds.has(p.id),
+      );
+      
+      collection = {
+        ...collection,
+        title: 'Carry It Your Own Way', // Enforce text everywhere
+        products: extras.length ? {
+          ...collection.products,
+          nodes: [...collection.products.nodes, ...extras],
+        } : collection.products,
+      } as any;
+      
+    } else if (bundleProducts.length) {
+      collection = {
+        id: 'synthetic-carry-it-your-way',
+        handle: 'carry-it-your-way',
+        title: 'Carry It Your Own Way', // Enforce text everywhere
+        description:
+          'Our signature pairings — cases, straps and accessories styled together.',
+        seo: {
+          title: 'Carry It Your Own Way',
+          description:
+            'Shop curated bundles of phone cases, straps and accessories.',
+        },
+        image: null,
+        products: {
+          nodes: bundleProducts,
+          filters: [],
+          pageInfo: allProducts.pageInfo,
+        },
+      } as any;
+    }
   }
   // Special handles that can use fallback to show all products
   const SYNTHETIC_HANDLES = [
