@@ -108,6 +108,11 @@ async function loadCriticalData({
   }
 
   const recommended = getRecommendedProducts(context.storefront, product.id);
+  const relatedBundles = getRelatedBundles(
+    context.storefront,
+    product.id,
+    product.title,
+  );
   const selectedVariant = product.selectedOrFirstAvailableVariant ?? {};
   const variants = getAdjacentAndFirstAvailableVariants(product);
 
@@ -123,6 +128,7 @@ async function loadCriticalData({
     shop,
     storeDomain: shop.primaryDomain.url,
     recommended,
+    relatedBundles,
     seo,
   };
 }
@@ -147,7 +153,7 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 };
 
 export default function Product() {
-  const {product, shop, recommended, variants, storeDomain} =
+  const {product, shop, recommended, relatedBundles, variants, storeDomain} =
     useLoaderData<typeof loader>();
   const {
     media,
@@ -362,6 +368,20 @@ export default function Product() {
                   <BundlePricing variant="cards" />
                 </div>
               ) : null}
+
+              {/* Bundle \u2194 Individual Cross-Links */}
+              <Suspense fallback={null}>
+                <Await resolve={relatedBundles}>
+                  {(data) =>
+                    data && data.products && data.products.length > 0 ? (
+                      <RelatedBundleLinks
+                        mode={data.mode}
+                        products={data.products}
+                      />
+                    ) : null
+                  }
+                </Await>
+              </Suspense>
 
               {/* Trust Badges Section */}
               <div className="mt-6">
@@ -674,6 +694,67 @@ export function ProductForm({
   );
 }
 
+function RelatedBundleLinks({
+  mode,
+  products,
+}: {
+  mode: 'parts' | 'bundles' | 'none';
+  products: any[];
+}) {
+  if (mode === 'none' || products.length === 0) return null;
+
+  const heading =
+    mode === 'parts' ? 'Also available individually' : 'Pair it in a bundle';
+  const subtitle =
+    mode === 'parts'
+      ? 'Prefer a single piece? Shop each part of this set on its own.'
+      : 'Save more when you carry it together.';
+
+  return (
+    <div className="mt-8 border-t border-[#E8E0D8] pt-6">
+      <div className="mb-3">
+        <span className="block text-[10px] uppercase tracking-[0.35em] text-[#a87441] font-light mb-1">
+          {heading}
+        </span>
+        <p className="text-xs text-[#8B8076] italic font-light">{subtitle}</p>
+      </div>
+      <div className="grid grid-cols-2 gap-3">
+        {products.map((p) => {
+          const img = p.images?.nodes?.[0];
+          return (
+            <Link
+              key={p.id}
+              to={`/products/${p.handle}`}
+              prefetch="intent"
+              className="group flex items-center gap-3 p-2 border border-[#E8E0D8] rounded-md hover:border-[#a87441] transition-colors"
+            >
+              <div className="relative w-14 h-14 flex-shrink-0 bg-[#F5F1ED] rounded overflow-hidden flex items-center justify-center">
+                {img ? (
+                  <img
+                    src={img.url}
+                    alt={img.altText || p.title}
+                    className="w-full h-full object-contain p-1"
+                    loading="lazy"
+                  />
+                ) : null}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[11px] font-serif text-[#2C2419] leading-tight line-clamp-2 group-hover:text-[#a87441] transition-colors">
+                  {p.title}
+                </p>
+                <p className="mt-1 text-[11px] text-[#8B8076]">
+                  {parseFloat(p.priceRange.minVariantPrice.amount).toFixed(0)}{' '}
+                  {p.priceRange.minVariantPrice.currencyCode}
+                </p>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function ProductOptionSwatch({
   swatch,
   name,
@@ -913,6 +994,86 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   }
   ${PRODUCT_CARD_FRAGMENT}
 ` as const;
+
+const RELATED_BUNDLES_QUERY = `#graphql
+  query RelatedBundles(
+    $country: CountryCode
+    $language: LanguageCode
+    $first: Int!
+  ) @inContext(country: $country, language: $language) {
+    products(first: $first, sortKey: CREATED_AT, reverse: true) {
+      nodes {
+        ...ProductCard
+      }
+    }
+  }
+  ${PRODUCT_CARD_FRAGMENT}
+` as const;
+
+/**
+ * Resolves cross-links between bundle products and their individual parts.
+ * - If the current product's title contains "+", returns `mode: 'parts'` with
+ *   the individual products matched by name.
+ * - Otherwise returns `mode: 'bundles'` with bundles that include this product.
+ */
+async function getRelatedBundles(
+  storefront: Storefront,
+  productId: string,
+  productTitle: string,
+) {
+  if (!productTitle) return {mode: 'none' as const, products: []};
+
+  const result = await storefront.query(RELATED_BUNDLES_QUERY, {
+    variables: {first: 100},
+  });
+  const allProducts: any[] = result?.products?.nodes || [];
+
+  const isBundle = productTitle.includes('+');
+
+  const normalize = (s: string) =>
+    s
+      .toLowerCase()
+      .replace(/\(bundle\)/gi, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+  if (isBundle) {
+    // Split title on "+", strip "(Bundle)" suffix, resolve each part to a product
+    const parts = productTitle
+      .replace(/\(bundle\)/gi, '')
+      .split('+')
+      .map((s) => normalize(s))
+      .filter(Boolean);
+
+    const matched: any[] = [];
+    for (const part of parts) {
+      const hit = allProducts.find((p) => {
+        if (!p?.title || p.id === productId) return false;
+        if (p.title.includes('+')) return false;
+        return normalize(p.title) === part || normalize(p.title).includes(part);
+      });
+      if (hit && !matched.find((m) => m.id === hit.id)) matched.push(hit);
+    }
+
+    return {mode: 'parts' as const, products: matched};
+  }
+
+  // Find bundles whose title contains this product's title (loose match on any token)
+  const tokens = normalize(productTitle)
+    .split(' ')
+    .filter((t) => t.length > 2);
+
+  const bundles = allProducts.filter((p) => {
+    if (!p?.title || p.id === productId) return false;
+    if (!p.title.includes('+')) return false;
+    const t = normalize(p.title);
+    // require at least 2 tokens overlap to be considered a real pairing
+    const overlap = tokens.filter((tok) => t.includes(tok)).length;
+    return overlap >= Math.min(2, tokens.length);
+  });
+
+  return {mode: 'bundles' as const, products: bundles.slice(0, 4)};
+}
 
 async function getRecommendedProducts(
   storefront: Storefront,
