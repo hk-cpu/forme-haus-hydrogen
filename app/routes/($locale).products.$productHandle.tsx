@@ -1023,10 +1023,15 @@ async function getRelatedBundles(
 ) {
   if (!productTitle) return {mode: 'none' as const, products: []};
 
-  const result = await storefront.query(RELATED_BUNDLES_QUERY, {
-    variables: {first: 100},
-  });
-  const allProducts: any[] = result?.products?.nodes || [];
+  let allProducts: any[] = [];
+  try {
+    const result = await storefront.query(RELATED_BUNDLES_QUERY, {
+      variables: {first: 100},
+    });
+    allProducts = result?.products?.nodes || [];
+  } catch {
+    return {mode: 'none' as const, products: []};
+  }
 
   const isBundle = productTitle.includes('+');
 
