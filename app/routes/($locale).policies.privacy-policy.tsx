@@ -30,8 +30,10 @@ export default function PrivacyPolicyPage() {
         {isArabic ? (
           /* Arabic */
           <div
-            className="prose max-w-prose mx-auto prose-headings:text-brand-text prose-headings:font-serif prose-p:text-brand-text/80 prose-li:text-brand-text/80 font-light leading-relaxed"
-            dir="rtl"
+            className={`prose max-w-prose mx-auto prose-headings:text-brand-text prose-headings:font-serif prose-p:text-brand-text/80 prose-li:text-brand-text/80 font-light leading-relaxed ${
+              isArabic ? 'text-right' : 'text-left'
+            }`}
+            dir={isArabic ? 'rtl' : 'ltr'}
           >
             <p>
               في <strong>Formé Haus</strong> نحترم خصوصيتكم ونلتزم بحماية
@@ -85,7 +87,7 @@ export default function PrivacyPolicyPage() {
           </div>
         ) : (
           /* English */
-          <div className="prose max-w-prose mx-auto prose-headings:text-brand-text prose-headings:font-serif prose-p:text-brand-text/80 prose-li:text-brand-text/80 font-light leading-relaxed">
+          <div className="prose max-w-prose mx-auto prose-headings:text-brand-text prose-headings:font-serif prose-p:text-brand-text/80 prose-li:text-brand-text/80 font-light leading-relaxed text-left">
             <p>
               At <strong>Formé Haus</strong>, we respect your privacy and are
               committed to protecting your personal data in accordance with the

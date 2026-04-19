@@ -254,7 +254,9 @@ export default function Article() {
                 dangerouslySetInnerHTML={{__html: contentHtml}}
                 className="prose prose-lg max-w-none 
                   prose-headings:font-serif prose-headings:text-[#D4AF87] prose-headings:font-normal prose-headings:mt-12 prose-headings:mb-6
-                  prose-p:text-white/90 prose-p:leading-loose prose-p:tracking-wide prose-p:text-[17px] md:prose-p:text-[19px] prose-p:text-justify
+                  prose-p:text-white/90 prose-p:leading-loose prose-p:tracking-wide prose-p:text-[17px] md:prose-p:text-[19px] ${
+                    isRTL ? 'prose-p:text-right' : 'prose-p:text-left'
+                  }
                   prose-a:text-[#a87441] prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-white
                   prose-strong:text-white prose-strong:font-medium
                   prose-ul:text-white/90 prose-ol:text-white/90
@@ -349,7 +351,9 @@ export default function Article() {
             {staticArticle.body.map((paragraph, i) => (
               <p
                 key={i}
-                className="font-serif text-[17px] md:text-[19px] text-white/90 leading-loose tracking-wide drop-shadow-sm text-justify"
+                className={`font-serif text-[17px] md:text-[19px] text-white/90 leading-loose tracking-wide drop-shadow-sm ${
+                  isRTL ? 'text-right' : 'text-left'
+                }`}
               >
                 {paragraph}
               </p>

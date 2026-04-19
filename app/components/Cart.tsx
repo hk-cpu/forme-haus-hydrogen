@@ -289,7 +289,7 @@ export function CartDetails({
 }) {
   const cartHasItems = !!cart && cart.totalQuantity > 0;
   const container = {
-    drawer: 'flex flex-col flex-1 overflow-y-auto w-full',
+    drawer: 'flex flex-col h-full w-full',
     page: 'w-full pb-12 grid md:grid-cols-2 md:items-start gap-8 md:gap-8 lg:gap-12',
   };
 
@@ -359,7 +359,7 @@ function CartDiscounts({
           <div className="flex-1 relative">
             <Icons.Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-taupe" />
             <input
-              className="w-full pl-10 pr-4 py-3 text-sm bg-surface border border-taupe/20 rounded-lg text-warm placeholder:text-taupe/50 focus:outline-none focus:border-bronze/50 transition-colors"
+              className="w-full pl-10 pr-4 py-3 text-base bg-surface border border-taupe/20 rounded-lg text-warm placeholder:text-taupe/50 focus:outline-none focus:border-bronze/50 transition-colors"
               type="text"
               name="discountCode"
               placeholder={t('cart.enterDiscountCode', 'Enter discount code')}
@@ -421,7 +421,7 @@ function CartLines({
     <section
       ref={scrollRef}
       aria-labelledby="cart-contents"
-      className={className}
+      className={clsx(className, 'flex-1 overflow-y-auto')}
     >
       <ul className="grid gap-6 md:gap-8">
         <AnimatePresence initial={false} mode="popLayout">

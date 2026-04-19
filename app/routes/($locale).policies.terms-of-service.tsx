@@ -30,8 +30,10 @@ export default function TermsOfServicePage() {
         {isArabic ? (
           /* Arabic */
           <div
-            className="prose max-w-prose mx-auto prose-headings:text-[#4A3C31] prose-headings:font-serif prose-p:text-[#4A3C31]/80 prose-li:text-[#4A3C31]/80 font-light leading-relaxed"
-            dir="rtl"
+            className={`prose max-w-prose mx-auto prose-headings:text-[#4A3C31] prose-headings:font-serif prose-p:text-[#4A3C31]/80 prose-li:text-[#4A3C31]/80 font-light leading-relaxed ${
+              isArabic ? 'text-right' : 'text-left'
+            }`}
+            dir={isArabic ? 'rtl' : 'ltr'}
           >
             <p>
               مرحبًا بكم في <strong>Formé Haus</strong>. باستخدامكم لهذا الموقع
@@ -82,7 +84,7 @@ export default function TermsOfServicePage() {
           </div>
         ) : (
           /* English */
-          <div className="prose max-w-prose mx-auto prose-headings:text-[#4A3C31] prose-headings:font-serif prose-p:text-[#4A3C31]/80 prose-li:text-[#4A3C31]/80 font-light leading-relaxed">
+          <div className="prose max-w-prose mx-auto prose-headings:text-[#4A3C31] prose-headings:font-serif prose-p:text-[#4A3C31]/80 prose-li:text-[#4A3C31]/80 font-light leading-relaxed text-left">
             <p>
               Welcome to <strong>Formé Haus</strong>. By accessing or using our
               website, you agree to the following Terms &amp; Conditions.
