@@ -460,7 +460,13 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
     setEmailTouched(true);
     if (!emailValid) return;
     fetcher.submit(
-      {amount: total, currency, merchantTxId, cartId: cart.id || '', shopperEmail: email},
+      {
+        amount: total,
+        currency,
+        merchantTxId,
+        cartId: cart.id || '',
+        shopperEmail: email,
+      },
       {method: 'post', action: tapInitiatePath},
     );
   }
@@ -512,7 +518,9 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
               className="w-full bg-[#1a1a1a] border border-warm/10 rounded-lg px-4 py-2.5 text-sm text-warm placeholder:text-taupe/50 focus:outline-none focus:border-bronze/50 transition-colors"
             />
             {emailTouched && !emailValid && (
-              <p className="text-red-400 text-[10px] mt-1 px-1">Please enter a valid email address.</p>
+              <p className="text-red-400 text-[10px] mt-1 px-1">
+                Please enter a valid email address.
+              </p>
             )}
           </div>
           <motion.button
