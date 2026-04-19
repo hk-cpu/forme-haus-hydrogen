@@ -230,7 +230,7 @@ import {BundleBuilderSection} from './BundleBuilderSection';
 
 const NAV_ITEMS = [
   {handle: 'modern-essentials', label: 'Modern Essentials'},
-  {handle: 'carry-it-your-way', label: 'Carry Your Own Way'},
+  {handle: 'carry-it-your-way', label: 'Carry It Your Own Way'},
   {handle: 'sun-ready', label: 'Sun Ready'},
   {handle: 'new-arrivals', label: 'New Arrivals'},
 ];

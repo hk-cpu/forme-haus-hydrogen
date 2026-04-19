@@ -36,7 +36,7 @@ const BENTO_ITEMS: BentoItem[] = [
     url: '/collections/carry-it-your-way',
     titleKey: 'editorial.carry.title',
     subtitleKey: 'editorial.carry.subtitle',
-    defaultTitle: 'Carry It Your Way',
+    defaultTitle: 'Carry It Your Own Way',
     defaultSubtitle: 'Hands-free style',
     width: 1024,
     height: 1024,

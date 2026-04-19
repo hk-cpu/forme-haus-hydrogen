@@ -87,6 +87,13 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
 
   let {collection} = result;
 
+  // Force grammatical fix for this specific collection
+  if (collection && collectionHandle === 'carry-it-your-way') {
+    collection = {
+      ...collection,
+      title: 'Carry It Your Own Way',
+    };
+  }
   // Special handles that can use fallback to show all products
   const SYNTHETIC_HANDLES = [
     'new-in',

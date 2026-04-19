@@ -64,7 +64,7 @@ export function Editorial() {
           />
           <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
             <h3 className="text-white text-base font-medium">
-              Carry It Your Way
+              Carry It Your Own Way
             </h3>
           </div>
         </Link>
