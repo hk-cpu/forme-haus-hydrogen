@@ -22,8 +22,14 @@ export default async function handleRequest(
       "'nonce-{nonce}'",
       'https://cdn.shopify.com',
       'https://shop.app',
+      'https://accounts.google.com',
     ],
-    styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+    styleSrc: [
+      "'self'",
+      "'unsafe-inline'",
+      'https://fonts.googleapis.com',
+      'https://accounts.google.com',
+    ],
     imgSrc: [
       "'self'",
       'https://cdn.shopify.com',
@@ -37,8 +43,10 @@ export default async function handleRequest(
       `https://${context.env.PUBLIC_STORE_DOMAIN}`,
       'https://shop.app',
       'https://cdn.shopify.com',
+      'https://accounts.google.com',
     ],
     fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+    frameSrc: ["'self'", 'https://accounts.google.com'],
   });
 
   const body = await renderToReadableStream(
