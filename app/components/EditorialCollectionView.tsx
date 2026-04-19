@@ -99,7 +99,8 @@ const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {
       {
         type: 'quote',
         content: {
-          quote: 'Foundations shaped by intention and refined for everyday presence.',
+          quote:
+            'Foundations shaped by intention and refined for everyday presence.',
           author: 'Sun Ready Series',
         },
       },
@@ -111,7 +112,8 @@ const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {
       {
         type: 'quote',
         content: {
-          quote: "Sustainability isn't a trend — it's our responsibility to tomorrow.",
+          quote:
+            "Sustainability isn't a trend — it's our responsibility to tomorrow.",
           author: 'Our Commitment',
         },
       },
@@ -124,14 +126,7 @@ const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {
     ],
   },
   sunglasses: {
-    sections: [
-      {type: 'editorial-grid', productIndices: [0, 1, 2, 3, 4, 5]},
-    ],
-  },
-  'phone-cases': {
-    sections: [
-      {type: 'editorial-grid', productIndices: [0, 1, 2, 3, 4, 5]},
-    ],
+    sections: [{type: 'editorial-grid', productIndices: [0, 1, 2, 3, 4, 5]}],
   },
 };
 
@@ -184,7 +179,8 @@ export function generateDynamicEditorialConfig(
         sections.push({
           type: 'quote',
           content: {
-            quote: 'Design is not just what it looks like and feels like. Design is how it works.',
+            quote:
+              'Design is not just what it looks like and feels like. Design is how it works.',
             author: 'Formé Haus',
           },
         });
@@ -203,7 +199,10 @@ export function generateDynamicEditorialConfig(
     else {
       sections.push({
         type: 'row',
-        productIndices: Array.from({length: remaining}, (_, i) => currentIndex + i),
+        productIndices: Array.from(
+          {length: remaining},
+          (_, i) => currentIndex + i,
+        ),
       });
       currentIndex += remaining;
     }
@@ -967,14 +966,46 @@ function getDisplayConfig(
       {size: 'small', style: 'framed'},
     ],
     'editorial-grid': [
-      {size: 'hero', style: 'elevated', className: 'col-span-2 md:col-span-2 md:row-span-2'},
-      {size: 'small', style: 'framed', className: 'col-span-1 md:col-span-1 md:row-span-1'},
-      {size: 'small', style: 'framed', className: 'col-span-1 md:col-span-1 md:row-span-1'},
-      {size: 'portrait', style: 'minimal', className: 'col-span-1 md:col-span-1 md:row-span-2'},
-      {size: 'portrait', style: 'minimal', className: 'col-span-1 md:col-span-1 md:row-span-2'},
-      {size: 'landscape', style: 'elevated', className: 'col-span-2 md:col-span-2 md:row-span-1'},
-      {size: 'small', style: 'framed', className: 'col-span-1 md:col-span-1 md:row-span-1'},
-      {size: 'small', style: 'framed', className: 'col-span-1 md:col-span-1 md:row-span-1'},
+      {
+        size: 'hero',
+        style: 'elevated',
+        className: 'col-span-2 md:col-span-2 md:row-span-2',
+      },
+      {
+        size: 'small',
+        style: 'framed',
+        className: 'col-span-1 md:col-span-1 md:row-span-1',
+      },
+      {
+        size: 'small',
+        style: 'framed',
+        className: 'col-span-1 md:col-span-1 md:row-span-1',
+      },
+      {
+        size: 'portrait',
+        style: 'minimal',
+        className: 'col-span-1 md:col-span-1 md:row-span-2',
+      },
+      {
+        size: 'portrait',
+        style: 'minimal',
+        className: 'col-span-1 md:col-span-1 md:row-span-2',
+      },
+      {
+        size: 'landscape',
+        style: 'elevated',
+        className: 'col-span-2 md:col-span-2 md:row-span-1',
+      },
+      {
+        size: 'small',
+        style: 'framed',
+        className: 'col-span-1 md:col-span-1 md:row-span-1',
+      },
+      {
+        size: 'small',
+        style: 'framed',
+        className: 'col-span-1 md:col-span-1 md:row-span-1',
+      },
     ],
     wide: [{size: 'wide', style: 'elevated'}],
   };
