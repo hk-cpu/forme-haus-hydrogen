@@ -34,6 +34,7 @@ import {Heading, Section, Text} from '~/components/Text';
 import {Link} from '~/components/Link';
 import {Button} from '~/components/Button';
 import {AddToCartButton} from '~/components/AddToCartButton';
+import {BuyNowButton} from '~/components/BuyNowButton';
 import {Skeleton} from '~/components/Skeleton';
 import {ProductSwimlane} from '~/components/ProductSwimlane';
 import {ProductGallery} from '~/components/ProductGallery';
@@ -690,6 +691,11 @@ export function ProductForm({
                     )}
                   </Text>
                 </AddToCartButton>
+                <BuyNowButton
+                  variantId={selectedVariant.id!}
+                  quantity={1}
+                  className="rounded-none"
+                />
                 <button
                   type="button"
                   onClick={(e) => {

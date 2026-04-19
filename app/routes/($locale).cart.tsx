@@ -25,6 +25,16 @@ export async function action({request, context}: ActionFunctionArgs) {
   switch (action) {
     case CartForm.ACTIONS.LinesAdd:
       result = await cart.addLines(inputs.lines);
+      // Silently set SA country context after adding lines; ignore errors
+      try {
+        const existingCountry =
+          result.cart?.buyerIdentity?.countryCode;
+        if (!existingCountry) {
+          await cart.updateBuyerIdentity({countryCode: 'SA'});
+        }
+      } catch {
+        // non-blocking — checkout still works without buyer identity
+      }
       break;
     case CartForm.ACTIONS.LinesUpdate:
       result = await cart.updateLines(inputs.lines);
@@ -47,6 +57,7 @@ export async function action({request, context}: ActionFunctionArgs) {
       break;
     case CartForm.ACTIONS.BuyerIdentityUpdate:
       result = await cart.updateBuyerIdentity({
+        countryCode: 'SA',
         ...inputs.buyerIdentity,
       });
       break;

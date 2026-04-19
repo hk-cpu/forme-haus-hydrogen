@@ -110,6 +110,8 @@ export const translations = {
 
     // Product
     'product.addToCart': 'Add to Bag',
+    'product.buyNow': 'Buy Now',
+    'product.buyNowLoading': 'Processing…',
     'product.soldOut': 'Sold Out',
     'product.sale': 'Sale',
     'product.new': 'New',
@@ -142,6 +144,13 @@ export const translations = {
     'cart.applyDiscount': 'Apply Discount',
     'cart.shopBestSellers': 'Shop Best Sellers',
     'cart.vatIncluded': '(VAT included)',
+    'cart.shippingNote': 'Shipping and taxes calculated at checkout.',
+    'cart.shopifyTrust': 'Secure checkout powered by Shopify',
+    'cart.and': 'and',
+    'cart.enterDiscountCode': 'Enter discount code',
+    'cart.apply': 'Apply',
+    'cart.freeShipping': 'Free Shipping',
+    'cart.secureCheckout': 'Secure Checkout',
 
     // Search
     'search.placeholder': 'Search products...',
@@ -455,6 +464,8 @@ export const translations = {
 
     // Product
     'product.addToCart': 'أضيفي إلى الحقيبة',
+    'product.buyNow': 'اشتري الآن',
+    'product.buyNowLoading': 'جارٍ المعالجة…',
     'product.soldOut': 'نفدت الكمية',
     'product.sale': 'تخفيض',
     'product.new': 'جديد',
@@ -486,6 +497,13 @@ export const translations = {
     'cart.applyDiscount': 'تطبيق الخصم',
     'cart.shopBestSellers': 'تسوّقي الأكثر مبيعاً',
     'cart.vatIncluded': '(شامل ضريبة القيمة المضافة)',
+    'cart.shippingNote': 'يُحسب الشحن والضريبة عند الدفع.',
+    'cart.shopifyTrust': 'دفع آمن بواسطة Shopify',
+    'cart.and': 'و',
+    'cart.enterDiscountCode': 'أدخل كود الخصم',
+    'cart.apply': 'تطبيق',
+    'cart.freeShipping': 'شحن مجاني',
+    'cart.secureCheckout': 'دفع آمن',
 
     // Search
     'search.placeholder': 'ابحث عن منتجات...',

@@ -2,20 +2,17 @@ import clsx from 'clsx';
 import {useRef, useState} from 'react';
 import useScroll from 'react-use/esm/useScroll';
 import {motion, AnimatePresence} from 'framer-motion';
-import {useFetcher, useRouteLoaderData} from '@remix-run/react';
-// eslint-disable-next-line import/order
+import {useFetcher} from '@remix-run/react';
 import {
   flattenConnection,
   CartForm,
   Image,
   Money,
-  ShopPayButton,
   useOptimisticData,
   OptimisticInput,
   type CartReturn,
 } from '@shopify/hydrogen';
 
-// Tap Payments replaces HyperPay — supports Mada, Visa, MC, AMEX, Apple Pay, STC Pay
 import type {
   Cart as CartType,
   CartCost,
@@ -28,9 +25,7 @@ import {Text, Heading} from '~/components/Text';
 import {Link} from '~/components/Link';
 import {IconRemove} from '~/components/Icon';
 import {FeaturedProducts} from '~/components/FeaturedProducts';
-import {buildLocalePath, getInputStyleClasses} from '~/lib/utils';
 import {useTranslation} from '~/hooks/useTranslation';
-import type {RootLoader} from '~/root';
 
 // ============================================================================
 // PREMIUM CART ICONS
@@ -434,105 +429,61 @@ function CartLines({
   );
 }
 
-function TapPayCheckoutButton({cart}: {cart: CartType}) {
-  const fetcher = useFetcher<{
-    chargeId?: string;
-    redirectUrl?: string;
-    error?: string;
-  }>();
-  const rootData = useRouteLoaderData<RootLoader>('root');
+function ShopifyCheckoutButton({checkoutUrl}: {checkoutUrl: string}) {
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
-  const total = cart.cost?.totalAmount?.amount ?? '0';
-  const currency = cart.cost?.totalAmount?.currencyCode ?? 'SAR';
-  const merchantTxId = `FH-${Date.now()}-${Math.random()
-    .toString(36)
-    .slice(2, 7)}`;
-  const tapInitiatePath = buildLocalePath(
-    '/tap/initiate',
-    rootData?.selectedLocale?.pathPrefix,
-  );
-
-  function initiatePayment() {
-    fetcher.submit(
-      {amount: total, currency, merchantTxId, cartId: cart.id || ''},
-      {method: 'post', action: tapInitiatePath},
-    );
+  function handleCheckout() {
+    if (!checkoutUrl) return;
+    setIsRedirecting(true);
+    document.body.style.overflow = '';
+    window.location.href = checkoutUrl;
   }
 
-  // Redirect to Tap's hosted payment page when we get the URL
-  if (fetcher.state === 'idle' && fetcher.data?.redirectUrl) {
-    if (typeof window !== 'undefined') {
-      // Clean up cart drawer scroll lock before leaving so history back works cleanly
-      document.body.style.overflow = '';
-      window.location.href = fetcher.data.redirectUrl;
-    }
-  }
-
-  return (
-    <div>
-      {fetcher.state !== 'idle' ? (
-        <div className="flex items-center justify-center gap-2 py-4 text-taupe text-sm">
-          <div className="w-4 h-4 rounded-full border-2 border-bronze/30 border-t-bronze animate-spin" />
-          Preparing secure payment…
-        </div>
-      ) : fetcher.data?.error ? (
-        <div className="p-3 bg-red-400/10 border border-red-400/20 rounded-lg text-red-400 text-xs text-center">
-          {fetcher.data.error}
-          <button
-            onClick={() => initiatePayment()}
-            className="block w-full mt-2 text-taupe hover:text-warm underline"
-          >
-            Try again
-          </button>
-        </div>
-      ) : (
-        <motion.button
-          type="button"
-          onClick={initiatePayment}
-          className="w-full py-3.5 rounded-xl bg-[#1B5E20] hover:bg-[#2E7D32] text-white text-[11px] uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
-          whileHover={{scale: 1.01}}
-          whileTap={{scale: 0.99}}
-        >
-          <Icons.Lock className="w-3.5 h-3.5" />
-          Pay with mada / Card / Apple Pay
-        </motion.button>
-      )}
+  return isRedirecting ? (
+    <div className="flex items-center justify-center gap-2 py-4 text-taupe text-sm">
+      <div className="w-4 h-4 rounded-full border-2 border-bronze/30 border-t-bronze animate-spin" />
+      Redirecting to checkout…
     </div>
+  ) : (
+    <motion.button
+      type="button"
+      onClick={handleCheckout}
+      className="w-full py-4 rounded-xl bg-[#2a2118] hover:bg-[#4A3C31] text-[#F0EAE6] text-[11px] uppercase tracking-[0.2em] font-medium flex items-center justify-center gap-3 transition-colors"
+      whileHover={{scale: 1.01}}
+      whileTap={{scale: 0.99}}
+    >
+      <Icons.Lock className="w-3.5 h-3.5" />
+      Continue to Secure Checkout
+    </motion.button>
   );
 }
 
 function CartCheckoutActions({
   checkoutUrl,
-  cart,
 }: {
   checkoutUrl: string;
   cart: CartType;
 }) {
   const {t} = useTranslation();
-  const rootData = useRouteLoaderData<RootLoader>('root');
 
   if (!checkoutUrl) return null;
-  const storeDomain = 'https://formehaus.me';
-
-  const variantIds =
-    cart.lines?.edges?.map((edge) => edge.node.merchandise.id) || [];
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Tap Payments — mada + Visa/MC + Apple Pay + STC Pay */}
-      <TapPayCheckoutButton cart={cart} />
+      {/* Shopify Native Checkout */}
+      <ShopifyCheckoutButton checkoutUrl={checkoutUrl} />
 
-      {/* Trust Badges */}
-      <div className="flex items-center justify-center gap-4 py-2">
-        <div className="flex items-center gap-1.5 text-taupe text-[10px]">
-          <Icons.Lock className="w-3 h-3" />
-          <span>{t('cart.secureCheckout', 'Secure Checkout')}</span>
-        </div>
-        <div className="w-px h-3 bg-taupe/30" />
-        <div className="flex items-center gap-1.5 text-taupe text-[10px]">
-          <Icons.Truck className="w-3 h-3" />
-          <span>{t('cart.freeShipping', 'Free Shipping')}</span>
-        </div>
+      {/* Shipping note */}
+      <p className="text-[11px] text-center text-taupe">
+        {t('cart.shippingNote', 'Shipping and taxes calculated at checkout.')}
+      </p>
+
+      {/* Trust badge */}
+      <div className="flex items-center justify-center gap-2 py-1">
+        <Icons.Lock className="w-3 h-3 text-taupe/60" />
+        <span className="text-[10px] text-taupe/60">
+          {t('cart.shopifyTrust', 'Secure checkout powered by Shopify')}
+        </span>
       </div>
 
       {/* Terms */}
