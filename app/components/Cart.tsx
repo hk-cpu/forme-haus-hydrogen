@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import {useRef, useState} from 'react';
 import useScroll from 'react-use/esm/useScroll';
 import {motion, AnimatePresence} from 'framer-motion';
-import {useFetcher} from '@remix-run/react';
+import {useFetcher, useRouteLoaderData} from '@remix-run/react';
 import {
   flattenConnection,
   CartForm,
@@ -25,7 +25,9 @@ import {Text, Heading} from '~/components/Text';
 import {Link} from '~/components/Link';
 import {IconRemove} from '~/components/Icon';
 import {FeaturedProducts} from '~/components/FeaturedProducts';
+import {buildLocalePath} from '~/lib/utils';
 import {useTranslation} from '~/hooks/useTranslation';
+import type {RootLoader} from '~/root';
 
 // ============================================================================
 // PREMIUM CART ICONS
@@ -429,6 +431,71 @@ function CartLines({
   );
 }
 
+function TapPayCheckoutButton({cart}: {cart: CartType}) {
+  const fetcher = useFetcher<{
+    chargeId?: string;
+    redirectUrl?: string;
+    error?: string;
+  }>();
+  const rootData = useRouteLoaderData<RootLoader>('root');
+
+  const total = cart.cost?.totalAmount?.amount ?? '0';
+  const currency = cart.cost?.totalAmount?.currencyCode ?? 'SAR';
+  const merchantTxId = `FH-${Date.now()}-${Math.random()
+    .toString(36)
+    .slice(2, 7)}`;
+  const tapInitiatePath = buildLocalePath(
+    '/tap/initiate',
+    rootData?.selectedLocale?.pathPrefix,
+  );
+
+  function initiatePayment() {
+    fetcher.submit(
+      {amount: total, currency, merchantTxId, cartId: cart.id || ''},
+      {method: 'post', action: tapInitiatePath},
+    );
+  }
+
+  if (fetcher.state === 'idle' && fetcher.data?.redirectUrl) {
+    if (typeof window !== 'undefined') {
+      document.body.style.overflow = '';
+      window.location.href = fetcher.data.redirectUrl;
+    }
+  }
+
+  return (
+    <div>
+      {fetcher.state !== 'idle' ? (
+        <div className="flex items-center justify-center gap-2 py-4 text-taupe text-sm">
+          <div className="w-4 h-4 rounded-full border-2 border-bronze/30 border-t-bronze animate-spin" />
+          Preparing secure payment…
+        </div>
+      ) : fetcher.data?.error ? (
+        <div className="p-3 bg-red-400/10 border border-red-400/20 rounded-lg text-red-400 text-xs text-center">
+          {fetcher.data.error}
+          <button
+            onClick={initiatePayment}
+            className="block w-full mt-2 text-taupe hover:text-warm underline"
+          >
+            Try again
+          </button>
+        </div>
+      ) : (
+        <motion.button
+          type="button"
+          onClick={initiatePayment}
+          className="w-full py-3.5 rounded-xl bg-[#1B5E20] hover:bg-[#2E7D32] text-white text-[11px] uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
+          whileHover={{scale: 1.01}}
+          whileTap={{scale: 0.99}}
+        >
+          <Icons.Lock className="w-3.5 h-3.5" />
+          Pay with mada / Card / Apple Pay
+        </motion.button>
+      )}
+    </div>
+  );
+}
+
 function ShopifyCheckoutButton({checkoutUrl}: {checkoutUrl: string}) {
   const [isRedirecting, setIsRedirecting] = useState(false);
 
@@ -460,6 +527,7 @@ function ShopifyCheckoutButton({checkoutUrl}: {checkoutUrl: string}) {
 
 function CartCheckoutActions({
   checkoutUrl,
+  cart,
 }: {
   checkoutUrl: string;
   cart: CartType;
@@ -470,6 +538,16 @@ function CartCheckoutActions({
 
   return (
     <div className="flex flex-col gap-4">
+      {/* Tap Payments — mada + Visa/MC + Apple Pay + STC Pay */}
+      <TapPayCheckoutButton cart={cart} />
+
+      {/* Divider */}
+      <div className="flex items-center gap-3">
+        <div className="flex-1 h-px bg-taupe/15" />
+        <span className="text-[10px] uppercase tracking-widest text-taupe/50">or</span>
+        <div className="flex-1 h-px bg-taupe/15" />
+      </div>
+
       {/* Shopify Native Checkout */}
       <ShopifyCheckoutButton checkoutUrl={checkoutUrl} />
 
