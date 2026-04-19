@@ -29,7 +29,6 @@ import {
   EditorialCollectionView,
   EDITORIAL_HANDLES,
   getEditorialLayoutConfig,
-  generateDynamicEditorialConfig,
 } from '~/components/EditorialCollectionView';
 import SortMenu, {
   type SortParam,
@@ -312,15 +311,10 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   // Check if this collection should use the editorial layout.
   // Metafield (namespace: editorial, key: layout_config) takes priority over defaults.
   const editorialMetafield = collection.metafield?.value ?? null;
-  let editorialLayoutConfig = getEditorialLayoutConfig(
+  const editorialLayoutConfig = getEditorialLayoutConfig(
     collection.handle,
     editorialMetafield,
   );
-
-  // Fallback: If no specific config, generate a dynamic one to satisfy "everything editorial" request
-  if (!editorialLayoutConfig && collection.products.nodes.length > 0) {
-    editorialLayoutConfig = generateDynamicEditorialConfig(collection.products.nodes.length);
-  }
 
   return json({
     collection,
