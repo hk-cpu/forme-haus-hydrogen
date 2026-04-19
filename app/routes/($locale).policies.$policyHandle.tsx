@@ -179,10 +179,15 @@ export default function Policies() {
           margin-top: 2.5rem;
           margin-bottom: 0.875rem;
           letter-spacing: 0.01em;
+          text-align: start;
         }
         .policy-prose h2 { font-size: 1.25rem; }
         .policy-prose h3 { font-size: 1.05rem; }
-        .policy-prose p { margin-bottom: 1.25rem; }
+        .policy-prose p { 
+          margin-bottom: 1.25rem; 
+          text-align: justify;
+          hyphens: auto;
+        }
         .policy-prose a {
           color: #a87441;
           text-decoration: underline;

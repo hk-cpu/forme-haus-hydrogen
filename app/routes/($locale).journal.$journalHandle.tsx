@@ -177,35 +177,96 @@ export default function Article() {
   if (article) {
     const {title, image, contentHtml, author} = article;
     return (
-      <div className="min-h-screen bg-[#F9F5F0]" dir={isRTL ? 'rtl' : 'ltr'}>
-        <div className="max-w-3xl mx-auto px-6 py-16 md:py-24">
-          <header className="text-center mb-12">
+      <div
+        className="relative min-h-screen overflow-hidden"
+        dir={isRTL ? 'rtl' : 'ltr'}
+      >
+        {/* Fixed full-page background image */}
+        {image && (
+          <div className="fixed inset-0 z-0">
+            <Image
+              data={image}
+              className="w-full h-full object-cover object-center"
+              sizes="100vw"
+            />
+            {/* Overlay for text readability */}
+            <div className="absolute inset-0 bg-black/60" />
+          </div>
+        )}
+
+        {/* All content overlaid on the image */}
+        <div className="relative z-10 min-h-screen flex flex-col">
+          {/* Title section — centered in the viewport */}
+          <motion.div
+            className="flex-1 flex flex-col items-center justify-center px-6 min-h-screen"
+            initial={{opacity: 0, y: 20}}
+            animate={{opacity: 1, y: 0}}
+            transition={{delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1]}}
+          >
             <span
               className={`text-[10px] ${
                 isRTL ? '' : 'uppercase tracking-[0.3em]'
-              } text-[#a87441] block mb-4`}
+              } text-[#D4AF87] block mb-4 font-semibold`}
             >
               {t('nav.journal', 'Journal')}
             </span>
-            <h1 className="font-serif text-3xl md:text-5xl italic text-[#4A3C31] mb-4">
+            <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl italic text-white mb-6 drop-shadow-lg text-center max-w-2xl">
               {title}
             </h1>
-            <span className="text-[12px] text-[#8B8076]">
+            <span className="text-[12px] text-white/70 mb-8 block uppercase tracking-wider">
               {formattedDate} {author?.name && `· ${author.name}`}
             </span>
-          </header>
-          {image && (
-            <Image
-              data={image}
-              className="w-full rounded-xl mb-12"
-              sizes="(min-width: 768px) 720px, 100vw"
-              loading="eager"
-            />
-          )}
-          <div
-            dangerouslySetInnerHTML={{__html: contentHtml}}
-            className="prose prose-lg max-w-none prose-headings:font-serif prose-headings:text-[#4A3C31] prose-p:text-[#5C5046] prose-p:leading-relaxed prose-a:text-[#a87441]"
-          />
+            <div className="h-px w-24 bg-gradient-to-r from-transparent via-white/50 to-transparent mb-8" />
+
+            {/* Scroll indicator */}
+            <motion.div
+              className="mt-8"
+              animate={{y: [0, 8, 0]}}
+              transition={{repeat: Infinity, duration: 2, ease: 'easeInOut'}}
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="white"
+                strokeWidth="1.5"
+                className="opacity-60"
+              >
+                <path
+                  d="M12 5v14M5 12l7 7 7-7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </motion.div>
+          </motion.div>
+
+          {/* Body text — overlaid on the image below the fold */}
+          <div className="max-w-3xl mx-auto px-6 py-16 md:py-24 w-full">
+            <motion.article
+              className="space-y-8 md:space-y-10"
+              initial={{opacity: 0}}
+              animate={{opacity: 1}}
+              transition={{duration: 0.8, delay: 0.5}}
+            >
+              <div
+                dangerouslySetInnerHTML={{__html: contentHtml}}
+                className="prose prose-lg max-w-none 
+                  prose-headings:font-serif prose-headings:text-[#D4AF87] prose-headings:font-normal prose-headings:mt-12 prose-headings:mb-6
+                  prose-p:text-white/90 prose-p:leading-loose prose-p:tracking-wide prose-p:text-[17px] md:prose-p:text-[19px] prose-p:text-justify
+                  prose-a:text-[#a87441] prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-white
+                  prose-strong:text-white prose-strong:font-medium
+                  prose-ul:text-white/90 prose-ol:text-white/90
+                  drop-shadow-sm w-full"
+              />
+            </motion.article>
+
+            {/* Decorative end mark */}
+            <div className="mt-16 flex justify-center">
+              <div className="w-px h-10 bg-gradient-to-b from-white/30 to-transparent" />
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -288,7 +349,7 @@ export default function Article() {
             {staticArticle.body.map((paragraph, i) => (
               <p
                 key={i}
-                className="font-serif text-lg md:text-xl text-white/90 leading-relaxed tracking-wide drop-shadow-sm"
+                className="font-serif text-[17px] md:text-[19px] text-white/90 leading-loose tracking-wide drop-shadow-sm text-justify"
               >
                 {paragraph}
               </p>
