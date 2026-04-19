@@ -239,7 +239,7 @@ export function ProductCard({
   quickAdd = true,
   index = 0,
 }: ProductCardProps) {
-  const {toggleWishlist, isInWishlist} = useUI();
+  const {toggleFavorite, isInFavorites} = useUI();
   const {isRTL, t} = useTranslation();
   const fetcher = useFetcher<{error?: string}>();
   const shouldReduceMotion = useReducedMotion();
@@ -263,7 +263,7 @@ export function ProductCard({
 
   const images = product.images?.nodes || [];
   const hasMultipleImages = images.length > 1;
-  const isWishlisted = isInWishlist(product.id);
+  const isWishlisted = isInFavorites(product.id);
   const isNew = product.tags?.includes('new') || false;
   const isSale = product.tags?.includes('sale') || false;
   const hasPrice =
@@ -370,7 +370,7 @@ export function ProductCard({
   const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    toggleWishlist(product.id);
+    toggleFavorite(product.id);
   };
 
   const handleQuickAdd = (e: React.MouseEvent) => {

@@ -97,10 +97,10 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
 
   useEffect(() => () => stopSlideshow(), [stopSlideshow]);
 
-  // Wishlist: localStorage bucket fh_wishlist
+  // Wishlist: localStorage bucket formehaus_favorites
   useEffect(() => {
     try {
-      const raw = localStorage.getItem('fh_wishlist');
+      const raw = localStorage.getItem('formehaus_favorites');
       if (!raw) return;
       const ids: string[] = JSON.parse(raw);
       setIsWishlisted(ids.includes(product.id));
@@ -110,12 +110,12 @@ export function ProductCardClean({product, index = 0}: ProductCardCleanProps) {
   const toggleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     try {
-      const raw = localStorage.getItem('fh_wishlist');
+      const raw = localStorage.getItem('formehaus_favorites');
       const ids: string[] = raw ? JSON.parse(raw) : [];
       const next = ids.includes(product.id)
         ? ids.filter((id) => id !== product.id)
         : [...ids, product.id];
-      localStorage.setItem('fh_wishlist', JSON.stringify(next));
+      localStorage.setItem('formehaus_favorites', JSON.stringify(next));
       setIsWishlisted(next.includes(product.id));
     } catch {}
   };

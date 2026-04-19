@@ -21,7 +21,7 @@ export function Modal({
         <div className="flex items-center justify-center min-h-full p-4 text-center sm:p-0">
           {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
           <div
-            className="relative flex-1 px-4 pt-5 pb-4 overflow-hidden text-left transition-all transform rounded shadow-xl bg-contrast sm:my-12 sm:flex-none sm:w-full sm:max-w-sm sm:p-6"
+            className="relative flex-1 px-4 pt-5 pb-4 overflow-hidden text-left transition-all transform rounded-xl shadow-xl bg-[#1E1814] border border-bronze/10 sm:my-12 sm:flex-none sm:w-full sm:max-w-sm sm:p-6"
             role="dialog"
             onClick={(e) => {
               e.stopPropagation();
@@ -34,7 +34,7 @@ export function Modal({
             <div className="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
               <Link
                 to={cancelLink}
-                className="p-4 -m-4 transition text-primary hover:text-primary/50"
+                className="p-4 -m-4 transition text-taupe hover:text-warm"
               >
                 <IconClose aria-label="Close panel" />
               </Link>

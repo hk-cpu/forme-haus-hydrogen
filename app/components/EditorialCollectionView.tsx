@@ -46,7 +46,8 @@ interface EditorialSectionConfig {
     | 'row'
     | 'quote'
     | 'hero-side'
-    | 'wide';
+    | 'wide'
+    | 'editorial-grid';
   productIndices?: number[];
   content?: {quote: string; author: string};
 }
@@ -60,6 +61,7 @@ interface ProductDisplayConfig {
   style: 'framed' | 'minimal' | 'elevated' | 'accent-border';
   badge?: string;
   numberBadge?: number;
+  className?: string; // Custom grid spans
 }
 
 // ─── Layout Defaults ─────────────────────────────────────────
@@ -67,8 +69,7 @@ interface ProductDisplayConfig {
 const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {
   'modern-essentials': {
     sections: [
-      {type: 'hero', productIndices: [0, 1]},
-      {type: 'asymmetric', productIndices: [2, 3, 4]},
+      {type: 'editorial-grid', productIndices: [0, 1, 2, 3, 4, 5]},
       {
         type: 'quote',
         content: {
@@ -76,13 +77,12 @@ const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {
           author: 'Our Design Philosophy',
         },
       },
-      {type: 'row', productIndices: [5, 6, 7, 8]},
+      {type: 'row', productIndices: [6, 7, 8, 9]},
     ],
   },
   'carry-it-your-way': {
     sections: [
-      {type: 'hero', productIndices: [0, 1]},
-      {type: 'scattered', productIndices: [2, 3, 4, 5]},
+      {type: 'editorial-grid', productIndices: [0, 1, 2, 3, 4, 5]},
       {
         type: 'quote',
         content: {
@@ -95,23 +95,42 @@ const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {
   },
   'sun-ready': {
     sections: [
-      {type: 'hero-side', productIndices: [0, 1, 2]},
-      {type: 'wide', productIndices: [3]},
-      {type: 'row', productIndices: [4, 5, 6, 7]},
+      {type: 'editorial-grid', productIndices: [0, 1, 2, 3, 4, 5, 6, 7]},
+      {
+        type: 'quote',
+        content: {
+          quote: 'Foundations shaped by intention and refined for everyday presence.',
+          author: 'Sun Ready Series',
+        },
+      },
     ],
   },
   'new-arrivals': {
     sections: [
-      {type: 'asymmetric', productIndices: [0, 1, 2]},
+      {type: 'editorial-grid', productIndices: [0, 1, 2, 3, 4, 5]},
       {
         type: 'quote',
         content: {
-          quote:
-            "Sustainability isn't a trend — it's our responsibility to tomorrow.",
+          quote: "Sustainability isn't a trend — it's our responsibility to tomorrow.",
           author: 'Our Commitment',
         },
       },
-      {type: 'row', productIndices: [3, 4, 5, 6]},
+      {type: 'row', productIndices: [6, 7, 8, 9]},
+    ],
+  },
+  'new-in': {
+    sections: [
+      {type: 'editorial-grid', productIndices: [0, 1, 2, 3, 4, 5, 6, 7]},
+    ],
+  },
+  sunglasses: {
+    sections: [
+      {type: 'editorial-grid', productIndices: [0, 1, 2, 3, 4, 5]},
+    ],
+  },
+  'phone-cases': {
+    sections: [
+      {type: 'editorial-grid', productIndices: [0, 1, 2, 3, 4, 5]},
     ],
   },
 };
@@ -138,6 +157,59 @@ export function getEditorialLayoutConfig(
 
   // 2. Fall back to hardcoded defaults
   return EDITORIAL_CONFIGS[handle] || null;
+}
+
+/**
+ * Generates a jumbled editorial-grid style layout for any number of products.
+ */
+export function generateDynamicEditorialConfig(
+  productCount: number,
+): EditorialLayoutConfig {
+  const sections: EditorialSectionConfig[] = [];
+  let currentIndex = 0;
+
+  while (currentIndex < productCount) {
+    const remaining = productCount - currentIndex;
+
+    // Use editorial-grid for batches of 8
+    if (remaining >= 8) {
+      sections.push({
+        type: 'editorial-grid',
+        productIndices: Array.from({length: 8}, (_, i) => currentIndex + i),
+      });
+      currentIndex += 8;
+
+      // Inject a quote after first major grid
+      if (currentIndex === 8) {
+        sections.push({
+          type: 'quote',
+          content: {
+            quote: 'Design is not just what it looks like and feels like. Design is how it works.',
+            author: 'Formé Haus',
+          },
+        });
+      }
+    }
+    // Use asymmetric for batches of 3-7
+    else if (remaining >= 3) {
+      const take = Math.min(3, remaining);
+      sections.push({
+        type: 'asymmetric',
+        productIndices: Array.from({length: take}, (_, i) => currentIndex + i),
+      });
+      currentIndex += take;
+    }
+    // Standard row for 1-2
+    else {
+      sections.push({
+        type: 'row',
+        productIndices: Array.from({length: remaining}, (_, i) => currentIndex + i),
+      });
+      currentIndex += remaining;
+    }
+  }
+
+  return {sections};
 }
 
 /** Handles that should render the editorial layout */
@@ -452,6 +524,8 @@ function getGridClass(type: string): string {
       return 'grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8';
     case 'wide':
       return 'mb-6 md:mb-8';
+    case 'editorial-grid':
+      return 'grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8';
     default:
       return '';
   }
@@ -505,6 +579,7 @@ function EditorialProductCard({
         'hover:shadow-lg hover:shadow-[#4A3C31]/8',
         getSizeClass(config.size),
         getStyleClass(config.style),
+        config.className,
       ]
         .filter(Boolean)
         .join(' ')}
@@ -891,6 +966,16 @@ function getDisplayConfig(
       {size: 'small', style: 'framed'},
       {size: 'small', style: 'framed'},
     ],
+    'editorial-grid': [
+      {size: 'hero', style: 'elevated', className: 'col-span-2 md:col-span-2 md:row-span-2'},
+      {size: 'small', style: 'framed', className: 'col-span-1 md:col-span-1 md:row-span-1'},
+      {size: 'small', style: 'framed', className: 'col-span-1 md:col-span-1 md:row-span-1'},
+      {size: 'portrait', style: 'minimal', className: 'col-span-1 md:col-span-1 md:row-span-2'},
+      {size: 'portrait', style: 'minimal', className: 'col-span-1 md:col-span-1 md:row-span-2'},
+      {size: 'landscape', style: 'elevated', className: 'col-span-2 md:col-span-2 md:row-span-1'},
+      {size: 'small', style: 'framed', className: 'col-span-1 md:col-span-1 md:row-span-1'},
+      {size: 'small', style: 'framed', className: 'col-span-1 md:col-span-1 md:row-span-1'},
+    ],
     wide: [{size: 'wide', style: 'elevated'}],
   };
 
@@ -902,7 +987,8 @@ function getSizeClass(size: string): string {
     hero: 'aspect-[4/5]',
     large: 'aspect-[5/6]',
     medium: 'aspect-square',
-    small: 'aspect-[3/4]',
+    portrait: 'aspect-[4/5] md:aspect-[1/2]',
+    landscape: 'aspect-[3/2] md:aspect-[2/1]',
     wide: 'aspect-[16/9]',
   };
   return sizes[size] || sizes.medium;

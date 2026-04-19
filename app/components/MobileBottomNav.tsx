@@ -68,13 +68,13 @@ export function MobileBottomNav() {
             <ShopIcon />
           </NavTab>
 
-          {/* Wishlist */}
+          {/* Favorites */}
           <NavTab
-            to="/account/wishlist"
-            label={t('nav.saved', 'Saved')}
-            isActive={isActive('/account/wishlist')}
+            to="/account/favorites"
+            label={t('nav.favorites', 'Favorites')}
+            isActive={isActive('/account/favorites')}
           >
-            <WishlistIcon count={state.wishlist.length} />
+            <WishlistIcon count={state.favorites.length} />
           </NavTab>
 
           {/* Cart */}

@@ -126,7 +126,7 @@ export default function AccountDetailsEdit() {
 
   return (
     <>
-      <Text className="mt-4 mb-6" as="h3" size="lead">
+      <Text className="mt-4 mb-6 font-serif text-warm" as="h3" size="lead">
         Update your profile
       </Text>
       <Form method="post">
@@ -141,7 +141,7 @@ export default function AccountDetailsEdit() {
         )}
         <div className="mt-3">
           <input
-            className={getInputStyleClasses()}
+            className="appearance-none rounded-lg bg-[#2A231C] border border-warm/10 w-full py-3 px-4 text-warm placeholder-taupe/50 focus:border-bronze focus:ring-1 focus:ring-bronze outline-none transition-all"
             id="firstName"
             name="firstName"
             type="text"
@@ -153,7 +153,7 @@ export default function AccountDetailsEdit() {
         </div>
         <div className="mt-3">
           <input
-            className={getInputStyleClasses()}
+            className="appearance-none rounded-lg bg-[#2A231C] border border-warm/10 w-full py-3 px-4 text-warm placeholder-taupe/50 focus:border-bronze focus:ring-1 focus:ring-bronze outline-none transition-all"
             id="lastName"
             name="lastName"
             type="text"
@@ -165,9 +165,7 @@ export default function AccountDetailsEdit() {
         </div>
         <div className="mt-6">
           <Button
-            className="text-sm mb-2"
-            variant="primary"
-            width="full"
+            className="w-full py-3 rounded-lg bg-[#a87441] hover:bg-[#8B5E3C] text-white text-[11px] uppercase tracking-wider transition-colors disabled:opacity-50 mt-4"
             type="submit"
             disabled={state !== 'idle'}
           >
@@ -175,7 +173,7 @@ export default function AccountDetailsEdit() {
           </Button>
         </div>
         <div className="mb-4">
-          <Button to=".." className="text-sm" variant="secondary" width="full">
+          <Button to=".." className="w-full block py-3 rounded-lg border border-warm/10 hover:border-warm/30 text-warm text-center text-[11px] uppercase tracking-wider transition-colors mt-3">
             Cancel
           </Button>
         </div>

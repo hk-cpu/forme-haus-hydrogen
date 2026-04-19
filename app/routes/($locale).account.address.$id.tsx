@@ -228,7 +228,7 @@ export default function EditAddress() {
 
   return (
     <>
-      <Text className="mt-4 mb-6" as="h3" size="lead">
+      <Text className="mt-4 mb-6 font-serif text-warm text-xl" as="h3" size="lead">
         {isNewAddress ? 'Add address' : 'Edit address'}
       </Text>
       <div className="max-w-lg">
@@ -249,7 +249,7 @@ export default function EditAddress() {
           )}
           <div className="mt-3">
             <input
-              className={getInputStyleClasses()}
+              className="appearance-none rounded-lg bg-[#2A231C] border border-warm/10 w-full py-3 px-4 text-warm placeholder-taupe/50 focus:border-bronze focus:ring-1 focus:ring-bronze outline-none transition-all"
               id="firstName"
               name="firstName"
               required
@@ -262,7 +262,7 @@ export default function EditAddress() {
           </div>
           <div className="mt-3">
             <input
-              className={getInputStyleClasses()}
+              className="appearance-none rounded-lg bg-[#2A231C] border border-warm/10 w-full py-3 px-4 text-warm placeholder-taupe/50 focus:border-bronze focus:ring-1 focus:ring-bronze outline-none transition-all"
               id="lastName"
               name="lastName"
               required
@@ -275,7 +275,7 @@ export default function EditAddress() {
           </div>
           <div className="mt-3">
             <input
-              className={getInputStyleClasses()}
+              className="appearance-none rounded-lg bg-[#2A231C] border border-warm/10 w-full py-3 px-4 text-warm placeholder-taupe/50 focus:border-bronze focus:ring-1 focus:ring-bronze outline-none transition-all"
               id="company"
               name="company"
               type="text"
@@ -287,7 +287,7 @@ export default function EditAddress() {
           </div>
           <div className="mt-3">
             <input
-              className={getInputStyleClasses()}
+              className="appearance-none rounded-lg bg-[#2A231C] border border-warm/10 w-full py-3 px-4 text-warm placeholder-taupe/50 focus:border-bronze focus:ring-1 focus:ring-bronze outline-none transition-all"
               id="address1"
               name="address1"
               type="text"
@@ -300,7 +300,7 @@ export default function EditAddress() {
           </div>
           <div className="mt-3">
             <input
-              className={getInputStyleClasses()}
+              className="appearance-none rounded-lg bg-[#2A231C] border border-warm/10 w-full py-3 px-4 text-warm placeholder-taupe/50 focus:border-bronze focus:ring-1 focus:ring-bronze outline-none transition-all"
               id="address2"
               name="address2"
               type="text"
@@ -312,7 +312,7 @@ export default function EditAddress() {
           </div>
           <div className="mt-3">
             <input
-              className={getInputStyleClasses()}
+              className="appearance-none rounded-lg bg-[#2A231C] border border-warm/10 w-full py-3 px-4 text-warm placeholder-taupe/50 focus:border-bronze focus:ring-1 focus:ring-bronze outline-none transition-all"
               id="city"
               name="city"
               type="text"
@@ -325,7 +325,7 @@ export default function EditAddress() {
           </div>
           <div className="mt-3">
             <input
-              className={getInputStyleClasses()}
+              className="appearance-none rounded-lg bg-[#2A231C] border border-warm/10 w-full py-3 px-4 text-warm placeholder-taupe/50 focus:border-bronze focus:ring-1 focus:ring-bronze outline-none transition-all"
               id="province"
               name="province"
               type="text"
@@ -338,7 +338,7 @@ export default function EditAddress() {
           </div>
           <div className="mt-3">
             <input
-              className={getInputStyleClasses()}
+              className="appearance-none rounded-lg bg-[#2A231C] border border-warm/10 w-full py-3 px-4 text-warm placeholder-taupe/50 focus:border-bronze focus:ring-1 focus:ring-bronze outline-none transition-all"
               id="zip"
               name="zip"
               type="text"
@@ -351,7 +351,7 @@ export default function EditAddress() {
           </div>
           <div className="mt-3">
             <input
-              className={getInputStyleClasses()}
+              className="appearance-none rounded-lg bg-[#2A231C] border border-warm/10 w-full py-3 px-4 text-warm placeholder-taupe/50 focus:border-bronze focus:ring-1 focus:ring-bronze outline-none transition-all"
               id="country"
               name="country"
               type="text"
@@ -364,7 +364,7 @@ export default function EditAddress() {
           </div>
           <div className="mt-3">
             <input
-              className={getInputStyleClasses()}
+              className="appearance-none rounded-lg bg-[#2A231C] border border-warm/10 w-full py-3 px-4 text-warm placeholder-taupe/50 focus:border-bronze focus:ring-1 focus:ring-bronze outline-none transition-all"
               id="phone"
               name="phone"
               type="tel"
@@ -383,27 +383,23 @@ export default function EditAddress() {
               className="border-gray-500 rounded-sm cursor-pointer border-1"
             />
             <label
-              className="inline-block ml-2 text-sm cursor-pointer"
+              className="inline-block ml-2 text-sm text-taupe cursor-pointer"
               htmlFor="defaultAddress"
             >
               Set as default address
             </label>
           </div>
-          <div className="mt-8">
+          <div className="mt-8 flex flex-col gap-3">
             <Button
-              className="w-full rounded focus:shadow-outline"
+              className="w-full py-3 rounded-lg bg-[#a87441] hover:bg-[#8B5E3C] text-white text-[11px] uppercase tracking-wider transition-colors disabled:opacity-50"
               type="submit"
-              variant="primary"
               disabled={state !== 'idle'}
             >
               {state !== 'idle' ? 'Saving' : 'Save'}
             </Button>
-          </div>
-          <div>
             <Button
               to=".."
-              className="w-full mt-2 rounded focus:shadow-outline"
-              variant="secondary"
+              className="w-full block py-3 rounded-lg border border-warm/10 hover:border-warm/30 text-warm text-center text-[11px] uppercase tracking-wider transition-colors"
             >
               Cancel
             </Button>

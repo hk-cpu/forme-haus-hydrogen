@@ -28,8 +28,9 @@ export interface UIState {
   promoBannerVisible: boolean;
   promoBannerPaused: boolean;
 
-  // Wishlist (local until synced with Shopify)
+  // Tracking
   wishlist: string[];
+  favorites: string[];
 
   // UI preferences
   reducedMotion: boolean;
@@ -53,6 +54,8 @@ type UIAction =
   | {type: 'CLOSE_PROMO_BANNER'}
   | {type: 'TOGGLE_WISHLIST'; productId: string}
   | {type: 'SET_WISHLIST'; productIds: string[]}
+  | {type: 'TOGGLE_FAVORITE'; productId: string}
+  | {type: 'SET_FAVORITES'; productIds: string[]}
   | {type: 'SET_REDUCED_MOTION'; enabled: boolean};
 
 // ============================================================================
@@ -70,6 +73,7 @@ const initialState: UIState = {
   promoBannerVisible: true,
   promoBannerPaused: false,
   wishlist: [],
+  favorites: [],
   reducedMotion: false,
 };
 
@@ -179,7 +183,7 @@ function uiReducer(state: UIState, action: UIAction): UIState {
       return {...state, promoBannerVisible: false};
 
     // Wishlist
-    case 'TOGGLE_WISHLIST':
+    case 'TOGGLE_WISHLIST': {
       const isInWishlist = state.wishlist.includes(action.productId);
       const newWishlist = isInWishlist
         ? state.wishlist.filter((id) => id !== action.productId)
@@ -189,8 +193,24 @@ function uiReducer(state: UIState, action: UIAction): UIState {
         localStorage.setItem('formehaus_wishlist', JSON.stringify(newWishlist));
       }
       return {...state, wishlist: newWishlist};
+    }
     case 'SET_WISHLIST':
       return {...state, wishlist: action.productIds};
+
+    // Favorites
+    case 'TOGGLE_FAVORITE': {
+      const isInFavorites = state.favorites.includes(action.productId);
+      const newFavorites = isInFavorites
+        ? state.favorites.filter((id) => id !== action.productId)
+        : [...state.favorites, action.productId];
+      // Persist to localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('formehaus_favorites', JSON.stringify(newFavorites));
+      }
+      return {...state, favorites: newFavorites};
+    }
+    case 'SET_FAVORITES':
+      return {...state, favorites: action.productIds};
 
     // Accessibility
     case 'SET_REDUCED_MOTION':
@@ -217,6 +237,8 @@ interface UIContextValue {
   closeAllOverlays: () => void;
   toggleWishlist: (productId: string) => void;
   isInWishlist: (productId: string) => boolean;
+  toggleFavorite: (productId: string) => void;
+  isInFavorites: (productId: string) => boolean;
 }
 
 const UIContext = createContext<UIContextValue | null>(null);
@@ -240,6 +262,19 @@ export function UIProvider({children}: {children: ReactNode}) {
           }
         } catch (e) {
           console.error('Failed to parse wishlist from localStorage');
+        }
+      }
+
+      // Check for favorites
+      const savedFavorites = localStorage.getItem('formehaus_favorites');
+      if (savedFavorites) {
+        try {
+          const parsedFav = JSON.parse(savedFavorites);
+          if (Array.isArray(parsedFav)) {
+            dispatch({type: 'SET_FAVORITES', productIds: parsedFav as string[]});
+          }
+        } catch (e) {
+          console.error('Failed to parse favorites from localStorage');
         }
       }
 
@@ -338,7 +373,17 @@ export function UIProvider({children}: {children: ReactNode}) {
     [state.wishlist],
   );
 
-  const value: UIContextValue = useMemo(
+  const toggleFavorite = useCallback(
+    (productId: string) => dispatch({type: 'TOGGLE_FAVORITE', productId}),
+    [dispatch],
+  );
+
+  const isInFavorites = useCallback(
+    (productId: string) => state.favorites.includes(productId),
+    [state.favorites],
+  );
+
+  const value = useMemo(
     () => ({
       state,
       dispatch,
@@ -350,10 +395,11 @@ export function UIProvider({children}: {children: ReactNode}) {
       closeAllOverlays,
       toggleWishlist,
       isInWishlist,
+      toggleFavorite,
+      isInFavorites,
     }),
     [
       state,
-      dispatch,
       toggleMenu,
       toggleSearch,
       toggleLogin,
@@ -362,6 +408,8 @@ export function UIProvider({children}: {children: ReactNode}) {
       closeAllOverlays,
       toggleWishlist,
       isInWishlist,
+      toggleFavorite,
+      isInFavorites,
     ],
   );
 
