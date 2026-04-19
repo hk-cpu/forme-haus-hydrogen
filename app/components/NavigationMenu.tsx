@@ -56,7 +56,7 @@ const topLevelItems = [
   {
     label: 'Phone Accessories',
     href: '/collections/phone-cases',
-    hasSubmenu: true,
+    hasSubmenu: false,
   },
   {
     label: 'Bundles',
