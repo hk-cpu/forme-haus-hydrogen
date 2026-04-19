@@ -86,16 +86,15 @@ export async function action({context, request}: ActionFunctionArgs) {
         Math.abs(hash).toString(16).padEnd(8, '0') + 'A1!xZ';
 
       // Attempt login
-      const {data: loginData}: any = await storefront.mutate(LOGIN_MUTATION, {
-        variables: {input: {email, password: dummyPassword}},
-      });
+      const {customerAccessTokenCreate: loginResult}: any =
+        await storefront.mutate(LOGIN_MUTATION, {
+          variables: {input: {email, password: dummyPassword}},
+        });
 
-      let customerAccessToken =
-        loginData?.customerAccessTokenCreate?.customerAccessToken;
+      let customerAccessToken = loginResult?.customerAccessToken;
 
       // Check if existing account is disabled (needs activation)
-      const loginUserErrors =
-        loginData?.customerAccessTokenCreate?.customerUserErrors ?? [];
+      const loginUserErrors = loginResult?.customerUserErrors ?? [];
       const isDisabled = loginUserErrors.some(
         (e: any) => e.code === 'CUSTOMER_DISABLED',
       );
@@ -112,12 +111,11 @@ export async function action({context, request}: ActionFunctionArgs) {
 
       if (!customerAccessToken) {
         // Create customer
-        const {data: regData, errors: regErrors}: any = await storefront.mutate(
+        const {customerCreate}: any = await storefront.mutate(
           CUSTOMER_CREATE_MUTATION,
           {variables: {input: {email, password: dummyPassword}}},
         );
-        const createUserErrors =
-          regData?.customerCreate?.customerUserErrors ?? [];
+        const createUserErrors = customerCreate?.customerUserErrors ?? [];
         const emailTaken = createUserErrors.some(
           (e: any) => e.code === 'TAKEN',
         );
@@ -133,21 +131,25 @@ export async function action({context, request}: ActionFunctionArgs) {
           );
         }
 
-        if (regErrors?.length || createUserErrors.length) {
-          const createErrMsg =
-            createUserErrors[0]?.message || 'Failed to create account.';
-          return json({error: createErrMsg, formId}, {status: 400});
+        if (createUserErrors.length) {
+          return json(
+            {
+              error:
+                createUserErrors[0]?.message || 'Failed to create account.',
+              formId,
+            },
+            {status: 400},
+          );
         }
 
-        const {data: retryData}: any = await storefront.mutate(LOGIN_MUTATION, {
-          variables: {input: {email, password: dummyPassword}},
-        });
-        customerAccessToken =
-          retryData?.customerAccessTokenCreate?.customerAccessToken;
+        const {customerAccessTokenCreate: retryResult}: any =
+          await storefront.mutate(LOGIN_MUTATION, {
+            variables: {input: {email, password: dummyPassword}},
+          });
+        customerAccessToken = retryResult?.customerAccessToken;
 
         // Check if newly created account needs activation
-        const retryErrors =
-          retryData?.customerAccessTokenCreate?.customerUserErrors ?? [];
+        const retryErrors = retryResult?.customerUserErrors ?? [];
         const retryDisabled = retryErrors.some(
           (e: any) => e.code === 'CUSTOMER_DISABLED',
         );
@@ -206,26 +208,15 @@ export async function action({context, request}: ActionFunctionArgs) {
 
   try {
     if (formId === 'register') {
-      const {data, errors}: any = await storefront.mutate(
+      const {customerCreate}: any = await storefront.mutate(
         CUSTOMER_CREATE_MUTATION,
-        {
-          variables: {
-            input: {email, password},
-          },
-        },
+        {variables: {input: {email, password}}},
       );
 
-      if (errors?.length) {
-        return json(
-          {error: errors[0].message, formId: 'register'},
-          {status: 400},
-        );
-      }
-
-      if (data?.customerCreate?.customerUserErrors?.length) {
+      if (customerCreate?.customerUserErrors?.length) {
         return json(
           {
-            error: data.customerCreate.customerUserErrors[0].message,
+            error: customerCreate.customerUserErrors[0].message,
             formId: 'register',
           },
           {status: 400},
@@ -238,33 +229,27 @@ export async function action({context, request}: ActionFunctionArgs) {
       });
     } else {
       // Login
-      const {data, errors}: any = await storefront.mutate(LOGIN_MUTATION, {
-        variables: {
-          input: {email, password},
-        },
-      });
+      const {customerAccessTokenCreate}: any = await storefront.mutate(
+        LOGIN_MUTATION,
+        {variables: {input: {email, password}}},
+      );
 
-      if (errors?.length) {
-        return json({error: errors[0].message, formId: 'login'}, {status: 400});
-      }
-
-      if (data?.customerAccessTokenCreate?.customerUserErrors?.length) {
+      if (customerAccessTokenCreate?.customerUserErrors?.length) {
         return json(
           {
-            error: data.customerAccessTokenCreate.customerUserErrors[0].message,
-            debug: data.customerAccessTokenCreate.customerUserErrors,
+            error: customerAccessTokenCreate.customerUserErrors[0].message,
             formId: 'login',
           },
           {status: 400},
         );
       }
 
-      const {customerAccessToken} = data?.customerAccessTokenCreate || {};
+      const customerAccessToken =
+        customerAccessTokenCreate?.customerAccessToken;
 
       if (!customerAccessToken?.accessToken) {
-        const devDebug = `API rejected login. Data: ${JSON.stringify(data)}`;
         return json(
-          {error: 'Invalid credentials. ' + devDebug, formId: 'login'},
+          {error: 'Sign-in failed. Please try again.', formId: 'login'},
           {status: 401},
         );
       }
@@ -272,9 +257,7 @@ export async function action({context, request}: ActionFunctionArgs) {
       session.set('customerAccessToken', customerAccessToken);
 
       return redirect(`${storefront.i18n?.pathPrefix || ''}/account`, {
-        headers: {
-          'Set-Cookie': await session.commit(),
-        },
+        headers: {'Set-Cookie': await session.commit()},
       });
     }
   } catch (error: any) {
