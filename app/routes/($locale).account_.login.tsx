@@ -92,31 +92,66 @@ export async function action({context, request}: ActionFunctionArgs) {
       let customerAccessToken =
         loginData?.customerAccessTokenCreate?.customerAccessToken;
 
+      // Check if existing account is disabled (needs activation)
+      const loginUserErrors = loginData?.customerAccessTokenCreate?.customerUserErrors ?? [];
+      const isDisabled = loginUserErrors.some((e: any) => e.code === 'CUSTOMER_DISABLED');
+      if (isDisabled) {
+        return json(
+          {error: 'Your account requires email activation. Please check your inbox for the activation link.', formId: 'login'},
+          {status: 401},
+        );
+      }
+
       if (!customerAccessToken) {
         // Create customer
         const {data: regData, errors: regErrors}: any = await storefront.mutate(
           CUSTOMER_CREATE_MUTATION,
           {variables: {input: {email, password: dummyPassword}}},
         );
-        if (
-          regErrors?.length ||
-          regData?.customerCreate?.customerUserErrors?.length
-        ) {
+        const createUserErrors = regData?.customerCreate?.customerUserErrors ?? [];
+        const emailTaken = createUserErrors.some((e: any) => e.code === 'TAKEN');
+
+        if (emailTaken) {
           return json(
-            {error: 'Failed to create Google mapped account.', formId},
+            {error: 'This email is already registered. Please sign in with your email and password, or use "Forgot Password" to reset it.', formId: 'login'},
             {status: 400},
           );
         }
+
+        if (regErrors?.length || createUserErrors.length) {
+          const createErrMsg = createUserErrors[0]?.message || 'Failed to create account.';
+          return json(
+            {error: createErrMsg, formId},
+            {status: 400},
+          );
+        }
+
         const {data: retryData}: any = await storefront.mutate(LOGIN_MUTATION, {
           variables: {input: {email, password: dummyPassword}},
         });
         customerAccessToken =
           retryData?.customerAccessTokenCreate?.customerAccessToken;
+
+        // Check if newly created account needs activation
+        const retryErrors = retryData?.customerAccessTokenCreate?.customerUserErrors ?? [];
+        const retryDisabled = retryErrors.some((e: any) => e.code === 'CUSTOMER_DISABLED');
+        if (retryDisabled) {
+          return json(
+            {error: 'Account created! Please check your email for an activation link before signing in.', formId: 'login'},
+            {status: 401},
+          );
+        }
+        if (!customerAccessToken?.accessToken && retryErrors.length) {
+          return json(
+            {error: retryErrors[0].message || 'Sign-in failed after account creation.', formId: 'login'},
+            {status: 401},
+          );
+        }
       }
 
       if (!customerAccessToken?.accessToken) {
         return json(
-          {error: 'Invalid mapped credentials.', formId: 'login'},
+          {error: 'Sign-in failed. Please try again or use email and password.', formId: 'login'},
           {status: 401},
         );
       }
