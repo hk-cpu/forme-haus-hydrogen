@@ -314,32 +314,6 @@ export default function Product() {
           <div className="sticky md:top-24 md:h-[calc(100vh-6rem)] hiddenScroll md:overflow-y-auto">
             <section className="flex flex-col w-full max-w-xl gap-10 p-6 md:pl-10 lg:pl-16 md:mx-auto md:max-w-none">
               <div className="grid gap-3">
-                {/* Brand Badge - LOUVE Collection */}
-                <div className="flex items-center gap-3 flex-wrap">
-                  <span className="text-[11px] uppercase tracking-[0.2em] text-[#a87441] font-semibold">
-                    LOUVE Collection
-                  </span>
-                  {iPhoneModels.length > 0 && (
-                    <div className="flex gap-1.5">
-                      {iPhoneModels
-                        .slice(0, 2)
-                        .map((model: string, idx: number) => (
-                          <span
-                            key={idx}
-                            className="text-[10px] px-2.5 py-1 bg-[#a87441]/10 text-[#a87441] rounded-full font-medium"
-                          >
-                            {model}
-                          </span>
-                        ))}
-                      {iPhoneModels.length > 2 && (
-                        <span className="text-[10px] px-2 py-1 text-[#8B8076]">
-                          +{iPhoneModels.length - 2} more
-                        </span>
-                      )}
-                    </div>
-                  )}
-                </div>
-
                 <Heading
                   as="h1"
                   className="whitespace-normal font-serif text-3xl md:text-4xl lg:text-4xl text-[#2a2118] font-thin leading-[0.95] tracking-tight mb-2 hyphens-auto"
@@ -347,7 +321,7 @@ export default function Product() {
                   {title}
                 </Heading>
 
-                {vendor && vendor !== 'LOUVE Collection' && (
+                {vendor && (
                   <Text
                     className={
                       'opacity-60 font-sans tracking-[0.2em] uppercase text-xs text-[#8B8076]'
@@ -514,13 +488,6 @@ export function ProductForm({
               key={option.name}
               className="product-options flex flex-col flex-wrap mb-4 gap-y-2 last:mb-0"
             >
-              <Heading
-                as="legend"
-                size="lead"
-                className="min-w-[4rem] text-[#5C5046] text-xs uppercase tracking-[0.15em] mb-3 font-medium"
-              >
-                {option.name}
-              </Heading>
               <div className="flex flex-wrap items-baseline gap-3">
                 {option.optionValues.length > 7 ? (
                   <div className="relative w-full">
@@ -654,7 +621,10 @@ export function ProductForm({
                 </Text>
               </Button>
             ) : (
-              <motion.div whileTap={{scale: 0.98}} className="flex flex-col gap-3">
+              <motion.div
+                whileTap={{scale: 0.98}}
+                className="flex flex-col gap-3"
+              >
                 <AddToCartButton
                   lines={[
                     {
@@ -698,10 +668,23 @@ export function ProductForm({
                   }}
                   className="w-full bg-transparent hover:bg-[#8B8076]/5 border border-[#8B8076]/30 text-[#8B8076] py-3 rounded-none transition-all duration-300 tracking-widest uppercase text-xs font-medium flex items-center justify-center gap-2"
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill={isInWishlist(productId) ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.5">
-                    <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" strokeLinecap="round" strokeLinejoin="round" />
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill={isInWishlist(productId) ? 'currentColor' : 'none'}
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <path
+                      d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
-                  {isInWishlist(productId) ? 'Remove from Wishlist' : 'Add to Wishlist'}
+                  {isInWishlist(productId)
+                    ? 'Remove from Wishlist'
+                    : 'Add to Wishlist'}
                 </button>
               </motion.div>
             )}
