@@ -441,6 +441,8 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
     error?: string;
   }>();
   const rootData = useRouteLoaderData<RootLoader>('root');
+  const [email, setEmail] = useState('');
+  const [emailTouched, setEmailTouched] = useState(false);
 
   const total = cart.cost?.totalAmount?.amount ?? '0';
   const currency = cart.cost?.totalAmount?.currencyCode ?? 'SAR';
@@ -452,9 +454,19 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
     rootData?.selectedLocale?.pathPrefix,
   );
 
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
   function initiatePayment() {
+    setEmailTouched(true);
+    if (!emailValid) return;
     fetcher.submit(
-      {amount: total, currency, merchantTxId, cartId: cart.id || ''},
+      {
+        amount: total,
+        currency,
+        merchantTxId,
+        cartId: cart.id || '',
+        shopperEmail: email,
+      },
       {method: 'post', action: tapInitiatePath},
     );
   }
@@ -476,26 +488,52 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
           Preparing secure payment…
         </div>
       ) : fetcher.data?.error ? (
-        <div className="p-3 bg-red-400/10 border border-red-400/20 rounded-lg text-red-400 text-xs text-center">
-          {fetcher.data.error}
-          <button
-            onClick={() => initiatePayment()}
-            className="block w-full mt-2 text-taupe hover:text-warm underline"
-          >
-            Try again
-          </button>
+        <div className="flex flex-col gap-3">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email for receipt"
+            className="w-full bg-[#1a1a1a] border border-red-400/40 rounded-lg px-4 py-2.5 text-sm text-warm placeholder:text-taupe/50 focus:outline-none focus:border-bronze/50 transition-colors"
+          />
+          <div className="p-3 bg-red-400/10 border border-red-400/20 rounded-lg text-red-400 text-xs text-center">
+            {fetcher.data.error}
+            <button
+              onClick={() => initiatePayment()}
+              className="block w-full mt-2 text-taupe hover:text-warm underline"
+            >
+              Try again
+            </button>
+          </div>
         </div>
       ) : (
-        <motion.button
-          type="button"
-          onClick={initiatePayment}
-          className="w-full py-3.5 rounded-xl bg-[#1B5E20] hover:bg-[#2E7D32] text-white text-[11px] uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
-          whileHover={{scale: 1.01}}
-          whileTap={{scale: 0.99}}
-        >
-          <Icons.Lock className="w-3.5 h-3.5" />
-          Pay with mada / Card / Apple Pay
-        </motion.button>
+        <div className="flex flex-col gap-3">
+          <div>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={() => setEmailTouched(true)}
+              placeholder="Email for receipt"
+              className="w-full bg-[#1a1a1a] border border-warm/10 rounded-lg px-4 py-2.5 text-sm text-warm placeholder:text-taupe/50 focus:outline-none focus:border-bronze/50 transition-colors"
+            />
+            {emailTouched && !emailValid && (
+              <p className="text-red-400 text-[10px] mt-1 px-1">
+                Please enter a valid email address.
+              </p>
+            )}
+          </div>
+          <motion.button
+            type="button"
+            onClick={initiatePayment}
+            className="w-full py-3.5 rounded-xl bg-[#1B5E20] hover:bg-[#2E7D32] text-white text-[11px] uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+            whileHover={{scale: 1.01}}
+            whileTap={{scale: 0.99}}
+          >
+            <Icons.Lock className="w-3.5 h-3.5" />
+            Pay with mada / Card / Apple Pay
+          </motion.button>
+        </div>
       )}
     </div>
   );
