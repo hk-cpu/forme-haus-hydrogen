@@ -1,6 +1,7 @@
+import {motion} from 'framer-motion';
+
 import {Link} from '~/components/Link';
 import {useTranslation} from '~/hooks/useTranslation';
-import {motion} from 'framer-motion';
 
 interface Category {
   id: number;
