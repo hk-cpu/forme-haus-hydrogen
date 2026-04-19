@@ -279,6 +279,21 @@ export function Header({
       };
     }
 
+    const isPhoneAccessoriesNode =
+      item.title === 'Phone Accessories' ||
+      item.title === t('category.phoneAccessories', 'Phone Accessories') ||
+      normalizedTo === '/collections/phone-cases' ||
+      normalizedTo === '/collections/phone-accessories';
+
+    if (isPhoneAccessoriesNode) {
+      return {
+        ...item,
+        to: '/collections/phone-cases',
+        title: t('category.phoneAccessories', 'Phone Accessories'),
+        items: [], // Flatten out any dropdown options like Phone Cases and Phone Straps
+      };
+    }
+
     if (item.title?.toLowerCase() === 'home') {
       return {
         ...item,
