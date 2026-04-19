@@ -416,8 +416,7 @@ export const menuData = {
     image:
       'https://images.unsplash.com/photo-1603313011101-320f26a4f6f6?w=800&q=80',
     categories: [
-      {label: 'All Phone Accessories', href: '/collections/phone-accessories'},
-      {label: 'Bundles (Case + Strap Bundles)', href: '/collections/bundles'},
+      {label: 'Phone Cases', href: '/collections/phone-cases'},
       {label: 'Phone Straps', href: '/collections/phone-straps'},
     ],
   },

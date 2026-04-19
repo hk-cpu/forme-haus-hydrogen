@@ -39,12 +39,11 @@ const menuCategories: Record<string, CategoryData> = {
     tagline: 'Protect in Style',
     categories: [
       {
-        label: 'Phone Accessories',
+        label: 'Phone Cases',
         href: '/collections/phone-cases',
         featured: true,
       },
       {label: 'Phone Straps', href: '/collections/phone-straps'},
-      {label: 'Bundles', href: '/collections/case-strap-bundles'},
     ],
   },
 };
@@ -56,7 +55,7 @@ const topLevelItems = [
   {
     label: 'Phone Accessories',
     href: '/collections/phone-cases',
-    hasSubmenu: false,
+    hasSubmenu: true,
   },
   {
     label: 'Bundles',
