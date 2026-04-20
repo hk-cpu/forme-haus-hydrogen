@@ -1,6 +1,7 @@
+import {motion} from 'framer-motion';
+
 import {Link} from '~/components/Link';
 import {useTranslation} from '~/hooks/useTranslation';
-import {motion} from 'framer-motion';
 
 interface Category {
   id: number;
@@ -24,7 +25,7 @@ const CATEGORIES: Category[] = [
   },
   {
     id: 2,
-    titleKey: 'category.phoneAccessories',
+    titleKey: 'category.phoneCases',
     image: '/brand/phone-accessories-opt.webp',
     url: '/collections/phone-cases',
     width: 640,
@@ -33,6 +34,15 @@ const CATEGORIES: Category[] = [
   },
   {
     id: 3,
+    titleKey: 'category.phoneStraps',
+    image: '/brand/phone-accessories-opt.webp',
+    url: '/collections/phone-straps',
+    width: 640,
+    height: 954,
+    count: '12 Pieces',
+  },
+  {
+    id: 4,
     titleKey: 'nav.sunglasses',
     image: '/brand/sunglasses-opt.webp',
     url: '/collections/sunglasses',
@@ -61,7 +71,7 @@ export default function CategoryBento() {
           <div className="h-px w-16 bg-gradient-to-r from-[#a87441] to-transparent" />
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-4">
           {CATEGORIES.map((category, index) => (
             <motion.div
               key={category.id}
@@ -84,7 +94,7 @@ export default function CategoryBento() {
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   width={category.width}
                   height={category.height}
-                  sizes="(max-width: 768px) 100vw, 33vw"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   loading={index === 0 ? 'eager' : 'lazy'}
                   fetchPriority={index === 0 ? 'high' : 'auto'}
                   decoding="async"

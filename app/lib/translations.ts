@@ -256,7 +256,8 @@ export const translations = {
 
     // Category Bento
     'category.newInHaus': 'New to Haus',
-    'category.phoneAccessories': 'Phone Accessories',
+    'category.phoneCases': 'Phone Cases',
+    'category.phoneStraps': 'Phone Straps',
     'home.shopByCategory': 'Shop by Category',
 
     // Bundle Pricing
@@ -608,7 +609,8 @@ export const translations = {
 
     // Category Bento
     'category.newInHaus': 'جديد الدار',
-    'category.phoneAccessories': 'إكسسوارات الهاتف',
+    'category.phoneCases': 'أغطية الهاتف',
+    'category.phoneStraps': 'أحزمة الهاتف',
     'home.shopByCategory': 'تسوّق حسب الفئة',
 
     // Bundle Pricing

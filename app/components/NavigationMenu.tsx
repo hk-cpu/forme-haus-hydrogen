@@ -54,7 +54,7 @@ const topLevelItems = [
   {label: 'Sunglasses', href: '/collections/sunglasses', hasSubmenu: true},
   {
     label: 'Phone Accessories',
-    href: '/collections/phone-cases',
+    href: '/collections/phone-accessories',
     hasSubmenu: true,
   },
   {
