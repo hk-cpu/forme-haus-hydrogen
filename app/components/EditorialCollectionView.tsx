@@ -4,6 +4,7 @@ import {CartForm, Money} from '@shopify/hydrogen';
 import type {FetcherWithComponents} from '@remix-run/react';
 
 import {Link} from '~/components/Link';
+import {BundlePricing} from '~/components/BundlePricing';
 import {useTranslation} from '~/hooks/useTranslation';
 import {useUI} from '~/context/UIContext';
 
@@ -46,7 +47,8 @@ interface EditorialSectionConfig {
     | 'row'
     | 'quote'
     | 'hero-side'
-    | 'wide';
+    | 'wide'
+    | 'bundle-pricing';
   productIndices?: number[];
   content?: {quote: string; author: string};
 }
@@ -64,7 +66,57 @@ interface ProductDisplayConfig {
 
 // ─── Layout Defaults ─────────────────────────────────────────
 
-const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {};
+const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {
+  'modern-essentials': {
+    sections: [
+      {type: 'hero', productIndices: [0, 1]},
+      {type: 'asymmetric', productIndices: [2, 3, 4]},
+      {
+        type: 'quote',
+        content: {
+          quote: 'The best fashion is the kind that lets you be yourself.',
+          author: 'Our Design Philosophy',
+        },
+      },
+      {type: 'row', productIndices: [5, 6, 7, 8]},
+    ],
+  },
+  'carry-it-your-way': {
+    sections: [
+      {type: 'hero', productIndices: [0, 1]},
+      {type: 'bundle-pricing'},
+      {type: 'scattered', productIndices: [2, 3, 4, 5]},
+      {
+        type: 'quote',
+        content: {
+          quote: 'Carry it your way — every pairing, your signature.',
+          author: 'Forme Haus',
+        },
+      },
+    ],
+  },
+  'sun-ready': {
+    sections: [
+      {type: 'hero-side', productIndices: [0, 1, 2]},
+      {type: 'wide', productIndices: [3]},
+      {type: 'row', productIndices: [4, 5, 6, 7]},
+    ],
+  },
+  'new-arrivals': {
+    sections: [
+      {type: 'asymmetric', productIndices: [0, 1, 2]},
+      {
+        type: 'quote',
+        content: {
+          quote:
+            "Sustainability isn't a trend — it's our responsibility to tomorrow.",
+          author: 'Our Commitment',
+        },
+      },
+      {type: 'row', productIndices: [3, 4, 5, 6]},
+    ],
+  },
+};
 
 /**
  * Resolve the editorial layout config for a collection.
@@ -308,6 +360,10 @@ function ContentSection({
     return <EditorialQuote {...section.content} />;
   }
 
+  if (section.type === 'bundle-pricing') {
+    return <EditorialBundlePricing />;
+  }
+
   const sectionProducts = (section.productIndices || [])
     .map((i) => products[i])
     .filter(Boolean);
@@ -477,6 +533,21 @@ function EditorialProductCard({
           Sale
         </span>
       )}
+      {product.title.includes('+') && !config.badge && !isOnSale && (
+        <span className="absolute top-3 left-3 z-10 inline-flex items-center gap-1 px-2.5 py-1 bg-bronze text-white text-[9px] tracking-[0.1em] uppercase rounded">
+          <svg
+            viewBox="0 0 24 24"
+            className="w-3 h-3"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            aria-hidden="true"
+          >
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+          </svg>
+          Bundle · Save 15%
+        </span>
+      )}
 
       {/* Clickable wrapper — links to product page */}
       <Link
@@ -586,6 +657,36 @@ function EditorialProductCard({
 }
 
 // ─── Editorial Quote ─────────────────────────────────────────
+
+function EditorialBundlePricing() {
+  const {t} = useTranslation();
+  return (
+    <motion.section
+      initial={{opacity: 0, y: 30}}
+      whileInView={{opacity: 1, y: 0}}
+      viewport={{once: true, margin: '-80px'}}
+      transition={{duration: 0.8, delay: 0.1, ease: EASE_OUT_EXPO}}
+      className="my-8 md:my-12 p-6 md:p-10 bg-cream rounded-lg border border-bronze/15"
+      aria-labelledby="bundle-pricing-heading"
+    >
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-6 md:mb-8">
+          <span className="text-[10px] md:text-xs uppercase tracking-[0.3em] text-bronze font-light">
+            {t('bundle.saveMoreWithBundles', 'Save more with bundles')}
+          </span>
+          <h2
+            id="bundle-pricing-heading"
+            className="font-serif text-2xl md:text-3xl text-brand-text mt-2"
+          >
+            {t('bundle.chooseBundle', 'Choose Your Bundle')}
+          </h2>
+          <div className="h-px w-16 bg-gradient-to-r from-transparent via-bronze/40 to-transparent mx-auto mt-4" />
+        </div>
+        <BundlePricing variant="cards" />
+      </div>
+    </motion.section>
+  );
+}
 
 function EditorialQuote({quote, author}: {quote: string; author: string}) {
   return (
