@@ -64,56 +64,7 @@ interface ProductDisplayConfig {
 
 // ─── Layout Defaults ─────────────────────────────────────────
 
-const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {
-  'modern-essentials': {
-    sections: [
-      {type: 'hero', productIndices: [0, 1]},
-      {type: 'asymmetric', productIndices: [2, 3, 4]},
-      {
-        type: 'quote',
-        content: {
-          quote: 'The best fashion is the kind that lets you be yourself.',
-          author: 'Our Design Philosophy',
-        },
-      },
-      {type: 'row', productIndices: [5, 6, 7, 8]},
-    ],
-  },
-  'carry-it-your-way': {
-    sections: [
-      {type: 'hero', productIndices: [0, 1]},
-      {type: 'scattered', productIndices: [2, 3, 4, 5]},
-      {
-        type: 'quote',
-        content: {
-          quote: 'Carry it your way — every pairing, your signature.',
-          author: 'Forme Haus',
-        },
-      },
-    ],
-  },
-  'sun-ready': {
-    sections: [
-      {type: 'hero-side', productIndices: [0, 1, 2]},
-      {type: 'wide', productIndices: [3]},
-      {type: 'row', productIndices: [4, 5, 6, 7]},
-    ],
-  },
-  'new-arrivals': {
-    sections: [
-      {type: 'asymmetric', productIndices: [0, 1, 2]},
-      {
-        type: 'quote',
-        content: {
-          quote:
-            "Sustainability isn't a trend — it's our responsibility to tomorrow.",
-          author: 'Our Commitment',
-        },
-      },
-      {type: 'row', productIndices: [3, 4, 5, 6]},
-    ],
-  },
-};
+const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {};
 
 /**
  * Resolve the editorial layout config for a collection.
