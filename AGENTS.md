@@ -35,6 +35,7 @@ Shopify Hydrogen v2024.10 storefront for **formehaus.me** — luxury lifestyle b
 ## Project Landmarks
 
 ### Routes (`app/routes/`)
+
 - Locale-prefixed: `($locale).*.tsx` — alias files at non-prefixed paths re-export
 - Collections: `($locale).collections.$collectionHandle.tsx`
 - Products: `($locale).products.$productHandle.tsx`
@@ -42,6 +43,7 @@ Shopify Hydrogen v2024.10 storefront for **formehaus.me** — luxury lifestyle b
 - Account (session-based auth, not Customer Account API)
 
 ### Key Components (`app/components/`)
+
 - `Header.tsx` — fixed nav with scroll-hide
 - `Hero.tsx` — `h-[70vh]` logo section
 - `CategoryBento.tsx` — homepage 3-card grid: New In, Phone Accessories, Sunglasses (Phone Cases/Straps were merged into one Phone Accessories card)
@@ -53,6 +55,7 @@ Shopify Hydrogen v2024.10 storefront for **formehaus.me** — luxury lifestyle b
 - `ProductGallery.tsx` — 3D rotating carousel
 
 ### State & i18n
+
 - `app/context/UIContext.tsx` — global UI state (search/cart/menu/login/filter toggles)
 - `app/hooks/useTranslation.ts` + `app/lib/translations.ts` — EN/AR key-value map. Add keys in **both** locales.
 - For Arabic: `font-arabic`, `dir="rtl"`, mirror directional icons/animations.
