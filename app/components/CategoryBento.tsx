@@ -25,21 +25,12 @@ const CATEGORIES: Category[] = [
   },
   {
     id: 2,
-    titleKey: 'category.phoneCases',
+    titleKey: 'category.phoneAccessories',
     image: '/brand/phone-accessories-opt.webp',
-    url: '/collections/phone-cases',
+    url: '/collections/phone-accessories',
     width: 640,
     height: 954,
-    count: '48 Pieces',
-  },
-  {
-    id: 3,
-    titleKey: 'category.phoneStraps',
-    image: '/brand/phone-accessories-opt.webp',
-    url: '/collections/phone-straps',
-    width: 640,
-    height: 954,
-    count: '12 Pieces',
+    count: '60 Pieces',
   },
   {
     id: 4,
@@ -71,7 +62,7 @@ export default function CategoryBento() {
           <div className="h-px w-16 bg-gradient-to-r from-[#a87441] to-transparent" />
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
           {CATEGORIES.map((category, index) => (
             <motion.div
               key={category.id}
