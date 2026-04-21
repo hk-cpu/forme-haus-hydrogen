@@ -5,20 +5,37 @@ import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
 
 /**
- * Category groups — context-aware sibling navigation.
- * When viewing a phone-related collection, show phone siblings.
- * Otherwise show the top-level categories.
+ * Primary tabs — top-level categories.
+ * Phone Accessories is a parent that groups Phone Cases + Phone Straps.
  */
 const CATEGORIES = [
   {id: 'shop-all', label: 'Shop All', href: '/products'},
   {
-    id: 'phone-cases',
+    id: 'phone-accessories',
     label: 'Phone Accessories',
-    href: '/collections/phone-cases',
+    href: '/collections/phone-accessories',
   },
-  {id: 'phone-straps', label: 'Straps', href: '/collections/phone-straps'},
   {id: 'sunglasses', label: 'Sunglasses', href: '/collections/sunglasses'},
 ];
+
+/**
+ * Sub-tabs — shown beneath the primary row when the active collection is
+ * part of the Phone Accessories group.
+ */
+const PHONE_SUBCATEGORIES = [
+  {id: 'phone-cases', label: 'Phone Cases', href: '/collections/phone-cases'},
+  {
+    id: 'phone-straps',
+    label: 'Phone Straps',
+    href: '/collections/phone-straps',
+  },
+];
+
+const PHONE_HANDLES = new Set([
+  'phone-accessories',
+  'phone-cases',
+  'phone-straps',
+]);
 
 /**
  * CategoryHeader — Sticky horizontal tab bar for collection navigation
@@ -45,6 +62,12 @@ export function CategoryHeader({
   const location = useLocation();
 
   const categories = CATEGORIES;
+  const isPhoneContext = collectionHandle
+    ? PHONE_HANDLES.has(collectionHandle)
+    : false;
+  const isPhoneParentActive =
+    isPhoneContext ||
+    location.pathname.endsWith('/collections/phone-accessories');
 
   return (
     <div
@@ -62,8 +85,10 @@ export function CategoryHeader({
         >
           {categories.map((cat) => {
             const isActive =
-              location.pathname === cat.href ||
-              location.pathname.endsWith(cat.href);
+              cat.id === 'phone-accessories'
+                ? isPhoneParentActive
+                : location.pathname === cat.href ||
+                  location.pathname.endsWith(cat.href);
 
             return (
               <Link
@@ -124,6 +149,50 @@ export function CategoryHeader({
           </button>
         </div>
       </div>
+
+      {/* Sub-tabs — Phone Cases / Phone Straps under Phone Accessories */}
+      {isPhoneParentActive && (
+        <div
+          className="max-w-[1440px] mx-auto border-t border-brand-text/5"
+          style={{padding: '0 var(--page-gutter)'}}
+        >
+          <nav
+            className="flex items-center gap-1 overflow-x-auto scrollbar-hide py-2 -mx-1"
+            aria-label="Phone accessories subcategories"
+          >
+            {PHONE_SUBCATEGORIES.map((sub) => {
+              const isActive =
+                location.pathname === sub.href ||
+                location.pathname.endsWith(sub.href);
+
+              return (
+                <Link
+                  key={sub.id}
+                  to={sub.href}
+                  className={`relative px-3.5 py-2 text-[10px] uppercase tracking-[0.18em] whitespace-nowrap transition-colors duration-300 rounded-full ${
+                    isActive
+                      ? 'text-brand-text font-medium'
+                      : 'text-[#8B7355] hover:text-brand-text'
+                  }`}
+                >
+                  {sub.label}
+                  {isActive && (
+                    <motion.span
+                      layoutId="category-subtab-underline"
+                      className="absolute inset-0 rounded-full bg-[#a87441]/10 border border-[#a87441]/20"
+                      transition={{
+                        type: 'spring',
+                        stiffness: 380,
+                        damping: 30,
+                      }}
+                    />
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+      )}
     </div>
   );
 }
