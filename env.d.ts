@@ -36,6 +36,8 @@ declare global {
     TAP_PUBLIC_KEY: string;
     TAP_API_URL: string;
     TAP_WEBHOOK_SECRET: string;
+    // Shopify Admin API (for order creation after Tap payment)
+    SHOPIFY_ADMIN_API_TOKEN: string;
     // Google SSO
     PUBLIC_GOOGLE_CLIENT_ID: string;
   }

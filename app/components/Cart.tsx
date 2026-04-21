@@ -489,73 +489,6 @@ function CartLines({
   );
 }
 
-function TapPayCheckoutButton({cart}: {cart: CartType}) {
-  const fetcher = useFetcher<{
-    chargeId?: string;
-    redirectUrl?: string;
-    error?: string;
-  }>();
-  const rootData = useRouteLoaderData<RootLoader>('root');
-
-  const total = cart.cost?.totalAmount?.amount ?? '0';
-  const currency = cart.cost?.totalAmount?.currencyCode ?? 'SAR';
-  const merchantTxId = `FH-${Date.now()}-${Math.random()
-    .toString(36)
-    .slice(2, 7)}`;
-  const tapInitiatePath = buildLocalePath(
-    '/tap/initiate',
-    rootData?.selectedLocale?.pathPrefix,
-  );
-
-  function initiatePayment() {
-    fetcher.submit(
-      {amount: total, currency, merchantTxId, cartId: cart.id || ''},
-      {method: 'post', action: tapInitiatePath},
-    );
-  }
-
-  // Redirect to Tap's hosted payment page when we get the URL
-  if (fetcher.state === 'idle' && fetcher.data?.redirectUrl) {
-    if (typeof window !== 'undefined') {
-      // Clean up cart drawer scroll lock before leaving so history back works cleanly
-      document.body.style.overflow = '';
-      window.location.href = fetcher.data.redirectUrl;
-    }
-  }
-
-  return (
-    <div>
-      {fetcher.state !== 'idle' ? (
-        <div className="flex items-center justify-center gap-2 py-4 text-taupe text-sm">
-          <div className="w-4 h-4 rounded-full border-2 border-bronze/30 border-t-bronze animate-spin" />
-          Preparing secure payment…
-        </div>
-      ) : fetcher.data?.error ? (
-        <div className="p-3 bg-red-400/10 border border-red-400/20 rounded-lg text-red-400 text-xs text-center">
-          {fetcher.data.error}
-          <button
-            onClick={() => initiatePayment()}
-            className="block w-full mt-2 text-taupe hover:text-warm underline"
-          >
-            Try again
-          </button>
-        </div>
-      ) : (
-        <motion.button
-          type="button"
-          onClick={initiatePayment}
-          className="w-full py-3.5 rounded-xl bg-[#1B5E20] hover:bg-[#2E7D32] text-white text-[11px] uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
-          whileHover={{scale: 1.01}}
-          whileTap={{scale: 0.99}}
-        >
-          <Icons.Lock className="w-3.5 h-3.5" />
-          Pay with mada / Card / Apple Pay
-        </motion.button>
-      )}
-    </div>
-  );
-}
-
 function CartCheckoutActions({
   checkoutUrl,
   cart,
@@ -570,8 +503,6 @@ function CartCheckoutActions({
   const {t} = useTranslation();
   const rootData = useRouteLoaderData<RootLoader>('root');
 
-  if (!checkoutUrl) return null;
-
   const checkoutPath = buildLocalePath(
     '/checkout',
     rootData?.selectedLocale?.pathPrefix,
@@ -579,18 +510,15 @@ function CartCheckoutActions({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Primary CTA: Proceed to secure checkout via branded Shopify checkout */}
+      {/* Single CTA — goes to our custom in-Hydrogen checkout page */}
       <Link
         to={checkoutPath}
         onClick={onClose}
-        className="w-full py-4 rounded-xl bg-bronze hover:bg-bronze-dark text-white text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
+        className="w-full py-4 rounded-xl bg-bronze hover:bg-bronze/90 text-white text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
       >
         <Icons.Lock className="w-3.5 h-3.5" />
-        {t('cart.proceedToCheckout', 'Proceed to secure checkout')}
+        {t('cart.proceedToCheckout', 'Proceed to Checkout')}
       </Link>
-
-      {/* Alternative: Tap Payments — mada + Visa/MC + Apple Pay + STC Pay */}
-      <TapPayCheckoutButton cart={cart} />
 
       {/* Trust Badges */}
       <div className="flex items-center justify-center gap-4 py-2">
@@ -605,20 +533,26 @@ function CartCheckoutActions({
         </div>
       </div>
 
+      {/* Payment badges */}
+      <div className="flex items-center justify-center gap-2 flex-wrap">
+        {['mada', 'Visa', 'MC', 'Apple Pay', 'STC Pay'].map((m) => (
+          <span
+            key={m}
+            className="px-2 py-0.5 text-[9px] text-taupe bg-surface border border-taupe/10 rounded"
+          >
+            {m}
+          </span>
+        ))}
+      </div>
+
       {/* Terms */}
       <p className="text-[10px] text-center text-taupe/60">
         {t('cart.terms', 'By proceeding, you agree to our')}{' '}
-        <Link
-          to="/policies/terms-of-service"
-          className="text-bronze hover:underline"
-        >
+        <Link to="/policies/terms-of-service" className="text-bronze hover:underline">
           {t('cart.termsLink', 'Terms')}
         </Link>{' '}
         {t('cart.and', 'and')}{' '}
-        <Link
-          to="/policies/refund-policy"
-          className="text-bronze hover:underline"
-        >
+        <Link to="/policies/refund-policy" className="text-bronze hover:underline">
           {t('cart.refundsLink', 'Refund Policy')}
         </Link>
       </p>
