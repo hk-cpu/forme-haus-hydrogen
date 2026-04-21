@@ -60,6 +60,9 @@ export async function action({request, context}: ActionFunctionArgs) {
         ...inputs.buyerIdentity,
       });
       break;
+    case CartForm.ACTIONS.NoteUpdate:
+      result = await cart.updateNote(inputs.note);
+      break;
     default:
       invariant(false, `${action} cart action is not defined`);
   }

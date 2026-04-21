@@ -1,17 +1,21 @@
 import clsx from 'clsx';
-import {useRef} from 'react';
+import {useRef, useState} from 'react';
 import useScroll from 'react-use/esm/useScroll';
 import {motion, AnimatePresence} from 'framer-motion';
 import {useFetcher, useRouteLoaderData} from '@remix-run/react';
+// eslint-disable-next-line import/order
 import {
   flattenConnection,
   CartForm,
   Image,
   Money,
+  ShopPayButton,
   useOptimisticData,
   OptimisticInput,
   type CartReturn,
 } from '@shopify/hydrogen';
+
+// Tap Payments replaces HyperPay — supports Mada, Visa, MC, AMEX, Apple Pay, STC Pay
 import type {
   Cart as CartType,
   CartCost,
@@ -24,7 +28,7 @@ import {Text, Heading} from '~/components/Text';
 import {Link} from '~/components/Link';
 import {IconRemove} from '~/components/Icon';
 import {FeaturedProducts} from '~/components/FeaturedProducts';
-import {buildLocalePath} from '~/lib/utils';
+import {buildLocalePath, getInputStyleClasses} from '~/lib/utils';
 import {useTranslation} from '~/hooks/useTranslation';
 import type {RootLoader} from '~/root';
 
@@ -286,7 +290,7 @@ export function CartDetails({
   const cartHasItems = !!cart && cart.totalQuantity > 0;
   const container = {
     drawer: 'flex flex-col h-full w-full',
-    page: 'w-full pb-12 grid lg:grid-cols-[1.25fr_0.9fr] md:items-start gap-8 md:gap-10 lg:gap-14',
+    page: 'w-full pb-12 grid md:grid-cols-2 md:items-start gap-8 md:gap-8 lg:gap-12',
   };
 
   return (
@@ -295,7 +299,13 @@ export function CartDetails({
       {cartHasItems && (
         <CartSummary cost={cart.cost} layout={layout}>
           <CartDiscounts discountCodes={cart.discountCodes} />
-          <CartCheckoutActions cart={cart} />
+          {layout === 'page' && <CartNote note={cart.note} />}
+          <CartCheckoutActions
+            checkoutUrl={cart.checkoutUrl}
+            cart={cart}
+            layout={layout}
+            onClose={onClose}
+          />
         </CartSummary>
       )}
     </div>
@@ -395,6 +405,55 @@ function UpdateDiscountForm({
   );
 }
 
+function CartNote({note}: {note?: string | null}) {
+  const {t} = useTranslation();
+
+  return (
+    <CartForm
+      route="/cart"
+      action={CartForm.ACTIONS.NoteUpdate}
+      inputs={{
+        note: note || '',
+      }}
+    >
+      {(fetcher) => (
+        <div className="space-y-2">
+          <label
+            htmlFor="cart-note"
+            className="text-[10px] uppercase tracking-wider text-taupe block"
+          >
+            {t('cart.deliveryNote', 'Delivery note')}
+          </label>
+          <div className="relative">
+            <textarea
+              id="cart-note"
+              name="note"
+              rows={2}
+              defaultValue={note || ''}
+              placeholder={t(
+                'cart.deliveryNotePlaceholder',
+                'Add a note about your order (optional)',
+              )}
+              className="w-full px-4 py-3 text-sm bg-surface border border-taupe/20 rounded-lg text-warm placeholder:text-taupe/50 focus:outline-none focus:border-bronze/50 transition-colors resize-none"
+            />
+            <motion.button
+              type="submit"
+              className="absolute bottom-2 right-2 px-3 py-1 text-[10px] uppercase tracking-wider font-medium text-warm bg-background border border-taupe/20 rounded-md hover:bg-bronze hover:border-bronze hover:text-white transition-all"
+              whileHover={{scale: 1.02}}
+              whileTap={{scale: 0.98}}
+              disabled={fetcher.state !== 'idle'}
+            >
+              {fetcher.state !== 'idle'
+                ? t('cart.saving', 'Saving...')
+                : t('cart.saveNote', 'Save')}
+            </motion.button>
+          </div>
+        </div>
+      )}
+    </CartForm>
+  );
+}
+
 function CartLines({
   layout = 'drawer',
   lines: cartLines,
@@ -409,7 +468,7 @@ function CartLines({
   const className = clsx([
     y > 0 ? 'border-t border-bronze/10' : '',
     layout === 'page'
-      ? 'flex-grow'
+      ? 'flex-grow md:translate-y-4'
       : 'flex-none px-6 pb-6 pt-2 sm:pt-0 transition md:px-12', // flex-none to prevent squishing, letting parent overflow-y-auto work
   ]);
 
@@ -419,13 +478,7 @@ function CartLines({
       aria-labelledby="cart-contents"
       className={clsx(className, 'flex-1 overflow-y-auto')}
     >
-      <ul
-        className={clsx(
-          'grid gap-6 md:gap-8',
-          layout === 'page' &&
-            'rounded-2xl border border-bronze/15 bg-surface/70 p-4 md:p-6',
-        )}
-      >
+      <ul className="grid gap-6 md:gap-8">
         <AnimatePresence initial={false} mode="popLayout">
           {currentLines.map((line, index) => (
             <CartLineItem key={line.id} line={line as CartLine} index={index} />
@@ -454,33 +507,17 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
     rootData?.selectedLocale?.pathPrefix,
   );
 
-  // Forward whatever Shopify already knows about the buyer so Tap's
-  // hosted page doesn't prompt for email/phone again.
-  const buyerEmail = cart.buyerIdentity?.email || '';
-  const buyerPhone = cart.buyerIdentity?.phone || '';
-  const buyerCustomer = (cart.buyerIdentity as any)?.customer;
-  const buyerName =
-    [buyerCustomer?.firstName, buyerCustomer?.lastName]
-      .filter(Boolean)
-      .join(' ') || '';
-
   function initiatePayment() {
     fetcher.submit(
-      {
-        amount: total,
-        currency,
-        merchantTxId,
-        cartId: cart.id || '',
-        shopperEmail: buyerEmail,
-        shopperPhone: buyerPhone,
-        shopperName: buyerName,
-      },
+      {amount: total, currency, merchantTxId, cartId: cart.id || ''},
       {method: 'post', action: tapInitiatePath},
     );
   }
 
+  // Redirect to Tap's hosted payment page when we get the URL
   if (fetcher.state === 'idle' && fetcher.data?.redirectUrl) {
     if (typeof window !== 'undefined') {
+      // Clean up cart drawer scroll lock before leaving so history back works cleanly
       document.body.style.overflow = '';
       window.location.href = fetcher.data.redirectUrl;
     }
@@ -497,7 +534,7 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
         <div className="p-3 bg-red-400/10 border border-red-400/20 rounded-lg text-red-400 text-xs text-center">
           {fetcher.data.error}
           <button
-            onClick={initiatePayment}
+            onClick={() => initiatePayment()}
             className="block w-full mt-2 text-taupe hover:text-warm underline"
           >
             Try again
@@ -519,27 +556,53 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
   );
 }
 
-function CartCheckoutActions({cart}: {cart: CartType}) {
+function CartCheckoutActions({
+  checkoutUrl,
+  cart,
+  layout,
+  onClose,
+}: {
+  checkoutUrl: string;
+  cart: CartType;
+  layout: Layouts;
+  onClose?: () => void;
+}) {
   const {t} = useTranslation();
+  const rootData = useRouteLoaderData<RootLoader>('root');
 
-  if (!cart?.id) return null;
+  if (!checkoutUrl) return null;
+
+  const checkoutPath = buildLocalePath(
+    '/checkout',
+    rootData?.selectedLocale?.pathPrefix,
+  );
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Tap Payments — mada + Visa/MC + Apple Pay + STC Pay */}
+      {/* Primary CTA: Proceed to secure checkout via branded Shopify checkout */}
+      <Link
+        to={checkoutPath}
+        onClick={onClose}
+        className="w-full py-4 rounded-xl bg-bronze hover:bg-bronze-dark text-white text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
+      >
+        <Icons.Lock className="w-3.5 h-3.5" />
+        {t('cart.proceedToCheckout', 'Proceed to secure checkout')}
+      </Link>
+
+      {/* Alternative: Tap Payments — mada + Visa/MC + Apple Pay + STC Pay */}
       <TapPayCheckoutButton cart={cart} />
 
-      {/* Shipping note */}
-      <p className="text-[11px] text-center text-taupe">
-        {t('cart.shippingNote', 'Shipping and taxes calculated at checkout.')}
-      </p>
-
-      {/* Trust badge */}
-      <div className="flex items-center justify-center gap-2 py-1">
-        <Icons.Lock className="w-3 h-3 text-taupe/60" />
-        <span className="text-[10px] text-taupe/60">
-          {t('cart.tapTrust', 'Secure payment powered by Tap')}
-        </span>
+      {/* Trust Badges */}
+      <div className="flex items-center justify-center gap-4 py-2">
+        <div className="flex items-center gap-1.5 text-taupe text-[10px]">
+          <Icons.Lock className="w-3 h-3" />
+          <span>{t('cart.secureCheckout', 'Secure Checkout')}</span>
+        </div>
+        <div className="w-px h-3 bg-taupe/30" />
+        <div className="flex items-center gap-1.5 text-taupe text-[10px]">
+          <Icons.Truck className="w-3 h-3" />
+          <span>{t('cart.freeShipping', 'Free Shipping')}</span>
+        </div>
       </div>
 
       {/* Terms */}
@@ -673,7 +736,7 @@ function CartSummary({
   const summary = {
     drawer:
       'grid gap-4 p-6 border-t border-bronze/20 bg-gradient-to-t from-background to-background',
-    page: 'sticky top-nav grid gap-6 rounded-2xl border border-bronze/15 bg-surface/85 p-5 md:p-6 shadow-[0_12px_40px_rgba(18,18,18,0.06)]',
+    page: 'sticky top-nav grid gap-6 p-4 md:px-6 md:translate-y-4 bg-primary/5 rounded-xl w-full',
   };
 
   return (
