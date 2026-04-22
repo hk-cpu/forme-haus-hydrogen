@@ -1,4 +1,4 @@
-import {json} from '@remix-run/server-runtime';
+import {json, redirect} from '@remix-run/server-runtime';
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {
   useLoaderData,
@@ -53,6 +53,14 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   const locale = context.storefront.i18n;
   // ... (rest of loader remains same until label logic) ...
   invariant(collectionHandle, 'Missing collectionHandle param');
+
+  // Phone Accessories is a parent category with no products of its own.
+  // Default to Phone Cases when the bare parent is requested.
+  if (collectionHandle === 'phone-accessories') {
+    const localePrefix = params.locale ? `/${params.locale}` : '';
+    const search = new URL(request.url).search;
+    throw redirect(`${localePrefix}/collections/phone-cases${search}`);
+  }
 
   const searchParams = new URL(request.url).searchParams;
 
