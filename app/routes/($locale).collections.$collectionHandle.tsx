@@ -1,4 +1,4 @@
-import {json} from '@remix-run/server-runtime';
+import {json, redirect} from '@remix-run/server-runtime';
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {
   useLoaderData,
@@ -54,6 +54,14 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   // ... (rest of loader remains same until label logic) ...
   invariant(collectionHandle, 'Missing collectionHandle param');
 
+  // Phone Accessories is a parent category with no products of its own.
+  // Default to Phone Cases when the bare parent is requested.
+  if (collectionHandle === 'phone-accessories') {
+    const localePrefix = params.locale ? `/${params.locale}` : '';
+    const search = new URL(request.url).search;
+    throw redirect(`${localePrefix}/collections/phone-cases${search}`);
+  }
+
   const searchParams = new URL(request.url).searchParams;
 
   const {sortKey, reverse} = getSortValuesFromParam(
@@ -87,7 +95,9 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
 
   let {collection} = result;
 
-  // Force grammatical fix for this specific collection and enrich with bundle products
+  // Carry It Your Own Way: bundle-only editorial collection.
+  // Replace whatever the Shopify collection returns with just bundle products
+  // (products whose title contains "+").
   if (collectionHandle === 'carry-it-your-way') {
     const {products: allProducts} = await context.storefront.query(
       ALL_PRODUCTS_FALLBACK_QUERY,
@@ -104,40 +114,25 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
       p?.title?.includes('+'),
     );
 
-    if (collection && collection.products.nodes.length > 0) {
-      const existingIds = new Set(
-        collection.products.nodes.map((p: any) => p.id),
-      );
-      const extras = bundleProducts.filter(
-        (p: any) => !existingIds.has(p.id),
-      );
-      
+    if (bundleProducts.length) {
       collection = {
-        ...collection,
-        title: 'Carry It Your Own Way', // Enforce text everywhere
-        products: extras.length ? {
-          ...collection.products,
-          nodes: [...collection.products.nodes, ...extras],
-        } : collection.products,
-      } as any;
-      
-    } else if (bundleProducts.length) {
-      collection = {
-        id: 'synthetic-carry-it-your-way',
+        id: collection?.id || 'synthetic-carry-it-your-way',
         handle: 'carry-it-your-way',
-        title: 'Carry It Your Own Way', // Enforce text everywhere
+        title: 'Carry It Your Own Way',
         description:
+          collection?.description ||
           'Our signature pairings — cases, straps and accessories styled together.',
-        seo: {
+        seo: collection?.seo || {
           title: 'Carry It Your Own Way',
           description:
             'Shop curated bundles of phone cases, straps and accessories.',
         },
-        image: null,
+        image: collection?.image || null,
+        metafield: collection?.metafield,
         products: {
           nodes: bundleProducts,
-          filters: [],
-          pageInfo: allProducts.pageInfo,
+          filters: collection?.products?.filters || [],
+          pageInfo: collection?.products?.pageInfo || allProducts.pageInfo,
         },
       } as any;
     }
@@ -308,13 +303,26 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     })
     .filter((filter): filter is NonNullable<typeof filter> => filter !== null);
 
+  // Category (non-editorial) handles always render the standard hero + product grid,
+  // even if an editorial metafield is set in admin.
+  const STANDARD_CATEGORY_HANDLES = new Set<string>([
+    'phone-accessories',
+    'phone-cases',
+    'phone-straps',
+    'sunglasses',
+    'new-in',
+    'new',
+    'sale',
+    'all',
+    'catalog',
+  ]);
+
   // Check if this collection should use the editorial layout.
   // Metafield (namespace: editorial, key: layout_config) takes priority over defaults.
   const editorialMetafield = collection.metafield?.value ?? null;
-  const editorialLayoutConfig = getEditorialLayoutConfig(
-    collection.handle,
-    editorialMetafield,
-  );
+  const editorialLayoutConfig = STANDARD_CATEGORY_HANDLES.has(collection.handle)
+    ? null
+    : getEditorialLayoutConfig(collection.handle, editorialMetafield);
 
   return json({
     collection,

@@ -1,6 +1,6 @@
 import {useState, useRef, useEffect} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
-import {Link, useFetcher} from '@remix-run/react';
+import {Link, useFetcher, useNavigate} from '@remix-run/react';
 
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
@@ -151,11 +151,16 @@ export function AccountOverlay() {
   const [registerPassword, setRegisterPassword] = useState('');
 
   // Fetchers for auth actions
-  const loginFetcher = useFetcher();
-  const registerFetcher = useFetcher();
+  const loginFetcher = useFetcher<{error?: string}>();
+  const registerFetcher = useFetcher<{error?: string; success?: boolean}>();
+  const navigate = useNavigate();
   const overlayRef = useRef<HTMLDivElement>(null);
   const firstInputRef = useRef<HTMLInputElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  const loginError = loginFetcher.data?.error;
+  const registerError = registerFetcher.data?.error;
+  const registerSuccess = registerFetcher.data?.success;
 
   const handleClose = () => {
     dispatch({type: 'CLOSE_LOGIN'});
@@ -163,6 +168,17 @@ export function AccountOverlay() {
     setLoginPassword('');
     setRegisterPassword('');
   };
+
+  // Close overlay + navigate to /account on successful login.
+  // A successful login action returns a redirect, which the fetcher
+  // follows — data ends up as the /account loader data (no `error`).
+  useEffect(() => {
+    if (loginFetcher.state !== 'idle' || !loginFetcher.data) return;
+    if (loginFetcher.data.error) return;
+    handleClose();
+    navigate(prefixPath('/account'));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loginFetcher.state, loginFetcher.data]);
 
   // Focus trap implementation
   useEffect(() => {
@@ -402,13 +418,23 @@ export function AccountOverlay() {
                       </Link>
                     </div>
 
+                    {/* Error */}
+                    {loginError && (
+                      <p
+                        role="alert"
+                        className="text-sm text-red-500 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3"
+                      >
+                        {loginError}
+                      </p>
+                    )}
+
                     {/* Submit */}
                     <button
                       type="submit"
-                      disabled={loginFetcher.state === 'submitting'}
+                      disabled={loginFetcher.state !== 'idle'}
                       className="w-full bg-bronze hover:bg-bronze-dark text-white font-medium py-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
-                      {loginFetcher.state === 'submitting' ? (
+                      {loginFetcher.state !== 'idle' ? (
                         <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                       ) : (
                         <>
@@ -440,88 +466,121 @@ export function AccountOverlay() {
                     )}
                   </p>
 
-                  <form onSubmit={handleCreateAccount} className="space-y-5">
-                    {/* Email */}
-                    <div>
-                      <label
-                        htmlFor="create-email"
-                        className="block text-[12px] uppercase tracking-[0.1em] text-taupe mb-2"
-                      >
-                        {t('account.email', 'Email')} *
-                      </label>
-                      <input
-                        type="email"
-                        id="create-email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder={t(
-                          'account.emailPlaceholder',
-                          'your@email.com',
-                        )}
-                        required
-                        className="w-full bg-surface border border-bronze/20 rounded-lg px-4 py-3.5 text-warm placeholder-taupe/50 focus:border-bronze focus:outline-none transition-colors"
-                      />
-                    </div>
-
-                    {/* Password */}
-                    <div>
-                      <label
-                        htmlFor="create-password"
-                        className="block text-[12px] uppercase tracking-[0.1em] text-taupe mb-2"
-                      >
-                        {t('account.password', 'Password')} *
-                      </label>
-                      <div className="relative">
-                        <input
-                          type={showPassword ? 'text' : 'password'}
-                          id="create-password"
-                          value={registerPassword}
-                          onChange={(e) => setRegisterPassword(e.target.value)}
-                          placeholder={t(
-                            'account.passwordPlaceholder',
-                            '••••••••',
-                          )}
-                          required
-                          minLength={8}
-                          className="w-full bg-surface border border-bronze/20 rounded-lg px-4 py-3.5 pr-12 text-warm placeholder-taupe/50 focus:border-bronze focus:outline-none transition-colors"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 text-taupe hover:text-warm transition-colors"
-                          aria-label={
-                            showPassword
-                              ? t('account.hidePassword')
-                              : t('account.showPassword')
-                          }
-                        >
-                          {showPassword ? <Icons.EyeOff /> : <Icons.Eye />}
-                        </button>
-                      </div>
-                      <p className="text-taupe/60 text-xs mt-2">
+                  {registerSuccess ? (
+                    <div
+                      role="status"
+                      className="space-y-3 rounded-lg border border-bronze/30 bg-bronze/10 p-5"
+                    >
+                      <p className="text-warm text-sm font-medium">
                         {t(
-                          'account.passwordHint',
-                          'Must be at least 8 characters',
+                          'account.registerSuccess',
+                          'Account created. Check your email to verify and sign in.',
                         )}
                       </p>
+                      <button
+                        type="button"
+                        onClick={() => setActiveTab('signin')}
+                        className="text-bronze text-sm underline underline-offset-4 hover:text-bronze-dark transition-colors"
+                      >
+                        {t('account.goToSignIn', 'Go to sign in')}
+                      </button>
                     </div>
+                  ) : (
+                    <form onSubmit={handleCreateAccount} className="space-y-5">
+                      {/* Email */}
+                      <div>
+                        <label
+                          htmlFor="create-email"
+                          className="block text-[12px] uppercase tracking-[0.1em] text-taupe mb-2"
+                        >
+                          {t('account.email', 'Email')} *
+                        </label>
+                        <input
+                          type="email"
+                          id="create-email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder={t(
+                            'account.emailPlaceholder',
+                            'your@email.com',
+                          )}
+                          required
+                          className="w-full bg-surface border border-bronze/20 rounded-lg px-4 py-3.5 text-warm placeholder-taupe/50 focus:border-bronze focus:outline-none transition-colors"
+                        />
+                      </div>
 
-                    {/* Submit */}
-                    <button
-                      type="submit"
-                      disabled={registerFetcher.state === 'submitting'}
-                      className="w-full bg-transparent border border-bronze text-bronze hover:bg-bronze hover:text-white font-medium py-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                    >
-                      {registerFetcher.state === 'submitting' ? (
-                        <div className="w-5 h-5 border-2 border-bronze border-t-transparent rounded-full animate-spin" />
-                      ) : (
-                        <>
-                          {t('account.createButton', 'Create Account')}
-                          <Icons.ArrowRight />
-                        </>
+                      {/* Password */}
+                      <div>
+                        <label
+                          htmlFor="create-password"
+                          className="block text-[12px] uppercase tracking-[0.1em] text-taupe mb-2"
+                        >
+                          {t('account.password', 'Password')} *
+                        </label>
+                        <div className="relative">
+                          <input
+                            type={showPassword ? 'text' : 'password'}
+                            id="create-password"
+                            value={registerPassword}
+                            onChange={(e) =>
+                              setRegisterPassword(e.target.value)
+                            }
+                            placeholder={t(
+                              'account.passwordPlaceholder',
+                              '••••••••',
+                            )}
+                            required
+                            minLength={8}
+                            className="w-full bg-surface border border-bronze/20 rounded-lg px-4 py-3.5 pr-12 text-warm placeholder-taupe/50 focus:border-bronze focus:outline-none transition-colors"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-taupe hover:text-warm transition-colors"
+                            aria-label={
+                              showPassword
+                                ? t('account.hidePassword')
+                                : t('account.showPassword')
+                            }
+                          >
+                            {showPassword ? <Icons.EyeOff /> : <Icons.Eye />}
+                          </button>
+                        </div>
+                        <p className="text-taupe/60 text-xs mt-2">
+                          {t(
+                            'account.passwordHint',
+                            'Must be at least 8 characters',
+                          )}
+                        </p>
+                      </div>
+
+                      {/* Error */}
+                      {registerError && (
+                        <p
+                          role="alert"
+                          className="text-sm text-red-500 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3"
+                        >
+                          {registerError}
+                        </p>
                       )}
-                    </button>
-                  </form>
+
+                      {/* Submit */}
+                      <button
+                        type="submit"
+                        disabled={registerFetcher.state !== 'idle'}
+                        className="w-full bg-transparent border border-bronze text-bronze hover:bg-bronze hover:text-white font-medium py-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      >
+                        {registerFetcher.state !== 'idle' ? (
+                          <div className="w-5 h-5 border-2 border-bronze border-t-transparent rounded-full animate-spin" />
+                        ) : (
+                          <>
+                            {t('account.createButton', 'Create Account')}
+                            <Icons.ArrowRight />
+                          </>
+                        )}
+                      </button>
+                    </form>
+                  )}
 
                   {/* Benefits */}
                   <div className="mt-8 pt-8 border-t border-bronze/20">

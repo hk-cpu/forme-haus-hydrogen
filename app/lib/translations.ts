@@ -258,6 +258,7 @@ export const translations = {
     'category.newInHaus': 'New to Haus',
     'category.phoneCases': 'Phone Cases',
     'category.phoneStraps': 'Phone Straps',
+    'category.phoneAccessories': 'Phone Accessories',
     'home.shopByCategory': 'Shop by Category',
 
     // Bundle Pricing
@@ -611,6 +612,7 @@ export const translations = {
     'category.newInHaus': 'جديد الدار',
     'category.phoneCases': 'أغطية الهاتف',
     'category.phoneStraps': 'أحزمة الهاتف',
+    'category.phoneAccessories': 'إكسسوارات الهاتف',
     'home.shopByCategory': 'تسوّق حسب الفئة',
 
     // Bundle Pricing
