@@ -78,7 +78,7 @@ Shopify Hydrogen v2024.10 storefront for **formehaus.me** — luxury lifestyle b
 - **ESLint** — `EditorialCollectionView.tsx` has pre-existing warnings
 - **Typescript** — Money `currencyCode`, HyperPay, products `tags` type issues
 - **Playwright** — flaky e2e tests; browser install sometimes fails in CI
-- **Oxygen PRODUCTION deploy** — fails due to credentials config. Oxygen **PREVIEW** deploys succeed per PR; that's the signal that matters.
+- **Oxygen PRODUCTION deploy** — fails until the `OXYGEN_DEPLOYMENT_TOKEN_1000082807` repo secret is set in GitHub → Settings → Secrets and variables → Actions. Oxygen **PREVIEW** deploys succeed per PR; that's the signal that matters until prod credentials are wired.
 
 Before attributing a CI failure to your change, diff against `main` to confirm it's new.
 
