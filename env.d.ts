@@ -35,6 +35,7 @@ declare global {
     TAP_SECRET_KEY: string;
     TAP_PUBLIC_KEY: string;
     TAP_API_URL: string;
+    TAP_WEBHOOK_SECRET: string;
     // Google SSO
     PUBLIC_GOOGLE_CLIENT_ID: string;
   }
