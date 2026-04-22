@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import {useRef, useState} from 'react';
+import {useRef} from 'react';
 import useScroll from 'react-use/esm/useScroll';
 import {motion, AnimatePresence} from 'framer-motion';
 import {useFetcher, useRouteLoaderData} from '@remix-run/react';
@@ -296,7 +296,7 @@ export function CartDetails({
       {cartHasItems && (
         <CartSummary cost={cart.cost} layout={layout}>
           <CartDiscounts discountCodes={cart.discountCodes} />
-          <CartCheckoutActions checkoutUrl={cart.checkoutUrl} cart={cart} />
+          <CartCheckoutActions cart={cart} />
         </CartSummary>
       )}
     </div>
@@ -449,9 +449,27 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
     rootData?.selectedLocale?.pathPrefix,
   );
 
+  // Forward whatever Shopify already knows about the buyer so Tap's
+  // hosted page doesn't prompt for email/phone again.
+  const buyerEmail = cart.buyerIdentity?.email || '';
+  const buyerPhone = cart.buyerIdentity?.phone || '';
+  const buyerCustomer = (cart.buyerIdentity as any)?.customer;
+  const buyerName =
+    [buyerCustomer?.firstName, buyerCustomer?.lastName]
+      .filter(Boolean)
+      .join(' ') || '';
+
   function initiatePayment() {
     fetcher.submit(
-      {amount: total, currency, merchantTxId, cartId: cart.id || ''},
+      {
+        amount: total,
+        currency,
+        merchantTxId,
+        cartId: cart.id || '',
+        shopperEmail: buyerEmail,
+        shopperPhone: buyerPhone,
+        shopperName: buyerName,
+      },
       {method: 'post', action: tapInitiatePath},
     );
   }
@@ -496,60 +514,15 @@ function TapPayCheckoutButton({cart}: {cart: CartType}) {
   );
 }
 
-function ShopifyCheckoutButton({checkoutUrl}: {checkoutUrl: string}) {
-  const [isRedirecting, setIsRedirecting] = useState(false);
-
-  function handleCheckout() {
-    if (!checkoutUrl) return;
-    setIsRedirecting(true);
-    document.body.style.overflow = '';
-    window.location.href = checkoutUrl;
-  }
-
-  return isRedirecting ? (
-    <div className="flex items-center justify-center gap-2 py-4 text-taupe text-sm">
-      <div className="w-4 h-4 rounded-full border-2 border-bronze/30 border-t-bronze animate-spin" />
-      Redirecting to checkout…
-    </div>
-  ) : (
-    <motion.button
-      type="button"
-      onClick={handleCheckout}
-      className="w-full py-4 rounded-xl bg-[#2a2118] hover:bg-[#4A3C31] text-[#F0EAE6] text-[11px] uppercase tracking-[0.2em] font-medium flex items-center justify-center gap-3 transition-colors"
-      whileHover={{scale: 1.01}}
-      whileTap={{scale: 0.99}}
-    >
-      <Icons.Lock className="w-3.5 h-3.5" />
-      Continue to Secure Checkout
-    </motion.button>
-  );
-}
-
-function CartCheckoutActions({
-  checkoutUrl,
-  cart,
-}: {
-  checkoutUrl: string;
-  cart: CartType;
-}) {
+function CartCheckoutActions({cart}: {cart: CartType}) {
   const {t} = useTranslation();
 
-  if (!checkoutUrl) return null;
+  if (!cart?.id) return null;
 
   return (
     <div className="flex flex-col gap-4">
       {/* Tap Payments — mada + Visa/MC + Apple Pay + STC Pay */}
       <TapPayCheckoutButton cart={cart} />
-
-      {/* Divider */}
-      <div className="flex items-center gap-3">
-        <div className="flex-1 h-px bg-taupe/15" />
-        <span className="text-[10px] uppercase tracking-widest text-taupe/50">or</span>
-        <div className="flex-1 h-px bg-taupe/15" />
-      </div>
-
-      {/* Shopify Native Checkout */}
-      <ShopifyCheckoutButton checkoutUrl={checkoutUrl} />
 
       {/* Shipping note */}
       <p className="text-[11px] text-center text-taupe">
@@ -560,7 +533,7 @@ function CartCheckoutActions({
       <div className="flex items-center justify-center gap-2 py-1">
         <Icons.Lock className="w-3 h-3 text-taupe/60" />
         <span className="text-[10px] text-taupe/60">
-          {t('cart.shopifyTrust', 'Secure checkout powered by Shopify')}
+          {t('cart.tapTrust', 'Secure payment powered by Tap')}
         </span>
       </div>
 
