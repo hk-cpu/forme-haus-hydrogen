@@ -14,16 +14,16 @@ import {json, type ActionFunctionArgs} from '@shopify/remix-oxygen';
 import {buildLocalePath, getPathLocalePrefix} from '~/lib/utils';
 
 export async function action({request, context}: ActionFunctionArgs) {
-  const {env} = context;
+  const {env, session, storefront} = context;
   const formData = await request.formData();
 
   const amount = formData.get('amount') as string;
-  const currency = (formData.get('currency') as string) || 'SAR';
+  const currency = (shopperValue(formData, 'currency') as string) || 'SAR';
   const merchantTxId = formData.get('merchantTxId') as string;
-  const shopperEmail = (formData.get('shopperEmail') as string) || '';
-  const shopperName = (formData.get('shopperName') as string) || '';
-  const shopperPhone = (formData.get('shopperPhone') as string) || '';
-  const cartId = (formData.get('cartId') as string) || '';
+  let shopperEmail = shopperValue(formData, 'shopperEmail');
+  let shopperName = shopperValue(formData, 'shopperName');
+  let shopperPhone = shopperValue(formData, 'shopperPhone');
+  const cartId = shopperValue(formData, 'cartId');
 
   const secretKey = env.TAP_SECRET_KEY;
   const apiUrl = env.TAP_API_URL || 'https://api.tap.company/v2';
@@ -37,6 +37,32 @@ export async function action({request, context}: ActionFunctionArgs) {
 
   if (!amount || isNaN(parseFloat(amount))) {
     return json({error: 'Invalid amount.'}, {status: 400});
+  }
+
+  // If the cart didn't carry buyer info, fall back to the logged-in
+  // customer's email/phone/name so Tap doesn't re-prompt.
+  if (!shopperEmail || !shopperPhone || !shopperName) {
+    const token = await session.get('customerAccessToken');
+    if (token?.accessToken) {
+      try {
+        const {customer}: any = await storefront.query(TAP_CUSTOMER_QUERY, {
+          variables: {customerAccessToken: token.accessToken},
+        });
+        if (customer) {
+          if (!shopperEmail && customer.email) shopperEmail = customer.email;
+          if (!shopperPhone && customer.phone) shopperPhone = customer.phone;
+          if (!shopperName) {
+            const full = [customer.firstName, customer.lastName]
+              .filter(Boolean)
+              .join(' ')
+              .trim();
+            if (full) shopperName = full;
+          }
+        }
+      } catch (err) {
+        console.warn('[Tap Initiate] customer lookup failed:', err);
+      }
+    }
   }
 
   // Determine origin for redirect URLs
@@ -136,3 +162,19 @@ export async function action({request, context}: ActionFunctionArgs) {
 export async function loader() {
   return json({error: 'Method not allowed'}, {status: 405});
 }
+
+function shopperValue(formData: FormData, key: string): string {
+  const v = formData.get(key);
+  return typeof v === 'string' ? v.trim() : '';
+}
+
+const TAP_CUSTOMER_QUERY = `#graphql
+  query TapCheckoutCustomer($customerAccessToken: String!) {
+    customer(customerAccessToken: $customerAccessToken) {
+      email
+      phone
+      firstName
+      lastName
+    }
+  }
+` as const;
