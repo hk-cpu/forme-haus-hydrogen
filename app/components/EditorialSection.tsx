@@ -85,7 +85,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
         delay: index * 0.1,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="group relative overflow-hidden rounded-[14px] bg-[#E8E4E0] aspect-square"
+      className="group relative mx-auto aspect-square h-[35%] w-[35%] overflow-hidden rounded-[14px] bg-[#E8E4E0]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
@@ -117,8 +117,8 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
               transformOrigin: 'center center',
               willChange: 'transform',
             }}
-            width={item.width}
-            height={item.height}
+            width={Math.round(item.width * 0.35)}
+            height={Math.round(item.height * 0.35)}
             sizes="(max-width: 768px) 100vw, 50vw"
             loading={index < 2 ? 'eager' : 'lazy'}
             fetchPriority={index === 0 ? 'high' : 'auto'}
