@@ -59,6 +59,16 @@ export const action: ActionFunction = async ({request, context, params}) => {
       (customer.firstName = formData.get('firstName') as string);
     formDataHas(formData, 'lastName') &&
       (customer.lastName = formData.get('lastName') as string);
+    if (formDataHas(formData, 'email')) {
+      customer.email = (formData.get('email') as string).trim();
+    }
+    if (formData.has('phone')) {
+      // Allow clearing the phone by submitting an empty string; E.164 only
+      // (strip spaces/dashes, keep a leading +).
+      const raw = String(formData.get('phone') ?? '').trim();
+      const cleaned = raw.replace(/[\s-]/g, '');
+      customer.phone = cleaned;
+    }
 
     const {customerUpdate}: any = await storefront.mutate(
       CUSTOMER_UPDATE_MUTATION,
@@ -99,6 +109,8 @@ const CUSTOMER_UPDATE_MUTATION = `#graphql
         id
         firstName
         lastName
+        email
+        phone
       }
       customerUserErrors {
         code
@@ -163,6 +175,30 @@ export default function AccountDetailsEdit() {
             defaultValue={customer.lastName ?? ''}
           />
         </div>
+        <div className="mt-3">
+          <input
+            className="appearance-none rounded-lg bg-[#2A231C] border border-warm/10 w-full py-3 px-4 text-warm placeholder-taupe/50 focus:border-bronze focus:ring-1 focus:ring-bronze outline-none transition-all"
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            placeholder="Email"
+            aria-label="Email"
+            defaultValue={customer.email ?? ''}
+          />
+        </div>
+        <div className="mt-3">
+          <input
+            className="appearance-none rounded-lg bg-[#2A231C] border border-warm/10 w-full py-3 px-4 text-warm placeholder-taupe/50 focus:border-bronze focus:ring-1 focus:ring-bronze outline-none transition-all"
+            id="phone"
+            name="phone"
+            type="tel"
+            autoComplete="tel"
+            placeholder="Phone (e.g. +966555123456)"
+            aria-label="Phone"
+            defaultValue={customer.phone ?? ''}
+          />
+        </div>
         <div className="mt-6">
           <Button
             className="w-full py-3 rounded-lg bg-[#a87441] hover:bg-[#8B5E3C] text-white text-[11px] uppercase tracking-wider transition-colors disabled:opacity-50 mt-4"
@@ -173,7 +209,10 @@ export default function AccountDetailsEdit() {
           </Button>
         </div>
         <div className="mb-4">
-          <Button to=".." className="w-full block py-3 rounded-lg border border-warm/10 hover:border-warm/30 text-warm text-center text-[11px] uppercase tracking-wider transition-colors mt-3">
+          <Button
+            to=".."
+            className="w-full block py-3 rounded-lg border border-warm/10 hover:border-warm/30 text-warm text-center text-[11px] uppercase tracking-wider transition-colors mt-3"
+          >
             Cancel
           </Button>
         </div>
