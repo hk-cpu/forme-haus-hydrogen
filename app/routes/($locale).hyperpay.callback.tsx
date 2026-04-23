@@ -142,13 +142,17 @@ export default function HyperPayCallback() {
   };
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-6">
+    <div className="min-h-[70vh] bg-background px-4 py-14 md:px-6">
       <motion.div
         initial={{opacity: 0, y: 20, scale: 0.95}}
         animate={{opacity: 1, y: 0, scale: 1}}
         transition={{duration: 0.5, ease: [0.16, 1, 0.3, 1]}}
-        className="max-w-md w-full text-center"
+        className="mx-auto w-full max-w-2xl rounded-2xl border border-bronze/20 bg-surface/90 p-8 text-center shadow-[0_16px_48px_rgba(18,18,18,0.08)] md:p-10"
       >
+        <p className="mb-3 text-[10px] uppercase tracking-[0.24em] text-taupe">
+          Payment status
+        </p>
+
         {/* Status Icon */}
         <div
           className={`w-20 h-20 rounded-full ${config.bg} border ${config.border} flex items-center justify-center mx-auto mb-6`}
@@ -158,14 +162,14 @@ export default function HyperPayCallback() {
           </span>
         </div>
 
-        <h1 className="font-serif text-2xl md:text-3xl text-[#4A3C31] mb-3">
+        <h1 className="mb-3 font-serif text-2xl text-brand-text md:text-3xl">
           {data.status === 'success' && 'Order Confirmed'}
           {data.status === 'pending' && 'Processing Payment'}
           {(data.status === 'failed' || data.status === 'error') &&
             'Payment Unsuccessful'}
         </h1>
 
-        <p className="text-[#8B8076] text-sm leading-relaxed mb-8">
+        <p className="mb-8 text-sm leading-relaxed text-taupe">
           {data.message}
         </p>
 
@@ -173,7 +177,7 @@ export default function HyperPayCallback() {
           <div
             className={`inline-block px-4 py-2 rounded-lg ${config.bg} border ${config.border} mb-8`}
           >
-            <p className="text-[10px] uppercase tracking-widest text-[#8B8076]">
+            <p className="text-[10px] uppercase tracking-widest text-taupe">
               Transaction ID
             </p>
             <p className={`text-sm font-mono mt-0.5 ${config.color}`}>
@@ -182,18 +186,18 @@ export default function HyperPayCallback() {
           </div>
         )}
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <div className="flex flex-col justify-center gap-3 sm:flex-row">
           {(data.status === 'failed' || data.status === 'error') && (
             <Link
               to="/cart"
-              className="px-6 py-3 bg-[#a87441] text-white text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-[#8B5E3C] transition-colors"
+              className="rounded-full bg-bronze px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-white transition-colors hover:bg-bronze-dark"
             >
               Try Again
             </Link>
           )}
           <Link
             to={data.status === 'success' ? '/account' : '/collections/all'}
-            className="px-6 py-3 bg-[#4A3C31]/10 text-[#4A3C31] text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-[#4A3C31]/20 transition-colors"
+            className="rounded-full border border-brand-text/15 bg-background px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-brand-text transition-colors hover:border-bronze/40 hover:text-bronze"
           >
             {data.status === 'success' ? 'View Orders' : 'Continue Shopping'}
           </Link>
