@@ -98,12 +98,19 @@ export default function CartRoute() {
   const {t} = useTranslation();
 
   return (
-    <div className="max-w-[1200px] mx-auto px-6 py-12">
-      <h1 className="text-3xl md:text-4xl font-serif text-[#4A3C31] mb-8">
-        {t('cart.title', 'Cart')}
-      </h1>
-      <Cart layout="page" cart={cart} />
-      <Analytics.CartView />
-    </div>
+    <main className="bg-background">
+      <section className="mx-auto max-w-[1280px] px-4 pb-16 pt-10 md:px-6 md:pt-14">
+        <div className="mb-8 border-b border-bronze/15 pb-6 md:mb-10">
+          <p className="mb-3 text-[11px] uppercase tracking-[0.22em] text-taupe">
+            {t('cart.bagLabel', 'Shopping Bag')}
+          </p>
+          <h1 className="font-serif text-4xl italic text-brand-text md:text-5xl">
+            {t('cart.title', 'Your Bag')}
+          </h1>
+        </div>
+        <Cart layout="page" cart={cart} />
+        <Analytics.CartView />
+      </section>
+    </main>
   );
 }

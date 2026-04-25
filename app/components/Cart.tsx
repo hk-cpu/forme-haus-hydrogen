@@ -286,7 +286,7 @@ export function CartDetails({
   const cartHasItems = !!cart && cart.totalQuantity > 0;
   const container = {
     drawer: 'flex flex-col h-full w-full',
-    page: 'w-full pb-12 grid md:grid-cols-2 md:items-start gap-8 md:gap-8 lg:gap-12',
+    page: 'w-full pb-12 grid lg:grid-cols-[1.25fr_0.9fr] md:items-start gap-8 md:gap-10 lg:gap-14',
   };
 
   return (
@@ -409,7 +409,7 @@ function CartLines({
   const className = clsx([
     y > 0 ? 'border-t border-bronze/10' : '',
     layout === 'page'
-      ? 'flex-grow md:translate-y-4'
+      ? 'flex-grow'
       : 'flex-none px-6 pb-6 pt-2 sm:pt-0 transition md:px-12', // flex-none to prevent squishing, letting parent overflow-y-auto work
   ]);
 
@@ -419,7 +419,13 @@ function CartLines({
       aria-labelledby="cart-contents"
       className={clsx(className, 'flex-1 overflow-y-auto')}
     >
-      <ul className="grid gap-6 md:gap-8">
+      <ul
+        className={clsx(
+          'grid gap-6 md:gap-8',
+          layout === 'page' &&
+            'rounded-2xl border border-bronze/15 bg-surface/70 p-4 md:p-6',
+        )}
+      >
         <AnimatePresence initial={false} mode="popLayout">
           {currentLines.map((line, index) => (
             <CartLineItem key={line.id} line={line as CartLine} index={index} />
@@ -667,7 +673,7 @@ function CartSummary({
   const summary = {
     drawer:
       'grid gap-4 p-6 border-t border-bronze/20 bg-gradient-to-t from-background to-background',
-    page: 'sticky top-nav grid gap-6 p-4 md:px-6 md:translate-y-4 bg-primary/5 rounded-xl w-full',
+    page: 'sticky top-nav grid gap-6 rounded-2xl border border-bronze/15 bg-surface/85 p-5 md:p-6 shadow-[0_12px_40px_rgba(18,18,18,0.06)]',
   };
 
   return (

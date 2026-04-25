@@ -146,13 +146,17 @@ export default function TapPaymentCallback() {
   };
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-6">
+    <div className="min-h-[70vh] bg-background px-4 py-14 md:px-6">
       <motion.div
         initial={{opacity: 0, y: 20, scale: 0.95}}
         animate={{opacity: 1, y: 0, scale: 1}}
         transition={{duration: 0.5, ease: [0.16, 1, 0.3, 1]}}
-        className="max-w-md w-full text-center"
+        className="mx-auto w-full max-w-2xl rounded-2xl border border-bronze/20 bg-surface/90 p-8 text-center shadow-[0_16px_48px_rgba(18,18,18,0.08)] md:p-10"
       >
+        <p className="mb-3 text-[10px] uppercase tracking-[0.24em] text-taupe">
+          Payment status
+        </p>
+
         {/* Status Icon */}
         <div
           className={`w-20 h-20 rounded-full ${config.bg} border ${config.border} flex items-center justify-center mx-auto mb-6`}
@@ -169,7 +173,7 @@ export default function TapPaymentCallback() {
             'Payment Unsuccessful'}
         </h1>
 
-        <p className="text-[#8B8076] text-sm leading-relaxed mb-8">
+        <p className="text-taupe text-sm leading-relaxed mb-8">
           {data.message}
         </p>
 
@@ -177,27 +181,27 @@ export default function TapPaymentCallback() {
           <div
             className={`inline-block px-4 py-2 rounded-lg ${config.bg} border ${config.border} mb-8`}
           >
-            <p className="text-[10px] uppercase tracking-widest text-[#8B8076]">
+            <p className="text-[10px] uppercase tracking-widest text-taupe">
               Transaction ID
             </p>
             <p className={`text-sm font-mono mt-0.5 ${config.color}`}>
               {data.transactionId}
             </p>
             {'paymentMethod' in data && data.paymentMethod && (
-              <p className="text-[10px] uppercase tracking-widest text-[#8B8076] mt-2">
+              <p className="text-[10px] uppercase tracking-widest text-taupe mt-2">
                 Paid via {data.paymentMethod}
               </p>
             )}
           </div>
         )}
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <div className="flex flex-col justify-center gap-3 sm:flex-row">
           {(data.status === 'failed' || data.status === 'error') && (
             <Link
               to={
                 'retryPath' in data && data.retryPath ? data.retryPath : '/cart'
               }
-              className="px-6 py-3 bg-[#a87441] text-white text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-[#8B5E3C] transition-colors"
+              className="rounded-full bg-bronze px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-white transition-colors hover:bg-bronze-dark"
             >
               Try Again
             </Link>
@@ -210,7 +214,7 @@ export default function TapPaymentCallback() {
                 ? '/account'
                 : '/collections/all'
             }
-            className="px-6 py-3 bg-brand-text/10 text-brand-text text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-brand-text/20 transition-colors"
+            className="rounded-full border border-brand-text/15 bg-background px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-brand-text transition-colors hover:border-bronze/40 hover:text-bronze"
           >
             {data.status === 'success' ? 'View Orders' : 'Continue Shopping'}
           </Link>
