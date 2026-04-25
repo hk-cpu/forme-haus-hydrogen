@@ -27,8 +27,7 @@ export async function action({request, context}: ActionFunctionArgs) {
       result = await cart.addLines(inputs.lines);
       // Silently set SA country context after adding lines; ignore errors
       try {
-        const existingCountry =
-          result.cart?.buyerIdentity?.countryCode;
+        const existingCountry = result.cart?.buyerIdentity?.countryCode;
         if (!existingCountry) {
           await cart.updateBuyerIdentity({countryCode: 'SA'});
         }

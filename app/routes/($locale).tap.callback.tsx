@@ -11,6 +11,7 @@ import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {json} from '@remix-run/server-runtime';
 import {useLoaderData, Link} from '@remix-run/react';
 import {motion} from 'framer-motion';
+
 import {buildLocalePath, getPathLocalePrefix} from '~/lib/utils';
 
 export async function loader({request, context}: LoaderFunctionArgs) {
