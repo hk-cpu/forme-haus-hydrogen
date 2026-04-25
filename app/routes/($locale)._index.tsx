@@ -1,3 +1,4 @@
+import {useLoaderData} from '@remix-run/react';
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {defer} from '@remix-run/server-runtime';
 import {getSeoMeta, CacheLong} from '@shopify/hydrogen';
@@ -36,13 +37,33 @@ export async function loader(args: LoaderFunctionArgs) {
 }
 
 async function loadCriticalData({context, request}: LoaderFunctionArgs) {
-  const {shop} = await context.storefront.query(HOMEPAGE_SEO_QUERY, {
+  const {shop, metaobjects} = await context.storefront.query(HOMEPAGE_QUERY, {
     cache: CacheLong(),
   });
+
+  const bentoItems = metaobjects?.nodes?.map((node: any) => {
+    const fields = node.fields.reduce((acc: any, field: any) => {
+      acc[field.key] = field;
+      return acc;
+    }, {});
+    
+    return {
+      image: fields.image?.reference?.image?.url,
+      width: fields.image?.reference?.image?.width || 1024,
+      height: fields.image?.reference?.image?.height || 1024,
+      alt: fields.alt?.value || fields.image?.reference?.image?.altText || fields.title_en?.value || '',
+      url: fields.url?.value || '#',
+      defaultTitle: fields.title_en?.value || '',
+      defaultSubtitle: fields.subtitle_en?.value || '',
+      titleKey: '', // Ignored when using dynamic data
+      subtitleKey: '', 
+    };
+  }).filter((item: any) => item.image) || [];
 
   return {
     shop,
     seo: seoPayload.home({url: request.url}),
+    bentoItems: bentoItems.length > 0 ? bentoItems : undefined,
   };
 }
 
@@ -59,6 +80,8 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 };
 
 export default function Homepage() {
+  const {bentoItems} = useLoaderData<typeof loader>();
+
   return (
     <div className="min-h-screen bg-transparent text-warm">
       <Hero />
@@ -75,7 +98,7 @@ export default function Homepage() {
 
         <div className="py-8 md:py-12">
           <Suspense fallback={<SectionFallback className="min-h-[640px]" />}>
-            <EditorialSection />
+            <EditorialSection bentoItems={bentoItems} />
           </Suspense>
         </div>
 
@@ -104,12 +127,31 @@ function SectionFallback({className}: {className: string}) {
   );
 }
 
-const HOMEPAGE_SEO_QUERY = `#graphql
+const HOMEPAGE_QUERY = `#graphql
   query seoCollectionContent($country: CountryCode, $language: LanguageCode)
   @inContext(country: $country, language: $language) {
     shop {
       name
       description
+    }
+    metaobjects(type: "bento_item", first: 4) {
+      nodes {
+        id
+        fields {
+          key
+          value
+          reference {
+            ... on MediaImage {
+              image {
+                url
+                width
+                height
+                altText
+              }
+            }
+          }
+        }
+      }
     }
   }
 ` as const;

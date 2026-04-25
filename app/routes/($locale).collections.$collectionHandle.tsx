@@ -497,10 +497,13 @@ export default function Collection() {
   const collectionSubtitle = COLLECTION_SUBTITLES[collection.handle];
 
   const override = HERO_OVERRIDES[collection.handle];
-  const heroImage = override?.src || collection.image?.url;
-  const hideTitle = override?.hideTitle;
-  const heroPosition = override?.position || 'center center';
-  const heroFit = override?.fit || 'cover';
+  const heroImage = collection.hero_image?.reference?.image?.url || override?.src || collection.image?.url;
+  const hideTitle = collection.hide_title?.value === 'true' || override?.hideTitle;
+  const heroPosition = collection.hero_position?.value || override?.position || 'center center';
+  const heroFit = collection.hero_fit?.value || override?.fit || 'cover';
+  const bgColor = collection.bg_color?.value || override?.bgClass || 'bg-[#E8DED4]';
+  const heightClass = override?.heightClass || '';
+
   const isFullWidthHero = heroFit === 'full-width' && hideTitle;
   const isTextOnlyHero = TEXT_ONLY_HERO_COLLECTIONS.has(collection.handle);
 
@@ -552,26 +555,18 @@ export default function Collection() {
             <>
               {isFullWidthHero ? (
                 <div
-                  className={`relative w-full overflow-hidden ${
-                    override?.bgClass || 'bg-[#E8DED4]'
-                  } ${override?.heightClass || ''}`}
+                  className={`relative w-full overflow-hidden ${bgColor} ${heightClass}`}
                 >
                   <motion.img
                     src={heroImage}
                     alt={collection.title}
-                    className={`block w-full h-full object-cover ${
-                      override?.position === 'top'
-                        ? 'object-top'
-                        : 'object-center'
-                    }`}
+                    className="block w-full h-full object-cover"
                     loading="eager"
                     fetchPriority="high"
                     style={{
                       y: heroY,
-                      transformOrigin:
-                        override?.position === 'top'
-                          ? 'top center'
-                          : 'center center',
+                      objectPosition: heroPosition,
+                      transformOrigin: heroPosition === 'top' ? 'top center' : 'center center',
                     }}
                     initial={{scale: 1.03}}
                     animate={{scale: 1}}
@@ -1137,6 +1132,29 @@ const COLLECTION_QUERY = `#graphql
       title
       description
       metafield(namespace: "editorial", key: "layout_config") {
+        value
+      }
+      hero_image: metafield(namespace: "custom", key: "hero_image") {
+        reference {
+          ... on MediaImage {
+            image {
+              url
+              width
+              height
+            }
+          }
+        }
+      }
+      hide_title: metafield(namespace: "custom", key: "hide_title") {
+        value
+      }
+      hero_fit: metafield(namespace: "custom", key: "hero_fit") {
+        value
+      }
+      hero_position: metafield(namespace: "custom", key: "hero_position") {
+        value
+      }
+      bg_color: metafield(namespace: "custom", key: "bg_color") {
         value
       }
       seo {

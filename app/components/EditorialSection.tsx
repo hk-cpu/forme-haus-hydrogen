@@ -95,8 +95,8 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
       onMouseMove={shouldReduceMotion ? undefined : tiltHandlers.onMouseMove}
     >
       {/* Animated Silk Background Border */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
-        <Silk color="#AD9686" speed={2} scale={1.2} />
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
+        <Silk color="#9B775C" speed={2} scale={1.2} />
       </div>
 
       <Link to={item.url} className="relative z-10 block h-full w-full p-5 md:p-8">
@@ -194,7 +194,11 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
   );
 }
 
-export default function EditorialSection() {
+export default function EditorialSection({
+  bentoItems = BENTO_ITEMS,
+}: {
+  bentoItems?: BentoItem[];
+}) {
   const {t, isRTL} = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = useReducedMotion();
@@ -261,17 +265,16 @@ export default function EditorialSection() {
 
         {/* Mobile: single column stack */}
         <div className="flex flex-col gap-3 md:hidden">
-          <TopCard item={BENTO_ITEMS[0]} index={0} t={t} />
-          <TopCard item={BENTO_ITEMS[1]} index={1} t={t} />
-          <TopCard item={BENTO_ITEMS[2]} index={2} t={t} />
-          <TopCard item={BENTO_ITEMS[3]} index={3} t={t} />
+          {bentoItems.slice(0, 4).map((item, i) => (
+            <TopCard key={`mobile-${i}`} item={item} index={i} t={t} />
+          ))}
         </div>
 
         {/* Desktop: 2x2 grid — square cards, no cropping */}
         <div className="hidden md:grid md:grid-cols-2 gap-3">
-          {BENTO_ITEMS.map((item, i) => (
+          {bentoItems.slice(0, 4).map((item, i) => (
             <motion.div
-              key={item.url}
+              key={item.url || `desktop-${i}`}
               style={
                 shouldReduceMotion
                   ? {}
