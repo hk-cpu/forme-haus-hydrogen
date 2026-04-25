@@ -1,0 +1,1 @@
+// Your resolved code for EditorialSection.tsx here
