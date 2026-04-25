@@ -109,7 +109,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
           <motion.img
             src={item.image}
             alt={item.alt}
-            className={`w-full h-full object-cover block transition-transform duration-700 ease-out ${
+            className={`w-full h-full p-6 md:p-10 object-contain block transition-transform duration-700 ease-out ${
               shouldReduceMotion ? '' : 'kenBurns'
             }`}
             style={{
