@@ -20,7 +20,7 @@ interface BentoItem {
 // 4 images — two-column editorial grid, all square (1:1) to prevent cropping
 const BENTO_ITEMS: BentoItem[] = [
   {
-    image: '/brand/edit-modern-essentials-sq.png',
+    image: '/brand/edit-modern-essentials-v2.png',
     alt: 'Modern Essentials — woman in pinstripe blazer driving a vintage car',
     url: '/collections/modern-essentials',
     titleKey: 'editorial.modernEssentials.title',
@@ -31,7 +31,7 @@ const BENTO_ITEMS: BentoItem[] = [
     height: 1024,
   },
   {
-    image: '/brand/edit-carry-sq.png',
+    image: '/brand/edit-carry.webp',
     alt: 'Carry It Your Way — crossbody phone strap',
     url: '/collections/carry-it-your-way',
     titleKey: 'editorial.carry.title',
@@ -42,7 +42,7 @@ const BENTO_ITEMS: BentoItem[] = [
     height: 1024,
   },
   {
-    image: '/brand/edit-sun-ready-sq.png',
+    image: '/brand/edit-sun-ready-v2.png',
     alt: 'Sun Ready — model relaxing poolside in sunglasses',
     url: '/collections/sun-ready',
     titleKey: 'editorial.sun.title',
@@ -53,7 +53,7 @@ const BENTO_ITEMS: BentoItem[] = [
     height: 1024,
   },
   {
-    image: '/brand/edit-new-arrivals-sq.png',
+    image: '/brand/edit-new-arrivals-v2.png',
     alt: 'New Arrivals — model with sheer scarf and silver ring',
     url: '/collections/new-arrivals',
     titleKey: 'editorial.new.title',
@@ -93,9 +93,9 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
       }}
       onMouseMove={shouldReduceMotion ? undefined : tiltHandlers.onMouseMove}
     >
-      <Link to={item.url} className="block h-full">
+      <Link to={item.url} className="block h-full w-full p-5 md:p-8">
         <motion.div
-          className="relative overflow-hidden h-full"
+          className="relative overflow-hidden h-full w-full rounded-[8px]"
           style={
             shouldReduceMotion
               ? {}
