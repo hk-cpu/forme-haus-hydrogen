@@ -4,6 +4,7 @@ import {useRef, useState} from 'react';
 import {Link} from '~/components/Link';
 import {useTranslation} from '~/hooks/useTranslation';
 import {use3DTilt} from '~/hooks/use3DTilt';
+import Silk from '~/components/Silk';
 
 interface BentoItem {
   image: string;
@@ -85,7 +86,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
         delay: index * 0.1,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="w-full group relative overflow-hidden rounded-[14px] bg-[#E8E4E0] aspect-square"
+      className="w-full group relative overflow-hidden rounded-[14px] aspect-square"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
@@ -93,7 +94,12 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
       }}
       onMouseMove={shouldReduceMotion ? undefined : tiltHandlers.onMouseMove}
     >
-      <Link to={item.url} className="block h-full w-full p-5 md:p-8">
+      {/* Animated Silk Background Border */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-80">
+        <Silk color="#E8E4E0" speed={2} scale={1.2} />
+      </div>
+
+      <Link to={item.url} className="relative z-10 block h-full w-full p-5 md:p-8">
         <motion.div
           className="relative overflow-hidden h-full w-full rounded-[8px]"
           style={
