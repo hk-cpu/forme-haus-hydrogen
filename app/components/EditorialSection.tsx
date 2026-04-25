@@ -85,7 +85,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
         delay: index * 0.1,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="group relative overflow-hidden rounded-[14px] bg-[#E8E4E0] aspect-square"
+      className="group relative w-full aspect-square overflow-hidden rounded-[14px] bg-[#E8E4E0]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
