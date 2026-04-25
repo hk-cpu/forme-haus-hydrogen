@@ -37,7 +37,7 @@ const BENTO_ITEMS: BentoItem[] = [
     url: '/collections/carry-it-your-way',
     titleKey: 'editorial.carry.title',
     subtitleKey: 'editorial.carry.subtitle',
-    defaultTitle: 'Carry It Your Own Way',
+    defaultTitle: 'Carry It Your Way',
     defaultSubtitle: 'Hands-free style',
     width: 1024,
     height: 1024,
@@ -95,8 +95,8 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
       onMouseMove={shouldReduceMotion ? undefined : tiltHandlers.onMouseMove}
     >
       {/* Animated Silk Background Border */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-80">
-        <Silk color="#E8E4E0" speed={2} scale={1.2} />
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
+        <Silk color="#AD9686" speed={2} scale={1.2} />
       </div>
 
       <Link to={item.url} className="relative z-10 block h-full w-full p-5 md:p-8">
