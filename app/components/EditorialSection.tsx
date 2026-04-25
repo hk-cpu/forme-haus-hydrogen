@@ -109,7 +109,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
           <motion.img
             src={item.image}
             alt={item.alt}
-            className={`w-full h-full p-6 md:p-10 object-contain block transition-transform duration-700 ease-out ${
+            className={`w-full h-full object-contain block transition-transform duration-700 ease-out ${
               shouldReduceMotion ? '' : 'kenBurns'
             }`}
             style={{
@@ -117,8 +117,8 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
               transformOrigin: 'center center',
               willChange: 'transform',
             }}
-            width={Math.round(item.width * 0.35)}
-            height={Math.round(item.height * 0.35)}
+            width={item.width}
+            height={item.height}
             sizes="(max-width: 768px) 100vw, 50vw"
             loading={index < 2 ? 'eager' : 'lazy'}
             fetchPriority={index === 0 ? 'high' : 'auto'}
