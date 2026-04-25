@@ -118,12 +118,12 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
       collection = {
         id: collection?.id || 'synthetic-carry-it-your-way',
         handle: 'carry-it-your-way',
-        title: 'Carry It Your Own Way',
+        title: 'Carry It Your Way',
         description:
           collection?.description ||
           'Our signature pairings — cases, straps and accessories styled together.',
         seo: collection?.seo || {
-          title: 'Carry It Your Own Way',
+          title: 'Carry It Your Way',
           description:
             'Shop curated bundles of phone cases, straps and accessories.',
         },
