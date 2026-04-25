@@ -1,0 +1,1 @@
+<motion.div className="w-full">\n  <Link to="/path" className="proper-padding">\n    {/* Your content here */}\n  </Link>\n</motion.div>\n
