@@ -33,7 +33,9 @@ async function createShopifyOrderFromWebhook(
           authorization: payload.id,
         },
       ],
-      note: `Webhook order. Tap Charge: ${payload.id}. Ref: ${payload.metadata?.merchantTxId ?? ''}. Cart: ${payload.metadata?.cartId ?? ''}`,
+      note: `Webhook order. Tap Charge: ${payload.id}. Ref: ${
+        payload.metadata?.merchantTxId ?? ''
+      }. Cart: ${payload.metadata?.cartId ?? ''}`,
       tags: 'tap-payment,webhook-created',
     },
   };
@@ -53,7 +55,9 @@ async function createShopifyOrderFromWebhook(
     );
     const body = (await res.json()) as {order?: {id: number; name: string}};
     if (body.order) {
-      console.log(`[Tap Webhook] Shopify order created: ${body.order.name} (${body.order.id})`);
+      console.log(
+        `[Tap Webhook] Shopify order created: ${body.order.name} (${body.order.id})`,
+      );
     }
   } catch (err) {
     console.error('[Tap Webhook] Shopify order creation failed:', err);

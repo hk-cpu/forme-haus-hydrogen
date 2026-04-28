@@ -9,17 +9,39 @@ import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {json} from '@remix-run/server-runtime';
 import {useLoaderData, Link} from '@remix-run/react';
 import {motion} from 'framer-motion';
+
 import {buildLocalePath, getPathLocalePrefix} from '~/lib/utils';
-import {getCheckoutData, clearCheckoutData, markOrderCreated} from '~/lib/checkout.server';
+import {
+  getCheckoutData,
+  clearCheckoutData,
+  markOrderCreated,
+} from '~/lib/checkout.server';
 
 // ── Shopify Order Creation ────────────────────────────────────────────────────
 async function createShopifyOrder(
   storeDomain: string,
   adminToken: string,
   data: {
-    contact: {firstName: string; lastName: string; email: string; phone: string};
-    address: {line1: string; line2?: string; city: string; country: string; countryCode: string; zip?: string};
-    cartLines: Array<{variantId: string; quantity: number; price: string; title: string}>;
+    contact: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      phone: string;
+    };
+    address: {
+      line1: string;
+      line2?: string;
+      city: string;
+      country: string;
+      countryCode: string;
+      zip?: string;
+    };
+    cartLines: Array<{
+      variantId: string;
+      quantity: number;
+      price: string;
+      title: string;
+    }>;
     total: string;
     currency: string;
     merchantTxId: string;
@@ -89,7 +111,10 @@ async function createShopifyOrder(
         body: JSON.stringify(payload),
       },
     );
-    const body = (await res.json()) as {order?: {id: number; name: string}; errors?: unknown};
+    const body = (await res.json()) as {
+      order?: {id: number; name: string};
+      errors?: unknown;
+    };
     if (body.order) {
       return {id: String(body.order.id), name: body.order.name};
     }
@@ -115,17 +140,26 @@ export async function loader({request, context}: LoaderFunctionArgs) {
   const storeDomain = env.PUBLIC_STORE_DOMAIN;
 
   if (!tapId) {
-    return json({status: 'error' as const, message: 'No payment reference found.'});
+    return json({
+      status: 'error' as const,
+      message: 'No payment reference found.',
+    });
   }
 
   if (!secretKey) {
-    return json({status: 'error' as const, message: 'Payment gateway not configured.'});
+    return json({
+      status: 'error' as const,
+      message: 'Payment gateway not configured.',
+    });
   }
 
   try {
     const res = await fetch(`${apiUrl}/charges/${tapId}`, {
       method: 'GET',
-      headers: {Authorization: `Bearer ${secretKey}`, Accept: 'application/json'},
+      headers: {
+        Authorization: `Bearer ${secretKey}`,
+        Accept: 'application/json',
+      },
     });
 
     const data = (await res.json()) as {
@@ -190,7 +224,8 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     if (chargeStatus === 'INITIATED' || chargeStatus === 'IN_PROGRESS') {
       return json({
         status: 'pending' as const,
-        message: 'Your payment is being processed. We will notify you once confirmed.',
+        message:
+          'Your payment is being processed. We will notify you once confirmed.',
         transactionId: data.id,
         nextPath: buildLocalePath('/collections/all', localePrefix),
         retryPath: buildLocalePath('/checkout', localePrefix),
@@ -199,7 +234,9 @@ export async function loader({request, context}: LoaderFunctionArgs) {
 
     return json({
       status: 'failed' as const,
-      message: data.response?.message ?? 'Payment was not successful. Please try again.',
+      message:
+        data.response?.message ??
+        'Payment was not successful. Please try again.',
       transactionId: data.id,
       nextPath: buildLocalePath('/collections/all', localePrefix),
       retryPath: buildLocalePath('/checkout', localePrefix),
@@ -220,11 +257,36 @@ export default function TapPaymentCallback() {
   const data = useLoaderData<typeof loader>();
 
   const cfg = {
-    success: {icon: '✓', color: 'text-[#a87441]', bg: 'bg-[#a87441]/10', border: 'border-[#a87441]/20'},
-    pending: {icon: '⏳', color: 'text-amber-400', bg: 'bg-amber-400/10', border: 'border-amber-400/20'},
-    failed:  {icon: '✕', color: 'text-red-400',   bg: 'bg-red-400/10',   border: 'border-red-400/20'},
-    error:   {icon: '!', color: 'text-red-400',   bg: 'bg-red-400/10',   border: 'border-red-400/20'},
-  }[data.status] ?? {icon: '?', color: 'text-[#8B8076]', bg: 'bg-[#8B8076]/10', border: 'border-[#8B8076]/20'};
+    success: {
+      icon: '✓',
+      color: 'text-[#a87441]',
+      bg: 'bg-[#a87441]/10',
+      border: 'border-[#a87441]/20',
+    },
+    pending: {
+      icon: '⏳',
+      color: 'text-amber-400',
+      bg: 'bg-amber-400/10',
+      border: 'border-amber-400/20',
+    },
+    failed: {
+      icon: '✕',
+      color: 'text-red-400',
+      bg: 'bg-red-400/10',
+      border: 'border-red-400/20',
+    },
+    error: {
+      icon: '!',
+      color: 'text-red-400',
+      bg: 'bg-red-400/10',
+      border: 'border-red-400/20',
+    },
+  }[data.status] ?? {
+    icon: '?',
+    color: 'text-[#8B8076]',
+    bg: 'bg-[#8B8076]/10',
+    border: 'border-[#8B8076]/20',
+  };
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-6">
@@ -234,28 +296,43 @@ export default function TapPaymentCallback() {
         transition={{duration: 0.5, ease: [0.16, 1, 0.3, 1]}}
         className="max-w-md w-full text-center"
       >
-        <div className={`w-20 h-20 rounded-full ${cfg.bg} border ${cfg.border} flex items-center justify-center mx-auto mb-6`}>
+        <div
+          className={`w-20 h-20 rounded-full ${cfg.bg} border ${cfg.border} flex items-center justify-center mx-auto mb-6`}
+        >
           <span className={`text-3xl font-light ${cfg.color}`}>{cfg.icon}</span>
         </div>
 
         <h1 className="font-serif text-2xl md:text-3xl text-brand-text mb-3">
           {data.status === 'success' && 'Order Confirmed'}
           {data.status === 'pending' && 'Processing Payment'}
-          {(data.status === 'failed' || data.status === 'error') && 'Payment Unsuccessful'}
+          {(data.status === 'failed' || data.status === 'error') &&
+            'Payment Unsuccessful'}
         </h1>
 
-        <p className="text-[#8B8076] text-sm leading-relaxed mb-6">{data.message}</p>
+        <p className="text-[#8B8076] text-sm leading-relaxed mb-6">
+          {data.message}
+        </p>
 
         {data.status === 'success' && 'transactionId' in data && (
-          <div className={`inline-block px-5 py-4 rounded-xl ${cfg.bg} border ${cfg.border} mb-6 text-left w-full`}>
+          <div
+            className={`inline-block px-5 py-4 rounded-xl ${cfg.bg} border ${cfg.border} mb-6 text-left w-full`}
+          >
             {'orderName' in data && data.orderName && (
               <div className="mb-3">
-                <p className="text-[10px] uppercase tracking-widest text-[#8B8076]">Order Number</p>
-                <p className={`text-lg font-serif mt-0.5 ${cfg.color}`}>{data.orderName as string}</p>
+                <p className="text-[10px] uppercase tracking-widest text-[#8B8076]">
+                  Order Number
+                </p>
+                <p className={`text-lg font-serif mt-0.5 ${cfg.color}`}>
+                  {data.orderName as string}
+                </p>
               </div>
             )}
-            <p className="text-[10px] uppercase tracking-widest text-[#8B8076]">Transaction ID</p>
-            <p className={`text-sm font-mono mt-0.5 ${cfg.color}`}>{data.transactionId}</p>
+            <p className="text-[10px] uppercase tracking-widest text-[#8B8076]">
+              Transaction ID
+            </p>
+            <p className={`text-sm font-mono mt-0.5 ${cfg.color}`}>
+              {data.transactionId}
+            </p>
             {'paymentMethod' in data && data.paymentMethod && (
               <p className="text-[10px] uppercase tracking-widest text-[#8B8076] mt-3">
                 Paid via {data.paymentMethod}
@@ -267,14 +344,24 @@ export default function TapPaymentCallback() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           {(data.status === 'failed' || data.status === 'error') && (
             <Link
-              to={'retryPath' in data && data.retryPath ? data.retryPath : '/checkout'}
+              to={
+                'retryPath' in data && data.retryPath
+                  ? data.retryPath
+                  : '/checkout'
+              }
               className="px-6 py-3 bg-[#a87441] text-white text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-[#8B5E3C] transition-colors"
             >
               Try Again
             </Link>
           )}
           <Link
-            to={'nextPath' in data && data.nextPath ? data.nextPath : data.status === 'success' ? '/account' : '/collections/all'}
+            to={
+              'nextPath' in data && data.nextPath
+                ? data.nextPath
+                : data.status === 'success'
+                ? '/account'
+                : '/collections/all'
+            }
             className="px-6 py-3 bg-brand-text/10 text-brand-text text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-brand-text/20 transition-colors"
           >
             {data.status === 'success' ? 'View Orders' : 'Continue Shopping'}

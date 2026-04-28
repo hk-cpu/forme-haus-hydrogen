@@ -202,7 +202,10 @@ export default function FavoritesPage() {
                           handleRemove(product.id);
                         }}
                         className="absolute top-3 right-3 w-10 h-10 rounded-full bg-bronze text-white flex items-center justify-center shadow-md hover:bg-bronze-dark transition-colors z-10"
-                        aria-label={t('favorites.remove', 'Remove from favorites')}
+                        aria-label={t(
+                          'favorites.remove',
+                          'Remove from favorites',
+                        )}
                       >
                         <svg
                           width="18"
