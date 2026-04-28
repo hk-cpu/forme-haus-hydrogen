@@ -205,7 +205,10 @@ function uiReducer(state: UIState, action: UIAction): UIState {
         : [...state.favorites, action.productId];
       // Persist to localStorage
       if (typeof window !== 'undefined') {
-        localStorage.setItem('formehaus_favorites', JSON.stringify(newFavorites));
+        localStorage.setItem(
+          'formehaus_favorites',
+          JSON.stringify(newFavorites),
+        );
       }
       return {...state, favorites: newFavorites};
     }
@@ -271,7 +274,10 @@ export function UIProvider({children}: {children: ReactNode}) {
         try {
           const parsedFav = JSON.parse(savedFavorites);
           if (Array.isArray(parsedFav)) {
-            dispatch({type: 'SET_FAVORITES', productIds: parsedFav as string[]});
+            dispatch({
+              type: 'SET_FAVORITES',
+              productIds: parsedFav as string[],
+            });
           }
         } catch (e) {
           console.error('Failed to parse favorites from localStorage');

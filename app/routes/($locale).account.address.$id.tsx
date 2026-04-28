@@ -228,7 +228,11 @@ export default function EditAddress() {
 
   return (
     <>
-      <Text className="mt-4 mb-6 font-serif text-warm text-xl" as="h3" size="lead">
+      <Text
+        className="mt-4 mb-6 font-serif text-warm text-xl"
+        as="h3"
+        size="lead"
+      >
         {isNewAddress ? 'Add address' : 'Edit address'}
       </Text>
       <div className="max-w-lg">

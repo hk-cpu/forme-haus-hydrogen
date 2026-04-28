@@ -2,7 +2,8 @@ import clsx from 'clsx';
 import {useRef, useState} from 'react';
 import useScroll from 'react-use/esm/useScroll';
 import {motion, AnimatePresence} from 'framer-motion';
-import {useFetcher, useRouteLoaderData} from '@remix-run/react';
+import type {useFetcher} from '@remix-run/react';
+import {useRouteLoaderData} from '@remix-run/react';
 // eslint-disable-next-line import/order
 import {
   flattenConnection,
@@ -548,11 +549,17 @@ function CartCheckoutActions({
       {/* Terms */}
       <p className="text-[10px] text-center text-taupe/60">
         {t('cart.terms', 'By proceeding, you agree to our')}{' '}
-        <Link to="/policies/terms-of-service" className="text-bronze hover:underline">
+        <Link
+          to="/policies/terms-of-service"
+          className="text-bronze hover:underline"
+        >
           {t('cart.termsLink', 'Terms')}
         </Link>{' '}
         {t('cart.and', 'and')}{' '}
-        <Link to="/policies/refund-policy" className="text-bronze hover:underline">
+        <Link
+          to="/policies/refund-policy"
+          className="text-bronze hover:underline"
+        >
           {t('cart.refundsLink', 'Refund Policy')}
         </Link>
       </p>

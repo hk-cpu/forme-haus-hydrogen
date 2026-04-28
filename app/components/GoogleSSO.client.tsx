@@ -1,4 +1,8 @@
-import {GoogleOAuthProvider, GoogleLogin, type CredentialResponse} from '@react-oauth/google';
+import {
+  GoogleOAuthProvider,
+  GoogleLogin,
+  type CredentialResponse,
+} from '@react-oauth/google';
 
 export function GoogleSSOButton({
   clientId,

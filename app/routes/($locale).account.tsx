@@ -761,7 +761,7 @@ function StatCard({
 function OrderRow({order, detailed = false}: {order: any; detailed?: boolean}) {
   const legacyOrderId = order.id.split('/').pop();
   const url = `/account/orders/${legacyOrderId}`;
-  const lineItems = flattenConnection(order.lineItems);
+  const lineItems = flattenConnection(order.lineItems) as any[];
   const firstImage = lineItems[0]?.variant?.image;
 
   const statusColor = (status: string) => {

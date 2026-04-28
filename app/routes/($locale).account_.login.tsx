@@ -65,7 +65,7 @@ export async function action({context, request}: ActionFunctionArgs) {
           })
           .join(''),
       );
-      const payload = JSON.parse(jsonPayload);
+      const payload = JSON.parse(jsonPayload) as {email?: string};
       const email = payload.email;
 
       if (!email)

@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {motion, AnimatePresence, useReducedMotion} from 'framer-motion';
 import {CartForm, Money} from '@shopify/hydrogen';
+import type {CurrencyCode} from '@shopify/hydrogen/storefront-api-types';
 import type {FetcherWithComponents} from '@remix-run/react';
 
 import {Link} from '~/components/Link';
@@ -16,18 +17,18 @@ interface ProductNode {
   vendor?: string;
   availableForSale?: boolean;
   priceRange: {
-    minVariantPrice: {amount: string; currencyCode: string};
+    minVariantPrice: {amount: string; currencyCode: CurrencyCode};
   };
   compareAtPriceRange?: {
-    minVariantPrice: {amount: string; currencyCode: string};
+    minVariantPrice: {amount: string; currencyCode: CurrencyCode};
   };
   images: {
     nodes: Array<{
-      id?: string;
+      id?: string | null;
       url: string;
       altText?: string | null;
-      width?: number;
-      height?: number;
+      width?: number | null;
+      height?: number | null;
     }>;
   };
   variants: {
@@ -47,7 +48,8 @@ interface EditorialSectionConfig {
     | 'quote'
     | 'hero-side'
     | 'wide'
-    | 'editorial-grid';
+    | 'editorial-grid'
+    | 'editorial-grid-large';
   productIndices?: number[];
   content?: {quote: string; author: string};
 }
@@ -57,7 +59,14 @@ export interface EditorialLayoutConfig {
 }
 
 interface ProductDisplayConfig {
-  size: 'hero' | 'large' | 'medium' | 'small' | 'wide';
+  size:
+    | 'hero'
+    | 'large'
+    | 'medium'
+    | 'small'
+    | 'wide'
+    | 'portrait'
+    | 'landscape';
   style: 'framed' | 'minimal' | 'elevated' | 'accent-border';
   badge?: string;
   numberBadge?: number;
@@ -99,7 +108,8 @@ const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {
       {
         type: 'quote',
         content: {
-          quote: 'Foundations shaped by intention and refined for everyday presence.',
+          quote:
+            'Foundations shaped by intention and refined for everyday presence.',
           author: 'Sun Ready Series',
         },
       },
@@ -111,7 +121,8 @@ const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {
       {
         type: 'quote',
         content: {
-          quote: "Sustainability isn't a trend — it's our responsibility to tomorrow.",
+          quote:
+            "Sustainability isn't a trend — it's our responsibility to tomorrow.",
           author: 'Our Commitment',
         },
       },
@@ -124,14 +135,10 @@ const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {
     ],
   },
   sunglasses: {
-    sections: [
-      {type: 'editorial-grid', productIndices: [0, 1, 2, 3, 4, 5]},
-    ],
+    sections: [{type: 'editorial-grid', productIndices: [0, 1, 2, 3, 4, 5]}],
   },
   'phone-cases': {
-    sections: [
-      {type: 'editorial-grid', productIndices: [0, 1, 2, 3, 4, 5]},
-    ],
+    sections: [{type: 'editorial-grid', productIndices: [0, 1, 2, 3, 4, 5]}],
   },
 };
 
@@ -146,7 +153,7 @@ export function getEditorialLayoutConfig(
   // 1. Try metafield-driven config from Shopify admin
   if (metafieldValue) {
     try {
-      const parsed = JSON.parse(metafieldValue);
+      const parsed: any = JSON.parse(metafieldValue);
       if (parsed?.sections && Array.isArray(parsed.sections)) {
         return parsed as EditorialLayoutConfig;
       }
@@ -200,17 +207,24 @@ export function generateDynamicEditorialConfig(
     else {
       sections.push({
         type: 'row',
-        productIndices: Array.from({length: remaining}, (_, i) => currentIndex + i),
+        productIndices: Array.from(
+          {length: remaining},
+          (_, i) => currentIndex + i,
+        ),
       });
       currentIndex += remaining;
     }
 
     // Inject a quote after first major grid if not already present
-    if (currentIndex >= 8 && sections.filter(s => s.type === 'quote').length === 0) {
+    if (
+      currentIndex >= 8 &&
+      sections.filter((s) => s.type === 'quote').length === 0
+    ) {
       sections.push({
         type: 'quote',
         content: {
-          quote: 'Design is not just what it looks like and feels like. Design is how it works.',
+          quote:
+            'Design is not just what it looks like and feels like. Design is how it works.',
           author: 'Formé Haus',
         },
       });
@@ -229,7 +243,7 @@ const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const fadeUp = {
   hidden: {opacity: 0, y: 30},
-  visible: (delay: number = 0) => ({
+  visible: (delay = 0) => ({
     opacity: 1,
     y: 0,
     transition: {duration: 0.7, delay, ease: EASE_OUT_EXPO},
@@ -747,6 +761,49 @@ function EditorialQuote({quote, author}: {quote: string; author: string}) {
   );
 }
 
+function AddToCartButton({
+  fetcher,
+  addedToCart,
+  setAddedToCart,
+  onClose,
+  toggleCart,
+}: {
+  fetcher: FetcherWithComponents<any>;
+  addedToCart: boolean;
+  setAddedToCart: (v: boolean) => void;
+  onClose: () => void;
+  toggleCart: () => void;
+}) {
+  const isAdding = fetcher.state !== 'idle';
+  const justAdded =
+    fetcher.state === 'idle' && fetcher.data && !fetcher.data.errors?.length;
+
+  useEffect(() => {
+    if (justAdded && !addedToCart) {
+      setAddedToCart(true);
+      const timer = setTimeout(() => {
+        onClose();
+        toggleCart();
+      }, 600);
+      return () => clearTimeout(timer);
+    }
+  }, [justAdded, addedToCart, setAddedToCart, onClose, toggleCart]);
+
+  return (
+    <button
+      type="submit"
+      disabled={isAdding}
+      className={`mt-4 w-full py-3.5 text-[11px] uppercase tracking-[0.15em] rounded transition-all duration-300 ${
+        addedToCart
+          ? 'bg-emerald-600 text-white'
+          : 'bg-[#a87441] text-white hover:bg-[#8B5E34]'
+      } disabled:opacity-60`}
+    >
+      {addedToCart ? 'Added!' : isAdding ? 'Adding...' : 'Add to Cart'}
+    </button>
+  );
+}
+
 // ─── Quick View Modal with Cart Integration ──────────────────
 
 function QuickViewModal({
@@ -886,44 +943,15 @@ function QuickViewModal({
               }}
               action={CartForm.ACTIONS.LinesAdd}
             >
-              {(fetcher: FetcherWithComponents<any>) => {
-                const isAdding = fetcher.state !== 'idle';
-                const justAdded =
-                  fetcher.state === 'idle' &&
-                  fetcher.data &&
-                  !fetcher.data.errors?.length;
-
-                // Open cart drawer after successful add
-                useEffect(() => {
-                  if (justAdded && !addedToCart) {
-                    setAddedToCart(true);
-                    // Small delay so user sees the success state
-                    const timer = setTimeout(() => {
-                      onClose();
-                      toggleCart();
-                    }, 600);
-                    return () => clearTimeout(timer);
-                  }
-                }, [justAdded]);
-
-                return (
-                  <button
-                    type="submit"
-                    disabled={isAdding}
-                    className={`mt-4 w-full py-3.5 text-[11px] uppercase tracking-[0.15em] rounded transition-all duration-300 ${
-                      addedToCart
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-[#a87441] text-white hover:bg-[#8B5E34]'
-                    } disabled:opacity-60`}
-                  >
-                    {addedToCart
-                      ? 'Added!'
-                      : isAdding
-                      ? 'Adding...'
-                      : 'Add to Cart'}
-                  </button>
-                );
-              }}
+              {(fetcher: FetcherWithComponents<any>) => (
+                <AddToCartButton
+                  fetcher={fetcher}
+                  addedToCart={addedToCart}
+                  setAddedToCart={setAddedToCart}
+                  onClose={onClose}
+                  toggleCart={toggleCart}
+                />
+              )}
             </CartForm>
           )}
 
@@ -976,26 +1004,98 @@ function getDisplayConfig(
       {size: 'small', style: 'framed'},
     ],
     'editorial-grid': [
-      {size: 'hero', style: 'elevated', className: 'col-span-2 lg:col-span-2 lg:row-span-2'},
-      {size: 'small', style: 'framed', className: 'col-span-1 lg:col-span-1 lg:row-span-1'},
-      {size: 'small', style: 'framed', className: 'col-span-1 lg:col-span-1 lg:row-span-1'},
-      {size: 'portrait', style: 'minimal', className: 'col-span-1 lg:col-span-1 lg:row-span-2'},
-      {size: 'portrait', style: 'minimal', className: 'col-span-1 lg:col-span-1 lg:row-span-2'},
-      {size: 'landscape', style: 'elevated', className: 'col-span-2 lg:col-span-2 lg:row-span-1'},
-      {size: 'landscape', style: 'framed', className: 'col-span-2 lg:col-span-2 lg:row-span-1'},
-      {size: 'landscape', style: 'framed', className: 'col-span-2 lg:col-span-2 lg:row-span-1'},
+      {
+        size: 'hero',
+        style: 'elevated',
+        className: 'col-span-2 lg:col-span-2 lg:row-span-2',
+      },
+      {
+        size: 'small',
+        style: 'framed',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-1',
+      },
+      {
+        size: 'small',
+        style: 'framed',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-1',
+      },
+      {
+        size: 'portrait',
+        style: 'minimal',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-2',
+      },
+      {
+        size: 'portrait',
+        style: 'minimal',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-2',
+      },
+      {
+        size: 'landscape',
+        style: 'elevated',
+        className: 'col-span-2 lg:col-span-2 lg:row-span-1',
+      },
+      {
+        size: 'landscape',
+        style: 'framed',
+        className: 'col-span-2 lg:col-span-2 lg:row-span-1',
+      },
+      {
+        size: 'landscape',
+        style: 'framed',
+        className: 'col-span-2 lg:col-span-2 lg:row-span-1',
+      },
     ],
     'editorial-grid-large': [
-      {size: 'hero', style: 'elevated', className: 'col-span-2 lg:col-span-2 lg:row-span-2'},
-      {size: 'small', style: 'framed', className: 'col-span-1 lg:col-span-1 lg:row-span-1'},
-      {size: 'small', style: 'framed', className: 'col-span-1 lg:col-span-1 lg:row-span-1'},
-      {size: 'portrait', style: 'minimal', className: 'col-span-1 lg:col-span-1 lg:row-span-2'},
-      {size: 'medium', style: 'framed', className: 'col-span-1 lg:col-span-1 lg:row-span-1'},
-      {size: 'medium', style: 'framed', className: 'col-span-1 lg:col-span-1 lg:row-span-1'},
-      {size: 'landscape', style: 'elevated', className: 'col-span-2 lg:col-span-2 lg:row-span-1'},
-      {size: 'portrait', style: 'minimal', className: 'col-span-1 lg:col-span-1 lg:row-span-2'},
-      {size: 'portrait', style: 'minimal', className: 'col-span-1 lg:col-span-1 lg:row-span-2'},
-      {size: 'landscape', style: 'elevated', className: 'col-span-2 lg:col-span-2 lg:row-span-1'},
+      {
+        size: 'hero',
+        style: 'elevated',
+        className: 'col-span-2 lg:col-span-2 lg:row-span-2',
+      },
+      {
+        size: 'small',
+        style: 'framed',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-1',
+      },
+      {
+        size: 'small',
+        style: 'framed',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-1',
+      },
+      {
+        size: 'portrait',
+        style: 'minimal',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-2',
+      },
+      {
+        size: 'medium',
+        style: 'framed',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-1',
+      },
+      {
+        size: 'medium',
+        style: 'framed',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-1',
+      },
+      {
+        size: 'landscape',
+        style: 'elevated',
+        className: 'col-span-2 lg:col-span-2 lg:row-span-1',
+      },
+      {
+        size: 'portrait',
+        style: 'minimal',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-2',
+      },
+      {
+        size: 'portrait',
+        style: 'minimal',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-2',
+      },
+      {
+        size: 'landscape',
+        style: 'elevated',
+        className: 'col-span-2 lg:col-span-2 lg:row-span-1',
+      },
     ],
     wide: [{size: 'wide', style: 'elevated'}],
   };

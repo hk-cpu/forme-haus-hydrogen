@@ -252,7 +252,10 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     throw new Response('collection', {status: 404});
   }
 
-  const seo = seoPayload.collection({collection, url: request.url});
+  const seo = seoPayload.collection({
+    collection: collection as any,
+    url: request.url,
+  });
 
   const allFilterValues = collection.products.filters.flatMap(
     (filter: Filter) => filter.values,
@@ -497,11 +500,17 @@ export default function Collection() {
   const collectionSubtitle = COLLECTION_SUBTITLES[collection.handle];
 
   const override = HERO_OVERRIDES[collection.handle];
-  const heroImage = collection.hero_image?.reference?.image?.url || override?.src || collection.image?.url;
-  const hideTitle = collection.hide_title?.value === 'true' || override?.hideTitle;
-  const heroPosition = collection.hero_position?.value || override?.position || 'center center';
+  const heroImage =
+    collection.hero_image?.reference?.image?.url ||
+    override?.src ||
+    collection.image?.url;
+  const hideTitle =
+    collection.hide_title?.value === 'true' || override?.hideTitle;
+  const heroPosition =
+    collection.hero_position?.value || override?.position || 'center center';
   const heroFit = collection.hero_fit?.value || override?.fit || 'cover';
-  const bgColor = collection.bg_color?.value || override?.bgClass || 'bg-[#E8DED4]';
+  const bgColor =
+    collection.bg_color?.value || override?.bgClass || 'bg-[#E8DED4]';
   const heightClass = override?.heightClass || '';
 
   const isFullWidthHero = heroFit === 'full-width' && hideTitle;
@@ -566,7 +575,8 @@ export default function Collection() {
                     style={{
                       y: heroY,
                       objectPosition: heroPosition,
-                      transformOrigin: heroPosition === 'top' ? 'top center' : 'center center',
+                      transformOrigin:
+                        heroPosition === 'top' ? 'top center' : 'center center',
                     }}
                     initial={{scale: 1.03}}
                     animate={{scale: 1}}

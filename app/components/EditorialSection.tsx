@@ -99,7 +99,10 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
         <Silk color="#9B775C" speed={2} scale={1.2} />
       </div>
 
-      <Link to={item.url} className="relative z-10 block h-full w-full p-5 md:p-8">
+      <Link
+        to={item.url}
+        className="relative z-10 block h-full w-full p-5 md:p-8"
+      >
         <motion.div
           className="relative overflow-hidden h-full w-full rounded-[8px]"
           style={
