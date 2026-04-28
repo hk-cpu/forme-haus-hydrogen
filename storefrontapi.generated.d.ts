@@ -560,33 +560,16 @@ export type CustomerCreateMutation = {
   }>;
 };
 
-export type PredictiveSearchQueryVariables = StorefrontAPI.Exact<{
+export type PredictiveSearchFallbackQueryVariables = StorefrontAPI.Exact<{
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
   searchTerm: StorefrontAPI.Scalars['String']['input'];
   limit: StorefrontAPI.Scalars['Int']['input'];
-  limitScope?: StorefrontAPI.PredictiveSearchLimitScope;
 }>;
 
-export type PredictiveSearchQuery = {
-  predictiveSearch?: StorefrontAPI.Maybe<{
-    articles: Array<
-      Pick<StorefrontAPI.Article, 'id' | 'title' | 'handle'> & {
-        image?: StorefrontAPI.Maybe<
-          Pick<StorefrontAPI.Image, 'url' | 'altText' | 'width' | 'height'>
-        >;
-        blog: Pick<StorefrontAPI.Blog, 'handle'>;
-      }
-    >;
-    collections: Array<
-      Pick<StorefrontAPI.Collection, 'id' | 'title' | 'handle'> & {
-        image?: StorefrontAPI.Maybe<
-          Pick<StorefrontAPI.Image, 'url' | 'altText' | 'width' | 'height'>
-        >;
-      }
-    >;
-    pages: Array<Pick<StorefrontAPI.Page, 'id' | 'title' | 'handle'>>;
-    products: Array<
+export type PredictiveSearchFallbackQuery = {
+  products: {
+    nodes: Array<
       Pick<StorefrontAPI.Product, 'id' | 'title' | 'handle'> & {
         featuredImage?: StorefrontAPI.Maybe<
           Pick<StorefrontAPI.Image, 'url' | 'altText' | 'width' | 'height'>
@@ -599,10 +582,27 @@ export type PredictiveSearchQuery = {
         };
       }
     >;
-    queries: Array<
-      Pick<StorefrontAPI.SearchQuerySuggestion, 'text' | 'styledText'>
+  };
+  collections: {
+    nodes: Array<
+      Pick<StorefrontAPI.Collection, 'id' | 'title' | 'handle'> & {
+        image?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.Image, 'url' | 'altText' | 'width' | 'height'>
+        >;
+      }
     >;
-  }>;
+  };
+  pages: {nodes: Array<Pick<StorefrontAPI.Page, 'id' | 'title' | 'handle'>>};
+  articles: {
+    nodes: Array<
+      Pick<StorefrontAPI.Article, 'id' | 'title' | 'handle'> & {
+        image?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.Image, 'url' | 'altText' | 'width' | 'height'>
+        >;
+        blog: Pick<StorefrontAPI.Blog, 'handle'>;
+      }
+    >;
+  };
 };
 
 export type ApiAllProductsQueryVariables = StorefrontAPI.Exact<{
@@ -1982,9 +1982,9 @@ interface GeneratedQueryTypes {
     return: CustomerDetailsQuery;
     variables: CustomerDetailsQueryVariables;
   };
-  '#graphql\n  query PredictiveSearch(\n    $country: CountryCode\n    $language: LanguageCode\n    $searchTerm: String!\n    $limit: Int!\n    $limitScope: PredictiveSearchLimitScope! = EACH\n  ) @inContext(country: $country, language: $language) {\n    predictiveSearch(\n      limit: $limit\n      limitScope: $limitScope\n      query: $searchTerm\n    ) {\n      articles {\n        id\n        title\n        handle\n        image {\n          url\n          altText\n          width\n          height\n        }\n        blog {\n          handle\n        }\n      }\n      collections {\n        id\n        title\n        handle\n        image {\n          url\n          altText\n          width\n          height\n        }\n      }\n      pages {\n        id\n        title\n        handle\n      }\n      products {\n        id\n        title\n        handle\n        featuredImage {\n          url\n          altText\n          width\n          height\n        }\n        priceRange {\n          minVariantPrice {\n            amount\n            currencyCode\n          }\n        }\n      }\n      queries {\n        text\n        styledText\n      }\n    }\n  }\n': {
-    return: PredictiveSearchQuery;
-    variables: PredictiveSearchQueryVariables;
+  '#graphql\n  query PredictiveSearchFallback(\n    $country: CountryCode\n    $language: LanguageCode\n    $searchTerm: String!\n    $limit: Int!\n  ) @inContext(country: $country, language: $language) {\n    products(first: $limit, query: $searchTerm) {\n      nodes {\n        id\n        title\n        handle\n        featuredImage {\n          url\n          altText\n          width\n          height\n        }\n        priceRange {\n          minVariantPrice {\n            amount\n            currencyCode\n          }\n        }\n      }\n    }\n    collections(first: $limit, query: $searchTerm) {\n      nodes {\n        id\n        title\n        handle\n        image {\n          url\n          altText\n          width\n          height\n        }\n      }\n    }\n    pages(first: $limit, query: $searchTerm) {\n      nodes {\n        id\n        title\n        handle\n      }\n    }\n    articles(first: $limit, query: $searchTerm) {\n      nodes {\n        id\n        title\n        handle\n        image {\n          url\n          altText\n          width\n          height\n        }\n        blog {\n          handle\n        }\n      }\n    }\n  }\n': {
+    return: PredictiveSearchFallbackQuery;
+    variables: PredictiveSearchFallbackQueryVariables;
   };
   '#graphql\n  query ApiAllProducts(\n    $query: String\n    $count: Int\n    $reverse: Boolean\n    $country: CountryCode\n    $language: LanguageCode\n    $sortKey: ProductSortKeys\n  ) @inContext(country: $country, language: $language) {\n    products(first: $count, sortKey: $sortKey, reverse: $reverse, query: $query) {\n      nodes {\n        ...ProductCard\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    titleAr: metafield(namespace: "custom", key: "title_ar") { value }\n    publishedAt\n    handle\n    vendor\n    availableForSale\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    images(first: 2) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        quantityAvailable\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n      }\n    }\n  }\n\n': {
     return: ApiAllProductsQuery;

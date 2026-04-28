@@ -449,20 +449,9 @@ function OverviewTab({
           label={t('account.totalSpent', 'Total Spent')}
           value={`${totalSpent.toFixed(0)} SAR`}
           icon={
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              className="w-5 h-5"
-            >
-              <line x1="12" y1="1" x2="12" y2="23" strokeLinecap="round" />
-              <path
-                d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <span className="text-[10px] font-medium leading-none flex items-center justify-center h-5">
+              SAR
+            </span>
           }
         />
         <StatCard

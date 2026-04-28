@@ -404,7 +404,7 @@ export function Header({
               src="/brand/logo-icon-only-opt.webp"
               alt="Forme Haus"
               className="h-8 w-8 object-contain opacity-90 transition-opacity duration-200 hover:opacity-100 md:h-10 md:w-10"
-              fetchPriority="high"
+              fetchpriority="high"
               loading="eager"
               width={128}
               height={127}

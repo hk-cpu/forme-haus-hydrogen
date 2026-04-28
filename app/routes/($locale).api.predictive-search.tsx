@@ -13,11 +13,17 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     return json({searchResults: {results: null, totalResults: 0}});
   }
 
+  const apiSearchTerm = searchTerm
+    .split(' ')
+    .filter((w) => w.trim().length > 0)
+    .map((word) => `(title:*${word}* OR product_type:*${word}* OR tag:*${word}* OR variants.title:*${word}*)`)
+    .join(' AND ');
+
   const {storefront} = context;
 
   const data = await storefront.query(PREDICTIVE_SEARCH_QUERY, {
     variables: {
-      searchTerm,
+      searchTerm: apiSearchTerm,
       limit,
       country: storefront.i18n.country,
       language: storefront.i18n.language,
@@ -28,8 +34,16 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     throw new Error('No data returned from Shopify API');
   }
 
+  const formattedPredictiveSearch = {
+    products: data.products?.nodes || [],
+    collections: data.collections?.nodes || [],
+    pages: data.pages?.nodes || [],
+    articles: data.articles?.nodes || [],
+    queries: [],
+  };
+
   const searchResults = normalizePredictiveSearchResults(
-    data.predictiveSearch,
+    formattedPredictiveSearch,
     context.storefront.i18n.language,
   );
 
@@ -37,49 +51,14 @@ export async function loader({request, context}: LoaderFunctionArgs) {
 }
 
 const PREDICTIVE_SEARCH_QUERY = `#graphql
-  query PredictiveSearch(
+  query PredictiveSearchFallback(
     $country: CountryCode
     $language: LanguageCode
     $searchTerm: String!
     $limit: Int!
-    $limitScope: PredictiveSearchLimitScope! = EACH
   ) @inContext(country: $country, language: $language) {
-    predictiveSearch(
-      limit: $limit
-      limitScope: $limitScope
-      query: $searchTerm
-    ) {
-      articles {
-        id
-        title
-        handle
-        image {
-          url
-          altText
-          width
-          height
-        }
-        blog {
-          handle
-        }
-      }
-      collections {
-        id
-        title
-        handle
-        image {
-          url
-          altText
-          width
-          height
-        }
-      }
-      pages {
-        id
-        title
-        handle
-      }
-      products {
+    products(first: $limit, query: $searchTerm) {
+      nodes {
         id
         title
         handle
@@ -96,9 +75,41 @@ const PREDICTIVE_SEARCH_QUERY = `#graphql
           }
         }
       }
-      queries {
-        text
-        styledText
+    }
+    collections(first: $limit, query: $searchTerm) {
+      nodes {
+        id
+        title
+        handle
+        image {
+          url
+          altText
+          width
+          height
+        }
+      }
+    }
+    pages(first: $limit, query: $searchTerm) {
+      nodes {
+        id
+        title
+        handle
+      }
+    }
+    articles(first: $limit, query: $searchTerm) {
+      nodes {
+        id
+        title
+        handle
+        image {
+          url
+          altText
+          width
+          height
+        }
+        blog {
+          handle
+        }
       }
     }
   }

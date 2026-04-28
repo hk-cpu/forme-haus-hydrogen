@@ -132,7 +132,7 @@ export function FooterAccordion() {
         </p>
         <p className="text-[11px] text-[#8B8076] mt-3">
           48 hour dispatch · International shipping · Free shipping on domestic
-          orders over $70
+          orders over 250 SAR
         </p>
       </div>
 

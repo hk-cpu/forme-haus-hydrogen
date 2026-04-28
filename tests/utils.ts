@@ -1,10 +1,10 @@
 /**
- * Formats a number as USD. Example: 1800 => $1,800.00
+ * Formats a number as SAR. Example: 1800 => SAR 1,800.00
  */
 export function formatPrice(
   price: string | number,
-  currency = 'USD',
-  locale = 'en-US',
+  currency = 'SAR',
+  locale = 'en-SA',
 ) {
   const formatter = new Intl.NumberFormat(locale, {
     style: 'currency',
@@ -18,13 +18,13 @@ export function formatPrice(
  * Removes symbols and decimals from a price and converts to number.
  */
 export function normalizePrice(price: string | null) {
-  if (!price || !/^[$\d.,]+$/.test(price)) {
+  if (!price || !/^[A-Za-z\s\d.,]+$/.test(price)) {
     throw new Error('Price was not found');
   }
 
   return Number(
     price
-      .replace('$', '')
+      .replace(/[^\d.,]/g, '')
       .trim()
       .replace(/[.,](\d\d)$/, '-$1')
       .replace(/[.,]/g, '')

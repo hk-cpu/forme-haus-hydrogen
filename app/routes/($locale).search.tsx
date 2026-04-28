@@ -31,12 +31,18 @@ export async function loader({
   context: {storefront},
 }: LoaderFunctionArgs) {
   const searchParams = new URL(request.url).searchParams;
-  const searchTerm = searchParams.get('q')!;
+  const searchTerm = searchParams.get('q') || '';
   const variables = getPaginationVariables(request, {pageBy: 8});
+
+  const apiSearchTerm = searchTerm
+    .split(' ')
+    .filter((w) => w.trim().length > 0)
+    .map((word) => `(title:*${word}* OR product_type:*${word}* OR tag:*${word}* OR variants.title:*${word}*)`)
+    .join(' AND ');
 
   const {products} = await storefront.query(SEARCH_QUERY, {
     variables: {
-      searchTerm,
+      searchTerm: apiSearchTerm,
       ...variables,
       country: storefront.i18n.country,
       language: storefront.i18n.language,
