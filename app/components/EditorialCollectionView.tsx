@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {motion, AnimatePresence, useReducedMotion} from 'framer-motion';
 import {CartForm, Money} from '@shopify/hydrogen';
+import type {CurrencyCode} from '@shopify/hydrogen/storefront-api-types';
 import type {FetcherWithComponents} from '@remix-run/react';
 
 import {Link} from '~/components/Link';
@@ -16,18 +17,18 @@ interface ProductNode {
   vendor?: string;
   availableForSale?: boolean;
   priceRange: {
-    minVariantPrice: {amount: string; currencyCode: string};
+    minVariantPrice: {amount: string; currencyCode: CurrencyCode};
   };
   compareAtPriceRange?: {
-    minVariantPrice: {amount: string; currencyCode: string};
+    minVariantPrice: {amount: string; currencyCode: CurrencyCode};
   };
   images: {
     nodes: Array<{
-      id?: string;
+      id?: string | null;
       url: string;
       altText?: string | null;
-      width?: number;
-      height?: number;
+      width?: number | null;
+      height?: number | null;
     }>;
   };
   variants: {
@@ -47,7 +48,8 @@ interface EditorialSectionConfig {
     | 'quote'
     | 'hero-side'
     | 'wide'
-    | 'editorial-grid';
+    | 'editorial-grid'
+    | 'editorial-grid-large';
   productIndices?: number[];
   content?: {quote: string; author: string};
 }
@@ -57,7 +59,14 @@ export interface EditorialLayoutConfig {
 }
 
 interface ProductDisplayConfig {
-  size: 'hero' | 'large' | 'medium' | 'small' | 'wide';
+  size:
+    | 'hero'
+    | 'large'
+    | 'medium'
+    | 'small'
+    | 'wide'
+    | 'portrait'
+    | 'landscape';
   style: 'framed' | 'minimal' | 'elevated' | 'accent-border';
   badge?: string;
   numberBadge?: number;
@@ -144,7 +153,7 @@ export function getEditorialLayoutConfig(
   // 1. Try metafield-driven config from Shopify admin
   if (metafieldValue) {
     try {
-      const parsed = JSON.parse(metafieldValue);
+      const parsed: any = JSON.parse(metafieldValue);
       if (parsed?.sections && Array.isArray(parsed.sections)) {
         return parsed as EditorialLayoutConfig;
       }

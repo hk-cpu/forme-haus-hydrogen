@@ -267,7 +267,7 @@ function AddressAutocomplete({
           )}&format=json&limit=5&countrycodes=sa&addressdetails=1`,
           {headers: {'Accept-Language': 'en'}},
         );
-        setHits(await r.json());
+        setHits((await r.json()) as any);
       } catch {}
       setBusy(false);
     }, 600);

@@ -32,7 +32,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const resourcePath = url.searchParams.get('resourcePath');
 
-  const env = context.env as Record<string, string | undefined>;
+  const env = context.env as unknown as Record<string, string | undefined>;
   const accessToken = env.HYPERPAY_ACCESS_TOKEN;
   const baseUrl = env.HYPERPAY_BASE_URL ?? 'https://eu-test.oppwa.com';
 
@@ -107,7 +107,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
 
 // ─── Callback UI ──────────────────────────────────────────────────────────────
 export default function HyperPayCallback() {
-  const data = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>() as any;
 
   const config = {
     success: {
@@ -134,7 +134,7 @@ export default function HyperPayCallback() {
       bg: 'bg-red-400/10',
       border: 'border-red-400/20',
     },
-  }[data.status] ?? {
+  }[data.status as 'success' | 'pending' | 'failed' | 'error'] ?? {
     icon: '?',
     color: 'text-[#8B8076]',
     bg: 'bg-[#8B8076]/10',

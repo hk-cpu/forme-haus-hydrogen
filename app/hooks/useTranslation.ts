@@ -27,8 +27,8 @@ export function useTranslation() {
     const override = (translationOverrides as any)[lang]?.[key as string];
     if (override) return override;
     return (
-      translations[lang][key as TranslationKey] ??
-      translations.EN[key as TranslationKey] ??
+      (translations[lang] as any)[key] ??
+      (translations.EN as any)[key] ??
       defaultText ??
       key
     );

@@ -41,7 +41,7 @@ export default function WishlistPage() {
       const res = await fetch(
         `/api/products?query=${encodeURIComponent(query)}&count=${ids.length}`,
       );
-      const data = await res.json();
+      const data = (await res.json()) as any;
 
       if (data?.products) {
         setProducts(data.products);

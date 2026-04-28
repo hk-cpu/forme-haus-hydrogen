@@ -252,7 +252,10 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     throw new Response('collection', {status: 404});
   }
 
-  const seo = seoPayload.collection({collection, url: request.url});
+  const seo = seoPayload.collection({
+    collection: collection as any,
+    url: request.url,
+  });
 
   const allFilterValues = collection.products.filters.flatMap(
     (filter: Filter) => filter.values,
