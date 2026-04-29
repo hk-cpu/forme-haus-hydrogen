@@ -304,7 +304,12 @@ export function Header({
       };
     }
 
-    if (normalizedTo === '/contact') {
+    if (
+      normalizedTo === '/contact' ||
+      normalizedTo === '/pages/contact' ||
+      item.title?.toLowerCase() === 'contact us' ||
+      item.title?.toLowerCase() === 'contact'
+    ) {
       return {...item, to: '/contact', title: t('nav.contact', 'Contact Us')};
     }
 
