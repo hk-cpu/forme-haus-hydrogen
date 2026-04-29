@@ -4,3 +4,7 @@ build
 dist
 playwright-report
 .hydrogen
+
+result.json
+result_utf8.json
+test-report-detailed.json
