@@ -1,4 +1,4 @@
-﻿import {json, redirect, type LoaderFunctionArgs, type ActionFunctionArgs} from '@shopify/remix-oxygen';
+import {json, redirect, type LoaderFunctionArgs, type ActionFunctionArgs} from '@shopify/remix-oxygen';
 import {useFetcher, useLoaderData, Link} from '@remix-run/react';
 import {flattenConnection} from '@shopify/hydrogen';
 import {useState, useCallback, useRef, useEffect} from 'react';
@@ -93,7 +93,8 @@ export async function action({request, context}: ActionFunctionArgs) {
     receipt: {email: true, sms: true},
     customer: {
       first_name: firstName,
-      last_name: lastName,
+      middle_name: '',
+      last_name: lastName || 'Customer',
       email,
       phone: {country_code: '966', number: rawPhone},
     },

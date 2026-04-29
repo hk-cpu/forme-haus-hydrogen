@@ -94,7 +94,8 @@ export async function action({request, context}: ActionFunctionArgs) {
     },
     customer: {
       first_name: shopperName.split(' ')[0] || 'Customer',
-      last_name: shopperName.split(' ').slice(1).join(' ') || '',
+      middle_name: '',
+      last_name: shopperName.split(' ').slice(1).join(' ') || 'Name',
       email: shopperEmail || undefined,
       phone: shopperPhone
         ? {
