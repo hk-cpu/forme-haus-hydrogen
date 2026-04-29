@@ -79,7 +79,7 @@ export async function action({request, context}: ActionFunctionArgs) {
   const locale   = getPathLocalePrefix(reqUrl.pathname);
   const cbPath   = buildLocalePath('/tap/callback', locale);
   const wbPath   = buildLocalePath('/tap/webhook', locale);
-  const rawPhone = phone.replace(/^\+966/, '').replace(/^966/, '').replace(/^0/, '');
+  const rawPhone = phone.replace(/^\+966/, '').replace(/^966/, '').replace(/^0/, '').replace(/\D/g, '');
 
   const tapPayload: Record<string, unknown> = {
     amount: parseFloat(total),
@@ -134,7 +134,10 @@ export async function action({request, context}: ActionFunctionArgs) {
       createdAt: Date.now(),
     });
 
-    return json({redirectUrl: data.transaction.url, chargeId: data.id});
+    return json(
+      {redirectUrl: data.transaction.url, chargeId: data.id},
+      {headers: {'Set-Cookie': await session.commit()}},
+    );
   } catch (err) {
     console.error('[Checkout] Tap error:', err);
     return json({error: 'Payment service unavailable.'}, {status: 503});
