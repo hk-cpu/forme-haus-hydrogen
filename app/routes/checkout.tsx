@@ -1,4 +1,4 @@
 // Alias route for /checkout - re-exports from ($locale).checkout.tsx
-import {loader} from './($locale).checkout';
-export {loader};
+import {loader, action} from './($locale).checkout';
+export {loader, action};
 export {default} from './($locale).checkout';
