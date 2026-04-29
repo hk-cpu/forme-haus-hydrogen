@@ -7,8 +7,9 @@ import {
   useSubmit,
   useRouteLoaderData,
 } from '@remix-run/react';
-import type {RootLoader} from '~/root';
 import {useState, useEffect, Suspense, lazy} from 'react';
+
+import type {RootLoader} from '~/root';
 
 const GoogleSSOButton = lazy(() =>
   import('~/components/GoogleSSO.client').then((m) => ({
@@ -106,183 +107,187 @@ export default function Register() {
     <div className="relative min-h-screen w-full bg-[#F9F5F0] flex flex-col items-center justify-center text-[#2C2419]">
       <div className="relative z-10 flex flex-col items-center gap-8 w-full max-w-[420px] mx-auto px-6 py-16">
         {/* Logo */}
-          <a href="/" className="group">
-            <img
-              src="/brand/logo-icon-only.webp"
-              alt="Formé Haus"
-              className="w-24 h-auto object-contain opacity-85 transition-opacity duration-700 group-hover:opacity-100"
-              loading="eager"
-              fetchPriority="high"
-              decoding="sync"
-              width={40}
-              height={40}
-            />
-          </a>
+        <a href="/" className="group">
+          <img
+            src="/brand/logo-icon-only.webp"
+            alt="Formé Haus"
+            className="w-24 h-auto object-contain opacity-85 transition-opacity duration-700 group-hover:opacity-100"
+            loading="eager"
+            fetchPriority="high"
+            decoding="sync"
+            width={40}
+            height={40}
+          />
+        </a>
 
-          <div className="text-center space-y-2">
-            <h1
-              className="font-serif text-3xl md:text-4xl text-[#2C2419]"
-              style={{letterSpacing: '0.02em'}}
-            >
-              Join Formé Haus
-            </h1>
-            <p className="text-[11px] tracking-[0.25em] font-sans text-[#8B8076] uppercase">
-              Begin Your Journey
-            </p>
-          </div>
+        <div className="text-center space-y-2">
+          <h1
+            className="font-serif text-3xl md:text-4xl text-[#2C2419]"
+            style={{letterSpacing: '0.02em'}}
+          >
+            Join Formé Haus
+          </h1>
+          <p className="text-[11px] tracking-[0.25em] font-sans text-[#8B8076] uppercase">
+            Begin Your Journey
+          </p>
+        </div>
 
-          {/* Form Card */}
-          {actionData?.success ? (
-            <div className="w-full bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-xl border border-[#4A3C31]/8 shadow-[0_4px_24px_rgba(0,0,0,0.06)] text-center space-y-6">
-              <div className="w-16 h-16 rounded-full bg-[#a87441]/15 flex items-center justify-center mx-auto">
-                <svg
-                  width="28"
-                  height="28"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#a87441"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M20 6L9 17l-5-5" />
-                </svg>
-              </div>
-              <div className="space-y-2">
-                <h2 className="font-serif text-2xl text-[#2C2419]">
-                  Account Created
-                </h2>
-                <p className="text-[13px] text-[#8B8076] leading-relaxed">
-                  Please check your email to verify your account, then sign in.
-                </p>
-              </div>
-              <Link
-                to="/account/login"
-                className="inline-block w-full py-4 bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] transition-all duration-300 rounded-lg font-medium"
+        {/* Form Card */}
+        {actionData?.success ? (
+          <div className="w-full bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-xl border border-[#4A3C31]/8 shadow-[0_4px_24px_rgba(0,0,0,0.06)] text-center space-y-6">
+            <div className="w-16 h-16 rounded-full bg-[#a87441]/15 flex items-center justify-center mx-auto">
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#a87441"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                Sign In
-              </Link>
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
             </div>
-          ) : (
-            <Form
-              method="post"
-              className="w-full space-y-6 bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-xl border border-[#4A3C31]/8 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
+            <div className="space-y-2">
+              <h2 className="font-serif text-2xl text-[#2C2419]">
+                Account Created
+              </h2>
+              <p className="text-[13px] text-[#8B8076] leading-relaxed">
+                Please check your email to verify your account, then sign in.
+              </p>
+            </div>
+            <Link
+              to="/account/login"
+              className="inline-block w-full py-4 bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] transition-all duration-300 rounded-lg font-medium"
             >
-              {/* Google SSO Button Render Client */}
-              {isMounted && rootData?.googleClientId && (
-                <div className="flex justify-center mb-2">
-                  <Suspense fallback={<div className="h-[40px] w-[200px] bg-warm/50 rounded-full animate-pulse" />}>
-                    <GoogleSSOButton
-                      clientId={rootData.googleClientId}
-                      onSuccess={(credentialResponse: any) => {
-                        const formData = new FormData();
-                        formData.append('formId', 'googleAuth');
-                        formData.append(
-                          'credential',
-                          credentialResponse.credential || '',
-                        );
-                        submit(formData, {
-                          method: 'post',
-                          action: `${
-                            rootData?.selectedLocale?.pathPrefix || ''
-                          }/account/login`,
-                        });
-                      }}
-                      onError={() => console.log('Google Sign-up Failed')}
-                    />
-                  </Suspense>
-                </div>
-              )}
-
-              <div className="flex items-center gap-3">
-                <div className="h-px bg-[#4A3C31]/10 flex-1"></div>
-                <span className="text-[10px] uppercase tracking-widest text-[#8B8076] font-medium">
-                  Or register with email
-                </span>
-                <div className="h-px bg-[#4A3C31]/10 flex-1"></div>
-              </div>
-              {actionData?.error && (
-                <div
-                  role="alert"
-                  aria-live="assertive"
-                  className="p-3.5 text-[12px] text-[#8B3A3A] bg-[#FDF2F2] border border-[#E8C4C4] rounded-lg text-center tracking-wide"
+              Sign In
+            </Link>
+          </div>
+        ) : (
+          <Form
+            method="post"
+            className="w-full space-y-6 bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-xl border border-[#4A3C31]/8 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
+          >
+            {/* Google SSO Button Render Client */}
+            {isMounted && rootData?.googleClientId && (
+              <div className="flex justify-center mb-2">
+                <Suspense
+                  fallback={
+                    <div className="h-[40px] w-[200px] bg-warm/50 rounded-full animate-pulse" />
+                  }
                 >
-                  {actionData.error}
-                </div>
-              )}
-
-              <div className="space-y-4">
-                {/* Email */}
-                <div>
-                  <label
-                    htmlFor="email-address"
-                    className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium"
-                  >
-                    Email Address
-                  </label>
-                  <input
-                    id="email-address"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    placeholder="you@example.com"
-                    className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 px-4 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[13px] tracking-wide rounded-lg"
+                  <GoogleSSOButton
+                    clientId={rootData.googleClientId}
+                    onSuccess={(credentialResponse: any) => {
+                      const formData = new FormData();
+                      formData.append('formId', 'googleAuth');
+                      formData.append(
+                        'credential',
+                        credentialResponse.credential || '',
+                      );
+                      submit(formData, {
+                        method: 'post',
+                        action: `${
+                          rootData?.selectedLocale?.pathPrefix || ''
+                        }/account/login`,
+                      });
+                    }}
+                    onError={() => console.log('Google Sign-up Failed')}
                   />
-                </div>
-
-                {/* Password */}
-                <div>
-                  <label
-                    htmlFor="password"
-                    className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium"
-                  >
-                    Password
-                  </label>
-                  <div className="relative">
-                    <input
-                      id="password"
-                      name="password"
-                      type={showPassword ? 'text' : 'password'}
-                      autoComplete="new-password"
-                      required
-                      placeholder="Create a strong password"
-                      className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 pl-4 pr-12 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[13px] tracking-wide rounded-lg"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#8B8076] hover:text-[#a87441] transition-colors duration-200"
-                      aria-label={
-                        showPassword ? 'Hide password' : 'Show password'
-                      }
-                    >
-                      {showPassword ? <EyeClosed /> : <EyeOpen />}
-                    </button>
-                  </div>
-                </div>
+                </Suspense>
               </div>
+            )}
 
-              <div className="flex flex-col gap-4 pt-2">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full py-4 bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] transition-all duration-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+            <div className="flex items-center gap-3">
+              <div className="h-px bg-[#4A3C31]/10 flex-1"></div>
+              <span className="text-[10px] uppercase tracking-widest text-[#8B8076] font-medium">
+                Or register with email
+              </span>
+              <div className="h-px bg-[#4A3C31]/10 flex-1"></div>
+            </div>
+            {actionData?.error && (
+              <div
+                role="alert"
+                aria-live="assertive"
+                className="p-3.5 text-[12px] text-[#8B3A3A] bg-[#FDF2F2] border border-[#E8C4C4] rounded-lg text-center tracking-wide"
+              >
+                {actionData.error}
+              </div>
+            )}
+
+            <div className="space-y-4">
+              {/* Email */}
+              <div>
+                <label
+                  htmlFor="email-address"
+                  className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium"
                 >
-                  {isSubmitting ? 'Creating Account...' : 'Create Account'}
-                </button>
+                  Email Address
+                </label>
+                <input
+                  id="email-address"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  placeholder="you@example.com"
+                  className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 px-4 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[13px] tracking-wide rounded-lg"
+                />
+              </div>
 
-                <div className="flex flex-col items-center gap-3 pt-2">
-                  <Link
-                    to="/account/login"
-                    className="text-[10px] uppercase tracking-[0.15em] text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 font-semibold"
+              {/* Password */}
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-[10px] uppercase tracking-[0.2em] text-[#8B8076] mb-2 font-medium"
+                >
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    autoComplete="new-password"
+                    required
+                    placeholder="Create a strong password"
+                    className="w-full bg-[#F9F5F0] border border-[#4A3C31]/12 py-3.5 pl-4 pr-12 text-[#2C2419] placeholder-[#AA9B8F]/60 focus:outline-none focus:border-[#a87441] focus:ring-1 focus:ring-[#a87441]/30 transition-all duration-300 text-[13px] tracking-wide rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#8B8076] hover:text-[#a87441] transition-colors duration-200"
+                    aria-label={
+                      showPassword ? 'Hide password' : 'Show password'
+                    }
                   >
-                    Already have an account? Sign In
-                  </Link>
+                    {showPassword ? <EyeClosed /> : <EyeOpen />}
+                  </button>
                 </div>
               </div>
-            </Form>
-          )}
+            </div>
+
+            <div className="flex flex-col gap-4 pt-2">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full py-4 bg-[#a87441] text-white hover:bg-[#8B5E3C] uppercase tracking-[0.2em] text-[11px] transition-all duration-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+              >
+                {isSubmitting ? 'Creating Account...' : 'Create Account'}
+              </button>
+
+              <div className="flex flex-col items-center gap-3 pt-2">
+                <Link
+                  to="/account/login"
+                  className="text-[10px] uppercase tracking-[0.15em] text-[#8B8076] hover:text-[#a87441] transition-colors duration-300 font-semibold"
+                >
+                  Already have an account? Sign In
+                </Link>
+              </div>
+            </div>
+          </Form>
+        )}
       </div>
     </div>
   );

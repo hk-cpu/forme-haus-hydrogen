@@ -41,24 +41,31 @@ async function loadCriticalData({context, request}: LoaderFunctionArgs) {
     cache: CacheLong(),
   });
 
-  const bentoItems = metaobjects?.nodes?.map((node: any) => {
-    const fields = node.fields.reduce((acc: any, field: any) => {
-      acc[field.key] = field;
-      return acc;
-    }, {});
-    
-    return {
-      image: fields.image?.reference?.image?.url,
-      width: fields.image?.reference?.image?.width || 1024,
-      height: fields.image?.reference?.image?.height || 1024,
-      alt: fields.alt?.value || fields.image?.reference?.image?.altText || fields.title_en?.value || '',
-      url: fields.url?.value || '#',
-      defaultTitle: fields.title_en?.value || '',
-      defaultSubtitle: fields.subtitle_en?.value || '',
-      titleKey: '', // Ignored when using dynamic data
-      subtitleKey: '', 
-    };
-  }).filter((item: any) => item.image) || [];
+  const bentoItems =
+    metaobjects?.nodes
+      ?.map((node: any) => {
+        const fields = node.fields.reduce((acc: any, field: any) => {
+          acc[field.key] = field;
+          return acc;
+        }, {});
+
+        return {
+          image: fields.image?.reference?.image?.url,
+          width: fields.image?.reference?.image?.width || 1024,
+          height: fields.image?.reference?.image?.height || 1024,
+          alt:
+            fields.alt?.value ||
+            fields.image?.reference?.image?.altText ||
+            fields.title_en?.value ||
+            '',
+          url: fields.url?.value || '#',
+          defaultTitle: fields.title_en?.value || '',
+          defaultSubtitle: fields.subtitle_en?.value || '',
+          titleKey: '', // Ignored when using dynamic data
+          subtitleKey: '',
+        };
+      })
+      .filter((item: any) => item.image) || [];
 
   return {
     shop,

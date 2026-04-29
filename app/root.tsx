@@ -225,7 +225,10 @@ function Layout({children}: {children?: React.ReactNode}) {
     >
       <head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover" />
+        <meta
+          name="viewport"
+          content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover"
+        />
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
         <HreflangLinks />
         <link rel="stylesheet" href={styles}></link>

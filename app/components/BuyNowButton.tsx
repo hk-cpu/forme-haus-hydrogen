@@ -82,9 +82,7 @@ export function BuyNowButton({
         </motion.button>
       </fetcher.Form>
 
-      {error && (
-        <p className="text-xs text-red-400 text-center">{error}</p>
-      )}
+      {error && <p className="text-xs text-red-400 text-center">{error}</p>}
     </div>
   );
 }

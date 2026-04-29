@@ -29,6 +29,7 @@ export function Modal({
             onKeyDown={(e) => {
               e.stopPropagation();
             }}
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
             tabIndex={0}
           >
             <div className="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
