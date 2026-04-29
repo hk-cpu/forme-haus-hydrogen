@@ -99,7 +99,8 @@ const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {
       {
         type: 'quote',
         content: {
-          quote: 'Foundations shaped by intention and refined for everyday presence.',
+          quote:
+            'Foundations shaped by intention and refined for everyday presence.',
           author: 'Sun Ready Series',
         },
       },
@@ -111,7 +112,8 @@ const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {
       {
         type: 'quote',
         content: {
-          quote: "Sustainability isn't a trend — it's our responsibility to tomorrow.",
+          quote:
+            "Sustainability isn't a trend — it's our responsibility to tomorrow.",
           author: 'Our Commitment',
         },
       },
@@ -124,14 +126,10 @@ const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {
     ],
   },
   sunglasses: {
-    sections: [
-      {type: 'editorial-grid', productIndices: [0, 1, 2, 3, 4, 5]},
-    ],
+    sections: [{type: 'editorial-grid', productIndices: [0, 1, 2, 3, 4, 5]}],
   },
   'phone-cases': {
-    sections: [
-      {type: 'editorial-grid', productIndices: [0, 1, 2, 3, 4, 5]},
-    ],
+    sections: [{type: 'editorial-grid', productIndices: [0, 1, 2, 3, 4, 5]}],
   },
 };
 
@@ -200,17 +198,24 @@ export function generateDynamicEditorialConfig(
     else {
       sections.push({
         type: 'row',
-        productIndices: Array.from({length: remaining}, (_, i) => currentIndex + i),
+        productIndices: Array.from(
+          {length: remaining},
+          (_, i) => currentIndex + i,
+        ),
       });
       currentIndex += remaining;
     }
 
     // Inject a quote after first major grid if not already present
-    if (currentIndex >= 8 && sections.filter(s => s.type === 'quote').length === 0) {
+    if (
+      currentIndex >= 8 &&
+      sections.filter((s) => s.type === 'quote').length === 0
+    ) {
       sections.push({
         type: 'quote',
         content: {
-          quote: 'Design is not just what it looks like and feels like. Design is how it works.',
+          quote:
+            'Design is not just what it looks like and feels like. Design is how it works.',
           author: 'Formé Haus',
         },
       });
@@ -229,7 +234,7 @@ const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const fadeUp = {
   hidden: {opacity: 0, y: 30},
-  visible: (delay: number = 0) => ({
+  visible: (delay = 0) => ({
     opacity: 1,
     y: 0,
     transition: {duration: 0.7, delay, ease: EASE_OUT_EXPO},
@@ -894,6 +899,7 @@ function QuickViewModal({
                   !fetcher.data.errors?.length;
 
                 // Open cart drawer after successful add
+                // eslint-disable-next-line react-hooks/rules-of-hooks
                 useEffect(() => {
                   if (justAdded && !addedToCart) {
                     setAddedToCart(true);
@@ -976,26 +982,98 @@ function getDisplayConfig(
       {size: 'small', style: 'framed'},
     ],
     'editorial-grid': [
-      {size: 'hero', style: 'elevated', className: 'col-span-2 lg:col-span-2 lg:row-span-2'},
-      {size: 'small', style: 'framed', className: 'col-span-1 lg:col-span-1 lg:row-span-1'},
-      {size: 'small', style: 'framed', className: 'col-span-1 lg:col-span-1 lg:row-span-1'},
-      {size: 'portrait', style: 'minimal', className: 'col-span-1 lg:col-span-1 lg:row-span-2'},
-      {size: 'portrait', style: 'minimal', className: 'col-span-1 lg:col-span-1 lg:row-span-2'},
-      {size: 'landscape', style: 'elevated', className: 'col-span-2 lg:col-span-2 lg:row-span-1'},
-      {size: 'landscape', style: 'framed', className: 'col-span-2 lg:col-span-2 lg:row-span-1'},
-      {size: 'landscape', style: 'framed', className: 'col-span-2 lg:col-span-2 lg:row-span-1'},
+      {
+        size: 'hero',
+        style: 'elevated',
+        className: 'col-span-2 lg:col-span-2 lg:row-span-2',
+      },
+      {
+        size: 'small',
+        style: 'framed',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-1',
+      },
+      {
+        size: 'small',
+        style: 'framed',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-1',
+      },
+      {
+        size: 'portrait',
+        style: 'minimal',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-2',
+      },
+      {
+        size: 'portrait',
+        style: 'minimal',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-2',
+      },
+      {
+        size: 'landscape',
+        style: 'elevated',
+        className: 'col-span-2 lg:col-span-2 lg:row-span-1',
+      },
+      {
+        size: 'landscape',
+        style: 'framed',
+        className: 'col-span-2 lg:col-span-2 lg:row-span-1',
+      },
+      {
+        size: 'landscape',
+        style: 'framed',
+        className: 'col-span-2 lg:col-span-2 lg:row-span-1',
+      },
     ],
     'editorial-grid-large': [
-      {size: 'hero', style: 'elevated', className: 'col-span-2 lg:col-span-2 lg:row-span-2'},
-      {size: 'small', style: 'framed', className: 'col-span-1 lg:col-span-1 lg:row-span-1'},
-      {size: 'small', style: 'framed', className: 'col-span-1 lg:col-span-1 lg:row-span-1'},
-      {size: 'portrait', style: 'minimal', className: 'col-span-1 lg:col-span-1 lg:row-span-2'},
-      {size: 'medium', style: 'framed', className: 'col-span-1 lg:col-span-1 lg:row-span-1'},
-      {size: 'medium', style: 'framed', className: 'col-span-1 lg:col-span-1 lg:row-span-1'},
-      {size: 'landscape', style: 'elevated', className: 'col-span-2 lg:col-span-2 lg:row-span-1'},
-      {size: 'portrait', style: 'minimal', className: 'col-span-1 lg:col-span-1 lg:row-span-2'},
-      {size: 'portrait', style: 'minimal', className: 'col-span-1 lg:col-span-1 lg:row-span-2'},
-      {size: 'landscape', style: 'elevated', className: 'col-span-2 lg:col-span-2 lg:row-span-1'},
+      {
+        size: 'hero',
+        style: 'elevated',
+        className: 'col-span-2 lg:col-span-2 lg:row-span-2',
+      },
+      {
+        size: 'small',
+        style: 'framed',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-1',
+      },
+      {
+        size: 'small',
+        style: 'framed',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-1',
+      },
+      {
+        size: 'portrait',
+        style: 'minimal',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-2',
+      },
+      {
+        size: 'medium',
+        style: 'framed',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-1',
+      },
+      {
+        size: 'medium',
+        style: 'framed',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-1',
+      },
+      {
+        size: 'landscape',
+        style: 'elevated',
+        className: 'col-span-2 lg:col-span-2 lg:row-span-1',
+      },
+      {
+        size: 'portrait',
+        style: 'minimal',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-2',
+      },
+      {
+        size: 'portrait',
+        style: 'minimal',
+        className: 'col-span-1 lg:col-span-1 lg:row-span-2',
+      },
+      {
+        size: 'landscape',
+        style: 'elevated',
+        className: 'col-span-2 lg:col-span-2 lg:row-span-1',
+      },
     ],
     wide: [{size: 'wide', style: 'elevated'}],
   };

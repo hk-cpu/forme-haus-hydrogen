@@ -16,7 +16,10 @@ export async function loader({request, context}: LoaderFunctionArgs) {
   const apiSearchTerm = searchTerm
     .split(' ')
     .filter((w) => w.trim().length > 0)
-    .map((word) => `(title:*${word}* OR product_type:*${word}* OR tag:*${word}* OR variants.title:*${word}*)`)
+    .map(
+      (word) =>
+        `(title:*${word}* OR product_type:*${word}* OR tag:*${word}* OR variants.title:*${word}*)`,
+    )
     .join(' AND ');
 
   const {storefront} = context;

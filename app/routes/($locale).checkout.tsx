@@ -17,9 +17,7 @@ export async function loader({context}: LoaderFunctionArgs) {
   const cartResult = await cart.get();
 
   // Validate cart exists and has line items
-  const hasItems =
-    cartResult &&
-    (cartResult.totalQuantity ?? 0) > 0;
+  const hasItems = cartResult && (cartResult.totalQuantity ?? 0) > 0;
 
   if (!hasItems) {
     return redirect('/cart');
