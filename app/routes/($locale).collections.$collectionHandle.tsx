@@ -437,11 +437,13 @@ export default function Collection() {
       hideTitle: true,
       fit: 'full-width',
       position: 'top',
+      heightClass: 'h-[30vh] md:h-[38vh]',
     },
     'sun-ready': {
       src: '/brand/sun-ready-hero-v2.png',
       hideTitle: true,
       fit: 'full-width',
+      heightClass: 'h-[30vh] md:h-[38vh]',
     },
     'new-arrivals': {
       src: '/brand/new-arrivals-hero-v2.png',

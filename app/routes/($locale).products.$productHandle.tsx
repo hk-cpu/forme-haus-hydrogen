@@ -38,7 +38,6 @@ import {BuyNowButton} from '~/components/BuyNowButton';
 import {Skeleton} from '~/components/Skeleton';
 import {ProductSwimlane} from '~/components/ProductSwimlane';
 import {ProductGallery} from '~/components/ProductGallery';
-import {TrustBadges} from '~/components/TrustBadges';
 import {BundlePricing} from '~/components/BundlePricing';
 import {IconCaret, IconCheck, IconClose} from '~/components/Icon';
 import {useUI} from '~/context/UIContext';
@@ -386,10 +385,6 @@ export default function Product() {
                 </Await>
               </Suspense>
 
-              {/* Trust Badges Section */}
-              <div className="mt-6">
-                <TrustBadges variant="full" />
-              </div>
               <div className="grid gap-4 py-8 border-t border-[#8B8076]/20">
                 {descriptionHtml && (
                   <ProductDetail

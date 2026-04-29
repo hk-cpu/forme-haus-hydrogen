@@ -183,10 +183,17 @@ export default function Policies() {
         }
         .policy-prose h2 { font-size: 1.25rem; }
         .policy-prose h3 { font-size: 1.05rem; }
-        .policy-prose p { 
-          margin-bottom: 1.25rem; 
-          text-align: justify;
+        .policy-prose p {
+          margin-bottom: 1.25rem;
+          text-align: start;
           hyphens: auto;
+        }
+        [dir="rtl"] .policy-prose p,
+        [dir="rtl"] .policy-prose li {
+          text-align: right;
+        }
+        [dir="rtl"] .policy-prose * {
+          text-align: inherit;
         }
         .policy-prose a {
           color: #a87441;

@@ -44,6 +44,7 @@ export async function action({request, context}: ActionFunctionArgs) {
       return json({error: userErrors[0].message}, {status: 400});
     }
 
+    await notifyOwner(email, context.env);
     return json({success: true, message: 'Thank you for subscribing.'});
   } catch (error) {
     console.error('Newsletter API Exception:', error);
@@ -51,6 +52,25 @@ export async function action({request, context}: ActionFunctionArgs) {
       {error: 'Failed to subscribe. Please try again.'},
       {status: 500},
     );
+  }
+}
+
+async function notifyOwner(email: string, env: unknown) {
+  const e = env as Record<string, string | undefined>;
+  const webhookUrl = e.STORE_NOTIFICATION_WEBHOOK_URL;
+  if (!webhookUrl) return;
+  try {
+    await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        event: 'newsletter_signup',
+        email,
+        timestamp: new Date().toISOString(),
+      }),
+    });
+  } catch {
+    // Non-blocking — owner notification failure should not affect subscriber
   }
 }
 

@@ -42,7 +42,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-[#F9F5F0]" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Hero Section — Text-only with elegant spacing */}
-      <div className="pt-20 md:pt-28 pb-12 md:pb-16 bg-[#F9F5F0]">
+      <div className="pt-14 md:pt-20 pb-8 md:pb-10 bg-[#F9F5F0]">
         <div className="max-w-[860px] mx-auto px-6 md:px-12 text-center">
           <motion.h1
             className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-text tracking-wider"
@@ -62,7 +62,7 @@ export default function AboutPage() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-[860px] mx-auto px-6 md:px-12 pb-16 md:pb-24">
+      <div className="max-w-[860px] mx-auto px-6 md:px-12 pb-10 md:pb-16">
         {/* Opening */}
         <FadeInSection>
           <p className="font-serif text-xl md:text-2xl text-brand-text leading-relaxed mb-4">
@@ -74,7 +74,7 @@ export default function AboutPage() {
 
         <FadeInSection delay={0.1}>
           <div
-            className={`mt-8 mb-14 h-px w-20 bg-gradient-to-r ${
+            className={`mt-6 mb-8 h-px w-20 bg-gradient-to-r ${
               isRTL
                 ? 'from-transparent to-[#a87441]/40'
                 : 'from-[#a87441]/40 to-transparent'
@@ -83,7 +83,7 @@ export default function AboutPage() {
         </FadeInSection>
 
         {/* Body */}
-        <div className="space-y-8 text-[15px] md:text-base text-brand-text/80 leading-[1.85] font-light">
+        <div className="space-y-6 text-[15px] md:text-base text-brand-text/80 leading-[1.85] font-light">
           <FadeInSection>
             <p>
               {isRTL
@@ -123,29 +123,11 @@ export default function AboutPage() {
                 : 'At its core, Formé Haus is guided by the belief that true elegance is revealed through thoughtful selection and in choosing only what endures.'}
             </p>
           </FadeInSection>
-
-          <FadeInSection>
-            <p className="font-serif text-lg md:text-xl text-brand-text italic py-4">
-              {isRTL ? (
-                <>
-                  Formé Haus ليست مجرد وجهة رقمية.
-                  <br />
-                  إنها رؤية منسّقة — حيث يلتقي الجوهر بالأناقة.
-                </>
-              ) : (
-                <>
-                  Formé Haus is more than an online destination.
-                  <br />
-                  It is a curated perspective — where essence meets elegance.
-                </>
-              )}
-            </p>
-          </FadeInSection>
         </div>
 
         {/* Editorial divider */}
-        <FadeInSection className="my-16 md:my-20">
-          <div className="py-10 md:py-14 border-y border-[#a87441]/15">
+        <FadeInSection className="my-10 md:my-14">
+          <div className="py-8 md:py-10 border-y border-[#a87441]/15">
             <span className="text-[10px] uppercase tracking-[0.4em] text-[#a87441] block mb-4">
               {isRTL ? 'مختارات بعناية' : 'Curated with intention'}
             </span>
@@ -173,7 +155,7 @@ export default function AboutPage() {
           </div>
         </FadeInSection>
 
-        <div className="space-y-8 text-[15px] md:text-base text-brand-text/80 leading-[1.85] font-light">
+        <div className="space-y-6 text-[15px] md:text-base text-brand-text/80 leading-[1.85] font-light">
           <FadeInSection>
             <p>
               {isRTL
@@ -232,7 +214,7 @@ export default function AboutPage() {
         </div>
 
         {/* Closing divider */}
-        <FadeInSection className="mt-16 mb-8">
+        <FadeInSection className="mt-10 mb-6">
           <div className="h-px w-24 bg-gradient-to-r from-[#a87441]/30 to-transparent" />
         </FadeInSection>
       </div>

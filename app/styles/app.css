@@ -207,6 +207,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  overflow-wrap: break-word;
+  word-break: break-word;
   /* Enable smooth touch scrolling */
   touch-action: pan-y pan-x pinch-zoom;
 }
