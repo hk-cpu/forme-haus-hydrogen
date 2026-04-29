@@ -237,7 +237,7 @@ export function Header({
   };
 
   const mapMenuItem = (item: any) => {
-    const normalizedTo = normalizeMenuPath(item.to);
+    const normalizedTo = normalizeMenuPath(item.to ?? item.url);
 
     const isCollectionsNode =
       item.title === 'CATALOG' ||
@@ -292,7 +292,10 @@ export function Header({
     if (
       item.title === 'ABOUT US' ||
       item.title === 'About Us' ||
-      normalizedTo === '/pages/about'
+      item.title === 'Our Story' ||
+      item.title === 'OUR STORY' ||
+      normalizedTo === '/pages/about' ||
+      normalizedTo === '/pages/our-story'
     ) {
       return {
         ...item,
