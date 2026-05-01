@@ -44,7 +44,9 @@ export const loader = async ({
   request,
   context: {storefront},
 }: LoaderFunctionArgs) => {
-  const localePrefix = (params as any).locale ? `/${(params as any).locale}` : '';
+  const localePrefix = (params as any).locale
+    ? `/${(params as any).locale}`
+    : '';
   throw redirect(`${localePrefix}/collections/all`);
 
   const paginationVariables = getPaginationVariables(request, {

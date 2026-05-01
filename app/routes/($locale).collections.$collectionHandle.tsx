@@ -59,6 +59,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     const localePrefix = params.locale ? `/${params.locale}` : '';
     throw redirect(`${localePrefix}/collections/all`);
   }
+  const handle = collectionHandle as string;
 
   const searchParams = new URL(request.url).searchParams;
 
@@ -81,7 +82,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   const result = await context.storefront.query(COLLECTION_QUERY, {
     variables: {
       ...paginationVariables,
-      handle: collectionHandle,
+      handle,
       filters,
       sortKey,
       reverse,
@@ -96,7 +97,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   // Carry It Your Own Way: bundle-only editorial collection.
   // Replace whatever the Shopify collection returns with just bundle products
   // (products whose title contains "+").
-  if (collectionHandle === 'carry-it-your-way') {
+  if (handle === 'carry-it-your-way') {
     const {products: allProducts} = await context.storefront.query(
       ALL_PRODUCTS_FALLBACK_QUERY,
       {
@@ -148,7 +149,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     'all',
     'catalog',
   ];
-  const isSyntheticHandle = SYNTHETIC_HANDLES.includes(collectionHandle);
+  const isSyntheticHandle = SYNTHETIC_HANDLES.includes(handle);
 
   // If collection doesn't exist or is empty, create synthetic collection for special handles
   if (
@@ -157,7 +158,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   ) {
     let fallbackProducts: any = null;
 
-    if (collectionHandle === 'case-strap-bundles') {
+    if (handle === 'case-strap-bundles') {
       // Query products from both phone-cases and phone-straps collections
       const [casesResult, strapsResult] = await Promise.all([
         context.storefront.query(COLLECTION_PRODUCTS_QUERY, {
@@ -216,19 +217,19 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
       const lang = context.storefront.i18n.language === 'AR' ? 'AR' : 'EN';
       // @ts-ignore
       let title: string = translations[lang]['nav.newIn'] as string;
-      if (collectionHandle === 'sunglasses') title = 'Sunglasses';
-      if (collectionHandle === 'sale') title = 'Sale';
-      if (collectionHandle === 'phone') title = 'Phone Accessories';
-      if (collectionHandle === 'phone-cases') title = 'Phone Accessories';
-      if (collectionHandle === 'phone-straps') title = 'Phone Straps';
-      if (collectionHandle === 'case-strap-bundles') title = 'Bundles';
-      if (collectionHandle === 'all') title = 'All products';
-      if (collectionHandle === 'catalog') title = 'All products';
+      if (handle === 'sunglasses') title = 'Sunglasses';
+      if (handle === 'sale') title = 'Sale';
+      if (handle === 'phone') title = 'Phone Accessories';
+      if (handle === 'phone-cases') title = 'Phone Accessories';
+      if (handle === 'phone-straps') title = 'Phone Straps';
+      if (handle === 'case-strap-bundles') title = 'Bundles';
+      if (handle === 'all') title = 'All products';
+      if (handle === 'catalog') title = 'All products';
 
       // Create a synthetic collection object
       collection = {
-        id: `synthetic-${collectionHandle}`,
-        handle: collectionHandle,
+        id: `synthetic-${handle}`,
+        handle,
         title,
         description: '',
         seo: {title, description: ''},
