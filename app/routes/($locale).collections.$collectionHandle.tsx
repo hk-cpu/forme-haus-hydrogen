@@ -60,7 +60,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     throw redirect(`${localePrefix}/collections/all`);
   }
   // Declare handle from a runtime call so TS doesn't narrow it to literal "all".
-  const handle: string = String(collectionHandle);
+  const handle = String(collectionHandle);
 
   const searchParams = new URL(request.url).searchParams;
 
