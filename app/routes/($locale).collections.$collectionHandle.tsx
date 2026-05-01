@@ -252,6 +252,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     throw new Response('collection', {status: 404});
   }
 
+  // @ts-ignore codegen Pick<Collection,...> doesn't fully satisfy CollectionRequiredFields
   const seo = seoPayload.collection({collection, url: request.url});
 
   const allFilterValues = collection.products.filters.flatMap(
@@ -644,6 +645,7 @@ export default function Collection() {
       {editorialLayoutConfig ? (
         /* ─── Editorial Collection Layout ─── */
         <>
+          {/* @ts-ignore codegen Pick<Collection,...> doesn't satisfy EditorialCollectionView props */}
           <EditorialCollectionView
             collection={collection}
             layoutConfig={editorialLayoutConfig}
