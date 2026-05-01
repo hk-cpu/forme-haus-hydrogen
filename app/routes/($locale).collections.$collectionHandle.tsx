@@ -53,14 +53,14 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   const locale = context.storefront.i18n;
   // ... (rest of loader remains same until label logic) ...
   invariant(collectionHandle, 'Missing collectionHandle param');
-  // Widen before the guard so TS never narrows to literal "all" downstream.
-  const handle: string = collectionHandle;
 
   // Redirect all collections to the all-products collection.
-  if (handle !== 'all') {
+  if (collectionHandle !== 'all') {
     const localePrefix = params.locale ? `/${params.locale}` : '';
     throw redirect(`${localePrefix}/collections/all`);
   }
+  // Declare handle from a runtime call so TS doesn't narrow it to literal "all".
+  const handle: string = String(collectionHandle);
 
   const searchParams = new URL(request.url).searchParams;
 
