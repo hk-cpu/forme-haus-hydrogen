@@ -54,12 +54,10 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   // ... (rest of loader remains same until label logic) ...
   invariant(collectionHandle, 'Missing collectionHandle param');
 
-  // Phone Accessories is a parent category with no products of its own.
-  // Default to Phone Cases when the bare parent is requested.
-  if (collectionHandle === 'phone-accessories') {
+  // Redirect all collections to the all-products collection.
+  if (collectionHandle !== 'all') {
     const localePrefix = params.locale ? `/${params.locale}` : '';
-    const search = new URL(request.url).search;
-    throw redirect(`${localePrefix}/collections/phone-cases${search}`);
+    throw redirect(`${localePrefix}/collections/all`);
   }
 
   const searchParams = new URL(request.url).searchParams;

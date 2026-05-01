@@ -40,9 +40,13 @@ const PAGINATION_SIZE = 4;
 export const headers = routeHeaders;
 
 export const loader = async ({
+  params,
   request,
   context: {storefront},
 }: LoaderFunctionArgs) => {
+  const localePrefix = (params as any).locale ? `/${(params as any).locale}` : '';
+  throw redirect(`${localePrefix}/collections/all`);
+
   const paginationVariables = getPaginationVariables(request, {
     pageBy: PAGINATION_SIZE,
   });
