@@ -645,11 +645,10 @@ export default function Collection() {
       {editorialLayoutConfig ? (
         /* ─── Editorial Collection Layout ─── */
         <>
-          {/* @ts-ignore codegen Pick<Collection,...> doesn't satisfy EditorialCollectionView props */}
           <EditorialCollectionView
-            collection={collection}
+            collection={collection as any}
             layoutConfig={editorialLayoutConfig}
-            products={collection.products.nodes}
+            products={collection.products.nodes as any}
           />
           <Analytics.CollectionView
             data={{
