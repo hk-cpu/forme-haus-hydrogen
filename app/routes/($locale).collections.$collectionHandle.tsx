@@ -434,28 +434,24 @@ export default function Collection() {
       hideTitle: true,
       fit: 'full-width',
       position: 'top',
-      heightClass: 'aspect-[19/5]',
     },
     'sun-ready': {
       src: '/brand/sun-ready-hero-v4.png',
       hideTitle: true,
       fit: 'full-width',
       position: 'center',
-      heightClass: 'aspect-[19/5]',
     },
     'new-arrivals': {
       src: '/brand/new-arrivals-hero-v2.png',
       hideTitle: true,
       fit: 'full-width',
       position: 'top',
-      heightClass: 'aspect-[19/5]',
     },
     'modern-essentials': {
       src: '/brand/modern-essentials-hero-v4.png',
       hideTitle: true,
       fit: 'full-width',
       position: 'center',
-      heightClass: 'aspect-[19/5]',
     },
   };
 
