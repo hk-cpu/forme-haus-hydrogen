@@ -327,7 +327,7 @@ const NAV_ITEMS = [
   {handle: 'new-arrivals', label: 'New Arrivals'},
 ];
 
-function EditorialNav({currentHandle}: {currentHandle: string}) {
+export function EditorialNav({currentHandle}: {currentHandle: string}) {
   return (
     <motion.nav
       initial={{y: -20, opacity: 0}}

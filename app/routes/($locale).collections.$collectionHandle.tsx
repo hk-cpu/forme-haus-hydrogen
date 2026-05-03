@@ -4,6 +4,7 @@ import {
   useLoaderData,
   useRouteError,
   isRouteErrorResponse,
+  useParams,
   Link as RemixLink,
 } from '@remix-run/react';
 import {useRef} from 'react';
@@ -27,6 +28,7 @@ import {CategoryHeader} from '~/components/CategoryHeader';
 import {FilterPanel} from '~/components/FilterPanel';
 import {
   EditorialCollectionView,
+  EditorialNav,
   EDITORIAL_HANDLES,
   getEditorialLayoutConfig,
 } from '~/components/EditorialCollectionView';
@@ -343,6 +345,146 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
   return getSeoMeta(...seoData);
 };
 
+// Collections that use a text-only hero (no image)
+const TEXT_ONLY_HERO_COLLECTIONS = new Set<string>([]);
+
+// Collection hero image overrides
+const HERO_OVERRIDES: Record<
+  string,
+  {
+    src?: string;
+    hideTitle?: boolean;
+    fit?: 'cover' | 'contain' | 'auto' | 'full-width';
+    position?: string;
+    bgClass?: string;
+    heightClass?: string;
+    imgClass?: string;
+  }
+> = {
+  'new-in': {
+    src: '/brand/new-in-hero-v3.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'center center',
+    bgClass: 'bg-[#B8956E]',
+  },
+  new: {
+    src: '/brand/new-in-hero-v3.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'center center',
+    bgClass: 'bg-[#B8956E]',
+  },
+  sunglasses: {
+    src: '/brand/sunglasses-hero-v3.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'center center',
+    bgClass: 'bg-[#C8B496]',
+  },
+  sale: {
+    src: '/assets/heros/sale-hero-banner.webp',
+    hideTitle: true,
+    fit: 'full-width',
+    bgClass: 'bg-[#E7D6C3]',
+  },
+  phone: {
+    src: '/brand/phone-accessories-hero-v3.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'center center',
+    bgClass: 'bg-[#C8B8A0]',
+  },
+  'phone-cases': {
+    src: '/brand/phone-accessories-hero-v3.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'center center',
+    bgClass: 'bg-[#C8B8A0]',
+  },
+  'phone-straps': {
+    src: '/brand/phone-accessories-hero-v3.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'center center',
+    bgClass: 'bg-[#C8B8A0]',
+  },
+  'case-strap-bundles': {
+    src: '/brand/phone-accessories-hero-v3.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'center center',
+    bgClass: 'bg-[#C8B8A0]',
+  },
+  'carry-it-your-way': {
+    src: '/brand/carry-hero-v4.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'top',
+  },
+  'sun-ready': {
+    src: '/brand/sun-ready-hero-v4.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'center',
+  },
+  'new-arrivals': {
+    src: '/brand/new-arrivals-hero-v2.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'top',
+    imgClass: 'h-[30vh] min-h-[240px] sm:h-[36vh] md:h-[42vh] lg:h-[48vh] object-cover',
+  },
+  'modern-essentials': {
+    src: '/brand/modern-essentials-hero-v4.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'center',
+  },
+};
+
+// Collection subtitle overrides — curated copy per landing page
+const COLLECTION_SUBTITLES: Record<
+  string,
+  {subtitle: string; description?: string}
+> = {
+  'new-in': {
+    subtitle: 'The latest additions to our curated selection.',
+  },
+  phone: {
+    subtitle: 'Designed to be carried beautifully.',
+  },
+  'phone-cases': {
+    subtitle: 'Designed to be carried beautifully.',
+  },
+  'phone-straps': {
+    subtitle: 'Designed to be carried beautifully.',
+  },
+  'case-strap-bundles': {
+    subtitle: 'Designed to be carried beautifully.',
+  },
+  sunglasses: {
+    subtitle: 'For light-filled days and elevated escapes.',
+  },
+  'modern-essentials': {
+    subtitle:
+      'Foundations shaped by intention and refined for everyday presence.',
+    description: 'Foundations of a refined wardrobe.',
+  },
+  'sun-ready': {
+    subtitle: 'Composed in daylight. Designed for warmth and clarity.',
+    description: 'For golden hours and everyday light.',
+  },
+  'carry-it-your-way': {
+    subtitle: 'Hands-free elegance, carried with ease.',
+    description: 'Hands-free. Effortless. Elevated.',
+  },
+  'new-arrivals': {
+    subtitle: 'Newly introduced. Carefully considered.',
+    description: 'Freshly arrived.',
+  },
+};
+
 export default function Collection() {
   const {collection, appliedFilters, editorialLayoutConfig} =
     useLoaderData<typeof loader>();
@@ -357,148 +499,12 @@ export default function Collection() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
   const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
 
-  // Collections that use a text-only hero (no image)
-  const TEXT_ONLY_HERO_COLLECTIONS = new Set<string>([]);
-
   // Themed collections — skeleton removed, showing real products
   const THEMED_COLLECTIONS = new Set<string>([]);
   const isThemedCollection = THEMED_COLLECTIONS.has(collection.handle);
   const isComingSoonCollection = collection.handle === 'new-arrivals';
 
-  // Collection hero image overrides
-  const HERO_OVERRIDES: Record<
-    string,
-    {
-      src?: string;
-      hideTitle?: boolean;
-      fit?: 'cover' | 'contain' | 'auto' | 'full-width';
-      position?: string;
-      bgClass?: string;
-      heightClass?: string;
-    }
-  > = {
-    'new-in': {
-      src: '/brand/new-in-hero-v3.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'center center',
-      bgClass: 'bg-[#B8956E]',
-    },
-    new: {
-      src: '/brand/new-in-hero-v3.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'center center',
-      bgClass: 'bg-[#B8956E]',
-    },
-    sunglasses: {
-      src: '/brand/sunglasses-hero-v3.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'center center',
-      bgClass: 'bg-[#C8B496]',
-    },
-    sale: {
-      src: '/assets/heros/sale-hero-banner.webp',
-      hideTitle: true,
-      fit: 'full-width',
-      bgClass: 'bg-[#E7D6C3]',
-    },
-    phone: {
-      src: '/brand/phone-accessories-hero-v3.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'center center',
-      bgClass: 'bg-[#C8B8A0]',
-    },
-    'phone-cases': {
-      src: '/brand/phone-accessories-hero-v3.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'center center',
-      bgClass: 'bg-[#C8B8A0]',
-    },
-    'phone-straps': {
-      src: '/brand/phone-accessories-hero-v3.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'center center',
-      bgClass: 'bg-[#C8B8A0]',
-    },
-    'case-strap-bundles': {
-      src: '/brand/phone-accessories-hero-v3.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'center center',
-      bgClass: 'bg-[#C8B8A0]',
-    },
-    'carry-it-your-way': {
-      src: '/brand/carry-hero-v4.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'top',
-    },
-    'sun-ready': {
-      src: '/brand/sun-ready-hero-v4.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'center',
-    },
-    'new-arrivals': {
-      src: '/brand/new-arrivals-hero-v2.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'top',
-    },
-    'modern-essentials': {
-      src: '/brand/modern-essentials-hero-v4.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'center',
-    },
-  };
 
-  // Collection subtitle overrides — curated copy per landing page
-  const COLLECTION_SUBTITLES: Record<
-    string,
-    {subtitle: string; description?: string}
-  > = {
-    'new-in': {
-      subtitle: 'The latest additions to our curated selection.',
-    },
-    phone: {
-      subtitle: 'Designed to be carried beautifully.',
-    },
-    'phone-cases': {
-      subtitle: 'Designed to be carried beautifully.',
-    },
-    'phone-straps': {
-      subtitle: 'Designed to be carried beautifully.',
-    },
-    'case-strap-bundles': {
-      subtitle: 'Designed to be carried beautifully.',
-    },
-    sunglasses: {
-      subtitle: 'For light-filled days and elevated escapes.',
-    },
-    'modern-essentials': {
-      subtitle:
-        'Foundations shaped by intention and refined for everyday presence.',
-      description: 'Foundations of a refined wardrobe.',
-    },
-    'sun-ready': {
-      subtitle: 'Composed in daylight. Designed for warmth and clarity.',
-      description: 'For golden hours and everyday light.',
-    },
-    'carry-it-your-way': {
-      subtitle: 'Hands-free elegance, carried with ease.',
-      description: 'Hands-free. Effortless. Elevated.',
-    },
-    'new-arrivals': {
-      subtitle: 'Newly introduced. Carefully considered.',
-      description: 'Freshly arrived.',
-    },
-  };
 
   const collectionSubtitle = COLLECTION_SUBTITLES[collection.handle];
 
@@ -515,6 +521,7 @@ export default function Collection() {
   const bgColor =
     collection.bg_color?.value || override?.bgClass || 'bg-[#E8DED4]';
   const heightClass = override?.heightClass || '';
+  const imgClass = override?.imgClass || 'h-auto';
 
   const isFullWidthHero = heroFit === 'full-width' && hideTitle;
   const isTextOnlyHero = TEXT_ONLY_HERO_COLLECTIONS.has(collection.handle);
@@ -572,7 +579,7 @@ export default function Collection() {
                   <motion.img
                     src={heroImage}
                     alt={collection.title}
-                    className="block w-full h-auto"
+                    className={`block w-full ${imgClass}`}
                     loading="eager"
                     fetchPriority="high"
                     style={{
@@ -1302,23 +1309,83 @@ const COLLECTION_PRODUCTS_QUERY = `#graphql
 export function ErrorBoundary() {
   const error = useRouteError();
   const is404 = isRouteErrorResponse(error) && error.status === 404;
+  
+  // Safely grab the collectionHandle from Remix route params
+  const params = useParams();
+  const collectionHandle = params?.collectionHandle || '';
+
+  const isEditorialHandle = collectionHandle ? EDITORIAL_HANDLES.has(collectionHandle) : false;
+
+  const override = HERO_OVERRIDES[collectionHandle];
+  const heroImage = override?.src;
+  const hideTitle = override?.hideTitle;
+  const heroPosition = override?.position || 'center center';
+  const heroFit = override?.fit || 'cover';
+  const bgColor = override?.bgClass || 'bg-[#E8DED4]';
+  const heightClass = override?.heightClass || '';
+  const imgClass = override?.imgClass || 'h-auto';
+
+  const isFullWidthHero = heroFit === 'full-width' && hideTitle;
 
   return (
-    <div className="flex flex-col items-center justify-center py-20 px-6 text-center min-h-[50vh]">
-      <h1 className="font-serif text-3xl md:text-4xl text-brand-text mb-4">
-        {is404 ? 'Collection Not Found' : 'Something went wrong'}
-      </h1>
-      <p className="text-[#8B8076] mb-8 max-w-md">
-        {is404
-          ? "We couldn't find this collection. It may have been removed or renamed."
-          : 'There was an error loading this collection. Please try again.'}
-      </p>
-      <RemixLink
-        to="/collections"
-        className="inline-block bg-[#a87441] text-white text-xs uppercase tracking-[0.2em] px-8 py-3 hover:bg-[#8B5E34] transition-colors"
-      >
-        View All Collections
-      </RemixLink>
+    <div className="min-h-screen bg-[#F9F5F0]">
+      {/* ─── Static Hero Banner for 404 Pages ─── */}
+      {heroImage && (
+        <div
+          className="relative w-full overflow-hidden bg-[#F9F5F0]"
+          style={{ paddingTop: 'var(--navbar-height)' }}
+        >
+          {isFullWidthHero ? (
+            <div className={`relative w-full overflow-hidden ${bgColor} ${heightClass}`}>
+              <img
+                src={heroImage}
+                alt={collectionHandle}
+                className={`block w-full ${imgClass}`}
+                loading="eager"
+                style={{
+                  objectPosition: heroPosition,
+                  transformOrigin: heroPosition === 'top' ? 'top center' : 'center center',
+                }}
+              />
+            </div>
+          ) : (
+            <img
+              src={heroImage}
+              alt={collectionHandle}
+              className="block h-[30vh] min-h-[240px] w-full object-cover sm:h-[36vh] md:h-[42vh] lg:h-[48vh]"
+              loading="eager"
+              style={{ objectPosition: heroPosition }}
+            />
+          )}
+          {!isFullWidthHero && (
+            <>
+              <div className="absolute inset-y-0 left-0 w-16 md:w-28 bg-gradient-to-r from-[#F9F5F0]/50 to-transparent pointer-events-none" />
+              <div className="absolute inset-y-0 right-0 w-16 md:w-28 bg-gradient-to-l from-[#F9F5F0]/50 to-transparent pointer-events-none" />
+            </>
+          )}
+          {!hideTitle && (
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0f0d0a]/70 via-transparent to-transparent" />
+          )}
+        </div>
+      )}
+
+      {isEditorialHandle && <EditorialNav currentHandle={collectionHandle} />}
+      <div className="flex flex-col items-center justify-center py-20 px-6 text-center min-h-[50vh]">
+        <h1 className="font-serif text-3xl md:text-4xl text-brand-text mb-4">
+          {is404 ? 'Collection Not Found' : 'Something went wrong'}
+        </h1>
+        <p className="text-[#8B8076] mb-8 max-w-md">
+          {is404
+            ? "We couldn't find this collection. It may have been removed or renamed."
+            : 'There was an error loading this collection. Please try again.'}
+        </p>
+        <RemixLink
+          to="/products"
+          className="inline-block bg-[#a87441] text-white text-xs uppercase tracking-[0.2em] px-8 py-3 hover:bg-[#8B5E34] transition-colors"
+        >
+          View All Collections
+        </RemixLink>
+      </div>
     </div>
   );
 }
