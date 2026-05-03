@@ -312,14 +312,12 @@ export default function Product() {
 
         <div className="grid items-start md:gap-6 lg:gap-12 md:grid-cols-2">
           <ProductGallery media={media.nodes} className="w-full" />
-          <div className="sticky md:top-24 md:h-[calc(100vh-6rem)] hiddenScroll md:overflow-y-auto">
+          <div className="md:sticky md:top-24">
             <section className="flex flex-col w-full max-w-xl gap-10 p-6 md:pl-10 lg:pl-16 md:mx-auto md:max-w-none">
               <div className="grid gap-3">
-                {/* Brand Badge - LOUVE Collection */}
+                {/* iPhone Models Badge */}
                 <div className="flex items-center gap-3 flex-wrap">
-                  <span className="text-[11px] uppercase tracking-[0.2em] text-[#a87441] font-semibold">
-                    LOUVE Collection
-                  </span>
+
                   {iPhoneModels.length > 0 && (
                     <div className="flex gap-1.5">
                       {iPhoneModels
@@ -348,7 +346,7 @@ export default function Product() {
                   {title}
                 </Heading>
 
-                {vendor && vendor !== 'LOUVE Collection' && (
+                {vendor && (
                   <Text
                     className={
                       'opacity-60 font-sans tracking-[0.2em] uppercase text-xs text-[#8B8076]'
