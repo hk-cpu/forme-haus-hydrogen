@@ -252,7 +252,10 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     throw new Response('collection', {status: 404});
   }
 
-  const seo = seoPayload.collection({collection, url: request.url});
+  const seo = seoPayload.collection({
+    collection: collection as any,
+    url: request.url,
+  });
 
   const allFilterValues = collection.products.filters.flatMap(
     (filter: Filter) => filter.values,
@@ -501,8 +504,8 @@ export default function Collection() {
 
   const override = HERO_OVERRIDES[collection.handle];
   const heroImage =
-    collection.hero_image?.reference?.image?.url ||
     override?.src ||
+    collection.hero_image?.reference?.image?.url ||
     collection.image?.url;
   const hideTitle =
     collection.hide_title?.value === 'true' || override?.hideTitle;

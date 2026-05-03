@@ -130,7 +130,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
             height={item.height}
             sizes="(max-width: 768px) 100vw, 50vw"
             loading={index < 2 ? 'eager' : 'lazy'}
-            fetchPriority={index === 0 ? 'high' : 'auto'}
+            fetchpriority={index === 0 ? 'high' : 'auto'}
             decoding="async"
           />
 

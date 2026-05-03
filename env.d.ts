@@ -65,3 +65,9 @@ declare module '@shopify/remix-oxygen' {
 
 // Needed to make this file a module.
 export {};
+
+declare module 'react' {
+  interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
+    fetchpriority?: 'high' | 'low' | 'auto';
+  }
+}
