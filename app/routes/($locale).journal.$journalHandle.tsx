@@ -195,10 +195,10 @@ export default function Article() {
         )}
 
         {/* All content overlaid on the image */}
-        <div className="relative z-10 min-h-screen flex flex-col">
-          {/* Title section — centered in the viewport */}
+        <div className="relative z-10 flex flex-col">
+          {/* Title section — 70vh so body is visible without deep scrolling */}
           <motion.div
-            className="flex-1 flex flex-col items-center justify-center px-6 min-h-screen"
+            className="h-[70vh] flex flex-col items-center justify-center px-6"
             initial={{opacity: 0, y: 20}}
             animate={{opacity: 1, y: 0}}
             transition={{delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1]}}
@@ -210,57 +210,45 @@ export default function Article() {
             >
               {t('nav.journal', 'Journal')}
             </span>
-            <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl italic text-white mb-6 drop-shadow-lg text-center max-w-2xl">
+            <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl italic text-white mb-4 drop-shadow-lg text-center max-w-2xl">
               {title}
             </h1>
-            <span className="text-[12px] text-white/70 mb-8 block uppercase tracking-wider">
-              {formattedDate} {author?.name && `· ${author.name}`}
-            </span>
-            <div className="h-px w-24 bg-gradient-to-r from-transparent via-white/50 to-transparent mb-8" />
-
+            {(formattedDate || author?.name) && (
+              <span className="text-[11px] text-white/60 mb-5 block uppercase tracking-wider">
+                {formattedDate}{author?.name ? ` · ${author.name}` : ''}
+              </span>
+            )}
+            <div className="h-px w-16 bg-gradient-to-r from-transparent via-white/40 to-transparent mb-6" />
             {/* Scroll indicator */}
             <motion.div
-              className="mt-8"
-              animate={{y: [0, 8, 0]}}
+              animate={{y: [0, 6, 0]}}
               transition={{repeat: Infinity, duration: 2, ease: 'easeInOut'}}
             >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                strokeWidth="1.5"
-                className="opacity-60"
-              >
-                <path
-                  d="M12 5v14M5 12l7 7 7-7"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="opacity-50">
+                <path d="M12 5v14M5 12l7 7 7-7" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </motion.div>
           </motion.div>
 
           {/* Body text — overlaid on the image below the fold */}
-          <div className="max-w-3xl mx-auto px-6 py-16 md:py-24 w-full">
+          <div className="max-w-2xl mx-auto px-6 pt-8 pb-20 w-full">
             <motion.article
-              className="space-y-8 md:space-y-10"
+              className="space-y-6"
               initial={{opacity: 0}}
               animate={{opacity: 1}}
               transition={{duration: 0.8, delay: 0.5}}
             >
               <div
                 dangerouslySetInnerHTML={{__html: contentHtml}}
-                className="prose prose-lg max-w-none 
-                  prose-headings:font-serif prose-headings:text-[#D4AF87] prose-headings:font-normal prose-headings:mt-12 prose-headings:mb-6
-                  prose-p:text-white/90 prose-p:leading-loose prose-p:tracking-wide prose-p:text-[17px] md:prose-p:text-[19px] ${
+                className={`prose prose-lg max-w-none 
+                  prose-headings:font-serif prose-headings:text-[#D4AF87] prose-headings:font-normal prose-headings:mt-10 prose-headings:mb-4
+                  prose-p:text-white/90 prose-p:leading-loose prose-p:tracking-wide prose-p:text-[16px] md:prose-p:text-[18px] ${
                     isRTL ? 'prose-p:text-right' : 'prose-p:text-left'
                   }
                   prose-a:text-[#a87441] prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-white
                   prose-strong:text-white prose-strong:font-medium
                   prose-ul:text-white/90 prose-ol:text-white/90
-                  drop-shadow-sm w-full"
+                  drop-shadow-sm w-full`}
               />
             </motion.article>
 
@@ -296,10 +284,10 @@ export default function Article() {
       )}
 
       {/* All content overlaid on the image */}
-      <div className="relative z-10 min-h-screen flex flex-col">
-        {/* Title section — centered in the viewport */}
+      <div className="relative z-10 flex flex-col">
+        {/* Title section — 70vh so body is visible without deep scrolling */}
         <motion.div
-          className="flex-1 flex flex-col items-center justify-center px-6 min-h-screen"
+          className="h-[70vh] flex flex-col items-center justify-center px-6"
           initial={{opacity: 0, y: 20}}
           animate={{opacity: 1, y: 0}}
           transition={{delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1]}}
@@ -311,39 +299,25 @@ export default function Article() {
           >
             {t('nav.journal', 'Journal')}
           </span>
-          <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl italic text-white mb-6 drop-shadow-lg text-center max-w-2xl">
+          <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl italic text-white mb-4 drop-shadow-lg text-center max-w-2xl">
             {staticArticle.title}
           </h1>
-          <div className="h-px w-24 bg-gradient-to-r from-transparent via-white/50 to-transparent mb-8" />
-
+          <div className="h-px w-16 bg-gradient-to-r from-transparent via-white/40 to-transparent mb-6" />
           {/* Scroll indicator */}
           <motion.div
-            className="mt-8"
-            animate={{y: [0, 8, 0]}}
+            animate={{y: [0, 6, 0]}}
             transition={{repeat: Infinity, duration: 2, ease: 'easeInOut'}}
           >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="white"
-              strokeWidth="1.5"
-              className="opacity-60"
-            >
-              <path
-                d="M12 5v14M5 12l7 7 7-7"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="opacity-50">
+              <path d="M12 5v14M5 12l7 7 7-7" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </motion.div>
         </motion.div>
 
         {/* Body text — overlaid on the image below the fold */}
-        <div className="max-w-3xl mx-auto px-6 py-16 md:py-24">
+        <div className="max-w-2xl mx-auto px-6 pt-8 pb-20">
           <motion.article
-            className="space-y-8 md:space-y-10"
+            className="space-y-6"
             initial={{opacity: 0}}
             animate={{opacity: 1}}
             transition={{duration: 0.8, delay: 0.5}}
@@ -351,7 +325,11 @@ export default function Article() {
             {staticArticle.body.map((paragraph, i) => (
               <p
                 key={i}
-                className={`font-serif text-[17px] md:text-[19px] text-white/90 leading-loose tracking-wide drop-shadow-sm ${
+                className={`${
+                  i === 0
+                    ? 'font-serif text-[20px] md:text-[22px] text-[#D4AF87] italic leading-relaxed drop-shadow-sm'
+                    : 'font-serif text-[16px] md:text-[18px] text-white/85 leading-loose tracking-wide drop-shadow-sm'
+                } ${
                   isRTL ? 'text-right' : 'text-left'
                 }`}
               >
