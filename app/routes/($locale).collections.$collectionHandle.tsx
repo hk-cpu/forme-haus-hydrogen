@@ -573,7 +573,7 @@ export default function Collection() {
                   <motion.img
                     src={heroImage}
                     alt={collection.title}
-                    className="block w-full h-full object-cover"
+                    className="block w-full h-auto"
                     loading="eager"
                     fetchPriority="high"
                     style={{
