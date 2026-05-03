@@ -7,7 +7,7 @@ import {
   useSpring,
   useReducedMotion,
 } from 'framer-motion';
-import {Link, useFetcher} from '@remix-run/react';
+import {Link} from '@remix-run/react';
 import {Money, CartForm} from '@shopify/hydrogen';
 
 import {useUI} from '~/context/UIContext';
@@ -241,13 +241,10 @@ export function ProductCard({
 }: ProductCardProps) {
   const {toggleFavorite, isInFavorites} = useUI();
   const {isRTL, t} = useTranslation();
-  const fetcher = useFetcher<{error?: string}>();
   const shouldReduceMotion = useReducedMotion();
 
   const [currentImage, setCurrentImage] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const [isAdding, setIsAdding] = useState(false);
-  const [showAdded, setShowAdded] = useState(false);
 
   // Mouse tracking for 3D tilt effect (disabled when reduced motion)
   const mouseX = useMotionValue(0);
@@ -373,36 +370,10 @@ export function ProductCard({
     toggleFavorite(product.id);
   };
 
-  const handleQuickAdd = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  // quickAddVariantId drives the CartForm render below
+  const quickAddVariantId = product.variants?.nodes?.[0]?.id ?? null;
 
-    const variant = product.variants?.nodes?.[0];
-    if (!variant?.id || isAdding) return;
 
-    setIsAdding(true);
-    fetcher.submit(
-      {
-        cartAction: CartForm.ACTIONS.LinesAdd,
-        cartFormInput: JSON.stringify({
-          lines: [{merchandiseId: variant.id, quantity: 1}],
-        }),
-      },
-      {method: 'POST', action: '/cart'},
-    );
-  };
-
-  // Drive UI state from fetcher, not arbitrary timeouts
-  useEffect(() => {
-    if (fetcher.state === 'idle' && isAdding) {
-      setIsAdding(false);
-      if (!fetcher.data?.error) {
-        setShowAdded(true);
-        const t = setTimeout(() => setShowAdded(false), 2000);
-        return () => clearTimeout(t);
-      }
-    }
-  }, [fetcher.state, fetcher.data, isAdding]);
 
   return (
     <motion.div
@@ -595,63 +566,7 @@ export function ProductCard({
             </div>
           )}
 
-          {/* Quick Add Button — always visible on mobile, hover-reveal on desktop */}
-          <AnimatePresence>
-            {quickAdd && isAvailable && hasPrice && (
-              <motion.button
-                initial={{opacity: 1, y: 0}}
-                animate={{
-                  opacity: isHovered ? 1 : undefined,
-                  y: isHovered ? 0 : undefined,
-                }}
-                transition={{duration: 0.3, ease: [0.25, 0.1, 0.25, 1]}}
-                onClick={handleQuickAdd}
-                disabled={isAdding}
-                className={`absolute bottom-3 left-3 right-3 py-3.5 md:py-3 min-h-[48px] rounded-lg font-medium text-xs md:text-[11px] uppercase tracking-[0.12em] flex items-center justify-center gap-2 transition-all duration-300 backdrop-blur-md z-20 shadow-lg touch-target md:opacity-0 md:group-hover:opacity-100 ${
-                  showAdded
-                    ? 'bg-green-600 text-white'
-                    : 'bg-bronze/95 hover:bg-bronze-dark text-white'
-                }`}
-              >
-                <AnimatePresence mode="wait">
-                  {isAdding ? (
-                    <motion.span
-                      key="loading"
-                      initial={{opacity: 0}}
-                      animate={{opacity: 1}}
-                      exit={{opacity: 0}}
-                      className="flex items-center gap-2"
-                    >
-                      <Icons.Loading />
-                      Adding...
-                    </motion.span>
-                  ) : showAdded ? (
-                    <motion.span
-                      key="added"
-                      initial={{opacity: 0, scale: 0.8}}
-                      animate={{opacity: 1, scale: 1}}
-                      exit={{opacity: 0}}
-                      className="flex items-center gap-2"
-                    >
-                      <Icons.Check />
-                      Added
-                    </motion.span>
-                  ) : (
-                    <motion.span
-                      key="add"
-                      initial={{opacity: 0}}
-                      animate={{opacity: 1}}
-                      exit={{opacity: 0}}
-                      className="flex items-center gap-2"
-                    >
-                      <Icons.Bag />
-                      {t('product.quickAdd', 'Quick Add')}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </motion.button>
-            )}
-          </AnimatePresence>
+          {/* Quick Add Button — rendered outside <Link> below to avoid <form> inside <a> */}
         </motion.div>
 
         {/* Product Info */}
@@ -707,6 +622,59 @@ export function ProductCard({
           </div>
         </div>
       </Link>
+
+      {/* Quick Add — CartForm lives outside <Link> to avoid <form>-in-<a> invalid HTML */}
+      {quickAdd && isAvailable && hasPrice && quickAddVariantId && (
+        <CartForm
+          route="/cart"
+          inputs={{lines: [{merchandiseId: quickAddVariantId, quantity: 1}]}}
+          action={CartForm.ACTIONS.LinesAdd}
+        >
+          {(cartFetcher) => {
+            const cartIsAdding = cartFetcher.state !== 'idle';
+            return (
+              <motion.button
+                type="submit"
+                initial={{opacity: 0, y: 4}}
+                animate={{
+                  opacity: isHovered ? 1 : 0,
+                  y: isHovered ? 0 : 4,
+                }}
+                transition={{duration: 0.25, ease: [0.25, 0.1, 0.25, 1]}}
+                disabled={cartIsAdding}
+                aria-label={t('product.quickAdd', 'Quick Add')}
+                className="absolute inset-x-3 bottom-[calc(30%+0.75rem)] py-3.5 md:py-3 min-h-[48px] rounded-lg font-medium text-xs md:text-[11px] uppercase tracking-[0.12em] flex items-center justify-center gap-2 transition-colors duration-300 backdrop-blur-md z-20 shadow-lg pointer-events-auto bg-bronze/95 hover:bg-bronze-dark text-white md:opacity-0 md:group-hover:opacity-100"
+              >
+                <AnimatePresence mode="wait">
+                  {cartIsAdding ? (
+                    <motion.span
+                      key="loading"
+                      initial={{opacity: 0}}
+                      animate={{opacity: 1}}
+                      exit={{opacity: 0}}
+                      className="flex items-center gap-2"
+                    >
+                      <Icons.Loading />
+                      Adding...
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="add"
+                      initial={{opacity: 0}}
+                      animate={{opacity: 1}}
+                      exit={{opacity: 0}}
+                      className="flex items-center gap-2"
+                    >
+                      <Icons.Bag />
+                      {t('product.quickAdd', 'Quick Add')}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </motion.button>
+            );
+          }}
+        </CartForm>
+      )}
 
       {/* Hover indicator line */}
       <motion.div

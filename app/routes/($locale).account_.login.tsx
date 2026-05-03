@@ -23,7 +23,6 @@ const GoogleSSOButton = lazy(() =>
   })),
 );
 
-// Lazy load GhostCursorEnhanced to prevent SSR issues with three.js
 const GhostCursorEnhanced = lazy(
   () => import('~/components/GhostCursorEnhanced.client'),
 );
@@ -54,7 +53,6 @@ export async function action({context, request}: ActionFunctionArgs) {
     if (!credential)
       return json({error: 'Google login failed.', formId}, {status: 400});
     try {
-      // Decode JWT payload
       const base64Url = credential.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
       const jsonPayload = decodeURIComponent(
@@ -65,7 +63,7 @@ export async function action({context, request}: ActionFunctionArgs) {
           })
           .join(''),
       );
-      const payload = JSON.parse(jsonPayload);
+      const payload = JSON.parse(jsonPayload) as {email?: string};
       const email = payload.email;
 
       if (!email)
@@ -74,9 +72,6 @@ export async function action({context, request}: ActionFunctionArgs) {
           {status: 400},
         );
 
-      // Generate dummy password via crude hash (Must meet length and complexity for Shopify)
-      // Node crypto is safer server-side for this if available, or just a secure stable transformation.
-      // Easiest is to pseudo-hash
       let hash = 0;
       const secretStr = email + (context.env?.SESSION_SECRET || 'secret');
       for (let i = 0; i < secretStr.length; i++) {
@@ -85,7 +80,6 @@ export async function action({context, request}: ActionFunctionArgs) {
       const dummyPassword =
         Math.abs(hash).toString(16).padEnd(8, '0') + 'A1!xZ';
 
-      // Attempt login
       const {customerAccessTokenCreate: loginResult}: any =
         await storefront.mutate(LOGIN_MUTATION, {
           variables: {input: {email, password: dummyPassword}},
@@ -93,7 +87,6 @@ export async function action({context, request}: ActionFunctionArgs) {
 
       let customerAccessToken = loginResult?.customerAccessToken;
 
-      // Check if existing account is disabled (needs activation)
       const loginUserErrors = loginResult?.customerUserErrors ?? [];
       const isDisabled = loginUserErrors.some(
         (e: any) => e.code === 'CUSTOMER_DISABLED',
@@ -110,7 +103,6 @@ export async function action({context, request}: ActionFunctionArgs) {
       }
 
       if (!customerAccessToken) {
-        // Create customer
         const {customerCreate}: any = await storefront.mutate(
           CUSTOMER_CREATE_MUTATION,
           {variables: {input: {email, password: dummyPassword}}},
@@ -148,7 +140,6 @@ export async function action({context, request}: ActionFunctionArgs) {
           });
         customerAccessToken = retryResult?.customerAccessToken;
 
-        // Check if newly created account needs activation
         const retryErrors = retryResult?.customerUserErrors ?? [];
         const retryDisabled = retryErrors.some(
           (e: any) => e.code === 'CUSTOMER_DISABLED',
@@ -228,7 +219,6 @@ export async function action({context, request}: ActionFunctionArgs) {
         formId: 'register',
       });
     } else {
-      // Login
       const {customerAccessTokenCreate}: any = await storefront.mutate(
         LOGIN_MUTATION,
         {variables: {input: {email, password}}},
@@ -268,6 +258,51 @@ export async function action({context, request}: ActionFunctionArgs) {
   }
 }
 
+// ─── Icons ───────────────────────────────────────────────────────────────────
+const EyeIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+  >
+    <ellipse cx="12" cy="12" rx="9" ry="6" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+const EyeOffIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+  >
+    <path d="M3 3l18 18" />
+    <path d="M10.5 10.5a3 3 0 0 0 4 4" />
+    <path d="M7.5 7.5C5 9 3 12 3 12s3 6 9 6c1.5 0 2.8-.3 4-.9" />
+    <path d="M21 12s-3-6-9-6c-.5 0-1 0-1.5.1" />
+  </svg>
+);
+
+const ArrowRightIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+  >
+    <path d="M5 12h14M12 5l7 7-7 7" />
+  </svg>
+);
+
+// ─── Page Component ───────────────────────────────────────────────────────────
 export default function Login() {
   const rootData = useRouteLoaderData<RootLoader>('root');
   const data = useActionData<typeof action>() as any;
@@ -276,96 +311,123 @@ export default function Login() {
   const submit = useSubmit();
   const isSubmitting = navigation.state === 'submitting';
 
-  // Default to registering if register params exists or if previous action was register
-  const [isRegistering, setIsRegistering] = useState(false);
+  const [activeTab, setActiveTab] = useState<'signin' | 'register'>('signin');
+  const [showPassword, setShowPassword] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
+  // After a successful registration, switch to sign-in tab
   useEffect(() => {
     if (data?.formId === 'register') {
       if (data?.error) {
-        setIsRegistering(true);
+        setActiveTab('register');
       } else if (data?.success) {
-        // Automatically slide to Sign In upon successful registration
-        setIsRegistering(false);
+        setActiveTab('signin');
       }
     }
   }, [data]);
 
-  return (
-    <div
-      className="relative min-h-screen w-full overflow-hidden bg-cover bg-center flex flex-col items-center justify-center text-brand-text"
-      style={{backgroundImage: 'url("/brand/silk-texture.webp")'}}
-    >
-      {/* Dark overlay for contrast */}
-      <div className="absolute inset-0 bg-black/10 backdrop-blur-[2px]"></div>
+  const isRegister = activeTab === 'register';
 
-      {/* Ghost Cursor - Client only */}
+  return (
+    <div className="relative min-h-screen w-full flex bg-background">
+      {/* Ghost Cursor - client only */}
       {isMounted && (
         <Suspense fallback={null}>
           <GhostCursorEnhanced
-            primaryColor="#ffffff"
-            secondaryColor={'#a87441'}
-            brightness={0.8}
-            edgeIntensity={0.2}
-            trailLength={40}
-            inertia={0.2}
-            grainIntensity={0.03}
-            bloomStrength={0.4}
-            bloomRadius={0.6}
+            primaryColor="#a87441"
+            secondaryColor="#D4AF87"
+            brightness={0.6}
+            edgeIntensity={0.15}
+            trailLength={30}
+            inertia={0.25}
+            grainIntensity={0.02}
+            bloomStrength={0.3}
+            bloomRadius={0.5}
             bloomThreshold={0.02}
             fadeDelayMs={600}
             fadeDurationMs={1000}
             zIndex={0}
-            mixBlendMode="overlay"
-            hoverIntensity={2.5}
+            mixBlendMode="screen"
+            hoverIntensity={2}
           />
         </Suspense>
       )}
 
-      <div className="relative z-10 w-full max-w-[480px] mx-auto px-6 py-12">
-        {/* Unified White Container */}
-        <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-white/50 p-6 md:p-8 lg:p-12 overflow-hidden relative">
-          {/* Subtle top glare */}
-          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white to-transparent opacity-80"></div>
+      {/* Left decorative panel (desktop only) */}
+      <div className="hidden lg:flex lg:w-[45%] relative overflow-hidden items-center justify-center">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{backgroundImage: 'url("/brand/silk-texture.webp")'}}
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-background/80 via-background/40 to-transparent" />
+        <div className="relative z-10 text-center px-12">
+          <Link to="/" className="group block mb-12">
+            <img
+              src="/brand/logo-icon-only.webp"
+              alt="Formé Haus"
+              className="w-24 h-24 object-contain mx-auto opacity-80 transition-all duration-700 group-hover:opacity-100 group-hover:scale-105"
+              loading="eager"
+              width={96}
+              height={96}
+            />
+          </Link>
+          <h1 className="font-serif text-5xl text-warm mb-4 tracking-wide">
+            Formé Haus
+          </h1>
+          <p className="text-[12px] uppercase tracking-[0.3em] text-taupe">
+            Luxury Lifestyle
+          </p>
+          <div className="mt-16 flex flex-col gap-4 text-left">
+            {[
+              'Track orders & purchase history',
+              'Manage your personal information',
+              'Receive exclusive news & offers',
+              'Save items to your wishlist',
+            ].map((benefit) => (
+              <div key={benefit} className="flex items-center gap-3">
+                <div className="w-1 h-1 rounded-full bg-bronze flex-shrink-0" />
+                <p className="text-taupe text-sm tracking-wide">{benefit}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
-          {/* Logo & Header */}
-          <div className="flex flex-col items-center gap-6 mb-8">
-            <Link to="/" className="group cursor-pointer">
-              <img
-                src="/brand/logo-icon-only.webp"
-                alt="Formé Haus"
-                className="w-20 h-20 object-contain opacity-85 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-100"
-                loading="eager"
-                fetchPriority="high"
-                decoding="sync"
-                width={40}
-                height={40}
-              />
-            </Link>
+      {/* Right form panel */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-16 lg:py-12">
+        {/* Mobile logo */}
+        <Link to="/" className="lg:hidden mb-10 group block">
+          <img
+            src="/brand/logo-icon-only.webp"
+            alt="Formé Haus"
+            className="w-16 h-16 object-contain mx-auto opacity-75 group-hover:opacity-100 transition-opacity"
+            loading="eager"
+            width={64}
+            height={64}
+          />
+        </Link>
 
-            <div className="text-center space-y-2">
-              <h1
-                className="font-serif text-3xl md:text-4xl text-brand-text"
-                style={{letterSpacing: '0.02em'}}
-              >
-                {isRegistering ? 'Join Formé Haus' : 'Welcome Back'}
-              </h1>
-              <p className="text-[11px] tracking-[0.25em] font-sans text-taupe uppercase">
-                {isRegistering ? 'Begin Your Journey' : 'Continue Your Journey'}
-              </p>
-            </div>
+        <div className="w-full max-w-[420px]">
+          {/* Heading */}
+          <div className="mb-8 text-center lg:text-left">
+            <h2 className="font-serif text-3xl md:text-4xl text-warm mb-2">
+              {isRegister ? 'Join Formé Haus' : 'Welcome Back'}
+            </h2>
+            <p className="text-[11px] uppercase tracking-[0.25em] text-taupe">
+              {isRegister ? 'Begin Your Journey' : 'Continue Your Journey'}
+            </p>
           </div>
 
-          {/* Google SSO Button - Render Client-Only via Lazy Component */}
+          {/* Google SSO */}
           {isMounted && rootData?.googleClientId && (
-            <div className="flex justify-center mb-6">
+            <div className="mb-6">
               <Suspense
                 fallback={
-                  <div className="h-[40px] w-[200px] bg-warm/50 rounded-full animate-pulse" />
+                  <div className="h-10 bg-surface rounded-full animate-pulse" />
                 }
               >
                 <GoogleSSOButton
@@ -385,138 +447,164 @@ export default function Login() {
             </div>
           )}
 
-          <div className="flex items-center gap-3 mb-8">
-            <div className="h-px bg-warm/50 flex-1"></div>
-            <span className="text-[10px] uppercase tracking-widest text-taupe font-medium">
-              Or log in with email
+          {/* Divider */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="h-px bg-bronze/20 flex-1" />
+            <span className="text-[10px] uppercase tracking-widest text-taupe">
+              or continue with email
             </span>
-            <div className="h-px bg-warm/50 flex-1"></div>
+            <div className="h-px bg-bronze/20 flex-1" />
           </div>
 
-          {/* Segmented Control UI */}
-          <div className="flex bg-cream border border-warm rounded-xl p-1 mb-8 relative">
-            <div
-              className="absolute inset-y-1 w-[calc(50%-4px)] bg-white rounded-lg shadow-sm transition-all duration-400 ease-[0.16,1,0.3,1] z-0"
-              style={{
-                left: isRegistering ? 'calc(50% + 2px)' : '4px',
-              }}
-            />
+          {/* Tab switcher */}
+          <div className="flex gap-6 mb-8 border-b border-bronze/20">
             <button
               type="button"
-              onClick={() => setIsRegistering(false)}
-              className={`flex-1 py-3.5 text-[11px] uppercase tracking-widest font-semibold z-10 transition-colors duration-300 ${
-                !isRegistering ? 'text-bronze' : 'text-taupe hover:text-bronze'
+              onClick={() => setActiveTab('signin')}
+              className={`pb-4 text-sm uppercase tracking-[0.15em] transition-colors relative ${
+                activeTab === 'signin' ? 'text-bronze' : 'text-taupe hover:text-warm'
               }`}
             >
               Sign In
+              {activeTab === 'signin' && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-bronze rounded-full" />
+              )}
             </button>
             <button
               type="button"
-              onClick={() => setIsRegistering(true)}
-              className={`flex-1 py-3.5 text-[11px] uppercase tracking-widest font-semibold z-10 transition-colors duration-300 ${
-                isRegistering ? 'text-bronze' : 'text-taupe hover:text-bronze'
+              onClick={() => setActiveTab('register')}
+              className={`pb-4 text-sm uppercase tracking-[0.15em] transition-colors relative ${
+                activeTab === 'register' ? 'text-bronze' : 'text-taupe hover:text-warm'
               }`}
             >
-              Register
+              Create Account
+              {activeTab === 'register' && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-bronze rounded-full" />
+              )}
             </button>
           </div>
 
           {/* Form */}
-          <Form method="post" className="w-full space-y-6">
+          <Form method="post" className="space-y-5">
             <input
               type="hidden"
               name="formId"
-              value={isRegistering ? 'register' : 'login'}
+              value={isRegister ? 'register' : 'login'}
             />
 
+            {/* Error / Success messages */}
             {data?.error && (
               <div
                 role="alert"
                 aria-live="assertive"
-                className="p-3.5 text-[12px] text-bronze-dark bg-bronze/10 border border-bronze/30 rounded-lg text-center tracking-wide"
+                className="p-3.5 text-[12px] text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg text-center tracking-wide"
               >
                 {data.error}
               </div>
             )}
-
-            {data?.success && !isRegistering && (
-              <div className="p-3.5 text-[12px] text-brand-text bg-bronze/10 border border-bronze/20 rounded-lg text-center tracking-wide animate-in fade-in zoom-in duration-300">
+            {data?.success && !isRegister && (
+              <div className="p-3.5 text-[12px] text-bronze bg-bronze/10 border border-bronze/20 rounded-lg text-center tracking-wide">
+                {data.success}
+              </div>
+            )}
+            {data?.success && isRegister === false && data?.formId === 'register' && (
+              <div className="p-3.5 text-[12px] text-bronze bg-bronze/10 border border-bronze/20 rounded-lg text-center tracking-wide">
                 {data.success}
               </div>
             )}
 
-            <div className="space-y-5">
-              {/* Floating Label Input: Email */}
-              <div className="relative group">
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  placeholder=" "
-                  required
-                  autoComplete="email"
-                  className="peer w-full bg-cream border border-warm pt-6 pb-2 px-4 text-brand-text focus:outline-none focus:border-bronze focus:bg-white focus:ring-1 focus:ring-bronze/30 focus-visible:ring-1 focus-visible:ring-bronze/50 transition-all duration-300 text-[14px] font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
-                />
-                <label
-                  htmlFor="email"
-                  className="absolute text-[11px] uppercase tracking-[0.2em] text-taupe top-4 left-4 transition-all duration-300 transform -translate-y-2.5 scale-[0.85] origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-[0.85] peer-focus:-translate-y-2.5 peer-focus:text-bronze pointer-events-none"
-                >
-                  Email Address
-                </label>
-              </div>
+            {/* Email */}
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-[11px] uppercase tracking-[0.15em] text-taupe mb-2"
+              >
+                Email Address *
+              </label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                required
+                autoComplete="email"
+                placeholder="your@email.com"
+                className="w-full bg-surface border border-bronze/20 rounded-lg px-4 py-3.5 text-warm placeholder-taupe/40 focus:border-bronze focus:outline-none focus:ring-1 focus:ring-bronze/30 transition-colors text-sm"
+              />
+            </div>
 
-              {/* Floating Label Input: Password */}
-              <div className="relative group">
+            {/* Password */}
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-[11px] uppercase tracking-[0.15em] text-taupe mb-2"
+              >
+                Password *
+              </label>
+              <div className="relative">
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   name="password"
                   id="password"
-                  placeholder=" "
                   required
-                  autoComplete={
-                    isRegistering ? 'new-password' : 'current-password'
-                  }
-                  className="peer w-full bg-cream border border-warm pt-6 pb-2 px-4 text-brand-text focus:outline-none focus:border-bronze focus:bg-white focus:ring-1 focus:ring-bronze/30 focus-visible:ring-1 focus-visible:ring-bronze/50 transition-all duration-300 text-[14px] font-medium tracking-wide rounded-xl shadow-inner shadow-black/[0.01]"
+                  autoComplete={isRegister ? 'new-password' : 'current-password'}
+                  placeholder="••••••••"
+                  minLength={isRegister ? 8 : undefined}
+                  className="w-full bg-surface border border-bronze/20 rounded-lg px-4 py-3.5 pr-12 text-warm placeholder-taupe/40 focus:border-bronze focus:outline-none focus:ring-1 focus:ring-bronze/30 transition-colors text-sm"
                 />
-                <label
-                  htmlFor="password"
-                  className="absolute text-[11px] uppercase tracking-[0.2em] text-taupe top-4 left-4 transition-all duration-300 transform -translate-y-2.5 scale-[0.85] origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-[0.85] peer-focus:-translate-y-2.5 peer-focus:text-bronze pointer-events-none"
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-taupe hover:text-warm transition-colors"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
-                  Password
-                </label>
+                  {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                </button>
               </div>
+              {isRegister && (
+                <p className="text-taupe/50 text-xs mt-1.5 tracking-wide">
+                  Must be at least 8 characters
+                </p>
+              )}
             </div>
 
-            <div className="flex flex-col gap-4 pt-2">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full py-4 bg-bronze text-white hover:bg-bronze-dark uppercase tracking-[0.2em] text-[11px] transition-all duration-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium flex items-center justify-center gap-2"
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Processing...
-                  </>
-                ) : isRegistering ? (
-                  'Create Account'
-                ) : (
-                  'Sign In'
-                )}
-              </button>
-
-              <div className="flex flex-col items-center gap-3 pt-4">
-                {!isRegistering && (
-                  <Link
-                    to="/account/recover"
-                    className="text-[10px] uppercase tracking-[0.15em] text-taupe hover:text-bronze transition-colors duration-300"
-                  >
-                    Forgot Password?
-                  </Link>
-                )}
+            {/* Forgot password */}
+            {!isRegister && (
+              <div className="flex justify-end -mt-2">
+                <Link
+                  to="/account/recover"
+                  className="text-[11px] uppercase tracking-[0.12em] text-taupe hover:text-bronze transition-colors"
+                >
+                  Forgot Password?
+                </Link>
               </div>
-            </div>
+            )}
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-4 bg-bronze hover:bg-bronze-dark text-white uppercase tracking-[0.2em] text-[11px] font-medium rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2"
+            >
+              {isSubmitting ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  {isRegister ? 'Create Account' : 'Sign In'}
+                  <ArrowRightIcon />
+                </>
+              )}
+            </button>
           </Form>
+
+          {/* Back home */}
+          <p className="mt-8 text-center text-taupe text-[11px] tracking-wide">
+            <Link to="/" className="hover:text-bronze transition-colors underline underline-offset-4">
+              Back to store
+            </Link>
+          </p>
         </div>
       </div>
     </div>
