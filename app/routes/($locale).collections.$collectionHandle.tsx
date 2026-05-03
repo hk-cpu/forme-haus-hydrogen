@@ -359,6 +359,7 @@ const HERO_OVERRIDES: Record<
     bgClass?: string;
     heightClass?: string;
     imgClass?: string;
+    customOverlay?: string;
   }
 > = {
   'new-in': {
@@ -417,29 +418,35 @@ const HERO_OVERRIDES: Record<
     bgClass: 'bg-[#C8B8A0]',
   },
   'carry-it-your-way': {
-    src: '/brand/carry-hero-v4.png',
+    src: '/assets/heros/CarryItYourWay_CollectionsPageHero.png',
     hideTitle: true,
+    customOverlay: 'right-centered',
     fit: 'full-width',
-    position: 'top',
+    position: 'right center',
+    imgClass: 'w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] object-cover',
   },
   'sun-ready': {
-    src: '/brand/sun-ready-hero-v4.png',
+    src: '/assets/heros/SunReady_CollectionsPageHero.png',
     hideTitle: true,
+    customOverlay: 'right-centered',
     fit: 'full-width',
-    position: 'center',
+    position: 'right center',
+    imgClass: 'w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] object-cover',
   },
   'new-arrivals': {
     src: '/brand/new-arrivals-hero-v2.png',
     hideTitle: true,
     fit: 'full-width',
-    position: 'top',
-    imgClass: 'h-[30vh] min-h-[240px] sm:h-[36vh] md:h-[42vh] lg:h-[48vh] object-cover',
+    position: 'center center',
+    imgClass: 'w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] object-cover',
   },
   'modern-essentials': {
-    src: '/brand/modern-essentials-hero-v4.png',
+    src: '/assets/heros/ModernEssentials_CollectionsPageHero.png',
     hideTitle: true,
+    customOverlay: 'right-centered',
     fit: 'full-width',
-    position: 'center',
+    position: 'right center',
+    imgClass: 'w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] object-cover',
   },
 };
 
@@ -532,7 +539,8 @@ export default function Collection() {
       {isTextOnlyHero ? (
         /* Text-only hero for sunglasses, phone cases, straps */
         <motion.div
-          className="w-full py-16 md:py-24 bg-[#F9F5F0] border-b border-[#E8E0D8]"
+          ref={heroRef}
+          className="relative w-full py-16 md:py-24 bg-[#F9F5F0] border-b border-[#E8E0D8]"
           initial={{opacity: 0}}
           animate={{opacity: 1}}
           transition={{duration: 0.6}}
@@ -581,7 +589,7 @@ export default function Collection() {
                     alt={collection.title}
                     className={`block w-full ${imgClass}`}
                     loading="eager"
-                    fetchPriority="high"
+                    {...({fetchpriority: 'high'} as any)}
                     style={{
                       y: heroY,
                       objectPosition: heroPosition,
@@ -599,7 +607,7 @@ export default function Collection() {
                   alt={collection.title}
                   className="block h-[30vh] min-h-[240px] w-full object-cover sm:h-[36vh] md:h-[42vh] lg:h-[48vh]"
                   loading="eager"
-                  fetchPriority="high"
+                  {...({fetchpriority: 'high'} as any)}
                   style={{y: heroY, objectPosition: heroPosition}}
                   initial={{scale: 1.03}}
                   animate={{scale: 1}}
@@ -648,6 +656,40 @@ export default function Collection() {
                     {collectionSubtitle?.subtitle || collection.description}
                   </p>
                 )}
+              </motion.div>
+            </div>
+          )}
+          {/* Custom Overlay for specific collections */}
+          {override?.customOverlay === 'right-centered' && (
+            <div className="absolute inset-0 flex flex-col justify-end md:justify-center items-center md:items-end pb-[12%] md:pb-0 px-4 md:pr-[4%] lg:pr-[8%] z-10 pointer-events-none">
+              {/* Desktop dark vignette for flawless text contrast */}
+              <div className="absolute inset-0 bg-gradient-to-l from-[#121212]/85 via-[#121212]/20 to-transparent hidden md:block z-[-1]" />
+              {/* Mobile dark vignette (bottom-up) for bottom-aligned text */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#121212]/90 via-[#121212]/30 to-transparent md:hidden z-[-1]" />
+
+              <motion.div
+                className="relative text-center md:text-right w-full md:w-auto md:px-12 py-2 md:py-10"
+                initial={{opacity: 0, y: 10}}
+                animate={{opacity: 1, y: 0}}
+                transition={{
+                  delay: 0.1,
+                  duration: 0.8,
+                  ease: [0.25, 0.1, 0.25, 1],
+                }}
+              >
+                <h1 
+                  className="font-serif text-[28px] sm:text-3xl md:text-5xl lg:text-[54px] text-[#D4AF87] mb-1.5 md:mb-2 leading-[1.1] drop-shadow-md"
+                  style={{ 
+                    letterSpacing: '0.015em',
+                  }}
+                >
+                  {collection.title}
+                </h1>
+                <p 
+                  className="font-serif font-light text-[14px] sm:text-[16px] md:text-xl lg:text-[22px] text-[#F9F5F0] leading-snug drop-shadow-sm mx-auto md:ml-auto md:mr-0 max-w-[280px] sm:max-w-[320px] md:max-w-none"
+                >
+                  {COLLECTION_SUBTITLES[collection.handle]?.subtitle}
+                </p>
               </motion.div>
             </div>
           )}

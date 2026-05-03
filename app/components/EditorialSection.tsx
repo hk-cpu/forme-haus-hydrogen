@@ -219,7 +219,7 @@ export default function EditorialSection({
     <section
       ref={sectionRef}
       aria-label="Editorial"
-      className="py-6 md:py-8"
+      className="py-6 md:py-8 relative"
       dir={isRTL ? 'rtl' : 'ltr'}
     >
       <div
