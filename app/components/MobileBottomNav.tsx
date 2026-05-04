@@ -35,7 +35,7 @@ export function MobileBottomNav() {
       {/* Frosted glass bar */}
       <div className="bg-[#F9F5F0]/90 backdrop-blur-xl border-t border-[#8B8076]/10 shadow-[0_-8px_32px_rgba(74,60,49,0.08)]">
         <div
-          className="grid grid-cols-5 items-end pb-safe"
+          className="grid grid-cols-6 items-end pb-safe"
           style={{paddingBottom: 'env(safe-area-inset-bottom, 8px)'}}
           dir={isRTL ? 'rtl' : 'ltr'}
         >
@@ -103,6 +103,15 @@ export function MobileBottomNav() {
               {t('nav.cart', 'Bag')}
             </span>
           </button>
+
+          {/* Account */}
+          <NavTab
+            to="/account"
+            label={t('nav.account', 'Account')}
+            isActive={isActive('/account')}
+          >
+            <AccountIcon />
+          </NavTab>
         </div>
       </div>
     </nav>
@@ -248,6 +257,24 @@ function WishlistIcon({count}: {count: number}) {
         </span>
       )}
     </span>
+  );
+}
+
+function AccountIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
   );
 }
 

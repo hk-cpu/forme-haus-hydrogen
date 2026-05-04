@@ -333,7 +333,7 @@ export default function Login() {
   const isRegister = activeTab === 'register';
 
   return (
-    <div className="relative min-h-screen w-full flex bg-background">
+    <div className="relative min-h-screen w-full flex bg-background pb-[72px] md:pb-0">
       {/* Ghost Cursor - client only */}
       {isMounted && (
         <Suspense fallback={null}>
@@ -398,9 +398,9 @@ export default function Login() {
       </div>
 
       {/* Right form panel */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-16 lg:py-12">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-8 md:py-16 lg:py-12">
         {/* Mobile logo */}
-        <Link to="/" className="lg:hidden mb-10 group block">
+        <Link to="/" className="lg:hidden mb-6 group block">
           <img
             src="/brand/logo-icon-only.webp"
             alt="Formé Haus"
