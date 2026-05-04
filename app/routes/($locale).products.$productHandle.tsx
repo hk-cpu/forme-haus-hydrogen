@@ -38,7 +38,6 @@ import {BuyNowButton} from '~/components/BuyNowButton';
 import {Skeleton} from '~/components/Skeleton';
 import {ProductSwimlane} from '~/components/ProductSwimlane';
 import {ProductGallery} from '~/components/ProductGallery';
-import {TrustBadges} from '~/components/TrustBadges';
 import {BundlePricing} from '~/components/BundlePricing';
 import {IconCaret, IconCheck, IconClose} from '~/components/Icon';
 import {useUI} from '~/context/UIContext';
@@ -312,7 +311,7 @@ export default function Product() {
 
         <div className="grid items-start md:gap-6 lg:gap-12 md:grid-cols-2">
           <ProductGallery media={media.nodes} className="w-full" />
-          <div className="md:sticky md:top-24">
+          <div className="md:relative">
             <section className="flex flex-col w-full max-w-xl gap-10 p-6 md:pl-10 lg:pl-16 md:mx-auto md:max-w-none">
               <div className="grid gap-3">
                 {/* iPhone Models Badge */}
@@ -384,10 +383,6 @@ export default function Product() {
                 </Await>
               </Suspense>
 
-              {/* Trust Badges Section */}
-              <div className="mt-6">
-                <TrustBadges variant="full" />
-              </div>
               <div className="grid gap-4 py-8 border-t border-[#8B8076]/20">
                 {descriptionHtml && (
                   <ProductDetail

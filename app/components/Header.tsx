@@ -64,7 +64,10 @@ function DropdownNavItem({
             : 'opacity-0 translate-y-2 invisible'
         }`}
       >
-        <div className="bg-surface/95 backdrop-blur-xl border border-bronze/20 rounded-sm py-3 w-56 shadow-[0_12px_40px_rgba(0,0,0,0.4)]">
+        <div
+          className="bg-surface/95 backdrop-blur-xl border border-bronze/20 rounded-sm py-3 w-56 shadow-[0_12px_40px_rgba(0,0,0,0.4)]"
+          dir={isRTL ? 'rtl' : 'ltr'}
+        >
           {item.items.map((sub: any) => (
             <NavLink
               key={sub.id}
@@ -73,7 +76,7 @@ function DropdownNavItem({
               className={({isActive}) =>
                 `block px-5 py-3 transition-colors duration-200 ${
                   isRTL
-                    ? 'text-[12px] font-normal'
+                    ? 'text-[12px] font-normal text-right'
                     : 'text-[10px] font-light uppercase tracking-[0.2em]'
                 } ${
                   isActive
