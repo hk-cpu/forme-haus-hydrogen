@@ -195,6 +195,8 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     if (chargeStatus === 'CAPTURED') {
       // Retrieve checkout session data saved before the Tap redirect
       const checkoutData = getCheckoutData(session);
+      let orderName: string | undefined;
+      let shopifyOrderId: string | undefined;
       let orderError: string | undefined;
 
       if (adminToken && storeDomain && checkoutData && !checkoutData.orderCreated) {
@@ -235,7 +237,8 @@ export async function loader({request, context}: LoaderFunctionArgs) {
         orderName,
         shopifyOrderId,
         orderError,
-        nextPath: buildLocalePath('/account', localePrefix),
+        nextPath: buildLocalePath('/collections/all', localePrefix),
+        accountPath: buildLocalePath('/account', localePrefix),
       });
     }
 
@@ -389,14 +392,20 @@ export default function TapPaymentCallback() {
             to={
               'nextPath' in data && data.nextPath
                 ? data.nextPath
-                : data.status === 'success'
-                ? '/account'
                 : '/collections/all'
             }
-            className="px-6 py-3 bg-brand-text/10 text-brand-text text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-brand-text/20 transition-colors"
+            className="px-6 py-3 bg-[#a87441] text-white text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-[#8B5E3C] transition-colors"
           >
-            {data.status === 'success' ? 'View Orders' : 'Continue Shopping'}
+            Continue Shopping
           </Link>
+          {data.status === 'success' && (
+            <Link
+              to={'accountPath' in data && data.accountPath ? data.accountPath : '/account'}
+              className="px-6 py-3 bg-brand-text/10 text-brand-text text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-brand-text/20 transition-colors"
+            >
+              View Orders
+            </Link>
+          )}
         </div>
       </motion.div>
     </div>
