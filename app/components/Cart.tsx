@@ -502,15 +502,15 @@ function CartCheckoutActions({
   const {t} = useTranslation();
   return (
     <div className="flex flex-col gap-4">
-      {/* Single CTA — goes to Shopify native checkout (creates order in admin) */}
-      <a
-        href={checkoutUrl}
+      {/* Single CTA — goes to custom Tap checkout (creates order in Shopify admin after payment) */}
+      <Link
+        to="/checkout"
         onClick={onClose}
         className="w-full py-4 rounded-xl bg-bronze hover:bg-bronze/90 text-white text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
       >
         <Icons.Lock className="w-3.5 h-3.5" />
         {t('cart.proceedToCheckout', 'Proceed to Checkout')}
-      </a>
+      </Link>
 
       {/* Trust Badges */}
       <div className="flex items-center justify-center gap-4 py-2">
