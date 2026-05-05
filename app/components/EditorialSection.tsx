@@ -38,7 +38,7 @@ const BENTO_ITEMS: BentoItem[] = [
     titleKey: 'editorial.carry.title',
     subtitleKey: 'editorial.carry.subtitle',
     defaultTitle: 'Carry It Your Way',
-    defaultSubtitle: 'Hands-free style',
+    defaultSubtitle: 'Effortless style',
     width: 1024,
     height: 1024,
   },
@@ -157,7 +157,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
             </motion.h3>
             {item.subtitleKey && (
               <motion.p
-                className="text-xs text-white/70 tracking-wide mt-1"
+                className="text-xs text-white/70 tracking-wide mt-1 truncate"
                 initial={false}
                 animate={{y: isHovered ? 0 : 4, opacity: isHovered ? 1 : 0.7}}
                 transition={{duration: 0.3, delay: 0.1}}
@@ -172,7 +172,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
               transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
             />
             <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[10px] uppercase tracking-[0.2em] text-[#D4AF87] mt-3 inline-flex items-center gap-1">
-              Shop the Edit &rarr;
+              {t('menu.cta.shopTheEdit', 'Shop the Edit')} &rarr;
             </span>
           </motion.div>
 

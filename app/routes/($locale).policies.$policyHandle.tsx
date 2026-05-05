@@ -120,7 +120,7 @@ export default function Policies() {
         </Link>
 
         {/* ── Policy title ── */}
-        <h1 className="font-serif text-[#F0EAE6] text-3xl md:text-4xl lg:text-5xl leading-tight mb-6">
+        <h1 className={`font-serif text-[#F0EAE6] text-3xl md:text-4xl lg:text-5xl leading-tight mb-6 ${isRTL ? 'tracking-normal' : ''}`}>
           {policy.title}
         </h1>
 
@@ -178,7 +178,7 @@ export default function Policies() {
           font-weight: 400;
           margin-top: 2.5rem;
           margin-bottom: 0.875rem;
-          letter-spacing: 0.01em;
+          letter-spacing: ${isRTL ? 'normal' : '0.01em'};
           text-align: start;
         }
         .policy-prose h2 { font-size: 1.25rem; }
@@ -186,7 +186,8 @@ export default function Policies() {
         .policy-prose p { 
           margin-bottom: 1.25rem; 
           text-align: justify;
-          hyphens: auto;
+          hyphens: none;
+          -webkit-hyphens: none;
         }
         .policy-prose a {
           color: #a87441;

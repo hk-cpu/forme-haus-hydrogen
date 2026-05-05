@@ -227,7 +227,7 @@ export const translations = {
     'editorial.modernEssentials.subtitle':
       'Foundations shaped by intention and refined for everyday presence.',
     'editorial.carry.title': 'Carry It Your Own Way',
-    'editorial.carry.subtitle': 'Hands-free elegance, carried with ease.',
+    'editorial.carry.subtitle': 'Effortless elegance, carried with ease.',
     'editorial.sun.title': 'Sun Ready',
     'editorial.sun.subtitle':
       'Composed in daylight. Designed for warmth and clarity.',

@@ -50,6 +50,23 @@ async function loadCriticalData({context, request}: LoaderFunctionArgs) {
           return acc;
         }, {});
 
+        const url = fields.url?.value || '#';
+        let titleKey = '';
+        let subtitleKey = '';
+        if (url.includes('modern-essentials')) {
+          titleKey = 'editorial.modernEssentials.title';
+          subtitleKey = 'editorial.modernEssentials.subtitle';
+        } else if (url.includes('carry-it-your-way')) {
+          titleKey = 'editorial.carry.title';
+          subtitleKey = 'editorial.carry.subtitle';
+        } else if (url.includes('sun-ready')) {
+          titleKey = 'editorial.sun.title';
+          subtitleKey = 'editorial.sun.subtitle';
+        } else if (url.includes('new-arrivals')) {
+          titleKey = 'editorial.new.title';
+          subtitleKey = 'editorial.new.subtitle';
+        }
+
         return {
           image: fields.image?.reference?.image?.url,
           width: fields.image?.reference?.image?.width || 1024,
@@ -59,11 +76,11 @@ async function loadCriticalData({context, request}: LoaderFunctionArgs) {
             fields.image?.reference?.image?.altText ||
             fields.title_en?.value ||
             '',
-          url: fields.url?.value || '#',
+          url: url,
           defaultTitle: fields.title_en?.value || '',
           defaultSubtitle: fields.subtitle_en?.value || '',
-          titleKey: '', // Ignored when using dynamic data
-          subtitleKey: '',
+          titleKey: titleKey,
+          subtitleKey: subtitleKey,
         };
       })
       .filter((item: any) => item.image) || [];

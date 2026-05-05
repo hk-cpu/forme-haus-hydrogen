@@ -249,10 +249,10 @@ h3 {
   letter-spacing: 0.1em;
 }
 
-/* Body text hyphenation for clean blocks */
+/* Body text hyphenation disabled per user request */
 p {
-  hyphens: auto;
-  -webkit-hyphens: auto;
+  hyphens: none;
+  -webkit-hyphens: none;
 }
 
 /* ── Global Page Container ── */
