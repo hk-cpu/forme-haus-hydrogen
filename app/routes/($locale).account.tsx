@@ -287,7 +287,7 @@ function Dashboard({customer}: {customer: any}) {
     },
     {
       id: 'wishlist',
-      label: 'Saved Items',
+      label: 'Wish List',
       labelKey: 'wishlist.title',
       icon: (
         <svg
@@ -387,9 +387,9 @@ function Dashboard({customer}: {customer: any}) {
                     {orders.length}
                   </span>
                 )}
-                {tab.id === 'wishlist' && state.wishlist.length > 0 && (
+                {tab.id === 'wishlist' && state.favorites.length > 0 && (
                   <span className="ml-1 px-1.5 py-0.5 rounded-full bg-[#a87441]/20 text-[#a87441] text-[9px]">
-                    {state.wishlist.length}
+                    {state.favorites.length}
                   </span>
                 )}
               </button>
@@ -561,7 +561,7 @@ function OverviewTab({
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
           {
-            label: t('wishlist.title', 'Saved Items'),
+            label: t('wishlist.title', 'Wish List'),
             onClick: () => onNavigate('wishlist'),
             icon: '🤍',
           },
@@ -775,7 +775,7 @@ function AddressesTab({
 
 // ─── Wishlist Tab ─────────────────────────────────────────────────────────────
 function WishlistTab() {
-  const {state, toggleWishlist} = useUI();
+  const {state, toggleFavorite} = useUI();
   const {t} = useTranslation();
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -808,8 +808,8 @@ function WishlistTab() {
   }, []);
 
   useEffect(() => {
-    fetchProducts(state.wishlist);
-  }, [state.wishlist, fetchProducts]);
+    fetchProducts(state.favorites);
+  }, [state.favorites, fetchProducts]);
 
   if (loading) {
     return (
@@ -825,7 +825,7 @@ function WishlistTab() {
     );
   }
 
-  if (state.wishlist.length === 0) {
+  if (state.favorites.length === 0) {
     return (
       <EmptyState
         icon="bag"
@@ -845,7 +845,7 @@ function WishlistTab() {
   return (
     <div>
       <h2 className="font-serif text-xl text-warm mb-6">
-        {t('wishlist.title', 'Saved Items')}
+        {t('wishlist.title', 'Wish List')}
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
         <AnimatePresence mode="popLayout">
@@ -880,7 +880,7 @@ function WishlistTab() {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      toggleWishlist(product.id);
+                      toggleFavorite(product.id);
                     }}
                     className="absolute top-3 right-3 w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#a87441] text-white flex items-center justify-center shadow-md hover:bg-[#8B5E3C] transition-colors z-10"
                     aria-label={t('wishlist.remove', 'Remove from saved')}

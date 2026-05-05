@@ -78,7 +78,7 @@ export default function FavoritesPage() {
               {t('favorites.subtitle', 'Your Curated Selection')}
             </span>
             <h1 className="font-serif text-4xl md:text-5xl italic text-brand-text mb-4">
-              {t('favorites.title', 'Favorites')}
+              {t('favorites.title', 'Wish List')}
             </h1>
             <p className="text-[13px] text-[#8B8076] tracking-wide">
               {state.favorites.length === 0
@@ -135,7 +135,7 @@ export default function FavoritesPage() {
               </svg>
             </div>
             <h2 className="font-serif text-2xl text-brand-text mb-3">
-              {t('favorites.emptyTitle', 'No Favorites Yet')}
+              {t('favorites.emptyTitle', 'Your Wish List is Empty')}
             </h2>
             <p className="text-[13px] text-[#8B8076] max-w-sm mb-8 leading-relaxed">
               {t(
@@ -204,7 +204,7 @@ export default function FavoritesPage() {
                         className="absolute top-3 right-3 w-10 h-10 rounded-full bg-bronze text-white flex items-center justify-center shadow-md hover:bg-bronze-dark transition-colors z-10"
                         aria-label={t(
                           'favorites.remove',
-                          'Remove from favorites',
+                          'Remove from wish list',
                         )}
                       >
                         <svg
