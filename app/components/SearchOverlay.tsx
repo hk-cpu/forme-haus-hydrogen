@@ -66,7 +66,6 @@ const trendingSearches = [
   'Sunglasses',
   'Phone Straps',
   'New Arrivals',
-  'Bundles',
 ];
 
 export const NO_PREDICTIVE_SEARCH_RESULTS = {

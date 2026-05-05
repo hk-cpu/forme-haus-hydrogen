@@ -1,6 +1,6 @@
 /**
  * Payment method icons for footer
- * Clean horizontal single-line layout: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tamara, Tabby
+ * Clean horizontal single-line layout: Mada, Visa, Mastercard, Apple Pay, STC Pay
  */
 
 function MadaIcon() {
@@ -105,42 +105,6 @@ function STCPayIcon() {
   );
 }
 
-function TamaraIcon() {
-  return (
-    <svg viewBox="0 0 60 20" className="h-5 w-auto" aria-label="Tamara">
-      <text
-        x="28"
-        y="13"
-        fontSize="8"
-        fontWeight="700"
-        fill="#F0EAE6"
-        fontFamily="Arial, sans-serif"
-        textAnchor="middle"
-      >
-        tamara
-      </text>
-      <circle cx="50" cy="10" r="2.5" fill="#F5A623" />
-    </svg>
-  );
-}
-
-function TabbyIcon() {
-  return (
-    <svg viewBox="0 0 50 20" className="h-5 w-auto" aria-label="Tabby">
-      <text
-        x="25"
-        y="13"
-        fontSize="8"
-        fontWeight="700"
-        fill="#D4FB54"
-        fontFamily="Arial, sans-serif"
-        textAnchor="middle"
-      >
-        tabby
-      </text>
-    </svg>
-  );
-}
 
 /**
  * PaymentLinkButton - Quick payment link for trial orders
@@ -200,8 +164,6 @@ export default function PaymentBadges() {
       <MastercardIcon />
       <ApplePayIcon />
       <STCPayIcon />
-      <TamaraIcon />
-      <TabbyIcon />
     </div>
   );
 }
