@@ -314,11 +314,11 @@ export default function CheckoutPage() {
                 <motion.div key="s1" variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{duration: 0.3}}>
                   <h2 className="font-serif text-xl text-warm mb-6">Contact Information</h2>
                   <div className="grid grid-cols-2 gap-4 mb-4">
-                    <Field id="firstName" label="First Name" required placeholder="Sarah" value={contact.firstName} onChange={e => setContact(c => ({...c, firstName: e.target.value}))} />
-                    <Field id="lastName"  label="Last Name"  required placeholder="Al-Harbi" value={contact.lastName}  onChange={e => setContact(c => ({...c, lastName:  e.target.value}))} />
+                    <Field id="firstName" label="First Name" required placeholder="First name" value={contact.firstName} onChange={e => setContact(c => ({...c, firstName: e.target.value}))} />
+                    <Field id="lastName"  label="Last Name"  required placeholder="Last name" value={contact.lastName}  onChange={e => setContact(c => ({...c, lastName:  e.target.value}))} />
                   </div>
                   <div className="space-y-4 mb-8">
-                    <Field id="email" label="Email" required type="email" placeholder="sarah@example.com" value={contact.email} onChange={e => setContact(c => ({...c, email: e.target.value}))} />
+                    <Field id="email" label="Email" required type="email" placeholder="you@example.com" value={contact.email} onChange={e => setContact(c => ({...c, email: e.target.value}))} />
                     <div>
                       <label htmlFor="phone" className={labelCls}>Phone<span className="text-bronze ml-0.5">*</span></label>
                       <div className="flex gap-2">
