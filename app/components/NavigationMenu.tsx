@@ -302,21 +302,6 @@ export function NavigationMenu() {
                 </ul>
 
                 {/* Journal link at bottom of left panel */}
-                <motion.div
-                  className="mt-8 pt-8 border-t border-[#F0EAE6]/5"
-                  initial={{opacity: 0}}
-                  animate={{opacity: 1}}
-                  transition={{delay: 0.6}}
-                >
-                  <Link
-                    to="/journal"
-                    className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#AA9B8F] hover:text-[#a87441] transition-colors duration-300"
-                    onClick={handleClose}
-                  >
-                    Journal
-                    <ArrowIcon />
-                  </Link>
-                </motion.div>
               </div>
 
               {/* RIGHT PANEL – Editorial Image + Subcategories */}
@@ -559,13 +544,6 @@ export function NavigationMenu() {
               transition={{delay: 0.5}}
             >
               <div className="flex flex-wrap items-center gap-6 text-[11px] uppercase tracking-[0.12em]">
-                <a
-                  href="tel:+966800123456"
-                  className="text-taupe hover:text-bronze transition-colors duration-300 flex items-center gap-2"
-                >
-                  <PhoneIcon />
-                  800 123 456
-                </a>
                 <Link
                   to="/contact"
                   className="text-taupe hover:text-bronze transition-colors duration-300 flex items-center gap-2"
