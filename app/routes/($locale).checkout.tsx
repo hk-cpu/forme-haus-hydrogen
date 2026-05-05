@@ -163,19 +163,28 @@ function AddressAutocomplete({onSelect}: {onSelect: (h: NominatimHit) => void}) 
   const [q, setQ]         = useState('');
   const [hits, setHits]   = useState<NominatimHit[]>([]);
   const [busy, setBusy]   = useState(false);
+  const [error, setError] = useState('');
   const timer             = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     clearTimeout(timer.current);
-    if (q.length < 3) { setHits([]); return; }
+    if (q.length < 2) { setHits([]); setError(''); return; }
     timer.current = setTimeout(async () => {
       setBusy(true);
+      setError('');
       try {
-        const r = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=5&countrycodes=sa&addressdetails=1`, {headers: {'Accept-Language': 'en'}});
-        setHits(await r.json());
-      } catch {}
+        const r = await fetch(
+          `/api/address-search?q=${encodeURIComponent(q)}&limit=6&countrycodes=sa`,
+        );
+        if (!r.ok) throw new Error('search failed');
+        const data = await r.json();
+        setHits(Array.isArray(data) ? data : []);
+      } catch {
+        setError('Address search unavailable. Please type your address manually.');
+        setHits([]);
+      }
       setBusy(false);
-    }, 600);
+    }, 300);
     return () => clearTimeout(timer.current);
   }, [q]);
 
@@ -200,6 +209,9 @@ function AddressAutocomplete({onSelect}: {onSelect: (h: NominatimHit) => void}) 
             >{h.display_name}</button>
           ))}
         </div>
+      )}
+      {error && (
+        <p className="mt-1 text-[11px] text-taupe/60">{error}</p>
       )}
     </div>
   );
