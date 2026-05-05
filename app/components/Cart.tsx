@@ -3,7 +3,6 @@ import {useRef, useState} from 'react';
 import useScroll from 'react-use/esm/useScroll';
 import {motion, AnimatePresence} from 'framer-motion';
 import type {useFetcher} from '@remix-run/react';
-import {useRouteLoaderData} from '@remix-run/react';
 // eslint-disable-next-line import/order
 import {
   flattenConnection,
@@ -29,9 +28,8 @@ import {Text, Heading} from '~/components/Text';
 import {Link} from '~/components/Link';
 import {IconRemove} from '~/components/Icon';
 import {FeaturedProducts} from '~/components/FeaturedProducts';
-import {buildLocalePath, getInputStyleClasses} from '~/lib/utils';
+import {getInputStyleClasses} from '~/lib/utils';
 import {useTranslation} from '~/hooks/useTranslation';
-import type {RootLoader} from '~/root';
 
 // ============================================================================
 // PREMIUM CART ICONS
@@ -502,18 +500,11 @@ function CartCheckoutActions({
   onClose?: () => void;
 }) {
   const {t} = useTranslation();
-  const rootData = useRouteLoaderData<RootLoader>('root');
-
-  const checkoutPath = buildLocalePath(
-    '/checkout',
-    rootData?.selectedLocale?.pathPrefix,
-  );
-
   return (
     <div className="flex flex-col gap-4">
-      {/* Single CTA — goes to our custom in-Hydrogen checkout page */}
+      {/* Single CTA — goes to custom Tap checkout (creates order in Shopify admin after payment) */}
       <Link
-        to={checkoutPath}
+        to="/checkout"
         onClick={onClose}
         data-test="checkout-btn"
         className="w-full py-4 rounded-xl bg-bronze hover:bg-bronze/90 text-white text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
