@@ -18,6 +18,7 @@ import {
   clearCheckoutData,
   markOrderCreated,
 } from '~/lib/checkout.server';
+import {sendOrderConfirmation} from '~/lib/email.server';
 
 // ── Shopify Order Creation ────────────────────────────────────────────────────
 async function createShopifyOrder(
@@ -96,7 +97,7 @@ async function createShopifyOrder(
       },
       note: `Paid via Tap Payments. Charge ID: ${data.tapChargeId}. Ref: ${data.merchantTxId}`,
       tags: 'tap-payment,online',
-      send_receipt: true,
+      send_receipt: false,
     },
   };
 
@@ -215,6 +216,27 @@ export async function loader({request, context}: LoaderFunctionArgs) {
           orderName = orderResult.name;
           shopifyOrderId = orderResult.id;
           markOrderCreated(session, orderResult.id ?? '');
+
+          // Send branded confirmation email — strictly formehaus.me links only
+          const resendKey = (env as any).RESEND_API_KEY as string | undefined;
+          if (resendKey && checkoutData.contact.email) {
+            sendOrderConfirmation(resendKey, {
+              toEmail: checkoutData.contact.email,
+              firstName: checkoutData.contact.firstName,
+              orderName: orderResult.name,
+              items: checkoutData.cartLines.map((l) => ({
+                title: l.title,
+                quantity: l.quantity,
+                price: l.price,
+              })),
+              total: checkoutData.total,
+              currency: checkoutData.currency,
+              paymentMethod: data.source?.payment_method,
+              tapChargeId: tapId,
+            }).catch((e) =>
+              console.error('[Email] Failed to send confirmation:', e),
+            );
+          }
         } else {
           orderError = orderResult.error;
         }
