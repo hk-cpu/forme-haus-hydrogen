@@ -506,6 +506,7 @@ function CartCheckoutActions({
       <Link
         to="/checkout"
         onClick={onClose}
+        data-test="checkout-btn"
         className="w-full py-4 rounded-xl bg-bronze hover:bg-bronze/90 text-white text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
       >
         <Icons.Lock className="w-3.5 h-3.5" />

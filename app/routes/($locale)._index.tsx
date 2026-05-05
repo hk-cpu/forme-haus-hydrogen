@@ -16,6 +16,7 @@ const WhyChooseUs = lazy(() =>
     default: module.WhyChooseUs,
   })),
 );
+const TrustBadges = lazy(() => import('~/components/TrustBadges'));
 
 export const headers = routeHeaders;
 
@@ -118,6 +119,12 @@ export default function Homepage() {
         <div className="section-deferred">
           <Suspense fallback={<SectionFallback className="min-h-[420px]" />}>
             <WhyChooseUs />
+          </Suspense>
+        </div>
+
+        <div className="section-deferred py-8 md:py-12 px-6">
+          <Suspense fallback={<SectionFallback className="min-h-[200px]" />}>
+            <TrustBadges variant="full" />
           </Suspense>
         </div>
       </div>

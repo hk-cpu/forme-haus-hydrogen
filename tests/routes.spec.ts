@@ -38,7 +38,7 @@ test.describe('Public Routes', () => {
       expect(response?.status()).toBeLessThan(500);
 
       // Check that main content is rendered
-      await expect(page.locator('main, #root, body')).toBeVisible();
+      await expect(page.locator('body')).toBeVisible();
 
       // Check that no error boundary is shown
       const errorText = await page
@@ -72,14 +72,14 @@ test.describe('Payment Routes', () => {
     await page.goto('/tap/callback');
 
     // Should show the callback UI
-    await expect(page.locator('main, body')).toBeVisible();
+    await expect(page.locator('body')).toBeVisible();
   });
 
   test('HyperPay callback page renders without error', async ({page}) => {
     await page.goto('/hyperpay/callback');
 
     // Should show the callback UI
-    await expect(page.locator('main, body')).toBeVisible();
+    await expect(page.locator('body')).toBeVisible();
   });
 
   test('Tap initiate returns method not allowed for GET', async ({request}) => {
@@ -100,21 +100,21 @@ test.describe('Account Routes (Public)', () => {
     await page.goto('/account/login');
 
     // Should show login form or redirect
-    await expect(page.locator('main, body')).toBeVisible();
+    await expect(page.locator('body')).toBeVisible();
   });
 
   test('Register page is accessible', async ({page}) => {
     await page.goto('/account/register');
 
     // Should show register form or redirect
-    await expect(page.locator('main, body')).toBeVisible();
+    await expect(page.locator('body')).toBeVisible();
   });
 
   test('Account recover page is accessible', async ({page}) => {
     await page.goto('/account/recover');
 
     // Should show recover form
-    await expect(page.locator('main, body')).toBeVisible();
+    await expect(page.locator('body')).toBeVisible();
   });
 });
 
@@ -122,13 +122,13 @@ test.describe('Internationalization Routes', () => {
   test('Arabic locale prefix works', async ({page}) => {
     const response = await page.goto('/ar');
     expect(response?.status()).toBeLessThan(500);
-    await expect(page.locator('main, body')).toBeVisible();
+    await expect(page.locator('body')).toBeVisible();
   });
 
   test('English locale prefix works', async ({page}) => {
     const response = await page.goto('/en');
     expect(response?.status()).toBeLessThan(500);
-    await expect(page.locator('main, body')).toBeVisible();
+    await expect(page.locator('body')).toBeVisible();
   });
 });
 
@@ -137,7 +137,7 @@ test.describe('404 Handling', () => {
     const response = await page.goto('/this-page-does-not-exist-12345');
 
     // Should not crash
-    await expect(page.locator('main, body')).toBeVisible();
+    await expect(page.locator('body')).toBeVisible();
   });
 
   test('Non-existent product returns appropriate response', async ({page}) => {
@@ -145,6 +145,6 @@ test.describe('404 Handling', () => {
 
     // Should handle gracefully
     expect(response?.status()).toBeLessThan(500);
-    await expect(page.locator('main, body')).toBeVisible();
+    await expect(page.locator('body')).toBeVisible();
   });
 });

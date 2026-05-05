@@ -4,6 +4,7 @@ import {
   useLoaderData,
   useRouteError,
   isRouteErrorResponse,
+  useParams,
   Link as RemixLink,
 } from '@remix-run/react';
 import {useRef} from 'react';
@@ -27,6 +28,7 @@ import {CategoryHeader} from '~/components/CategoryHeader';
 import {FilterPanel} from '~/components/FilterPanel';
 import {
   EditorialCollectionView,
+  EditorialNav,
   EDITORIAL_HANDLES,
   getEditorialLayoutConfig,
 } from '~/components/EditorialCollectionView';
@@ -54,13 +56,13 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   // ... (rest of loader remains same until label logic) ...
   invariant(collectionHandle, 'Missing collectionHandle param');
 
-  // Redirect all collections to the all-products collection.
-  if (collectionHandle !== 'all') {
+  // Phone Accessories is a parent category with no products of its own.
+  // Default to Phone Cases when the bare parent is requested.
+  if (collectionHandle === 'phone-accessories') {
     const localePrefix = params.locale ? `/${params.locale}` : '';
-    throw redirect(`${localePrefix}/collections/all`);
+    const search = new URL(request.url).search;
+    throw redirect(`${localePrefix}/collections/phone-cases${search}`);
   }
-  // Declare handle from a runtime call so TS doesn't narrow it to literal "all".
-  const handle = String(collectionHandle);
 
   const searchParams = new URL(request.url).searchParams;
 
@@ -83,7 +85,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   const result = await context.storefront.query(COLLECTION_QUERY, {
     variables: {
       ...paginationVariables,
-      handle,
+      handle: collectionHandle,
       filters,
       sortKey,
       reverse,
@@ -98,7 +100,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   // Carry It Your Own Way: bundle-only editorial collection.
   // Replace whatever the Shopify collection returns with just bundle products
   // (products whose title contains "+").
-  if (handle === 'carry-it-your-way') {
+  if (collectionHandle === 'carry-it-your-way') {
     const {products: allProducts} = await context.storefront.query(
       ALL_PRODUCTS_FALLBACK_QUERY,
       {
@@ -150,7 +152,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     'all',
     'catalog',
   ];
-  const isSyntheticHandle = SYNTHETIC_HANDLES.includes(handle);
+  const isSyntheticHandle = SYNTHETIC_HANDLES.includes(collectionHandle);
 
   // If collection doesn't exist or is empty, create synthetic collection for special handles
   if (
@@ -159,7 +161,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   ) {
     let fallbackProducts: any = null;
 
-    if (handle === 'case-strap-bundles') {
+    if (collectionHandle === 'case-strap-bundles') {
       // Query products from both phone-cases and phone-straps collections
       const [casesResult, strapsResult] = await Promise.all([
         context.storefront.query(COLLECTION_PRODUCTS_QUERY, {
@@ -218,19 +220,19 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
       const lang = context.storefront.i18n.language === 'AR' ? 'AR' : 'EN';
       // @ts-ignore
       let title: string = translations[lang]['nav.newIn'] as string;
-      if (handle === 'sunglasses') title = 'Sunglasses';
-      if (handle === 'sale') title = 'Sale';
-      if (handle === 'phone') title = 'Phone Accessories';
-      if (handle === 'phone-cases') title = 'Phone Accessories';
-      if (handle === 'phone-straps') title = 'Phone Straps';
-      if (handle === 'case-strap-bundles') title = 'Bundles';
-      if (handle === 'all') title = 'All products';
-      if (handle === 'catalog') title = 'All products';
+      if (collectionHandle === 'sunglasses') title = 'Sunglasses';
+      if (collectionHandle === 'sale') title = 'Sale';
+      if (collectionHandle === 'phone') title = 'Phone Accessories';
+      if (collectionHandle === 'phone-cases') title = 'Phone Accessories';
+      if (collectionHandle === 'phone-straps') title = 'Phone Straps';
+      if (collectionHandle === 'case-strap-bundles') title = 'Bundles';
+      if (collectionHandle === 'all') title = 'All products';
+      if (collectionHandle === 'catalog') title = 'All products';
 
       // Create a synthetic collection object
       collection = {
-        id: `synthetic-${handle}`,
-        handle,
+        id: `synthetic-${collectionHandle}`,
+        handle: collectionHandle,
         title,
         description: '',
         seo: {title, description: ''},
@@ -252,8 +254,10 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     throw new Response('collection', {status: 404});
   }
 
-  // @ts-ignore codegen Pick<Collection,...> doesn't fully satisfy CollectionRequiredFields
-  const seo = seoPayload.collection({collection, url: request.url});
+  const seo = seoPayload.collection({
+    collection: collection as any,
+    url: request.url,
+  });
 
   const allFilterValues = collection.products.filters.flatMap(
     (filter: Filter) => filter.values,
@@ -341,6 +345,153 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
   return getSeoMeta(...seoData);
 };
 
+// Collections that use a text-only hero (no image)
+const TEXT_ONLY_HERO_COLLECTIONS = new Set<string>([]);
+
+// Collection hero image overrides
+const HERO_OVERRIDES: Record<
+  string,
+  {
+    src?: string;
+    hideTitle?: boolean;
+    fit?: 'cover' | 'contain' | 'auto' | 'full-width';
+    position?: string;
+    bgClass?: string;
+    heightClass?: string;
+    imgClass?: string;
+    customOverlay?: string;
+  }
+> = {
+  'new-in': {
+    src: '/brand/new-in-hero-v3.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'center center',
+    bgClass: 'bg-[#B8956E]',
+  },
+  new: {
+    src: '/brand/new-in-hero-v3.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'center center',
+    bgClass: 'bg-[#B8956E]',
+  },
+  sunglasses: {
+    src: '/brand/sunglasses-hero-v3.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'center center',
+    bgClass: 'bg-[#C8B496]',
+  },
+  sale: {
+    src: '/assets/heros/sale-hero-banner.webp',
+    hideTitle: true,
+    fit: 'full-width',
+    bgClass: 'bg-[#E7D6C3]',
+  },
+  phone: {
+    src: '/brand/phone-accessories-hero-v3.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'center center',
+    bgClass: 'bg-[#C8B8A0]',
+  },
+  'phone-cases': {
+    src: '/brand/phone-accessories-hero-v3.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'center center',
+    bgClass: 'bg-[#C8B8A0]',
+  },
+  'phone-straps': {
+    src: '/brand/phone-accessories-hero-v3.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'center center',
+    bgClass: 'bg-[#C8B8A0]',
+  },
+  'case-strap-bundles': {
+    src: '/brand/phone-accessories-hero-v3.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'center center',
+    bgClass: 'bg-[#C8B8A0]',
+  },
+  'carry-it-your-way': {
+    src: '/assets/heros/CarryItYourWay_CollectionsPageHero.png',
+    hideTitle: true,
+    customOverlay: 'right-centered',
+    fit: 'full-width',
+    position: 'right center',
+    imgClass: 'w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] object-cover',
+  },
+  'sun-ready': {
+    src: '/assets/heros/SunReady_CollectionsPageHero.png',
+    hideTitle: true,
+    customOverlay: 'right-centered',
+    fit: 'full-width',
+    position: 'right center',
+    imgClass: 'w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] object-cover',
+  },
+  'new-arrivals': {
+    src: '/brand/new-arrivals-hero-v2.png',
+    hideTitle: true,
+    fit: 'full-width',
+    position: 'center center',
+    imgClass: 'w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] object-cover',
+  },
+  'modern-essentials': {
+    src: '/assets/heros/ModernEssentials_CollectionsPageHero.png',
+    hideTitle: true,
+    customOverlay: 'right-centered',
+    fit: 'full-width',
+    position: 'right center',
+    imgClass: 'w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] object-cover',
+  },
+};
+
+// Collection subtitle overrides — curated copy per landing page
+const COLLECTION_SUBTITLES: Record<
+  string,
+  {subtitle: string; description?: string}
+> = {
+  'new-in': {
+    subtitle: 'The latest additions to our curated selection.',
+  },
+  phone: {
+    subtitle: 'Designed to be carried beautifully.',
+  },
+  'phone-cases': {
+    subtitle: 'Designed to be carried beautifully.',
+  },
+  'phone-straps': {
+    subtitle: 'Designed to be carried beautifully.',
+  },
+  'case-strap-bundles': {
+    subtitle: 'Designed to be carried beautifully.',
+  },
+  sunglasses: {
+    subtitle: 'For light-filled days and elevated escapes.',
+  },
+  'modern-essentials': {
+    subtitle:
+      'Foundations shaped by intention and refined for everyday presence.',
+    description: 'Foundations of a refined wardrobe.',
+  },
+  'sun-ready': {
+    subtitle: 'Composed in daylight. Designed for warmth and clarity.',
+    description: 'For golden hours and everyday light.',
+  },
+  'carry-it-your-way': {
+    subtitle: 'Hands-free elegance, carried with ease.',
+    description: 'Hands-free. Effortless. Elevated.',
+  },
+  'new-arrivals': {
+    subtitle: 'Newly introduced. Carefully considered.',
+    description: 'Freshly arrived.',
+  },
+};
+
 export default function Collection() {
   const {collection, appliedFilters, editorialLayoutConfig} =
     useLoaderData<typeof loader>();
@@ -355,152 +506,19 @@ export default function Collection() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
   const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
 
-  // Collections that use a text-only hero (no image)
-  const TEXT_ONLY_HERO_COLLECTIONS = new Set<string>([]);
-
   // Themed collections — skeleton removed, showing real products
   const THEMED_COLLECTIONS = new Set<string>([]);
   const isThemedCollection = THEMED_COLLECTIONS.has(collection.handle);
   const isComingSoonCollection = collection.handle === 'new-arrivals';
 
-  // Collection hero image overrides
-  const HERO_OVERRIDES: Record<
-    string,
-    {
-      src?: string;
-      hideTitle?: boolean;
-      fit?: 'cover' | 'contain' | 'auto' | 'full-width';
-      position?: string;
-      bgClass?: string;
-      heightClass?: string;
-    }
-  > = {
-    'new-in': {
-      src: '/brand/new-in-hero-v3.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'center center',
-      bgClass: 'bg-[#B8956E]',
-    },
-    new: {
-      src: '/brand/new-in-hero-v3.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'center center',
-      bgClass: 'bg-[#B8956E]',
-    },
-    sunglasses: {
-      src: '/brand/sunglasses-hero-v3.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'center center',
-      bgClass: 'bg-[#C8B496]',
-    },
-    sale: {
-      src: '/assets/heros/sale-hero-banner.webp',
-      hideTitle: true,
-      fit: 'full-width',
-      bgClass: 'bg-[#E7D6C3]',
-    },
-    phone: {
-      src: '/brand/phone-accessories-hero-v3.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'center center',
-      bgClass: 'bg-[#C8B8A0]',
-    },
-    'phone-cases': {
-      src: '/brand/phone-accessories-hero-v3.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'center center',
-      bgClass: 'bg-[#C8B8A0]',
-    },
-    'phone-straps': {
-      src: '/brand/phone-accessories-hero-v3.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'center center',
-      bgClass: 'bg-[#C8B8A0]',
-    },
-    'case-strap-bundles': {
-      src: '/brand/phone-accessories-hero-v3.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'center center',
-      bgClass: 'bg-[#C8B8A0]',
-    },
-    'carry-it-your-way': {
-      src: '/brand/carry-hero-v2.png',
-      hideTitle: true,
-      fit: 'full-width',
-      position: 'top',
-    },
-    'sun-ready': {
-      src: '/brand/sun-ready-hero-v2.png',
-      hideTitle: true,
-      fit: 'full-width',
-    },
-    'new-arrivals': {
-      src: '/brand/new-arrivals-hero-v2.png',
-      hideTitle: true,
-      fit: 'full-width',
-    },
-    'modern-essentials': {
-      src: '/brand/modern-essentials-hero-v2.png',
-      hideTitle: true,
-      fit: 'full-width',
-    },
-  };
 
-  // Collection subtitle overrides — curated copy per landing page
-  const COLLECTION_SUBTITLES: Record<
-    string,
-    {subtitle: string; description?: string}
-  > = {
-    'new-in': {
-      subtitle: 'The latest additions to our curated selection.',
-    },
-    phone: {
-      subtitle: 'Designed to be carried beautifully.',
-    },
-    'phone-cases': {
-      subtitle: 'Designed to be carried beautifully.',
-    },
-    'phone-straps': {
-      subtitle: 'Designed to be carried beautifully.',
-    },
-    'case-strap-bundles': {
-      subtitle: 'Designed to be carried beautifully.',
-    },
-    sunglasses: {
-      subtitle: 'For light-filled days and elevated escapes.',
-    },
-    'modern-essentials': {
-      subtitle:
-        'Foundations shaped by intention and refined for everyday presence.',
-      description: 'Foundations of a refined wardrobe.',
-    },
-    'sun-ready': {
-      subtitle: 'Composed in daylight. Designed for warmth and clarity.',
-      description: 'For golden hours and everyday light.',
-    },
-    'carry-it-your-way': {
-      subtitle: 'Hands-free elegance, carried with ease.',
-      description: 'Hands-free. Effortless. Elevated.',
-    },
-    'new-arrivals': {
-      subtitle: 'Newly introduced. Carefully considered.',
-      description: 'Freshly arrived.',
-    },
-  };
 
   const collectionSubtitle = COLLECTION_SUBTITLES[collection.handle];
 
   const override = HERO_OVERRIDES[collection.handle];
   const heroImage =
-    collection.hero_image?.reference?.image?.url ||
     override?.src ||
+    collection.hero_image?.reference?.image?.url ||
     collection.image?.url;
   const hideTitle =
     collection.hide_title?.value === 'true' || override?.hideTitle;
@@ -510,6 +528,7 @@ export default function Collection() {
   const bgColor =
     collection.bg_color?.value || override?.bgClass || 'bg-[#E8DED4]';
   const heightClass = override?.heightClass || '';
+  const imgClass = override?.imgClass || 'h-auto';
 
   const isFullWidthHero = heroFit === 'full-width' && hideTitle;
   const isTextOnlyHero = TEXT_ONLY_HERO_COLLECTIONS.has(collection.handle);
@@ -520,7 +539,8 @@ export default function Collection() {
       {isTextOnlyHero ? (
         /* Text-only hero for sunglasses, phone cases, straps */
         <motion.div
-          className="w-full py-16 md:py-24 bg-[#F9F5F0] border-b border-[#E8E0D8]"
+          ref={heroRef}
+          className="relative w-full py-16 md:py-24 bg-[#F9F5F0] border-b border-[#E8E0D8]"
           initial={{opacity: 0}}
           animate={{opacity: 1}}
           transition={{duration: 0.6}}
@@ -567,9 +587,9 @@ export default function Collection() {
                   <motion.img
                     src={heroImage}
                     alt={collection.title}
-                    className="block w-full h-full object-cover"
+                    className={`block w-full ${imgClass}`}
                     loading="eager"
-                    fetchPriority="high"
+                    {...({fetchpriority: 'high'} as any)}
                     style={{
                       y: heroY,
                       objectPosition: heroPosition,
@@ -587,7 +607,7 @@ export default function Collection() {
                   alt={collection.title}
                   className="block h-[30vh] min-h-[240px] w-full object-cover sm:h-[36vh] md:h-[42vh] lg:h-[48vh]"
                   loading="eager"
-                  fetchPriority="high"
+                  {...({fetchpriority: 'high'} as any)}
                   style={{y: heroY, objectPosition: heroPosition}}
                   initial={{scale: 1.03}}
                   animate={{scale: 1}}
@@ -639,6 +659,40 @@ export default function Collection() {
               </motion.div>
             </div>
           )}
+          {/* Custom Overlay for specific collections */}
+          {override?.customOverlay === 'right-centered' && (
+            <div className="absolute inset-0 flex flex-col justify-end md:justify-center items-center md:items-end pb-[12%] md:pb-0 px-4 md:pr-[4%] lg:pr-[8%] z-10 pointer-events-none">
+              {/* Desktop dark vignette for flawless text contrast */}
+              <div className="absolute inset-0 bg-gradient-to-l from-[#121212]/85 via-[#121212]/20 to-transparent hidden md:block z-[-1]" />
+              {/* Mobile dark vignette (bottom-up) for bottom-aligned text */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#121212]/90 via-[#121212]/30 to-transparent md:hidden z-[-1]" />
+
+              <motion.div
+                className="relative text-center md:text-right w-full md:w-auto md:px-12 py-2 md:py-10"
+                initial={{opacity: 0, y: 10}}
+                animate={{opacity: 1, y: 0}}
+                transition={{
+                  delay: 0.1,
+                  duration: 0.8,
+                  ease: [0.25, 0.1, 0.25, 1],
+                }}
+              >
+                <h1 
+                  className="font-serif text-[28px] sm:text-3xl md:text-5xl lg:text-[54px] text-[#D4AF87] mb-1.5 md:mb-2 leading-[1.1] drop-shadow-md"
+                  style={{ 
+                    letterSpacing: '0.015em',
+                  }}
+                >
+                  {collection.title}
+                </h1>
+                <p 
+                  className="font-serif font-light text-[14px] sm:text-[16px] md:text-xl lg:text-[22px] text-[#F9F5F0] leading-snug drop-shadow-sm mx-auto md:ml-auto md:mr-0 max-w-[280px] sm:max-w-[320px] md:max-w-none"
+                >
+                  {COLLECTION_SUBTITLES[collection.handle]?.subtitle}
+                </p>
+              </motion.div>
+            </div>
+          )}
         </motion.div>
       )}
 
@@ -646,9 +700,9 @@ export default function Collection() {
         /* ─── Editorial Collection Layout ─── */
         <>
           <EditorialCollectionView
-            collection={collection as any}
+            collection={collection}
             layoutConfig={editorialLayoutConfig}
-            products={collection.products.nodes as any}
+            products={collection.products.nodes}
           />
           <Analytics.CollectionView
             data={{
@@ -1297,23 +1351,83 @@ const COLLECTION_PRODUCTS_QUERY = `#graphql
 export function ErrorBoundary() {
   const error = useRouteError();
   const is404 = isRouteErrorResponse(error) && error.status === 404;
+  
+  // Safely grab the collectionHandle from Remix route params
+  const params = useParams();
+  const collectionHandle = params?.collectionHandle || '';
+
+  const isEditorialHandle = collectionHandle ? EDITORIAL_HANDLES.has(collectionHandle) : false;
+
+  const override = HERO_OVERRIDES[collectionHandle];
+  const heroImage = override?.src;
+  const hideTitle = override?.hideTitle;
+  const heroPosition = override?.position || 'center center';
+  const heroFit = override?.fit || 'cover';
+  const bgColor = override?.bgClass || 'bg-[#E8DED4]';
+  const heightClass = override?.heightClass || '';
+  const imgClass = override?.imgClass || 'h-auto';
+
+  const isFullWidthHero = heroFit === 'full-width' && hideTitle;
 
   return (
-    <div className="flex flex-col items-center justify-center py-20 px-6 text-center min-h-[50vh]">
-      <h1 className="font-serif text-3xl md:text-4xl text-brand-text mb-4">
-        {is404 ? 'Collection Not Found' : 'Something went wrong'}
-      </h1>
-      <p className="text-[#8B8076] mb-8 max-w-md">
-        {is404
-          ? "We couldn't find this collection. It may have been removed or renamed."
-          : 'There was an error loading this collection. Please try again.'}
-      </p>
-      <RemixLink
-        to="/collections"
-        className="inline-block bg-[#a87441] text-white text-xs uppercase tracking-[0.2em] px-8 py-3 hover:bg-[#8B5E34] transition-colors"
-      >
-        View All Collections
-      </RemixLink>
+    <div className="min-h-screen bg-[#F9F5F0]">
+      {/* ─── Static Hero Banner for 404 Pages ─── */}
+      {heroImage && (
+        <div
+          className="relative w-full overflow-hidden bg-[#F9F5F0]"
+          style={{ paddingTop: 'var(--navbar-height)' }}
+        >
+          {isFullWidthHero ? (
+            <div className={`relative w-full overflow-hidden ${bgColor} ${heightClass}`}>
+              <img
+                src={heroImage}
+                alt={collectionHandle}
+                className={`block w-full ${imgClass}`}
+                loading="eager"
+                style={{
+                  objectPosition: heroPosition,
+                  transformOrigin: heroPosition === 'top' ? 'top center' : 'center center',
+                }}
+              />
+            </div>
+          ) : (
+            <img
+              src={heroImage}
+              alt={collectionHandle}
+              className="block h-[30vh] min-h-[240px] w-full object-cover sm:h-[36vh] md:h-[42vh] lg:h-[48vh]"
+              loading="eager"
+              style={{ objectPosition: heroPosition }}
+            />
+          )}
+          {!isFullWidthHero && (
+            <>
+              <div className="absolute inset-y-0 left-0 w-16 md:w-28 bg-gradient-to-r from-[#F9F5F0]/50 to-transparent pointer-events-none" />
+              <div className="absolute inset-y-0 right-0 w-16 md:w-28 bg-gradient-to-l from-[#F9F5F0]/50 to-transparent pointer-events-none" />
+            </>
+          )}
+          {!hideTitle && (
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0f0d0a]/70 via-transparent to-transparent" />
+          )}
+        </div>
+      )}
+
+      {isEditorialHandle && <EditorialNav currentHandle={collectionHandle} />}
+      <div className="flex flex-col items-center justify-center py-20 px-6 text-center min-h-[50vh]">
+        <h1 className="font-serif text-3xl md:text-4xl text-brand-text mb-4">
+          {is404 ? 'Collection Not Found' : 'Something went wrong'}
+        </h1>
+        <p className="text-[#8B8076] mb-8 max-w-md">
+          {is404
+            ? "We couldn't find this collection. It may have been removed or renamed."
+            : 'There was an error loading this collection. Please try again.'}
+        </p>
+        <RemixLink
+          to="/products"
+          className="inline-block bg-[#a87441] text-white text-xs uppercase tracking-[0.2em] px-8 py-3 hover:bg-[#8B5E34] transition-colors"
+        >
+          View All Collections
+        </RemixLink>
+      </div>
     </div>
   );
 }

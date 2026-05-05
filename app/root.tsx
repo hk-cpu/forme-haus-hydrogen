@@ -176,7 +176,7 @@ async function loadCriticalData({request, context}: LoaderFunctionArgs) {
       publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
     }),
     consent: {
-      checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
+      checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN || 'shop.formehaus.me',
       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
       withPrivacyBanner: true,
       country: storefront.i18n.country,
@@ -238,7 +238,10 @@ function Layout({children}: {children?: React.ReactNode}) {
           href={futuristicStyles}
           as="style"
           // @ts-ignore – onLoad triggers stylesheet swap after load
-          onLoad="this.onload=null;this.rel='stylesheet'"
+          onLoad={(e) => {
+            (e.currentTarget as any).onload = null;
+            (e.currentTarget as any).rel = 'stylesheet';
+          }}
         />
         <noscript>
           <link rel="stylesheet" href={futuristicStyles} />

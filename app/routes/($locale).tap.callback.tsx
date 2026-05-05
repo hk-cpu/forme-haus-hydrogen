@@ -3,6 +3,8 @@
  * ────────────────────────────
  * Tap redirects here after customer completes/cancels payment.
  * On CAPTURED: creates a real Shopify order via Admin API and shows confirmation.
+ *
+ * URL: /tap/callback?tap_id={chargeId}&merchantTxId={ref}
  */
 
 import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
@@ -116,13 +118,19 @@ async function createShopifyOrder(
       errors?: unknown;
     };
     if (body.order) {
+      console.log(
+        `[Tap Callback] Shopify order created: ${body.order.name} (${body.order.id})`,
+      );
       return {id: String(body.order.id), name: body.order.name};
     }
-    console.error('[Tap Callback] Shopify order creation failed:', body.errors);
+    if (body.errors) {
+      console.error('[Tap Callback] Shopify order creation failed:', body.errors);
+      return {error: typeof body.errors === 'string' ? body.errors : JSON.stringify(body.errors)};
+    }
     return {error: 'Order creation failed'};
   } catch (err) {
     console.error('[Tap Callback] Shopify order API error:', err);
-    return {error: 'Order creation error'};
+    return {error: err instanceof Error ? err.message : 'Order creation error'};
   }
 }
 
@@ -153,6 +161,13 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     });
   }
 
+  // Log whether Admin API is configured — helpful for debugging
+  if (!adminToken) {
+    console.warn(
+      '[Tap Callback] SHOPIFY_ADMIN_API_TOKEN not set — orders will NOT be created in Shopify.',
+    );
+  }
+
   try {
     const res = await fetch(`${apiUrl}/charges/${tapId}`, {
       method: 'GET',
@@ -173,16 +188,18 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       response?: {code?: string; message?: string};
     };
 
+    console.log(`[Tap Callback] tap_id=${tapId} status=${data.status}`);
+
     const chargeStatus = data.status?.toUpperCase();
 
     if (chargeStatus === 'CAPTURED') {
-      // Retrieve checkout session data
+      // Retrieve checkout session data saved before the Tap redirect
       const checkoutData = getCheckoutData(session);
       let orderName: string | undefined;
       let shopifyOrderId: string | undefined;
+      let orderError: string | undefined;
 
-      // Create Shopify order if we have Admin API token and haven't done it yet
-      if (adminToken && checkoutData && !checkoutData.orderCreated) {
+      if (adminToken && storeDomain && checkoutData && !checkoutData.orderCreated) {
         const orderResult = await createShopifyOrder(storeDomain, adminToken, {
           contact: checkoutData.contact,
           address: checkoutData.address,
@@ -198,27 +215,45 @@ export async function loader({request, context}: LoaderFunctionArgs) {
           orderName = orderResult.name;
           shopifyOrderId = orderResult.id;
           markOrderCreated(session, orderResult.id ?? '');
+        } else {
+          orderError = orderResult.error;
         }
       } else if (checkoutData?.shopifyOrderId) {
         shopifyOrderId = checkoutData.shopifyOrderId;
       }
 
-      // Clear checkout session
+      // Clear checkout session data
       clearCheckoutData(session);
 
-      return json({
-        status: 'success' as const,
-        message: 'Payment successful. Thank you for your order!',
-        transactionId: data.id,
-        receiptId: data.receipt?.id,
-        amount: data.amount ? String(data.amount) : undefined,
-        currency: data.currency,
-        paymentMethod: data.source?.payment_method,
-        merchantTxId: data.reference?.transaction ?? merchantTxId,
-        orderName,
-        shopifyOrderId,
-        nextPath: buildLocalePath('/account', localePrefix),
-      });
+      const sessionCookie = await session.commit();
+      // Expire the Shopify cart cookie so the bag badge resets to 0
+      const expireCartCookie =
+        'cart=; Max-Age=0; Path=/; HttpOnly; SameSite=Lax';
+
+      return json(
+        {
+          status: 'success' as const,
+          message: 'Payment successful. Thank you for your order!',
+          transactionId: data.id,
+          receiptId: data.receipt?.id,
+          amount: data.amount ? String(data.amount) : undefined,
+          currency: data.currency,
+          paymentMethod: data.source?.payment_method,
+          merchantTxId: data.reference?.transaction ?? merchantTxId,
+          orderName,
+          shopifyOrderId,
+          orderError,
+          customerEmail: checkoutData?.contact?.email,
+          nextPath: buildLocalePath('/collections/all', localePrefix),
+          accountPath: buildLocalePath('/account', localePrefix),
+        },
+        {
+          headers: [
+            ['Set-Cookie', sessionCookie],
+            ['Set-Cookie', expireCartCookie],
+          ],
+        },
+      );
     }
 
     if (chargeStatus === 'INITIATED' || chargeStatus === 'IN_PROGRESS') {
@@ -232,6 +267,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       });
     }
 
+    // ABANDONED, CANCELLED, DECLINED, RESTRICTED, VOID, TIMEDOUT, UNKNOWN
     return json({
       status: 'failed' as const,
       message:
@@ -327,12 +363,24 @@ export default function TapPaymentCallback() {
                 </p>
               </div>
             )}
+            {'orderError' in data && data.orderError && (
+              <div className="mb-3 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+                <p className="text-[10px] uppercase tracking-widest text-red-400">
+                  Shopify Order Error
+                </p>
+                <p className="text-xs text-red-300 mt-1 font-mono break-all">
+                  {data.orderError as string}
+                </p>
+              </div>
+            )}
+
             <p className="text-[10px] uppercase tracking-widest text-[#8B8076]">
               Transaction ID
             </p>
             <p className={`text-sm font-mono mt-0.5 ${cfg.color}`}>
               {data.transactionId}
             </p>
+
             {'paymentMethod' in data && data.paymentMethod && (
               <p className="text-[10px] uppercase tracking-widest text-[#8B8076] mt-3">
                 Paid via {data.paymentMethod}
@@ -358,15 +406,39 @@ export default function TapPaymentCallback() {
             to={
               'nextPath' in data && data.nextPath
                 ? data.nextPath
-                : data.status === 'success'
-                ? '/account'
                 : '/collections/all'
             }
-            className="px-6 py-3 bg-brand-text/10 text-brand-text text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-brand-text/20 transition-colors"
+            className="px-6 py-3 bg-[#a87441] text-white text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-[#8B5E3C] transition-colors"
           >
-            {data.status === 'success' ? 'View Orders' : 'Continue Shopping'}
+            Continue Shopping
           </Link>
+          {data.status === 'success' && (
+            <Link
+              to={'accountPath' in data && data.accountPath ? data.accountPath : '/account'}
+              className="px-6 py-3 bg-brand-text/10 text-brand-text text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-brand-text/20 transition-colors"
+            >
+              View Orders
+            </Link>
+          )}
         </div>
+
+        {/* Guest: prompt to create account for order tracking */}
+        {data.status === 'success' && 'customerEmail' in data && data.customerEmail && (
+          <div className="mt-8 p-4 rounded-xl border border-bronze/15 bg-bronze/5 text-center">
+            <p className="text-[11px] uppercase tracking-[0.2em] text-[#8B8076] mb-1">
+              Track Your Order
+            </p>
+            <p className="text-sm text-warm/80 mb-3">
+              Create an account to view your order history and track your shipment.
+            </p>
+            <Link
+              to={`/account/login`}
+              className="inline-block px-5 py-2 border border-bronze/40 text-bronze text-[11px] uppercase tracking-[0.15em] rounded-sm hover:bg-bronze/10 transition-colors"
+            >
+              Create Account / Sign In →
+            </Link>
+          </div>
+        )}
       </motion.div>
     </div>
   );

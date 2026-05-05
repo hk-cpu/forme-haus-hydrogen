@@ -130,7 +130,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
             height={item.height}
             sizes="(max-width: 768px) 100vw, 50vw"
             loading={index < 2 ? 'eager' : 'lazy'}
-            fetchPriority={index === 0 ? 'high' : 'auto'}
+            fetchpriority={index === 0 ? 'high' : 'auto'}
             decoding="async"
           />
 
@@ -219,7 +219,7 @@ export default function EditorialSection({
     <section
       ref={sectionRef}
       aria-label="Editorial"
-      className="py-6 md:py-8"
+      className="py-6 md:py-8 relative"
       dir={isRTL ? 'rtl' : 'ltr'}
     >
       <div

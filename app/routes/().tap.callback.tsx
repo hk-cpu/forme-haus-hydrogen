@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Tap Payments Callback Route
  * ────────────────────────────
  * Tap redirects here after customer completes/cancels payment.
@@ -203,22 +203,37 @@ export async function loader({request, context}: LoaderFunctionArgs) {
         shopifyOrderId = checkoutData.shopifyOrderId;
       }
 
-      // Clear checkout session
+      // Clear cart (bag) — expire the cart cookie so a fresh empty cart is created next page load
       clearCheckoutData(session);
 
-      return json({
-        status: 'success' as const,
-        message: 'Payment successful. Thank you for your order!',
-        transactionId: data.id,
-        receiptId: data.receipt?.id,
-        amount: data.amount ? String(data.amount) : undefined,
-        currency: data.currency,
-        paymentMethod: data.source?.payment_method,
-        merchantTxId: data.reference?.transaction ?? merchantTxId,
-        orderName,
-        shopifyOrderId,
-        nextPath: buildLocalePath('/account', localePrefix),
-      });
+      const sessionCookie = await session.commit();
+      // Expire the Shopify cart cookie so the bag badge resets to 0
+      const expireCartCookie =
+        'cart=; Max-Age=0; Path=/; HttpOnly; SameSite=Lax';
+
+      return json(
+        {
+          status: 'success' as const,
+          message: 'Payment successful. Thank you for your order!',
+          transactionId: data.id,
+          receiptId: data.receipt?.id,
+          amount: data.amount ? String(data.amount) : undefined,
+          currency: data.currency,
+          paymentMethod: data.source?.payment_method,
+          merchantTxId: data.reference?.transaction ?? merchantTxId,
+          orderName,
+          shopifyOrderId,
+          customerEmail: checkoutData?.contact?.email,
+          nextPath: buildLocalePath('/collections/all', localePrefix),
+          accountPath: buildLocalePath('/account', localePrefix),
+        },
+        {
+          headers: [
+            ['Set-Cookie', sessionCookie],
+            ['Set-Cookie', expireCartCookie],
+          ],
+        },
+      );
     }
 
     if (chargeStatus === 'INITIATED' || chargeStatus === 'IN_PROGRESS') {
@@ -358,15 +373,39 @@ export default function TapPaymentCallback() {
             to={
               'nextPath' in data && data.nextPath
                 ? data.nextPath
-                : data.status === 'success'
-                ? '/account'
                 : '/collections/all'
             }
-            className="px-6 py-3 bg-brand-text/10 text-brand-text text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-brand-text/20 transition-colors"
+            className="px-6 py-3 bg-[#a87441] text-white text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-[#8B5E3C] transition-colors"
           >
-            {data.status === 'success' ? 'View Orders' : 'Continue Shopping'}
+            Continue Shopping
           </Link>
+          {data.status === 'success' && (
+            <Link
+              to={'accountPath' in data && data.accountPath ? data.accountPath : '/account'}
+              className="px-6 py-3 bg-brand-text/10 text-brand-text text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-brand-text/20 transition-colors"
+            >
+              View Orders
+            </Link>
+          )}
         </div>
+
+        {/* Guest: prompt to create account for order tracking */}
+        {data.status === 'success' && 'customerEmail' in data && data.customerEmail && (
+          <div className="mt-8 p-4 rounded-xl border border-bronze/15 bg-bronze/5 text-center">
+            <p className="text-[11px] uppercase tracking-[0.2em] text-[#8B8076] mb-1">
+              Track Your Order
+            </p>
+            <p className="text-sm text-warm/80 mb-3">
+              Create an account to view your order history and track your shipment.
+            </p>
+            <Link
+              to="/account/login"
+              className="inline-block px-5 py-2 border border-bronze/40 text-bronze text-[11px] uppercase tracking-[0.15em] rounded-sm hover:bg-bronze/10 transition-colors"
+            >
+              Create Account / Sign In →
+            </Link>
+          </div>
+        )}
       </motion.div>
     </div>
   );

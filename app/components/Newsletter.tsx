@@ -1,4 +1,4 @@
-import {useFetcher} from '@remix-run/react';
+import {useFetcher, useNavigate} from '@remix-run/react';
 import {useEffect, useRef} from 'react';
 
 import {useTranslation} from '~/hooks/useTranslation';
@@ -11,6 +11,7 @@ export function Newsletter() {
   }>();
   const formRef = useRef<HTMLFormElement>(null);
   const {t} = useTranslation() as any;
+  const navigate = useNavigate();
 
   const isSuccess = fetcher.data?.success;
   const isError = fetcher.data?.error;
@@ -21,6 +22,15 @@ export function Newsletter() {
       formRef.current.reset();
     }
   }, [isSuccess]);
+
+  // Redirect to all products after showing the success message briefly
+  useEffect(() => {
+    if (!isSuccess) return;
+    const timer = setTimeout(() => {
+      navigate('/collections/all');
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [isSuccess, navigate]);
 
   return (
     <div className="w-full">

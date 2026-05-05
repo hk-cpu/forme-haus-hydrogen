@@ -28,7 +28,7 @@ const JOURNAL_CARDS: JournalCard[] = [
     title: 'Everyday Elegance',
     excerpt: 'Elegance is lived in the in-between moments.',
     width: 640,
-    height: 954,
+    height: 640,
   },
   {
     image: '/brand/journal-elegance-opt.webp',
@@ -37,7 +37,7 @@ const JOURNAL_CARDS: JournalCard[] = [
     title: 'Behind the Selection',
     excerpt: 'Every piece begins with careful consideration.',
     width: 640,
-    height: 640,
+    height: 954,
   },
 ];
 

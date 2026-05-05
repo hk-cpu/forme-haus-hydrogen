@@ -58,7 +58,6 @@ const topLevelItems = [
     hasSubmenu: true,
   },
   {label: 'All Products', href: '/products', hasSubmenu: false},
-  {label: 'Sale', href: '/collections/sale', hasSubmenu: false},
   {label: 'Our Story', href: '/pages/about', hasSubmenu: false},
   {label: 'Contact Us', href: '/contact', hasSubmenu: false},
 ];

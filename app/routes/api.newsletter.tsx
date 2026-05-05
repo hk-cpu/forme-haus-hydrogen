@@ -48,7 +48,7 @@ export async function action({request, context}: ActionFunctionArgs) {
   } catch (error) {
     console.error('Newsletter API Exception:', error);
     return json(
-      {error: 'Failed to subscribe. Please try again.'},
+      {error: error instanceof Error ? error.message : String(error)},
       {status: 500},
     );
   }
