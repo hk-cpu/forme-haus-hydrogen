@@ -559,49 +559,6 @@ function CartCheckoutActions({
   );
 }
 
-// Free shipping threshold in SAR — update to match your Shopify shipping rules
-const FREE_SHIPPING_THRESHOLD = 250;
-
-function FreeShippingBar({subtotal}: {subtotal: string | undefined}) {
-  const amount = parseFloat(subtotal || '0');
-  const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - amount);
-  const progress = Math.min(100, (amount / FREE_SHIPPING_THRESHOLD) * 100);
-  const isFree = remaining === 0;
-
-  return (
-    <div className="px-1 py-3">
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-1.5">
-          <Icons.Truck className="w-3.5 h-3.5 text-bronze" />
-          {isFree ? (
-            <span className="text-[11px] text-bronze font-medium">
-              🎉 You&apos;ve unlocked free shipping!
-            </span>
-          ) : (
-            <span className="text-[11px] text-taupe">
-              Add{' '}
-              <span className="text-warm font-semibold">
-                {remaining.toFixed(0)} SAR
-              </span>{' '}
-              for free shipping
-            </span>
-          )}
-        </div>
-        <span className="text-[10px] text-taupe">
-          {FREE_SHIPPING_THRESHOLD} SAR
-        </span>
-      </div>
-      <div className="h-1 bg-taupe/15 rounded-full overflow-hidden">
-        <motion.div
-          className="h-full rounded-full bg-gradient-to-r from-bronze to-bronze-light"
-          initial={{width: 0}}
-          animate={{width: `${progress}%`}}
-          transition={{duration: 0.6, ease: [0.16, 1, 0.3, 1]}}
-        />
-      </div>
-    </div>
-  );
-}
 
 function GCCPaymentBadges() {
   return (
@@ -677,11 +634,6 @@ function CartSummary({
       <h2 id="summary-heading" className="sr-only">
         Order summary
       </h2>
-
-      {/* Free Shipping Progress Bar — drawer only for cleanliness */}
-      {layout === 'drawer' && (
-        <FreeShippingBar subtotal={cost?.subtotalAmount?.amount} />
-      )}
 
       {/* Subtotal */}
       <div className="flex items-center justify-between py-4 border-b border-bronze/10">
