@@ -502,16 +502,8 @@ function CartCheckoutActions({
   const {t} = useTranslation();
   return (
     <div className="flex flex-col gap-4">
-      {/* Single CTA — goes to custom Tap checkout (creates order in Shopify admin after payment) */}
-      <Link
-        to="/checkout"
-        onClick={onClose}
-        data-test="checkout-btn"
-        className="w-full py-4 rounded-xl bg-bronze hover:bg-bronze/90 text-white text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
-      >
-        <Icons.Lock className="w-3.5 h-3.5" />
-        {t('cart.proceedToCheckout', 'Proceed to Checkout')}
-      </Link>
+      {/* Native Shopify Checkout */}
+      <ShopifyCheckoutButton checkoutUrl={checkoutUrl} t={t} />
 
       {/* Trust Badges */}
       <div className="flex items-center justify-center gap-4 py-2">
@@ -1018,4 +1010,35 @@ function CartEmpty({
 function CartSubtotalLabel() {
   const {t} = useTranslation();
   return <>{t('cart.subtotal')}</>;
+}
+
+function ShopifyCheckoutButton({checkoutUrl, t}: {checkoutUrl: string; t: any}) {
+  const [isRedirecting, setIsRedirecting] = useState(false);
+
+  function handleCheckout() {
+    if (!checkoutUrl) return;
+    setIsRedirecting(true);
+    document.body.style.overflow = '';
+    window.location.href = checkoutUrl;
+  }
+
+  return (
+    <button
+      onClick={handleCheckout}
+      disabled={isRedirecting || !checkoutUrl}
+      className="w-full py-4 rounded-xl bg-bronze hover:bg-bronze/90 text-white text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors disabled:opacity-70"
+    >
+      {isRedirecting ? (
+        <>
+          <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          {t('cart.redirecting', 'Redirecting...')}
+        </>
+      ) : (
+        <>
+          <Icons.Lock className="w-3.5 h-3.5" />
+          {t('cart.proceedToCheckout', 'Proceed to Checkout')}
+        </>
+      )}
+    </button>
+  );
 }

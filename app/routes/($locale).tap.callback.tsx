@@ -152,7 +152,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
   const {env, session} = context;
   const secretKey = env.TAP_SECRET_KEY;
   const apiUrl = env.TAP_API_URL ?? 'https://api.tap.company/v2';
-  const adminToken = env.SHOPIFY_ADMIN_API_TOKEN;
+  const adminToken = env.SHOPIFY_ADMIN_API_TOKEN || env.PRIVATE_STOREFRONT_API_TOKEN;
   const storeDomain = env.PUBLIC_STORE_DOMAIN;
 
   if (!tapId) {
