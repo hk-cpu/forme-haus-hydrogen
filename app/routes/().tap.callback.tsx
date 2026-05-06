@@ -48,6 +48,7 @@ async function createShopifyOrder(
     merchantTxId: string;
     tapChargeId: string;
     paymentMethod?: string;
+    acceptsMarketing: boolean;
   },
 ): Promise<{id?: string; name?: string; error?: string}> {
   const extractId = (gid: string) => {
@@ -76,11 +77,17 @@ async function createShopifyOrder(
           authorization: data.tapChargeId,
         },
       ],
+      buyer_accepts_marketing: data.acceptsMarketing,
       customer: {
         email: data.contact.email,
         first_name: data.contact.firstName,
         last_name: data.contact.lastName,
         phone: data.contact.phone,
+        accepts_marketing: data.acceptsMarketing,
+      },
+      email_marketing_consent: {
+        state: data.acceptsMarketing ? 'subscribed' : 'not_subscribed',
+        opt_in_level: 'single_opt_in',
       },
       shipping_address: {
         first_name: data.contact.firstName,
@@ -193,6 +200,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
           merchantTxId: checkoutData.merchantTxId,
           tapChargeId: tapId,
           paymentMethod: data.source?.payment_method,
+          acceptsMarketing: checkoutData.acceptsMarketing ?? false,
         });
 
         if (orderResult.name) {

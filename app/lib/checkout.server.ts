@@ -41,6 +41,7 @@ export interface CheckoutSessionData {
   contact: CheckoutContact;
   address: CheckoutAddress;
   createdAt: number;
+  acceptsMarketing: boolean;
   /** Set to true once a Shopify Draft Order has been created to prevent duplicates */
   orderCreated?: boolean;
   shopifyOrderId?: string;

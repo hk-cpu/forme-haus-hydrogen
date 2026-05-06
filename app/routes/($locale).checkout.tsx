@@ -47,8 +47,9 @@ export async function action({request, context}: ActionFunctionArgs) {
   const line1     = (fd.get('line1')     as string | null) ?? '';
   const line2     = (fd.get('line2')     as string | null) ?? '';
   const city      = (fd.get('city')      as string | null) ?? '';
-  const country   = (fd.get('country')   as string | null) ?? 'Saudi Arabia';
-  const zip       = (fd.get('zip')       as string | null) ?? '';
+  const country          = (fd.get('country')          as string | null) ?? 'Saudi Arabia';
+  const zip              = (fd.get('zip')              as string | null) ?? '';
+  const acceptsMarketing = fd.get('acceptsMarketing') === 'true';
 
   if (!firstName || !lastName || !email || !phone || !line1 || !city) {
     return json({error: 'Please complete all required fields.'}, {status: 400});
@@ -131,6 +132,7 @@ export async function action({request, context}: ActionFunctionArgs) {
       total, currency,
       contact: {firstName, lastName, email, phone},
       address: {line1, line2: line2 || undefined, city, country, countryCode: 'SA', zip: zip || undefined},
+      acceptsMarketing,
       createdAt: Date.now(),
     });
 
@@ -222,6 +224,7 @@ export default function CheckoutPage() {
   const {lines, total, subtotal, currency, prefillContact, prefillAddress} = useLoaderData<typeof loader>();
   const fetcher = useFetcher<typeof action>();
   const [step, setStep]   = useState(1);
+  const [acceptsMarketing, setAcceptsMarketing] = useState(false);
   const [contact, setContact] = useState({
     firstName: prefillContact?.firstName ?? '',
     lastName:  prefillContact?.lastName  ?? '',
@@ -339,6 +342,23 @@ export default function CheckoutPage() {
                       </div>
                     </div>
                   </div>
+
+                  {/* Marketing consent */}
+                  <label className="flex items-start gap-3 mb-6 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={acceptsMarketing}
+                      onChange={e => setAcceptsMarketing(e.target.checked)}
+                      className="mt-0.5 w-4 h-4 rounded border-taupe/40 bg-surface accent-bronze cursor-pointer"
+                    />
+                    <span className="text-[11px] text-taupe leading-relaxed">
+                      Keep me updated with new arrivals, exclusive offers, and style edits from Formé Haus.
+                    </span>
+                  </label>
+
+                  {/* Pass marketing consent to action */}
+                  <input type="hidden" name="acceptsMarketing" value={String(acceptsMarketing)} />
+
                   <button
                     type="button"
                     disabled={!contact.firstName || !contact.lastName || !contact.email || !contact.phone}
