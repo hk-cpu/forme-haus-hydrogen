@@ -142,6 +142,64 @@ async function createShopifyOrder(
   }
 }
 
+// ── Shopify Draft Order Completion ────────────────────────────────────────────
+async function completeDraftOrder(
+  storeDomain: string,
+  adminToken: string,
+  draftOrderId: string,
+  tapChargeId: string,
+  chargeStatus: string
+): Promise<{id?: string; name?: string; error?: string}> {
+  try {
+    // First, check if the draft order is already completed
+    const getRes = await fetch(
+      `https://${storeDomain}/admin/api/2024-10/draft_orders/${draftOrderId}.json`,
+      { headers: { 'X-Shopify-Access-Token': adminToken } }
+    );
+    const getData = await getRes.json() as any;
+    
+    if (getData.draft_order?.order_id) {
+       const orderId = getData.draft_order.order_id;
+       const orderRes = await fetch(
+         `https://${storeDomain}/admin/api/2024-10/orders/${orderId}.json`,
+         { headers: { 'X-Shopify-Access-Token': adminToken } }
+       );
+       const orderData = await orderRes.json() as any;
+       return {id: String(orderId), name: orderData.order?.name};
+    }
+
+    const isPending = chargeStatus === 'AUTHORIZED' ? 'true' : 'false';
+    const completeRes = await fetch(
+      `https://${storeDomain}/admin/api/2024-10/draft_orders/${draftOrderId}/complete.json?payment_pending=${isPending}`,
+      {
+        method: 'PUT',
+        headers: {
+          'X-Shopify-Access-Token': adminToken,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const completeData = await completeRes.json() as any;
+    if (completeData.draft_order?.order_id) {
+      const orderId = completeData.draft_order.order_id;
+      
+      const orderRes = await fetch(
+        `https://${storeDomain}/admin/api/2024-10/orders/${orderId}.json`,
+        {
+          headers: { 'X-Shopify-Access-Token': adminToken }
+        }
+      );
+      const orderData = await orderRes.json() as any;
+      console.log(`[Tap Callback] Shopify draft order completed: ${orderData.order?.name} (${orderId})`);
+      return {id: String(orderId), name: orderData.order?.name};
+    }
+    return {error: JSON.stringify(completeData.errors)};
+  } catch (err) {
+    console.error('[Tap Callback] Draft completion error:', err);
+    return {error: err instanceof Error ? err.message : 'Draft completion error'};
+  }
+}
+
 // ── Loader ────────────────────────────────────────────────────────────────────
 export async function loader({request, context}: LoaderFunctionArgs) {
   const url = new URL(request.url);
@@ -200,27 +258,37 @@ export async function loader({request, context}: LoaderFunctionArgs) {
 
     const chargeStatus = data.status?.toUpperCase();
 
-    if (chargeStatus === 'CAPTURED') {
+    if (chargeStatus === 'CAPTURED' || chargeStatus === 'AUTHORIZED') {
       // Retrieve checkout session data saved before the Tap redirect
       const checkoutData = getCheckoutData(session);
       let orderName: string | undefined;
       let shopifyOrderId: string | undefined;
       let orderError: string | undefined;
 
-      if (adminToken && storeDomain && checkoutData && !checkoutData.orderCreated) {
-        const orderResult = await createShopifyOrder(storeDomain, adminToken, {
-          contact: checkoutData.contact,
-          address: checkoutData.address,
-          cartLines: checkoutData.cartLines,
-          total: checkoutData.total,
-          currency: checkoutData.currency,
-          merchantTxId: checkoutData.merchantTxId,
-          tapChargeId: tapId,
-          paymentMethod: data.source?.payment_method,
-          acceptsMarketing: checkoutData.acceptsMarketing ?? false,
-        });
+      // Ensure we extract merchantTxId properly, falling back to session if URL is missing it
+      const actualMerchantTxId = data.reference?.transaction ?? merchantTxId ?? checkoutData?.merchantTxId;
 
-        if (orderResult.name) {
+      if (adminToken && storeDomain && actualMerchantTxId) {
+        let orderResult;
+
+        if (actualMerchantTxId.startsWith('DO-')) {
+          const draftOrderId = actualMerchantTxId.replace('DO-', '');
+          orderResult = await completeDraftOrder(storeDomain, adminToken, draftOrderId, tapId, chargeStatus);
+        } else if (checkoutData && !checkoutData.orderCreated) {
+          orderResult = await createShopifyOrder(storeDomain, adminToken, {
+            contact: checkoutData.contact,
+            address: checkoutData.address,
+            cartLines: checkoutData.cartLines,
+            total: checkoutData.total,
+            currency: checkoutData.currency,
+            merchantTxId: checkoutData.merchantTxId,
+            tapChargeId: tapId,
+            paymentMethod: data.source?.payment_method,
+            acceptsMarketing: checkoutData.acceptsMarketing ?? false,
+          });
+        }
+
+        if (orderResult?.name) {
           orderName = orderResult.name;
           shopifyOrderId = orderResult.id;
           markOrderCreated(session, orderResult.id ?? '');
@@ -245,7 +313,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
               console.error('[Email] Failed to send confirmation:', e),
             );
           }
-        } else {
+        } else if (orderResult?.error) {
           orderError = orderResult.error;
         }
       } else if (checkoutData?.shopifyOrderId) {

@@ -63,7 +63,7 @@ export async function action({request, context}: ActionFunctionArgs) {
   const total    = cartResult.cost.totalAmount.amount;
   const currency = cartResult.cost.totalAmount.currencyCode ?? 'SAR';
   const cartId   = cartResult.id ?? '';
-  const merchantTxId = `FH-${Date.now()}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
+  let merchantTxId = `FH-${Date.now()}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
 
   const cartLines = flattenConnection(cartResult.lines).map((l: any) => ({
     title: l.merchandise?.product?.title ?? 'Product',
@@ -78,9 +78,68 @@ export async function action({request, context}: ActionFunctionArgs) {
   const reqUrl   = new URL(request.url);
   const origin   = reqUrl.origin;
   const locale   = getPathLocalePrefix(reqUrl.pathname);
-  const cbPath   = buildLocalePath('/tap/callback', locale);
+  const cbPath   = buildLocalePath('/checkout/success', locale);
   const wbPath   = buildLocalePath('/tap/webhook', locale);
   const rawPhone = phone.replace(/^\+966/, '').replace(/^966/, '').replace(/^0/, '');
+
+  // Phase 1: Create a Draft Order to securely store cart data before leaving for Tap
+  const adminToken = env.SHOPIFY_ADMIN_API_TOKEN || env.PRIVATE_STOREFRONT_API_TOKEN;
+  const storeDomain = env.PUBLIC_STORE_DOMAIN;
+  let draftOrderId: string | null = null;
+
+  if (adminToken && storeDomain) {
+    const draftOrderPayload = {
+      draft_order: {
+        line_items: cartLines.map((l: any) => {
+          const numericId = l.variantId ? l.variantId.split('/').pop() : null;
+          return {
+            variant_id: numericId ? Number(numericId) : undefined,
+            quantity: l.quantity,
+            price: l.price
+          };
+        }),
+        customer: {
+          first_name: firstName,
+          last_name: lastName || 'Customer',
+          email: email,
+          phone: `+966${rawPhone}`
+        },
+        shipping_address: {
+          first_name: firstName,
+          last_name: lastName || 'Customer',
+          address1: line1,
+          address2: line2 || undefined,
+          city: city,
+          country: 'Saudi Arabia',
+          zip: zip || undefined,
+          phone: `+966${rawPhone}`
+        },
+        note: `Tap Payments Checkout Initiated. Cart: ${cartId}`,
+        tags: 'tap-checkout-pending'
+      }
+    };
+
+    try {
+      const draftRes = await fetch(`https://${storeDomain}/admin/api/2024-10/draft_orders.json`, {
+        method: 'POST',
+        headers: {
+          'X-Shopify-Access-Token': adminToken,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(draftOrderPayload)
+      });
+      
+      const draftData = await draftRes.json() as any;
+      if (draftData.draft_order?.id) {
+        draftOrderId = String(draftData.draft_order.id);
+        merchantTxId = `DO-${draftOrderId}`; // Prefix with DO- for Draft Order
+      } else {
+        console.warn('[Checkout] Draft order creation returned no ID:', draftData);
+      }
+    } catch (e) {
+      console.error('[Checkout] Draft order creation failed:', e);
+    }
+  }
 
   const tapPayload: Record<string, unknown> = {
     amount: parseFloat(total),
