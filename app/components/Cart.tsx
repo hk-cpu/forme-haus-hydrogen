@@ -288,7 +288,7 @@ export function CartDetails({
 }) {
   const cartHasItems = !!cart && cart.totalQuantity > 0;
   const container = {
-    drawer: 'flex flex-col h-full w-full',
+    drawer: 'flex flex-col h-full w-full overflow-hidden',
     page: 'w-full pb-12 grid md:grid-cols-2 md:items-start gap-8 md:gap-8 lg:gap-12',
   };
 
@@ -468,7 +468,7 @@ function CartLines({
     y > 0 ? 'border-t border-bronze/10' : '',
     layout === 'page'
       ? 'flex-grow md:translate-y-4'
-      : 'flex-none px-6 pb-6 pt-2 sm:pt-0 transition md:px-12', // flex-none to prevent squishing, letting parent overflow-y-auto work
+      : 'px-6 pb-6 pt-2 sm:pt-0 transition md:px-12',
   ]);
 
   return (
