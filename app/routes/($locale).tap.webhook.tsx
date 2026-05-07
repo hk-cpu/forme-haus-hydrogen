@@ -37,9 +37,16 @@ async function verifyTapSignature(
 ): Promise<boolean> {
   if (!hashstring) return false;
 
+  let formattedAmount = '';
+  if (payload.amount !== undefined) {
+    const threeDecimalCurrencies = ['BHD', 'KWD', 'OMR', 'JOD'];
+    const decimals = threeDecimalCurrencies.includes(payload.currency?.toUpperCase() || '') ? 3 : 2;
+    formattedAmount = Number(payload.amount).toFixed(decimals);
+  }
+
   const canonical =
     `x_id${payload.id ?? ''}` +
-    `x_amount${payload.amount ?? ''}` +
+    `x_amount${formattedAmount}` +
     `x_currency${payload.currency ?? ''}` +
     `x_gateway_reference${payload.reference?.gateway ?? ''}` +
     `x_payment_reference${payload.reference?.payment ?? ''}` +
@@ -104,6 +111,10 @@ export async function action({request, context}: ActionFunctionArgs) {
   // Order creation against the Shopify Admin API would happen here.
   // Until that integration is wired up, we just acknowledge so Tap
   // stops retrying.
+  //
+  // TODO: Implement full webhook order creation by querying the Storefront API
+  // using payload.metadata.cartId to get line items and shipping address, then 
+  // push to Admin API. Currently `().tap.webhook.tsx` handles a fallback manual order creation.
 
   return json({received: true, status}, {status: 200});
 }
