@@ -126,7 +126,8 @@ export async function action({request, context}: ActionFunctionArgs) {
           'X-Shopify-Access-Token': adminToken,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(draftOrderPayload)
+        body: JSON.stringify(draftOrderPayload),
+        signal: AbortSignal.timeout(4000)
       });
       
       const draftData = await draftRes.json() as any;

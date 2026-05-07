@@ -119,6 +119,7 @@ async function createShopifyOrder(
           Accept: 'application/json',
         },
         body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(5000)
       },
     );
     const body = (await res.json()) as {
@@ -136,7 +137,11 @@ async function createShopifyOrder(
       return {error: typeof body.errors === 'string' ? body.errors : JSON.stringify(body.errors)};
     }
     return {error: 'Order creation failed'};
-  } catch (err) {
+  } catch (err: any) {
+    if (err.name === 'TimeoutError' || err.name === 'AbortError') {
+      console.warn('[Tap Callback] Shopify order creation timed out, letting webhook handle it.');
+      return {};
+    }
     console.error('[Tap Callback] Shopify order API error:', err);
     return {error: err instanceof Error ? err.message : 'Order creation error'};
   }
@@ -154,7 +159,10 @@ async function completeDraftOrder(
     // First, check if the draft order is already completed
     const getRes = await fetch(
       `https://${storeDomain}/admin/api/2024-10/draft_orders/${draftOrderId}.json`,
-      { headers: { 'X-Shopify-Access-Token': adminToken } }
+      { 
+        headers: { 'X-Shopify-Access-Token': adminToken },
+        signal: AbortSignal.timeout(4000)
+      }
     );
     const getData = await getRes.json() as any;
     
@@ -162,7 +170,10 @@ async function completeDraftOrder(
        const orderId = getData.draft_order.order_id;
        const orderRes = await fetch(
          `https://${storeDomain}/admin/api/2024-10/orders/${orderId}.json`,
-         { headers: { 'X-Shopify-Access-Token': adminToken } }
+         { 
+           headers: { 'X-Shopify-Access-Token': adminToken },
+           signal: AbortSignal.timeout(4000)
+         }
        );
        const orderData = await orderRes.json() as any;
        return {id: String(orderId), name: orderData.order?.name};
@@ -177,6 +188,7 @@ async function completeDraftOrder(
           'X-Shopify-Access-Token': adminToken,
           'Content-Type': 'application/json',
         },
+        signal: AbortSignal.timeout(4500)
       }
     );
     const completeData = await completeRes.json() as any;
@@ -186,7 +198,8 @@ async function completeDraftOrder(
       const orderRes = await fetch(
         `https://${storeDomain}/admin/api/2024-10/orders/${orderId}.json`,
         {
-          headers: { 'X-Shopify-Access-Token': adminToken }
+          headers: { 'X-Shopify-Access-Token': adminToken },
+          signal: AbortSignal.timeout(4000)
         }
       );
       const orderData = await orderRes.json() as any;
@@ -194,7 +207,11 @@ async function completeDraftOrder(
       return {id: String(orderId), name: orderData.order?.name};
     }
     return {error: JSON.stringify(completeData.errors)};
-  } catch (err) {
+  } catch (err: any) {
+    if (err.name === 'TimeoutError' || err.name === 'AbortError') {
+      console.warn(`[Tap Callback] Shopify API timed out for Draft Order ${draftOrderId}. Let webhook complete it.`);
+      return {}; // Gracefully return without error, UI will show generic success
+    }
     console.error('[Tap Callback] Draft completion error:', err);
     return {error: err instanceof Error ? err.message : 'Draft completion error'};
   }
