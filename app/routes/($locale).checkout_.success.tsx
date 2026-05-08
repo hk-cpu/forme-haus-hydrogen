@@ -407,152 +407,180 @@ export async function loader({request, context}: LoaderFunctionArgs) {
 export default function TapPaymentCallback() {
   const data = useLoaderData<typeof loader>();
 
+  const isSuccess = data.status === 'success';
+  const isPending = data.status === 'pending';
+  const isFailed = data.status === 'failed' || data.status === 'error';
+
   const cfg = {
     success: {
-      icon: '✓',
-      color: 'text-[#a87441]',
-      bg: 'bg-[#a87441]/10',
-      border: 'border-[#a87441]/20',
+      icon: (
+        <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M5 13l4 4L19 7" />
+        </svg>
+      ),
+      color: 'text-bronze',
+      bg: 'bg-bronze/5',
+      border: 'border-bronze/20',
+      glow: 'shadow-[0_0_30px_rgba(168,116,65,0.15)]',
+      title: 'Order Confirmed',
     },
     pending: {
-      icon: '⏳',
-      color: 'text-amber-400',
-      bg: 'bg-amber-400/10',
-      border: 'border-amber-400/20',
+      icon: (
+        <svg className="w-10 h-10 animate-[spin_3s_linear_infinite]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      color: 'text-warm',
+      bg: 'bg-taupe/5',
+      border: 'border-taupe/20',
+      glow: 'shadow-[0_0_30px_rgba(255,255,255,0.05)]',
+      title: 'Processing Payment',
     },
     failed: {
-      icon: '✕',
+      icon: (
+        <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      ),
       color: 'text-red-400',
-      bg: 'bg-red-400/10',
+      bg: 'bg-red-400/5',
       border: 'border-red-400/20',
+      glow: 'shadow-[0_0_30px_rgba(248,113,113,0.1)]',
+      title: 'Payment Unsuccessful',
     },
-    error: {
-      icon: '!',
-      color: 'text-red-400',
-      bg: 'bg-red-400/10',
-      border: 'border-red-400/20',
+  }[isSuccess ? 'success' : isPending ? 'pending' : 'failed'];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.1 },
     },
-  }[data.status] ?? {
-    icon: '?',
-    color: 'text-[#8B8076]',
-    bg: 'bg-[#8B8076]/10',
-    border: 'border-[#8B8076]/20',
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
   };
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-6">
+    <div className="min-h-[85vh] bg-background flex flex-col items-center justify-center px-4 py-20 overflow-hidden relative">
+      {/* Background Ambience */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[120px] opacity-20 ${cfg.bg} mix-blend-screen`} />
+      </div>
+
       <motion.div
-        initial={{opacity: 0, y: 20, scale: 0.95}}
-        animate={{opacity: 1, y: 0, scale: 1}}
-        transition={{duration: 0.5, ease: [0.16, 1, 0.3, 1]}}
-        className="max-w-md w-full text-center"
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+        className="w-full max-w-lg z-10 relative"
       >
-        <div
-          className={`w-20 h-20 rounded-full ${cfg.bg} border ${cfg.border} flex items-center justify-center mx-auto mb-6`}
-        >
-          <span className={`text-3xl font-light ${cfg.color}`}>{cfg.icon}</span>
-        </div>
-
-        <h1 className="font-serif text-2xl md:text-3xl text-brand-text mb-3">
-          {data.status === 'success' && 'Order Confirmed'}
-          {data.status === 'pending' && 'Processing Payment'}
-          {(data.status === 'failed' || data.status === 'error') &&
-            'Payment Unsuccessful'}
-        </h1>
-
-        <p className="text-[#8B8076] text-sm leading-relaxed mb-6">
-          {data.message}
-        </p>
-
-        {data.status === 'success' && 'transactionId' in data && (
-          <div
-            className={`inline-block px-5 py-4 rounded-xl ${cfg.bg} border ${cfg.border} mb-6 text-left w-full`}
-          >
-            {'orderName' in data && data.orderName && (
-              <div className="mb-3">
-                <p className="text-[10px] uppercase tracking-widest text-[#8B8076]">
-                  Order Number
-                </p>
-                <p className={`text-lg font-serif mt-0.5 ${cfg.color}`}>
-                  {data.orderName as string}
-                </p>
-              </div>
-            )}
-            {'orderError' in data && data.orderError && (
-              <div className="mb-3 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
-                <p className="text-[10px] uppercase tracking-widest text-red-400">
-                  Shopify Order Error
-                </p>
-                <p className="text-xs text-red-300 mt-1 font-mono break-all">
-                  {data.orderError as string}
-                </p>
-              </div>
-            )}
-
-            <p className="text-[10px] uppercase tracking-widest text-[#8B8076]">
-              Transaction ID
+        {/* Receipt Card */}
+        <motion.div variants={itemVariants} className={`bg-surface/40 backdrop-blur-xl border ${cfg.border} rounded-2xl overflow-hidden ${cfg.glow}`}>
+          
+          {/* Header Section */}
+          <div className="px-8 py-10 flex flex-col items-center text-center border-b border-taupe/10">
+            <div className={`w-20 h-20 rounded-full ${cfg.bg} border ${cfg.border} flex items-center justify-center mb-6 ${cfg.color}`}>
+              {cfg.icon}
+            </div>
+            
+            <h1 className="font-serif text-3xl md:text-4xl text-warm mb-3">
+              {cfg.title}
+            </h1>
+            
+            <p className="text-taupe text-sm leading-relaxed max-w-xs mx-auto">
+              {data.message}
             </p>
-            <p className={`text-sm font-mono mt-0.5 ${cfg.color}`}>
-              {data.transactionId}
-            </p>
-
-            {'paymentMethod' in data && data.paymentMethod && (
-              <p className="text-[10px] uppercase tracking-widest text-[#8B8076] mt-3">
-                Paid via {data.paymentMethod}
-              </p>
-            )}
           </div>
-        )}
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          {(data.status === 'failed' || data.status === 'error') && (
-            <Link
-              to={
-                'retryPath' in data && data.retryPath
-                  ? data.retryPath
-                  : '/checkout'
-              }
-              className="px-6 py-3 bg-[#a87441] text-white text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-[#8B5E3C] transition-colors"
-            >
-              Try Again
-            </Link>
+          {/* Details Section */}
+          {(isSuccess && 'transactionId' in data) && (
+            <div className="px-8 py-8 bg-surface/20">
+              <div className="space-y-6">
+                {'orderName' in data && data.orderName && (
+                  <div className="flex justify-between items-baseline border-b border-taupe/5 pb-6">
+                    <span className="text-[10px] uppercase tracking-widest text-taupe">Order No.</span>
+                    <span className={`text-lg font-serif ${cfg.color}`}>{data.orderName as string}</span>
+                  </div>
+                )}
+
+                <div className="flex justify-between items-baseline border-b border-taupe/5 pb-6">
+                  <span className="text-[10px] uppercase tracking-widest text-taupe">Transaction ID</span>
+                  <span className="text-xs font-mono text-warm">{data.transactionId}</span>
+                </div>
+
+                {'amount' in data && data.amount && 'currency' in data && (
+                  <div className="flex justify-between items-baseline border-b border-taupe/5 pb-6">
+                    <span className="text-[10px] uppercase tracking-widest text-taupe">Total Paid</span>
+                    <span className="text-sm text-warm">
+                      {new Intl.NumberFormat('en-SA', { style: 'currency', currency: data.currency as string }).format(parseFloat(data.amount as string))}
+                    </span>
+                  </div>
+                )}
+
+                {'paymentMethod' in data && data.paymentMethod && (
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-[10px] uppercase tracking-widest text-taupe">Payment Method</span>
+                    <span className="text-xs text-warm capitalize">{data.paymentMethod as string}</span>
+                  </div>
+                )}
+                
+                {'orderError' in data && data.orderError && (
+                  <div className="mt-6 p-4 bg-red-400/5 border border-red-400/20 rounded-xl">
+                    <p className="text-[10px] uppercase tracking-widest text-red-400 mb-2">Notice</p>
+                    <p className="text-xs text-red-300 font-mono break-all leading-relaxed">
+                      {data.orderError as string}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
           )}
-          <Link
-            to={
-              'nextPath' in data && data.nextPath
-                ? data.nextPath
-                : '/collections/all'
-            }
-            className="px-6 py-3 bg-[#a87441] text-white text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-[#8B5E3C] transition-colors"
-          >
-            Continue Shopping
-          </Link>
-          {data.status === 'success' && (
+        </motion.div>
+
+        {/* Action Buttons */}
+        <motion.div variants={itemVariants} className="mt-8 flex flex-col gap-3">
+          {isFailed && (
+             <Link
+               to={'retryPath' in data && data.retryPath ? data.retryPath : '/checkout'}
+               className="w-full py-4 bg-bronze hover:bg-bronze/90 text-white text-center text-[11px] uppercase tracking-[0.2em] rounded-xl transition-all shadow-[0_4px_14px_rgba(168,116,65,0.25)] hover:shadow-[0_6px_20px_rgba(168,116,65,0.4)]"
+             >
+               Try Again
+             </Link>
+          )}
+
+          {isSuccess && (
             <Link
               to={'accountPath' in data && data.accountPath ? data.accountPath : '/account'}
-              className="px-6 py-3 bg-brand-text/10 text-brand-text text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-brand-text/20 transition-colors"
+              className="w-full py-4 bg-bronze hover:bg-bronze/90 text-white text-center text-[11px] uppercase tracking-[0.2em] rounded-xl transition-all shadow-[0_4px_14px_rgba(168,116,65,0.25)] hover:shadow-[0_6px_20px_rgba(168,116,65,0.4)]"
             >
               View Orders
             </Link>
           )}
-        </div>
+          
+          <Link
+            to={'nextPath' in data && data.nextPath ? data.nextPath : '/collections/all'}
+            className="w-full py-4 bg-transparent border border-taupe/20 hover:border-bronze text-warm hover:text-bronze text-center text-[11px] uppercase tracking-[0.2em] rounded-xl transition-colors"
+          >
+            Continue Shopping
+          </Link>
+        </motion.div>
 
-        {/* Guest: prompt to create account for order tracking */}
-        {data.status === 'success' && 'customerEmail' in data && data.customerEmail && (
-          <div className="mt-8 p-4 rounded-xl border border-bronze/15 bg-bronze/5 text-center">
-            <p className="text-[11px] uppercase tracking-[0.2em] text-[#8B8076] mb-1">
-              Track Your Order
-            </p>
-            <p className="text-sm text-warm/80 mb-3">
-              Create an account to view your order history and track your shipment.
+        {/* Guest Invite */}
+        {isSuccess && 'customerEmail' in data && data.customerEmail && (
+          <motion.div variants={itemVariants} className="mt-10 pt-8 border-t border-taupe/10 text-center">
+            <h3 className="font-serif text-lg text-warm mb-2">Track Your Journey</h3>
+            <p className="text-sm text-taupe mb-6 max-w-sm mx-auto">
+              Create an exclusive Formé Haus account to track shipments and access your luxury order history.
             </p>
             <Link
               to={`/account/login`}
-              className="inline-block px-5 py-2 border border-bronze/40 text-bronze text-[11px] uppercase tracking-[0.15em] rounded-sm hover:bg-bronze/10 transition-colors"
+              className="inline-block border-b border-bronze/50 pb-1 text-bronze hover:text-bronze/80 hover:border-bronze/80 text-[11px] uppercase tracking-[0.15em] transition-colors"
             >
-              Create Account / Sign In →
+              Create Account / Sign In
             </Link>
-          </div>
+          </motion.div>
         )}
       </motion.div>
     </div>
