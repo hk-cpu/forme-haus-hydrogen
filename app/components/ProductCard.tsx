@@ -373,8 +373,6 @@ export function ProductCard({
   // quickAddVariantId drives the CartForm render below
   const quickAddVariantId = product.variants?.nodes?.[0]?.id ?? null;
 
-
-
   return (
     <motion.div
       className="group relative"
@@ -546,7 +544,7 @@ export function ProductCard({
             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
               {images.slice(0, 5).map((_, idx) => (
                 <motion.button
-                  key={idx}
+                  key={`dot-${idx}`}
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -615,9 +613,7 @@ export function ProductCard({
                 )}
               </>
             ) : (
-              <p className="text-[13px] text-[#8B8076] italic mt-1">
-                Price TBA
-              </p>
+              <p className="text-[13px] text-[#8B8076] italic mt-1">Price TBA</p>
             )}
           </div>
         </div>

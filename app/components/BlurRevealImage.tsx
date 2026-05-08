@@ -31,7 +31,7 @@ export function BlurRevealImage({
   blurSrc,
   alt,
   className = '',
-  breatheDuration = 6,
+  breatheDuration: _breatheDuration = 6,
   revealOnScroll = true,
   showVignette = false,
   isHovered: externalHover,
@@ -118,9 +118,6 @@ export function BlurRevealImage({
   const handleAnimationComplete = () => {
     if (phase === 'reveal') setPhase('idle');
   };
-
-  // suppress unused warning — breatheDuration is intentionally kept for API compatibility
-  void breatheDuration;
 
   return (
     <div

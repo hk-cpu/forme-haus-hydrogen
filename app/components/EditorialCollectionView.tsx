@@ -7,7 +7,7 @@ import {Link} from '~/components/Link';
 import {useTranslation} from '~/hooks/useTranslation';
 import {useUI} from '~/context/UIContext';
 
-// ─── Types ───────────────────────────────────────────────────
+// ─── Types ─────────────────────────────────────────────────────────────
 
 interface ProductNode {
   id: string;
@@ -65,7 +65,7 @@ interface ProductDisplayConfig {
   className?: string; // Custom grid spans
 }
 
-// ─── Layout Defaults ─────────────────────────────────────────
+// ─── Layout Defaults ───────────────────────────────────────────────
 
 const EDITORIAL_CONFIGS: Record<string, EditorialLayoutConfig> = {
   'modern-essentials': {
@@ -229,7 +229,7 @@ export function generateDynamicEditorialConfig(
 /** Handles that should render the editorial layout */
 export const EDITORIAL_HANDLES = new Set(Object.keys(EDITORIAL_CONFIGS));
 
-// ─── Shared animation config ─────────────────────────────────
+// ─── Shared animation config ────────────────────────────────────────
 
 const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -242,7 +242,7 @@ const fadeUp = {
   }),
 };
 
-// ─── Main Component ──────────────────────────────────────────
+// ─── Main Component ──────────────────────────────────────────────
 
 export function EditorialCollectionView({
   collection,
@@ -293,7 +293,7 @@ export function EditorialCollectionView({
       >
         {layoutConfig.sections.map((section, sectionIndex) => (
           <ContentSection
-            key={sectionIndex}
+            key={`${section.type}-${sectionIndex}`}
             section={section}
             products={products}
             sectionIndex={sectionIndex}
@@ -318,7 +318,7 @@ export function EditorialCollectionView({
   );
 }
 
-// ─── Editorial Navigation ────────────────────────────────────
+// ─── Editorial Navigation ───────────────────────────────────────────
 
 const NAV_ITEMS = [
   {handle: 'modern-essentials', label: 'Modern Essentials'},
@@ -369,7 +369,7 @@ export function EditorialNav({currentHandle}: {currentHandle: string}) {
   );
 }
 
-// ─── Collection Hero ─────────────────────────────────────────
+// ─── Collection Hero ──────────────────────────────────────────────
 
 function CollectionHero({
   title,
@@ -397,11 +397,11 @@ function CollectionHero({
       >
         {words.map((word, i) =>
           i === words.length - 1 ? (
-            <em key={i} className="font-serif italic">
+            <em key={`word-last-${i}`} className="font-serif italic">
               {word}
             </em>
           ) : (
-            <span key={i}>{word} </span>
+            <span key={`word-${i}`}>{word} </span>
           ),
         )}
       </h1>
@@ -421,7 +421,7 @@ function CollectionHero({
   );
 }
 
-// ─── Content Section Renderer ────────────────────────────────
+// ─── Content Section Renderer ──────────────────────────────────────────
 
 function ContentSection({
   section,
@@ -546,7 +546,7 @@ function getGridClass(type: string): string {
   }
 }
 
-// ─── Editorial Product Card ──────────────────────────────────
+// ─── Editorial Product Card ──────────────────────────────────────────
 
 function EditorialProductCard({
   product,
@@ -725,7 +725,7 @@ function EditorialProductCard({
   );
 }
 
-// ─── Editorial Quote ─────────────────────────────────────────
+// ─── Editorial Quote ────────────────────────────────────────────────
 
 function EditorialQuote({quote, author}: {quote: string; author: string}) {
   return (
@@ -753,7 +753,7 @@ function EditorialQuote({quote, author}: {quote: string; author: string}) {
   );
 }
 
-// ─── Quick View Modal with Cart Integration ──────────────────
+// ─── Quick View Modal with Cart Integration ──────────────────────────────
 
 function QuickViewModal({
   product,
@@ -834,7 +834,7 @@ function QuickViewModal({
             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
               {images.map((_, i) => (
                 <button
-                  key={i}
+                  key={`thumb-${i}`}
                   onClick={() => setDisplayImage(i)}
                   className={`w-2 h-2 rounded-full transition-all duration-200 ${
                     i === displayImage
@@ -949,7 +949,7 @@ function QuickViewModal({
   );
 }
 
-// ─── Display Config Helpers ──────────────────────────────────
+// ─── Display Config Helpers ───────────────────────────────────────────
 
 function getDisplayConfig(
   sectionType: string,
