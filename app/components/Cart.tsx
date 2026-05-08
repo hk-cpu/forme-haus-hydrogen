@@ -15,7 +15,6 @@ import {
   type CartReturn,
 } from '@shopify/hydrogen';
 
-// Tap Payments replaces HyperPay — supports Mada, Visa, MC, AMEX, Apple Pay, STC Pay
 import type {
   Cart as CartType,
   CartCost,
@@ -502,16 +501,16 @@ function CartCheckoutActions({
   const {t} = useTranslation();
   return (
     <div className="flex flex-col gap-4">
-      {/* Single CTA — goes to custom Tap checkout (creates order in Shopify admin after payment) */}
-      <Link
-        to="/checkout"
+      {/* Shopify native checkout — goes directly to Shopify hosted checkout */}
+      <a
+        href={checkoutUrl}
         onClick={onClose}
         data-test="checkout-btn"
         className="w-full py-4 rounded-xl bg-bronze hover:bg-bronze/90 text-white text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
       >
         <Icons.Lock className="w-3.5 h-3.5" />
         {t('cart.proceedToCheckout', 'Proceed to Checkout')}
-      </Link>
+      </a>
 
       {/* Trust Badges */}
       <div className="flex items-center justify-center gap-4 py-2">
@@ -1019,5 +1018,3 @@ function CartSubtotalLabel() {
   const {t} = useTranslation();
   return <>{t('cart.subtotal')}</>;
 }
-
-
