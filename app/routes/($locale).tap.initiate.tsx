@@ -28,7 +28,6 @@ export async function action({request, context}: ActionFunctionArgs) {
 
   const secretKey = env.TAP_SECRET_KEY;
   const apiUrl = env.TAP_API_URL || 'https://api.tap.company/v2';
-  const merchantId = env.TAP_MERCHANT_ID;
 
   if (!secretKey) {
     return json(
@@ -89,7 +88,6 @@ export async function action({request, context}: ActionFunctionArgs) {
     reference: {
       transaction: merchantTxId || `FH-${Date.now()}`,
       order: merchantTxId || `FH-${Date.now()}`,
-      idempotent: merchantTxId || `FH-${Date.now()}`,
     },
     receipt: {
       email: !!shopperEmail,
@@ -107,7 +105,6 @@ export async function action({request, context}: ActionFunctionArgs) {
           }
         : undefined,
     },
-    ...(merchantId ? {merchant: {id: merchantId}} : {}),
     source: {id: 'src_all'}, // Accept all payment methods (Mada, Visa, MC, AMEX, Apple Pay, STC Pay)
     post: {
       url: `${origin}${tapWebhookPath}`, // Server-to-server notification

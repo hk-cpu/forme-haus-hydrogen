@@ -3,8 +3,6 @@
  * ────────────────────────────
  * Tap redirects here after customer completes/cancels payment.
  * On CAPTURED: creates a real Shopify order via Admin API and shows confirmation.
- *
- * URL: /tap/callback?tap_id={chargeId}&merchantTxId={ref}
  */
 
 import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
@@ -119,7 +117,6 @@ async function createShopifyOrder(
           Accept: 'application/json',
         },
         body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(5000)
       },
     );
     const body = (await res.json()) as {
@@ -127,93 +124,13 @@ async function createShopifyOrder(
       errors?: unknown;
     };
     if (body.order) {
-      console.log(
-        `[Tap Callback] Shopify order created: ${body.order.name} (${body.order.id})`,
-      );
       return {id: String(body.order.id), name: body.order.name};
     }
-    if (body.errors) {
-      console.error('[Tap Callback] Shopify order creation failed:', body.errors);
-      return {error: typeof body.errors === 'string' ? body.errors : JSON.stringify(body.errors)};
-    }
+    console.error('[Tap Callback] Shopify order creation failed:', body.errors);
     return {error: 'Order creation failed'};
-  } catch (err: any) {
-    if (err.name === 'TimeoutError' || err.name === 'AbortError') {
-      console.warn('[Tap Callback] Shopify order creation timed out, letting webhook handle it.');
-      return {};
-    }
+  } catch (err) {
     console.error('[Tap Callback] Shopify order API error:', err);
-    return {error: err instanceof Error ? err.message : 'Order creation error'};
-  }
-}
-
-// ── Shopify Draft Order Completion ────────────────────────────────────────────
-async function completeDraftOrder(
-  storeDomain: string,
-  adminToken: string,
-  draftOrderId: string,
-  tapChargeId: string,
-  chargeStatus: string
-): Promise<{id?: string; name?: string; error?: string}> {
-  try {
-    // First, check if the draft order is already completed
-    const getRes = await fetch(
-      `https://${storeDomain}/admin/api/2024-10/draft_orders/${draftOrderId}.json`,
-      { 
-        headers: { 'X-Shopify-Access-Token': adminToken },
-        signal: AbortSignal.timeout(4000)
-      }
-    );
-    const getData = await getRes.json() as any;
-    
-    if (getData.draft_order?.order_id) {
-       const orderId = getData.draft_order.order_id;
-       const orderRes = await fetch(
-         `https://${storeDomain}/admin/api/2024-10/orders/${orderId}.json`,
-         { 
-           headers: { 'X-Shopify-Access-Token': adminToken },
-           signal: AbortSignal.timeout(4000)
-         }
-       );
-       const orderData = await orderRes.json() as any;
-       return {id: String(orderId), name: orderData.order?.name};
-    }
-
-    const isPending = chargeStatus === 'AUTHORIZED' ? 'true' : 'false';
-    const completeRes = await fetch(
-      `https://${storeDomain}/admin/api/2024-10/draft_orders/${draftOrderId}/complete.json?payment_pending=${isPending}`,
-      {
-        method: 'PUT',
-        headers: {
-          'X-Shopify-Access-Token': adminToken,
-          'Content-Type': 'application/json',
-        },
-        signal: AbortSignal.timeout(4500)
-      }
-    );
-    const completeData = await completeRes.json() as any;
-    if (completeData.draft_order?.order_id) {
-      const orderId = completeData.draft_order.order_id;
-      
-      const orderRes = await fetch(
-        `https://${storeDomain}/admin/api/2024-10/orders/${orderId}.json`,
-        {
-          headers: { 'X-Shopify-Access-Token': adminToken },
-          signal: AbortSignal.timeout(4000)
-        }
-      );
-      const orderData = await orderRes.json() as any;
-      console.log(`[Tap Callback] Shopify draft order completed: ${orderData.order?.name} (${orderId})`);
-      return {id: String(orderId), name: orderData.order?.name};
-    }
-    return {error: JSON.stringify(completeData.errors)};
-  } catch (err: any) {
-    if (err.name === 'TimeoutError' || err.name === 'AbortError') {
-      console.warn(`[Tap Callback] Shopify API timed out for Draft Order ${draftOrderId}. Let webhook complete it.`);
-      return {}; // Gracefully return without error, UI will show generic success
-    }
-    console.error('[Tap Callback] Draft completion error:', err);
-    return {error: err instanceof Error ? err.message : 'Draft completion error'};
+    return {error: 'Order creation error'};
   }
 }
 
@@ -244,13 +161,6 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     });
   }
 
-  // Log whether Admin API is configured — helpful for debugging
-  if (!adminToken) {
-    console.warn(
-      '[Tap Callback] SHOPIFY_ADMIN_API_TOKEN not set — orders will NOT be created in Shopify.',
-    );
-  }
-
   try {
     const res = await fetch(`${apiUrl}/charges/${tapId}`, {
       method: 'GET',
@@ -271,41 +181,29 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       response?: {code?: string; message?: string};
     };
 
-    console.log(`[Tap Callback] tap_id=${tapId} status=${data.status}`);
-
     const chargeStatus = data.status?.toUpperCase();
 
-    if (chargeStatus === 'CAPTURED' || chargeStatus === 'AUTHORIZED') {
-      // Retrieve checkout session data saved before the Tap redirect
+    if (chargeStatus === 'CAPTURED') {
+      // Retrieve checkout session data
       const checkoutData = getCheckoutData(session);
       let orderName: string | undefined;
       let shopifyOrderId: string | undefined;
-      let orderError: string | undefined;
 
-      // Ensure we extract merchantTxId properly, falling back to session if URL is missing it
-      const actualMerchantTxId = data.reference?.transaction ?? merchantTxId ?? checkoutData?.merchantTxId;
+      // Create Shopify order if we have Admin API token and haven't done it yet
+      if (adminToken && checkoutData && !checkoutData.orderCreated) {
+        const orderResult = await createShopifyOrder(storeDomain, adminToken, {
+          contact: checkoutData.contact,
+          address: checkoutData.address,
+          cartLines: checkoutData.cartLines,
+          total: checkoutData.total,
+          currency: checkoutData.currency,
+          merchantTxId: checkoutData.merchantTxId,
+          tapChargeId: tapId,
+          paymentMethod: data.source?.payment_method,
+          acceptsMarketing: checkoutData.acceptsMarketing ?? false,
+        });
 
-      if (adminToken && storeDomain && actualMerchantTxId) {
-        let orderResult;
-
-        if (actualMerchantTxId.startsWith('DO-')) {
-          const draftOrderId = actualMerchantTxId.replace('DO-', '');
-          orderResult = await completeDraftOrder(storeDomain, adminToken, draftOrderId, tapId, chargeStatus);
-        } else if (checkoutData && !checkoutData.orderCreated) {
-          orderResult = await createShopifyOrder(storeDomain, adminToken, {
-            contact: checkoutData.contact,
-            address: checkoutData.address,
-            cartLines: checkoutData.cartLines,
-            total: checkoutData.total,
-            currency: checkoutData.currency,
-            merchantTxId: checkoutData.merchantTxId,
-            tapChargeId: tapId,
-            paymentMethod: data.source?.payment_method,
-            acceptsMarketing: checkoutData.acceptsMarketing ?? false,
-          });
-        }
-
-        if (orderResult?.name) {
+        if (orderResult.name) {
           orderName = orderResult.name;
           shopifyOrderId = orderResult.id;
           markOrderCreated(session, orderResult.id ?? '');
@@ -330,14 +228,12 @@ export async function loader({request, context}: LoaderFunctionArgs) {
               console.error('[Email] Failed to send confirmation:', e),
             );
           }
-        } else if (orderResult?.error) {
-          orderError = orderResult.error;
         }
       } else if (checkoutData?.shopifyOrderId) {
         shopifyOrderId = checkoutData.shopifyOrderId;
       }
 
-      // Clear checkout session data
+      // Clear cart (bag) — expire the cart cookie so a fresh empty cart is created next page load
       clearCheckoutData(session);
 
       const sessionCookie = await session.commit();
@@ -357,7 +253,6 @@ export async function loader({request, context}: LoaderFunctionArgs) {
           merchantTxId: data.reference?.transaction ?? merchantTxId,
           orderName,
           shopifyOrderId,
-          orderError,
           customerEmail: checkoutData?.contact?.email,
           nextPath: buildLocalePath('/collections/all', localePrefix),
           accountPath: buildLocalePath('/account', localePrefix),
@@ -382,7 +277,6 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       });
     }
 
-    // ABANDONED, CANCELLED, DECLINED, RESTRICTED, VOID, TIMEDOUT, UNKNOWN
     return json({
       status: 'failed' as const,
       message:
@@ -478,24 +372,12 @@ export default function TapPaymentCallback() {
                 </p>
               </div>
             )}
-            {'orderError' in data && data.orderError && (
-              <div className="mb-3 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
-                <p className="text-[10px] uppercase tracking-widest text-red-400">
-                  Shopify Order Error
-                </p>
-                <p className="text-xs text-red-300 mt-1 font-mono break-all">
-                  {data.orderError as string}
-                </p>
-              </div>
-            )}
-
             <p className="text-[10px] uppercase tracking-widest text-[#8B8076]">
               Transaction ID
             </p>
             <p className={`text-sm font-mono mt-0.5 ${cfg.color}`}>
               {data.transactionId}
             </p>
-
             {'paymentMethod' in data && data.paymentMethod && (
               <p className="text-[10px] uppercase tracking-widest text-[#8B8076] mt-3">
                 Paid via {data.paymentMethod}
@@ -547,7 +429,7 @@ export default function TapPaymentCallback() {
               Create an account to view your order history and track your shipment.
             </p>
             <Link
-              to={`/account/login`}
+              to="/account/login"
               className="inline-block px-5 py-2 border border-bronze/40 text-bronze text-[11px] uppercase tracking-[0.15em] rounded-sm hover:bg-bronze/10 transition-colors"
             >
               Create Account / Sign In →
