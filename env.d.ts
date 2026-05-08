@@ -31,12 +31,6 @@ declare global {
     SHOP_ID: string;
     API_BASE_URL: string;
     API_ACCESS_TOKEN: string;
-    // Tap Payments
-    TAP_SECRET_KEY: string;
-    TAP_PUBLIC_KEY: string;
-    TAP_API_URL: string;
-    TAP_WEBHOOK_SECRET: string;
-    // Shopify Admin API (for order creation after Tap payment)
     SHOPIFY_ADMIN_API_TOKEN: string;
     // Resend — transactional email (order confirmations, formehaus.me links only)
     RESEND_API_KEY: string;

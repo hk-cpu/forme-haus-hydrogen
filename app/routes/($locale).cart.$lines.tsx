@@ -57,8 +57,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   // Update cart id in cookie
   const headers = cart.setCartId(cartResult.id);
 
-  //! redirect to branded checkout handoff
-  return redirect('/checkout', {headers});
+  return redirect(cartResult.checkoutUrl, {headers});
 }
 
 export default function Component() {
