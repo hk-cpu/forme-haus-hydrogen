@@ -31,7 +31,7 @@ export function BlurRevealImage({
   blurSrc,
   alt,
   className = '',
-  breatheDuration = 6,
+  breatheDuration: _breatheDuration = 6,
   revealOnScroll = true,
   showVignette = false,
   isHovered: externalHover,
@@ -160,9 +160,6 @@ export function BlurRevealImage({
         animate={currentAnimate}
         transition={currentTransition}
         onAnimationComplete={handleAnimationComplete}
-        onError={() =>
-          console.warn(`[BlurRevealImage] Failed to load image: ${src}`)
-        }
       />
 
       {/* Layer 3: Optional vignette (disabled by default when cards have gradient overlays) */}

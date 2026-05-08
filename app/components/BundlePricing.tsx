@@ -332,9 +332,9 @@ export function BundlePricing({
           {icon: '🚚', text: t('bundle.freeShipping', 'Free Shipping')},
           {icon: '🎁', text: t('bundle.giftWrap', 'Gift Wrap')},
           {icon: '↩️', text: t('bundle.easyReturns', 'Easy Returns')},
-        ].map((benefit, i) => (
+        ].map((benefit) => (
           <span
-            key={i}
+            key={benefit.text}
             className="text-[10px] px-2 py-1 bg-[#8B8076]/10 text-[#8B8076] rounded-full"
           >
             {benefit.icon} {benefit.text}

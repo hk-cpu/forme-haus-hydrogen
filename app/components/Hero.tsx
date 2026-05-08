@@ -26,7 +26,7 @@ export default function Hero() {
             alt="Forme Haus - Where Essence Meets Elegance"
             className="relative z-10 h-24 w-auto object-contain drop-shadow-2xl sm:h-32 md:h-40 lg:h-48 xl:h-56"
             loading="eager"
-            fetchpriority="high"
+            fetchPriority="high"
             decoding="sync"
             width={480}
             height={250}

@@ -387,7 +387,7 @@ export function AccountOverlay() {
                           onChange={(e) => setLoginPassword(e.target.value)}
                           placeholder={t(
                             'account.passwordPlaceholder',
-                            '••••••••',
+                            '········',
                           )}
                           required
                           className="w-full bg-surface border border-bronze/20 rounded-lg px-4 py-3.5 pr-12 text-warm placeholder-taupe/50 focus:border-bronze focus:outline-none transition-colors"
@@ -527,7 +527,7 @@ export function AccountOverlay() {
                             }
                             placeholder={t(
                               'account.passwordPlaceholder',
-                              '••••••••',
+                              '········',
                             )}
                             required
                             minLength={8}
@@ -590,7 +590,7 @@ export function AccountOverlay() {
                     <ul className="space-y-3">
                       {benefits.map((benefit, index) => (
                         <motion.li
-                          key={index}
+                          key={benefit.text}
                           initial={{opacity: 0, x: -10}}
                           animate={{opacity: 1, x: 0}}
                           transition={{delay: 0.3 + index * 0.1}}

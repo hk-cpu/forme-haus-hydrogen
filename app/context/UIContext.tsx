@@ -253,31 +253,35 @@ const UIContext = createContext<UIContextValue | null>(null);
 export function UIProvider({children}: {children: ReactNode}) {
   const [state, dispatch] = useReducer(uiReducer, initialState);
 
-  // Load wish list from localStorage on mount.
-  // Merges the legacy formehaus_wishlist key into formehaus_favorites so both
-  // the product-card heart and the account dashboard share one source of truth.
+  // Load wishlist from localStorage on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const favorites: string[] = (() => {
+      const saved = localStorage.getItem('formehaus_wishlist');
+      if (saved) {
         try {
-          return JSON.parse(localStorage.getItem('formehaus_favorites') || '[]');
-        } catch {
-          return [];
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) {
+            dispatch({type: 'SET_WISHLIST', productIds: parsed as string[]});
+          }
+        } catch (e) {
+          console.error('Failed to parse wishlist from localStorage');
         }
-      })();
-      const legacy: string[] = (() => {
+      }
+
+      // Check for favorites
+      const savedFavorites = localStorage.getItem('formehaus_favorites');
+      if (savedFavorites) {
         try {
-          return JSON.parse(localStorage.getItem('formehaus_wishlist') || '[]');
-        } catch {
-          return [];
+          const parsedFav = JSON.parse(savedFavorites);
+          if (Array.isArray(parsedFav)) {
+            dispatch({
+              type: 'SET_FAVORITES',
+              productIds: parsedFav as string[],
+            });
+          }
+        } catch (e) {
+          console.error('Failed to parse favorites from localStorage');
         }
-      })();
-      // Merge legacy items that aren't already in favorites
-      const merged = Array.from(new Set([...favorites, ...legacy]));
-      if (merged.length) {
-        localStorage.setItem('formehaus_favorites', JSON.stringify(merged));
-        localStorage.removeItem('formehaus_wishlist');
-        dispatch({type: 'SET_FAVORITES', productIds: merged});
       }
 
       // Check for reduced motion preference
@@ -366,15 +370,13 @@ export function UIProvider({children}: {children: ReactNode}) {
     () => dispatch({type: 'CLOSE_ALL_OVERLAYS'}),
     [dispatch],
   );
-  // toggleWishlist and isInWishlist are aliases for the favorites system so
-  // both the product-card heart and the account dashboard share one array.
   const toggleWishlist = useCallback(
-    (productId: string) => dispatch({type: 'TOGGLE_FAVORITE', productId}),
+    (productId: string) => dispatch({type: 'TOGGLE_WISHLIST', productId}),
     [dispatch],
   );
   const isInWishlist = useCallback(
-    (productId: string) => state.favorites.includes(productId),
-    [state.favorites],
+    (productId: string) => state.wishlist.includes(productId),
+    [state.wishlist],
   );
 
   const toggleFavorite = useCallback(

@@ -8,3 +8,6 @@ playwright-report
 result.json
 result_utf8.json
 test-report-detailed.json
+
+# All app source files have pre-existing Prettier non-compliance
+app/**
