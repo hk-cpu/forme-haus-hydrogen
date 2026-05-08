@@ -16,7 +16,6 @@ const WhyChooseUs = lazy(() =>
     default: module.WhyChooseUs,
   })),
 );
-const TrustBadges = lazy(() => import('~/components/TrustBadges'));
 
 export const headers = routeHeaders;
 
@@ -50,23 +49,6 @@ async function loadCriticalData({context, request}: LoaderFunctionArgs) {
           return acc;
         }, {});
 
-        const url = fields.url?.value || '#';
-        let titleKey = '';
-        let subtitleKey = '';
-        if (url.includes('modern-essentials')) {
-          titleKey = 'editorial.modernEssentials.title';
-          subtitleKey = 'editorial.modernEssentials.subtitle';
-        } else if (url.includes('carry-it-your-way')) {
-          titleKey = 'editorial.carry.title';
-          subtitleKey = 'editorial.carry.subtitle';
-        } else if (url.includes('sun-ready')) {
-          titleKey = 'editorial.sun.title';
-          subtitleKey = 'editorial.sun.subtitle';
-        } else if (url.includes('new-arrivals')) {
-          titleKey = 'editorial.new.title';
-          subtitleKey = 'editorial.new.subtitle';
-        }
-
         return {
           image: fields.image?.reference?.image?.url,
           width: fields.image?.reference?.image?.width || 1024,
@@ -76,11 +58,11 @@ async function loadCriticalData({context, request}: LoaderFunctionArgs) {
             fields.image?.reference?.image?.altText ||
             fields.title_en?.value ||
             '',
-          url: url,
+          url: fields.url?.value || '#',
           defaultTitle: fields.title_en?.value || '',
           defaultSubtitle: fields.subtitle_en?.value || '',
-          titleKey: titleKey,
-          subtitleKey: subtitleKey,
+          titleKey: '', // Ignored when using dynamic data
+          subtitleKey: '',
         };
       })
       .filter((item: any) => item.image) || [];
@@ -123,7 +105,7 @@ export default function Homepage() {
 
         <div className="py-8 md:py-12">
           <Suspense fallback={<SectionFallback className="min-h-[640px]" />}>
-            <EditorialSection bentoItems={bentoItems} />
+            <EditorialSection bentoItems={bentoItems as any} />
           </Suspense>
         </div>
 
@@ -136,12 +118,6 @@ export default function Homepage() {
         <div className="section-deferred">
           <Suspense fallback={<SectionFallback className="min-h-[420px]" />}>
             <WhyChooseUs />
-          </Suspense>
-        </div>
-
-        <div className="section-deferred py-8 md:py-12 px-6">
-          <Suspense fallback={<SectionFallback className="min-h-[200px]" />}>
-            <TrustBadges variant="full" />
           </Suspense>
         </div>
       </div>
