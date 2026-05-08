@@ -469,24 +469,6 @@ export function NavigationMenu() {
                       </button>
                     </div>
 
-                    {/* Mobile editorial image */}
-                    <div className="relative h-52 overflow-hidden">
-                      <img
-                        src={categoryData.editorial}
-                        alt={activeCategory}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/40 to-transparent" />
-                      <div className="absolute bottom-4 left-6">
-                        <span className="text-[10px] uppercase tracking-[0.25em] text-bronze">
-                          {categoryData.tagline}
-                        </span>
-                        <h2 className="font-serif text-2xl text-[#F0EAE6] mt-1">
-                          {activeCategory}
-                        </h2>
-                      </div>
-                    </div>
-
                     {/* Mobile subcategory links */}
                     <div className="flex-1 overflow-y-auto py-4 px-2">
                       {categoryData.categories.map((cat, i) => (
