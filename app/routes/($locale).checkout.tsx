@@ -1,8 +1,10 @@
+/* eslint-disable no-console */
 import {json, redirect, type LoaderFunctionArgs, type ActionFunctionArgs} from '@shopify/remix-oxygen';
 import {useFetcher, useLoaderData, Link} from '@remix-run/react';
 import {flattenConnection} from '@shopify/hydrogen';
 import {useState, useCallback, useRef, useEffect} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
+
 import {saveCheckoutData, getCheckoutData} from '~/lib/checkout.server';
 import {buildLocalePath, getPathLocalePrefix} from '~/lib/utils';
 

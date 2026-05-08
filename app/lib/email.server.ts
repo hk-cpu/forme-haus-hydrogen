@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Transactional email — Formé Haus
  * Sends via Resend (resend.com). All links point strictly to formehaus.me.

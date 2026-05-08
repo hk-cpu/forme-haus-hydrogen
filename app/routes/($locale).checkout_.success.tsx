@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Tap Payments Callback Route
  * ────────────────────────────
