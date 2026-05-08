@@ -3,6 +3,8 @@ import {useRef, useState} from 'react';
 import useScroll from 'react-use/esm/useScroll';
 import {motion, AnimatePresence} from 'framer-motion';
 import type {useFetcher} from '@remix-run/react';
+import {useRouteLoaderData} from '@remix-run/react';
+import type {loader as RootLoader} from '~/root';
 // eslint-disable-next-line import/order
 import {
   flattenConnection,
@@ -1014,12 +1016,22 @@ function CartSubtotalLabel() {
 
 function ShopifyCheckoutButton({checkoutUrl, t}: {checkoutUrl: string; t: any}) {
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const rootData = useRouteLoaderData<typeof RootLoader>('root');
+  const checkoutDomain = rootData?.consent?.checkoutDomain;
 
   function handleCheckout() {
     if (!checkoutUrl) return;
     setIsRedirecting(true);
     document.body.style.overflow = '';
-    window.location.href = checkoutUrl;
+    let url = checkoutUrl;
+    if (checkoutDomain) {
+      try {
+        const parsed = new URL(checkoutUrl);
+        parsed.host = checkoutDomain;
+        url = parsed.toString();
+      } catch {}
+    }
+    window.location.href = url;
   }
 
   return (
