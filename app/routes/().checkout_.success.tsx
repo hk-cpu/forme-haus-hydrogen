@@ -348,7 +348,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       return json(
         {
           status: 'success' as const,
-          message: 'Payment successful. Thank you for your order!',
+          message: 'Your order has been placed. We\'ll be in touch once it\'s on its way.',
           transactionId: data.id,
           receiptId: data.receipt?.id,
           amount: data.amount ? String(data.amount) : undefined,
@@ -454,7 +454,7 @@ export default function TapPaymentCallback() {
         </div>
 
         <h1 className="font-serif text-2xl md:text-3xl text-brand-text mb-3">
-          {data.status === 'success' && 'Order Confirmed'}
+          {data.status === 'success' && 'Order Placed'}
           {data.status === 'pending' && 'Processing Payment'}
           {(data.status === 'failed' || data.status === 'error') &&
             'Payment Unsuccessful'}

@@ -78,7 +78,7 @@ function orderConfirmationHtml(data: {
                 <tr>
                   <td align="center" style="padding-bottom:6px;">
                     <p style="margin:0;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:#8B8076;font-family:Arial,sans-serif;">
-                      Order Confirmed
+                      Order Placed
                     </p>
                   </td>
                 </tr>
@@ -212,7 +212,7 @@ export async function sendOrderConfirmation(
     body: JSON.stringify({
       from: FROM,
       to: [data.toEmail],
-      subject: `Order Confirmed ${data.orderName} — Formé Haus`,
+      subject: `Order Placed ${data.orderName} — Formé Haus`,
       html,
     }),
   });
