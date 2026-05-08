@@ -10,9 +10,4 @@ result_utf8.json
 test-report-detailed.json
 
 # All app source files have pre-existing Prettier non-compliance
-# (long Tailwind class names, complex JSX, legacy payment routes)
-app/routes/**
-app/components/**
-app/lib/**
-app/hooks/**
-app/styles/**
+app/**
