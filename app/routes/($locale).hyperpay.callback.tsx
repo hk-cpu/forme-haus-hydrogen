@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * HyperPay Payment Callback Route
  * ────────────────────────────────
@@ -105,7 +106,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
   }
 }
 
-// ─── Callback UI ──────────────────────────────────────────────────────────────
+// ─── Callback UI ─────────────────────────────────────────────────────────────────
 export default function HyperPayCallback() {
   const data = useLoaderData<typeof loader>();
 

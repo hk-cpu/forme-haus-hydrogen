@@ -8,3 +8,13 @@ playwright-report
 result.json
 result_utf8.json
 test-report-detailed.json
+
+# Legacy payment gateway routes (Tap Payments / HyperPay)
+app/routes/($locale).checkout.tsx
+app/routes/($locale).checkout_.success.tsx
+app/routes/($locale).tap.initiate.tsx
+app/routes/($locale).tap.webhook.tsx
+app/routes/($locale).hyperpay.initiate.tsx
+app/routes/($locale).hyperpay.callback.tsx
+app/routes/().checkout_.success.tsx
+app/routes/().tap.webhook.tsx

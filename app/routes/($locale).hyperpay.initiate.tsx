@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * HyperPay Checkout Initiation Route
  * ────────────────────────────────────
@@ -17,7 +18,7 @@
 
 import {json, type ActionFunctionArgs} from '@shopify/remix-oxygen';
 
-// ─── HyperPay brand → entity ID mapping ──────────────────────────────────────
+// ─── HyperPay brand → entity ID mapping ────────────────────────────────────────────────
 function getEntityId(
   brand: string,
   env: Record<string, string | undefined>,
@@ -34,7 +35,7 @@ function getEntityId(
   }
 }
 
-// ─── Action ───────────────────────────────────────────────────────────────────
+// ─── Action ─────────────────────────────────────────────────────────────────────────────
 export async function action({request, context}: ActionFunctionArgs) {
   const env = context.env as Record<string, string | undefined>;
   const formData = await request.formData();
