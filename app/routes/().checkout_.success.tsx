@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Tap Payments Callback Route
  * ────────────────────────────
@@ -156,7 +157,6 @@ async function completeDraftOrder(
   chargeStatus: string
 ): Promise<{id?: string; name?: string; error?: string}> {
   try {
-    // First, check if the draft order is already completed
     const getRes = await fetch(
       `https://${storeDomain}/admin/api/2024-10/draft_orders/${draftOrderId}.json`,
       { 
@@ -194,7 +194,6 @@ async function completeDraftOrder(
     const completeData = await completeRes.json() as any;
     if (completeData.draft_order?.order_id) {
       const orderId = completeData.draft_order.order_id;
-      
       const orderRes = await fetch(
         `https://${storeDomain}/admin/api/2024-10/orders/${orderId}.json`,
         {
@@ -210,7 +209,7 @@ async function completeDraftOrder(
   } catch (err: any) {
     if (err.name === 'TimeoutError' || err.name === 'AbortError') {
       console.warn(`[Tap Callback] Shopify API timed out for Draft Order ${draftOrderId}. Let webhook complete it.`);
-      return {}; // Gracefully return without error, UI will show generic success
+      return {};
     }
     console.error('[Tap Callback] Draft completion error:', err);
     return {error: err instanceof Error ? err.message : 'Draft completion error'};
@@ -244,7 +243,6 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     });
   }
 
-  // Log whether Admin API is configured — helpful for debugging
   if (!adminToken) {
     console.warn(
       '[Tap Callback] SHOPIFY_ADMIN_API_TOKEN not set — orders will NOT be created in Shopify.',
@@ -276,13 +274,11 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     const chargeStatus = data.status?.toUpperCase();
 
     if (chargeStatus === 'CAPTURED' || chargeStatus === 'AUTHORIZED') {
-      // Retrieve checkout session data saved before the Tap redirect
       const checkoutData = getCheckoutData(session);
       let orderName: string | undefined;
       let shopifyOrderId: string | undefined;
       let orderError: string | undefined;
 
-      // Ensure we extract merchantTxId properly, falling back to session if URL is missing it
       const actualMerchantTxId = data.reference?.transaction ?? merchantTxId ?? checkoutData?.merchantTxId;
 
       if (adminToken && storeDomain && actualMerchantTxId) {
@@ -310,7 +306,6 @@ export async function loader({request, context}: LoaderFunctionArgs) {
           shopifyOrderId = orderResult.id;
           markOrderCreated(session, orderResult.id ?? '');
 
-          // Send branded confirmation email — strictly formehaus.me links only
           const resendKey = (env as any).RESEND_API_KEY as string | undefined;
           if (resendKey && checkoutData.contact.email) {
             sendOrderConfirmation(resendKey, {
@@ -337,11 +332,9 @@ export async function loader({request, context}: LoaderFunctionArgs) {
         shopifyOrderId = checkoutData.shopifyOrderId;
       }
 
-      // Clear checkout session data
       clearCheckoutData(session);
 
       const sessionCookie = await session.commit();
-      // Expire the Shopify cart cookie so the bag badge resets to 0
       const expireCartCookie =
         'cart=; Max-Age=0; Path=/; HttpOnly; SameSite=Lax';
 
@@ -382,7 +375,6 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       });
     }
 
-    // ABANDONED, CANCELLED, DECLINED, RESTRICTED, VOID, TIMEDOUT, UNKNOWN
     return json({
       status: 'failed' as const,
       message:
@@ -537,7 +529,6 @@ export default function TapPaymentCallback() {
           )}
         </div>
 
-        {/* Guest: prompt to create account for order tracking */}
         {data.status === 'success' && 'customerEmail' in data && data.customerEmail && (
           <div className="mt-8 p-4 rounded-xl border border-bronze/15 bg-bronze/5 text-center">
             <p className="text-[11px] uppercase tracking-[0.2em] text-[#8B8076] mb-1">

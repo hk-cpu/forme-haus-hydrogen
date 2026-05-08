@@ -1,16 +1,8 @@
+/* eslint-disable no-console */
 /**
  * Tap Payments Webhook Route
  * ──────────────────────────
  * Server-to-server notification from Tap when a charge status changes.
- * Fires independently of the customer redirect, so it's the source of
- * truth for whether a payment really succeeded.
- *
- * Signature verification:
- *   Tap signs the body of every webhook with HMAC-SHA256 using
- *   TAP_WEBHOOK_SECRET. The signature is in the `hashstring` header,
- *   computed over the canonical string:
- *     x_id{id}x_amount{amount}x_currency{currency}x_gateway_reference{ref}
- *     x_payment_reference{ref}x_status{status}x_created{ts}
  */
 
 import {json, type ActionFunctionArgs} from '@shopify/remix-oxygen';
@@ -61,11 +53,7 @@ async function verifyTapSignature(
     false,
     ['sign'],
   );
-  const signature = await crypto.subtle.sign(
-    'HMAC',
-    key,
-    enc.encode(canonical),
-  );
+  const signature = await crypto.subtle.sign('HMAC', key, enc.encode(canonical));
   const computed = Array.from(new Uint8Array(signature))
     .map((b) => b.toString(16).padStart(2, '0'))
     .join('');
@@ -121,7 +109,7 @@ export async function action({request, context}: ActionFunctionArgs) {
       );
       const completeData = await completeRes.json() as any;
       if (completeData.draft_order?.order_id) {
-        console.log(`[Tap Webhook] Draft order completed autonomously: ${draftOrderId} -> Order ${completeData.draft_order.order_id}`);
+        console.log(`[Tap Webhook] Draft order completed: ${draftOrderId} -> Order ${completeData.draft_order.order_id}`);
       } else {
         console.error('[Tap Webhook] Draft order completion failed:', completeData);
       }
