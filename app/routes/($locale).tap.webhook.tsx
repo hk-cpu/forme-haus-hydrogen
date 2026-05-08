@@ -37,9 +37,16 @@ async function verifyTapSignature(
 ): Promise<boolean> {
   if (!hashstring) return false;
 
+  let formattedAmount = '';
+  if (payload.amount !== undefined) {
+    const threeDecimalCurrencies = ['BHD', 'KWD', 'OMR', 'JOD'];
+    const decimals = threeDecimalCurrencies.includes(payload.currency?.toUpperCase() || '') ? 3 : 2;
+    formattedAmount = Number(payload.amount).toFixed(decimals);
+  }
+
   const canonical =
     `x_id${payload.id ?? ''}` +
-    `x_amount${payload.amount ?? ''}` +
+    `x_amount${formattedAmount}` +
     `x_currency${payload.currency ?? ''}` +
     `x_gateway_reference${payload.reference?.gateway ?? ''}` +
     `x_payment_reference${payload.reference?.payment ?? ''}` +
@@ -95,15 +102,33 @@ export async function action({request, context}: ActionFunctionArgs) {
     `[Tap Webhook] charge=${payload.id} status=${status} amount=${payload.amount} ${payload.currency}`,
   );
 
-  // Tap status taxonomy:
-  //   CAPTURED  → payment settled, fulfill the order
-  //   AUTHORIZED → funds held, capture later
-  //   FAILED / DECLINED / RESTRICTED / VOID → payment did not succeed
-  //   INITIATED / IN_PROGRESS → still pending, ignore
-  //
-  // Order creation against the Shopify Admin API would happen here.
-  // Until that integration is wired up, we just acknowledge so Tap
-  // stops retrying.
+  const adminToken = env.SHOPIFY_ADMIN_API_TOKEN || env.PRIVATE_STOREFRONT_API_TOKEN;
+  const storeDomain = env.PUBLIC_STORE_DOMAIN;
+
+  if ((status === 'CAPTURED' || status === 'AUTHORIZED') && payload.metadata?.merchantTxId?.startsWith('DO-') && adminToken && storeDomain) {
+    const draftOrderId = payload.metadata.merchantTxId.replace('DO-', '');
+    const isPending = status === 'AUTHORIZED' ? 'true' : 'false';
+    try {
+      const completeRes = await fetch(
+        `https://${storeDomain}/admin/api/2024-10/draft_orders/${draftOrderId}/complete.json?payment_pending=${isPending}`,
+        {
+          method: 'PUT',
+          headers: {
+            'X-Shopify-Access-Token': adminToken,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const completeData = await completeRes.json() as any;
+      if (completeData.draft_order?.order_id) {
+        console.log(`[Tap Webhook] Draft order completed autonomously: ${draftOrderId} -> Order ${completeData.draft_order.order_id}`);
+      } else {
+        console.error('[Tap Webhook] Draft order completion failed:', completeData);
+      }
+    } catch (err) {
+      console.error('[Tap Webhook] Draft order completion API error:', err);
+    }
+  }
 
   return json({received: true, status}, {status: 200});
 }
