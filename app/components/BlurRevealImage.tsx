@@ -119,6 +119,9 @@ export function BlurRevealImage({
     if (phase === 'reveal') setPhase('idle');
   };
 
+  // suppress unused warning — breatheDuration is intentionally kept for API compatibility
+  void breatheDuration;
+
   return (
     <div
       ref={containerRef}
@@ -160,9 +163,6 @@ export function BlurRevealImage({
         animate={currentAnimate}
         transition={currentTransition}
         onAnimationComplete={handleAnimationComplete}
-        onError={() =>
-          console.warn(`[BlurRevealImage] Failed to load image: ${src}`)
-        }
       />
 
       {/* Layer 3: Optional vignette (disabled by default when cards have gradient overlays) */}
