@@ -14,7 +14,6 @@ import {
   OptimisticInput,
   type CartReturn,
 } from '@shopify/hydrogen';
-
 import type {
   Cart as CartType,
   CartCost,

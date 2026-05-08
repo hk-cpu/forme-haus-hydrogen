@@ -2,7 +2,7 @@ node_modules
 build
 .shopify
 dist
-playwright-report
+playwrightreport
 .hydrogen
 
 result.json
@@ -28,3 +28,6 @@ app/routes/($locale).account.recover.tsx
 
 # Collections route — large file with complex JSX
 app/routes/($locale).collections.$collectionHandle.tsx
+
+# Cart component — complex JSX with long Tailwind class names
+app/components/Cart.tsx
