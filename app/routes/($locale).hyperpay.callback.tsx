@@ -47,11 +47,11 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       : env.HYPERPAY_ENTITY_ID_CARD;
 
   if (!resourcePath) {
-    return json({status: 'error', message: 'No payment reference found.'});
+    return json({status: 'error' as const, message: 'No payment reference found.'});
   }
 
   if (!accessToken || !entityId) {
-    return json({status: 'error', message: 'Payment gateway not configured.'});
+    return json({status: 'error' as const, message: 'Payment gateway not configured.'});
   }
 
   try {
@@ -73,7 +73,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     if (isSuccess(code)) {
       // Payment verified — order management handled by Shopify checkout integration
       return json({
-        status: 'success',
+        status: 'success' as const,
         message: 'Payment successful. Thank you for your order!',
         transactionId: data.id,
         amount: data.amount,
@@ -84,7 +84,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
 
     if (isPending(code)) {
       return json({
-        status: 'pending',
+        status: 'pending' as const,
         message:
           'Your payment is being processed. We will notify you once confirmed.',
         transactionId: data.id,
@@ -92,7 +92,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     }
 
     return json({
-      status: 'failed',
+      status: 'failed' as const,
       message:
         data.result?.description ||
         'Payment was not successful. Please try again.',
@@ -100,7 +100,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
   } catch (err) {
     console.error('HyperPay callback verification error:', err);
     return json({
-      status: 'error',
+      status: 'error' as const,
       message: 'Could not verify payment. Please contact support.',
     });
   }

@@ -130,7 +130,7 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
             height={item.height}
             sizes="(max-width: 768px) 100vw, 50vw"
             loading={index < 2 ? 'eager' : 'lazy'}
-            fetchpriority={index === 0 ? 'high' : 'auto'}
+            fetchPriority={index === 0 ? 'high' : 'auto'}
             decoding="async"
           />
 
@@ -259,7 +259,7 @@ export default function EditorialSection({
                       ease: [0.16, 1, 0.3, 1],
                     }}
                   >
-                    {char === ' ' ? '\u00A0' : char}
+                    {char === ' ' ? ' ' : char}
                   </motion.span>
                 ))
             )}
