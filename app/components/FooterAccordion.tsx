@@ -208,6 +208,9 @@ export function FooterAccordion() {
               Premium Phone Accessories
             </span>
           </div>
+          <p className="text-[10px] text-[#8B8076]/60 text-center md:text-right">
+            © {new Date().getFullYear()}
+          </p>
         </div>
       </div>
     </div>
