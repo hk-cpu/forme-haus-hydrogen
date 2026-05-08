@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {type MetaArgs, type ActionFunctionArgs} from '@shopify/remix-oxygen';
 import {
   Form,
