@@ -57,16 +57,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   // Update cart id in cookie
   const headers = cart.setCartId(cartResult.id);
 
-  const checkoutDomain = context.env.PUBLIC_CHECKOUT_DOMAIN;
-  let checkoutUrl = cartResult.checkoutUrl;
-  if (checkoutDomain) {
-    try {
-      const parsed = new URL(checkoutUrl);
-      parsed.host = checkoutDomain;
-      checkoutUrl = parsed.toString();
-    } catch {}
-  }
-  return redirect(checkoutUrl, {headers});
+  return redirect(cartResult.checkoutUrl, {headers});
 }
 
 export default function Component() {
