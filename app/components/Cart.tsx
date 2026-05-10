@@ -502,16 +502,15 @@ function CartCheckoutActions({
   const {t} = useTranslation();
   return (
     <div className="flex flex-col gap-4">
-      {/* Single CTA — goes to custom Tap checkout (creates order in Shopify admin after payment) */}
-      <Link
-        to="/checkout"
-        onClick={onClose}
+      {/* Single CTA — Shopify native checkout at checkout.formehaus.me */}
+      <a
+        href={checkoutUrl}
         data-test="checkout-btn"
         className="w-full py-4 rounded-xl bg-bronze hover:bg-bronze/90 text-white text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
       >
         <Icons.Lock className="w-3.5 h-3.5" />
         {t('cart.proceedToCheckout', 'Proceed to Checkout')}
-      </Link>
+      </a>
 
       {/* Trust Badges */}
       <div className="flex items-center justify-center gap-4 py-2">
@@ -1019,5 +1018,3 @@ function CartSubtotalLabel() {
   const {t} = useTranslation();
   return <>{t('cart.subtotal')}</>;
 }
-
-
