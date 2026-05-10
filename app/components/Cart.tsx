@@ -505,6 +505,7 @@ function CartCheckoutActions({
       {/* Single CTA — Shopify native checkout at checkout.formehaus.me */}
       <a
         href={checkoutUrl}
+        onClick={onClose}
         data-test="checkout-btn"
         className="w-full py-4 rounded-xl bg-bronze hover:bg-bronze/90 text-white text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
       >
@@ -1018,3 +1019,5 @@ function CartSubtotalLabel() {
   const {t} = useTranslation();
   return <>{t('cart.subtotal')}</>;
 }
+
+
