@@ -1,4 +1,4 @@
-import {type MetaArgs, type ActionFunctionArgs} from '@shopify/remix-oxygen';
+import {type ActionFunctionArgs} from '@shopify/remix-oxygen';
 import {Form, useActionData, useNavigation, Link} from '@remix-run/react';
 
 export const meta = () => {
