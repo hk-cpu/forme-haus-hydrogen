@@ -49,7 +49,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   return defer({customer}, {headers: {'Cache-Control': CACHE_NONE}});
 }
 
-// ─── GraphQL ──────────────────────────────────────────────────────────────────
+// ─── GraphQL ───────────────────────────────────────────────────────────────────────────────
 const CUSTOMER_QUERY = `#graphql
   query CustomerDetails(
     $customerAccessToken: String!
@@ -127,7 +127,7 @@ const CUSTOMER_QUERY = `#graphql
   }
 ` as const;
 
-// ─── Route ────────────────────────────────────────────────────────────────────
+// ─── Route ─────────────────────────────────────────────────────────────────────────────────
 export default function Authenticated() {
   const data = useLoaderData<typeof loader>();
   const outlet = useOutlet();
@@ -155,10 +155,10 @@ export default function Authenticated() {
   return <Dashboard customer={data.customer} />;
 }
 
-// ─── Tab types ────────────────────────────────────────────────────────────────
+// ─── Tab types ────────────────────────────────────────────────────────────────────────────
 type Tab = 'overview' | 'orders' | 'profile' | 'addresses' | 'wishlist';
 
-// ─── Dashboard ────────────────────────────────────────────────────────────────
+// ─── Dashboard ────────────────────────────────────────────────────────────────────────────
 function Dashboard({customer}: {customer: any}) {
   const [activeTab, setActiveTab] = useState<Tab>('overview');
   const {isRTL, t} = useTranslation();
@@ -287,7 +287,7 @@ function Dashboard({customer}: {customer: any}) {
     },
     {
       id: 'wishlist',
-      label: 'Wish List',
+      label: 'Wishlist',
       labelKey: 'wishlist.title',
       icon: (
         <svg
@@ -429,7 +429,7 @@ function Dashboard({customer}: {customer: any}) {
   );
 }
 
-// ─── Overview Tab ─────────────────────────────────────────────────────────────
+// ─── Overview Tab ───────────────────────────────────────────────────────────────────────────
 function OverviewTab({
   customer,
   orders,
@@ -561,7 +561,7 @@ function OverviewTab({
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
           {
-            label: t('wishlist.title', 'Wish List'),
+            label: t('wishlist.title', 'Wishlist'),
             onClick: () => onNavigate('wishlist'),
             icon: '🤍',
           },
@@ -615,7 +615,7 @@ function OverviewTab({
   );
 }
 
-// ─── Orders Tab ───────────────────────────────────────────────────────────────
+// ─── Orders Tab ─────────────────────────────────────────────────────────────────────────────
 function OrdersTab({orders}: {orders: any[]}) {
   const {t} = useTranslation();
 
@@ -651,7 +651,7 @@ function OrdersTab({orders}: {orders: any[]}) {
   );
 }
 
-// ─── Profile Tab ──────────────────────────────────────────────────────────────
+// ─── Profile Tab ────────────────────────────────────────────────────────────────────────────
 function ProfileTab({customer}: {customer: any}) {
   const {t} = useTranslation();
   const {firstName, lastName, email, phone} = customer;
@@ -715,7 +715,7 @@ function ProfileTab({customer}: {customer: any}) {
   );
 }
 
-// ─── Addresses Tab ────────────────────────────────────────────────────────────
+// ─── Addresses Tab ────────────────────────────────────────────────────────────────────────────
 function AddressesTab({
   addresses,
   customer,
@@ -773,7 +773,7 @@ function AddressesTab({
   );
 }
 
-// ─── Wishlist Tab ─────────────────────────────────────────────────────────────
+// ─── Wishlist Tab ────────────────────────────────────────────────────────────────────────────
 function WishlistTab() {
   const {state, toggleFavorite} = useUI();
   const {t} = useTranslation();
@@ -786,6 +786,7 @@ function WishlistTab() {
       setLoading(false);
       return;
     }
+    setLoading(true);
     try {
       const query = ids
         .map((id) => {
@@ -845,7 +846,7 @@ function WishlistTab() {
   return (
     <div>
       <h2 className="font-serif text-xl text-warm mb-6">
-        {t('wishlist.title', 'Wish List')}
+        {t('wishlist.title', 'Wishlist')}
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
         <AnimatePresence mode="popLayout">
@@ -883,7 +884,7 @@ function WishlistTab() {
                       toggleFavorite(product.id);
                     }}
                     className="absolute top-3 right-3 w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#a87441] text-white flex items-center justify-center shadow-md hover:bg-[#8B5E3C] transition-colors z-10"
-                    aria-label={t('wishlist.remove', 'Remove from saved')}
+                    aria-label={t('wishlist.remove', 'Remove from wishlist')}
                   >
                     <svg
                       width="16"
@@ -928,7 +929,7 @@ function WishlistTab() {
   );
 }
 
-// ─── Shared sub-components ────────────────────────────────────────────────────
+// ─── Shared sub-components ─────────────────────────────────────────────────────────────────────────
 function StatCard({
   label,
   value,
@@ -1159,7 +1160,7 @@ function EmptyState({
   );
 }
 
-// ─── Error Boundary ───────────────────────────────────────────────────────────
+// ─── Error Boundary ────────────────────────────────────────────────────────────────────────────
 export function ErrorBoundary() {
   const error = useRouteError();
   const is404 = isRouteErrorResponse(error) && error.status === 404;

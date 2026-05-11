@@ -182,17 +182,19 @@ function uiReducer(state: UIState, action: UIAction): UIState {
     case 'CLOSE_PROMO_BANNER':
       return {...state, promoBannerVisible: false};
 
-    // Wishlist
+    // Wishlist — aliased to favorites so PDP and product-card share one list
     case 'TOGGLE_WISHLIST': {
-      const isInWishlist = state.wishlist.includes(action.productId);
-      const newWishlist = isInWishlist
-        ? state.wishlist.filter((id) => id !== action.productId)
-        : [...state.wishlist, action.productId];
-      // Persist to localStorage
+      const isInFavorites = state.favorites.includes(action.productId);
+      const newFavorites = isInFavorites
+        ? state.favorites.filter((id) => id !== action.productId)
+        : [...state.favorites, action.productId];
       if (typeof window !== 'undefined') {
-        localStorage.setItem('formehaus_wishlist', JSON.stringify(newWishlist));
+        localStorage.setItem(
+          'formehaus_favorites',
+          JSON.stringify(newFavorites),
+        );
       }
-      return {...state, wishlist: newWishlist};
+      return {...state, favorites: newFavorites, wishlist: newFavorites};
     }
     case 'SET_WISHLIST':
       return {...state, wishlist: action.productIds};
@@ -366,8 +368,6 @@ export function UIProvider({children}: {children: ReactNode}) {
     () => dispatch({type: 'CLOSE_ALL_OVERLAYS'}),
     [dispatch],
   );
-  // toggleWishlist and isInWishlist are aliases for the favorites system so
-  // both the product-card heart and the account dashboard share one array.
   const toggleWishlist = useCallback(
     (productId: string) => dispatch({type: 'TOGGLE_FAVORITE', productId}),
     [dispatch],
