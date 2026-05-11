@@ -500,7 +500,17 @@ function CartCheckoutActions({
   onClose?: () => void;
 }) {
   const {t} = useTranslation();
-  const checkoutHref = `${checkoutUrl}${checkoutUrl.includes('?') ? '&' : '?'}return_to=${encodeURIComponent('https://formehaus.me')}`;
+
+  // Route checkout through the Hydrogen channel's custom domain so that
+  // Shopify associates the order with formehaus.me (not f0c5au-jn.myshopify.com)
+  // and the post-payment "Continue Shopping" button returns to formehaus.me.
+  let checkoutHref = checkoutUrl;
+  try {
+    const url = new URL(checkoutUrl);
+    url.hostname = 'checkout.formehaus.me';
+    checkoutHref = url.toString();
+  } catch {}
+
   return (
     <div className="flex flex-col gap-4">
       {/* Single CTA — Shopify native checkout at checkout.formehaus.me */}
@@ -1020,4 +1030,3 @@ function CartSubtotalLabel() {
   const {t} = useTranslation();
   return <>{t('cart.subtotal')}</>;
 }
-

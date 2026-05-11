@@ -1,4 +1,4 @@
-import {type MetaArgs, type ActionFunctionArgs} from '@shopify/remix-oxygen';
+import {type ActionFunctionArgs} from '@shopify/remix-oxygen';
 import {Form, useActionData, useNavigation, Link} from '@remix-run/react';
 import {useState} from 'react';
 
@@ -37,7 +37,6 @@ export async function action({context, request, params}: ActionFunctionArgs) {
   }
 }
 
-// Eye icon SVGs
 const EyeOpen = () => (
   <svg
     width="18"
