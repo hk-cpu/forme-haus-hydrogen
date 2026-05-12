@@ -9,9 +9,8 @@ import {
 } from '@shopify/remix-oxygen';
 import {getSeoMeta} from '@shopify/hydrogen';
 
-export async function loader({context}: LoaderFunctionArgs) {
+export async function loader(_: LoaderFunctionArgs) {
   return json({
-    storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     seo: {
       title: 'Contact Us',
       titleTemplate: '%s | Formé Haus',
@@ -39,55 +38,48 @@ export async function action({request, context}: ActionFunctionArgs) {
     return json({error: 'Please fill in all fields.'}, {status: 400});
   }
 
+  const resendKey = (context.env as any).RESEND_API_KEY as string | undefined;
+  if (!resendKey) {
+    return json({error: 'Email service not configured.'}, {status: 500});
+  }
+
+  const html = `
+    <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#2C2318">
+      <p style="font-size:12px;text-transform:uppercase;letter-spacing:0.15em;color:#a87441">Contact Form — Formé Haus</p>
+      <h2 style="font-size:20px;margin:8px 0 24px">${subject}</h2>
+      <table style="width:100%;border-collapse:collapse;font-size:14px">
+        <tr><td style="padding:8px 0;color:#8B8076;width:80px">From</td><td>${name}</td></tr>
+        <tr><td style="padding:8px 0;color:#8B8076">Email</td><td><a href="mailto:${email}" style="color:#a87441">${email}</a></td></tr>
+      </table>
+      <hr style="border:none;border-top:1px solid #eee;margin:20px 0"/>
+      <p style="font-size:15px;line-height:1.7;white-space:pre-wrap">${message}</p>
+      <hr style="border:none;border-top:1px solid #eee;margin:20px 0"/>
+      <p style="font-size:11px;color:#aaa">Reply to this email to respond directly to ${name}.</p>
+    </div>`;
+
   try {
-    const body = new URLSearchParams({
-      form_type: 'contact',
-      utf8: '✓',
-      'contact[name]': name,
-      'contact[email]': email,
-      'contact[subject]': subject,
-      'contact[body]': message,
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${resendKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'Formé Haus Contact <orders@formehaus.me>',
+        to: ['info@formehaus.me'],
+        reply_to: `${name} <${email}>`,
+        subject: `[Contact] ${subject}`,
+        html,
+      }),
     });
 
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000);
-
-    const res = await fetch(
-      `https://${context.env.PUBLIC_STORE_DOMAIN}/contact#contact_form`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Accept: 'text/html',
-        },
-        body: body.toString(),
-        redirect: 'manual',
-        signal: controller.signal,
-      },
-    );
-
-    clearTimeout(timeout);
-
-    // Shopify redirects (3xx) on success — treat as success
-    // Only treat explicit 5xx as failure
-    if (res.status >= 500) {
-      return json(
-        {error: 'Unable to send message. Please try again.'},
-        {status: 500},
-      );
+    if (!res.ok) {
+      return json({error: 'Unable to send message. Please try again.'}, {status: 500});
     }
 
     return json({success: true});
-  } catch (err: any) {
-    // Timeout or network error
-    if (err?.name === 'AbortError') {
-      // If timed out, message may have been sent — treat as likely success
-      return json({success: true});
-    }
-    return json(
-      {error: 'Unable to send message. Please try again.'},
-      {status: 500},
-    );
+  } catch {
+    return json({error: 'Unable to send message. Please try again.'}, {status: 500});
   }
 }
 
