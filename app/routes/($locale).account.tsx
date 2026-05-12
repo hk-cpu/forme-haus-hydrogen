@@ -585,7 +585,7 @@ function OverviewTab({
             to: '/policies/refund-policy',
             icon: '↩️',
           },
-        ].map((action) => (
+        ].map((action) =>
           action.onClick ? (
             <button
               key={action.label}
@@ -608,8 +608,8 @@ function OverviewTab({
                 {action.label}
               </span>
             </Link>
-          )
-        ))}
+          ),
+        )}
       </div>
     </div>
   );
@@ -797,7 +797,7 @@ function WishlistTab() {
       const res = await fetch(
         `/api/products?query=${encodeURIComponent(query)}&count=${ids.length}`,
       );
-      const data = await res.json();
+      const data = (await res.json()) as {products?: any[]};
       if (data?.products) {
         setProducts(data.products);
       }
@@ -830,7 +830,10 @@ function WishlistTab() {
     return (
       <EmptyState
         icon="bag"
-        message={t('wishlist.emptyDesc', 'Discover our curated collection and save the pieces that speak to you.')}
+        message={t(
+          'wishlist.emptyDesc',
+          'Discover our curated collection and save the pieces that speak to you.',
+        )}
         action={
           <Link
             to="/collections"
@@ -958,7 +961,7 @@ function OrderRow({order, detailed = false}: {order: any; detailed?: boolean}) {
   const legacyOrderId = order.id.split('/').pop();
   const url = `/account/orders/${legacyOrderId}`;
   const lineItems = flattenConnection(order.lineItems);
-  const firstImage = lineItems[0]?.variant?.image;
+  const firstImage = (lineItems[0] as any)?.variant?.image;
 
   const statusColor = (status: string) => {
     if (status === 'FULFILLED' || status === 'PAID')
@@ -1008,8 +1011,8 @@ function OrderRow({order, detailed = false}: {order: any; detailed?: boolean}) {
           <div>
             <p className="text-warm text-sm font-medium truncate">
               {lineItems.length > 1
-                ? `${lineItems[0].title} +${lineItems.length - 1}`
-                : lineItems[0]?.title}
+                ? `${(lineItems[0] as any).title} +${lineItems.length - 1}`
+                : (lineItems[0] as any)?.title}
             </p>
             <p className="text-[#8B8076] text-[11px] mt-0.5">
               Order #{order.orderNumber} ·{' '}

@@ -462,7 +462,9 @@ export default function Login() {
               type="button"
               onClick={() => setActiveTab('signin')}
               className={`pb-4 text-sm uppercase tracking-[0.15em] transition-colors relative ${
-                activeTab === 'signin' ? 'text-bronze' : 'text-taupe hover:text-warm'
+                activeTab === 'signin'
+                  ? 'text-bronze'
+                  : 'text-taupe hover:text-warm'
               }`}
             >
               Sign In
@@ -474,7 +476,9 @@ export default function Login() {
               type="button"
               onClick={() => setActiveTab('register')}
               className={`pb-4 text-sm uppercase tracking-[0.15em] transition-colors relative ${
-                activeTab === 'register' ? 'text-bronze' : 'text-taupe hover:text-warm'
+                activeTab === 'register'
+                  ? 'text-bronze'
+                  : 'text-taupe hover:text-warm'
               }`}
             >
               Create Account
@@ -507,11 +511,13 @@ export default function Login() {
                 {data.success}
               </div>
             )}
-            {data?.success && isRegister === false && data?.formId === 'register' && (
-              <div className="p-3.5 text-[12px] text-bronze bg-bronze/10 border border-bronze/20 rounded-lg text-center tracking-wide">
-                {data.success}
-              </div>
-            )}
+            {data?.success &&
+              isRegister === false &&
+              data?.formId === 'register' && (
+                <div className="p-3.5 text-[12px] text-bronze bg-bronze/10 border border-bronze/20 rounded-lg text-center tracking-wide">
+                  {data.success}
+                </div>
+              )}
 
             {/* Email */}
             <div>
@@ -546,7 +552,9 @@ export default function Login() {
                   name="password"
                   id="password"
                   required
-                  autoComplete={isRegister ? 'new-password' : 'current-password'}
+                  autoComplete={
+                    isRegister ? 'new-password' : 'current-password'
+                  }
                   placeholder="••••••••"
                   minLength={isRegister ? 8 : undefined}
                   className="w-full bg-surface border border-bronze/20 rounded-lg px-4 py-3.5 pr-12 text-warm placeholder-taupe/40 focus:border-bronze focus:outline-none focus:ring-1 focus:ring-bronze/30 transition-colors text-sm"
@@ -601,7 +609,10 @@ export default function Login() {
 
           {/* Back home */}
           <p className="mt-8 text-center text-taupe text-[11px] tracking-wide">
-            <Link to="/" className="hover:text-bronze transition-colors underline underline-offset-4">
+            <Link
+              to="/"
+              className="hover:text-bronze transition-colors underline underline-offset-4"
+            >
               Back to store
             </Link>
           </p>

@@ -76,11 +76,11 @@ async function loadCriticalData({context, request}: LoaderFunctionArgs) {
             fields.image?.reference?.image?.altText ||
             fields.title_en?.value ||
             '',
-          url: url,
+          url,
           defaultTitle: fields.title_en?.value || '',
           defaultSubtitle: fields.subtitle_en?.value || '',
-          titleKey: titleKey,
-          subtitleKey: subtitleKey,
+          titleKey,
+          subtitleKey,
         };
       })
       .filter((item: any) => item.image) || [];
@@ -123,7 +123,7 @@ export default function Homepage() {
 
         <div className="py-8 md:py-12">
           <Suspense fallback={<SectionFallback className="min-h-[640px]" />}>
-            <EditorialSection bentoItems={bentoItems} />
+            <EditorialSection bentoItems={bentoItems as any} />
           </Suspense>
         </div>
 

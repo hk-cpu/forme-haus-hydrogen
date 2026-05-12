@@ -31,7 +31,8 @@ export async function loader({request}: LoaderFunctionArgs) {
   try {
     const res = await fetch(nominatimUrl, {
       headers: {
-        'User-Agent': 'FormeHaus/1.0 (https://formehaus.me; orders@formehaus.me)',
+        'User-Agent':
+          'FormeHaus/1.0 (https://formehaus.me; orders@formehaus.me)',
         'Accept-Language': 'en',
         Accept: 'application/json',
       },

@@ -58,7 +58,14 @@ export interface EditorialLayoutConfig {
 }
 
 interface ProductDisplayConfig {
-  size: 'hero' | 'large' | 'medium' | 'small' | 'wide' | 'portrait' | 'landscape';
+  size:
+    | 'hero'
+    | 'large'
+    | 'medium'
+    | 'small'
+    | 'wide'
+    | 'portrait'
+    | 'landscape';
   style: 'framed' | 'minimal' | 'elevated' | 'accent-border';
   badge?: string;
   numberBadge?: number;

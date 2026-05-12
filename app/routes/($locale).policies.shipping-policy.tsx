@@ -55,37 +55,55 @@ export default function ShippingPolicyPage() {
           {isArabic ? (
             <>
               <p>يتم تجهيز الطلبات خلال 1–3 أيام عمل بعد تأكيد الطلب.</p>
-              
+
               <div>
-                <strong className="font-medium text-brand-text block mb-2">مدة التوصيل التقديرية:</strong>
+                <strong className="font-medium text-brand-text block mb-2">
+                  مدة التوصيل التقديرية:
+                </strong>
                 <ul className="list-none space-y-2">
                   <li>• داخل المملكة العربية السعودية: 2–5 أيام عمل</li>
                   <li>• دول مجلس التعاون الخليجي: 3–7 أيام عمل</li>
                 </ul>
               </div>
 
-              <p>يتم احتساب رسوم الشحن عند إتمام الطلب بناءً على عنوان التوصيل.</p>
+              <p>
+                يتم احتساب رسوم الشحن عند إتمام الطلب بناءً على عنوان التوصيل.
+              </p>
               <p>
                 بالنسبة للطلبات التي يتم شحنها خارج المملكة العربية السعودية،{' '}
-                <strong className="font-medium text-brand-text">يتحمل العميل كامل الرسوم الجمركية وأي ضرائب أو رسوم إضافية متعلقة بالاستيراد.</strong>
+                <strong className="font-medium text-brand-text">
+                  يتحمل العميل كامل الرسوم الجمركية وأي ضرائب أو رسوم إضافية
+                  متعلقة بالاستيراد.
+                </strong>
               </p>
             </>
           ) : (
             <>
-              <p>Orders are processed within 1–3 business days after confirmation.</p>
-              
+              <p>
+                Orders are processed within 1–3 business days after
+                confirmation.
+              </p>
+
               <div>
-                <strong className="font-medium text-brand-text block mb-2">Estimated delivery times:</strong>
+                <strong className="font-medium text-brand-text block mb-2">
+                  Estimated delivery times:
+                </strong>
                 <ul className="list-none space-y-2">
                   <li>• Saudi Arabia: 2–5 business days</li>
                   <li>• GCC Countries: 3–7 business days</li>
                 </ul>
               </div>
 
-              <p>Shipping fees are calculated at checkout based on the delivery location.</p>
+              <p>
+                Shipping fees are calculated at checkout based on the delivery
+                location.
+              </p>
               <p>
                 For orders shipped outside Saudi Arabia,{' '}
-                <strong className="font-medium text-brand-text">all applicable customs duties, import taxes, and additional charges are the responsibility of the customer.</strong>
+                <strong className="font-medium text-brand-text">
+                  all applicable customs duties, import taxes, and additional
+                  charges are the responsibility of the customer.
+                </strong>
               </p>
             </>
           )}

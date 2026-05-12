@@ -105,7 +105,6 @@ function STCPayIcon() {
   );
 }
 
-
 /**
  * PaymentLinkButton - Quick payment link for trial orders
  * Placeholder for payment link integration (Moyasar, HyperPay, etc.)

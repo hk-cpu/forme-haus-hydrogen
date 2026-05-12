@@ -215,7 +215,8 @@ export default function Article() {
             </h1>
             {(formattedDate || author?.name) && (
               <span className="text-[11px] text-white/60 mb-5 block uppercase tracking-wider">
-                {formattedDate}{author?.name ? ` · ${author.name}` : ''}
+                {formattedDate}
+                {author?.name ? ` · ${author.name}` : ''}
               </span>
             )}
             <div className="h-px w-16 bg-gradient-to-r from-transparent via-white/40 to-transparent mb-6" />
@@ -224,8 +225,20 @@ export default function Article() {
               animate={{y: [0, 6, 0]}}
               transition={{repeat: Infinity, duration: 2, ease: 'easeInOut'}}
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="opacity-50">
-                <path d="M12 5v14M5 12l7 7 7-7" strokeLinecap="round" strokeLinejoin="round" />
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="white"
+                strokeWidth="1.5"
+                className="opacity-50"
+              >
+                <path
+                  d="M12 5v14M5 12l7 7 7-7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </motion.div>
           </motion.div>
@@ -308,8 +321,20 @@ export default function Article() {
             animate={{y: [0, 6, 0]}}
             transition={{repeat: Infinity, duration: 2, ease: 'easeInOut'}}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="opacity-50">
-              <path d="M12 5v14M5 12l7 7 7-7" strokeLinecap="round" strokeLinejoin="round" />
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="white"
+              strokeWidth="1.5"
+              className="opacity-50"
+            >
+              <path
+                d="M12 5v14M5 12l7 7 7-7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </motion.div>
         </motion.div>
@@ -329,9 +354,7 @@ export default function Article() {
                   i === 0
                     ? 'font-serif text-[20px] md:text-[22px] text-[#D4AF87] italic leading-relaxed drop-shadow-sm'
                     : 'font-serif text-[16px] md:text-[18px] text-white/85 leading-loose tracking-wide drop-shadow-sm'
-                } ${
-                  isRTL ? 'text-right' : 'text-left'
-                }`}
+                } ${isRTL ? 'text-right' : 'text-left'}`}
               >
                 {paragraph}
               </p>
