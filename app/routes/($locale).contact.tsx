@@ -65,7 +65,7 @@ export async function action({request, context}: ActionFunctionArgs) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Formé Haus Contact <orders@formehaus.me>',
+        from: 'Formé Haus Contact <info@formehaus.me>',
         to: ['info@formehaus.me'],
         reply_to: `${name} <${email}>`,
         subject: `[Contact] ${subject}`,
