@@ -316,7 +316,6 @@ export default function Product() {
               <div className="grid gap-3">
                 {/* iPhone Models Badge */}
                 <div className="flex items-center gap-3 flex-wrap">
-
                   {iPhoneModels.length > 0 && (
                     <div className="flex gap-1.5">
                       {iPhoneModels

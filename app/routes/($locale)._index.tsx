@@ -76,11 +76,11 @@ async function loadCriticalData({context, request}: LoaderFunctionArgs) {
             fields.image?.reference?.image?.altText ||
             fields.title_en?.value ||
             '',
-          url: url,
+          url,
           defaultTitle: fields.title_en?.value || '',
           defaultSubtitle: fields.subtitle_en?.value || '',
-          titleKey: titleKey,
-          subtitleKey: subtitleKey,
+          titleKey,
+          subtitleKey,
         };
       })
       .filter((item: any) => item.image) || [];

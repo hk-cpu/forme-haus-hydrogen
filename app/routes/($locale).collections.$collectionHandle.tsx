@@ -423,7 +423,8 @@ const HERO_OVERRIDES: Record<
     customOverlay: 'right-centered',
     fit: 'full-width',
     position: 'right center',
-    imgClass: 'w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] object-cover',
+    imgClass:
+      'w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] object-cover',
   },
   'sun-ready': {
     src: '/assets/heros/SunReady_CollectionsPageHero.png',
@@ -431,14 +432,16 @@ const HERO_OVERRIDES: Record<
     customOverlay: 'right-centered',
     fit: 'full-width',
     position: 'right center',
-    imgClass: 'w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] object-cover',
+    imgClass:
+      'w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] object-cover',
   },
   'new-arrivals': {
     src: '/brand/new-arrivals-hero-v2.png',
     hideTitle: true,
     fit: 'full-width',
     position: 'center center',
-    imgClass: 'w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] object-cover',
+    imgClass:
+      'w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] object-cover',
   },
   'modern-essentials': {
     src: '/assets/heros/ModernEssentials_CollectionsPageHero.png',
@@ -446,7 +449,8 @@ const HERO_OVERRIDES: Record<
     customOverlay: 'right-centered',
     fit: 'full-width',
     position: 'right center',
-    imgClass: 'w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] object-cover',
+    imgClass:
+      'w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] object-cover',
   },
 };
 
@@ -510,8 +514,6 @@ export default function Collection() {
   const THEMED_COLLECTIONS = new Set<string>([]);
   const isThemedCollection = THEMED_COLLECTIONS.has(collection.handle);
   const isComingSoonCollection = collection.handle === 'new-arrivals';
-
-
 
   const collectionSubtitle = COLLECTION_SUBTITLES[collection.handle];
 
@@ -677,17 +679,15 @@ export default function Collection() {
                   ease: [0.25, 0.1, 0.25, 1],
                 }}
               >
-                <h1 
+                <h1
                   className="font-serif text-[28px] sm:text-3xl md:text-5xl lg:text-[54px] text-[#D4AF87] mb-1.5 md:mb-2 leading-[1.1] drop-shadow-md"
-                  style={{ 
+                  style={{
                     letterSpacing: '0.015em',
                   }}
                 >
                   {collection.title}
                 </h1>
-                <p 
-                  className="font-serif font-light text-[14px] sm:text-[16px] md:text-xl lg:text-[22px] text-[#F9F5F0] leading-snug drop-shadow-sm mx-auto md:ml-auto md:mr-0 max-w-[280px] sm:max-w-[320px] md:max-w-none"
-                >
+                <p className="font-serif font-light text-[14px] sm:text-[16px] md:text-xl lg:text-[22px] text-[#F9F5F0] leading-snug drop-shadow-sm mx-auto md:ml-auto md:mr-0 max-w-[280px] sm:max-w-[320px] md:max-w-none">
                   {COLLECTION_SUBTITLES[collection.handle]?.subtitle}
                 </p>
               </motion.div>
@@ -1351,12 +1351,14 @@ const COLLECTION_PRODUCTS_QUERY = `#graphql
 export function ErrorBoundary() {
   const error = useRouteError();
   const is404 = isRouteErrorResponse(error) && error.status === 404;
-  
+
   // Safely grab the collectionHandle from Remix route params
   const params = useParams();
   const collectionHandle = params?.collectionHandle || '';
 
-  const isEditorialHandle = collectionHandle ? EDITORIAL_HANDLES.has(collectionHandle) : false;
+  const isEditorialHandle = collectionHandle
+    ? EDITORIAL_HANDLES.has(collectionHandle)
+    : false;
 
   const override = HERO_OVERRIDES[collectionHandle];
   const heroImage = override?.src;
@@ -1375,10 +1377,12 @@ export function ErrorBoundary() {
       {heroImage && (
         <div
           className="relative w-full overflow-hidden bg-[#F9F5F0]"
-          style={{ paddingTop: 'var(--navbar-height)' }}
+          style={{paddingTop: 'var(--navbar-height)'}}
         >
           {isFullWidthHero ? (
-            <div className={`relative w-full overflow-hidden ${bgColor} ${heightClass}`}>
+            <div
+              className={`relative w-full overflow-hidden ${bgColor} ${heightClass}`}
+            >
               <img
                 src={heroImage}
                 alt={collectionHandle}
@@ -1386,7 +1390,8 @@ export function ErrorBoundary() {
                 loading="eager"
                 style={{
                   objectPosition: heroPosition,
-                  transformOrigin: heroPosition === 'top' ? 'top center' : 'center center',
+                  transformOrigin:
+                    heroPosition === 'top' ? 'top center' : 'center center',
                 }}
               />
             </div>
@@ -1396,7 +1401,7 @@ export function ErrorBoundary() {
               alt={collectionHandle}
               className="block h-[30vh] min-h-[240px] w-full object-cover sm:h-[36vh] md:h-[42vh] lg:h-[48vh]"
               loading="eager"
-              style={{ objectPosition: heroPosition }}
+              style={{objectPosition: heroPosition}}
             />
           )}
           {!isFullWidthHero && (

@@ -119,7 +119,7 @@ async function createShopifyOrder(
           Accept: 'application/json',
         },
         body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(5000)
+        signal: AbortSignal.timeout(5000),
       },
     );
     const body = (await res.json()) as {
@@ -133,13 +133,23 @@ async function createShopifyOrder(
       return {id: String(body.order.id), name: body.order.name};
     }
     if (body.errors) {
-      console.error('[Tap Callback] Shopify order creation failed:', body.errors);
-      return {error: typeof body.errors === 'string' ? body.errors : JSON.stringify(body.errors)};
+      console.error(
+        '[Tap Callback] Shopify order creation failed:',
+        body.errors,
+      );
+      return {
+        error:
+          typeof body.errors === 'string'
+            ? body.errors
+            : JSON.stringify(body.errors),
+      };
     }
     return {error: 'Order creation failed'};
   } catch (err: any) {
     if (err.name === 'TimeoutError' || err.name === 'AbortError') {
-      console.warn('[Tap Callback] Shopify order creation timed out, letting webhook handle it.');
+      console.warn(
+        '[Tap Callback] Shopify order creation timed out, letting webhook handle it.',
+      );
       return {};
     }
     console.error('[Tap Callback] Shopify order API error:', err);
@@ -153,30 +163,30 @@ async function completeDraftOrder(
   adminToken: string,
   draftOrderId: string,
   tapChargeId: string,
-  chargeStatus: string
+  chargeStatus: string,
 ): Promise<{id?: string; name?: string; error?: string}> {
   try {
     // First, check if the draft order is already completed
     const getRes = await fetch(
       `https://${storeDomain}/admin/api/2024-10/draft_orders/${draftOrderId}.json`,
-      { 
-        headers: { 'X-Shopify-Access-Token': adminToken },
-        signal: AbortSignal.timeout(4000)
-      }
+      {
+        headers: {'X-Shopify-Access-Token': adminToken},
+        signal: AbortSignal.timeout(4000),
+      },
     );
-    const getData = await getRes.json() as any;
-    
+    const getData = (await getRes.json()) as any;
+
     if (getData.draft_order?.order_id) {
-       const orderId = getData.draft_order.order_id;
-       const orderRes = await fetch(
-         `https://${storeDomain}/admin/api/2024-10/orders/${orderId}.json`,
-         { 
-           headers: { 'X-Shopify-Access-Token': adminToken },
-           signal: AbortSignal.timeout(4000)
-         }
-       );
-       const orderData = await orderRes.json() as any;
-       return {id: String(orderId), name: orderData.order?.name};
+      const orderId = getData.draft_order.order_id;
+      const orderRes = await fetch(
+        `https://${storeDomain}/admin/api/2024-10/orders/${orderId}.json`,
+        {
+          headers: {'X-Shopify-Access-Token': adminToken},
+          signal: AbortSignal.timeout(4000),
+        },
+      );
+      const orderData = (await orderRes.json()) as any;
+      return {id: String(orderId), name: orderData.order?.name};
     }
 
     const isPending = chargeStatus === 'AUTHORIZED' ? 'true' : 'false';
@@ -188,32 +198,38 @@ async function completeDraftOrder(
           'X-Shopify-Access-Token': adminToken,
           'Content-Type': 'application/json',
         },
-        signal: AbortSignal.timeout(4500)
-      }
+        signal: AbortSignal.timeout(4500),
+      },
     );
-    const completeData = await completeRes.json() as any;
+    const completeData = (await completeRes.json()) as any;
     if (completeData.draft_order?.order_id) {
       const orderId = completeData.draft_order.order_id;
-      
+
       const orderRes = await fetch(
         `https://${storeDomain}/admin/api/2024-10/orders/${orderId}.json`,
         {
-          headers: { 'X-Shopify-Access-Token': adminToken },
-          signal: AbortSignal.timeout(4000)
-        }
+          headers: {'X-Shopify-Access-Token': adminToken},
+          signal: AbortSignal.timeout(4000),
+        },
       );
-      const orderData = await orderRes.json() as any;
-      console.log(`[Tap Callback] Shopify draft order completed: ${orderData.order?.name} (${orderId})`);
+      const orderData = (await orderRes.json()) as any;
+      console.log(
+        `[Tap Callback] Shopify draft order completed: ${orderData.order?.name} (${orderId})`,
+      );
       return {id: String(orderId), name: orderData.order?.name};
     }
     return {error: JSON.stringify(completeData.errors)};
   } catch (err: any) {
     if (err.name === 'TimeoutError' || err.name === 'AbortError') {
-      console.warn(`[Tap Callback] Shopify API timed out for Draft Order ${draftOrderId}. Let webhook complete it.`);
+      console.warn(
+        `[Tap Callback] Shopify API timed out for Draft Order ${draftOrderId}. Let webhook complete it.`,
+      );
       return {}; // Gracefully return without error, UI will show generic success
     }
     console.error('[Tap Callback] Draft completion error:', err);
-    return {error: err instanceof Error ? err.message : 'Draft completion error'};
+    return {
+      error: err instanceof Error ? err.message : 'Draft completion error',
+    };
   }
 }
 
@@ -227,7 +243,8 @@ export async function loader({request, context}: LoaderFunctionArgs) {
   const {env, session} = context;
   const secretKey = env.TAP_SECRET_KEY;
   const apiUrl = env.TAP_API_URL ?? 'https://api.tap.company/v2';
-  const adminToken = env.SHOPIFY_ADMIN_API_TOKEN || env.PRIVATE_STOREFRONT_API_TOKEN;
+  const adminToken =
+    env.SHOPIFY_ADMIN_API_TOKEN || env.PRIVATE_STOREFRONT_API_TOKEN;
   const storeDomain = env.PUBLIC_STORE_DOMAIN;
 
   if (!tapId) {
@@ -283,14 +300,23 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       let orderError: string | undefined;
 
       // Ensure we extract merchantTxId properly, falling back to session if URL is missing it
-      const actualMerchantTxId = data.reference?.transaction ?? merchantTxId ?? checkoutData?.merchantTxId;
+      const actualMerchantTxId =
+        data.reference?.transaction ??
+        merchantTxId ??
+        checkoutData?.merchantTxId;
 
       if (adminToken && storeDomain && actualMerchantTxId) {
         let orderResult;
 
         if (actualMerchantTxId.startsWith('DO-')) {
           const draftOrderId = actualMerchantTxId.replace('DO-', '');
-          orderResult = await completeDraftOrder(storeDomain, adminToken, draftOrderId, tapId, chargeStatus);
+          orderResult = await completeDraftOrder(
+            storeDomain,
+            adminToken,
+            draftOrderId,
+            tapId,
+            chargeStatus,
+          );
         } else if (checkoutData && !checkoutData.orderCreated) {
           orderResult = await createShopifyOrder(storeDomain, adminToken, {
             contact: checkoutData.contact,
@@ -348,7 +374,8 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       return json(
         {
           status: 'success' as const,
-          message: 'Your order has been placed. We\'ll be in touch once it\'s on its way.',
+          message:
+            "Your order has been placed. We'll be in touch once it's on its way.",
           transactionId: data.id,
           receiptId: data.receipt?.id,
           amount: data.amount ? String(data.amount) : undefined,
@@ -529,7 +556,11 @@ export default function TapPaymentCallback() {
           </Link>
           {data.status === 'success' && (
             <Link
-              to={'accountPath' in data && data.accountPath ? data.accountPath : '/account'}
+              to={
+                'accountPath' in data && data.accountPath
+                  ? data.accountPath
+                  : '/account'
+              }
               className="px-6 py-3 bg-brand-text/10 text-brand-text text-[11px] uppercase tracking-[0.2em] rounded-sm hover:bg-brand-text/20 transition-colors"
             >
               View Orders
@@ -538,22 +569,25 @@ export default function TapPaymentCallback() {
         </div>
 
         {/* Guest: prompt to create account for order tracking */}
-        {data.status === 'success' && 'customerEmail' in data && data.customerEmail && (
-          <div className="mt-8 p-4 rounded-xl border border-bronze/15 bg-bronze/5 text-center">
-            <p className="text-[11px] uppercase tracking-[0.2em] text-[#8B8076] mb-1">
-              Track Your Order
-            </p>
-            <p className="text-sm text-warm/80 mb-3">
-              Create an account to view your order history and track your shipment.
-            </p>
-            <Link
-              to={`/account/login`}
-              className="inline-block px-5 py-2 border border-bronze/40 text-bronze text-[11px] uppercase tracking-[0.15em] rounded-sm hover:bg-bronze/10 transition-colors"
-            >
-              Create Account / Sign In →
-            </Link>
-          </div>
-        )}
+        {data.status === 'success' &&
+          'customerEmail' in data &&
+          data.customerEmail && (
+            <div className="mt-8 p-4 rounded-xl border border-bronze/15 bg-bronze/5 text-center">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-[#8B8076] mb-1">
+                Track Your Order
+              </p>
+              <p className="text-sm text-warm/80 mb-3">
+                Create an account to view your order history and track your
+                shipment.
+              </p>
+              <Link
+                to={`/account/login`}
+                className="inline-block px-5 py-2 border border-bronze/40 text-bronze text-[11px] uppercase tracking-[0.15em] rounded-sm hover:bg-bronze/10 transition-colors"
+              >
+                Create Account / Sign In →
+              </Link>
+            </div>
+          )}
       </motion.div>
     </div>
   );

@@ -92,7 +92,9 @@ function orderConfirmationHtml(data: {
                 <tr>
                   <td align="center" style="padding-bottom:32px;">
                     <p style="margin:0;font-size:13px;color:#8B8076;line-height:1.6;">
-                      Your order <strong style="color:#a87441;">${data.orderName}</strong> has been placed and paid successfully.
+                      Your order <strong style="color:#a87441;">${
+                        data.orderName
+                      }</strong> has been placed and paid successfully.
                     </p>
                   </td>
                 </tr>

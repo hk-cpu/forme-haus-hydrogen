@@ -559,7 +559,6 @@ function CartCheckoutActions({
   );
 }
 
-
 function GCCPaymentBadges() {
   return (
     <div className="flex items-center justify-center gap-2 flex-wrap py-1">

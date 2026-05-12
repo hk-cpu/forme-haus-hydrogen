@@ -40,7 +40,11 @@ async function verifyTapSignature(
   let formattedAmount = '';
   if (payload.amount !== undefined) {
     const threeDecimalCurrencies = ['BHD', 'KWD', 'OMR', 'JOD'];
-    const decimals = threeDecimalCurrencies.includes(payload.currency?.toUpperCase() || '') ? 3 : 2;
+    const decimals = threeDecimalCurrencies.includes(
+      payload.currency?.toUpperCase() || '',
+    )
+      ? 3
+      : 2;
     formattedAmount = Number(payload.amount).toFixed(decimals);
   }
 
@@ -102,10 +106,16 @@ export async function action({request, context}: ActionFunctionArgs) {
     `[Tap Webhook] charge=${payload.id} status=${status} amount=${payload.amount} ${payload.currency}`,
   );
 
-  const adminToken = env.SHOPIFY_ADMIN_API_TOKEN || env.PRIVATE_STOREFRONT_API_TOKEN;
+  const adminToken =
+    env.SHOPIFY_ADMIN_API_TOKEN || env.PRIVATE_STOREFRONT_API_TOKEN;
   const storeDomain = env.PUBLIC_STORE_DOMAIN;
 
-  if ((status === 'CAPTURED' || status === 'AUTHORIZED') && payload.metadata?.merchantTxId?.startsWith('DO-') && adminToken && storeDomain) {
+  if (
+    (status === 'CAPTURED' || status === 'AUTHORIZED') &&
+    payload.metadata?.merchantTxId?.startsWith('DO-') &&
+    adminToken &&
+    storeDomain
+  ) {
     const draftOrderId = payload.metadata.merchantTxId.replace('DO-', '');
     const isPending = status === 'AUTHORIZED' ? 'true' : 'false';
     try {
@@ -117,13 +127,18 @@ export async function action({request, context}: ActionFunctionArgs) {
             'X-Shopify-Access-Token': adminToken,
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
-      const completeData = await completeRes.json() as any;
+      const completeData = (await completeRes.json()) as any;
       if (completeData.draft_order?.order_id) {
-        console.log(`[Tap Webhook] Draft order completed autonomously: ${draftOrderId} -> Order ${completeData.draft_order.order_id}`);
+        console.log(
+          `[Tap Webhook] Draft order completed autonomously: ${draftOrderId} -> Order ${completeData.draft_order.order_id}`,
+        );
       } else {
-        console.error('[Tap Webhook] Draft order completion failed:', completeData);
+        console.error(
+          '[Tap Webhook] Draft order completion failed:',
+          completeData,
+        );
       }
     } catch (err) {
       console.error('[Tap Webhook] Draft order completion API error:', err);

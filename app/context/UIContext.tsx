@@ -262,7 +262,9 @@ export function UIProvider({children}: {children: ReactNode}) {
     if (typeof window !== 'undefined') {
       const favorites: string[] = (() => {
         try {
-          return JSON.parse(localStorage.getItem('formehaus_favorites') || '[]');
+          return JSON.parse(
+            localStorage.getItem('formehaus_favorites') || '[]',
+          );
         } catch {
           return [];
         }

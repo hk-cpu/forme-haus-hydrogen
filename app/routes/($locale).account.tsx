@@ -585,7 +585,7 @@ function OverviewTab({
             to: '/policies/refund-policy',
             icon: '↩️',
           },
-        ].map((action) => (
+        ].map((action) =>
           action.onClick ? (
             <button
               key={action.label}
@@ -608,8 +608,8 @@ function OverviewTab({
                 {action.label}
               </span>
             </Link>
-          )
-        ))}
+          ),
+        )}
       </div>
     </div>
   );
@@ -830,7 +830,10 @@ function WishlistTab() {
     return (
       <EmptyState
         icon="bag"
-        message={t('wishlist.emptyDesc', 'Discover our curated collection and save the pieces that speak to you.')}
+        message={t(
+          'wishlist.emptyDesc',
+          'Discover our curated collection and save the pieces that speak to you.',
+        )}
         action={
           <Link
             to="/collections"

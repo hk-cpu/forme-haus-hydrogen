@@ -87,7 +87,7 @@ export default function CategoryBento() {
                   height={category.height}
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   loading={index === 0 ? 'eager' : 'lazy'}
-                  fetchpriority={index === 0 ? 'high' : 'auto'}
+                  fetchPriority={index === 0 ? 'high' : 'auto'}
                   decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
