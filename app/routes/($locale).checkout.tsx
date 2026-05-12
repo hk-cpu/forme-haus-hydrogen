@@ -341,7 +341,7 @@ function AddressAutocomplete({
         );
         if (!r.ok) throw new Error('search failed');
         const data = await r.json();
-        setHits(Array.isArray(data) ? data : []);
+        setHits(Array.isArray(data) ? (data as NominatimHit[]) : []);
       } catch {
         setError(
           'Address search unavailable. Please type your address manually.',

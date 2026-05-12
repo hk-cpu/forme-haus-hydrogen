@@ -123,7 +123,7 @@ export default function Homepage() {
 
         <div className="py-8 md:py-12">
           <Suspense fallback={<SectionFallback className="min-h-[640px]" />}>
-            <EditorialSection bentoItems={bentoItems} />
+            <EditorialSection bentoItems={bentoItems as any} />
           </Suspense>
         </div>
 

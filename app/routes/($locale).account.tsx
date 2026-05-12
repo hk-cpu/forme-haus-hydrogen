@@ -797,7 +797,7 @@ function WishlistTab() {
       const res = await fetch(
         `/api/products?query=${encodeURIComponent(query)}&count=${ids.length}`,
       );
-      const data = await res.json();
+      const data = (await res.json()) as {products?: any[]};
       if (data?.products) {
         setProducts(data.products);
       }
@@ -961,7 +961,7 @@ function OrderRow({order, detailed = false}: {order: any; detailed?: boolean}) {
   const legacyOrderId = order.id.split('/').pop();
   const url = `/account/orders/${legacyOrderId}`;
   const lineItems = flattenConnection(order.lineItems);
-  const firstImage = lineItems[0]?.variant?.image;
+  const firstImage = (lineItems[0] as any)?.variant?.image;
 
   const statusColor = (status: string) => {
     if (status === 'FULFILLED' || status === 'PAID')
@@ -1011,8 +1011,8 @@ function OrderRow({order, detailed = false}: {order: any; detailed?: boolean}) {
           <div>
             <p className="text-warm text-sm font-medium truncate">
               {lineItems.length > 1
-                ? `${lineItems[0].title} +${lineItems.length - 1}`
-                : lineItems[0]?.title}
+                ? `${(lineItems[0] as any).title} +${lineItems.length - 1}`
+                : (lineItems[0] as any)?.title}
             </p>
             <p className="text-[#8B8076] text-[11px] mt-0.5">
               Order #{order.orderNumber} ·{' '}

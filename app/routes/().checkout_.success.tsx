@@ -338,7 +338,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
 
           // Send branded confirmation email — strictly formehaus.me links only
           const resendKey = (env as any).RESEND_API_KEY as string | undefined;
-          if (resendKey && checkoutData.contact.email) {
+          if (resendKey && checkoutData && checkoutData.contact.email) {
             sendOrderConfirmation(resendKey, {
               toEmail: checkoutData.contact.email,
               firstName: checkoutData.contact.firstName,
