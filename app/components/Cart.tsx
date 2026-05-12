@@ -475,7 +475,7 @@ function CartLines({
     <section
       ref={scrollRef}
       aria-labelledby="cart-contents"
-      className={clsx(className, 'flex-1 overflow-y-auto')}
+      className={clsx(className, 'flex-1 min-h-0 overflow-y-auto')}
     >
       <ul className="grid gap-6 md:gap-8">
         <AnimatePresence initial={false} mode="popLayout">
@@ -625,7 +625,7 @@ function CartSummary({
 
   const summary = {
     drawer:
-      'grid gap-4 p-6 border-t border-bronze/20 bg-gradient-to-t from-background to-background',
+      'flex-shrink-0 grid gap-4 p-6 border-t border-bronze/20 bg-gradient-to-t from-background to-background',
     page: 'sticky top-nav grid gap-6 p-4 md:px-6 md:translate-y-4 bg-primary/5 rounded-xl w-full',
   };
 
