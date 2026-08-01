@@ -519,8 +519,8 @@ export default function Collection() {
 
   const override = HERO_OVERRIDES[collection.handle];
   const heroImage =
-    override?.src ||
     collection.hero_image?.reference?.image?.url ||
+    override?.src ||
     collection.image?.url;
   const hideTitle =
     collection.hide_title?.value === 'true' || override?.hideTitle;

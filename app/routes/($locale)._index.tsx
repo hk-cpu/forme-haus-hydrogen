@@ -38,12 +38,13 @@ export async function loader(args: LoaderFunctionArgs) {
 }
 
 async function loadCriticalData({context, request}: LoaderFunctionArgs) {
-  const {shop, metaobjects} = await context.storefront.query(HOMEPAGE_QUERY, {
-    cache: CacheLong(),
-  });
+  const {shop, bentoMetaobjects, categoryMetaobjects} =
+    await context.storefront.query(HOMEPAGE_QUERY, {
+      cache: CacheLong(),
+    });
 
   const bentoItems =
-    metaobjects?.nodes
+    bentoMetaobjects?.nodes
       ?.map((node: any) => {
         const fields = node.fields.reduce((acc: any, field: any) => {
           acc[field.key] = field;
@@ -85,10 +86,39 @@ async function loadCriticalData({context, request}: LoaderFunctionArgs) {
       })
       .filter((item: any) => item.image) || [];
 
+  const categoryCards =
+    categoryMetaobjects?.nodes
+      ?.map((node: any) => {
+        const fields = node.fields.reduce((acc: any, field: any) => {
+          acc[field.key] = field;
+          return acc;
+        }, {});
+        const img = fields.image?.reference?.image;
+        if (!img?.url) return null;
+        return {
+          image: img.url,
+          width: img.width || 640,
+          height: img.height || 1160,
+          titleEn: fields.title_en?.value || '',
+          titleAr: fields.title_ar?.value || '',
+          url: fields.url?.value || '#',
+          sortOrder: Number(fields.sort_order?.value ?? 99),
+        };
+      })
+      .filter(Boolean)
+      .sort((a: any, b: any) => a.sortOrder - b.sortOrder) || [];
+
+  const heroCta = {
+    en: shop.heroCtaEn?.value || '',
+    ar: shop.heroCtaAr?.value || '',
+  };
+
   return {
     shop,
     seo: seoPayload.home({url: request.url}),
     bentoItems: bentoItems.length > 0 ? bentoItems : undefined,
+    categoryCards: categoryCards.length > 0 ? categoryCards : undefined,
+    heroCta: heroCta.en || heroCta.ar ? heroCta : undefined,
   };
 }
 
@@ -105,11 +135,11 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 };
 
 export default function Homepage() {
-  const {bentoItems} = useLoaderData<typeof loader>();
+  const {bentoItems, categoryCards, heroCta} = useLoaderData<typeof loader>();
 
   return (
     <div className="min-h-screen bg-transparent text-warm">
-      <Hero />
+      <Hero cta={heroCta as any} />
 
       <div
         id="explore-collections"
@@ -117,7 +147,7 @@ export default function Homepage() {
       >
         <div className="pt-14 md:pt-16">
           <Suspense fallback={<SectionFallback className="min-h-[520px]" />}>
-            <CategoryBento />
+            <CategoryBento categories={categoryCards as any} />
           </Suspense>
         </div>
 
@@ -164,8 +194,10 @@ const HOMEPAGE_QUERY = `#graphql
     shop {
       name
       description
+      heroCtaEn: metafield(namespace: "hero", key: "cta_en") { value }
+      heroCtaAr: metafield(namespace: "hero", key: "cta_ar") { value }
     }
-    metaobjects(type: "bento_item", first: 4) {
+    bentoMetaobjects: metaobjects(type: "bento_item", first: 4) {
       nodes {
         id
         fields {
@@ -173,12 +205,21 @@ const HOMEPAGE_QUERY = `#graphql
           value
           reference {
             ... on MediaImage {
-              image {
-                url
-                width
-                height
-                altText
-              }
+              image { url width height altText }
+            }
+          }
+        }
+      }
+    }
+    categoryMetaobjects: metaobjects(type: "category_card", first: 6) {
+      nodes {
+        id
+        fields {
+          key
+          value
+          reference {
+            ... on MediaImage {
+              image { url width height altText }
             }
           }
         }

@@ -56,6 +56,7 @@ const WHATSAPP_NUMBER = '966533954066';
 
 export function PageLayout({children, layout}: LayoutProps) {
   const {headerMenu, footerMenu} = layout || {};
+  const shop = (layout as any)?.shop;
   const location = useLocation();
   const {state} = useUI();
   const isHome = useIsHomePath();
@@ -190,13 +191,15 @@ export function PageLayout({children, layout}: LayoutProps) {
                 </div>
               </div>
             </section>
-            <Footer menu={footerMenu || undefined} />
+            <Footer menu={footerMenu || undefined} shop={shop} />
           </div>
         </div>
         {/* WhatsApp Floating Button � set WHATSAPP_NUMBER above to enable */}
-        {WHATSAPP_NUMBER && (
+        {(shop?.whatsappNumber?.value || WHATSAPP_NUMBER) && (
           <a
-            href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+            href={`https://wa.me/${
+              shop?.whatsappNumber?.value || WHATSAPP_NUMBER
+            }?text=${encodeURIComponent(
               t(
                 'whatsapp.defaultMessage',
                 'Hello, I would like to enquire about a product at Formé Haus',
@@ -392,8 +395,15 @@ function LegacyMenuMobileNav({
   );
 }
 
-function Footer({menu}: {menu?: EnhancedMenu}) {
+function Footer({menu, shop}: {menu?: EnhancedMenu; shop?: any}) {
   const {t} = useTranslation();
+  const instagramUrl =
+    shop?.instagramUrl?.value || 'https://instagram.com/formehaus';
+  const snapchatUrl =
+    shop?.snapchatUrl?.value || 'https://snapchat.com/add/formehaus';
+  const tiktokUrl = shop?.tiktokUrl?.value || 'https://tiktok.com/@formehaus';
+  const crNo = shop?.crNo?.value || '7051891369';
+  const vatNo = shop?.vatNo?.value || '314271812300003';
 
   const linkClass =
     'text-[12px] text-taupe hover:text-bronze transition-colors duration-300 inline-block py-1.5 focus:outline-none focus-visible:text-bronze';
@@ -462,7 +472,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
         <div className="max-w-[1440px] mx-auto mb-8">
           <div className="flex items-center justify-center gap-4">
             <a
-              href="https://instagram.com/formehaus"
+              href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-[#AA9B8F] hover:text-[#a87441] transition-colors"
@@ -502,7 +512,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
               </svg>
             </a>
             <a
-              href="https://snapchat.com/add/formehaus"
+              href={snapchatUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-[#AA9B8F] hover:text-[#a87441] transition-colors"
@@ -518,7 +528,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
               </svg>
             </a>
             <a
-              href="https://tiktok.com/@formehaus"
+              href={tiktokUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-[#AA9B8F] hover:text-[#a87441] transition-colors"
@@ -562,12 +572,12 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
             <span>
               {t('footer.crNo', 'CR No.')}
-              <span className="font-mono text-[#F0EAE6]">7051891369</span>
+              <span className="font-mono text-[#F0EAE6]">{crNo}</span>
             </span>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
             <span>
               {t('footer.vatNo', 'VAT No.')}
-              <span className="font-mono text-[#F0EAE6]">314271812300003</span>
+              <span className="font-mono text-[#F0EAE6]">{vatNo}</span>
             </span>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
             <span>{t('footer.registered', 'Registered in Saudi Arabia')}</span>
