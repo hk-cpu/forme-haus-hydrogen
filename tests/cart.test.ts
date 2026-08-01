@@ -78,6 +78,9 @@ test.describe('Cart', () => {
     const checkoutBtn = page.locator('[data-test=checkout-btn]');
     await expect(checkoutBtn).toBeVisible();
     const href = await checkoutBtn.getAttribute('href');
-    expect(href, 'checkout button should link to /checkout').toMatch(/checkout/);
+    // The cart uses Shopify's native checkout permalink (cart/c/...) or /checkout
+    expect(href, 'checkout button should link to checkout').toMatch(
+      /checkout|cart\/c\//,
+    );
   });
 });

@@ -2,8 +2,10 @@ import {motion} from 'framer-motion';
 
 import {useTranslation} from '~/hooks/useTranslation';
 
-export default function Hero() {
-  const {t} = useTranslation();
+export default function Hero({cta}: {cta?: {en: string; ar: string}}) {
+  const {t, lang} = useTranslation();
+  const ctaLabel =
+    (lang === 'AR' ? cta?.ar : cta?.en) || t('hero.cta', 'Explore Collection');
 
   return (
     <section
@@ -63,7 +65,7 @@ export default function Hero() {
             }}
             className="group inline-flex min-h-[48px] items-center justify-center gap-3 rounded-sm border border-bronze/40 px-8 py-4 text-[10px] font-light uppercase tracking-[0.3em] text-warm/90 transition-colors duration-300 hover:border-bronze hover:bg-bronze/10 hover:text-bronze focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            <span>{t('hero.cta', 'Explore Collection')}</span>
+            <span>{ctaLabel}</span>
             <svg
               width="16"
               height="16"

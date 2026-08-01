@@ -42,7 +42,7 @@ export default function FavoritesPage() {
       const res = await fetch(
         `/api/products?query=${encodeURIComponent(query)}&count=${ids.length}`,
       );
-      const data = await res.json();
+      const data = (await res.json()) as {products?: any[]};
 
       if (data?.products) {
         setProducts(data.products);

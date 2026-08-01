@@ -230,7 +230,7 @@ export default function Product() {
 
   // Extract iPhone models from tags (e.g., "iphone-17-pro", "iphone-17-pro-max")
   const iPhoneModels: string[] =
-    product.tags
+    (product as any).tags
       ?.filter((tag: string) => tag.toLowerCase().startsWith('iphone-'))
       ?.map((tag: string) => {
         const match = tag.match(/iphone-?(\d+)-?(pro-?max|pro|max|plus|mini)/i);
@@ -316,7 +316,6 @@ export default function Product() {
               <div className="grid gap-3">
                 {/* iPhone Models Badge */}
                 <div className="flex items-center gap-3 flex-wrap">
-
                   {iPhoneModels.length > 0 && (
                     <div className="flex gap-1.5">
                       {iPhoneModels

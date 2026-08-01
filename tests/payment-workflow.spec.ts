@@ -36,8 +36,8 @@ test.describe('Payment Workflow', () => {
   });
 
   test('Tap Payments callback endpoint renders UI', async ({page}) => {
-    // Test callback page with mock error state
-    await page.goto('/tap/callback');
+    // Test callback page with mock error state (route is /checkout/success)
+    await page.goto('/checkout/success');
 
     // Should show error state when no payment reference
     await expect(

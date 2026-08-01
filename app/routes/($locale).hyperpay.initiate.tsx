@@ -36,7 +36,7 @@ function getEntityId(
 
 // ─── Action ───────────────────────────────────────────────────────────────────
 export async function action({request, context}: ActionFunctionArgs) {
-  const env = context.env as Record<string, string | undefined>;
+  const env = context.env as unknown as Record<string, string | undefined>;
   const formData = await request.formData();
 
   const amount = formData.get('amount') as string;

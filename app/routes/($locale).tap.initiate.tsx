@@ -72,7 +72,7 @@ export async function action({request, context}: ActionFunctionArgs) {
   const origin = requestUrl.origin;
   const localePrefix = getPathLocalePrefix(requestUrl.pathname);
   const tapWebhookPath = buildLocalePath('/tap/webhook', localePrefix);
-  const tapCallbackPath = buildLocalePath('/tap/callback', localePrefix);
+  const tapCallbackPath = buildLocalePath('/checkout/success', localePrefix);
 
   // Build the Tap Payments charge request
   const chargePayload = {

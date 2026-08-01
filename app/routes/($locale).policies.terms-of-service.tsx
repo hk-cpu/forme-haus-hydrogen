@@ -54,70 +54,148 @@ export default function TermsOfServicePage() {
         >
           {isArabic ? (
             <>
-              <p>مرحبًا بكم في Formé Haus. باستخدامكم لهذا الموقع فإنكم توافقون على الالتزام بالشروط والأحكام التالية.</p>
+              <p>
+                مرحبًا بكم في Formé Haus. باستخدامكم لهذا الموقع فإنكم توافقون
+                على الالتزام بالشروط والأحكام التالية.
+              </p>
 
               <div>
-                <strong className="font-medium text-brand-text block mb-2">استخدام الموقع</strong>
-                <p>يجب استخدام الموقع لأغراض مشروعة فقط وبما لا يؤثر على تشغيل الموقع أو ينتهك حقوق الآخرين.</p>
+                <strong className="font-medium text-brand-text block mb-2">
+                  استخدام الموقع
+                </strong>
+                <p>
+                  يجب استخدام الموقع لأغراض مشروعة فقط وبما لا يؤثر على تشغيل
+                  الموقع أو ينتهك حقوق الآخرين.
+                </p>
               </div>
 
               <div>
-                <strong className="font-medium text-brand-text block mb-2">معلومات المنتجات</strong>
-                <p>نسعى إلى عرض معلومات دقيقة عن المنتجات بما في ذلك الوصف والصور والأسعار، ومع ذلك قد تحدث بعض الاختلافات البسيطة. تحتفظ Formé Haus بالحق في تصحيح الأخطاء أو تحديث المعلومات دون إشعار مسبق.</p>
+                <strong className="font-medium text-brand-text block mb-2">
+                  معلومات المنتجات
+                </strong>
+                <p>
+                  نسعى إلى عرض معلومات دقيقة عن المنتجات بما في ذلك الوصف والصور
+                  والأسعار، ومع ذلك قد تحدث بعض الاختلافات البسيطة. تحتفظ Formé
+                  Haus بالحق في تصحيح الأخطاء أو تحديث المعلومات دون إشعار مسبق.
+                </p>
               </div>
 
               <div>
-                <strong className="font-medium text-brand-text block mb-2">الطلبات</strong>
-                <p>تخضع جميع الطلبات لتوفر المنتجات وموافقة Formé Haus. ونحتفظ بالحق في رفض أو إلغاء أي طلب في حال حدوث خطأ في التسعير، أو عدم توفر المنتج، أو الاشتباه في وجود نشاط احتيالي.</p>
+                <strong className="font-medium text-brand-text block mb-2">
+                  الطلبات
+                </strong>
+                <p>
+                  تخضع جميع الطلبات لتوفر المنتجات وموافقة Formé Haus. ونحتفظ
+                  بالحق في رفض أو إلغاء أي طلب في حال حدوث خطأ في التسعير، أو
+                  عدم توفر المنتج، أو الاشتباه في وجود نشاط احتيالي.
+                </p>
               </div>
 
               <div>
-                <strong className="font-medium text-brand-text block mb-2">الملكية الفكرية</strong>
-                <p>جميع المحتويات المعروضة على هذا الموقع، بما في ذلك النصوص والصور والشعارات والتصاميم، هي ملك لـ Formé Haus أو للجهات المالكة لها، ولا يجوز نسخها، أو إعادة إنتاجها، أو استخدامها دون إذن خطي مسبق.</p>
+                <strong className="font-medium text-brand-text block mb-2">
+                  الملكية الفكرية
+                </strong>
+                <p>
+                  جميع المحتويات المعروضة على هذا الموقع، بما في ذلك النصوص
+                  والصور والشعارات والتصاميم، هي ملك لـ Formé Haus أو للجهات
+                  المالكة لها، ولا يجوز نسخها، أو إعادة إنتاجها، أو استخدامها
+                  دون إذن خطي مسبق.
+                </p>
               </div>
 
               <div>
-                <strong className="font-medium text-brand-text block mb-2">تحديد المسؤولية</strong>
-                <p>لا تتحمل Formé Haus المسؤولية عن أي أضرار غير مباشرة أو تبعية قد تنتج عن استخدام الموقع وذلك في الحدود التي يسمح بها النظام.</p>
+                <strong className="font-medium text-brand-text block mb-2">
+                  تحديد المسؤولية
+                </strong>
+                <p>
+                  لا تتحمل Formé Haus المسؤولية عن أي أضرار غير مباشرة أو تبعية
+                  قد تنتج عن استخدام الموقع وذلك في الحدود التي يسمح بها النظام.
+                </p>
               </div>
 
               <div>
-                <strong className="font-medium text-brand-text block mb-2">القانون المعمول به</strong>
-                <p>تخضع هذه الشروط والأحكام لأنظمة وقوانين المملكة العربية السعودية.</p>
+                <strong className="font-medium text-brand-text block mb-2">
+                  القانون المعمول به
+                </strong>
+                <p>
+                  تخضع هذه الشروط والأحكام لأنظمة وقوانين المملكة العربية
+                  السعودية.
+                </p>
               </div>
             </>
           ) : (
             <>
-              <p>Welcome to Formé Haus. By accessing or using our website, you agree to the following Terms & Conditions.</p>
+              <p>
+                Welcome to Formé Haus. By accessing or using our website, you
+                agree to the following Terms & Conditions.
+              </p>
 
               <div>
-                <strong className="font-medium text-brand-text block mb-2">Use of the Website</strong>
-                <p>You agree to use this website only for lawful purposes and in a manner that does not interfere with its operation or violate the rights of others.</p>
+                <strong className="font-medium text-brand-text block mb-2">
+                  Use of the Website
+                </strong>
+                <p>
+                  You agree to use this website only for lawful purposes and in
+                  a manner that does not interfere with its operation or violate
+                  the rights of others.
+                </p>
               </div>
 
               <div>
-                <strong className="font-medium text-brand-text block mb-2">Product Information</strong>
-                <p>We strive to ensure that product descriptions, images, and pricing are accurate. However, minor variations may occur. Formé Haus reserves the right to correct errors or update product information without prior notice.</p>
+                <strong className="font-medium text-brand-text block mb-2">
+                  Product Information
+                </strong>
+                <p>
+                  We strive to ensure that product descriptions, images, and
+                  pricing are accurate. However, minor variations may occur.
+                  Formé Haus reserves the right to correct errors or update
+                  product information without prior notice.
+                </p>
               </div>
 
               <div>
-                <strong className="font-medium text-brand-text block mb-2">Orders</strong>
-                <p>All orders are subject to product availability and acceptance by Formé Haus. We reserve the right to refuse or cancel any order if a pricing error occurs, if a product becomes unavailable, or if fraudulent activity is suspected.</p>
+                <strong className="font-medium text-brand-text block mb-2">
+                  Orders
+                </strong>
+                <p>
+                  All orders are subject to product availability and acceptance
+                  by Formé Haus. We reserve the right to refuse or cancel any
+                  order if a pricing error occurs, if a product becomes
+                  unavailable, or if fraudulent activity is suspected.
+                </p>
               </div>
 
               <div>
-                <strong className="font-medium text-brand-text block mb-2">Intellectual Property</strong>
-                <p>All content on this website, including text, images, graphics, logos, and design elements, is the property of Formé Haus or its respective partners and may not be copied, reproduced, or used without prior written permission.</p>
+                <strong className="font-medium text-brand-text block mb-2">
+                  Intellectual Property
+                </strong>
+                <p>
+                  All content on this website, including text, images, graphics,
+                  logos, and design elements, is the property of Formé Haus or
+                  its respective partners and may not be copied, reproduced, or
+                  used without prior written permission.
+                </p>
               </div>
 
               <div>
-                <strong className="font-medium text-brand-text block mb-2">Limitation of Liability</strong>
-                <p>Formé Haus shall not be liable for any indirect or consequential damages arising from the use of this website to the extent permitted by applicable law.</p>
+                <strong className="font-medium text-brand-text block mb-2">
+                  Limitation of Liability
+                </strong>
+                <p>
+                  Formé Haus shall not be liable for any indirect or
+                  consequential damages arising from the use of this website to
+                  the extent permitted by applicable law.
+                </p>
               </div>
 
               <div>
-                <strong className="font-medium text-brand-text block mb-2">Governing Law</strong>
-                <p>These Terms & Conditions are governed by the laws and regulations of the Kingdom of Saudi Arabia.</p>
+                <strong className="font-medium text-brand-text block mb-2">
+                  Governing Law
+                </strong>
+                <p>
+                  These Terms & Conditions are governed by the laws and
+                  regulations of the Kingdom of Saudi Arabia.
+                </p>
               </div>
             </>
           )}

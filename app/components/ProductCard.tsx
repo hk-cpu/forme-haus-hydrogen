@@ -373,8 +373,6 @@ export function ProductCard({
   // quickAddVariantId drives the CartForm render below
   const quickAddVariantId = product.variants?.nodes?.[0]?.id ?? null;
 
-
-
   return (
     <motion.div
       className="group relative"

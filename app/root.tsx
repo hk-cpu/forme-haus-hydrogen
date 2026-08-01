@@ -284,7 +284,7 @@ function Layout({children}: {children?: React.ReactNode}) {
             >
               <PageLayout
                 key={`${locale.language}-${locale.country}`}
-                layout={data.layout}
+                layout={data.layout as any}
               >
                 {children}
               </PageLayout>
@@ -409,6 +409,12 @@ const LAYOUT_QUERY = `#graphql
         }
       }
     }
+    instagramUrl: metafield(namespace: "footer", key: "instagram_url") { value }
+    snapchatUrl: metafield(namespace: "footer", key: "snapchat_url") { value }
+    tiktokUrl: metafield(namespace: "footer", key: "tiktok_url") { value }
+    whatsappNumber: metafield(namespace: "footer", key: "whatsapp_number") { value }
+    crNo: metafield(namespace: "footer", key: "cr_no") { value }
+    vatNo: metafield(namespace: "footer", key: "vat_no") { value }
   }
   fragment MenuItem on MenuItem {
     id

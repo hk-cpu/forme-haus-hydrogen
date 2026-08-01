@@ -120,7 +120,11 @@ export default function Policies() {
         </Link>
 
         {/* ── Policy title ── */}
-        <h1 className={`font-serif text-[#F0EAE6] text-3xl md:text-4xl lg:text-5xl leading-tight mb-6 ${isRTL ? 'tracking-normal' : ''}`}>
+        <h1
+          className={`font-serif text-[#F0EAE6] text-3xl md:text-4xl lg:text-5xl leading-tight mb-6 ${
+            isRTL ? 'tracking-normal' : ''
+          }`}
+        >
           {policy.title}
         </h1>
 
