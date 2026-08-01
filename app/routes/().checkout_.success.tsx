@@ -357,7 +357,9 @@ export async function loader({request, context}: LoaderFunctionArgs) {
             );
           }
         } else if (orderResult?.error) {
-          orderError = orderResult.error;
+          console.error('[Checkout] Order creation error:', orderResult.error);
+          orderError =
+            'Your payment was received but we had trouble confirming your order. Our team has been notified — please contact support with your transaction ID.';
         }
       } else if (checkoutData?.shopifyOrderId) {
         shopifyOrderId = checkoutData.shopifyOrderId;
@@ -506,11 +508,8 @@ export default function TapPaymentCallback() {
               </div>
             )}
             {'orderError' in data && data.orderError && (
-              <div className="mb-3 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
-                <p className="text-[10px] uppercase tracking-widest text-red-400">
-                  Shopify Order Error
-                </p>
-                <p className="text-xs text-red-300 mt-1 font-mono break-all">
+              <div className="mb-3 p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+                <p className="text-xs text-amber-300 leading-relaxed">
                   {data.orderError as string}
                 </p>
               </div>

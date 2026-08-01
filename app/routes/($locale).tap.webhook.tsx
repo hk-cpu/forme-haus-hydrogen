@@ -88,17 +88,16 @@ export async function action({request, context}: ActionFunctionArgs) {
     return json({error: 'Invalid JSON body'}, {status: 400});
   }
 
-  if (webhookSecret) {
-    const hashstring = request.headers.get('hashstring');
-    const valid = await verifyTapSignature(payload, hashstring, webhookSecret);
-    if (!valid) {
-      console.warn('[Tap Webhook] Invalid signature for charge', payload.id);
-      return json({error: 'Invalid signature'}, {status: 401});
-    }
-  } else {
-    console.warn(
-      '[Tap Webhook] TAP_WEBHOOK_SECRET not set — accepting unsigned webhook',
-    );
+  if (!webhookSecret) {
+    console.error('[Tap Webhook] TAP_WEBHOOK_SECRET is not configured');
+    return json({error: 'Webhook not configured'}, {status: 500});
+  }
+
+  const hashstring = request.headers.get('hashstring');
+  const valid = await verifyTapSignature(payload, hashstring, webhookSecret);
+  if (!valid) {
+    console.warn('[Tap Webhook] Invalid signature for charge', payload.id);
+    return json({error: 'Invalid signature'}, {status: 401});
   }
 
   const status = payload.status?.toUpperCase();

@@ -53,8 +53,56 @@ export async function action({context, request}: ActionFunctionArgs) {
     if (!credential)
       return json({error: 'Google login failed.', formId}, {status: 400});
     try {
-      const base64Url = credential.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      // Verify JWT signature against Google's public keys
+      const clientId = context.env.PUBLIC_GOOGLE_CLIENT_ID;
+      const [headerB64, payloadB64, sigB64] = credential.split('.');
+      if (!headerB64 || !payloadB64 || !sigB64) {
+        return json({error: 'Google login failed.', formId}, {status: 400});
+      }
+
+      // Fetch Google's current public keys
+      const certsRes = await fetch(
+        'https://www.googleapis.com/oauth2/v3/certs',
+      );
+      if (!certsRes.ok) {
+        return json({error: 'Google login failed.', formId}, {status: 502});
+      }
+      const {keys} = (await certsRes.json()) as {keys: any[]};
+
+      // Decode header to find which key was used
+      const headerJson = JSON.parse(
+        atob(headerB64.replace(/-/g, '+').replace(/_/g, '/')),
+      ) as {kid?: string};
+      const jwk = keys.find((k: any) => k.kid === headerJson.kid);
+      if (!jwk) {
+        return json({error: 'Google login failed.', formId}, {status: 401});
+      }
+
+      // Import the JWK and verify the signature
+      const publicKey = await crypto.subtle.importKey(
+        'jwk',
+        jwk,
+        {name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256'},
+        false,
+        ['verify'],
+      );
+      const sigBytes = Uint8Array.from(
+        atob(sigB64.replace(/-/g, '+').replace(/_/g, '/')),
+        (c) => c.charCodeAt(0),
+      );
+      const msgBytes = new TextEncoder().encode(`${headerB64}.${payloadB64}`);
+      const valid = await crypto.subtle.verify(
+        'RSASSA-PKCS1-v1_5',
+        publicKey,
+        sigBytes,
+        msgBytes,
+      );
+      if (!valid) {
+        return json({error: 'Google login failed.', formId}, {status: 401});
+      }
+
+      // Decode payload and check audience + expiry
+      const base64 = payloadB64.replace(/-/g, '+').replace(/_/g, '/');
       const jsonPayload = decodeURIComponent(
         atob(base64)
           .split('')
@@ -63,7 +111,19 @@ export async function action({context, request}: ActionFunctionArgs) {
           })
           .join(''),
       );
-      const payload = JSON.parse(jsonPayload) as {email?: string};
+      const payload = JSON.parse(jsonPayload) as {
+        email?: string;
+        aud?: string;
+        exp?: number;
+      };
+
+      if (payload.aud !== clientId) {
+        return json({error: 'Google login failed.', formId}, {status: 401});
+      }
+      if (!payload.exp || payload.exp < Math.floor(Date.now() / 1000)) {
+        return json({error: 'Google login failed.', formId}, {status: 401});
+      }
+
       const email = payload.email;
 
       if (!email)
