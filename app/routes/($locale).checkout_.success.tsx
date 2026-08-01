@@ -4,7 +4,7 @@
  * Tap redirects here after customer completes/cancels payment.
  * On CAPTURED: creates a real Shopify order via Admin API and shows confirmation.
  *
- * URL: /tap/callback?tap_id={chargeId}&merchantTxId={ref}
+ * URL: /checkout/success?tap_id={chargeId}&merchantTxId={ref}
  */
 
 import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
