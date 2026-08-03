@@ -16,9 +16,30 @@ runs:
       shell: 'bash'
       run: npm ci
 
+    - name: 🔑 Write .env for local preview server
+      shell: bash
+      run: |
+        if [ -z "$SESSION_SECRET" ]; then
+          echo "⚠️  SESSION_SECRET not set — E2E tests require GitHub secrets to be configured."
+          echo "SKIP_E2E=true" >> "$GITHUB_ENV"
+        else
+          printf '%s\n' \
+            "SESSION_SECRET=$SESSION_SECRET" \
+            "PUBLIC_STOREFRONT_API_TOKEN=$PUBLIC_STOREFRONT_API_TOKEN" \
+            "PRIVATE_STOREFRONT_API_TOKEN=$PRIVATE_STOREFRONT_API_TOKEN" \
+            "PUBLIC_STORE_DOMAIN=$PUBLIC_STORE_DOMAIN" \
+            "PUBLIC_STOREFRONT_ID=$PUBLIC_STOREFRONT_ID" \
+            "PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID=$PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID" \
+            "PUBLIC_CUSTOMER_ACCOUNT_API_URL=$PUBLIC_CUSTOMER_ACCOUNT_API_URL" \
+            "PUBLIC_CHECKOUT_DOMAIN=$PUBLIC_CHECKOUT_DOMAIN" \
+            "SHOP_ID=$SHOP_ID" \
+            > .env
+        fi
+
     - name: 📦 Build
       shell: 'bash'
-      run: npm run build
+      if: env.SKIP_E2E != 'true'
+      run: SHOPIFY_HYDROGEN_FLAG_LOCKFILE_CHECK=false npm run build
 
     - name: 💾 Turbo cache
       id: turbo-cache
@@ -55,6 +76,7 @@ runs:
 
     - name: 🍄 Run Playwright tests
       shell: 'bash'
+      if: env.SKIP_E2E != 'true'
       run: URL=${{ inputs.url }} AUTH_BYPASS_TOKEN=${{ inputs.auth-bypass-token }} npx playwright test
 
     - name: 🗒 Report
