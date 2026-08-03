@@ -104,7 +104,13 @@ async function createMetaobjectDefinition(type, name, displayNameKey, fields) {
 }
 
 // ── Helper: create metafield definition ────────────────────────────────────
-async function createMetafieldDefinition(namespace, key, name, ownerType, fieldType) {
+async function createMetafieldDefinition(
+  namespace,
+  key,
+  name,
+  ownerType,
+  fieldType,
+) {
   // Check if it already exists
   const existing = await adminQuery(`{
     metafieldDefinitions(ownerType: ${ownerType}, namespace: "${namespace}", first: 50) {
@@ -115,7 +121,9 @@ async function createMetafieldDefinition(namespace, key, name, ownerType, fieldT
     (n) => n.namespace === namespace && n.key === key,
   );
   if (found) {
-    console.log(`  ⏩  metafield ${ownerType}::${namespace}.${key} already exists — skipping`);
+    console.log(
+      `  ⏩  metafield ${ownerType}::${namespace}.${key} already exists — skipping`,
+    );
     return found;
   }
 
@@ -160,60 +168,165 @@ async function main() {
     'Category Card',
     'title_en',
     [
-      {key: 'title_en', name: 'Title (English)', type: {name: 'single_line_text_field'}, required: true},
-      {key: 'title_ar', name: 'Title (Arabic)', type: {name: 'single_line_text_field'}, required: false},
-      {key: 'image', name: 'Image', type: {name: 'file_reference'}, required: true},
+      {
+        key: 'title_en',
+        name: 'Title (English)',
+        type: {name: 'single_line_text_field'},
+        required: true,
+      },
+      {
+        key: 'title_ar',
+        name: 'Title (Arabic)',
+        type: {name: 'single_line_text_field'},
+        required: false,
+      },
+      {
+        key: 'image',
+        name: 'Image',
+        type: {name: 'file_reference'},
+        required: true,
+      },
       {key: 'url', name: 'Link URL', type: {name: 'url'}, required: true},
-      {key: 'sort_order', name: 'Sort Order', type: {name: 'number_integer'}, required: false},
+      {
+        key: 'sort_order',
+        name: 'Sort Order',
+        type: {name: 'number_integer'},
+        required: false,
+      },
     ],
   );
 
   // ── 2. bento_item metaobject definition ────────────────────────────────
   console.log('\n📦  Metaobject: bento_item (homepage editorial bento grid)');
-  await createMetaobjectDefinition(
-    'bento_item',
-    'Bento Item',
-    'title_en',
-    [
-      {key: 'title_en', name: 'Title (English)', type: {name: 'single_line_text_field'}, required: true},
-      {key: 'title_ar', name: 'Title (Arabic)', type: {name: 'single_line_text_field'}, required: false},
-      {key: 'subtitle_en', name: 'Subtitle (English)', type: {name: 'single_line_text_field'}, required: false},
-      {key: 'subtitle_ar', name: 'Subtitle (Arabic)', type: {name: 'single_line_text_field'}, required: false},
-      {key: 'image', name: 'Image', type: {name: 'file_reference'}, required: true},
-      {key: 'alt', name: 'Image Alt Text', type: {name: 'single_line_text_field'}, required: false},
-      {key: 'url', name: 'Link URL', type: {name: 'url'}, required: false},
-    ],
-  );
+  await createMetaobjectDefinition('bento_item', 'Bento Item', 'title_en', [
+    {
+      key: 'title_en',
+      name: 'Title (English)',
+      type: {name: 'single_line_text_field'},
+      required: true,
+    },
+    {
+      key: 'title_ar',
+      name: 'Title (Arabic)',
+      type: {name: 'single_line_text_field'},
+      required: false,
+    },
+    {
+      key: 'subtitle_en',
+      name: 'Subtitle (English)',
+      type: {name: 'single_line_text_field'},
+      required: false,
+    },
+    {
+      key: 'subtitle_ar',
+      name: 'Subtitle (Arabic)',
+      type: {name: 'single_line_text_field'},
+      required: false,
+    },
+    {
+      key: 'image',
+      name: 'Image',
+      type: {name: 'file_reference'},
+      required: true,
+    },
+    {
+      key: 'alt',
+      name: 'Image Alt Text',
+      type: {name: 'single_line_text_field'},
+      required: false,
+    },
+    {key: 'url', name: 'Link URL', type: {name: 'url'}, required: false},
+  ]);
 
   // ── 3. Hero CTA shop metafields ─────────────────────────────────────────
   console.log('\n🏪  Shop metafields: hero CTA button text');
-  await createMetafieldDefinition('hero', 'cta_en', 'Hero CTA (English)', 'SHOP', 'single_line_text_field');
-  await createMetafieldDefinition('hero', 'cta_ar', 'Hero CTA (Arabic)', 'SHOP', 'single_line_text_field');
+  await createMetafieldDefinition(
+    'hero',
+    'cta_en',
+    'Hero CTA (English)',
+    'SHOP',
+    'single_line_text_field',
+  );
+  await createMetafieldDefinition(
+    'hero',
+    'cta_ar',
+    'Hero CTA (Arabic)',
+    'SHOP',
+    'single_line_text_field',
+  );
 
   // ── 4. Footer shop metafields ───────────────────────────────────────────
   console.log('\n🏪  Shop metafields: footer social links & legal');
-  await createMetafieldDefinition('footer', 'instagram_url', 'Instagram URL', 'SHOP', 'url');
-  await createMetafieldDefinition('footer', 'snapchat_url', 'Snapchat URL', 'SHOP', 'url');
-  await createMetafieldDefinition('footer', 'tiktok_url', 'TikTok URL', 'SHOP', 'url');
-  await createMetafieldDefinition('footer', 'whatsapp_number', 'WhatsApp Number (with country code, no +)', 'SHOP', 'single_line_text_field');
-  await createMetafieldDefinition('footer', 'cr_no', 'Commercial Registration No.', 'SHOP', 'single_line_text_field');
-  await createMetafieldDefinition('footer', 'vat_no', 'VAT Registration No.', 'SHOP', 'single_line_text_field');
+  await createMetafieldDefinition(
+    'footer',
+    'instagram_url',
+    'Instagram URL',
+    'SHOP',
+    'url',
+  );
+  await createMetafieldDefinition(
+    'footer',
+    'snapchat_url',
+    'Snapchat URL',
+    'SHOP',
+    'url',
+  );
+  await createMetafieldDefinition(
+    'footer',
+    'tiktok_url',
+    'TikTok URL',
+    'SHOP',
+    'url',
+  );
+  await createMetafieldDefinition(
+    'footer',
+    'whatsapp_number',
+    'WhatsApp Number (with country code, no +)',
+    'SHOP',
+    'single_line_text_field',
+  );
+  await createMetafieldDefinition(
+    'footer',
+    'cr_no',
+    'Commercial Registration No.',
+    'SHOP',
+    'single_line_text_field',
+  );
+  await createMetafieldDefinition(
+    'footer',
+    'vat_no',
+    'VAT Registration No.',
+    'SHOP',
+    'single_line_text_field',
+  );
 
   // ── 5. Collection hero image metafield ─────────────────────────────────
   console.log('\n🗂️  Collection metafield: custom hero image');
-  await createMetafieldDefinition('custom', 'hero_image', 'Hero Image', 'COLLECTION', 'file_reference');
+  await createMetafieldDefinition(
+    'custom',
+    'hero_image',
+    'Hero Image',
+    'COLLECTION',
+    'file_reference',
+  );
 
   console.log('\n✨  Setup complete!\n');
   console.log('Next steps in Shopify Admin:');
   console.log('  1. Content → Metaobjects → Category Card → Add entries');
-  console.log('     • title_en, title_ar, image, url, sort_order for each category tile');
+  console.log(
+    '     • title_en, title_ar, image, url, sort_order for each category tile',
+  );
   console.log('  2. Content → Metaobjects → Bento Item → Add entries');
   console.log('     • title_en, image, url for each bento grid item');
   console.log('  3. Settings → Custom data → Shop → hero.cta_en / hero.cta_ar');
   console.log('     • e.g. "Explore Collection" / "استكشف المجموعة"');
   console.log('  4. Settings → Custom data → Shop → footer.instagram_url etc.');
-  console.log('     • Fill in your social media URLs and legal registration numbers');
-  console.log('  5. Catalog → Collections → [any collection] → Custom data → custom.hero_image');
+  console.log(
+    '     • Fill in your social media URLs and legal registration numbers',
+  );
+  console.log(
+    '  5. Catalog → Collections → [any collection] → Custom data → custom.hero_image',
+  );
   console.log('     • Upload a hero banner image for that collection page');
 }
 
