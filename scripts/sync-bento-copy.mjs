@@ -67,6 +67,11 @@ const TILES = [
   {handle: 'new-arrivals', key: 'editorial.new'},
 ];
 
+/** Escapes every regex metacharacter so a key is matched literally. */
+function escapeRegExp(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 // ── Extract the canonical strings from translations.ts ─────────────────────
 function loadTranslations() {
   const src = readFileSync(
@@ -91,7 +96,7 @@ function loadTranslations() {
   /** Reads one key out of one language block. Values may wrap onto the next line. */
   function read(lang, key) {
     const pattern = new RegExp(
-      `'${key.replace(/\./g, '\\.')}':\\s*\\n?\\s*'((?:[^'\\\\]|\\\\.)*)'`,
+      `'${escapeRegExp(key)}':\\s*\\n?\\s*'((?:[^'\\\\]|\\\\.)*)'`,
     );
     const match = sections[lang].match(pattern);
     if (!match) throw new Error(`Missing ${lang} translation for "${key}"`);
