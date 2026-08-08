@@ -10,12 +10,37 @@ interface BentoItem {
   image: string;
   alt: string;
   url: string;
-  titleKey: any;
+  /** Copy managed in Shopify Admin — wins over `titleKey` when present. */
+  titleEn?: string;
+  titleAr?: string;
+  subtitleEn?: string;
+  subtitleAr?: string;
+  /** Translation-file fallback, used when Admin has no value for the locale. */
+  titleKey?: any;
   subtitleKey?: any;
   defaultTitle: string;
   defaultSubtitle?: string;
   width: number;
   height: number;
+}
+
+/**
+ * Resolves a piece of bento copy for the active language.
+ *
+ * Order: the entry's own Admin value for this language, then the translation
+ * key, then the English default. An empty Admin field is skipped rather than
+ * rendered, so clearing a value in Admin degrades to the translation instead
+ * of blanking the card.
+ */
+function resolveCopy(
+  adminValue: string | undefined,
+  key: string | undefined,
+  fallback: string,
+  t: (k: string, d?: string) => string,
+): string {
+  if (adminValue) return adminValue;
+  if (key) return t(key, fallback);
+  return fallback;
 }
 
 // 4 images — two-column editorial grid, all square (1:1) to prevent cropping
@@ -69,12 +94,35 @@ const BENTO_ITEMS: BentoItem[] = [
 /**
  * TopCard — renders at natural image height with 3D tilt and parallax
  */
-function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
+function TopCard({
+  item,
+  index,
+  t,
+  lang,
+}: {
+  item: BentoItem;
+  index: number;
+  t: any;
+  lang: 'EN' | 'AR';
+}) {
   const [isHovered, setIsHovered] = useState(false);
   const shouldReduceMotion = useReducedMotion();
   const {style: tiltStyle, handlers: tiltHandlers} = use3DTilt({
     maxRotation: 4,
   });
+
+  const title = resolveCopy(
+    lang === 'AR' ? item.titleAr : item.titleEn,
+    item.titleKey,
+    item.defaultTitle,
+    t,
+  );
+  const subtitle = resolveCopy(
+    lang === 'AR' ? item.subtitleAr : item.subtitleEn,
+    item.subtitleKey,
+    item.defaultSubtitle ?? '',
+    t,
+  );
 
   return (
     <motion.div
@@ -153,16 +201,16 @@ function TopCard({item, index, t}: {item: BentoItem; index: number; t: any}) {
               animate={{y: isHovered ? 0 : 4}}
               transition={{duration: 0.3, delay: 0.05}}
             >
-              {t(item.titleKey, item.defaultTitle)}
+              {title}
             </motion.h3>
-            {item.subtitleKey && (
+            {subtitle && (
               <motion.p
                 className="text-xs text-white/70 tracking-wide mt-1 truncate"
                 initial={false}
                 animate={{y: isHovered ? 0 : 4, opacity: isHovered ? 1 : 0.7}}
                 transition={{duration: 0.3, delay: 0.1}}
               >
-                {t(item.subtitleKey, item.defaultSubtitle!)}
+                {subtitle}
               </motion.p>
             )}
             <motion.div
@@ -202,7 +250,7 @@ export default function EditorialSection({
 }: {
   bentoItems?: BentoItem[];
 }) {
-  const {t, isRTL} = useTranslation();
+  const {t, isRTL, lang} = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = useReducedMotion();
 
@@ -269,7 +317,13 @@ export default function EditorialSection({
         {/* Mobile: single column stack */}
         <div className="flex flex-col gap-3 md:hidden">
           {bentoItems.slice(0, 4).map((item, i) => (
-            <TopCard key={`mobile-${i}`} item={item} index={i} t={t} />
+            <TopCard
+              key={`mobile-${i}`}
+              item={item}
+              index={i}
+              t={t}
+              lang={lang}
+            />
           ))}
         </div>
 
@@ -284,7 +338,7 @@ export default function EditorialSection({
                   : {y: i % 2 === 0 ? leftColY : rightColY}
               }
             >
-              <TopCard item={item} index={i} t={t} />
+              <TopCard item={item} index={i} t={t} lang={lang} />
             </motion.div>
           ))}
         </div>
