@@ -101,6 +101,14 @@ export type LayoutQuery = {
         image?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Image, 'url'>>;
       }>;
     }>;
+    instagramUrl?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+    snapchatUrl?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+    tiktokUrl?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+    whatsappNumber?: StorefrontAPI.Maybe<
+      Pick<StorefrontAPI.Metafield, 'value'>
+    >;
+    crNo?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+    vatNo?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
   };
   headerMenu?: StorefrontAPI.Maybe<
     Pick<StorefrontAPI.Menu, 'id'> & {
@@ -148,6 +156,12 @@ export type ShopFragment = Pick<
       image?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Image, 'url'>>;
     }>;
   }>;
+  instagramUrl?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+  snapchatUrl?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+  tiktokUrl?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+  whatsappNumber?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+  crNo?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+  vatNo?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
 };
 
 export type MenuItemFragment = Pick<
@@ -202,8 +216,29 @@ export type SeoCollectionContentQueryVariables = StorefrontAPI.Exact<{
 }>;
 
 export type SeoCollectionContentQuery = {
-  shop: Pick<StorefrontAPI.Shop, 'name' | 'description'>;
-  metaobjects: {
+  shop: Pick<StorefrontAPI.Shop, 'name' | 'description'> & {
+    heroCtaEn?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+    heroCtaAr?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'value'>>;
+  };
+  bentoMetaobjects: {
+    nodes: Array<
+      Pick<StorefrontAPI.Metaobject, 'id' | 'handle'> & {
+        fields: Array<
+          Pick<StorefrontAPI.MetaobjectField, 'key' | 'value'> & {
+            reference?: StorefrontAPI.Maybe<{
+              image?: StorefrontAPI.Maybe<
+                Pick<
+                  StorefrontAPI.Image,
+                  'url' | 'width' | 'height' | 'altText'
+                >
+              >;
+            }>;
+          }
+        >;
+      }
+    >;
+  };
+  categoryMetaobjects: {
     nodes: Array<
       Pick<StorefrontAPI.Metaobject, 'id'> & {
         fields: Array<
@@ -412,38 +447,12 @@ export type CustomerOrdersForDetailQuery = {
   }>;
 };
 
-export type CustomerRecoverMutationVariables = StorefrontAPI.Exact<{
-  email: StorefrontAPI.Scalars['String']['input'];
-}>;
-
-export type CustomerRecoverMutation = {
-  customerRecover?: StorefrontAPI.Maybe<{
-    customerUserErrors: Array<
-      Pick<StorefrontAPI.CustomerUserError, 'code' | 'field' | 'message'>
-    >;
-  }>;
-};
-
 export type CustomerAccountCreateMutationVariables = StorefrontAPI.Exact<{
   input: StorefrontAPI.CustomerCreateInput;
 }>;
 
 export type CustomerAccountCreateMutation = {
   customerCreate?: StorefrontAPI.Maybe<{
-    customer?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Customer, 'id'>>;
-    customerUserErrors: Array<
-      Pick<StorefrontAPI.CustomerUserError, 'code' | 'field' | 'message'>
-    >;
-  }>;
-};
-
-export type CustomerResetMutationVariables = StorefrontAPI.Exact<{
-  id: StorefrontAPI.Scalars['ID']['input'];
-  input: StorefrontAPI.CustomerResetInput;
-}>;
-
-export type CustomerResetMutation = {
-  customerReset?: StorefrontAPI.Maybe<{
     customer?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Customer, 'id'>>;
     customerUserErrors: Array<
       Pick<StorefrontAPI.CustomerUserError, 'code' | 'field' | 'message'>
@@ -553,6 +562,32 @@ export type CustomerCreateMutationVariables = StorefrontAPI.Exact<{
 
 export type CustomerCreateMutation = {
   customerCreate?: StorefrontAPI.Maybe<{
+    customer?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Customer, 'id'>>;
+    customerUserErrors: Array<
+      Pick<StorefrontAPI.CustomerUserError, 'code' | 'field' | 'message'>
+    >;
+  }>;
+};
+
+export type CustomerRecoverMutationVariables = StorefrontAPI.Exact<{
+  email: StorefrontAPI.Scalars['String']['input'];
+}>;
+
+export type CustomerRecoverMutation = {
+  customerRecover?: StorefrontAPI.Maybe<{
+    customerUserErrors: Array<
+      Pick<StorefrontAPI.CustomerUserError, 'code' | 'field' | 'message'>
+    >;
+  }>;
+};
+
+export type CustomerResetMutationVariables = StorefrontAPI.Exact<{
+  id: StorefrontAPI.Scalars['ID']['input'];
+  input: StorefrontAPI.CustomerResetInput;
+}>;
+
+export type CustomerResetMutation = {
+  customerReset?: StorefrontAPI.Maybe<{
     customer?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Customer, 'id'>>;
     customerUserErrors: Array<
       Pick<StorefrontAPI.CustomerUserError, 'code' | 'field' | 'message'>
@@ -1196,6 +1231,7 @@ export type ProductFragment = Pick<
   | 'title'
   | 'vendor'
   | 'handle'
+  | 'tags'
   | 'descriptionHtml'
   | 'description'
   | 'encodedVariantExistence'
@@ -1366,6 +1402,7 @@ export type ProductQuery = {
       | 'title'
       | 'vendor'
       | 'handle'
+      | 'tags'
       | 'descriptionHtml'
       | 'description'
       | 'encodedVariantExistence'
@@ -1926,7 +1963,7 @@ export type NewsletterCustomerCreateMutation = {
 };
 
 interface GeneratedQueryTypes {
-  '#graphql\n  query layout(\n    $language: LanguageCode\n    $headerMenuHandle: String!\n    $footerMenuHandle: String!\n  ) @inContext(language: $language) {\n    shop {\n      ...Shop\n    }\n    headerMenu: menu(handle: $headerMenuHandle) {\n      ...Menu\n    }\n    footerMenu: menu(handle: $footerMenuHandle) {\n      ...Menu\n    }\n  }\n  fragment Shop on Shop {\n    id\n    name\n    description\n    primaryDomain {\n      url\n    }\n    brand {\n      logo {\n        image {\n          url\n        }\n      }\n    }\n  }\n  fragment MenuItem on MenuItem {\n    id\n    resourceId\n    tags\n    title\n    type\n    url\n  }\n  fragment ChildMenuItem on MenuItem {\n    ...MenuItem\n  }\n  fragment ParentMenuItem on MenuItem {\n    ...MenuItem\n    items {\n      ...ChildMenuItem\n    }\n  }\n  fragment Menu on Menu {\n    id\n    items {\n      ...ParentMenuItem\n    }\n  }\n': {
+  '#graphql\n  query layout(\n    $language: LanguageCode\n    $headerMenuHandle: String!\n    $footerMenuHandle: String!\n  ) @inContext(language: $language) {\n    shop {\n      ...Shop\n    }\n    headerMenu: menu(handle: $headerMenuHandle) {\n      ...Menu\n    }\n    footerMenu: menu(handle: $footerMenuHandle) {\n      ...Menu\n    }\n  }\n  fragment Shop on Shop {\n    id\n    name\n    description\n    primaryDomain {\n      url\n    }\n    brand {\n      logo {\n        image {\n          url\n        }\n      }\n    }\n    instagramUrl: metafield(namespace: "footer", key: "instagram_url") { value }\n    snapchatUrl: metafield(namespace: "footer", key: "snapchat_url") { value }\n    tiktokUrl: metafield(namespace: "footer", key: "tiktok_url") { value }\n    whatsappNumber: metafield(namespace: "footer", key: "whatsapp_number") { value }\n    crNo: metafield(namespace: "footer", key: "cr_no") { value }\n    vatNo: metafield(namespace: "footer", key: "vat_no") { value }\n  }\n  fragment MenuItem on MenuItem {\n    id\n    resourceId\n    tags\n    title\n    type\n    url\n  }\n  fragment ChildMenuItem on MenuItem {\n    ...MenuItem\n  }\n  fragment ParentMenuItem on MenuItem {\n    ...MenuItem\n    items {\n      ...ChildMenuItem\n    }\n  }\n  fragment Menu on Menu {\n    id\n    items {\n      ...ParentMenuItem\n    }\n  }\n': {
     return: LayoutQuery;
     variables: LayoutQueryVariables;
   };
@@ -1934,7 +1971,7 @@ interface GeneratedQueryTypes {
     return: GetShopPrimaryDomainQuery;
     variables: GetShopPrimaryDomainQueryVariables;
   };
-  '#graphql\n  query seoCollectionContent($country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    shop {\n      name\n      description\n    }\n    metaobjects(type: "bento_item", first: 4) {\n      nodes {\n        id\n        fields {\n          key\n          value\n          reference {\n            ... on MediaImage {\n              image {\n                url\n                width\n                height\n                altText\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query seoCollectionContent($country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    shop {\n      name\n      description\n      heroCtaEn: metafield(namespace: "hero", key: "cta_en") { value }\n      heroCtaAr: metafield(namespace: "hero", key: "cta_ar") { value }\n    }\n    bentoMetaobjects: metaobjects(type: "bento_item", first: 4) {\n      nodes {\n        id\n        handle\n        fields {\n          key\n          value\n          reference {\n            ... on MediaImage {\n              image { url width height altText }\n            }\n          }\n        }\n      }\n    }\n    categoryMetaobjects: metaobjects(type: "category_card", first: 6) {\n      nodes {\n        id\n        fields {\n          key\n          value\n          reference {\n            ... on MediaImage {\n              image { url width height altText }\n            }\n          }\n        }\n      }\n    }\n  }\n': {
     return: SeoCollectionContentQuery;
     variables: SeoCollectionContentQueryVariables;
   };
@@ -1990,7 +2027,7 @@ interface GeneratedQueryTypes {
     return: PoliciesIndexQuery;
     variables: PoliciesIndexQueryVariables;
   };
-  '#graphql\n  query Product(\n    $country: CountryCode\n    $language: LanguageCode\n    $handle: String!\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      ...Product\n    }\n    shop {\n      name\n      primaryDomain {\n        url\n      }\n      shippingPolicy {\n        body\n        handle\n      }\n      refundPolicy {\n        body\n        handle\n      }\n    }\n  }\n  #graphql\n  fragment Media on Media {\n    __typename\n    mediaContentType\n    alt\n    previewImage {\n      url\n    }\n    ... on MediaImage {\n      id\n      image {\n        id\n        url\n        width\n        height\n      }\n    }\n    ... on Video {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on Model3d {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on ExternalVideo {\n      id\n      embedUrl\n      host\n    }\n  }\n\n  #graphql\n  fragment Product on Product {\n    id\n    title\n    vendor\n    handle\n    descriptionHtml\n    description\n    encodedVariantExistence\n    encodedVariantAvailability\n    frameShape: metafield(namespace: "custom", key: "frame_shape") { value }\n    gender: metafield(namespace: "custom", key: "gender") { value }\n    frameMaterial: metafield(namespace: "custom", key: "frame_material") { value }\n    lensDescription: metafield(namespace: "custom", key: "lens_description") { value }\n    lensMaterial: metafield(namespace: "custom", key: "lens_material") { value }\n    uvProtection: metafield(namespace: "custom", key: "uv_protection") { value }\n    frameWidth: metafield(namespace: "custom", key: "frame_width") { value }\n    frameHeight: metafield(namespace: "custom", key: "frame_height") { value }\n    lensWidth: metafield(namespace: "custom", key: "lens_width") { value }\n    noseBridge: metafield(namespace: "custom", key: "nose_bridge") { value }\n    templeLength: metafield(namespace: "custom", key: "temple_length") { value }\n    productCode: metafield(namespace: "custom", key: "product_code") { value }\n    warranty: metafield(namespace: "custom", key: "warranty") { value }\n    polarised: metafield(namespace: "custom", key: "polarised") { value }\n    measurementImage: metafield(namespace: "custom", key: "measurement_image") {\n      reference {\n        ... on MediaImage {\n          image {\n            url\n          }\n        }\n      }\n    }\n    options {\n      name\n      optionValues {\n        name\n        firstSelectableVariant {\n          ...ProductVariant\n        }\n        swatch {\n          color\n          image {\n            previewImage {\n              url\n            }\n          }\n        }\n      }\n    }\n    selectedOrFirstAvailableVariant(selectedOptions: $selectedOptions, ignoreUnknownOptions: true, caseInsensitiveMatch: true) {\n      ...ProductVariant\n    }\n    adjacentVariants (selectedOptions: $selectedOptions) {\n      ...ProductVariant\n    }\n    seo {\n      description\n      title\n    }\n    media(first: 7) {\n      nodes {\n        ...Media\n      }\n    }\n  }\n  #graphql\n  fragment ProductVariant on ProductVariant {\n    id\n    availableForSale\n    selectedOptions {\n      name\n      value\n    }\n    image {\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n  }\n\n\n': {
+  '#graphql\n  query Product(\n    $country: CountryCode\n    $language: LanguageCode\n    $handle: String!\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      ...Product\n    }\n    shop {\n      name\n      primaryDomain {\n        url\n      }\n      shippingPolicy {\n        body\n        handle\n      }\n      refundPolicy {\n        body\n        handle\n      }\n    }\n  }\n  #graphql\n  fragment Media on Media {\n    __typename\n    mediaContentType\n    alt\n    previewImage {\n      url\n    }\n    ... on MediaImage {\n      id\n      image {\n        id\n        url\n        width\n        height\n      }\n    }\n    ... on Video {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on Model3d {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on ExternalVideo {\n      id\n      embedUrl\n      host\n    }\n  }\n\n  #graphql\n  fragment Product on Product {\n    id\n    title\n    vendor\n    handle\n    tags\n    descriptionHtml\n    description\n    encodedVariantExistence\n    encodedVariantAvailability\n    frameShape: metafield(namespace: "custom", key: "frame_shape") { value }\n    gender: metafield(namespace: "custom", key: "gender") { value }\n    frameMaterial: metafield(namespace: "custom", key: "frame_material") { value }\n    lensDescription: metafield(namespace: "custom", key: "lens_description") { value }\n    lensMaterial: metafield(namespace: "custom", key: "lens_material") { value }\n    uvProtection: metafield(namespace: "custom", key: "uv_protection") { value }\n    frameWidth: metafield(namespace: "custom", key: "frame_width") { value }\n    frameHeight: metafield(namespace: "custom", key: "frame_height") { value }\n    lensWidth: metafield(namespace: "custom", key: "lens_width") { value }\n    noseBridge: metafield(namespace: "custom", key: "nose_bridge") { value }\n    templeLength: metafield(namespace: "custom", key: "temple_length") { value }\n    productCode: metafield(namespace: "custom", key: "product_code") { value }\n    warranty: metafield(namespace: "custom", key: "warranty") { value }\n    polarised: metafield(namespace: "custom", key: "polarised") { value }\n    measurementImage: metafield(namespace: "custom", key: "measurement_image") {\n      reference {\n        ... on MediaImage {\n          image {\n            url\n          }\n        }\n      }\n    }\n    options {\n      name\n      optionValues {\n        name\n        firstSelectableVariant {\n          ...ProductVariant\n        }\n        swatch {\n          color\n          image {\n            previewImage {\n              url\n            }\n          }\n        }\n      }\n    }\n    selectedOrFirstAvailableVariant(selectedOptions: $selectedOptions, ignoreUnknownOptions: true, caseInsensitiveMatch: true) {\n      ...ProductVariant\n    }\n    adjacentVariants (selectedOptions: $selectedOptions) {\n      ...ProductVariant\n    }\n    seo {\n      description\n      title\n    }\n    media(first: 7) {\n      nodes {\n        ...Media\n      }\n    }\n  }\n  #graphql\n  fragment ProductVariant on ProductVariant {\n    id\n    availableForSale\n    selectedOptions {\n      name\n      value\n    }\n    image {\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n  }\n\n\n': {
     return: ProductQuery;
     variables: ProductQueryVariables;
   };
@@ -2041,17 +2078,9 @@ interface GeneratedMutationTypes {
     return: CustomerUpdateMutation;
     variables: CustomerUpdateMutationVariables;
   };
-  '#graphql\n  mutation customerRecover($email: String!) {\n    customerRecover(email: $email) {\n      customerUserErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
-    return: CustomerRecoverMutation;
-    variables: CustomerRecoverMutationVariables;
-  };
   '#graphql\n  mutation customerAccountCreate($input: CustomerCreateInput!) {\n    customerCreate(input: $input) {\n      customer {\n        id\n      }\n      customerUserErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
     return: CustomerAccountCreateMutation;
     variables: CustomerAccountCreateMutationVariables;
-  };
-  '#graphql\n  mutation customerReset($id: ID!, $input: CustomerResetInput!) {\n    customerReset(id: $id, input: $input) {\n      customer {\n        id\n      }\n      customerUserErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
-    return: CustomerResetMutation;
-    variables: CustomerResetMutationVariables;
   };
   '#graphql\n  mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {\n    customerAccessTokenCreate(input: $input) {\n      customerUserErrors {\n        code\n        field\n        message\n      }\n      customerAccessToken {\n        accessToken\n        expiresAt\n      }\n    }\n  }\n': {
     return: CustomerAccessTokenCreateMutation;
@@ -2060,6 +2089,14 @@ interface GeneratedMutationTypes {
   '#graphql\n  mutation customerCreate($input: CustomerCreateInput!) {\n    customerCreate(input: $input) {\n      customer {\n        id\n      }\n      customerUserErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
     return: CustomerCreateMutation;
     variables: CustomerCreateMutationVariables;
+  };
+  '#graphql\n  mutation customerRecover($email: String!) {\n    customerRecover(email: $email) {\n      customerUserErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
+    return: CustomerRecoverMutation;
+    variables: CustomerRecoverMutationVariables;
+  };
+  '#graphql\n  mutation customerReset($id: ID!, $input: CustomerResetInput!) {\n    customerReset(id: $id, input: $input) {\n      customer {\n        id\n      }\n      customerUserErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
+    return: CustomerResetMutation;
+    variables: CustomerResetMutationVariables;
   };
   '#graphql\n  mutation CartCreate($input: CartInput!) {\n    cartCreate(input: $input) {\n      cart {\n        id\n        checkoutUrl\n      }\n      userErrors {\n        field\n        message\n      }\n    }\n  }\n': {
     return: CartCreateMutation;

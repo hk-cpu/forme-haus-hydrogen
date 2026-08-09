@@ -13,8 +13,6 @@ import {Money, CartForm} from '@shopify/hydrogen';
 import {useUI} from '~/context/UIContext';
 import {useTranslation} from '~/hooks/useTranslation';
 
-import {BundlePricing} from './BundlePricing';
-
 // ============================================================================
 // PREMIUM ICONS
 // ============================================================================
