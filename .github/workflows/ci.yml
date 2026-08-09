@@ -110,3 +110,13 @@ jobs:
 
       - name: 🧪 Run Playwright tests
         uses: ./.github/actions/end-to-end-tests
+        env:
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          PUBLIC_STOREFRONT_API_TOKEN: ${{ secrets.PUBLIC_STOREFRONT_API_TOKEN }}
+          PRIVATE_STOREFRONT_API_TOKEN: ${{ secrets.PRIVATE_STOREFRONT_API_TOKEN }}
+          PUBLIC_STORE_DOMAIN: ${{ secrets.PUBLIC_STORE_DOMAIN }}
+          PUBLIC_STOREFRONT_ID: ${{ secrets.PUBLIC_STOREFRONT_ID }}
+          PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID: ${{ secrets.PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID }}
+          PUBLIC_CUSTOMER_ACCOUNT_API_URL: ${{ secrets.PUBLIC_CUSTOMER_ACCOUNT_API_URL }}
+          PUBLIC_CHECKOUT_DOMAIN: ${{ secrets.PUBLIC_CHECKOUT_DOMAIN }}
+          SHOP_ID: ${{ secrets.SHOP_ID }}

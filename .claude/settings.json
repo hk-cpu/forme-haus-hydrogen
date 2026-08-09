@@ -10,5 +10,21 @@
         ]
       }
     ]
+  },
+  "permissions": {
+    "allow": [
+      "mcp__012d9ca9-1b7a-44f9-abef-37d298f5bcb7__graphql_query",
+      "mcp__012d9ca9-1b7a-44f9-abef-37d298f5bcb7__graphql_mutation",
+      "mcp__012d9ca9-1b7a-44f9-abef-37d298f5bcb7__graphql_schema",
+      "mcp__012d9ca9-1b7a-44f9-abef-37d298f5bcb7__get-shop-info",
+      "mcp__012d9ca9-1b7a-44f9-abef-37d298f5bcb7__search_products",
+      "mcp__012d9ca9-1b7a-44f9-abef-37d298f5bcb7__search_collections",
+      "mcp__012d9ca9-1b7a-44f9-abef-37d298f5bcb7__get-collection",
+      "mcp__012d9ca9-1b7a-44f9-abef-37d298f5bcb7__get-product",
+      "mcp__012d9ca9-1b7a-44f9-abef-37d298f5bcb7__update-product",
+      "mcp__012d9ca9-1b7a-44f9-abef-37d298f5bcb7__update-collection",
+      "mcp__012d9ca9-1b7a-44f9-abef-37d298f5bcb7__create-collection",
+      "mcp__012d9ca9-1b7a-44f9-abef-37d298f5bcb7__validate_graphql_codeblocks"
+    ]
   }
 }

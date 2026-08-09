@@ -20,6 +20,35 @@ const TrustBadges = lazy(() => import('~/components/TrustBadges'));
 
 export const headers = routeHeaders;
 
+/**
+ * Translation keys for the four original editorial tiles, looked up by
+ * metaobject handle.
+ *
+ * These are a fallback only: a bento entry's own `title_ar`/`subtitle_ar`
+ * always wins. They exist so entries created before those fields were added
+ * keep rendering Arabic instead of falling back to English. Once every entry
+ * carries its own Arabic text, this map and the `titleKey`/`subtitleKey`
+ * plumbing can be deleted.
+ */
+const LEGACY_BENTO_KEYS: Record<string, {title: string; subtitle: string}> = {
+  'modern-essentials': {
+    title: 'editorial.modernEssentials.title',
+    subtitle: 'editorial.modernEssentials.subtitle',
+  },
+  'carry-it-your-way': {
+    title: 'editorial.carry.title',
+    subtitle: 'editorial.carry.subtitle',
+  },
+  'sun-ready': {
+    title: 'editorial.sun.title',
+    subtitle: 'editorial.sun.subtitle',
+  },
+  'new-arrivals': {
+    title: 'editorial.new.title',
+    subtitle: 'editorial.new.subtitle',
+  },
+};
+
 export async function loader(args: LoaderFunctionArgs) {
   const {params, context} = args;
   const {language, country} = context.storefront.i18n;
@@ -51,22 +80,10 @@ async function loadCriticalData({context, request}: LoaderFunctionArgs) {
           return acc;
         }, {});
 
-        const url = fields.url?.value || '#';
-        let titleKey = '';
-        let subtitleKey = '';
-        if (url.includes('modern-essentials')) {
-          titleKey = 'editorial.modernEssentials.title';
-          subtitleKey = 'editorial.modernEssentials.subtitle';
-        } else if (url.includes('carry-it-your-way')) {
-          titleKey = 'editorial.carry.title';
-          subtitleKey = 'editorial.carry.subtitle';
-        } else if (url.includes('sun-ready')) {
-          titleKey = 'editorial.sun.title';
-          subtitleKey = 'editorial.sun.subtitle';
-        } else if (url.includes('new-arrivals')) {
-          titleKey = 'editorial.new.title';
-          subtitleKey = 'editorial.new.subtitle';
-        }
+        const legacy = LEGACY_BENTO_KEYS[node.handle] ?? {
+          title: '',
+          subtitle: '',
+        };
 
         return {
           image: fields.image?.reference?.image?.url,
@@ -77,11 +94,15 @@ async function loadCriticalData({context, request}: LoaderFunctionArgs) {
             fields.image?.reference?.image?.altText ||
             fields.title_en?.value ||
             '',
-          url,
+          url: fields.url?.value || '#',
+          titleEn: fields.title_en?.value || '',
+          titleAr: fields.title_ar?.value || '',
+          subtitleEn: fields.subtitle_en?.value || '',
+          subtitleAr: fields.subtitle_ar?.value || '',
           defaultTitle: fields.title_en?.value || '',
           defaultSubtitle: fields.subtitle_en?.value || '',
-          titleKey,
-          subtitleKey,
+          titleKey: legacy.title,
+          subtitleKey: legacy.subtitle,
         };
       })
       .filter((item: any) => item.image) || [];
@@ -200,6 +221,7 @@ const HOMEPAGE_QUERY = `#graphql
     bentoMetaobjects: metaobjects(type: "bento_item", first: 4) {
       nodes {
         id
+        handle
         fields {
           key
           value
