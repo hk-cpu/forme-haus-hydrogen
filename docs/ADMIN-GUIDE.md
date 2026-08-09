@@ -189,11 +189,11 @@ Covers a category page (e.g. `/collections/sunglasses`) and an individual produc
 | **Shipping & Returns drop-downs**                                                                                                                                                                                                        | Settings › **Policies** › Shipping policy / Refund policy                                             | Each drop-down is hidden if that policy is empty. Only a short excerpt shows, with a "Learn more" link.                                                         |
 | **"Related Products" row**                                                                                                                                                                                                               | Apps › **Search & Discovery** › Product recommendations (or leave it to Shopify's automatic picks)    | Shopify's picks are topped up with your 12 best sellers, duplicates removed.                                                                                    |
 
-> ### ⚠️ Two product-page warnings
+> ### iPhone compatibility badges
 >
-> **Bundle pricing block shows fixed SAR amounts and discount percentages that are NOT connected to your Shopify prices.** If you change prices in Admin, this block will not follow — it can display a price that doesn't match checkout. Flag it to a developer before running any price change.
+> Tag a product `iphone-17-pro`, `iphone-16-plus` and so on, and those models appear as small badges near the title. The first two are shown, then "+N more". Tags with any other prefix are ignored here.
 >
-> **Known bug:** iPhone-compatibility badges and the bundle block currently never appear, because the product tags they rely on aren't being read. Adding `iphone-*` tags in Admin has no effect right now. A developer needs to fix this.
+> This only started working in the release that removed the old bundle pricing block — if you tagged products earlier and saw nothing, that was the cause, and your existing tags will now show up.
 
 ---
 
@@ -255,7 +255,6 @@ A single scannable list of everything hardcoded, grouped by area. **None of it i
 
 ## Product pages
 
-- The bundle pricing block's SAR amounts and discount percentages (see the warning in §3.2).
 - Specification row labels ("Frame Shape", "UV Protection", …) — fixed English, do not translate. You control the values, not the labels.
 - The 7-media-items-per-product limit.
 - Breadcrumbs always read "Home › Shop" regardless of where the shopper came from.
@@ -265,7 +264,6 @@ A single scannable list of everything hardcoded, grouped by area. **None of it i
 
 - Every button and section label: "Add to Bag", "Buy Now", "Sold Out", "Quick Add", "Your Bag", "Checkout", "Subtotal", "The Edit", "Shop by Category", "Where Elegance Begins", and so on.
 - **Cart and checkout wording**, including legally sensitive lines: "(VAT included)", "Shipping and taxes calculated at checkout", "(7-day returns)".
-- **Bundle discount percentages** — "Save 15%", "Save 20%", "2+ items: 10% off". These are _wording only_. If you change the real discount in Admin, the on-page text keeps claiming the old figure. **Tell your developer whenever you change a discount.**
 - **The sign-in and sign-up screens** — currently **English only**, with no Arabic version anywhere. Arabic visitors see English on those two screens. Worth putting on the list.
 
 Shopify's **Translate & Adapt** app does not reach any of this text.

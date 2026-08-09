@@ -38,7 +38,6 @@ import {BuyNowButton} from '~/components/BuyNowButton';
 import {Skeleton} from '~/components/Skeleton';
 import {ProductSwimlane} from '~/components/ProductSwimlane';
 import {ProductGallery} from '~/components/ProductGallery';
-import {BundlePricing} from '~/components/BundlePricing';
 import {IconCaret, IconCheck, IconClose} from '~/components/Icon';
 import {useUI} from '~/context/UIContext';
 import {getExcerpt} from '~/lib/utils';
@@ -228,9 +227,11 @@ export default function Product() {
   const {t} = useTranslation();
   const {shippingPolicy, refundPolicy} = shop;
 
-  // Extract iPhone models from tags (e.g., "iphone-17-pro", "iphone-17-pro-max")
+  // Extract iPhone models from tags (e.g., "iphone-17-pro", "iphone-17-pro-max").
+  // `tags` must stay in the Product fragment — without it this silently yields
+  // an empty list and every compatibility badge disappears.
   const iPhoneModels: string[] =
-    (product as any).tags
+    product.tags
       ?.filter((tag: string) => tag.toLowerCase().startsWith('iphone-'))
       ?.map((tag: string) => {
         const match = tag.match(/iphone-?(\d+)-?(pro-?max|pro|max|plus|mini)/i);
@@ -245,7 +246,6 @@ export default function Product() {
           .replace(/-/g, ' ')
           .replace(/\b\w/g, (l: string) => l.toUpperCase());
       }) || [];
-  const isBundleEligible = iPhoneModels.length > 0;
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
@@ -360,13 +360,6 @@ export default function Product() {
                 selectedVariant={selectedVariant}
                 storeDomain={storeDomain}
               />
-
-              {/* Bundle Pricing Section */}
-              {isBundleEligible ? (
-                <div className="mt-6">
-                  <BundlePricing variant="cards" />
-                </div>
-              ) : null}
 
               {/* Bundle \u2194 Individual Cross-Links */}
               <Suspense fallback={null}>
@@ -916,6 +909,7 @@ const PRODUCT_FRAGMENT = `#graphql
     title
     vendor
     handle
+    tags
     descriptionHtml
     description
     encodedVariantExistence
