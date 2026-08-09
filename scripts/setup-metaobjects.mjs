@@ -238,6 +238,112 @@ async function main() {
     {key: 'url', name: 'Link URL', type: {name: 'url'}, required: false},
   ]);
 
+  // ── 2b. journal_card metaobject definition ──────────────────────────────
+  console.log('\n📦  Metaobject: journal_card (homepage Journal cards)');
+  await createMetaobjectDefinition('journal_card', 'Journal Card', 'title_en', [
+    {
+      key: 'title_en',
+      name: 'Title (English)',
+      type: {name: 'single_line_text_field'},
+      required: true,
+    },
+    {
+      key: 'title_ar',
+      name: 'Title (Arabic)',
+      type: {name: 'single_line_text_field'},
+      required: false,
+    },
+    {
+      key: 'excerpt_en',
+      name: 'Excerpt (English)',
+      type: {name: 'single_line_text_field'},
+      required: false,
+    },
+    {
+      key: 'excerpt_ar',
+      name: 'Excerpt (Arabic)',
+      type: {name: 'single_line_text_field'},
+      required: false,
+    },
+    {
+      key: 'image',
+      name: 'Image',
+      type: {name: 'file_reference'},
+      required: true,
+    },
+    {
+      key: 'alt',
+      name: 'Image Alt Text',
+      type: {name: 'single_line_text_field'},
+      required: false,
+    },
+    {
+      key: 'url',
+      name: 'Link URL',
+      type: {name: 'single_line_text_field'},
+      required: true,
+      description:
+        'Relative path starting with a slash, e.g. /journal/everyday-elegance. Do not paste a full https:// address.',
+    },
+    {
+      key: 'sort_order',
+      name: 'Sort Order',
+      type: {name: 'number_integer'},
+      required: false,
+    },
+  ]);
+
+  // ── 2c. brand_promise metaobject definition ─────────────────────────────
+  console.log('\n📦  Metaobject: brand_promise (Why Choose Us items)');
+  await createMetaobjectDefinition(
+    'brand_promise',
+    'Brand Promise',
+    'title_en',
+    [
+      {
+        key: 'title_en',
+        name: 'Title (English)',
+        type: {name: 'single_line_text_field'},
+        required: true,
+      },
+      {
+        key: 'title_ar',
+        name: 'Title (Arabic)',
+        type: {name: 'single_line_text_field'},
+        required: false,
+      },
+      {
+        key: 'description_en',
+        name: 'Description (English)',
+        type: {name: 'single_line_text_field'},
+        required: false,
+      },
+      {
+        key: 'description_ar',
+        name: 'Description (Arabic)',
+        type: {name: 'single_line_text_field'},
+        required: false,
+      },
+      {
+        key: 'icon',
+        name: 'Icon',
+        type: {name: 'single_line_text_field'},
+        required: true,
+        description:
+          'One of: shield, sparkle, globe, gem. Any other value shows the shield icon.',
+        validations: [
+          {name: 'choices', value: '["shield","sparkle","globe","gem"]'},
+        ],
+      },
+      {
+        key: 'sort_order',
+        name: 'Sort Order',
+        type: {name: 'number_integer'},
+        required: false,
+      },
+    ],
+  );
+
   // ── 3. Hero CTA shop metafields ─────────────────────────────────────────
   console.log('\n🏪  Shop metafields: hero CTA button text');
   await createMetafieldDefinition(

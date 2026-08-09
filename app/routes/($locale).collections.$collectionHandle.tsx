@@ -517,6 +517,15 @@ export default function Collection() {
 
   const collectionSubtitle = COLLECTION_SUBTITLES[collection.handle];
 
+  /**
+   * The Description box in Shopify Admin wins; the built-in sub-line is only
+   * the fallback. Previously this was the other way round, so a merchant could
+   * edit the description on any of the ten collections with a built-in
+   * sub-line and see no change on the page.
+   */
+  const collectionTagline =
+    collection.description?.trim() || collectionSubtitle?.subtitle;
+
   const override = HERO_OVERRIDES[collection.handle];
   const heroImage =
     collection.hero_image?.reference?.image?.url ||
@@ -563,9 +572,9 @@ export default function Collection() {
               {collection.title}
             </h1>
             <div className="h-px w-16 bg-gradient-to-r from-transparent via-[#a87441] to-transparent mx-auto mb-4" />
-            {(collectionSubtitle?.subtitle || collection.description) && (
+            {collectionTagline && (
               <p className="max-w-md mx-auto text-[#8B8076] text-sm font-light tracking-wide leading-relaxed italic">
-                {collectionSubtitle?.subtitle || collection.description}
+                {collectionTagline}
               </p>
             )}
           </motion.div>
@@ -653,9 +662,9 @@ export default function Collection() {
                 >
                   {collection.title}
                 </h1>
-                {(collectionSubtitle?.subtitle || collection.description) && (
+                {collectionTagline && (
                   <p className="max-w-lg mx-auto text-warm/55 text-sm font-light tracking-wide leading-relaxed">
-                    {collectionSubtitle?.subtitle || collection.description}
+                    {collectionTagline}
                   </p>
                 )}
               </motion.div>
