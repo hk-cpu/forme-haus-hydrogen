@@ -62,18 +62,23 @@ Currently reads "Explore the Collection". English and Arabic are set separately 
 
 Where the button scrolls to is fixed in code. You can change the words, not the destination.
 
-## 1.2 Shop by Category — ⚠️ NOT EDITABLE TODAY
+## 1.2 Shop by Category — the three tiles
 
-**There are currently ZERO Category Card entries in Admin.** All three tiles you see on the live homepage come from the code (New to Haus / Phone Accessories / Sunglasses). The Admin fields exist (Content → Metaobjects → **Category Card**: Title English, Title Arabic, Image, Link URL, Sort Order) but nothing has been created in them, so nothing you do there changes the site until entries are added.
+**Content → Metaobjects → Category Card**
 
-> **Do not create a single Category Card entry on your own.** The moment one entry exists it replaces **all three** built-in tiles — the homepage would drop from three category tiles to one. If you want to take these tiles over, ask a developer to set up all three together in one go.
+Three entries exist — **New to Haus**, **Phone Accessories** and **Sunglasses** — and editing them changes the live homepage. This section is yours.
 
-Also worth knowing before that conversation, and **needs confirming with your developer** before you rely on it:
+| What it controls | Field to edit | If you leave it blank |
+|---|---|---|
+| Tile title, English | **Title (English)** | Required — Admin will not let you save it empty. |
+| Tile title, Arabic | **Title (Arabic)** | Arabic shoppers see the **English** title instead. |
+| The photo | **Image** | Required. |
+| Where the tile goes when clicked | **Link URL** | Required. Use a path starting with a slash, e.g. `/collections/sunglasses`. **Never paste a full `https://` address** — it sends Arabic shoppers to the English page. |
+| Left-to-right position | **Sort Order** | An unnumbered tile is pushed to the end. |
 
-- These tiles have **no separate alt-text field** — the title is reused as the image description.
-- A blank Arabic title shows the **English** title, not a translation.
-- A tile with no image disappears; if no tile has an image, the section reverts to the three built-in tiles.
-- Sort Order sets left-to-right position; an unnumbered tile is pushed to the end.
+> **The section shows exactly the entries that exist here.** Delete one and the homepage drops to two tiles. Delete all three and it silently falls back to three built-in tiles from the code.
+
+These tiles have **no separate alt-text field** — the title is reused as the image description.
 
 ## 1.3 The Edit — the four photo tiles
 
@@ -90,7 +95,7 @@ Also worth knowing before that conversation, and **needs confirming with your de
 | Small line under the headline, Arabic | **Subtitle (Arabic)** | Arabic shoppers see the English sub-line, or nothing. |
 | The photo | **Image** (file picker) | **The whole tile disappears.** If every tile loses its image, the homepage silently reverts to the four built-in tiles. Never save a tile without a photo. |
 | Image description for screen readers and Google | **Image Alt Text** | Uses the description saved on the file itself in Content → Files, then the English headline, then nothing. Worth filling in for search visibility. |
-| Where the tile goes when clicked | **Link URL** | The tile becomes unclickable. ⚠️ This field insists on a full web address starting with `https://`, but the tiles are meant to point at pages inside your own store. **Ask a developer before changing a link here** — a full address can break the Arabic/English version of the page it lands on. |
+| Where the tile goes when clicked | **Link URL** | The tile becomes unclickable. Use a path starting with a slash, e.g. `/collections/sun-ready`. **Never paste a full `https://` address** — it sends Arabic shoppers to the English page and slows the link down. |
 
 **Two hard limits:**
 
@@ -219,7 +224,7 @@ A single scannable list of everything hardcoded, grouped by area. **None of it i
 - The hidden page headline used by Google ("Designer Phone Cases and Sunglasses in Saudi Arabia").
 - Where the hero button scrolls to (you control the words, not the destination).
 - The heading "Shop by Category", its **View All** button (always goes to `/products`), and the three-column layout.
-- The three category tiles currently live — their photos, titles and links.
+- The three *backup* category tiles that appear only if every Category Card entry is deleted. (The tiles actually on the site are yours to edit — see §1.2.)
 - The heading "The Edit", its letter-by-letter animation, and the "Shop the Edit →" hover label.
 - The four backup tiles that appear if The Edit's entries are removed, and the four-tile cap.
 - Which sections appear on the homepage and in what order, all spacing, the cream panel, all colours, gradients, photo zoom and tilt effects.
