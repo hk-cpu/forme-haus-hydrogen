@@ -111,13 +111,11 @@ export const links: LinksFunction = () => {
       as: 'image',
       type: 'image/webp',
     },
-    // Preload first category card image — eagerly loaded, visible just below hero
-    {
-      rel: 'preload',
-      href: '/brand/new-in-opt.webp',
-      as: 'image',
-      type: 'image/webp',
-    },
+    // The first category card is no longer preloaded here. Its image now comes
+    // from the Category Card entry in Admin and is served from the Shopify CDN,
+    // so a static /brand/ preload fetched a file the page never displayed —
+    // wasted bandwidth on every homepage load, and it did not preload the image
+    // that actually renders. The preconnect below is what helps that fetch now.
     // Preconnect — establishes early TCP+TLS for critical origins
     {rel: 'preconnect', href: 'https://cdn.shopify.com'},
     // dns-prefetch — fallback for browsers that skip preconnect; zero cost, saves 20–200ms on slow networks
