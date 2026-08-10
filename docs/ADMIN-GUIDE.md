@@ -9,7 +9,7 @@
 This storefront is a custom-built site, not a standard Shopify theme. That means:
 
 - **Some things are yours.** Products, collections, prices, images, the main menu, social links, and a handful of homepage tiles and labels.
-- **Some things are written into the site's code.** Most headings, button labels, taglines, the footer link list, trust badges, and the Journal cards. None of these are broken — they were simply never connected to Admin. Any of them _can_ be changed; it needs a developer and a site update, so raise it as a request rather than hunting for it in Admin.
+- **Some things are written into the site's code.** Most headings, button labels, taglines, and the trust badges. None of these are broken — they were simply never connected to Admin. Any of them _can_ be changed; it needs a developer and a site update, so raise it as a request rather than hunting for it in Admin.
 
 When you can't find something in Admin, it is almost always because it lives in the code. This guide tells you which is which.
 
@@ -49,7 +49,7 @@ The homepage runs: the logo panel (**Hero**) → **Shop by Category** (three til
 Two Admin locations control everything you can edit here:
 
 - **Settings → Custom data → Shop** — one-off pieces of text that apply store-wide.
-- **Content → Metaobjects** (shown as **Custom content** in some Admin versions) — reusable content groups. Two groups matter: **Category Card** and **Bento Item**.
+- **Content → Metaobjects** (shown as **Custom content** in some Admin versions) — reusable content groups. Four matter: **Category Card**, **Bento Item**, **Journal Card** and **Brand Promise**.
 
 ## 1.1 The button under the logo
 
@@ -118,7 +118,13 @@ Two things to know before you edit it:
 - **Renaming Collections, About Us / Our Story, or Contact will not change what shoppers see.** Those three names and destinations are fixed in the code. Adding _new_ links works normally; renaming those three does not.
 - If the Collections link has no sub-links of its own, the drop-down shows a built-in list: New to Haus, Sunglasses, Phone Accessories, View All Collections.
 
-## 2.2 Footer and WhatsApp details
+## 2.2 The footer links
+
+**Content → Menus → Footer.** Add, remove or reorder the links along the bottom of every page.
+
+If that menu is empty or deleted, the site falls back to five built-in links (Contact us, Shipping & Delivery Policy, Return & Exchange Policy, Privacy Policy, Terms & Conditions), so the footer never goes blank.
+
+## 2.3 Footer and WhatsApp details
 
 All in one place: **Settings → Custom data → Shop.** Open it, find the field, edit the value, save.
 
@@ -151,7 +157,7 @@ Covers a category page (e.g. `/collections/sunglasses`) and an individual produc
 | What it controls                                                             | Where to click                                                                          | If you leave it blank                                                                                                                                                                                                                                                                                |
 | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Collection name** (page heading)                                           | Products › Collections › [collection] › **Title**                                       | Nothing renders. See the empty-collection trap below.                                                                                                                                                                                                                                                |
-| **Sub-line under the heading**                                               | Products › Collections › [collection] › **Description**                                 | Nothing renders. On many categories a built-in line is used instead and always wins — see §6.                                                                                                                                                                                                        |
+| **Sub-line under the heading**                                               | Products › Collections › [collection] › **Description**                                 | Falls back to a built-in line on the ten categories that have one, otherwise nothing renders. Whatever you type here now wins over the built-in line.                                                                                                                                                |
 | **Banner image**                                                             | [collection] › scroll to **Extra fields** › **Hero image** › Select file                | Falls back in order to: a built-in banner for that category → the collection's own Image → a plain dark block. Must be picked with the file picker; pasting an address into a text field will not work.                                                                                              |
 | **Backup banner + social/search preview image**                              | [collection] › **Image** section › Add image                                            | Used as the banner only if no Hero image is set and the category has no built-in banner. Always used for search-engine and social previews.                                                                                                                                                          |
 | **Hide the name overlaid on the banner** (when the artwork already has text) | Extra fields › **Hide title** › enter `true`                                            | Name and sub-line show over the banner. On the 12 categories with a built-in banner, setting `false` will _not_ bring the text back — ask a developer.                                                                                                                                               |
@@ -201,19 +207,47 @@ Covers a category page (e.g. `/collections/sunglasses`) and an individual produc
 
 **The Journal**, **Why Choose Us**, and the **Shop with Confidence** trust badges.
 
-**None of these three sections are editable from Admin.** Every photo, heading, summary, statistic, badge and link in them is written into the code. That is not a bug list — it's simply how the site was built — but several items in it are worth fixing, so raise them with your developer:
+## 4.1 The Journal cards — yours to edit
 
-| Item                                                                                                                           | Why it's worth raising                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| ------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **The Journal cards**                                                                                                          | All three cards (photos, headings, summaries, links) are fixed in code, even though the articles they point to already live in your Shopify blog. The sensible fix is to have the section pull the three newest Journal articles automatically, so publishing an article updates the homepage. Until then, the Arabic wording is matched to the English headings behind the scenes — renaming or adding a card will silently break its Arabic text. |
-| **The Maroof seal link**                                                                                                       | Currently points at an invalid web address. Needs pointing at your real Maroof listing.                                                                                                                                                                                                                                                                                                                                                             |
-| **Maroof / Muwathooq seal labels**                                                                                             | Drawn in code rather than uploaded images, and their English labels are incomplete (showing " Verified" and "Consumer "). They also don't pick up the Arabic wording.                                                                                                                                                                                                                                                                               |
-| **"Free Shipping Across KSA" and "7-Day Easy Returns" pills**                                                                  | Show in **English even on the Arabic site**.                                                                                                                                                                                                                                                                                                                                                                                                        |
-| **The homepage statistics** — "50,000+ Happy Customers", "100+ Premium Products", "15+ Cities Served", "99% Satisfaction Rate" | Public marketing claims with no Admin control. Make sure you're comfortable with them.                                                                                                                                                                                                                                                                                                                                                              |
-| **The payment line** — "Secure payments via Tap: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tabby, Tamara"                    | If you add or drop a payment method, this sentence must be edited by hand in both languages.                                                                                                                                                                                                                                                                                                                                                        |
-| **The free-shipping threshold text** — "over 300 SAR"                                                                          | Changing your actual shipping settings in Admin will **not** update this sentence.                                                                                                                                                                                                                                                                                                                                                                  |
+**Content → Metaobjects → Journal Card.** Three entries, one per card.
 
-Also fixed here: the four Why Choose Us promise cards (Curated Selection, Limited Collections, Global Designers, Elevated Experience) and their code-drawn icons; the "Why Choose Us" and "Shop with Confidence" headings; which trust seals appear (all always on, cannot be switched off).
+| What it controls        | Field to edit                            | If you leave it blank                                                                                       |
+| ----------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Card heading            | **Title (English)** / **Title (Arabic)** | English is required. Blank Arabic shows the English heading.                                                |
+| The small line after it | **Excerpt (English)** / **(Arabic)**     | The card shows just the heading, which looks fine.                                                          |
+| The photo               | **Image**                                | Required. A card with no photo is not shown.                                                                |
+| Where it links          | **Link URL**                             | Use a path starting with a slash, e.g. `/journal/everyday-elegance`. Never paste a full `https://` address. |
+| Left-to-right position  | **Sort Order**                           | Unnumbered cards go last.                                                                                   |
+
+Delete every entry and the section falls back to three built-in cards.
+
+## 4.2 Why Choose Us — yours to edit
+
+**Content → Metaobjects → Brand Promise.** Four entries.
+
+| What it controls | Field to edit                            | Notes                                                                          |
+| ---------------- | ---------------------------------------- | ------------------------------------------------------------------------------ |
+| Heading          | **Title (English)** / **Title (Arabic)** | English required.                                                              |
+| Sentence under   | **Description (English)** / **(Arabic)** | Keep it to one short line.                                                     |
+| The symbol       | **Icon**                                 | Choose from `shield`, `sparkle`, `globe`, `gem`. New symbols need a developer. |
+| Position         | **Sort Order**                           | 1–4, left to right.                                                            |
+
+You can add a fifth promise; the row will simply grow.
+
+## 4.3 The rest of this area
+
+The **Shop with Confidence** trust badges are still written into the code, along with the section headings. Several items here are worth raising with your developer:
+
+| Item                                                                                                                           | Why it's worth raising                                                                                                                                                |
+| ------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **The Maroof seal link**                                                                                                       | Currently points at an invalid web address. Needs pointing at your real Maroof listing.                                                                               |
+| **Maroof / Muwathooq seal labels**                                                                                             | Drawn in code rather than uploaded images, and their English labels are incomplete (showing " Verified" and "Consumer "). They also don't pick up the Arabic wording. |
+| **"Free Shipping Across KSA" and "7-Day Easy Returns" pills**                                                                  | Show in **English even on the Arabic site**.                                                                                                                          |
+| **The homepage statistics** — "50,000+ Happy Customers", "100+ Premium Products", "15+ Cities Served", "99% Satisfaction Rate" | Public marketing claims with no Admin control. Make sure you're comfortable with them.                                                                                |
+| **The payment line** — "Secure payments via Tap: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tabby, Tamara"                    | If you add or drop a payment method, this sentence must be edited by hand in both languages.                                                                          |
+| **The free-shipping threshold text** — "over 300 SAR"                                                                          | Changing your actual shipping settings in Admin will **not** update this sentence.                                                                                    |
+
+Also fixed here: the "Why Choose Us" and "Shop with Confidence" headings, the set of icon symbols available to a Brand Promise, and which trust seals appear (all always on, cannot be switched off).
 
 ---
 
@@ -234,7 +268,6 @@ A single scannable list of everything hardcoded, grouped by area. **None of it i
 
 ## Header and footer
 
-- **The footer link list** (Contact us, Shipping & Delivery Policy, Return & Exchange Policy, Privacy Policy, Terms & Conditions) — and note the Footer menu in Admin does nothing.
 - The **"Contact Us"** link in the top nav — added automatically, cannot be removed.
 - The header logo and the footer logo/wordmark. Uploading a new logo in Shopify's brand settings will not change them.
 - The store name. Renaming the store in Admin changes nothing in the header or footer.
@@ -245,7 +278,6 @@ A single scannable list of everything hardcoded, grouped by area. **None of it i
 ## Collection pages
 
 - **Built-in banners** on 12 categories (New In, New, Sunglasses, Sale, Phone, Phone Cases, Phone Straps, Case & Strap Bundles, Carry It Your Way, Sun Ready, New Arrivals, Modern Essentials): heights and overlay styling are baked in. You can swap the _image_, not the height or treatment.
-- **Built-in sub-lines** on 10 categories (New In, Phone, Phone Cases, Phone Straps, Case & Strap Bundles, Sunglasses, Modern Essentials, Sun Ready, Carry It Your Way, New Arrivals) — these always beat whatever you type in the Description box.
 - **Carry It Your Way ignores its product list.** It shows any product with a "+" in its name. Adding a product to that collection does nothing — the product must be renamed.
 - **New Arrivals is locked to a "Coming Soon" animation** and will not show products until a developer launches it.
 - **Phone Accessories redirects to Phone Cases** and can never show its own page.
