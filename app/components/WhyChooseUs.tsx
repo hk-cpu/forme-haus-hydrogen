@@ -1,6 +1,8 @@
+import type {ReactNode} from 'react';
+
 import {useTranslation} from '~/hooks/useTranslation';
 
-const BRAND_PROMISES = [
+const BRAND_PROMISES: (BrandPromise & {icon: ReactNode})[] = [
   {
     id: '1',
     icon: (
@@ -19,6 +21,7 @@ const BRAND_PROMISES = [
         <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
+    iconKey: 'shield',
     title: 'Curated Selection',
     titleKey: 'whyUs.curatedTitle',
     description:
@@ -45,6 +48,7 @@ const BRAND_PROMISES = [
         <path d="M12 6v6l4 2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
+    iconKey: 'sparkle',
     title: 'Limited Collections',
     titleKey: 'whyUs.limitedTitle',
     description:
@@ -81,6 +85,7 @@ const BRAND_PROMISES = [
         />
       </svg>
     ),
+    iconKey: 'globe',
     title: 'Global Designers',
     titleKey: 'whyUs.globalTitle',
     description: 'A curated mix of emerging and established labels worldwide.',
@@ -103,6 +108,7 @@ const BRAND_PROMISES = [
         />
       </svg>
     ),
+    iconKey: 'gem',
     title: 'Elevated Experience',
     titleKey: 'whyUs.elevatedTitle',
     description:
@@ -111,8 +117,51 @@ const BRAND_PROMISES = [
   },
 ];
 
-export function WhyChooseUs() {
-  const {t, isRTL} = useTranslation();
+/**
+ * Icons are inline SVG, so they can't live in Admin. Each entry instead stores
+ * a stable key ("shield", "sparkle", "globe", "gem") and the artwork is looked
+ * up here. An unrecognised key falls back to the first icon rather than
+ * rendering an empty circle.
+ */
+const ICON_BY_KEY: Record<string, ReactNode> = Object.fromEntries(
+  BRAND_PROMISES.map((promise) => [promise.iconKey, promise.icon]),
+);
+
+export interface BrandPromise {
+  id: string;
+  iconKey: string;
+  /** English defaults, used when Admin has no value and no translation exists. */
+  title: string;
+  description: string;
+  /** Translation-file fallback for the four original promises. */
+  titleKey?: string;
+  descKey?: string;
+  /** Copy managed in Shopify Admin — wins over the translation key. */
+  titleEn?: string;
+  titleAr?: string;
+  descriptionEn?: string;
+  descriptionAr?: string;
+}
+
+/**
+ * Order: the entry's own Admin value for this language, then the translation
+ * key, then the English default. An empty Admin field is skipped rather than
+ * rendered.
+ */
+function resolveCopy(
+  adminValue: string | undefined,
+  key: string | undefined,
+  fallback: string,
+  t: (k: string, d?: string) => string,
+): string {
+  if (adminValue) return adminValue;
+  if (key) return t(key, fallback);
+  return fallback;
+}
+
+export function WhyChooseUs({promises}: {promises?: BrandPromise[]}) {
+  const {t, isRTL, lang} = useTranslation();
+  const items = promises?.length ? promises : BRAND_PROMISES;
 
   return (
     <section
@@ -140,16 +189,26 @@ export function WhyChooseUs() {
         </div>
 
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
-          {BRAND_PROMISES.map((item) => (
+          {items.map((item) => (
             <div key={item.id} className="text-center">
               <div className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#a87441]/15 bg-[linear-gradient(135deg,rgba(168,116,65,0.3),rgba(212,175,135,0.15))] text-[#a87441] shadow-sm">
-                {item.icon}
+                {ICON_BY_KEY[item.iconKey] ?? ICON_BY_KEY.shield}
               </div>
               <h3 className="mb-1 font-serif italic text-sm text-[#4A3C31] md:text-base">
-                {t(item.titleKey, item.title)}
+                {resolveCopy(
+                  lang === 'AR' ? item.titleAr : item.titleEn,
+                  item.titleKey,
+                  item.title,
+                  t,
+                )}
               </h3>
               <p className="break-words font-serif italic text-xs leading-relaxed text-[#5C5046] md:text-sm">
-                {t(item.descKey, item.description)}
+                {resolveCopy(
+                  lang === 'AR' ? item.descriptionAr : item.descriptionEn,
+                  item.descKey,
+                  item.description,
+                  t,
+                )}
               </p>
             </div>
           ))}

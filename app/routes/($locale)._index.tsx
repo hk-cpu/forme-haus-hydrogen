@@ -49,6 +49,14 @@ const LEGACY_BENTO_KEYS: Record<string, {title: string; subtitle: string}> = {
   },
 };
 
+/** Turns a metaobject's `fields` array into a `{[key]: field}` lookup. */
+function toFieldMap(node: any): Record<string, any> {
+  return node.fields.reduce((acc: any, field: any) => {
+    acc[field.key] = field;
+    return acc;
+  }, {});
+}
+
 export async function loader(args: LoaderFunctionArgs) {
   const {params, context} = args;
   const {language, country} = context.storefront.i18n;
@@ -67,10 +75,15 @@ export async function loader(args: LoaderFunctionArgs) {
 }
 
 async function loadCriticalData({context, request}: LoaderFunctionArgs) {
-  const {shop, bentoMetaobjects, categoryMetaobjects} =
-    await context.storefront.query(HOMEPAGE_QUERY, {
-      cache: CacheLong(),
-    });
+  const {
+    shop,
+    bentoMetaobjects,
+    categoryMetaobjects,
+    journalMetaobjects,
+    promiseMetaobjects,
+  } = await context.storefront.query(HOMEPAGE_QUERY, {
+    cache: CacheLong(),
+  });
 
   const bentoItems =
     bentoMetaobjects?.nodes
@@ -129,6 +142,51 @@ async function loadCriticalData({context, request}: LoaderFunctionArgs) {
       .filter(Boolean)
       .sort((a: any, b: any) => a.sortOrder - b.sortOrder) || [];
 
+  const journalCards =
+    journalMetaobjects?.nodes
+      ?.map((node: any) => {
+        const fields = toFieldMap(node);
+        const img = fields.image?.reference?.image;
+        if (!img?.url) return null;
+        return {
+          image: img.url,
+          width: img.width || 640,
+          height: img.height || 800,
+          alt: fields.alt?.value || img.altText || '',
+          url: fields.url?.value || '#',
+          title: fields.title_en?.value || '',
+          excerpt: fields.excerpt_en?.value || '',
+          titleEn: fields.title_en?.value || '',
+          titleAr: fields.title_ar?.value || '',
+          excerptEn: fields.excerpt_en?.value || '',
+          excerptAr: fields.excerpt_ar?.value || '',
+          sortOrder: Number(fields.sort_order?.value ?? 99),
+        };
+      })
+      .filter(Boolean)
+      .sort((a: any, b: any) => a.sortOrder - b.sortOrder) || [];
+
+  const brandPromises =
+    promiseMetaobjects?.nodes
+      ?.map((node: any) => {
+        const fields = toFieldMap(node);
+        const title = fields.title_en?.value || '';
+        if (!title) return null;
+        return {
+          id: node.id,
+          iconKey: fields.icon?.value || 'shield',
+          title,
+          description: fields.description_en?.value || '',
+          titleEn: title,
+          titleAr: fields.title_ar?.value || '',
+          descriptionEn: fields.description_en?.value || '',
+          descriptionAr: fields.description_ar?.value || '',
+          sortOrder: Number(fields.sort_order?.value ?? 99),
+        };
+      })
+      .filter(Boolean)
+      .sort((a: any, b: any) => a.sortOrder - b.sortOrder) || [];
+
   const heroCta = {
     en: shop.heroCtaEn?.value || '',
     ar: shop.heroCtaAr?.value || '',
@@ -139,6 +197,8 @@ async function loadCriticalData({context, request}: LoaderFunctionArgs) {
     seo: seoPayload.home({url: request.url}),
     bentoItems: bentoItems.length > 0 ? bentoItems : undefined,
     categoryCards: categoryCards.length > 0 ? categoryCards : undefined,
+    journalCards: journalCards.length > 0 ? journalCards : undefined,
+    brandPromises: brandPromises.length > 0 ? brandPromises : undefined,
     heroCta: heroCta.en || heroCta.ar ? heroCta : undefined,
   };
 }
@@ -156,7 +216,8 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 };
 
 export default function Homepage() {
-  const {bentoItems, categoryCards, heroCta} = useLoaderData<typeof loader>();
+  const {bentoItems, categoryCards, heroCta, journalCards, brandPromises} =
+    useLoaderData<typeof loader>();
 
   return (
     <div className="min-h-screen bg-transparent text-warm">
@@ -180,13 +241,13 @@ export default function Homepage() {
 
         <div className="section-deferred py-8 md:py-12">
           <Suspense fallback={<SectionFallback className="min-h-[420px]" />}>
-            <JournalSection />
+            <JournalSection cards={journalCards as any} />
           </Suspense>
         </div>
 
         <div className="section-deferred">
           <Suspense fallback={<SectionFallback className="min-h-[420px]" />}>
-            <WhyChooseUs />
+            <WhyChooseUs promises={brandPromises as any} />
           </Suspense>
         </div>
 
@@ -245,6 +306,26 @@ const HOMEPAGE_QUERY = `#graphql
             }
           }
         }
+      }
+    }
+    journalMetaobjects: metaobjects(type: "journal_card", first: 6) {
+      nodes {
+        id
+        fields {
+          key
+          value
+          reference {
+            ... on MediaImage {
+              image { url width height altText }
+            }
+          }
+        }
+      }
+    }
+    promiseMetaobjects: metaobjects(type: "brand_promise", first: 8) {
+      nodes {
+        id
+        fields { key value }
       }
     }
   }

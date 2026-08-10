@@ -448,23 +448,43 @@ function Footer({menu, shop}: {menu?: EnhancedMenu; shop?: any}) {
             </div>
           </div>
 
-          {/* Direct Navigation Links */}
+          {/*
+            Direct Navigation Links.
+            Driven by the Footer menu in Admin (Content → Menus) when it has
+            items; the hardcoded list below is the fallback, so an empty or
+            missing menu never leaves the footer bare.
+          */}
           <nav className="flex flex-col md:flex-row items-center gap-4 md:gap-8 text-center">
-            <Link to="/contact" className={linkClass}>
-              {t('footer.contact', 'Contact us')}
-            </Link>
-            <Link to="/policies/shipping-policy" className={linkClass}>
-              {t('footer.shipping', 'Shipping & Delivery Policy')}
-            </Link>
-            <Link to="/policies/refund-policy" className={linkClass}>
-              {t('footer.returns', 'Return & Exchange Policy')}
-            </Link>
-            <Link to="/policies/privacy-policy" className={linkClass}>
-              {t('footer.privacy', 'Privacy Policy')}
-            </Link>
-            <Link to="/policies/terms-of-service" className={linkClass}>
-              {t('footer.terms', 'Terms & Conditions')}
-            </Link>
+            {menu?.items?.length ? (
+              menu.items.map((item) => (
+                <Link
+                  key={item.id}
+                  to={item.to}
+                  target={item.target}
+                  className={linkClass}
+                >
+                  {item.title}
+                </Link>
+              ))
+            ) : (
+              <>
+                <Link to="/contact" className={linkClass}>
+                  {t('footer.contact', 'Contact us')}
+                </Link>
+                <Link to="/policies/shipping-policy" className={linkClass}>
+                  {t('footer.shipping', 'Shipping & Delivery Policy')}
+                </Link>
+                <Link to="/policies/refund-policy" className={linkClass}>
+                  {t('footer.returns', 'Return & Exchange Policy')}
+                </Link>
+                <Link to="/policies/privacy-policy" className={linkClass}>
+                  {t('footer.privacy', 'Privacy Policy')}
+                </Link>
+                <Link to="/policies/terms-of-service" className={linkClass}>
+                  {t('footer.terms', 'Terms & Conditions')}
+                </Link>
+              </>
+            )}
           </nav>
         </div>
 
