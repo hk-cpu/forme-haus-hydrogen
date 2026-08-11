@@ -2,28 +2,28 @@
 
 **A hands-on handover for whoever runs the store.** No technical knowledge needed.
 
-This is the "how do I actually do it" document. Its companion, `ADMIN-GUIDE.md`, is the full reference — what exists, what doesn't, and why. Start here; go there when you want detail.
+This is the "how do I actually do it" manual. Its companion, `ADMIN-GUIDE.md`, is the full reference — what exists, what doesn't, and why. Start here; go there for detail.
 
 ---
 
 ## Before you touch anything — five minutes
 
-### Your site is not a normal Shopify theme
+### This is not a normal Shopify theme
 
 There is **no Customize button** and no drag-and-drop editor. The design is built in code. What you control is the **content inside it**: words, photos, links, products, prices.
 
 That is a deliberate trade. You get a site that looks like nothing else; you give up moving blocks around yourself.
 
-### Everything you can edit lives in one of four places
+### Everything editable lives in one of four places
 
-| Place                             | What lives there                                          |
-| --------------------------------- | --------------------------------------------------------- |
-| **Products / Collections**        | Everything about what you sell                            |
-| **Content → Metaobjects**         | The homepage sections (tiles, cards, promises)            |
-| **Content → Menus**               | The header and footer link lists                          |
-| **Settings → Custom data → Shop** | Site-wide bits: hero button, social links, CR/VAT numbers |
+| Place                             | What lives there                               |
+| --------------------------------- | ---------------------------------------------- |
+| **Products / Collections**        | Everything about what you sell                 |
+| **Content → Metaobjects**         | The homepage sections — tiles, cards, promises |
+| **Content → Menus**               | The header and footer link lists               |
+| **Settings → Custom data → Shop** | Hero button, social links, CR and VAT numbers  |
 
-If you cannot find something in those four places, it is in the code. Ask a developer.
+If you cannot find something in those four places, it lives in the code. Ask a developer.
 
 ### The one rule that will save you an afternoon
 
@@ -31,7 +31,7 @@ If you cannot find something in those four places, it is in the code. Ask a deve
 >
 > There is no "clear cache" button. Refreshing harder, opening incognito, adding `?v=2` — none of it works. The saved copy sits on Shopify's servers, not in your browser.
 >
-> **Change it once. Walk away. Come back later.** Nine times out of ten your edit saved fine and you were looking at a stored copy.
+> **Change it once. Walk away. Come back later.** Nine times out of ten your edit saved correctly and you were looking at a stored copy.
 
 Re-editing because "it didn't work" is the single most common mistake. Resist it.
 
@@ -41,11 +41,11 @@ Re-editing because "it didn't work" is the single most common mistake. Resist it
 
 Do this once to build confidence. It is trivially reversible.
 
-1. **Settings → Custom data → Shop**
+1. Go to **Settings → Custom data → Shop**
 2. Find **Hero CTA (English)**
-3. Click **Edit value**, change it to `Explore the Collection` (or anything)
+3. Click **Edit value** and change the wording
 4. Save
-5. Open your homepage. **You will probably see no change yet — that is expected.** Wait, then reload.
+5. Open the homepage. **You will probably see no change yet** — that is expected. Wait, then reload.
 
 If it changed, you understand the whole system. Everything else is the same motion in a different place.
 
@@ -62,9 +62,7 @@ If it changed, you understand the whole system. Everything else is the same moti
 | **Hero CTA (English)** | The button text in English |
 | **Hero CTA (Arabic)**  | The button text in Arabic  |
 
-The two are separate. Changing one does **not** change the other.
-
-Leave either blank and it falls back to built-in wording, so the button is never empty. Where the button scrolls to is fixed in code.
+The two are separate — changing one does **not** change the other. Leave either blank and built-in wording takes over, so the button is never empty. Where it scrolls to is fixed in code.
 
 ## …change the three category tiles?
 
@@ -74,18 +72,18 @@ Leave either blank and it falls back to built-in wording, so the button is never
 | ------------------- | ------------------------------------------------------- |
 | **Title (English)** | Required                                                |
 | **Title (Arabic)**  | Blank → Arabic shoppers see the English title           |
-| **Image**           | Required. Tall portrait shape works best                |
+| **Image**           | Required. A tall portrait shape works best              |
 | **Link URL**        | Required. Must start with `/` — see the link rule below |
 | **Sort Order**      | 1, 2, 3 — left to right                                 |
 
-**Add a fourth tile?** Create a new entry. The row grows.
+**Add a fourth tile?** Create a new entry; the row grows.
 **Remove one?** Delete the entry. Delete all three and built-in tiles reappear.
 
 ## …change the four large photo tiles ("The Edit")?
 
 **Content → Metaobjects → Bento Item** — four entries.
 
-Same idea, plus **Subtitle (English/Arabic)** for the small line, and **Image Alt Text** for accessibility and Google.
+Same fields as the category tiles, plus **Subtitle (English/Arabic)** for the small line and **Image Alt Text** for accessibility and Google.
 
 The section shows **exactly four**. A fifth entry will not appear anywhere.
 
@@ -114,11 +112,11 @@ These link to your Journal articles but do **not** update automatically when you
 | **Icon**                         | Choose one: `shield`, `sparkle`, `globe`, `gem` |
 | **Sort Order**                   | 1–4                                             |
 
-Only those four symbols exist. A new symbol needs a developer. You can add a fifth promise — the row grows.
+Only those four symbols exist; a new one needs a developer. You can add a fifth promise — the row grows.
 
 ## …change the header menu?
 
-**Content → Menus → Main menu.** Add, remove, reorder, including drop-downs.
+**Content → Menus → Main menu.** Add, remove and reorder links, including drop-downs.
 
 Empty it entirely and the header falls back to four built-in links, so it never goes blank.
 
@@ -126,11 +124,11 @@ Empty it entirely and the header falls back to four built-in links, so it never 
 
 **Content → Menus → Footer menu.**
 
-> **Right now this menu is empty**, so the footer is showing five built-in links (Contact us, Shipping & Delivery Policy, Return & Exchange Policy, Privacy Policy, Terms & Conditions).
+> **This menu is currently empty**, so the footer shows five built-in links: Contact us, Shipping & Delivery Policy, Return & Exchange Policy, Privacy Policy, Terms & Conditions.
 >
-> The moment you add **one** item to this menu, it replaces **all five**. So add the full set you want, not just one.
+> The moment you add **one** item, it replaces **all five**. Add the complete set you want, not just the one you came to add.
 
-## …change the social links, WhatsApp number, or CR/VAT?
+## …change the social links, WhatsApp number, or CR and VAT?
 
 **Settings → Custom data → Shop**
 
@@ -141,7 +139,7 @@ Empty it entirely and the header falls back to four built-in links, so it never 
 | **Commercial Registration No.**       | Shown in the footer                        |
 | **VAT Registration No.**              | Shown in the footer                        |
 
-Only these three platforms exist. A fourth needs a developer.
+Only these three social platforms exist. A fourth needs a developer.
 
 ## …change a collection page?
 
@@ -155,24 +153,24 @@ Only these three platforms exist. A fourth needs a developer.
 | Banner image           | **Custom data → Hero Image**      |
 | Hide the heading       | **Custom data → Hide Title**      |
 
-Ten collections have a built-in line under the heading. **Whatever you type in Description now wins over it.** Clear the Description and the built-in line comes back.
+Ten collections have a built-in line under the heading. **Whatever you type in Description now wins over it.** Clear the Description and the built-in line returns.
 
 ## …change a product?
 
-Entirely standard Shopify. Title, description, photos, price, variants, inventory — all normal.
+Entirely standard Shopify — title, description, photos, price, variants, inventory.
 
 Two extras worth knowing:
 
 - **Specification rows** (Frame Shape, UV Protection…) come from the product's **Custom data**. You control the values; the labels are fixed English.
-- **iPhone compatibility badges** appear if you tag a product `iphone-17-pro`, `iphone-16-plus` and so on. First two show, then "+N more".
+- **iPhone compatibility badges** appear if you tag a product `iphone-17-pro`, `iphone-16-plus` and so on. The first two show, then "+N more".
 
 ---
 
-## The three rules that will bite you
+## The three rules that will catch you out
 
 ### 1. Links must start with a slash
 
-In any **Link URL** field, write `/collections/sunglasses` — **not** `https://formehaus.me/collections/sunglasses`.
+In any **Link URL** field write `/collections/sunglasses` — **not** `https://formehaus.me/collections/sunglasses`.
 
 A full address sends Arabic shoppers to the English page and makes the link slower. This applies to Category Card, Bento Item and Journal Card.
 
@@ -191,12 +189,34 @@ Most blank fields fall back to built-in wording. Two exceptions:
 
 ---
 
-## When to call a developer
+## Worth your attention right now
 
-Ask for anything in these categories — none of it is in Admin:
+Three things are true of the store today and are yours to settle. All three are editable from Admin.
+
+### The CR and VAT numbers have never been verified
+
+The footer currently shows **CR 7051891369** and **VAT 314271812300003**. These were taken from values already in the site's code, not from your registration documents. Nobody has confirmed them.
+
+Check both against your paperwork and correct them in **Settings → Custom data → Shop**. Of everything in this manual, this is the one where being wrong matters beyond appearance.
+
+### "New In" has no products
+
+The first homepage tile links to the **New In** collection, which is currently empty — so shoppers clicking it land on a page with nothing on it.
+
+New In is an **automated** collection: it gathers any product tagged `new-in`. You cannot add products to it by hand. Either tag the products you consider new, or repoint that tile at a collection that has stock.
+
+### The Maroof badge links to the platform, not your listing
+
+The trust badge links to `maroof.sa` rather than your own Maroof business listing. Your listing URL contains a business ID only you have — send it to a developer to have the badge point at your actual verification.
+
+---
+
+## When to ask a developer
+
+None of this is in Admin:
 
 - Layout, spacing, colours, animations, section order
-- Any heading or button label not listed above (roughly 500 fixed phrases across both languages)
+- Any heading or button label not listed above — roughly 500 fixed phrases across both languages
 - New icon symbols, a fourth social platform, a fifth Edit tile
 - The trust badges and the homepage statistics
 - The sign-in and sign-up screens, which are English-only
@@ -205,9 +225,9 @@ Ask for anything in these categories — none of it is in Admin:
 
 1. A screenshot with the thing circled
 2. What it says now, and what it should say — in **both** languages if it's text
-3. The page URL
+3. The page address
 
-`ADMIN-GUIDE.md` §5 has the full list of what is fixed in code, plus a set of known issues worth raising.
+`ADMIN-GUIDE.md` §5 has the full list of what is fixed in code, plus other known issues worth raising.
 
 ---
 
