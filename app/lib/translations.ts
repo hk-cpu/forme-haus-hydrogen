@@ -56,7 +56,7 @@ export const translations = {
     'home.shopCollection': 'Shop Collection',
 
     // Top Bar
-    'topBar.promo': 'Free shipping on orders over 299 SAR',
+    'topBar.promo': 'Free shipping on orders over 300 SAR',
 
     // Stats Section
     'stats.title': 'Our Numbers',
@@ -291,6 +291,8 @@ export const translations = {
     'stats.numbersSpeak': 'Our Numbers Speak',
 
     // Trust Badges
+    'whyUs.badgeShipping': 'Free Shipping Across KSA',
+    'whyUs.badgeReturns': '7-Day Easy Returns',
     'trust.maroof': 'Maroof',
     'trust.trusted': 'Trusted',
     'trust.maroofVerified': 'Maroof Verified Store',
@@ -645,6 +647,8 @@ export const translations = {
     'stats.numbersSpeak': 'أرقامنا تتحدث',
 
     // Trust Badges
+    'whyUs.badgeShipping': 'شحن مجاني في جميع أنحاء السعودية',
+    'whyUs.badgeReturns': 'استرجاع خلال 7 أيام',
     'trust.maroof': 'معروف',
     'trust.trusted': 'موثوق',
     'trust.maroofVerified': 'متجر معتمد من معروف',

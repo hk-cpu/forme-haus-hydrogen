@@ -7,7 +7,7 @@ const PLACEHOLDERS = {
     {
       heading: {value: 'Modern Elegance'},
       byline: {
-        value: 'Discover our curated collection of luxury womenswear',
+        value: 'Discover our curated collection of luxury accessories',
       },
       cta: {value: 'Shop Now →'},
       handle: 'new-arrivals',

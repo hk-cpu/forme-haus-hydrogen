@@ -14,7 +14,7 @@ function Icon({className = ''}: {className?: string}) {
     <svg
       viewBox="0 0 80 32"
       className={`h-8 w-auto ${className}`}
-      aria-label=" Verified"
+      aria-label="Maroof Verified"
     >
       <path
         d="M16 2L28 8v10c0 7-5.5 12-12 12S4 25 4 18V8l12-6z"
@@ -147,7 +147,7 @@ export function TrustBadges({
         {show ? (
           <div
             className="flex items-center gap-1.5 rounded-md bg-[#E8F5E9] px-2 py-1"
-            title={t('trust.Verified', ' Verified Store')}
+            title={t('trust.maroofVerified', 'Maroof Verified Store')}
           >
             <svg viewBox="0 0 20 20" className="h-4 w-4">
               <path
@@ -188,7 +188,7 @@ export function TrustBadges({
       >
         {show ? (
           <a
-            href="https://.sa"
+            href="https://maroof.sa"
             target="_blank"
             rel="noopener noreferrer"
             className="opacity-70 transition-opacity hover:opacity-100"
@@ -220,14 +220,14 @@ export function TrustBadges({
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
         {show ? (
           <a
-            href="https://.sa"
+            href="https://maroof.sa"
             target="_blank"
             rel="noopener noreferrer"
             className="flex flex-col items-center gap-2 rounded-xl border border-[#8B8076]/10 bg-white px-3 py-3 text-center shadow-sm"
           >
             <Icon className="h-8" />
             <span className="text-[10px] font-medium leading-tight text-[#4A3C31]">
-              {t('trust.Verified', ' Verified')}
+              {t('trust.maroofVerified', 'Maroof Verified Store')}
             </span>
           </a>
         ) : null}
@@ -236,7 +236,7 @@ export function TrustBadges({
           <div className="flex flex-col items-center gap-2 rounded-xl border border-[#8B8076]/10 bg-white px-3 py-3 text-center shadow-sm">
             <MuwathooqIcon className="h-8" />
             <span className="text-[10px] font-medium leading-tight text-[#4A3C31]">
-              {t('trust.muwathooq', 'Consumer ')}
+              {t('trust.trusted', 'Trusted')}
             </span>
           </div>
         ) : null}
