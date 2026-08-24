@@ -140,6 +140,21 @@ function CategoryCard({
   );
 }
 
+/**
+ * Column count for the tile grid, chosen from how many tiles actually exist.
+ *
+ * The grid used to be a fixed three columns, so a fourth tile added in Admin
+ * would sit alone on a second row at a third of the width. Tiles are tall
+ * portraits, so four reads better as a 2x2 on tablet opening to a single row
+ * on desktop; five or six fall back to threes.
+ */
+function gridColumnsFor(count: number): string {
+  if (count === 1) return 'md:grid-cols-1';
+  if (count === 2) return 'md:grid-cols-2';
+  if (count === 4) return 'md:grid-cols-2 lg:grid-cols-4';
+  return 'md:grid-cols-3';
+}
+
 export default function CategoryBento({
   categories,
 }: {
@@ -147,6 +162,9 @@ export default function CategoryBento({
 }) {
   const {isRTL, t, lang} = useTranslation();
   const useDynamic = categories && categories.length > 0;
+  const gridColumns = gridColumnsFor(
+    useDynamic ? categories.length : CATEGORIES.length,
+  );
 
   return (
     <section
@@ -164,7 +182,7 @@ export default function CategoryBento({
           <div className="h-px w-16 bg-gradient-to-r from-[#a87441] to-transparent" />
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
+        <div className={`grid grid-cols-1 gap-4 md:gap-5 ${gridColumns}`}>
           {useDynamic
             ? categories.map((category, index) => (
                 <CategoryCard
