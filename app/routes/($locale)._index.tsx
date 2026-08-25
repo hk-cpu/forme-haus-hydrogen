@@ -1,7 +1,7 @@
 import {useLoaderData} from '@remix-run/react';
 import {type MetaArgs, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {defer} from '@remix-run/server-runtime';
-import {getSeoMeta, CacheLong} from '@shopify/hydrogen';
+import {getSeoMeta, CacheShort} from '@shopify/hydrogen';
 import {lazy, Suspense} from 'react';
 
 import Hero from '~/components/Hero';
@@ -82,7 +82,13 @@ async function loadCriticalData({context, request}: LoaderFunctionArgs) {
     journalMetaobjects,
     promiseMetaobjects,
   } = await context.storefront.query(HOMEPAGE_QUERY, {
-    cache: CacheLong(),
+    // CacheShort, not CacheLong. Almost everything on this page — the category
+    // tiles, editorial tiles, Journal cards, brand promises and the hero button
+    // — is edited in Admin, and an hour-long cache meant every one of those
+    // edits appeared to do nothing for an hour. Stale-while-revalidate caps how
+    // often the origin actually re-renders, so the shorter window does not make
+    // cost scale with traffic.
+    cache: CacheShort(),
   });
 
   const bentoItems =

@@ -27,7 +27,7 @@ If you cannot find something in those four places, it lives in the code. Ask a d
 
 ### The one rule that will save you an afternoon
 
-> **Homepage edits take up to an hour to appear.** Everything else is quick.
+> **Edits appear within about 10 seconds** — the homepage included. Reload the page twice: the first load triggers the refresh, the second shows your change.
 >
 > There is no "clear cache" button. Refreshing harder, opening incognito, adding `?v=2` — none of it works. The saved copy sits on Shopify's servers, not in your browser.
 >
@@ -64,9 +64,11 @@ If it changed, you understand the whole system. Everything else is the same moti
 
 The two are separate — changing one does **not** change the other. Leave either blank and built-in wording takes over, so the button is never empty. Where it scrolls to is fixed in code.
 
-## …change the three category tiles?
+## …change the four category tiles?
 
-**Content → Metaobjects → Category Card** — three entries: New to Haus, Phone Accessories, Sunglasses.
+**Content → Metaobjects → Category Card** — four entries: New to Haus, Phone Accessories, Sunglasses, Heritage Caps.
+
+Heritage Caps currently uses a **placeholder image**. Swap it for a real photo when you have one — its alt text flags it as a placeholder.
 
 | Field               | Notes                                                   |
 | ------------------- | ------------------------------------------------------- |
@@ -74,10 +76,10 @@ The two are separate — changing one does **not** change the other. Leave eithe
 | **Title (Arabic)**  | Blank → Arabic shoppers see the English title           |
 | **Image**           | Required. A tall portrait shape works best              |
 | **Link URL**        | Required. Must start with `/` — see the link rule below |
-| **Sort Order**      | 1, 2, 3 — left to right                                 |
+| **Sort Order**      | 1, 2, 3, 4 — left to right                              |
 
-**Add a fourth tile?** Create a new entry; the row grows.
-**Remove one?** Delete the entry. Delete all three and built-in tiles reappear.
+**Add a fifth tile?** Create a new entry; the row grows.
+**Remove one?** Delete the entry — the row shrinks to three. Delete all four and three built-in tiles reappear from the code.
 
 ## …change the four large photo tiles ("The Edit")?
 
@@ -246,4 +248,4 @@ None of this is in Admin:
 | Collection banner or heading | Collection → Custom data              |
 | Products, prices, stock      | Products                              |
 
-**And remember:** homepage changes take up to an hour. Everything else is quick.
+**And remember:** changes appear within about 10 seconds. Reload twice — the first load triggers the refresh, the second shows it.
