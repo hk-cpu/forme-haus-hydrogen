@@ -108,7 +108,7 @@ export function TopBar() {
   const socialLinks = [
     {
       icon: Icons.Instagram,
-      href: 'https://instagram.com/formehaus',
+      href: 'https://www.instagram.com/formee.haus',
       label: 'Instagram',
     },
     {

@@ -398,7 +398,7 @@ function LegacyMenuMobileNav({
 function Footer({menu, shop}: {menu?: EnhancedMenu; shop?: any}) {
   const {t} = useTranslation();
   const instagramUrl =
-    shop?.instagramUrl?.value || 'https://instagram.com/formehaus';
+    shop?.instagramUrl?.value || 'https://www.instagram.com/formee.haus';
   const snapchatUrl =
     shop?.snapchatUrl?.value || 'https://snapchat.com/add/formehaus';
   const tiktokUrl =
