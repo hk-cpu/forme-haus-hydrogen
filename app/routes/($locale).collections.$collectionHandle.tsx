@@ -97,7 +97,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
 
   let {collection} = result;
 
-  // Carry It Your Own Way: bundle-only editorial collection.
+  // Carry It Your Way: bundle-only editorial collection.
   // Replace whatever the Shopify collection returns with just bundle products
   // (products whose title contains "+").
   if (collectionHandle === 'carry-it-your-way') {

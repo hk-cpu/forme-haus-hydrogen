@@ -60,7 +60,7 @@ function home({url}: {url: Request['url']}): SeoConfig {
     title: 'Home',
     titleTemplate: '%s | Formé Haus',
     description:
-      'Saudi-based luxury accessories — phone cases, phone straps and sunglasses, made with modern elegance and thoughtful craftsmanship.',
+      'Saudi-based curated luxury fashion & lifestyle store — refined accessories, elevated essentials, and thoughtful design.',
     url,
     robots: {
       noIndex: false,

@@ -398,11 +398,11 @@ function LegacyMenuMobileNav({
 function Footer({menu, shop}: {menu?: EnhancedMenu; shop?: any}) {
   const {t} = useTranslation();
   const instagramUrl =
-    shop?.instagramUrl?.value || 'https://instagram.com/formehaus';
+    shop?.instagramUrl?.value || 'https://www.instagram.com/formee.haus';
   const snapchatUrl =
     shop?.snapchatUrl?.value || 'https://snapchat.com/add/formehaus';
-  const tiktokUrl = shop?.tiktokUrl?.value || 'https://tiktok.com/@formehaus';
-  const crNo = shop?.crNo?.value || '7051891369';
+  const tiktokUrl =
+    shop?.tiktokUrl?.value || 'https://www.tiktok.com/@forme.haus';
   const vatNo = shop?.vatNo?.value || '314271812300003';
 
   const linkClass =
@@ -588,11 +588,6 @@ function Footer({menu, shop}: {menu?: EnhancedMenu; shop?: any}) {
           <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-2 sm:gap-4 lg:gap-6">
             <span className="font-medium text-[#F0EAE6]/80">
               &copy; {new Date().getFullYear()} Formé Haus FH Establishment
-            </span>
-            <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
-            <span>
-              {t('footer.crNo', 'CR No.')}
-              <span className="font-mono text-[#F0EAE6]">{crNo}</span>
             </span>
             <span className="hidden lg:block h-3 w-px bg-[#F0EAE6]/20" />
             <span>
