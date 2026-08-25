@@ -17,7 +17,7 @@ When you can't find something in Admin, it is almost always because it lives in 
 
 # ⚠️ READ THIS FIRST — THE CACHE DELAY
 
-> ## Your edits are not instant. The homepage can take **up to 1 hour**, and old content can keep showing for **up to 23 hours more**.
+> ## Your edits are not instant, but they are quick. Most pages, the homepage included, refresh within about **10 seconds**.
 >
 > This is the number one cause of "I changed it and nothing happened."
 >
@@ -27,14 +27,14 @@ When you can't find something in Admin, it is almost always because it lives in 
 
 ## How long each page waits
 
-| Page                                                  | How fast your edit appears                  | What to expect                                                                                                                                                              |
-| ----------------------------------------------------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Homepage** (`/` and `/ar-sa/`)                      | **Up to ~1 hour, plus one extra page view** | Slowest page on the site. After the hour, the _next_ visitor still sees the old version — their visit is what triggers the refresh. The person after them sees the new one. |
-| Collection pages (`/collections/...`)                 | ~10 seconds                                 | Effectively instant. Covers title, description, which products are in it, sort order.                                                                                       |
-| Product pages (`/products/...`)                       | Usually the second page load                | Price, title, images, variants. Reload once and you'll see it.                                                                                                              |
-| Header & footer menu links                            | Usually the second page load                | Site-wide, so it's easy to think nothing happened. Reload any page a second time.                                                                                           |
-| Products index, Journal, standard pages, policy pages | Usually the second page load                | Same as product pages.                                                                                                                                                      |
-| Account and order pages                               | Instant                                     | Never cached — always live customer data. Intentional.                                                                                                                      |
+| Page                                                  | How fast your edit appears   | What to expect                                                                                                   |
+| ----------------------------------------------------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| **Homepage** (`/` and `/ar-sa/`)                      | ~10 seconds                  | Covers the category tiles, The Edit, Journal cards, Why Choose Us and the hero button. Reload once after saving. |
+| Collection pages (`/collections/...`)                 | ~10 seconds                  | Effectively instant. Covers title, description, which products are in it, sort order.                            |
+| Product pages (`/products/...`)                       | Usually the second page load | Price, title, images, variants. Reload once and you'll see it.                                                   |
+| Header & footer menu links                            | Usually the second page load | Site-wide, so it's easy to think nothing happened. Reload any page a second time.                                |
+| Products index, Journal, standard pages, policy pages | Usually the second page load | Same as product pages.                                                                                           |
+| Account and order pages                               | Instant                      | Never cached — always live customer data. Intentional.                                                           |
 
 **One slow exception inside a fast page.** If a collection is _empty_ in Admin, the storefront quietly fills the page with products from your full catalogue instead — and that backup list refreshes far more slowly, so a product edit can show old data for **up to 24 hours**. The fix is to put real products into the collection so the page stops using the backup list.
 
@@ -44,7 +44,7 @@ When you can't find something in Admin, it is almost always because it lives in 
 
 # 1. Homepage — top of the page
 
-The homepage runs: the logo panel (**Hero**) → **Shop by Category** (three tiles) → **The Edit** (four large photo tiles) → **The Journal** → **Why Choose Us** → **Shop with Confidence** badges.
+The homepage runs: the logo panel (**Hero**) → **Shop by Category** (four tiles) → **The Edit** (four large photo tiles) → **The Journal** → **Why Choose Us** → **Shop with Confidence** badges.
 
 Two Admin locations control everything you can edit here:
 
@@ -62,11 +62,13 @@ Currently reads "Explore the Collection". English and Arabic are set separately 
 
 Where the button scrolls to is fixed in code. You can change the words, not the destination.
 
-## 1.2 Shop by Category — the three tiles
+## 1.2 Shop by Category — the four tiles
 
 **Content → Metaobjects → Category Card**
 
-Three entries exist — **New to Haus**, **Phone Accessories** and **Sunglasses** — and editing them changes the live homepage. This section is yours.
+Four entries exist — **New to Haus**, **Phone Accessories**, **Sunglasses** and **Heritage Caps** — and editing them changes the live homepage. This section is yours.
+
+Heritage Caps currently uses a **placeholder image**; replace it with a real photo when you have one. Its alt text says so, to make it easy to spot.
 
 | What it controls                 | Field to edit       | If you leave it blank                                                                                                                                                 |
 | -------------------------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -316,7 +318,7 @@ Shopify's **Translate & Adapt** app does not reach any of this text.
 
 Work through these in order:
 
-1. **Was it the homepage?** Wait up to an hour, then load the page **twice** — the first load after the wait is what triggers the refresh; the second shows your change. See the cache section at the top.
+1. **Was it the homepage?** Wait about 10 seconds, then load the page **twice** — the first load is what triggers the refresh; the second shows your change. See the cache section at the top.
 2. **Was it a product, menu link, or standard page?** Just reload once. It's almost certainly the second-load behaviour.
 3. **Was it a collection banner or Extra field?** Check the collection **exists and has products in it**. An empty collection makes the page rebuild itself and discard every Extra field you set. This is the single most common cause.
 4. **Was it a menu rename?** Renaming Collections, About Us / Our Story, or Contact in the Main menu has no effect — those three are fixed. Same for anything under the Footer menu.
