@@ -64,7 +64,7 @@ If it changed, you understand the whole system. Everything else is the same moti
 
 The two are separate — changing one does **not** change the other. Leave either blank and built-in wording takes over, so the button is never empty. Where it scrolls to is fixed in code.
 
-## …change the three category tiles?
+## …change the four category tiles?
 
 **Content → Metaobjects → Category Card** — four entries: New to Haus, Phone Accessories, Sunglasses, Heritage Caps.
 
@@ -76,10 +76,10 @@ Heritage Caps currently uses a **placeholder image**. Swap it for a real photo w
 | **Title (Arabic)**  | Blank → Arabic shoppers see the English title           |
 | **Image**           | Required. A tall portrait shape works best              |
 | **Link URL**        | Required. Must start with `/` — see the link rule below |
-| **Sort Order**      | 1, 2, 3 — left to right                                 |
+| **Sort Order**      | 1, 2, 3, 4 — left to right                              |
 
-**Add a fourth tile?** Create a new entry; the row grows.
-**Remove one?** Delete the entry. Delete all three and built-in tiles reappear.
+**Add a fifth tile?** Create a new entry; the row grows.
+**Remove one?** Delete the entry — the row shrinks to three. Delete all four and three built-in tiles reappear from the code.
 
 ## …change the four large photo tiles ("The Edit")?
 

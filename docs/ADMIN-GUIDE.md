@@ -78,7 +78,7 @@ Heritage Caps currently uses a **placeholder image**; replace it with a real pho
 | Where the tile goes when clicked | **Link URL**        | Required. Use a path starting with a slash, e.g. `/collections/sunglasses`. **Never paste a full `https://` address** — it sends Arabic shoppers to the English page. |
 | Left-to-right position           | **Sort Order**      | An unnumbered tile is pushed to the end.                                                                                                                              |
 
-> **The section shows exactly the entries that exist here.** Delete one and the homepage drops to two tiles. Delete all three and it silently falls back to three built-in tiles from the code.
+> **The section shows exactly the entries that exist here.** Delete one and the homepage drops to three tiles. Delete all four and it silently falls back to three built-in tiles from the code.
 
 These tiles have **no separate alt-text field** — the title is reused as the image description.
 
