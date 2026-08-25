@@ -32,7 +32,7 @@ export default function SocialButtons() {
         </svg>
       </SocialLink>
       <SocialLink
-        href="https://tiktok.com/@formehaus"
+        href="https://www.tiktok.com/@forme.haus"
         label="Follow us on TikTok"
       >
         <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">

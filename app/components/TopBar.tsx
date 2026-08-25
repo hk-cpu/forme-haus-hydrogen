@@ -118,7 +118,7 @@ export function TopBar() {
     },
     {
       icon: Icons.TikTok,
-      href: 'https://tiktok.com/@formehaus',
+      href: 'https://www.tiktok.com/@forme.haus',
       label: 'TikTok',
     },
   ];
