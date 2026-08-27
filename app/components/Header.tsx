@@ -274,6 +274,11 @@ export function Header({
                 to: '/collections/phone-cases',
               },
               {
+                id: 'sub-heritage',
+                title: t('nav.heritageCaps', 'Heritage Caps'),
+                to: '/collections/heritage-caps',
+              },
+              {
                 id: 'sub-all',
                 title: t('nav.viewAll', 'View All Collections'),
                 to: '/collections',

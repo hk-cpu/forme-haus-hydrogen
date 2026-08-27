@@ -16,6 +16,11 @@ const CATEGORIES = [
     href: '/collections/phone-accessories',
   },
   {id: 'sunglasses', label: 'Sunglasses', href: '/collections/sunglasses'},
+  {
+    id: 'heritage-caps',
+    label: 'Heritage Caps',
+    href: '/collections/heritage-caps',
+  },
 ];
 
 /**
