@@ -22,6 +22,7 @@ export const translations = {
     'nav.contact': 'Contact Us',
     'nav.phoneCases': 'Phone Accessories',
     'nav.sunglasses': 'Sunglasses',
+    'nav.heritageCaps': 'Heritage Caps',
     'nav.ourStory': 'Our Story',
     'nav.menu': 'Menu',
     'nav.search': 'Search',

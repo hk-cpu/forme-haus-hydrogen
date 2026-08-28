@@ -57,6 +57,11 @@ const topLevelItems = [
     href: '/collections/phone-accessories',
     hasSubmenu: true,
   },
+  {
+    label: 'Heritage Caps',
+    href: '/collections/heritage-caps',
+    hasSubmenu: false,
+  },
   {label: 'All Products', href: '/products', hasSubmenu: false},
   {label: 'Our Story', href: '/pages/about', hasSubmenu: false},
   {label: 'Contact Us', href: '/contact', hasSubmenu: false},
