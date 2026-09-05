@@ -302,7 +302,7 @@ export const translations = {
     'trust.trialReady': 'Trial Ready',
     'trust.fastDelivery': 'Fast Delivery',
     'trust.paymentMethods':
-      'Multiple payment methods via Tap: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tabby, Tamara',
+      'Multiple payment methods via Tap: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tamara',
 
     // Why Choose Us
     'whyUs.title': 'Why Choose Us',
@@ -658,7 +658,7 @@ export const translations = {
     'trust.trialReady': 'جاهز للتجربة',
     'trust.fastDelivery': 'توصيل سريع',
     'trust.paymentMethods':
-      'طرق دفع متعددة عبر Tap: مدى، فيزا، ماستركارد، آبل باي، STC Pay، تابي، تمارا',
+      'طرق دفع متعددة عبر Tap: مدى، فيزا، ماستركارد، آبل باي، STC Pay، تمارا',
 
     // Why Choose Us
     'whyUs.title': 'لماذا تختارنا',

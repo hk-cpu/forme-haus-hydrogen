@@ -23,7 +23,7 @@ export const translationOverrides = {
     'trust.securePayment': 'دفع آمن',
     'trust.shopWithConfidence': 'تسوّق بثقة',
     'trust.paymentMethods':
-      'طرق دفع متعددة عبر تاب: مدى، فيزا، ماستركارد، آبل باي، stc pay، تابي، تمارا',
+      'طرق دفع متعددة عبر تاب: مدى، فيزا، ماستركارد، آبل باي، stc pay، تمارا',
   },
 } as const;
 

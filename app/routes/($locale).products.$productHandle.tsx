@@ -309,9 +309,19 @@ export default function Product() {
           </Breadcrumb>
         </div>
 
+        {/*
+          min-w-0 on both columns: grid items default to min-width:auto, so a
+          child that refuses to shrink sets the track width. The gallery's
+          thumbnail strip is exactly that: its thumbs are flex-shrink-0, so it
+          is as wide as the image count demands — 552px for a seven-image
+          product. On a 390px phone that became the track width and dragged
+          this whole row off-screen, clipping the product title. The strip
+          already scrolls (overflow-x-auto); it just needed permission to be
+          narrower than its contents.
+        */}
         <div className="grid items-start md:gap-6 lg:gap-12 md:grid-cols-2">
-          <ProductGallery media={media.nodes} className="w-full" />
-          <div className="md:relative">
+          <ProductGallery media={media.nodes} className="w-full min-w-0" />
+          <div className="md:relative min-w-0">
             <section className="flex flex-col w-full max-w-xl gap-10 p-6 md:pl-10 lg:pl-16 md:mx-auto md:max-w-none">
               <div className="grid gap-3">
                 {/* iPhone Models Badge */}

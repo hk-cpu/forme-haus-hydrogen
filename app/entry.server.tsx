@@ -4,6 +4,8 @@ import isbot from 'isbot';
 import {renderToReadableStream} from 'react-dom/server';
 import {createContentSecurityPolicy} from '@shopify/hydrogen';
 
+import {CHECKOUT_DOMAIN_FALLBACK} from '~/lib/const';
+
 export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
@@ -13,7 +15,8 @@ export default async function handleRequest(
 ) {
   const {nonce, header, NonceProvider} = createContentSecurityPolicy({
     shop: {
-      checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
+      checkoutDomain:
+        context.env.PUBLIC_CHECKOUT_DOMAIN || CHECKOUT_DOMAIN_FALLBACK,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
     defaultSrc: ["'self'", 'data:', 'blob:'],

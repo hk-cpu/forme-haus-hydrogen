@@ -31,6 +31,7 @@ import {PageLayout} from '~/components/PageLayout';
 import {GenericError} from '~/components/GenericError';
 import {NotFound} from '~/components/NotFound';
 import {seoPayload} from '~/lib/seo.server';
+import {CHECKOUT_DOMAIN_FALLBACK} from '~/lib/const';
 import styles from '~/styles/app.css?url';
 import futuristicStyles from '~/styles/futuristic-polish.css?url';
 import {UIProvider} from '~/context/UIContext';
@@ -174,7 +175,7 @@ async function loadCriticalData({request, context}: LoaderFunctionArgs) {
       publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
     }),
     consent: {
-      checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN || 'shop.formehaus.me',
+      checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN || CHECKOUT_DOMAIN_FALLBACK,
       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
       withPrivacyBanner: true,
       country: storefront.i18n.country,
