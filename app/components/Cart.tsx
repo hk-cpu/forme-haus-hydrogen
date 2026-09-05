@@ -595,12 +595,6 @@ function GCCPaymentBadges() {
           </text>
         </svg>
       </div>
-      {/* Tabby */}
-      <div className="px-2 py-1 bg-surface rounded border border-taupe/10 flex items-center">
-        <span className="text-[9px] font-bold text-[#3BB273] tracking-wide">
-          tabby
-        </span>
-      </div>
       {/* Tamara */}
       <div className="px-2 py-1 bg-surface rounded border border-taupe/10 flex items-center">
         <span className="text-[9px] font-bold text-[#F6A623] tracking-wide">

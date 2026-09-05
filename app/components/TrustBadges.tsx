@@ -268,7 +268,7 @@ export function TrustBadges({
         <p className="text-center text-[10px] text-[#736659]">
           {t(
             'trust.paymentMethods',
-            'Secure payments via Tap: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tabby, Tamara',
+            'Secure payments via Tap: Mada, Visa, Mastercard, Apple Pay, STC Pay, Tamara',
           )}
         </p>
       </div>
