@@ -58,12 +58,13 @@ let config: PlaywrightTestConfig = defineConfig({
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
   // outputDir: 'test-results/',
 
-  /* Run your local dev server before starting the tests */
-  webServer: {
-    command: 'npm run preview',
-    port: 3000,
-    reuseExistingServer: !process.env.CI,
-  },
+  /*
+   * No webServer here on purpose. It is added below only when URL is unset.
+   * Previously it lived in this base config, so pointing the suite at an
+   * already-deployed URL still booted a local preview server that nothing
+   * talked to — and that server needs Shopify credentials, which is exactly
+   * what running against a URL is meant to avoid.
+   */
 });
 
 if (process.env.URL) {
