@@ -118,6 +118,12 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
 
     if (bundleProducts.length) {
       collection = {
+        // Spread the real collection first so its Admin metafields survive.
+        // This object used to be built field by field, which silently dropped
+        // hero_image, hide_title, hero_fit, hero_position and bg_color — so
+        // this collection alone ignored everything set in Admin and fell back
+        // to the hardcoded hero override.
+        ...collection,
         id: collection?.id || 'synthetic-carry-it-your-way',
         handle: 'carry-it-your-way',
         title: 'Carry It Your Way',
