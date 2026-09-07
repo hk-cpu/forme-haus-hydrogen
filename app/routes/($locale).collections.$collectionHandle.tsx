@@ -118,6 +118,12 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
 
     if (bundleProducts.length) {
       collection = {
+        // Spread the real collection first so its Admin metafields survive.
+        // This object used to be built field by field, which silently dropped
+        // hero_image, hide_title, hero_fit, hero_position and bg_color — so
+        // this collection alone ignored everything set in Admin and fell back
+        // to the hardcoded hero override.
+        ...collection,
         id: collection?.id || 'synthetic-carry-it-your-way',
         handle: 'carry-it-your-way',
         title: 'Carry It Your Way',
@@ -527,19 +533,39 @@ export default function Collection() {
     collection.description?.trim() || collectionSubtitle?.subtitle;
 
   const override = HERO_OVERRIDES[collection.handle];
-  const heroImage =
-    collection.hero_image?.reference?.image?.url ||
-    override?.src ||
-    collection.image?.url;
+
+  /*
+   * A hero image set in Admin also discards the override's presentation.
+   *
+   * The override's imgClass, object-position and text overlay were authored
+   * for the bundled /assets/heros artwork. The images now set in Admin are
+   * different pictures with their own titles already baked into them, so
+   * carrying the old presentation over did two visible things: it forced a
+   * fixed-height object-cover crop, which cost Modern Essentials 43% of its
+   * width on a 390px phone, and it printed the collection title a second time
+   * on top of the title inside the picture. Sun Ready made the crop worse
+   * still — its baked-in title sits top-centre while the override positions
+   * the image "right center".
+   *
+   * Only the image is Admin's to supply, so only Admin should describe how it
+   * is shown.
+   */
+  const adminHeroImage = collection.hero_image?.reference?.image?.url;
+  const usingAdminHero = Boolean(adminHeroImage);
+
+  const heroImage = adminHeroImage || override?.src || collection.image?.url;
   const hideTitle =
     collection.hide_title?.value === 'true' || override?.hideTitle;
   const heroPosition =
-    collection.hero_position?.value || override?.position || 'center center';
+    collection.hero_position?.value ||
+    (usingAdminHero ? undefined : override?.position) ||
+    'center center';
   const heroFit = collection.hero_fit?.value || override?.fit || 'cover';
   const bgColor =
     collection.bg_color?.value || override?.bgClass || 'bg-[#E8DED4]';
-  const heightClass = override?.heightClass || '';
-  const imgClass = override?.imgClass || 'h-auto';
+  const heightClass = usingAdminHero ? '' : override?.heightClass || '';
+  const imgClass = usingAdminHero ? 'h-auto' : override?.imgClass || 'h-auto';
+  const customOverlay = usingAdminHero ? undefined : override?.customOverlay;
 
   const isFullWidthHero = heroFit === 'full-width' && hideTitle;
   const isTextOnlyHero = TEXT_ONLY_HERO_COLLECTIONS.has(collection.handle);
@@ -671,7 +697,7 @@ export default function Collection() {
             </div>
           )}
           {/* Custom Overlay for specific collections */}
-          {override?.customOverlay === 'right-centered' && (
+          {customOverlay === 'right-centered' && (
             <div className="absolute inset-0 flex flex-col justify-end md:justify-center items-center md:items-end pb-[12%] md:pb-0 px-4 md:pr-[4%] lg:pr-[8%] z-10 pointer-events-none">
               {/* Desktop dark vignette for flawless text contrast */}
               <div className="absolute inset-0 bg-gradient-to-l from-[#121212]/85 via-[#121212]/20 to-transparent hidden md:block z-[-1]" />

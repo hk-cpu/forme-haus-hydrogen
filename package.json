@@ -8,6 +8,7 @@
     "dev": "shopify hydrogen dev --codegen",
     "build": "shopify hydrogen build",
     "preview": "npm run build && shopify hydrogen preview",
+    "audit:tax": "node scripts/audit-tax.mjs",
     "e2e": "npx playwright test",
     "e2e:mobile": "URL=${URL:-https://formehaus.me} npx playwright test tests/mobile-layout.spec.ts",
     "e2e:ui": "npx playwright test --ui",

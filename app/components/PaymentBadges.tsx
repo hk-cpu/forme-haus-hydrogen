@@ -3,18 +3,65 @@
  * Clean horizontal single-line layout: Mada, Visa, Mastercard, Apple Pay, STC Pay
  */
 
+/*
+ * Payment marks for the footer.
+ *
+ * The footer sits on a dark gradient (via-[#151515]/90). The previous marks
+ * were hand-drawn approximations and two of them were dark-on-dark: mada was
+ * #00589B and STC Pay #4F008C, both close to unreadable against that
+ * background. They are drawn light here so they can be read.
+ *
+ * Visa and Mastercard are the real brand SVGs, bundled under
+ * /brand/payment/. mada, Apple Pay and STC Pay are still approximations —
+ * accurate marks for those have to come from the schemes themselves (Tap
+ * supplies a marks pack), and redrawing them from memory is what made this
+ * row look wrong in the first place.
+ */
+
+const MARK_HEIGHT = 'h-5 w-auto';
+
+function VisaIcon() {
+  return (
+    <img
+      src="/brand/payment/visa.svg"
+      alt="Visa"
+      className={MARK_HEIGHT}
+      width={31}
+      height={20}
+      loading="lazy"
+      decoding="async"
+    />
+  );
+}
+
+function MastercardIcon() {
+  return (
+    <img
+      src="/brand/payment/mastercard.svg"
+      alt="Mastercard"
+      className={MARK_HEIGHT}
+      width={31}
+      height={20}
+      loading="lazy"
+      decoding="async"
+    />
+  );
+}
+
 function MadaIcon() {
   return (
-    <svg viewBox="0 0 60 20" className="h-5 w-auto" aria-label="Mada">
-      <path d="M8 6h6l-3 7h-6l3-7z" fill="#009B3A" />
-      <path d="M13 6h6l-3 7h-6l3-7z" fill="#00589B" />
+    <svg viewBox="0 0 62 20" className={MARK_HEIGHT} aria-label="mada">
+      <rect width="62" height="20" rx="3" fill="#FFFFFF" />
+      <path d="M10 6.5h6.5l-3.2 7H6.8l3.2-7z" fill="#059A4D" />
+      <path d="M15.4 6.5h6.5l-3.2 7h-6.5l3.2-7z" fill="#1A4E8A" />
       <text
-        x="32"
-        y="13"
-        fontSize="8"
+        x="42"
+        y="13.6"
+        fontSize="8.5"
         fontWeight="700"
-        fill="#00589B"
-        fontFamily="Arial, sans-serif"
+        fill="#1A4E8A"
+        fontFamily="Arial, Helvetica, sans-serif"
+        textAnchor="middle"
       >
         mada
       </text>
@@ -22,53 +69,21 @@ function MadaIcon() {
   );
 }
 
-function VisaIcon() {
-  return (
-    <svg viewBox="0 0 60 20" className="h-5 w-auto" aria-label="Visa">
-      <text
-        x="30"
-        y="14"
-        fontSize="10"
-        fontWeight="800"
-        fill="#1A1F71"
-        fontFamily="Arial, sans-serif"
-        textAnchor="middle"
-      >
-        VISA
-      </text>
-    </svg>
-  );
-}
-
-function MastercardIcon() {
-  return (
-    <svg viewBox="0 0 40 20" className="h-5 w-auto" aria-label="Mastercard">
-      <circle cx="14" cy="10" r="7" fill="#EB001B" />
-      <circle cx="26" cy="10" r="7" fill="#F79E1B" />
-      <path d="M20 3a7 7 0 010 14 7 7 0 000-14z" fill="#FF5F00" />
-    </svg>
-  );
-}
-
 function ApplePayIcon() {
   return (
-    <svg viewBox="0 0 60 20" className="h-5 w-auto" aria-label="Apple Pay">
+    <svg viewBox="0 0 62 20" className={MARK_HEIGHT} aria-label="Apple Pay">
+      <rect width="62" height="20" rx="3" fill="#FFFFFF" />
       <path
-        d="M15 5c.6-.7 1-1.6.9-2.5-.8 0-1.9.5-2.5 1.3-.5.6-.9 1.5-.8 2.4.9.1 1.8-.4 2.4-1.2z"
-        fill="#fff"
-      />
-      <path
-        d="M15.9 6.2c-1.2-.1-2.3.7-2.9.7-1 0-1.8-.6-2.9-.6-1.3 0-2.5.7-3.1 1.8-1.3 2.3-.4 5.7.9 7.6.6.9 1.4 1.9 2.4 1.8 1 0 1.3-.6 2.5-.6 1.2 0 1.5.6 2.5.6 1 0 1.7-.9 2.4-1.9.7-1 1-1.9 1-2 .1-.1-1.9-.7-1.9-2.9 0-1.7 1.5-2.6 1.6-2.7-.9-1.2-2.1-1.4-2.5-1.8z"
-        fill="#fff"
-        transform="scale(0.5) translate(12,2)"
+        d="M22.1 8.05c-.35.42-.92.75-1.48.7-.07-.56.2-1.16.53-1.53.35-.43.97-.73 1.47-.76.06.58-.17 1.16-.52 1.59zm.51.81c-.81-.05-1.5.46-1.89.46-.39 0-.98-.44-1.62-.42-.83.01-1.6.48-2.03 1.23-.87 1.5-.23 3.72.61 4.94.41.6.9 1.27 1.55 1.25.61-.02.85-.4 1.6-.4.74 0 .96.4 1.61.39.67-.01 1.09-.61 1.5-1.21.47-.69.67-1.36.68-1.4-.01-.01-1.31-.51-1.32-2.01-.01-1.25 1.02-1.85 1.07-1.88-.58-.86-1.49-.95-1.81-.97z"
+        fill="#111111"
       />
       <text
-        x="38"
-        y="14"
+        x="40"
+        y="13.8"
         fontSize="9"
         fontWeight="600"
-        fill="#fff"
-        fontFamily="Arial, sans-serif"
+        fill="#111111"
+        fontFamily="Helvetica, Arial, sans-serif"
       >
         Pay
       </text>
@@ -78,28 +93,18 @@ function ApplePayIcon() {
 
 function STCPayIcon() {
   return (
-    <svg viewBox="0 0 40 20" className="h-5 w-auto" aria-label="STC Pay">
+    <svg viewBox="0 0 62 20" className={MARK_HEIGHT} aria-label="STC Pay">
+      <rect width="62" height="20" rx="3" fill="#FFFFFF" />
       <text
-        x="20"
-        y="9"
-        fontSize="6"
-        fontWeight="800"
+        x="31"
+        y="13.6"
+        fontSize="8.5"
+        fontWeight="700"
         fill="#4F008C"
-        fontFamily="Arial, sans-serif"
+        fontFamily="Arial, Helvetica, sans-serif"
         textAnchor="middle"
       >
-        STC
-      </text>
-      <text
-        x="20"
-        y="16"
-        fontSize="5"
-        fontWeight="600"
-        fill="#4F008C"
-        fontFamily="Arial, sans-serif"
-        textAnchor="middle"
-      >
-        pay
+        stc pay
       </text>
     </svg>
   );
