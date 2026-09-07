@@ -38,55 +38,158 @@ export async function action({request, context}: ActionFunctionArgs) {
     return json({error: 'Please fill in all fields.'}, {status: 400});
   }
 
-  const resendKey = (context.env as any).RESEND_API_KEY as string | undefined;
-  if (!resendKey) {
-    return json({error: 'Email service not configured.'}, {status: 500});
+  // Anyone on the internet can post here, and every submission now becomes a
+  // stored record, so cap the sizes rather than let the form define them.
+  if (
+    name.length > 100 ||
+    email.length > 254 ||
+    subject.length > 200 ||
+    message.length > 5000
+  ) {
+    return json({error: 'That message is too long.'}, {status: 400});
   }
 
-  const html = `
+  const env = context.env as any;
+  const adminToken = env.SHOPIFY_ADMIN_API_TOKEN as string | undefined;
+  const storeDomain = env.PUBLIC_STORE_DOMAIN as string | undefined;
+  const resendKey = env.RESEND_API_KEY as string | undefined;
+
+  /**
+   * Store the message in Shopify before trying to email it.
+   *
+   * This form used to do nothing but call Resend, and RESEND_API_KEY was never
+   * set in production, so every message a customer sent was answered with a
+   * 500 and then lost — there was no copy of it anywhere. Email is a delivery
+   * mechanism, not a record, and it should not be the only one.
+   *
+   * Entries show up under Content > Metaobjects > Contact Message in Shopify
+   * admin, which works from the phone app.
+   */
+  async function storeMessage(emailDelivered: boolean): Promise<boolean> {
+    if (!adminToken || !storeDomain) return false;
+    try {
+      const res = await fetch(
+        `https://${storeDomain}/admin/api/2025-01/graphql.json`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Shopify-Access-Token': adminToken,
+          },
+          body: JSON.stringify({
+            query: `mutation StoreContactMessage($metaobject: MetaobjectCreateInput!) {
+              metaobjectCreate(metaobject: $metaobject) {
+                metaobject { id }
+                userErrors { field message }
+              }
+            }`,
+            variables: {
+              metaobject: {
+                type: 'contact_message',
+                fields: [
+                  {key: 'name', value: name},
+                  {key: 'email', value: email},
+                  {key: 'subject', value: subject},
+                  {key: 'message', value: message},
+                  {key: 'received_at', value: new Date().toISOString()},
+                  {
+                    key: 'email_delivered',
+                    value: emailDelivered ? 'yes' : 'no',
+                  },
+                ],
+              },
+            },
+          }),
+        },
+      );
+      if (!res.ok) return false;
+      const body: any = await res.json();
+      if (body?.errors?.length) return false;
+      if (body?.data?.metaobjectCreate?.userErrors?.length) return false;
+      return Boolean(body?.data?.metaobjectCreate?.metaobject?.id);
+    } catch {
+      return false;
+    }
+  }
+
+  /** These values are typed by the public, and they are interpolated into HTML. */
+  function escapeHtml(value: string): string {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  async function sendEmail(): Promise<boolean> {
+    if (!resendKey) return false;
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safeSubject = escapeHtml(subject);
+    const safeMessage = escapeHtml(message);
+    const html = `
     <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#2C2318">
       <p style="font-size:12px;text-transform:uppercase;letter-spacing:0.15em;color:#a87441">Contact Form — Formé Haus</p>
-      <h2 style="font-size:20px;margin:8px 0 24px">${subject}</h2>
+      <h2 style="font-size:20px;margin:8px 0 24px">${safeSubject}</h2>
       <table style="width:100%;border-collapse:collapse;font-size:14px">
-        <tr><td style="padding:8px 0;color:#8B8076;width:80px">From</td><td>${name}</td></tr>
-        <tr><td style="padding:8px 0;color:#8B8076">Email</td><td><a href="mailto:${email}" style="color:#a87441">${email}</a></td></tr>
+        <tr><td style="padding:8px 0;color:#8B8076;width:80px">From</td><td>${safeName}</td></tr>
+        <tr><td style="padding:8px 0;color:#8B8076">Email</td><td><a href="mailto:${safeEmail}" style="color:#a87441">${safeEmail}</a></td></tr>
       </table>
       <hr style="border:none;border-top:1px solid #eee;margin:20px 0"/>
-      <p style="font-size:15px;line-height:1.7;white-space:pre-wrap">${message}</p>
+      <p style="font-size:15px;line-height:1.7;white-space:pre-wrap">${safeMessage}</p>
       <hr style="border:none;border-top:1px solid #eee;margin:20px 0"/>
-      <p style="font-size:11px;color:#aaa">Reply to this email to respond directly to ${name}.</p>
+      <p style="font-size:11px;color:#aaa">Reply to this email to respond directly to ${safeName}.</p>
     </div>`;
+    try {
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${resendKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'Formé Haus Contact <info@formehaus.me>',
+          to: ['info@formehaus.me'],
+          reply_to: `${name} <${email}>`,
+          subject: `[Contact] ${subject}`,
+          html,
+        }),
+      });
+      return res.ok;
+    } catch {
+      return false;
+    }
+  }
 
-  try {
-    const res = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${resendKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'Formé Haus Contact <info@formehaus.me>',
-        to: ['info@formehaus.me'],
-        reply_to: `${name} <${email}>`,
-        subject: `[Contact] ${subject}`,
-        html,
-      }),
-    });
+  const emailed = await sendEmail();
+  const stored = await storeMessage(emailed);
 
-    if (!res.ok) {
-      return json(
-        {error: 'Unable to send message. Please try again.'},
-        {status: 500},
+  // The customer is told their message got through if it landed anywhere we
+  // can retrieve it from. Only tell them to try again when it truly went
+  // nowhere, and log enough to tell those two cases apart afterwards.
+  if (stored || emailed) {
+    if (!stored) {
+      // eslint-disable-next-line no-console
+      console.error(
+        '[contact] emailed but NOT stored — check SHOPIFY_ADMIN_API_TOKEN',
       );
     }
-
+    if (!emailed) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        '[contact] stored but not emailed — check RESEND_API_KEY and Resend domain verification',
+      );
+    }
     return json({success: true});
-  } catch {
-    return json(
-      {error: 'Unable to send message. Please try again.'},
-      {status: 500},
-    );
   }
+
+  // eslint-disable-next-line no-console
+  console.error('[contact] message lost — neither stored nor emailed');
+  return json(
+    {error: 'Unable to send message. Please try again.'},
+    {status: 500},
+  );
 }
 
 export default function ContactPage() {
