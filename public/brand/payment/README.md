@@ -2,7 +2,7 @@
 
 These files are copied unmodified from Shopify's open-source
 [`payment_icons`](https://github.com/activemerchant/payment_icons) library
-(`app/assets/images/payment_icons/`), MIT-licensed — see `LICENSE.txt`. It is
+(`app/assets/images/payment_icons/`), MIT-licensed — see `LICENSE`. It is
 the same artwork Shopify shows at checkout, which is why it is used here
 instead of hand-drawn approximations.
 

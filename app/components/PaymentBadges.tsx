@@ -3,7 +3,7 @@
  *
  * Every mark is the genuine artwork from Shopify's open-source payment_icons
  * library — the same files Shopify shows at checkout — copied unmodified into
- * /public/brand/payment/ (MIT, see LICENSE.txt and README.md there).
+ * /public/brand/payment/ (MIT, see LICENSE and README.md there).
  *
  * They replace hand-drawn approximations: a coloured-parallelogram "mada", a
  * plain-text "STC Pay", a redrawn Apple glyph, and in the cart plain text
