@@ -24,6 +24,7 @@ import type {
 } from '@shopify/hydrogen/storefront-api-types';
 
 import {Button} from '~/components/Button';
+import {PaymentMarks} from '~/components/PaymentBadges';
 import {Text, Heading} from '~/components/Text';
 import {Link} from '~/components/Link';
 import {IconRemove} from '~/components/Icon';
@@ -527,16 +528,7 @@ function CartCheckoutActions({
       </div>
 
       {/* Payment badges */}
-      <div className="flex items-center justify-center gap-2 flex-wrap">
-        {['mada', 'Visa', 'MC', 'Apple Pay', 'STC Pay'].map((m) => (
-          <span
-            key={m}
-            className="px-2 py-0.5 text-[9px] text-taupe bg-surface border border-taupe/10 rounded"
-          >
-            {m}
-          </span>
-        ))}
-      </div>
+      <PaymentMarks size="sm" />
 
       {/* Terms */}
       <p className="text-[10px] text-center text-taupe/60">
@@ -561,47 +553,11 @@ function CartCheckoutActions({
 
 function GCCPaymentBadges() {
   return (
-    <div className="flex items-center justify-center gap-2 flex-wrap py-1">
-      {/* mada */}
-      <div className="px-2 py-1 bg-surface rounded border border-taupe/10 flex items-center">
-        <span className="text-[9px] font-bold text-[#1B5E20] tracking-wide">
-          mada
-        </span>
-      </div>
-      {/* STC Pay */}
-      <div className="px-2 py-1 bg-surface rounded border border-taupe/10 flex items-center">
-        <span className="text-[9px] font-bold text-purple-400 tracking-wide">
-          STC Pay
-        </span>
-      </div>
-      {/* Apple Pay */}
-      <div className="px-2 py-1 bg-surface rounded border border-taupe/10 flex items-center">
-        <svg
-          className="w-7 h-3.5"
-          viewBox="0 0 80 34"
-          fill="white"
-          aria-label="Apple Pay"
-        >
-          <path d="M15.1 6.5c-.8.9-2 1.6-3.2 1.5-.2-1.2.5-2.5 1.2-3.3C13.9 3.7 15.2 3 16.3 3c.1 1.3-.4 2.6-1.2 3.5zm1.2 1.8c-1.8-.1-3.3 1-4.1 1s-2.1-1-3.6-.9c-1.8 0-3.5 1-4.4 2.6-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.4 2.6 1.4-.1 1.9-.9 3.5-.9 1.6 0 2.1.9 3.5.9 1.4-.1 2.3-1.3 3.2-2.6.9-1.3 1.3-2.6 1.3-2.7-.1 0-2.4-.9-2.5-3.7 0-2.3 1.9-3.4 2-3.5-.1-1.3-2.1-2.5-3.6-2.6z" />
-          <text
-            x="28"
-            y="22"
-            fontSize="14"
-            fontWeight="600"
-            fill="white"
-            fontFamily="-apple-system, sans-serif"
-          >
-            Pay
-          </text>
-        </svg>
-      </div>
-      {/* Tamara */}
-      <div className="px-2 py-1 bg-surface rounded border border-taupe/10 flex items-center">
-        <span className="text-[9px] font-bold text-[#F6A623] tracking-wide">
-          tamara
-        </span>
-      </div>
-    </div>
+    <PaymentMarks
+      methods={['mada', 'stcPay', 'applePay', 'tamara']}
+      size="sm"
+      className="py-1"
+    />
   );
 }
 

@@ -1,112 +1,79 @@
 /**
- * Payment method icons for footer
- * Clean horizontal single-line layout: Mada, Visa, Mastercard, Apple Pay, STC Pay
+ * Payment method marks.
+ *
+ * Every mark is the genuine artwork from Shopify's open-source payment_icons
+ * library — the same files Shopify shows at checkout — copied unmodified into
+ * /public/brand/payment/ (MIT, see LICENSE and README.md there).
+ *
+ * They replace hand-drawn approximations: a coloured-parallelogram "mada", a
+ * plain-text "STC Pay", a redrawn Apple glyph, and in the cart plain text
+ * chips. Customers read those as fake, and for a checkout that is a trust
+ * problem, not a cosmetic one.
+ *
+ * All six share Shopify's 38x24 card format, so they line up at any height.
+ * Do not recolour, crop or redraw them; Apple requires the Apple Pay mark to be
+ * used unaltered.
  */
 
-/*
- * Payment marks for the footer.
- *
- * The footer sits on a dark gradient (via-[#151515]/90). The previous marks
- * were hand-drawn approximations and two of them were dark-on-dark: mada was
- * #00589B and STC Pay #4F008C, both close to unreadable against that
- * background. They are drawn light here so they can be read.
- *
- * Visa and Mastercard are the real brand SVGs, bundled under
- * /brand/payment/. mada, Apple Pay and STC Pay are still approximations —
- * accurate marks for those have to come from the schemes themselves (Tap
- * supplies a marks pack), and redrawing them from memory is what made this
- * row look wrong in the first place.
- */
+export type PaymentMethod =
+  | 'mada'
+  | 'visa'
+  | 'mastercard'
+  | 'applePay'
+  | 'stcPay'
+  | 'tamara';
 
-const MARK_HEIGHT = 'h-5 w-auto';
+const PAYMENT_MARKS: Record<PaymentMethod, {src: string; label: string}> = {
+  mada: {src: '/brand/payment/mada.svg', label: 'mada'},
+  visa: {src: '/brand/payment/visa.svg', label: 'Visa'},
+  mastercard: {src: '/brand/payment/mastercard.svg', label: 'Mastercard'},
+  applePay: {src: '/brand/payment/apple-pay.svg', label: 'Apple Pay'},
+  stcPay: {src: '/brand/payment/stc-pay.svg', label: 'stc pay'},
+  tamara: {src: '/brand/payment/tamara.svg', label: 'tamara'},
+};
 
-function VisaIcon() {
+/** The methods the store takes payment through, in display order. */
+export const ACCEPTED_METHODS: PaymentMethod[] = [
+  'mada',
+  'visa',
+  'mastercard',
+  'applePay',
+  'stcPay',
+];
+
+const HEIGHTS = {sm: 20, md: 24} as const;
+
+export function PaymentMarks({
+  methods = ACCEPTED_METHODS,
+  size = 'md',
+  className = '',
+}: {
+  methods?: PaymentMethod[];
+  size?: keyof typeof HEIGHTS;
+  className?: string;
+}) {
+  const h = HEIGHTS[size];
+  const w = Math.round((h * 38) / 24);
   return (
-    <img
-      src="/brand/payment/visa.svg"
-      alt="Visa"
-      className={MARK_HEIGHT}
-      width={31}
-      height={20}
-      loading="lazy"
-      decoding="async"
-    />
-  );
-}
-
-function MastercardIcon() {
-  return (
-    <img
-      src="/brand/payment/mastercard.svg"
-      alt="Mastercard"
-      className={MARK_HEIGHT}
-      width={31}
-      height={20}
-      loading="lazy"
-      decoding="async"
-    />
-  );
-}
-
-function MadaIcon() {
-  return (
-    <svg viewBox="0 0 62 20" className={MARK_HEIGHT} aria-label="mada">
-      <rect width="62" height="20" rx="3" fill="#FFFFFF" />
-      <path d="M10 6.5h6.5l-3.2 7H6.8l3.2-7z" fill="#059A4D" />
-      <path d="M15.4 6.5h6.5l-3.2 7h-6.5l3.2-7z" fill="#1A4E8A" />
-      <text
-        x="42"
-        y="13.6"
-        fontSize="8.5"
-        fontWeight="700"
-        fill="#1A4E8A"
-        fontFamily="Arial, Helvetica, sans-serif"
-        textAnchor="middle"
-      >
-        mada
-      </text>
-    </svg>
-  );
-}
-
-function ApplePayIcon() {
-  return (
-    <svg viewBox="0 0 62 20" className={MARK_HEIGHT} aria-label="Apple Pay">
-      <rect width="62" height="20" rx="3" fill="#FFFFFF" />
-      <path
-        d="M22.1 8.05c-.35.42-.92.75-1.48.7-.07-.56.2-1.16.53-1.53.35-.43.97-.73 1.47-.76.06.58-.17 1.16-.52 1.59zm.51.81c-.81-.05-1.5.46-1.89.46-.39 0-.98-.44-1.62-.42-.83.01-1.6.48-2.03 1.23-.87 1.5-.23 3.72.61 4.94.41.6.9 1.27 1.55 1.25.61-.02.85-.4 1.6-.4.74 0 .96.4 1.61.39.67-.01 1.09-.61 1.5-1.21.47-.69.67-1.36.68-1.4-.01-.01-1.31-.51-1.32-2.01-.01-1.25 1.02-1.85 1.07-1.88-.58-.86-1.49-.95-1.81-.97z"
-        fill="#111111"
-      />
-      <text
-        x="40"
-        y="13.8"
-        fontSize="9"
-        fontWeight="600"
-        fill="#111111"
-        fontFamily="Helvetica, Arial, sans-serif"
-      >
-        Pay
-      </text>
-    </svg>
-  );
-}
-
-function STCPayIcon() {
-  return (
-    <svg viewBox="0 0 62 20" className={MARK_HEIGHT} aria-label="STC Pay">
-      <rect width="62" height="20" rx="3" fill="#FFFFFF" />
-      <text
-        x="31"
-        y="13.6"
-        fontSize="8.5"
-        fontWeight="700"
-        fill="#4F008C"
-        fontFamily="Arial, Helvetica, sans-serif"
-        textAnchor="middle"
-      >
-        stc pay
-      </text>
-    </svg>
+    <ul
+      className={`flex items-center justify-center gap-2 flex-wrap ${className}`}
+      aria-label="Accepted payment methods"
+    >
+      {methods.map((m) => (
+        <li key={m} className="flex">
+          <img
+            src={PAYMENT_MARKS[m].src}
+            alt={PAYMENT_MARKS[m].label}
+            width={w}
+            height={h}
+            style={{width: w, height: h}}
+            loading="lazy"
+            decoding="async"
+            draggable={false}
+          />
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -161,13 +128,5 @@ export function TrustPaymentSection() {
 }
 
 export default function PaymentBadges() {
-  return (
-    <div className="flex items-center gap-3 sm:gap-4 flex-wrap justify-center">
-      <MadaIcon />
-      <VisaIcon />
-      <MastercardIcon />
-      <ApplePayIcon />
-      <STCPayIcon />
-    </div>
-  );
+  return <PaymentMarks className="sm:gap-3" />;
 }
