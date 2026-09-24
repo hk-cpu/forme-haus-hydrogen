@@ -309,7 +309,29 @@ function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
       heading="Bag"
       openFrom={isRTL ? 'left' : 'right'}
     >
-      <div className="grid">
+      {/*
+        This wrapper has to be a flex child that both grows and is allowed to
+        shrink, because it sits between two halves of a height chain.
+
+        Above it, Drawer's Dialog.Panel is `h-[100dvh] flex flex-col`. Below
+        it, CartDetails is `flex flex-col h-full overflow-hidden` with a
+        `flex-1 min-h-0 overflow-y-auto` item list and a `flex-shrink-0`
+        summary — a correct scrolling layout.
+
+        It used to be `grid`, which is neither. A plain flex child defaults to
+        `flex: 0 1 auto` with `min-height: auto`, so it took its content's
+        height instead of the panel's, and CartDetails' `h-full` had no
+        definite height to resolve 100% against. The item list therefore never
+        received a bounded height and never scrolled: the cart simply grew
+        past the panel and was clipped by the drawer's `overflow-hidden`,
+        taking the checkout button with it. Measured at 1440x900, five items
+        put the button's bottom edge at 1152px.
+
+        This is why the two earlier attempts at this bug did not hold. Both
+        corrected the flex setup *inside* CartDetails, which was already
+        right; the chain was broken one level above it.
+      */}
+      <div className="flex min-h-0 flex-1 flex-col">
         <Suspense fallback={<CartLoading />}>
           <Await resolve={rootData?.cart}>
             {(cart) => <Cart layout="drawer" onClose={onClose} cart={cart} />}
