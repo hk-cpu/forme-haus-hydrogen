@@ -57,8 +57,16 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   // Update cart id in cookie
   const headers = cart.setCartId(cartResult.id);
 
-  //! redirect to branded checkout handoff
-  return redirect('/checkout', {headers});
+  // Hand off to Shopify's checkout for this cart — the same checkoutUrl the
+  // bag's "Proceed to checkout" button uses.
+  //
+  // This used to redirect to /checkout, the site's own Tap checkout page. That
+  // page creates the Shopify order only after payment and only when
+  // SHOPIFY_ADMIN_API_TOKEN is configured; without it a customer could pay
+  // through Tap and no order would exist — no stock deduction, no VAT record.
+  // Shopify's checkout records the order itself, so these links are safe to
+  // print as QR codes (e.g. for an in-person pop-up).
+  return redirect(cartResult.checkoutUrl, {headers});
 }
 
 export default function Component() {
