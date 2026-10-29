@@ -1,5 +1,27 @@
 import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {redirect} from '@remix-run/server-runtime';
+import type {CartBuyerIdentityInput} from '@shopify/hydrogen/storefront-api-types';
+
+// In-person pop-up (29 Oct 2026): carts from these links open checkout with
+// local pickup at the Olaya Office location already selected, so customers
+// scanning a product QR skip the shipping address. Expires on its own; after
+// that the links behave as ordinary cart links. Buyers can still switch to
+// shipping at checkout — this is only a prefill.
+const POPUP_PICKUP_LOCATION_ID = '82673008811';
+const POPUP_PICKUP_UNTIL = Date.parse('2026-10-30T06:00:00Z');
+
+function popupPickupIdentity(): CartBuyerIdentityInput | undefined {
+  if (Date.now() >= POPUP_PICKUP_UNTIL) return undefined;
+  return {
+    countryCode: 'SA',
+    preferences: {
+      delivery: {
+        deliveryMethod: ['PICK_UP'],
+        pickupHandle: [POPUP_PICKUP_LOCATION_ID],
+      },
+    },
+  };
+}
 
 /**
  * Automatically creates a new cart based on the URL and redirects straight to checkout.
@@ -41,10 +63,16 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   const discountArray = discount ? [discount] : [];
 
   //! create a cart
-  const result = await cart.create({
-    lines: linesMap,
-    discountCodes: discountArray,
-  });
+  const input = {lines: linesMap, discountCodes: discountArray};
+  const buyerIdentity = popupPickupIdentity();
+  let result = await cart.create(
+    buyerIdentity ? {...input, buyerIdentity} : input,
+  );
+
+  // The pickup prefill is a convenience; never let it break the link.
+  if (buyerIdentity && (result.errors?.length || !result.cart)) {
+    result = await cart.create(input);
+  }
 
   const cartResult = result.cart;
 
