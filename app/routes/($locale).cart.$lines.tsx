@@ -2,22 +2,21 @@ import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {redirect} from '@remix-run/server-runtime';
 import type {CartBuyerIdentityInput} from '@shopify/hydrogen/storefront-api-types';
 
-// In-person pop-up (29 Oct 2026): walk-in customers scan a product QR and
-// should only have to tap "Pay now". Carts from these links arrive at checkout
-// with every required field prefilled with the store's own details: a
-// "Pop-up Customer" name, the store email, and free delivery to the store
-// address (billing copies it). Staff hand the item over and fulfil the order
-// by hand. Local pickup is not used because Shopify then asks for a billing
-// address that cannot be prefilled. Buyers can still overwrite any field,
-// e.g. to get an email receipt. Expires on its own; after that the links
-// behave as ordinary cart links.
+// In-person pop-up (29 Oct 2026): walk-in customers scan a product QR, enter
+// only their phone number (Contact, which also creates their customer record)
+// and tap "Pay now". Carts from these links arrive at checkout with every
+// other required field prefilled with the store's own details: a
+// "Pop-up Customer" name and free delivery to the store address (billing
+// copies it). Staff hand the item over and fulfil the order by hand. Local
+// pickup is not used because Shopify then asks for a billing address that
+// cannot be prefilled. Expires on its own; after that the links behave as
+// ordinary cart links.
 const POPUP_UNTIL = Date.parse('2026-10-30T06:00:00Z');
 
 function popupCheckoutIdentity(): CartBuyerIdentityInput | undefined {
   if (Date.now() >= POPUP_UNTIL) return undefined;
   return {
     countryCode: 'SA',
-    email: 'info@formehaus.me',
     deliveryAddressPreferences: [
       {
         deliveryAddress: {
